@@ -10,16 +10,15 @@ module Models =
           FullName: string }
 
     type ConstructType =
-        { LowerShortName: string
+        { Name: string
           InputType: string }
 
     type ConstructorType =
-        { LowerShortName: string
+        { Name: string
           InputType: string }
 
     type BuildMember =
-        { Position : int
-          Name : string
+        { Name : string
           UniqueName : string
           InputType : string
           ConvertInputToModel : string
@@ -69,8 +68,8 @@ module Models =
     type BuilderData =
         { Build : BuildData
           Create : CreateData
-          Update : UpdateData }
-//          Construct : ConstructData }
+          Update : UpdateData
+          Construct : ConstructData }
 
     type ViewerMember =
         { Name : string
@@ -96,6 +95,8 @@ module Models =
         
     type GeneratorData =
         { Namespace : string
-          Attributes: string[]
-          Proto: string[]
-          Builders : BuilderData [] }
+          Attributes : string[]
+          Builders : BuilderData []
+          Viewers : ViewerData []
+          Constructors : ConstructorData []
+          ViewExtensions : ViewExtensionsData [] }

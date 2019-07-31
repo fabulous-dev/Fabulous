@@ -14,19 +14,18 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -38,7 +37,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -50,7 +48,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -62,7 +59,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -74,7 +70,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -95,19 +90,18 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -119,7 +113,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -131,7 +124,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -143,7 +135,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -155,7 +146,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -167,7 +157,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -179,7 +168,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -200,39 +188,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -244,235 +231,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": false
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -484,7 +242,94 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -496,7 +341,127 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -508,7 +473,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -520,7 +484,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -532,7 +495,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -544,7 +506,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -556,7 +517,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -568,7 +528,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -580,7 +539,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -601,39 +559,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -645,7 +602,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -657,7 +613,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -669,7 +624,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -681,7 +635,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -693,235 +646,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -933,7 +657,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -945,7 +756,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -957,7 +888,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -969,7 +899,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -981,7 +910,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -993,7 +921,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1005,7 +932,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1017,7 +943,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1029,7 +954,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1050,19 +974,18 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "GestureElementGestureRecognizers",
@@ -1074,7 +997,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1086,7 +1008,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1098,7 +1019,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1110,7 +1030,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1122,7 +1041,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1143,29 +1061,28 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "PanUpdated",
           "ShortName": "panUpdated",
           "UniqueName": "PanGestureRecognizerPanUpdated",
           "InputType": "Xamarin.Forms.PanUpdatedEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "TouchPoints",
           "ShortName": "touchPoints",
           "UniqueName": "PanGestureRecognizerTouchPoints",
@@ -1177,7 +1094,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1189,7 +1105,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1201,7 +1116,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1213,7 +1127,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1225,7 +1138,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1246,19 +1158,18 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "ClickGestureRecognizerCommand",
@@ -1270,7 +1181,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "NumberOfClicksRequired",
           "ShortName": "numberOfClicksRequired",
           "UniqueName": "ClickGestureRecognizerNumberOfClicksRequired",
@@ -1282,7 +1192,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Buttons",
           "ShortName": "buttons",
           "UniqueName": "ClickGestureRecognizerButtons",
@@ -1294,7 +1203,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1306,7 +1214,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1318,7 +1225,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1330,7 +1236,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1342,7 +1247,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1363,29 +1267,28 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "PinchUpdated",
           "ShortName": "pinchUpdated",
           "UniqueName": "PinchGestureRecognizerPinchUpdated",
           "InputType": "Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1397,7 +1300,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1409,7 +1311,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1421,7 +1322,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1433,7 +1333,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1454,29 +1353,28 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Swiped",
           "ShortName": "swiped",
           "UniqueName": "SwipeGestureRecognizerSwiped",
           "InputType": "Xamarin.Forms.SwipedEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "SwipeGestureRecognizerCommand",
@@ -1488,7 +1386,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Direction",
           "ShortName": "direction",
           "UniqueName": "SwipeGestureRecognizerDirection",
@@ -1500,7 +1397,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Threshold",
           "ShortName": "threshold",
           "UniqueName": "SwipeGestureRecognizerThreshold",
@@ -1512,7 +1408,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1524,7 +1419,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -1536,7 +1430,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -1548,7 +1441,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -1560,7 +1452,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -1581,39 +1472,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Color",
           "ShortName": "color",
           "UniqueName": "ActivityIndicatorColor",
@@ -1625,7 +1515,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "IsRunning",
           "ShortName": "isRunning",
           "UniqueName": "ActivityIndicatorIsRunning",
@@ -1637,7 +1526,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -1649,7 +1537,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -1661,7 +1548,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -1673,7 +1559,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -1685,7 +1570,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -1697,235 +1581,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -1937,7 +1592,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -1949,7 +1691,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -1961,7 +1823,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -1973,7 +1834,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -1985,7 +1845,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -1997,7 +1856,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -2009,7 +1867,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -2021,7 +1878,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -2033,7 +1889,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -2054,39 +1909,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Color",
           "ShortName": "color",
           "UniqueName": "BoxViewColor",
@@ -2098,7 +1952,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "CornerRadius",
           "ShortName": "cornerRadius",
           "UniqueName": "BoxViewCornerRadius",
@@ -2110,7 +1963,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -2122,7 +1974,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -2134,7 +1985,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -2146,7 +1996,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -2158,7 +2007,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -2170,235 +2018,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -2410,7 +2029,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -2422,7 +2128,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -2434,7 +2260,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -2446,7 +2271,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -2458,7 +2282,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -2470,7 +2293,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -2482,7 +2304,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -2494,7 +2315,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -2506,7 +2326,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -2527,39 +2346,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Progress",
           "ShortName": "progress",
           "UniqueName": "ProgressBarProgress",
@@ -2571,7 +2389,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -2583,7 +2400,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -2595,7 +2411,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -2607,7 +2422,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -2619,7 +2433,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -2631,235 +2444,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -2871,7 +2455,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -2883,7 +2554,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -2895,7 +2686,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -2907,7 +2697,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -2919,7 +2708,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -2931,7 +2719,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -2943,7 +2730,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -2955,7 +2741,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -2967,7 +2752,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -2988,39 +2772,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "IsClippedToBounds",
           "ShortName": "isClippedToBounds",
           "UniqueName": "LayoutIsClippedToBounds",
@@ -3032,7 +2815,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Padding",
           "ShortName": "padding",
           "UniqueName": "LayoutPadding",
@@ -3044,7 +2826,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -3056,7 +2837,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -3068,7 +2848,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -3080,7 +2859,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -3092,7 +2870,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -3104,235 +2881,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -3344,7 +2892,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -3356,7 +2991,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -3368,7 +3123,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -3380,7 +3134,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -3392,7 +3145,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -3404,7 +3156,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -3416,7 +3167,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -3428,7 +3178,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -3440,7 +3189,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -3461,49 +3209,48 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Scrolled",
           "ShortName": "scrolled",
           "UniqueName": "ScrollViewScrolled",
           "InputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Content",
           "ShortName": "content",
           "UniqueName": "ScrollViewContent",
@@ -3515,7 +3262,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Orientation",
           "ShortName": "orientation",
           "UniqueName": "ScrollViewOrientation",
@@ -3527,7 +3273,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalScrollBarVisibility",
           "ShortName": "horizontalScrollBarVisibility",
           "UniqueName": "ScrollViewHorizontalScrollBarVisibility",
@@ -3539,7 +3284,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalScrollBarVisibility",
           "ShortName": "verticalScrollBarVisibility",
           "UniqueName": "ScrollViewVerticalScrollBarVisibility",
@@ -3551,7 +3295,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "ScrollTo",
           "ShortName": "scrollTo",
           "UniqueName": "ScrollViewScrollTo",
@@ -3563,7 +3306,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "IsClippedToBounds",
           "ShortName": "isClippedToBounds",
           "UniqueName": "LayoutIsClippedToBounds",
@@ -3575,7 +3317,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Padding",
           "ShortName": "padding",
           "UniqueName": "LayoutPadding",
@@ -3587,7 +3328,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -3599,7 +3339,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -3611,7 +3350,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -3623,7 +3361,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -3635,7 +3372,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -3647,235 +3383,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -3887,7 +3394,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -3899,7 +3493,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -3911,7 +3625,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -3923,7 +3636,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -3935,7 +3647,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -3947,7 +3658,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -3959,7 +3669,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -3971,7 +3680,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -3983,7 +3691,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -4004,39 +3711,38 @@
       "AttachedProperties": [],
       "Events": [
         {
-          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "InputType": "obj -> unit",
           "ModelType": "obj -> unit",
           "ConvertInputToModel": "",
+          "RelatedProperties": [],
           "IsInherited": true
         }
       ],
       "Properties": [
         {
-          "Position": 2147483647,
           "Name": "Text",
           "ShortName": "text",
           "UniqueName": "ButtonText",
@@ -4048,7 +3754,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "ButtonCommand",
@@ -4060,7 +3765,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "BorderColor",
           "ShortName": "borderColor",
           "UniqueName": "ButtonBorderColor",
@@ -4072,7 +3776,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "BorderWidth",
           "ShortName": "borderWidth",
           "UniqueName": "ButtonBorderWidth",
@@ -4084,7 +3787,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "ContentLayout",
           "ShortName": "contentLayout",
           "UniqueName": "ButtonContentLayout",
@@ -4096,7 +3798,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "CornerRadius",
           "ShortName": "cornerRadius",
           "UniqueName": "ButtonCornerRadius",
@@ -4108,7 +3809,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "FontFamily",
           "ShortName": "fontFamily",
           "UniqueName": "ButtonFontFamily",
@@ -4120,7 +3820,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "FontAttributes",
           "ShortName": "fontAttributes",
           "UniqueName": "ButtonFontAttributes",
@@ -4132,7 +3831,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "FontSize",
           "ShortName": "fontSize",
           "UniqueName": "ButtonFontSize",
@@ -4144,7 +3842,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Image",
           "ShortName": "image",
           "UniqueName": "ButtonImage",
@@ -4156,7 +3853,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "TextColor",
           "ShortName": "textColor",
           "UniqueName": "ButtonTextColor",
@@ -4168,7 +3864,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "Padding",
           "ShortName": "padding",
           "UniqueName": "ButtonPadding",
@@ -4180,7 +3875,6 @@
           "IsInherited": false
         },
         {
-          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -4192,7 +3886,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -4204,7 +3897,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -4216,7 +3908,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -4228,7 +3919,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -4240,235 +3930,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
-          "Name": "TranslationY",
-          "ShortName": "translationY",
-          "UniqueName": "VisualElementTranslationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TranslationX",
-          "ShortName": "translationX",
-          "UniqueName": "VisualElementTranslationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "TabIndex",
-          "ShortName": "tabIndex",
-          "UniqueName": "VisualElementTabIndex",
-          "DefaultValue": "0",
-          "InputType": "int",
-          "ModelType": "int",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleY",
-          "ShortName": "scaleY",
-          "UniqueName": "VisualElementScaleY",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "ScaleX",
-          "ShortName": "scaleX",
-          "UniqueName": "VisualElementScaleX",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Scale",
-          "ShortName": "scale",
-          "UniqueName": "VisualElementScale",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationY",
-          "ShortName": "rotationY",
-          "UniqueName": "VisualElementRotationY",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "RotationX",
-          "ShortName": "rotationX",
-          "UniqueName": "VisualElementRotationX",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Rotation",
-          "ShortName": "rotation",
-          "UniqueName": "VisualElementRotation",
-          "DefaultValue": "0",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "MinimumHeight",
-          "ShortName": "minimumHeight",
-          "UniqueName": "VisualElementMinimumHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsVisible",
-          "ShortName": "isVisible",
-          "UniqueName": "VisualElementIsVisible",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsTabStop",
-          "ShortName": "isTabStop",
-          "UniqueName": "VisualElementIsTabStop",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "IsEnabled",
-          "ShortName": "isEnabled",
-          "UniqueName": "VisualElementIsEnabled",
-          "DefaultValue": "true",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "InputTransparent",
-          "ShortName": "inputTransparent",
-          "UniqueName": "VisualElementInputTransparent",
-          "DefaultValue": "false",
-          "InputType": "bool",
-          "ModelType": "bool",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "Height",
-          "ShortName": "height",
-          "UniqueName": "VisualElementHeight",
-          "DefaultValue": "-1",
-          "InputType": "float",
-          "ModelType": "float",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "FlowDirection",
-          "ShortName": "flowDirection",
-          "UniqueName": "VisualElementFlowDirection",
-          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
-          "InputType": "Xamarin.Forms.FlowDirection",
-          "ModelType": "Xamarin.Forms.FlowDirection",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
-          "Name": "BackgroundColor",
-          "ShortName": "backgroundColor",
-          "UniqueName": "VisualElementBackgroundColor",
-          "DefaultValue": "Xamarin.Forms.Color.Default",
-          "InputType": "Xamarin.Forms.Color",
-          "ModelType": "Xamarin.Forms.Color",
-          "ConvertInputToModel": "",
-          "ConvertModelToValue": "",
-          "IsInherited": true
-        },
-        {
-          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -4480,7 +3941,94 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -4492,7 +4040,127 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -4504,7 +4172,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -4516,7 +4183,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -4528,7 +4194,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -4540,7 +4205,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -4552,7 +4216,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -4564,7 +4227,6 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -4576,7 +4238,486 @@
           "IsInherited": true
         },
         {
-          "Position": 2147483647,
+          "Name": "Tag",
+          "ShortName": "tag",
+          "UniqueName": "ElementTag",
+          "DefaultValue": "null",
+          "InputType": "obj",
+          "ModelType": "obj",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        }
+      ]
+    },
+    {
+      "Type": "Xamarin.Forms.Slider",
+      "TypeToInstantiate": "Xamarin.Forms.Slider",
+      "BaseTypeName": "View",
+      "Name": "Slider",
+      "AttachedProperties": [],
+      "Events": [
+        {
+          "Name": "ValueChanged",
+          "ShortName": "valueChanged",
+          "UniqueName": "SliderValueChanged",
+          "InputType": "Xamarin.Forms.ValueChangedEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [
+            "Value"
+          ],
+          "IsInherited": false
+        },
+        {
+          "Name": "DragCompleted",
+          "ShortName": "dragCompleted",
+          "UniqueName": "SliderDragCompleted",
+          "InputType": "unit -> unit",
+          "ModelType": "System.EventHandler",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [],
+          "IsInherited": false
+        },
+        {
+          "Name": "DragStarted",
+          "ShortName": "dragStarted",
+          "UniqueName": "SliderDragStarted",
+          "InputType": "unit -> unit",
+          "ModelType": "System.EventHandler",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [],
+          "IsInherited": false
+        },
+        {
+          "Name": "Focused",
+          "ShortName": "focused",
+          "UniqueName": "VisualElementFocused",
+          "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [],
+          "IsInherited": true
+        },
+        {
+          "Name": "Unfocused",
+          "ShortName": "unfocused",
+          "UniqueName": "VisualElementUnfocused",
+          "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [],
+          "IsInherited": true
+        },
+        {
+          "Name": "Created",
+          "ShortName": "created",
+          "UniqueName": "ElementCreated",
+          "InputType": "obj -> unit",
+          "ModelType": "obj -> unit",
+          "ConvertInputToModel": "",
+          "RelatedProperties": [],
+          "IsInherited": true
+        }
+      ],
+      "Properties": [
+        {
+          "Name": "MinimumMaximum",
+          "ShortName": "minimumMaximum",
+          "UniqueName": "SliderMinimumMaximum",
+          "DefaultValue": "(0.0, 1.0)",
+          "InputType": "float * float",
+          "ModelType": "float * float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "Value",
+          "ShortName": "value",
+          "UniqueName": "SliderValue",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "ThumbImageSource",
+          "ShortName": "thumbImageSource",
+          "UniqueName": "SliderThumbImageSource",
+          "DefaultValue": "null",
+          "InputType": "Xamarin.Forms.ImageSource",
+          "ModelType": "Xamarin.Forms.ImageSource",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": false
+        },
+        {
+          "Name": "HorizontalOptions",
+          "ShortName": "horizontalOptions",
+          "UniqueName": "ViewHorizontalOptions",
+          "DefaultValue": "Xamarin.Forms.LayoutOptions.Fill",
+          "InputType": "Xamarin.Forms.LayoutOptions",
+          "ModelType": "Xamarin.Forms.LayoutOptions",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "VerticalOptions",
+          "ShortName": "verticalOptions",
+          "UniqueName": "ViewVerticalOptions",
+          "DefaultValue": "Xamarin.Forms.LayoutOptions.Fill",
+          "InputType": "Xamarin.Forms.LayoutOptions",
+          "ModelType": "Xamarin.Forms.LayoutOptions",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Margin",
+          "ShortName": "margin",
+          "UniqueName": "ViewMargin",
+          "DefaultValue": "InputTypes.Thickness.Uniform 0.",
+          "InputType": "InputTypes.Thickness",
+          "ModelType": "Xamarin.Forms.Thickness",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness",
+          "IsInherited": true
+        },
+        {
+          "Name": "GestureRecognizers",
+          "ShortName": "gestureRecognizers",
+          "UniqueName": "ViewGestureRecognizers",
+          "DefaultValue": "[]",
+          "InputType": "ViewElement list",
+          "ModelType": "ViewElement list",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "AnchorX",
+          "ShortName": "anchorX",
+          "UniqueName": "VisualElementAnchorX",
+          "DefaultValue": "0.5",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "AnchorY",
+          "ShortName": "anchorY",
+          "UniqueName": "VisualElementAnchorY",
+          "DefaultValue": "0.5",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "BackgroundColor",
+          "ShortName": "backgroundColor",
+          "UniqueName": "VisualElementBackgroundColor",
+          "DefaultValue": "Xamarin.Forms.Color.Default",
+          "InputType": "Xamarin.Forms.Color",
+          "ModelType": "Xamarin.Forms.Color",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "FlowDirection",
+          "ShortName": "flowDirection",
+          "UniqueName": "VisualElementFlowDirection",
+          "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent",
+          "InputType": "Xamarin.Forms.FlowDirection",
+          "ModelType": "Xamarin.Forms.FlowDirection",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Height",
+          "ShortName": "height",
+          "UniqueName": "VisualElementHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "InputTransparent",
+          "ShortName": "inputTransparent",
+          "UniqueName": "VisualElementInputTransparent",
+          "DefaultValue": "false",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsEnabled",
+          "ShortName": "isEnabled",
+          "UniqueName": "VisualElementIsEnabled",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsTabStop",
+          "ShortName": "isTabStop",
+          "UniqueName": "VisualElementIsTabStop",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "IsVisible",
+          "ShortName": "isVisible",
+          "UniqueName": "VisualElementIsVisible",
+          "DefaultValue": "true",
+          "InputType": "bool",
+          "ModelType": "bool",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumHeight",
+          "ShortName": "minimumHeight",
+          "UniqueName": "VisualElementMinimumHeight",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "MinimumWidth",
+          "ShortName": "minimumWidth",
+          "UniqueName": "VisualElementMinimumWidth",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Rotation",
+          "ShortName": "rotation",
+          "UniqueName": "VisualElementRotation",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationX",
+          "ShortName": "rotationX",
+          "UniqueName": "VisualElementRotationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "RotationY",
+          "ShortName": "rotationY",
+          "UniqueName": "VisualElementRotationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Scale",
+          "ShortName": "scale",
+          "UniqueName": "VisualElementScale",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleX",
+          "ShortName": "scaleX",
+          "UniqueName": "VisualElementScaleX",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ScaleY",
+          "ShortName": "scaleY",
+          "UniqueName": "VisualElementScaleY",
+          "DefaultValue": "1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TabIndex",
+          "ShortName": "tabIndex",
+          "UniqueName": "VisualElementTabIndex",
+          "DefaultValue": "0",
+          "InputType": "int",
+          "ModelType": "int",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationX",
+          "ShortName": "translationX",
+          "UniqueName": "VisualElementTranslationX",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "TranslationY",
+          "ShortName": "translationY",
+          "UniqueName": "VisualElementTranslationY",
+          "DefaultValue": "0",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Width",
+          "ShortName": "width",
+          "UniqueName": "VisualElementWidth",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Style",
+          "ShortName": "style",
+          "UniqueName": "NavigableElementStyle",
+          "DefaultValue": "null",
+          "InputType": "Xamarin.Forms.Style",
+          "ModelType": "Xamarin.Forms.Style",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "StyleClass",
+          "ShortName": "styleClass",
+          "UniqueName": "NavigableElementStyleClass",
+          "DefaultValue": "InputTypes.StyleClass.None",
+          "InputType": "InputTypes.StyleClass",
+          "ModelType": "InputTypes.StyleClass",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "ViewConverters.convertStyleClassToStringList",
+          "IsInherited": true
+        },
+        {
+          "Name": "AutomationId",
+          "ShortName": "automationId",
+          "UniqueName": "ElementAutomationId",
+          "DefaultValue": "null",
+          "InputType": "string",
+          "ModelType": "string",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "ClassId",
+          "ShortName": "classId",
+          "UniqueName": "ElementClassId",
+          "DefaultValue": "null",
+          "InputType": "string",
+          "ModelType": "string",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "StyleId",
+          "ShortName": "styleId",
+          "UniqueName": "ElementStyleId",
+          "DefaultValue": "null",
+          "InputType": "string",
+          "ModelType": "string",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
+          "Name": "Ref",
+          "ShortName": "ref",
+          "UniqueName": "ElementRef",
+          "DefaultValue": "null",
+          "InputType": "ViewRef",
+          "ModelType": "ViewRef",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "",
+          "IsInherited": true
+        },
+        {
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",

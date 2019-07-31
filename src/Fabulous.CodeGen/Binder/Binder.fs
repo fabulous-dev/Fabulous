@@ -50,12 +50,11 @@ module BinderHelpers =
         | None -> tryCreateFunc()
         | Some source -> tryBind members source getNameFunc logNotFound bindFunc
             
-    let bindMembers overwriteMembers getPositionFunc tryBindMemberFunc =
+    let bindMembers overwriteMembers tryBindMemberFunc =
         match overwriteMembers with
         | None -> [||]
         | Some members ->
             members
-            |> Array.sortBy (fun m -> match (getPositionFunc m) with Some position -> position | None -> System.Int32.MaxValue)
             |> Array.choose tryBindMemberFunc
         
 module Binder =
@@ -75,20 +74,19 @@ module Binder =
     /// Create an event binding from the AssemblyReader data and Overwrite data
     let bindEvent containerTypeName (readerData: EventReaderData) (overwriteData: EventOverwriteData) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
-        { Position = BinderHelpers.getPosition overwriteData.Position
-          Name = name
+        { Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
           InputType = BinderHelpers.getValueOrDefault overwriteData.InputType readerData.Type
           ModelType = BinderHelpers.getValueOrDefault overwriteData.ModelType readerData.EventHandlerType
           ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
+          RelatedProperties = match overwriteData.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
           IsInherited = false }
     
     /// Create a property binding from the AssemblyReader data and Overwrite data
     let bindProperty containerTypeName (readerData: PropertyReaderData) (overwriteData: PropertyOverwriteData) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
-        { Position = BinderHelpers.getPosition overwriteData.Position
-          Name = name
+        { Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
           DefaultValue = BinderHelpers.getValueOrDefault overwriteData.DefaultValue readerData.DefaultValue
@@ -129,13 +127,13 @@ module Binder =
             let! modelType = "ModelType", overwriteData.ModelType
             
             return
-                { Position = BinderHelpers.getPosition overwriteData.Position
-                  Name = name
+                { Name = name
                   ShortName = BinderHelpers.getShortName overwriteData.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
                   InputType = inputType
                   ModelType = modelType
                   ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
+                  RelatedProperties = match overwriteData.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
                   IsInherited = false }
         }
        
@@ -149,8 +147,7 @@ module Binder =
             let! inputType = "InputType", overwriteData.InputType
 
             return
-                { Position = BinderHelpers.getPosition overwriteData.Position
-                  Name = name
+                { Name = name
                   ShortName = BinderHelpers.getShortName overwriteData.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
                   DefaultValue = defaultValue
@@ -201,17 +198,14 @@ module Binder =
           AttachedProperties =
               BinderHelpers.bindMembers
                 overwriteData.AttachedProperties
-                (fun a -> a.Position)
                 (tryBindAttachedProperty logger typeName baseAttachedPropertyTargetType readerData.AttachedProperties)
           Events =
               BinderHelpers.bindMembers
                 overwriteData.Events
-                (fun e -> e.Position)
                 (tryBindEvent logger typeName readerData.Events)
           Properties =
               BinderHelpers.bindMembers
                 overwriteData.Properties
-                (fun p -> p.Position)
                 (tryBindProperty logger typeName readerData.Properties) }
     
     /// Try to bind a type

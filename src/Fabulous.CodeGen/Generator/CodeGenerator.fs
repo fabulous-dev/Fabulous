@@ -25,13 +25,6 @@ module CodeGenerator =
         w.printfn ""
         w
 
-    let generateProto (types: string []) (w: StringWriter) =
-        w.printfn "type ViewProto() ="
-        for name in types do
-            w.printfn "    static member val Proto%s : ViewElement option = None with get, set" name
-        w.printfn ""
-        w
-
     let generateBuildFunction (data: BuildData) (w: StringWriter) =
         let memberNewLine = "\n                              " + String.replicate data.Name.Length " " + " "
         let members =
@@ -101,10 +94,7 @@ module CodeGenerator =
         match data.BaseName with 
         | None -> ()
         | Some nameOfBaseCreator ->
-            // TODO : Foireux - appeler direct UpdateXXX
-            w.printfn "        // update the inherited %s element" nameOfBaseCreator
-            w.printfn "        let baseElement = (if ViewProto.Proto%s.IsNone then ViewProto.Proto%s <- Some (ViewBuilders.Construct%s())); ViewProto.Proto%s.Value" nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator
-            w.printfn "        baseElement.UpdateInherited (prevOpt, curr, target)"
+            w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" nameOfBaseCreator
 
         if (data.ImmediateMembers.Length = 0) then
             w.printfn "        ()"
@@ -229,7 +219,35 @@ module CodeGenerator =
 //                        w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
 //                        w.printfn "        | ValueNone, ValueNone -> ()"
         w.printfn ""
-        w   
+        w
+
+    let generateConstruct (data: ConstructData) (w: StringWriter) =
+        let memberNewLine = "\n                                  " + String.replicate data.Name.Length " " + " "
+        let space = "\n                               "
+        let membersForConstructor =
+            data.Members
+            |> Array.mapi (fun i m ->
+                let commaSpace = if i = 0 then "" else "," + memberNewLine
+                match m.Name with
+                | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name data.FullName
+                | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name data.FullName
+                | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
+            |> Array.fold (+) ""
+        let membersForBuild =
+            data.Members
+            |> Array.map (fun m ->
+                match m.Name with
+                | "created" -> sprintf ",%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" space m.Name m.Name data.FullName
+                | "ref" ->     sprintf ",%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" space m.Name m.Name data.FullName
+                | _ ->         sprintf ",%s?%s=%s" space m.Name m.Name)
+            |> Array.fold (+) ""
+
+        w.printfn "    static member inline Construct%s(%s) = " data.Name membersForConstructor
+        w.printfn ""
+        w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
+        w.printfn ""
+        w.printfn "        ViewElement.Create<%s>(ViewBuilders.CreateFunc%s, ViewBuilders.UpdateFunc%s, attribBuilder)" data.FullName data.Name data.Name
+        w.printfn ""
 
 
     let generateBuilders (data: BuilderData []) (w: StringWriter) =
@@ -239,8 +257,96 @@ module CodeGenerator =
             |> generateBuildFunction typ.Build
             |> generateCreateFunction typ.Create
             |> generateUpdateFunction typ.Update
-            |> ignore
-//            |> generateConstruct typ.Construct
+            |> generateConstruct typ.Construct
+        w
+
+    let generateViewers (data: ViewerData []) (w: StringWriter) =
+        for typ in data do
+            w.printfn "/// Viewer that allows to read the properties of a ViewElement representing a %s" typ.Name
+            w.printfn "type %sViewer(element: ViewElement) =" typ.Name
+
+            match typ.BaseName with
+            | None -> ()
+            | Some baseName ->
+                w.printfn "    inherit %sViewer(element)" baseName
+
+            w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
+            for m in typ.Members do
+                match m.Name with
+                | "Created" | "Ref" -> ()
+                | _ ->
+                    w.printfn "    /// Get the value of the %s member" m.Name
+                    w.printfn "    member this.%s = element.GetAttributeKeyed(ViewAttributes.%sAttribKey)" m.Name m.UniqueName
+            w.printfn ""
+        w
+
+    let generateConstructors (data: ConstructorData []) (w: StringWriter) =
+        w.printfn "type View() ="
+
+        for d in data do
+            let memberNewLine = "\n                         " + String.replicate d.Name.Length " " + " "
+            let space = "\n                               "
+            let membersForConstructor =
+                d.Members
+                |> Array.mapi (fun i m ->
+                    let commaSpace = if i = 0 then "" else "," + memberNewLine
+                    match m.Name with
+                    | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
+                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
+                    | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
+                |> Array.fold (+) ""
+            let membersForConstruct =
+                d.Members
+                |> Array.mapi (fun i m ->
+                    let commaSpace = if i = 0 then "" else "," + space
+                    sprintf "%s?%s=%s" commaSpace m.Name m.Name)
+                |> Array.fold (+) ""
+
+            w.printfn "    /// Describes a %s in the view" d.Name
+            w.printfn "    static member inline %s(%s) =" d.Name membersForConstructor
+            w.printfn ""
+            w.printfn "        ViewBuilders.Construct%s(%s)" d.Name membersForConstruct
+            w.printfn ""
+        w.printfn ""
+        w
+    
+    let generateViewExtensions (data: ViewExtensionsData []) (w: StringWriter) : StringWriter =
+        let newLine = "\n                      "
+
+        w.printfn "[<AutoOpen>]"
+        w.printfn "module ViewElementExtensions = "
+        w.printfn ""
+        w.printfn "    type ViewElement with"
+
+        for m in data do
+            match m.LowerShortName with
+            | "created" | "ref" -> ()
+            | _ ->
+                w.printfn ""
+                w.printfn "        /// Adjusts the %s property in the visual element" m.UniqueName
+                w.printfn "        member x.%s(value: %s) = x.WithAttribute(ViewAttributes.%sAttribKey, %s(value))" m.UniqueName m.InputType m.UniqueName m.ConvToModel
+
+        let members =
+            data
+            |> Array.filter (fun m -> m.LowerShortName <> "created" && m.LowerShortName <> "ref")
+            |> Array.mapi (fun index m -> sprintf "%s%s?%s: %s" (if index > 0 then ", " else "") (if index > 0 && index % 5 = 0 then newLine else "") m.LowerUniqueName m.InputType)
+            |> Array.fold (+) ""
+
+        w.printfn ""
+        w.printfn "        member inline x.With(%s) =" members
+        for m in data do
+            match m.LowerShortName with
+            | "created" | "ref" -> ()
+            | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
+        w.printfn "            x"
+        w.printfn ""
+
+        for m in data do
+            match m.LowerShortName with
+            | "created" | "ref" -> ()
+            | _ ->
+                w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
+                w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
 
     let generateCode bindings =
@@ -251,6 +357,8 @@ module CodeGenerator =
         writer
         |> generateNamespace data.Namespace
         |> generateAttributes data.Attributes
-        |> generateProto data.Proto
         |> generateBuilders data.Builders
+        |> generateViewers data.Viewers
+        |> generateConstructors data.Constructors
+        |> generateViewExtensions data.ViewExtensions
         |> toString

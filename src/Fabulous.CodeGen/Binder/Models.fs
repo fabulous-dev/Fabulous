@@ -13,18 +13,17 @@ module Models =
           IsInherited: bool  }
     
     type EventBinding =
-        { Position: int
-          Name: string
+        { Name: string
           ShortName: string
           UniqueName: string
           InputType: string
           ModelType: string
           ConvertInputToModel: string
+          RelatedProperties: string[]
           IsInherited: bool }
     
     type PropertyBinding =
-        { Position: int
-          Name: string
+        { Name: string
           ShortName: string
           UniqueName: string
           DefaultValue: string

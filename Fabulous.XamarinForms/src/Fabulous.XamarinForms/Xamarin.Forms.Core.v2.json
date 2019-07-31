@@ -348,6 +348,38 @@
           "source": "Padding"
         }
       ]
+    },
+    {
+      "type": "Xamarin.Forms.Slider",
+      "properties": [
+        {
+          "source": null,
+          "name": "MinimumMaximum",
+          "defaultValue": "(0.0, 1.0)",
+          "inputType": "float * float",
+          "modelType": "float * float"
+        },
+        {
+          "source": "Value"
+        },
+        {
+          "source": "ThumbImageSource"
+        }
+      ],
+      "events": [
+        {
+          "source": "ValueChanged",
+          "relatedProperties": [
+            "Value"
+          ]
+        },
+        {
+          "source": "DragCompleted"
+        },
+        {
+          "source": "DragStarted"
+        }
+      ]
     }
   ]
 }
