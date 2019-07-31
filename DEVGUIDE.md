@@ -48,7 +48,7 @@ At minimum, you need to run `.\build RunGeneratorForFabulousXamarinForms` to ens
 The Generator is built and run as part of the default build command
 If you only want to build the tools and run the generator, use the following commands.
 
-### Please run the generator if there are build errors related to "Missing Xamarin.Forms.Core.fs".
+**Please run the generator if there are build errors related to "Missing Xamarin.Forms.Core.fs".**
 
 On OSX:
 
