@@ -57,3 +57,8 @@ module Converters =
                 | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
             else
                 defaultValue.ToString().Replace("+", ".")
+                
+    let convertEventType eventArgsType =
+        match eventArgsType with
+        | None -> "unit -> unit"
+        | Some eventArgs -> sprintf "%s -> unit" eventArgs

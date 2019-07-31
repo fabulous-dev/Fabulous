@@ -4,7 +4,7 @@ module Models =
     type EventReaderData =
         { Name: string
           Type: string
-          EventArgsType: string }
+          EventHandlerType: string }
     
     type AttachedPropertyReaderData =
         { Name: string

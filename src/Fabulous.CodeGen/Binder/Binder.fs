@@ -79,8 +79,9 @@ module Binder =
           Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-          Type = BinderHelpers.getValueOrDefault overwriteData.Type readerData.Type
-          EventArgsType = BinderHelpers.getValueOrDefault overwriteData.EventArgsType readerData.EventArgsType
+          InputType = BinderHelpers.getValueOrDefault overwriteData.InputType readerData.Type
+          ModelType = BinderHelpers.getValueOrDefault overwriteData.ModelType readerData.EventHandlerType
+          ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
           IsInherited = false }
     
     /// Create a property binding from the AssemblyReader data and Overwrite data
@@ -124,16 +125,17 @@ module Binder =
             use_logger logger containerTypeName "event" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
             let! name = "Name", overwriteData.Name
-            let! ``type`` = "Type", overwriteData.Type
-            let! eventArgsType = "EventArgsType", overwriteData.EventArgsType
+            let! inputType = "InputType", overwriteData.InputType
+            let! modelType = "ModelType", overwriteData.ModelType
             
             return
                 { Position = BinderHelpers.getPosition overwriteData.Position
                   Name = name
                   ShortName = BinderHelpers.getShortName overwriteData.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-                  Type = ``type``
-                  EventArgsType = eventArgsType
+                  InputType = inputType
+                  ModelType = modelType
+                  ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
                   IsInherited = false }
         }
        
@@ -193,7 +195,7 @@ module Binder =
     let bindType (logger: Logger) baseAttachedPropertyTargetType (readerData: TypeReaderData) (overwriteData: TypeOverwriteData) =
         let typeName = BinderHelpers.getTypeName readerData.Name overwriteData.Name
         { Type = readerData.Name
-          CustomType = overwriteData.CustomType
+          TypeToInstantiate = BinderHelpers.getValueOrDefault overwriteData.CustomType readerData.Name
           BaseTypeName = None
           Name = typeName
           AttachedProperties =

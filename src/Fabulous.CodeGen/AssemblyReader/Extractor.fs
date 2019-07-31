@@ -5,18 +5,24 @@ open Fabulous.CodeGen.Helpers
 open Mono.Cecil
 
 module Extractor =
-    let readEventsFromType (``type``: TypeDefinition) =
+    let readEventsFromType
+            (convertEventType: string option -> string)
+            (``type``: TypeDefinition) =
         Resolver.getAllEventsForType ``type``
         |> Array.map (fun edef ->
+            let eventArgsType =
+                  match edef.EventType with
+                  | :? GenericInstanceType as git -> Some git.GenericArguments.[0].FullName
+                  | _ -> None
+                  
+            let eventHandlerType =
+                match edef.EventType with
+                | :? GenericInstanceType as git -> git.FullName |> removeText "`1"
+                | _ -> "System.EventHandler"
+            
             { Name = edef.Name
-              Type =
-                  match edef.EventType with
-                  | :? GenericInstanceType as git -> git.FullName |> removeText "`1"
-                  | _ -> "System.EventHandler"
-              EventArgsType =
-                  match edef.EventType with
-                  | :? GenericInstanceType as git -> git.GenericArguments.[0].FullName
-                  | _ -> null }    
+              Type = convertEventType eventArgsType
+              EventHandlerType = eventHandlerType }    
         )
         
     let readAttachedPropertiesFromType
@@ -59,6 +65,7 @@ module Extractor =
 
     let readType
             (convertTypeName: string -> string)
+            (convertEventType: string option -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
             (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
             (propertyBaseType: string)
@@ -66,6 +73,6 @@ module Extractor =
             (tdef: TypeDefinition) =
         { Name = tdef.FullName
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
-          Events = readEventsFromType tdef
+          Events = readEventsFromType convertEventType tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
           Properties = readPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }

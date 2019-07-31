@@ -38,23 +38,28 @@ module Models =
           Parameters : string [] }
 
     type UpdateMember =
+        { UniqueName : string
+          ModelType : string }
+    
+    type UpdateEvent =
         { Name : string
           UniqueName : string
-          ModelType : string
-          DefaultValue : string
-          ConvToValue : string
-          UpdateCode : string
-          ElementTypeFullName : string option
-          IsParameter : bool
-          BoundType : BoundType option
-          Attached : UpdateMember [] }
+          RelatedProperties : string [] }
+        
+    type UpdateProperty =
+        { Name : string }
+        
+    type UpdateAttachedProperty =
+        { Name : string }
 
     type UpdateData =
         { Name : string
           FullName : string
           BaseName : string option
           ImmediateMembers : UpdateMember []
-          KnownTypes : string [] }
+          Events : UpdateEvent []
+          Properties : UpdateProperty []
+          AttachedProperties : UpdateAttachedProperty [] }
 
     type ConstructData =
         { Name : string
@@ -62,9 +67,9 @@ module Models =
           Members : ConstructType [] }
 
     type BuilderData =
-        { Build : BuildData }
-//          Create : CreateData
-//          Update : UpdateData
+        { Build : BuildData
+          Create : CreateData
+          Update : UpdateData }
 //          Construct : ConstructData }
 
     type ViewerMember =

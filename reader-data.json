@@ -5,28 +5,28 @@
     "Events": [
       {
         "Name": "ChildAdded",
-        "Type": "System.EventHandler<Xamarin.Forms.ElementEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ElementEventArgs"
+        "Type": "Xamarin.Forms.ElementEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ElementEventArgs>"
       },
       {
         "Name": "ChildRemoved",
-        "Type": "System.EventHandler<Xamarin.Forms.ElementEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ElementEventArgs"
+        "Type": "Xamarin.Forms.ElementEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ElementEventArgs>"
       },
       {
         "Name": "DescendantAdded",
-        "Type": "System.EventHandler<Xamarin.Forms.ElementEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ElementEventArgs"
+        "Type": "Xamarin.Forms.ElementEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ElementEventArgs>"
       },
       {
         "Name": "DescendantRemoved",
-        "Type": "System.EventHandler<Xamarin.Forms.ElementEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ElementEventArgs"
+        "Type": "Xamarin.Forms.ElementEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ElementEventArgs>"
       },
       {
         "Name": "PlatformSet",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [
@@ -57,33 +57,33 @@
     "Events": [
       {
         "Name": "ModalPopped",
-        "Type": "System.EventHandler<Xamarin.Forms.ModalPoppedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ModalPoppedEventArgs"
+        "Type": "Xamarin.Forms.ModalPoppedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ModalPoppedEventArgs>"
       },
       {
         "Name": "ModalPopping",
-        "Type": "System.EventHandler<Xamarin.Forms.ModalPoppingEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ModalPoppingEventArgs"
+        "Type": "Xamarin.Forms.ModalPoppingEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ModalPoppingEventArgs>"
       },
       {
         "Name": "ModalPushed",
-        "Type": "System.EventHandler<Xamarin.Forms.ModalPushedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ModalPushedEventArgs"
+        "Type": "Xamarin.Forms.ModalPushedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ModalPushedEventArgs>"
       },
       {
         "Name": "ModalPushing",
-        "Type": "System.EventHandler<Xamarin.Forms.ModalPushingEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ModalPushingEventArgs"
+        "Type": "Xamarin.Forms.ModalPushingEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ModalPushingEventArgs>"
       },
       {
         "Name": "PageAppearing",
-        "Type": "System.EventHandler<Xamarin.Forms.Page>",
-        "EventArgsType": "Xamarin.Forms.Page"
+        "Type": "Xamarin.Forms.Page -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Page>"
       },
       {
         "Name": "PageDisappearing",
-        "Type": "System.EventHandler<Xamarin.Forms.Page>",
-        "EventArgsType": "Xamarin.Forms.Page"
+        "Type": "Xamarin.Forms.Page -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Page>"
       }
     ],
     "AttachedProperties": [],
@@ -152,8 +152,8 @@
     "Events": [
       {
         "Name": "Clicked",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [
@@ -211,8 +211,8 @@
     "Events": [
       {
         "Name": "Activated",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -236,23 +236,23 @@
     "Events": [
       {
         "Name": "Appearing",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Disappearing",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "ForceUpdateSizeRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Tapped",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -273,8 +273,8 @@
     "Events": [
       {
         "Name": "Completed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -326,8 +326,8 @@
     "Events": [
       {
         "Name": "TextChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.TextChangedEventArgs"
+        "Type": "Xamarin.Forms.TextChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -342,8 +342,8 @@
     "Events": [
       {
         "Name": "OnChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.ToggledEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ToggledEventArgs"
+        "Type": "Xamarin.Forms.ToggledEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ToggledEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -546,8 +546,8 @@
     "Events": [
       {
         "Name": "Clicked",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -583,8 +583,8 @@
     "Events": [
       {
         "Name": "PanUpdated",
-        "Type": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.PanUpdatedEventArgs"
+        "Type": "Xamarin.Forms.PanUpdatedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -605,8 +605,8 @@
     "Events": [
       {
         "Name": "PinchUpdated",
-        "Type": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.PinchGestureUpdatedEventArgs"
+        "Type": "Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -621,8 +621,8 @@
     "Events": [
       {
         "Name": "Swiped",
-        "Type": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.SwipedEventArgs"
+        "Type": "Xamarin.Forms.SwipedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -658,8 +658,8 @@
     "Events": [
       {
         "Name": "Tapped",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -980,38 +980,38 @@
     "Events": [
       {
         "Name": "ChildrenReordered",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Focused",
-        "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-        "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+        "Type": "Xamarin.Forms.FocusEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>"
       },
       {
         "Name": "MeasureInvalidated",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "SizeChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Unfocused",
-        "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-        "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+        "Type": "Xamarin.Forms.FocusEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>"
       },
       {
         "Name": "BatchCommitted",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.EventArg<Xamarin.Forms.VisualElement>>",
-        "EventArgsType": "Xamarin.Forms.Internals.EventArg`1<Xamarin.Forms.VisualElement>"
+        "Type": "Xamarin.Forms.Internals.EventArg`1<Xamarin.Forms.VisualElement> -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.EventArg<Xamarin.Forms.VisualElement>>"
       },
       {
         "Name": "FocusChangeRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>",
-        "EventArgsType": "Xamarin.Forms.VisualElement/FocusRequestArgs"
+        "Type": "Xamarin.Forms.VisualElement/FocusRequestArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>"
       }
     ],
     "AttachedProperties": [
@@ -1189,18 +1189,18 @@
     "Events": [
       {
         "Name": "LayoutChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Appearing",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Disappearing",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -1253,13 +1253,13 @@
     "Events": [
       {
         "Name": "IsPresentedChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "BackButtonPressed",
-        "Type": "System.EventHandler<Xamarin.Forms.BackButtonPressedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.BackButtonPressedEventArgs"
+        "Type": "Xamarin.Forms.BackButtonPressedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.BackButtonPressedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -1292,13 +1292,13 @@
     "Events": [
       {
         "Name": "CurrentPageChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "PagesChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -1362,43 +1362,43 @@
     "Events": [
       {
         "Name": "Popped",
-        "Type": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>",
-        "EventArgsType": "Xamarin.Forms.NavigationEventArgs"
+        "Type": "Xamarin.Forms.NavigationEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>"
       },
       {
         "Name": "PoppedToRoot",
-        "Type": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>",
-        "EventArgsType": "Xamarin.Forms.NavigationEventArgs"
+        "Type": "Xamarin.Forms.NavigationEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>"
       },
       {
         "Name": "Pushed",
-        "Type": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>",
-        "EventArgsType": "Xamarin.Forms.NavigationEventArgs"
+        "Type": "Xamarin.Forms.NavigationEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.NavigationEventArgs>"
       },
       {
         "Name": "InsertPageBeforeRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.Internals.NavigationRequestedEventArgs"
+        "Type": "Xamarin.Forms.Internals.NavigationRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>"
       },
       {
         "Name": "PopRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.Internals.NavigationRequestedEventArgs"
+        "Type": "Xamarin.Forms.Internals.NavigationRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>"
       },
       {
         "Name": "PopToRootRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.Internals.NavigationRequestedEventArgs"
+        "Type": "Xamarin.Forms.Internals.NavigationRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>"
       },
       {
         "Name": "PushRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.Internals.NavigationRequestedEventArgs"
+        "Type": "Xamarin.Forms.Internals.NavigationRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>"
       },
       {
         "Name": "RemovePageRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.Internals.NavigationRequestedEventArgs"
+        "Type": "Xamarin.Forms.Internals.NavigationRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.NavigationRequestedEventArgs>"
       }
     ],
     "AttachedProperties": [
@@ -1472,13 +1472,13 @@
     "Events": [
       {
         "Name": "Navigated",
-        "Type": "System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ShellNavigatedEventArgs"
+        "Type": "Xamarin.Forms.ShellNavigatedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>"
       },
       {
         "Name": "Navigating",
-        "Type": "System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ShellNavigatingEventArgs"
+        "Type": "Xamarin.Forms.ShellNavigatingEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>"
       }
     ],
     "AttachedProperties": [
@@ -1756,18 +1756,18 @@
     "Events": [
       {
         "Name": "Clicked",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Pressed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Released",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -1870,8 +1870,8 @@
     "Events": [
       {
         "Name": "CheckedChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.CheckedChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.CheckedChangedEventArgs"
+        "Type": "Xamarin.Forms.CheckedChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.CheckedChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -1899,8 +1899,8 @@
     "Events": [
       {
         "Name": "DateSelected",
-        "Type": "System.EventHandler<Xamarin.Forms.DateChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.DateChangedEventArgs"
+        "Type": "Xamarin.Forms.DateChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.DateChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -1991,18 +1991,18 @@
     "Events": [
       {
         "Name": "Clicked",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Pressed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "Released",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -2109,13 +2109,13 @@
     "Events": [
       {
         "Name": "Completed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "TextChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.TextChangedEventArgs"
+        "Type": "Xamarin.Forms.TextChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -2179,13 +2179,13 @@
     "Events": [
       {
         "Name": "Completed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "TextChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.TextChangedEventArgs"
+        "Type": "Xamarin.Forms.TextChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -2279,13 +2279,13 @@
     "Events": [
       {
         "Name": "SearchButtonPressed",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "TextChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.TextChangedEventArgs"
+        "Type": "Xamarin.Forms.TextChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.TextChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -2371,33 +2371,33 @@
     "Events": [
       {
         "Name": "ItemAppearing",
-        "Type": "System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ItemVisibilityEventArgs"
+        "Type": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>"
       },
       {
         "Name": "ItemDisappearing",
-        "Type": "System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ItemVisibilityEventArgs"
+        "Type": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>"
       },
       {
         "Name": "ItemSelected",
-        "Type": "System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.SelectedItemChangedEventArgs"
+        "Type": "Xamarin.Forms.SelectedItemChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>"
       },
       {
         "Name": "ItemTapped",
-        "Type": "System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ItemTappedEventArgs"
+        "Type": "Xamarin.Forms.ItemTappedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>"
       },
       {
         "Name": "Refreshing",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "ScrollToRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.ScrollToRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ScrollToRequestedEventArgs"
+        "Type": "Xamarin.Forms.ScrollToRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ScrollToRequestedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -2561,8 +2561,8 @@
     "Events": [
       {
         "Name": "SelectionChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.SelectionChangedEventArgs"
+        "Type": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -2722,8 +2722,8 @@
     "Events": [
       {
         "Name": "LayoutChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -3006,13 +3006,13 @@
     "Events": [
       {
         "Name": "ScrollToRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.ScrollToRequestedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ScrollToRequestedEventArgs"
+        "Type": "Xamarin.Forms.ScrollToRequestedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ScrollToRequestedEventArgs>"
       },
       {
         "Name": "Scrolled",
-        "Type": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ScrolledEventArgs"
+        "Type": "Xamarin.Forms.ScrolledEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -3150,8 +3150,8 @@
     "Events": [
       {
         "Name": "DisplayRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -3174,8 +3174,8 @@
     "Events": [
       {
         "Name": "SelectedIndexChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -3261,18 +3261,18 @@
     "Events": [
       {
         "Name": "ValueChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ValueChangedEventArgs"
+        "Type": "Xamarin.Forms.ValueChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>"
       },
       {
         "Name": "DragStarted",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "DragCompleted",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -3340,8 +3340,8 @@
     "Events": [
       {
         "Name": "ValueChanged",
-        "Type": "System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ValueChangedEventArgs"
+        "Type": "Xamarin.Forms.ValueChangedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -3379,8 +3379,8 @@
     "Events": [
       {
         "Name": "Toggled",
-        "Type": "System.EventHandler<Xamarin.Forms.ToggledEventArgs>",
-        "EventArgsType": "Xamarin.Forms.ToggledEventArgs"
+        "Type": "Xamarin.Forms.ToggledEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.ToggledEventArgs>"
       }
     ],
     "AttachedProperties": [],
@@ -3408,8 +3408,8 @@
     "Events": [
       {
         "Name": "ModelChanged",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],
@@ -3480,38 +3480,38 @@
     "Events": [
       {
         "Name": "Navigated",
-        "Type": "System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>",
-        "EventArgsType": "Xamarin.Forms.WebNavigatedEventArgs"
+        "Type": "Xamarin.Forms.WebNavigatedEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>"
       },
       {
         "Name": "Navigating",
-        "Type": "System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>",
-        "EventArgsType": "Xamarin.Forms.WebNavigatingEventArgs"
+        "Type": "Xamarin.Forms.WebNavigatingEventArgs -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>"
       },
       {
         "Name": "EvalRequested",
-        "Type": "System.EventHandler<Xamarin.Forms.Internals.EvalRequested>",
-        "EventArgsType": "Xamarin.Forms.Internals.EvalRequested"
+        "Type": "Xamarin.Forms.Internals.EvalRequested -> unit",
+        "EventHandlerType": "System.EventHandler<Xamarin.Forms.Internals.EvalRequested>"
       },
       {
         "Name": "EvaluateJavaScriptRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "GoBackRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "GoForwardRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       },
       {
         "Name": "ReloadRequested",
-        "Type": "System.EventHandler",
-        "EventArgsType": null
+        "Type": "unit -> unit",
+        "EventHandlerType": "System.EventHandler"
       }
     ],
     "AttachedProperties": [],

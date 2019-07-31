@@ -46,4 +46,7 @@ module XFConverters =
         | :? Rectangle as rectangle -> sprintf "Xamarin.Forms.Rectangle(%0f, %0f, %0f, %0f)" rectangle.X rectangle.Y rectangle.Width rectangle.Height
         | :? Size as size when size.IsZero -> "Xamarin.Forms.Size.Zero"
         | _ -> Converters.getStringRepresentationOfDefaultValue defaultValue
+        
+    let convertEventType (eventArgsType: string option) =
+        Converters.convertEventType eventArgsType
 

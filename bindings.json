@@ -8,7 +8,7 @@
   "Types": [
     {
       "Type": "Xamarin.Forms.Element",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.Element",
       "BaseTypeName": null,
       "Name": "Element",
       "AttachedProperties": [],
@@ -18,8 +18,9 @@
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
-          "Type": "obj",
-          "EventArgsType": "unit",
+          "InputType": "obj -> unit",
+          "ModelType": "obj -> unit",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -88,7 +89,7 @@
     },
     {
       "Type": "Xamarin.Forms.NavigableElement",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.NavigableElement",
       "BaseTypeName": null,
       "Name": "NavigableElement",
       "AttachedProperties": [],
@@ -122,7 +123,7 @@
     },
     {
       "Type": "Xamarin.Forms.VisualElement",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.VisualElement",
       "BaseTypeName": null,
       "Name": "VisualElement",
       "AttachedProperties": [],
@@ -132,8 +133,9 @@
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
-          "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-          "EventArgsType": "Xamarin.Forms.FocusEventArgs",
+          "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         },
         {
@@ -141,8 +143,9 @@
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
-          "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-          "EventArgsType": "Xamarin.Forms.FocusEventArgs",
+          "InputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -427,7 +430,7 @@
     },
     {
       "Type": "Xamarin.Forms.View",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.View",
       "BaseTypeName": null,
       "Name": "View",
       "AttachedProperties": [],
@@ -485,7 +488,7 @@
     },
     {
       "Type": "Xamarin.Forms.GestureElement",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.GestureElement",
       "BaseTypeName": null,
       "Name": "GestureElement",
       "AttachedProperties": [],
@@ -507,7 +510,7 @@
     },
     {
       "Type": "Xamarin.Forms.PanGestureRecognizer",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.PanGestureRecognizer",
       "BaseTypeName": null,
       "Name": "PanGestureRecognizer",
       "AttachedProperties": [],
@@ -517,8 +520,9 @@
           "Name": "PanUpdated",
           "ShortName": "panUpdated",
           "UniqueName": "PanGestureRecognizerPanUpdated",
-          "Type": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.PanUpdatedEventArgs",
+          "InputType": "Xamarin.Forms.PanUpdatedEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -539,7 +543,7 @@
     },
     {
       "Type": "Xamarin.Forms.ClickGestureRecognizer",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.ClickGestureRecognizer",
       "BaseTypeName": null,
       "Name": "ClickGestureRecognizer",
       "AttachedProperties": [],
@@ -585,7 +589,7 @@
     },
     {
       "Type": "Xamarin.Forms.PinchGestureRecognizer",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.PinchGestureRecognizer",
       "BaseTypeName": null,
       "Name": "PinchGestureRecognizer",
       "AttachedProperties": [],
@@ -595,8 +599,9 @@
           "Name": "PinchUpdated",
           "ShortName": "pinchUpdated",
           "UniqueName": "PinchGestureRecognizerPinchUpdated",
-          "Type": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.PinchGestureUpdatedEventArgs",
+          "InputType": "Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -604,7 +609,7 @@
     },
     {
       "Type": "Xamarin.Forms.SwipeGestureRecognizer",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.SwipeGestureRecognizer",
       "BaseTypeName": null,
       "Name": "SwipeGestureRecognizer",
       "AttachedProperties": [],
@@ -614,8 +619,9 @@
           "Name": "Swiped",
           "ShortName": "swiped",
           "UniqueName": "SwipeGestureRecognizerSwiped",
-          "Type": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.SwipedEventArgs",
+          "InputType": "Xamarin.Forms.SwipedEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -660,7 +666,7 @@
     },
     {
       "Type": "Xamarin.Forms.ActivityIndicator",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.ActivityIndicator",
       "BaseTypeName": null,
       "Name": "ActivityIndicator",
       "AttachedProperties": [],
@@ -694,7 +700,7 @@
     },
     {
       "Type": "Xamarin.Forms.BoxView",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.BoxView",
       "BaseTypeName": null,
       "Name": "BoxView",
       "AttachedProperties": [],
@@ -728,7 +734,7 @@
     },
     {
       "Type": "Xamarin.Forms.ProgressBar",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.ProgressBar",
       "BaseTypeName": null,
       "Name": "ProgressBar",
       "AttachedProperties": [],
@@ -750,7 +756,7 @@
     },
     {
       "Type": "Xamarin.Forms.Layout",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.Layout",
       "BaseTypeName": null,
       "Name": "Layout",
       "AttachedProperties": [],
@@ -784,7 +790,7 @@
     },
     {
       "Type": "Xamarin.Forms.ScrollView",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.ScrollView",
       "BaseTypeName": null,
       "Name": "ScrollView",
       "AttachedProperties": [],
@@ -794,8 +800,9 @@
           "Name": "Scrolled",
           "ShortName": "scrolled",
           "UniqueName": "ScrollViewScrolled",
-          "Type": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>",
-          "EventArgsType": "Xamarin.Forms.ScrolledEventArgs",
+          "InputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
+          "ModelType": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>",
+          "ConvertInputToModel": "",
           "IsInherited": false
         }
       ],
@@ -864,7 +871,7 @@
     },
     {
       "Type": "Xamarin.Forms.Button",
-      "CustomType": null,
+      "TypeToInstantiate": "Xamarin.Forms.Button",
       "BaseTypeName": null,
       "Name": "Button",
       "AttachedProperties": [],

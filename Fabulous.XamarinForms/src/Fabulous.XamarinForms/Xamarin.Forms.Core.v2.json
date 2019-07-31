@@ -38,8 +38,8 @@
         {
           "source": null,
           "name": "Created",
-          "type": "obj",
-          "eventArgsType": "unit"
+          "inputType": "obj -> unit",
+          "modelType": "obj -> unit"
         }
       ]
     },

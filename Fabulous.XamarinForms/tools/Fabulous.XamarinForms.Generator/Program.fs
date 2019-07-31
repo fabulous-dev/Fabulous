@@ -51,7 +51,7 @@ module Entry =
         let tryGetProperty = Reflection.tryGetProperty assemblies
         
         allTypesDerivingFromBaseType
-        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
+        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.convertEventType XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
         
     let writeOutputIfDebug debug path data =
         if debug then Json.serialize data |> File.write path

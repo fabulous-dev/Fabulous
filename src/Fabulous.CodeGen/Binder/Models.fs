@@ -17,8 +17,9 @@ module Models =
           Name: string
           ShortName: string
           UniqueName: string
-          Type: string
-          EventArgsType: string
+          InputType: string
+          ModelType: string
+          ConvertInputToModel: string
           IsInherited: bool }
     
     type PropertyBinding =
@@ -35,7 +36,7 @@ module Models =
     
     type TypeBinding =
         { Type: string
-          CustomType: string option
+          TypeToInstantiate: string
           BaseTypeName: string option
           Name: string
           AttachedProperties: AttachedPropertyBinding array

@@ -32,8 +32,9 @@ module Models =
           Name: string option
           ShortName: string option
           UniqueName: string option
-          Type: string option
-          EventArgsType: string option }
+          InputType: string option
+          ModelType: string option
+          ConvertInputToModel: string option }
     
     type TypeOverwriteData =
         { Type: string

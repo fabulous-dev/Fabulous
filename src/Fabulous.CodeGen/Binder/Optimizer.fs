@@ -9,10 +9,6 @@ module Optimizer =
                 InputType = if Array.contains p.InputType knownTypes then "ViewElement" else p.InputType
                 ModelType = if Array.contains p.ModelType knownTypes then "ViewElement" else p.ModelType }    
         )
-        let events = typeBinding.Events |> Array.map (fun e ->
-            { e with
-                EventArgsType = if Array.contains e.EventArgsType knownTypes then "ViewElement" else e.EventArgsType }    
-        )
         let attachedProperties = typeBinding.AttachedProperties |> Array.map (fun a ->
             { a with
                 InputType = if Array.contains a.InputType knownTypes then "ViewElement" else a.InputType
@@ -21,7 +17,7 @@ module Optimizer =
         
         { typeBinding with
              Properties = properties
-             Events = events
+             Events = typeBinding.Events
              AttachedProperties = attachedProperties }
     
     let optimizeKnownTypes (bindings: Bindings) =
