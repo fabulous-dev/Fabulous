@@ -46,7 +46,14 @@ module Models =
           RelatedProperties : string [] }
         
     type UpdateProperty =
-        { Name : string }
+        { Name : string
+          UniqueName : string
+          DefaultValue : string
+          OriginalType : string
+          ModelType : string
+          ConvertModelToValue : string
+          UpdateCode : string
+          ElementType : string option } 
         
     type UpdateAttachedProperty =
         { Name : string }

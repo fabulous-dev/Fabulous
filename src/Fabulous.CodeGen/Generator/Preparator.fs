@@ -59,23 +59,23 @@ module Preparator =
         
         let updateEvents = immediateEvents |> Array.map (fun e -> { Name = e.Name; UniqueName = e.UniqueName; RelatedProperties = e.RelatedProperties })
         
-//        let rec toUpdateMember (m : PreparedMember) =
-//            { Name = m.Name
-//              UniqueName = m.UniqueName
-//              ModelType = m.ModelType
-//              DefaultValue = m.DefaultValue
-//              ConvToValue = m.ConvToValue
-//              UpdateCode = m.UpdateCode
-//              ElementTypeFullName = m.ElementTypeFullName
-//              IsParameter = m.IsParameter
-//              BoundType = m.BoundType
-//              Attached = m.AttachedMembers |> Array.map toUpdateMember }
+        let updateProperties = immediateProperties |> Array.map (fun p ->
+            { Name = p.Name
+              UniqueName = p.UniqueName
+              DefaultValue = p.DefaultValue
+              OriginalType = p.OriginalType
+              ModelType = p.ModelType
+              ConvertModelToValue = p.ConvertModelToValue
+              UpdateCode = ""
+              ElementType = None }    
+        )
+        
         { Name = ``type``.Name
           FullName = ``type``.Type
           BaseName = ``type``.BaseTypeName
           ImmediateMembers = immediateMembers
           Events = updateEvents
-          Properties = [||]
+          Properties = updateProperties
           AttachedProperties = [||] }
 
     let toConstructData (``type``: TypeBinding) : ConstructData =

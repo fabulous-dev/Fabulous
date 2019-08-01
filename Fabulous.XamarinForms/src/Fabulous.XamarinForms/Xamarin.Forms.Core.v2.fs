@@ -169,6 +169,31 @@ type ViewBuilders() =
             match prevElementCreatedOpt with
             | ValueSome prevValue -> target.Created.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevElementAutomationIdOpt, currElementAutomationIdOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.AutomationId <-  currValue
+        | ValueSome _, ValueNone -> target.AutomationId <- null
+        | ValueNone, ValueNone -> ()
+        match prevElementClassIdOpt, currElementClassIdOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClassId <-  currValue
+        | ValueSome _, ValueNone -> target.ClassId <- null
+        | ValueNone, ValueNone -> ()
+        match prevElementStyleIdOpt, currElementStyleIdOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.StyleId <-  currValue
+        | ValueSome _, ValueNone -> target.StyleId <- null
+        | ValueNone, ValueNone -> ()
+        match prevElementRefOpt, currElementRefOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Ref <-  currValue
+        | ValueSome _, ValueNone -> target.Ref <- null
+        | ValueNone, ValueNone -> ()
+        match prevElementTagOpt, currElementTagOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Tag <-  currValue
+        | ValueSome _, ValueNone -> target.Tag <- null
+        | ValueNone, ValueNone -> ()
         if shouldUpdateElementCreated then
             match currElementCreatedOpt with
             | ValueSome currValue -> target.Created.AddHandler(currValue)
@@ -238,6 +263,16 @@ type ViewBuilders() =
                     prevNavigableElementStyleOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Style)
                 if kvp.Key = ViewAttributes.NavigableElementStyleClassAttribKey.KeyValue then 
                     prevNavigableElementStyleClassOpt <- ValueSome (kvp.Value :?> InputTypes.StyleClass)
+        match prevNavigableElementStyleOpt, currNavigableElementStyleOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Style <-  currValue
+        | ValueSome _, ValueNone -> target.Style <- null
+        | ValueNone, ValueNone -> ()
+        match prevNavigableElementStyleClassOpt, currNavigableElementStyleClassOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.StyleClass <- ViewConverters.convertStyleClassToStringList currValue
+        | ValueSome _, ValueNone -> target.StyleClass <- InputTypes.StyleClass.None
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructNavigableElement(?style: Xamarin.Forms.Style,
                                                    ?styleClass: InputTypes.StyleClass,
@@ -526,6 +561,121 @@ type ViewBuilders() =
             match prevVisualElementUnfocusedOpt with
             | ValueSome prevValue -> target.Unfocused.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevVisualElementAnchorXOpt, currVisualElementAnchorXOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.AnchorX <-  currValue
+        | ValueSome _, ValueNone -> target.AnchorX <- 0.5
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementAnchorYOpt, currVisualElementAnchorYOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.AnchorY <-  currValue
+        | ValueSome _, ValueNone -> target.AnchorY <- 0.5
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementBackgroundColorOpt, currVisualElementBackgroundColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.BackgroundColor <-  currValue
+        | ValueSome _, ValueNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementFlowDirectionOpt, currVisualElementFlowDirectionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlowDirection <-  currValue
+        | ValueSome _, ValueNone -> target.FlowDirection <- Xamarin.Forms.FlowDirection.MatchParent
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementHeightOpt, currVisualElementHeightOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Height <-  currValue
+        | ValueSome _, ValueNone -> target.Height <- -1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementInputTransparentOpt, currVisualElementInputTransparentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.InputTransparent <-  currValue
+        | ValueSome _, ValueNone -> target.InputTransparent <- false
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementIsEnabledOpt, currVisualElementIsEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.IsEnabled <- true
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementIsTabStopOpt, currVisualElementIsTabStopOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsTabStop <-  currValue
+        | ValueSome _, ValueNone -> target.IsTabStop <- true
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementIsVisibleOpt, currVisualElementIsVisibleOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsVisible <-  currValue
+        | ValueSome _, ValueNone -> target.IsVisible <- true
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementMinimumHeightOpt, currVisualElementMinimumHeightOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.MinimumHeight <-  currValue
+        | ValueSome _, ValueNone -> target.MinimumHeight <- -1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementMinimumWidthOpt, currVisualElementMinimumWidthOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.MinimumWidth <-  currValue
+        | ValueSome _, ValueNone -> target.MinimumWidth <- -1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementOpacityOpt, currVisualElementOpacityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Opacity <-  currValue
+        | ValueSome _, ValueNone -> target.Opacity <- 1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementRotationOpt, currVisualElementRotationOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Rotation <-  currValue
+        | ValueSome _, ValueNone -> target.Rotation <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementRotationXOpt, currVisualElementRotationXOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RotationX <-  currValue
+        | ValueSome _, ValueNone -> target.RotationX <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementRotationYOpt, currVisualElementRotationYOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RotationY <-  currValue
+        | ValueSome _, ValueNone -> target.RotationY <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementScaleOpt, currVisualElementScaleOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Scale <-  currValue
+        | ValueSome _, ValueNone -> target.Scale <- 1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementScaleXOpt, currVisualElementScaleXOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ScaleX <-  currValue
+        | ValueSome _, ValueNone -> target.ScaleX <- 1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementScaleYOpt, currVisualElementScaleYOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ScaleY <-  currValue
+        | ValueSome _, ValueNone -> target.ScaleY <- 1
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementTabIndexOpt, currVisualElementTabIndexOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TabIndex <-  currValue
+        | ValueSome _, ValueNone -> target.TabIndex <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementTranslationXOpt, currVisualElementTranslationXOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TranslationX <-  currValue
+        | ValueSome _, ValueNone -> target.TranslationX <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementTranslationYOpt, currVisualElementTranslationYOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TranslationY <-  currValue
+        | ValueSome _, ValueNone -> target.TranslationY <- 0
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementVisualOpt, currVisualElementVisualOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Visual <-  currValue
+        | ValueSome _, ValueNone -> target.Visual <- Xamarin.Forms.VisualMarker.MatchParentVisual
+        | ValueNone, ValueNone -> ()
+        match prevVisualElementWidthOpt, currVisualElementWidthOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Width <-  currValue
+        | ValueSome _, ValueNone -> target.Width <- -1
+        | ValueNone, ValueNone -> ()
         if shouldUpdateVisualElementFocused then
             match currVisualElementFocusedOpt with
             | ValueSome currValue -> target.Focused.AddHandler(currValue)
@@ -703,6 +853,26 @@ type ViewBuilders() =
                     prevViewMarginOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
                 if kvp.Key = ViewAttributes.ViewGestureRecognizersAttribKey.KeyValue then 
                     prevViewGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+        match prevViewHorizontalOptionsOpt, currViewHorizontalOptionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.HorizontalOptions <-  currValue
+        | ValueSome _, ValueNone -> target.HorizontalOptions <- Xamarin.Forms.LayoutOptions.Fill
+        | ValueNone, ValueNone -> ()
+        match prevViewVerticalOptionsOpt, currViewVerticalOptionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.VerticalOptions <-  currValue
+        | ValueSome _, ValueNone -> target.VerticalOptions <- Xamarin.Forms.LayoutOptions.Fill
+        | ValueNone, ValueNone -> ()
+        match prevViewMarginOpt, currViewMarginOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Margin <- ViewConverters.convertFabulousThicknessToXamarinFormsThickness currValue
+        | ValueSome _, ValueNone -> target.Margin <- InputTypes.Thickness.Uniform 0.
+        | ValueNone, ValueNone -> ()
+        match prevViewGestureRecognizersOpt, currViewGestureRecognizersOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.GestureRecognizers <-  currValue
+        | ValueSome _, ValueNone -> target.GestureRecognizers <- []
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructView(?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -821,6 +991,11 @@ type ViewBuilders() =
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.GestureElementGestureRecognizersAttribKey.KeyValue then 
                     prevGestureElementGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+        match prevGestureElementGestureRecognizersOpt, currGestureElementGestureRecognizersOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.GestureRecognizers <-  currValue
+        | ValueSome _, ValueNone -> target.GestureRecognizers <- []
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructGestureElement(?gestureRecognizers: ViewElement list,
                                                  ?automationId: string,
@@ -893,6 +1068,11 @@ type ViewBuilders() =
             match prevPanGestureRecognizerPanUpdatedOpt with
             | ValueSome prevValue -> target.PanUpdated.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevPanGestureRecognizerTouchPointsOpt, currPanGestureRecognizerTouchPointsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TouchPoints <-  currValue
+        | ValueSome _, ValueNone -> target.TouchPoints <- 1
+        | ValueNone, ValueNone -> ()
         if shouldUpdatePanGestureRecognizerPanUpdated then
             match currPanGestureRecognizerPanUpdatedOpt with
             | ValueSome currValue -> target.PanUpdated.AddHandler(currValue)
@@ -975,6 +1155,21 @@ type ViewBuilders() =
                     prevClickGestureRecognizerNumberOfClicksRequiredOpt <- ValueSome (kvp.Value :?> int)
                 if kvp.Key = ViewAttributes.ClickGestureRecognizerButtonsAttribKey.KeyValue then 
                     prevClickGestureRecognizerButtonsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ButtonsMask)
+        match prevClickGestureRecognizerCommandOpt, currClickGestureRecognizerCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevClickGestureRecognizerNumberOfClicksRequiredOpt, currClickGestureRecognizerNumberOfClicksRequiredOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.NumberOfClicksRequired <-  currValue
+        | ValueSome _, ValueNone -> target.NumberOfClicksRequired <- 1
+        | ValueNone, ValueNone -> ()
+        match prevClickGestureRecognizerButtonsOpt, currClickGestureRecognizerButtonsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Buttons <-  currValue
+        | ValueSome _, ValueNone -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructClickGestureRecognizer(?command: unit -> unit,
                                                          ?numberOfClicksRequired: int,
@@ -1136,6 +1331,21 @@ type ViewBuilders() =
             match prevSwipeGestureRecognizerSwipedOpt with
             | ValueSome prevValue -> target.Swiped.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevSwipeGestureRecognizerCommandOpt, currSwipeGestureRecognizerCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevSwipeGestureRecognizerDirectionOpt, currSwipeGestureRecognizerDirectionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Direction <-  currValue
+        | ValueSome _, ValueNone -> target.Direction <- Unchecked.defaultof<Xamarin.Forms.SwipeDirection>
+        | ValueNone, ValueNone -> ()
+        match prevSwipeGestureRecognizerThresholdOpt, currSwipeGestureRecognizerThresholdOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Threshold <-  currValue
+        | ValueSome _, ValueNone -> target.Threshold <- 100u
+        | ValueNone, ValueNone -> ()
         if shouldUpdateSwipeGestureRecognizerSwiped then
             match currSwipeGestureRecognizerSwipedOpt with
             | ValueSome currValue -> target.Swiped.AddHandler(currValue)
@@ -1250,6 +1460,16 @@ type ViewBuilders() =
                     prevActivityIndicatorColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.ActivityIndicatorIsRunningAttribKey.KeyValue then 
                     prevActivityIndicatorIsRunningOpt <- ValueSome (kvp.Value :?> bool)
+        match prevActivityIndicatorColorOpt, currActivityIndicatorColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Color <-  currValue
+        | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevActivityIndicatorIsRunningOpt, currActivityIndicatorIsRunningOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsRunning <-  currValue
+        | ValueSome _, ValueNone -> target.IsRunning <- false
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructActivityIndicator(?color: Xamarin.Forms.Color,
                                                     ?isRunning: bool,
@@ -1418,6 +1638,16 @@ type ViewBuilders() =
                     prevBoxViewColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.BoxViewCornerRadiusAttribKey.KeyValue then 
                     prevBoxViewCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
+        match prevBoxViewColorOpt, currBoxViewColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Color <-  currValue
+        | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevBoxViewCornerRadiusOpt, currBoxViewCornerRadiusOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CornerRadius <-  currValue
+        | ValueSome _, ValueNone -> target.CornerRadius <- Xamarin.Forms.CornerRadius(0.)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructBoxView(?color: Xamarin.Forms.Color,
                                           ?cornerRadius: Xamarin.Forms.CornerRadius,
@@ -1577,6 +1807,11 @@ type ViewBuilders() =
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.ProgressBarProgressAttribKey.KeyValue then 
                     prevProgressBarProgressOpt <- ValueSome (kvp.Value :?> float)
+        match prevProgressBarProgressOpt, currProgressBarProgressOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Progress <-  currValue
+        | ValueSome _, ValueNone -> target.Progress <- 0
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructProgressBar(?progress: float,
                                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -1743,6 +1978,16 @@ type ViewBuilders() =
                     prevLayoutIsClippedToBoundsOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = ViewAttributes.LayoutPaddingAttribKey.KeyValue then 
                     prevLayoutPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
+        match prevLayoutIsClippedToBoundsOpt, currLayoutIsClippedToBoundsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsClippedToBounds <-  currValue
+        | ValueSome _, ValueNone -> target.IsClippedToBounds <- false
+        | ValueNone, ValueNone -> ()
+        match prevLayoutPaddingOpt, currLayoutPaddingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Padding <-  currValue
+        | ValueSome _, ValueNone -> target.Padding <- Xamarin.Forms.Thickness(0.)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructLayout(?isClippedToBounds: bool,
                                          ?padding: Xamarin.Forms.Thickness,
@@ -1954,6 +2199,36 @@ type ViewBuilders() =
             match prevScrollViewScrolledOpt with
             | ValueSome prevValue -> target.Scrolled.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevScrollViewContentOpt, currScrollViewContentOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.Content)
+        | _, ValueSome newValue ->
+            target.Content <- (newValue.Create() :?> ViewElement)
+        | ValueSome _, ValueNone ->
+            target.Content <- null
+        | ValueNone, ValueNone -> ()
+        match prevScrollViewOrientationOpt, currScrollViewOrientationOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Orientation <-  currValue
+        | ValueSome _, ValueNone -> target.Orientation <- Xamarin.Forms.ScrollOrientation.Vertical
+        | ValueNone, ValueNone -> ()
+        match prevScrollViewHorizontalScrollBarVisibilityOpt, currScrollViewHorizontalScrollBarVisibilityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.HorizontalScrollBarVisibility <-  currValue
+        | ValueSome _, ValueNone -> target.HorizontalScrollBarVisibility <- Xamarin.Forms.ScrollBarVisibility.Default
+        | ValueNone, ValueNone -> ()
+        match prevScrollViewVerticalScrollBarVisibilityOpt, currScrollViewVerticalScrollBarVisibilityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.VerticalScrollBarVisibility <-  currValue
+        | ValueSome _, ValueNone -> target.VerticalScrollBarVisibility <- Xamarin.Forms.ScrollBarVisibility.Default
+        | ValueNone, ValueNone -> ()
+        match prevScrollViewScrollToOpt, currScrollViewScrollToOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ScrollTo <-  currValue
+        | ValueSome _, ValueNone -> target.ScrollTo <- null
+        | ValueNone, ValueNone -> ()
         if shouldUpdateScrollViewScrolled then
             match currScrollViewScrolledOpt with
             | ValueSome currValue -> target.Scrolled.AddHandler(currValue)
@@ -2228,6 +2503,66 @@ type ViewBuilders() =
                     prevButtonTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.ButtonPaddingAttribKey.KeyValue then 
                     prevButtonPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
+        match prevButtonTextOpt, currButtonTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Text <-  currValue
+        | ValueSome _, ValueNone -> target.Text <- null
+        | ValueNone, ValueNone -> ()
+        match prevButtonCommandOpt, currButtonCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevButtonBorderColorOpt, currButtonBorderColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.BorderColor <-  currValue
+        | ValueSome _, ValueNone -> target.BorderColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevButtonBorderWidthOpt, currButtonBorderWidthOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.BorderWidth <-  currValue
+        | ValueSome _, ValueNone -> target.BorderWidth <- -1
+        | ValueNone, ValueNone -> ()
+        match prevButtonContentLayoutOpt, currButtonContentLayoutOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ContentLayout <-  currValue
+        | ValueSome _, ValueNone -> target.ContentLayout <- Xamarin.Forms.Button.ButtonContentLayout(Xamarin.Forms.Button.ButtonContentLayout.ImagePosition.Left, 10)
+        | ValueNone, ValueNone -> ()
+        match prevButtonCornerRadiusOpt, currButtonCornerRadiusOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CornerRadius <-  currValue
+        | ValueSome _, ValueNone -> target.CornerRadius <- -1
+        | ValueNone, ValueNone -> ()
+        match prevButtonFontFamilyOpt, currButtonFontFamilyOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontFamily <-  currValue
+        | ValueSome _, ValueNone -> target.FontFamily <- null
+        | ValueNone, ValueNone -> ()
+        match prevButtonFontAttributesOpt, currButtonFontAttributesOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontAttributes <-  currValue
+        | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
+        | ValueNone, ValueNone -> ()
+        match prevButtonFontSizeOpt, currButtonFontSizeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontSize <-  currValue
+        | ValueSome _, ValueNone -> target.FontSize <- -1
+        | ValueNone, ValueNone -> ()
+        match prevButtonImageOpt, currButtonImageOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Image <- ViewConverters.convertFabulousImageToXamarinFormsImageSource currValue
+        | ValueSome _, ValueNone -> target.Image <- InputTypes.Image.None
+        | ValueNone, ValueNone -> ()
+        match prevButtonTextColorOpt, currButtonTextColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TextColor <-  currValue
+        | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevButtonPaddingOpt, currButtonPaddingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Padding <-  currValue
+        | ValueSome _, ValueNone -> target.Padding <- Xamarin.Forms.Thickness(0.)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructButton(?text: string,
                                          ?command: unit -> unit,
@@ -2467,6 +2802,21 @@ type ViewBuilders() =
             match prevSliderDragStartedOpt with
             | ValueSome prevValue -> target.DragStarted.RemoveHandler(prevValue)
             | ValueNone -> ()
+        match prevSliderMinimumMaximumOpt, currSliderMinimumMaximumOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.MinimumMaximum <-  currValue
+        | ValueSome _, ValueNone -> target.MinimumMaximum <- (0.0, 1.0)
+        | ValueNone, ValueNone -> ()
+        match prevSliderValueOpt, currSliderValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Value <-  currValue
+        | ValueSome _, ValueNone -> target.Value <- 0
+        | ValueNone, ValueNone -> ()
+        match prevSliderThumbImageSourceOpt, currSliderThumbImageSourceOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ThumbImageSource <-  currValue
+        | ValueSome _, ValueNone -> target.ThumbImageSource <- null
+        | ValueNone, ValueNone -> ()
         if shouldUpdateSliderValueChanged then
             match currSliderValueChangedOpt with
             | ValueSome currValue -> target.ValueChanged.AddHandler(currValue)

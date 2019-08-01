@@ -27,6 +27,7 @@ module Models =
           ShortName: string
           UniqueName: string
           DefaultValue: string
+          OriginalType: string
           InputType: string
           ModelType: string
           ConvertInputToModel: string

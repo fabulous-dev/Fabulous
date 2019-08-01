@@ -91,10 +91,8 @@ module CodeGenerator =
         w.printfn ""
         w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
 
-        match data.BaseName with 
-        | None -> ()
-        | Some nameOfBaseCreator ->
-            w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" nameOfBaseCreator
+        if data.BaseName.IsSome then
+            w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" data.BaseName.Value
 
         if (data.ImmediateMembers.Length = 0) then
             w.printfn "        ()"
@@ -127,6 +125,43 @@ module CodeGenerator =
                 w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
                 w.printfn "            | ValueNone -> ()"
             
+            // Update properties
+            for p in data.Properties do
+                let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
+
+                // Check if the property is a collection
+                match p.ElementType with 
+                | Some elementType when not hasApply ->
+                    w.printfn "        updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                    w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" elementType
+                    w.printfn "            canReuseView"
+                    w.printfn "            updateChild"
+
+                | _ -> 
+                    // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
+                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed object by default (thus disabling control reuse in the generator)
+                    if p.ModelType = "ViewElement" && not hasApply then
+                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        // For structured objects, dependsOn on reference equality"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
+                        w.printfn "        | _, ValueSome newValue ->"
+                        w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
+                        w.printfn "        | ValueSome _, ValueNone ->"
+                        w.printfn "            target.%s <- null"  p.Name
+                        w.printfn "        | ValueNone, ValueNone -> ()"
+
+                    // Explicit update code
+                    elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
+                        w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
+
+                    else
+                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
+                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
+                        w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  p.Name p.DefaultValue
+                        w.printfn "        | ValueNone, ValueNone -> ()"
             
             // Subscribe event handlers
             for e in data.Events do
@@ -134,90 +169,7 @@ module CodeGenerator =
                 w.printfn "            match curr%sOpt with" e.UniqueName
                 w.printfn "            | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
                 w.printfn "            | ValueNone -> ()"
-            
-//            for m in members do
-//                let hasApply = not (System.String.IsNullOrWhiteSpace(m.ConvToValue)) || not (System.String.IsNullOrWhiteSpace(m.UpdateCode))
-//
-//                // Check if the member is a collection
-//                match m.ElementTypeFullName with 
-//                | Some elementType when not hasApply ->
-//                    w.printfn "        updateCollectionGeneric prev%sOpt curr%sOpt target.%s" m.UniqueName m.UniqueName m.Name
-//                    w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" elementType
-//                    if (m.Attached.Length > 0) then
-//                        w.printfn "            (fun prevChildOpt newChild targetChild -> "
-//                        for ap in m.Attached do
-//                            w.printfn "                // Adjust the attached properties"
-//                            w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-//                            w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-//                            if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
-//                                let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
-//                                w.printfn "                match prevChildValueOpt, childValueOpt with"
-//                                w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-//                                w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %scurrChildValue)" data.FullName ap.Name apApply
-//                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
-//                                w.printfn "                | _ -> ()"
-//                            else
-//                                w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
-//                        w.printfn "                ())"
-//                    else
-//                        w.printfn "            (fun _ _ _ -> ())"
-//                    w.printfn "            canReuseView"
-//                    w.printfn "            updateChild"
-//
-//                | _ -> 
-//                    match m.BoundType with 
-//
-//                    // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-//                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed object by default (thus disabling control reuse in the generator)
-//                    | Some boundType when ((tryFindType data.KnownTypes boundType.FullName).IsSome || m.ModelType = "ViewElement") && not hasApply ->
-//                        w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
-//                        w.printfn "        // For structured objects, dependsOn on reference equality"
-//                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-//                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
-//                        w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" m.Name
-//                        w.printfn "        | _, ValueSome newValue ->"
-//                        w.printfn "            target.%s <- (newValue.Create() :?> %s)" m.Name boundType.FullName
-//                        w.printfn "        | ValueSome _, ValueNone ->"
-//                        w.printfn "            target.%s <- null"  m.Name
-//                        w.printfn "        | ValueNone, ValueNone -> ()"
-//
-//                    // Default for delegate-typed things
-//                    | Some boundType when (boundType.Name.EndsWith("Handler") || boundType.Name.EndsWith("Handler`1") || boundType.Name.EndsWith("Handler`2")) && not hasApply ->
-//                        w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
-//                        w.printfn "        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()"
-//                        w.printfn "        | ValueSome prevValue, ValueSome currValue -> target.%s.RemoveHandler(prevValue); target.%s.AddHandler(currValue)" m.Name m.Name
-//                        w.printfn "        | ValueNone, ValueSome currValue -> target.%s.AddHandler(currValue)" m.Name
-//                        w.printfn "        | ValueSome prevValue, ValueNone -> target.%s.RemoveHandler(prevValue)" m.Name
-//                        w.printfn "        | ValueNone, ValueNone -> ()"
-//
-//                    // Explicit update code
-//                    | _ when not (System.String.IsNullOrWhiteSpace(m.UpdateCode))  -> 
-//                        w.printfn "        %s prev%sOpt curr%sOpt target" m.UpdateCode m.UniqueName m.UniqueName
-//                        if (m.Attached.Length > 0) then
-//                            w.printfn "            (fun prevChildOpt newChild targetChild -> "
-//                            for ap in m.Attached do
-//                                w.printfn "                // Adjust the attached properties"
-//                                w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-//                                w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-//
-//                                if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
-//                                    let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
-//                                    w.printfn "                match prevChildValueOpt, childValueOpt with"
-//                                    w.printfn "                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()"
-//                                    w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, %scurrValue)" data.FullName ap.Name apApply
-//                                    w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" data.FullName ap.Name ap.DefaultValue
-//                                    w.printfn "                | _ -> ()"
-//                                else
-//                                    w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
-//                            w.printfn "                ())"
-//
-//                    | _ -> 
-//                        let update = getValueOrDefault "" m.ConvToValue
-//                        w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
-//                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-//                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" m.Name update
-//                        w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
-//                        w.printfn "        | ValueNone, ValueNone -> ()"
+                
         w.printfn ""
         w
 
