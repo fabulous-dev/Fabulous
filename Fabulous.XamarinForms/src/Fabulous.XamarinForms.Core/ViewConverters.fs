@@ -125,7 +125,9 @@ module Converters =
         match itemsSource with 
         | :? System.Collections.IList as arr -> arr
         | es -> (Array.ofSeq es :> System.Collections.IList)
-
+    
+    let mutable enableIssue535Workaround = false
+    
     /// Remove when https://github.com/xamarin/Xamarin.Forms/pull/7050 is merged
     let private issue535WorkAround =
         match System.Reflection.Assembly.Load "Xamarin.Forms.Platform.Android" with
@@ -180,7 +182,7 @@ module Converters =
                                 if i >= n then
                                     targetColl.Insert(i, targetChild)
                                 else
-                                    issue535WorkAround targetChild
+                                    if enableIssue535Workaround then issue535WorkAround targetChild
                                     targetColl.[i] <- targetChild
                                 ValueNone, targetChild
                             else
