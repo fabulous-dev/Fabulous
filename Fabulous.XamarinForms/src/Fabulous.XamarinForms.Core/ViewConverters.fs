@@ -128,7 +128,7 @@ module Converters =
 
     /// Remove when https://github.com/xamarin/Xamarin.Forms/pull/7050 is merged
     let private issue535WorkAround =
-        match System.Reflection.Assembly.Load  "Xamarin.Forms.Platform.Android" with
+        match System.Reflection.Assembly.Load "Xamarin.Forms.Platform.Android" with
         | null -> ignore // Not on Android
         | asm -> // On Android
             let context = asm.GetType("Xamarin.Forms.Forms").GetProperty("Context").GetValue null
