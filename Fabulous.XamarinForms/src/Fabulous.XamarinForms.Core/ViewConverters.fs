@@ -126,6 +126,21 @@ module Converters =
         | :? System.Collections.IList as arr -> arr
         | es -> (Array.ofSeq es :> System.Collections.IList)
 
+    /// Remove when https://github.com/xamarin/Xamarin.Forms/pull/7050 is merged
+    let private issue535WorkAround =
+        match System.Reflection.Assembly.Load  "Xamarin.Forms.Platform.Android" with
+        | null -> ignore // Not on Android
+        | asm -> // On Android
+            let context = asm.GetType("Xamarin.Forms.Forms").GetProperty("Context").GetValue null
+            let androidPlatform = asm.GetType "Xamarin.Forms.Platform.Android.Platform"
+            let getRenderer = androidPlatform.GetMethod "GetRenderer"
+            let setRenderer = androidPlatform.GetMethod "SetRenderer"
+            let createRenderer = androidPlatform.GetMethod "CreateRendererWithContext"
+            fun (u: obj) ->
+                let v = u :?> Xamarin.Forms.VisualElement
+                if getRenderer.Invoke(null, [| v |]) = null then
+                    setRenderer.Invoke(null, [| v; createRenderer.Invoke(null, [| v; context |]) |]) |> ignore
+
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
     let updateCollectionGeneric
@@ -165,6 +180,7 @@ module Converters =
                                 if i >= n then
                                     targetColl.Insert(i, targetChild)
                                 else
+                                    issue535WorkAround targetChild
                                     targetColl.[i] <- targetChild
                                 ValueNone, targetChild
                             else
