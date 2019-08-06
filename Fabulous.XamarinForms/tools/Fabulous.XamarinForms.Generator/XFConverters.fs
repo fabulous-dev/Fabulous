@@ -16,6 +16,8 @@ module XFConverters =
     let convertTypeName (typeName: string) =
         match typeName with
         | "Xamarin.Forms.Grid/IGridList`1<Xamarin.Forms.View>" -> "ViewElement list"
+        | "System.Collections.Generic.IList`1<Xamarin.Forms.Effect>" -> "ViewElement list"
+        | "System.Collections.Generic.IList`1<T>" -> "ViewElement list"
         | "System.Windows.Input.ICommand" -> "unit -> unit"
         | "System.Collections.Generic.IList`1[[Xamarin.Forms.Behavior, Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null]]" -> "ViewElement list"
         | _ -> Converters.convertTypeName typeName

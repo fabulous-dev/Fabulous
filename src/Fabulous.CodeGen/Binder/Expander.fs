@@ -19,7 +19,7 @@ module Expander =
         
     let private recomputePositions () = () // TODO
     
-    let expandType (readerDataTypes: TypeReaderData[]) (types: TypeBinding[]) (``type``: TypeBinding) =
+    let expandType (readerDataTypes: ReaderType[]) (types: TypeBinding[]) (``type``: TypeBinding) =
         let readerDataType = readerDataTypes |> Array.find (fun t -> t.Name = ``type``.Type)
         let hierarchy = readerDataType.InheritanceHierarchy
         let allBaseAttachedProperties = hierarchy |> getMembers types (fun t -> t.AttachedProperties) (fun a -> { a with IsInherited = true })
@@ -38,7 +38,7 @@ module Expander =
             Events = Array.concat [ ``type``.Events; allBaseEvents ]
             Properties = Array.concat [ ``type``.Properties; allBaseProperties ] }
     
-    let expand (readerDataTypes: TypeReaderData[]) (bindings: Bindings): Bindings =
+    let expand (readerDataTypes: ReaderType[]) (bindings: Bindings): Bindings =
         { bindings with
             Types = bindings.Types |> Array.map (expandType readerDataTypes bindings.Types) }
 

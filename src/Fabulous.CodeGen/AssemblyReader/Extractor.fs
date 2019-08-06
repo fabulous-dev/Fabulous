@@ -51,18 +51,30 @@ module Extractor =
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
 
-        Resolver.getAllPropertiesForType propertyBaseType ``type``
-        |> Array.map (fun fdef ->
-            match tryGetProperty (``type``.FullName, fdef.Name) with
-            | None -> None
-            | Some data ->
-                Some
-                    ({ Name = data.Name
-                       Type = convertTypeName data.Type
-                       ElementType = Resolver.getElementTypeForType ``type``
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderProperty)
-        )
-        |> Array.choose id
+        let propertiesWithBindingFields =
+            Resolver.getAllPropertiesWithBindingFieldForType propertyBaseType ``type``
+            |> Array.map (fun tdef ->
+                match tryGetProperty (``type``.FullName, tdef.Name) with
+                | None -> None
+                | Some data ->
+                    Some
+                        ({ Name = data.Name
+                           Type = convertTypeName data.Type
+                           ElementType = Resolver.getElementTypeForType ``type``
+                           DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderProperty)
+            )
+            |> Array.choose id
+
+        let listPropertiesWithNoSetter =
+            Resolver.getAllListPropertiesWithNoSetterForType ``type``
+            |> Array.map (fun pdef ->
+                { Name = pdef.Name
+                  Type = convertTypeName pdef.PropertyType.FullName
+                  ElementType = Resolver.getElementTypeForType ``type``
+                  DefaultValue = getStringRepresentationOfDefaultValue null } : ReaderProperty
+            )
+
+        Array.concat [ propertiesWithBindingFields; listPropertiesWithNoSetter ]
 
     let readType
             (convertTypeName: string -> string)

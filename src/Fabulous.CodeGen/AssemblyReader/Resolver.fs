@@ -52,9 +52,19 @@ module Resolver =
             |> Seq.filter (fun fdef -> fdef.IsStatic && fdef.FieldType.FullName = propertyBaseType && fdef.Name.EndsWith("Property"))
             |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = (fdef.Name |> removeText "Property")) |> not)
             |> Seq.toArray
-        
+    
+    /// Finds all not settable list properties for a given type
+    let getAllListPropertiesWithNoSetterForType (``type``: TypeDefinition) =
+        if not ``type``.HasProperties then
+            [||]
+        else
+            ``type``.Properties
+            |> Seq.filter (fun pdef -> pdef.GetMethod <> null && pdef.GetMethod.IsPublic && pdef.SetMethod = null)
+            |> Seq.filter (fun pdef -> pdef.PropertyType.GetElementType().FullName = "System.Collections.Generic.IList`1")
+            |> Seq.toArray
+
     /// Finds all settable properties for a given type
-    let getAllPropertiesForType propertyBaseType (``type``: TypeDefinition) =
+    let getAllPropertiesWithBindingFieldForType propertyBaseType (``type``: TypeDefinition) =
         if not ``type``.HasProperties then
             [||]
         else

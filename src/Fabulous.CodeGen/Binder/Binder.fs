@@ -4,13 +4,12 @@ open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Helpers
-open System
 
 module BinderHelpers =
     let getValueOrDefault overwrittenValue defaultValue =
         match overwrittenValue with
         | None -> defaultValue
-        | Some value when String.IsNullOrWhiteSpace value -> defaultValue
+        | Some value when System.String.IsNullOrWhiteSpace value -> defaultValue
         | Some value -> value
 
     let toLowerPascalCase (str : string) =
@@ -59,7 +58,7 @@ module BinderHelpers =
         
 module Binder =
     /// Create an attached property binding from the AssemblyReader data and Overwrite data
-    let bindAttachedProperty containerTypeName baseTargetTypeFullName (readerData: AttachedPropertyReaderData) (overwriteData: AttachedPropertyOverwriteData) =
+    let bindAttachedProperty containerTypeName baseTargetTypeFullName (readerData: ReaderAttachedProperty) (overwriteData: AttachedProperty) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
         { TargetType = BinderHelpers.getValueOrDefault overwriteData.TargetType baseTargetTypeFullName
           Name = name
@@ -72,7 +71,7 @@ module Binder =
           IsInherited = false }
     
     /// Create an event binding from the AssemblyReader data and Overwrite data
-    let bindEvent containerTypeName (readerData: EventReaderData) (overwriteData: EventOverwriteData) =
+    let bindEvent containerTypeName (readerData: ReaderEvent) (overwriteData: Event) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
         { Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
@@ -84,7 +83,7 @@ module Binder =
           IsInherited = false }
     
     /// Create a property binding from the AssemblyReader data and Overwrite data
-    let bindProperty containerTypeName (readerData: PropertyReaderData) (overwriteData: PropertyOverwriteData) =
+    let bindProperty containerTypeName (readerData: ReaderProperty) (overwriteData: Property) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
         { Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
@@ -98,7 +97,7 @@ module Binder =
           IsInherited = false }
        
     /// Try to create an attached property binding from the Overwrite data only 
-    let tryCreateAttachedProperty logger containerTypeName baseTargetTypeFullName (overwriteData: AttachedPropertyOverwriteData) =
+    let tryCreateAttachedProperty logger containerTypeName baseTargetTypeFullName (overwriteData: AttachedProperty) =
         maybe {
             use_logger logger containerTypeName "attached property" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
@@ -119,7 +118,7 @@ module Binder =
         }
        
     /// Try to create an event binding from the Overwrite data only 
-    let tryCreateEvent logger containerTypeName (overwriteData: EventOverwriteData) =
+    let tryCreateEvent logger containerTypeName (overwriteData: Event) =
         maybe {
             use_logger logger containerTypeName "event" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
@@ -139,7 +138,7 @@ module Binder =
         }
        
     /// Try to create an event binding from the Overwrite data only 
-    let tryCreateProperty logger containerTypeName (overwriteData: PropertyOverwriteData) =
+    let tryCreateProperty logger containerTypeName (overwriteData: Property) =
         maybe {
             use_logger logger containerTypeName "property" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
@@ -161,7 +160,7 @@ module Binder =
         }
     
     /// Try to bind or create an attached property binding
-    let tryBindAttachedProperty (logger: Logger) containerType baseTargetType (readerData: AttachedPropertyReaderData array) (overwriteData: AttachedPropertyOverwriteData) =
+    let tryBindAttachedProperty (logger: Logger) containerType baseTargetType (readerData: ReaderAttachedProperty array) (overwriteData: AttachedProperty) =
         BinderHelpers.tryBindOrCreateMember
             readerData
             overwriteData.Source
@@ -171,7 +170,7 @@ module Binder =
             (fun a -> bindAttachedProperty containerType baseTargetType a overwriteData)
     
     /// Try to bind or create an event binding
-    let tryBindEvent (logger: Logger) containerType (readerData: EventReaderData array) (overwriteData: EventOverwriteData) =
+    let tryBindEvent (logger: Logger) containerType (readerData: ReaderEvent array) (overwriteData: Event) =
         BinderHelpers.tryBindOrCreateMember
             readerData
             overwriteData.Source
@@ -181,7 +180,7 @@ module Binder =
             (fun e -> bindEvent containerType e overwriteData)
     
     /// Try to bind or create a property binding
-    let tryBindProperty (logger: Logger) containerType (readerData: PropertyReaderData array) (overwriteData: PropertyOverwriteData) =
+    let tryBindProperty (logger: Logger) containerType (readerData: ReaderProperty array) (overwriteData: Property) =
         BinderHelpers.tryBindOrCreateMember
             readerData
             overwriteData.Source
@@ -191,7 +190,7 @@ module Binder =
             (fun p -> bindProperty containerType p overwriteData)
     
     /// Create a type binding
-    let bindType (logger: Logger) baseAttachedPropertyTargetType (readerData: TypeReaderData) (overwriteData: TypeOverwriteData) =
+    let bindType (logger: Logger) baseAttachedPropertyTargetType (readerData: ReaderType) (overwriteData: Type) =
         let typeName = BinderHelpers.getTypeName readerData.Name overwriteData.Name
         { Type = readerData.Name
           TypeToInstantiate = BinderHelpers.getValueOrDefault overwriteData.CustomType readerData.Name
@@ -211,7 +210,7 @@ module Binder =
                 (tryBindProperty logger typeName readerData.Properties) }
     
     /// Try to bind a type
-    let tryBindType (logger: Logger) baseAttachedPropertyTargetTypeFullName (readerData: TypeReaderData array) (overwriteData: TypeOverwriteData) =
+    let tryBindType (logger: Logger) baseAttachedPropertyTargetTypeFullName (readerData: ReaderType array) (overwriteData: Type) =
         BinderHelpers.tryBind
             readerData
             overwriteData.Type
@@ -220,7 +219,7 @@ module Binder =
             (fun t -> bindType logger baseAttachedPropertyTargetTypeFullName t overwriteData)
     
     /// Bind all declared types
-    let bind (logger: Logger) (readerData: TypeReaderData array) (overwriteData: OverwriteData) =
+    let bind (logger: Logger) (readerData: ReaderType array) (overwriteData: OverwriteData) =
         { Assemblies = overwriteData.Assemblies
           OutputNamespace = overwriteData.OutputNamespace
           BaseAttachedPropertyTargetType = overwriteData.BaseAttachedPropertyTargetType
