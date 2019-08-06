@@ -4,6 +4,7 @@ namespace Fabulous.CodeGen.AssemblyReader
 open System
 
 module Converters =
+    /// Converts the type name to another type name (e.g. System.Boolean => bool)
     let convertTypeName typeName =
         match typeName with
         | "System.Boolean" -> "bool"
@@ -24,7 +25,14 @@ module Converters =
         | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "obj list"
         | "System.Collections.IList" -> "obj list"
         | _ -> typeName.Replace("+", ".")
+               
+    /// Converts the event args type to the event type (e.g. Xamarin.Forms.TextChangedEventArgs => Xamarin.Forms.TextChangedEventArgs -> unit)
+    let convertEventType eventArgsType =
+        match eventArgsType with
+        | None -> "unit -> unit"
+        | Some eventArgs -> sprintf "%s -> unit" eventArgs
         
+    /// Gets the string representation of the default value
     let getStringRepresentationOfDefaultValue (defaultValue: obj) =
         match defaultValue with
         | null -> "null"
@@ -48,17 +56,10 @@ module Converters =
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> "System.DateTime.MaxValue"
         | :? DateTime as dateTime -> sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day
         | :? string as string when string = "" -> "System.String.Empty"
-        | _ ->
+        | value when value.GetType().IsEnum ->
             let typ = defaultValue.GetType()
-            if typ.IsEnum then
-                let valueName = Enum.GetName(typ, defaultValue)
-                match valueName with
-                | null -> sprintf "Unchecked.defaultof<%s>" typ.FullName
-                | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
-            else
-                defaultValue.ToString().Replace("+", ".")
-                
-    let convertEventType eventArgsType =
-        match eventArgsType with
-        | None -> "unit -> unit"
-        | Some eventArgs -> sprintf "%s -> unit" eventArgs
+            let valueName = Enum.GetName(typ, defaultValue)
+            match valueName with
+            | null -> sprintf "Unchecked.defaultof<%s>" typ.FullName
+            | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
+        | _ -> defaultValue.ToString().Replace("+", ".")

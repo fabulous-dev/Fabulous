@@ -92,3 +92,9 @@ module Resolver =
             getHierarchyForTypeInner stopAtType ``type`` []
             |> List.rev
             |> List.toArray
+            
+    let getElementTypeForType (``type``: TypeDefinition) =
+        if ``type``.HasGenericParameters then
+            Some ``type``.GenericParameters.[0].FullName
+        else
+            None

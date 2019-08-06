@@ -139,7 +139,7 @@ module CodeGenerator =
 
                 | _ -> 
                     // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed object by default (thus disabling control reuse in the generator)
+                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed 'object' by default (thus disabling control reuse in the generator)
                     if p.ModelType = "ViewElement" && not hasApply then
                         w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"

@@ -1,30 +1,68 @@
 namespace Fabulous.CodeGen.AssemblyReader
 
 module Models =
-    type EventReaderData =
-        { Name: string
+    /// An event extracted by the Assembly Reader
+    type ReaderEvent =
+        { /// The name of the event (e.g. TextChanged)
+          Name: string
+          
+          /// The type of the function to subscribe to this event (e.g. Xamarin.Forms.TextChangedEventArgs -> unit)
           Type: string
+          
+          /// The type of the event handler (e.g. System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
           EventHandlerType: string }
     
-    type AttachedPropertyReaderData =
-        { Name: string
+    /// An attached property extracted by the Assembly Reader 
+    type ReaderAttachedProperty =
+        { /// The name of the attached property (e.g. Row)
+          Name: string
+          
+          /// The type of the attached property (e.g. int)
           Type: string
+          
+          /// The default value of the attached property (e.g. 0)
           DefaultValue: string }
     
-    type PropertyReaderData =
-        { Name: string
+    /// A property extracted by the Assembly Reader
+    type ReaderProperty =
+        { /// The name of the property (e.g. Text)
+          Name: string
+          
+          /// The type of the property (e.g. string)
           Type: string
+          
+          /// The type of the items in case the property is a list (e.g. IGridList<View> => View)
+          ElementType: string option
+          
+          /// The default value of the property (e.g. null)
           DefaultValue: string }
     
-    type TypeReaderData =
-        { Name: string
+    /// A type extracted by the Assembly Reader
+    type ReaderType =
+        { /// The name of the type
+          Name: string
+          
+          /// The types inherited by this type
+          /// From first to last, the closest inherited type to the base
           InheritanceHierarchy: string[]
-          Events: EventReaderData array
-          AttachedProperties: AttachedPropertyReaderData array
-          Properties: PropertyReaderData array }
+          
+          /// The extracted events
+          Events: ReaderEvent array
+          
+          /// The extracted properties
+          Properties: ReaderProperty array
+          
+          /// The extracted attached properties
+          AttachedProperties: ReaderAttachedProperty array }
         
-    type ReflectedAttachedPropertyReaderData =
-        { Name: string
+    /// An attached property extracted by reflection
+    type ReflectionAttachedProperty =
+        { /// The name of the attached property
+          Name: string
+          
+          /// The type of the attached property
           Type: string
+          
+          /// The default value of the attached property
           DefaultValue: obj }
 

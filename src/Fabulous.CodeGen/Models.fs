@@ -1,50 +1,107 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen
 
-module Models =        
-    type PropertyOverwriteData =
-        { Source: string option
-          Name: string option
-          ShortName: string option
-          UniqueName: string option
-          DefaultValue: string option
-          InputType: string option
-          ModelType: string option
-          ConvertInputToModel: string option
-          ConvertModelToValue: string option }
+module Models =
+    [<AbstractClass>]
+    type BaseMember() =
+        /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
+        /// If none is provided, the generator will consider it's a non-existent property and other fields will be mandatory
+        member val Source : string option = None with get, set
         
-    type EventOverwriteData =
-        { Source: string option
-          Name: string option
-          ShortName: string option
-          UniqueName: string option
-          InputType: string option
-          ModelType: string option
-          ConvertInputToModel: string option
-          RelatedProperties: string[] option }
+        /// The name to use (e.g. ItemsSource => Items)
+        member val Name : string option = None with get, set
         
-    type AttachedPropertyOverwriteData =
-        { Source: string option
-          TargetType: string option
-          Name: string option
-          UniqueName: string option
-          DefaultValue: string option
-          InputType: string option
-          ModelType: string option
-          ConvertInputToModel: string option
-          ConvertModelToValue: string option }
+        /// The unique identifier of the member to use inside the generated code (e.g. Text => ButtonText)
+        /// If a Name is provided, the ShortName will be automatically determined from it
+        member val UniqueName : string option = None with get, set
+        
+        /// The type which the user should provide for the member
+        member val InputType : string option = None with get, set
+        
+        /// The type as which the member's value will be stored in the ViewElement
+        /// If the InputType is an F# List, the ModelType will automatically set to an array
+        member val ModelType : string option = None with get, set
+        
+        /// The function that converts the input value to the model type
+        /// If the InputType is an F# List, the convert function will automatically be Array.ofList
+        member val ConvertInputToModelType : string option = None with get, set
+        
+    [<AbstractClass>]
+    type BaseConstructorMember() =
+        inherit BaseMember()
+        
+        /// The name of the member in the constructor, should be in a lower camel case (e.g. ItemsSource => items | View.ListView(items=...))
+        /// If a Name is provided, the ShortName will be automatically determined from it
+        member val ShortName : string option = None with get, set
+        
+    type IProperty =
+        abstract ConvertModelToValue : string option with get, set
+        abstract UpdateCode : string option with get, set
+        
+    type Event() =
+        inherit BaseConstructorMember()
+        
+        /// The properties that can trigger this event (e.g. TextChanged => Text)
+        member val RelatedProperties : string[] option = None with get, set
+        
+    type Property() =
+        inherit BaseConstructorMember()
+        
+        interface IProperty with        
+            /// The function that converts the model value to the actual type expected by the property
+            member val ConvertModelToValue : string option = None with get, set
+            
+            /// The function that will handle the update process for this property
+            /// Completely replace the code generated for this property in Update*ControlType*
+            member val UpdateCode : string option = None with get, set
+        
+    type AttachedProperty() =
+        inherit BaseMember()
+        
+        /// The type on which this attached property will be applied on (e.g. Grid.Row => View)
+        member val TargetType : string option = None with get, set
+        
+        interface IProperty with  
+            /// The function that converts the model value to the actual type expected by the property
+            member val ConvertModelToValue : string option = None with get, set
+            
+            /// The function that will handle the update process for this property
+            /// Completely replace the code generated for this property in Update*ControlType*
+            member val UpdateCode : string option = None with get, set
     
-    type TypeOverwriteData =
-        { Type: string
-          CustomType: string option
-          Name: string option
-          Events: EventOverwriteData array option
-          Properties: PropertyOverwriteData array option
-          AttachedProperties: AttachedPropertyOverwriteData array option
-          ConstructorMemberOrdering: string[] option }
-    
-    type OverwriteData =
-        { Assemblies: string array
-          OutputNamespace: string
-          BaseAttachedPropertyTargetType: string
-          Types: TypeOverwriteData array }
+    type Type() =
+        /// The full name of the type to include (e.g. Xamarin.Forms.Button)
+        member val Type : string = "" with get, set
+        
+        /// The full name of the type to instantiate (e.g. Fabulous.XamarinForms.CustomButton)
+        member val CustomType : string option = None with get, set
+        
+        /// The name of the type as used inside Fabulous (e.g. MyWonderfulButton => View.MyWonderfulButton(...))
+        member val Name : string option = None with get, set
+        
+        /// The events to include/create/override for this type
+        member val Events : Event[] option = None with get, set
+        
+        /// The properties to include/create/override for this type
+        member val Properties : Property[] option = None with get, set
+        
+        /// The attached properties to include/create/override for this type
+        member val AttachedProperty : AttachedProperty[] option = None with get, set
+        
+        /// An ordered list of all direct members (events and properties, not attached properties) to determine the order of the constructor (e.g. ["Text", "TextChanged", "Font"] => View.Entry(text=..., textChanged=..., font=...)
+        /// Values must be Name
+        /// Can order inherited members
+        member val ConstructorMembersOrder : string[] option = None with get, set
+        
+    type OverwriteData() =
+        /// Assemblies to read (can be relative paths to dlls)
+        member val Assemblies : string[] = [||] with get, set
+        
+        /// The namespace under which all the generated code will be put
+        member val OutputNamespace : string = "" with get, set
+        
+        /// The base type that will get all the attached properties (e.g. Xamarin.Forms.Element)
+        member val BaseAttachedPropertyTargetType : string = "" with get, set
+        
+        /// The types to include in the generated code
+        member val Types : Type[] = [||] with get, set

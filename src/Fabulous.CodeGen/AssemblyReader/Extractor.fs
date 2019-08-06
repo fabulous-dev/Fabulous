@@ -28,7 +28,7 @@ module Extractor =
     let readAttachedPropertiesFromType
             (convertTypeName: string -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
-            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
+            (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
        
@@ -40,14 +40,14 @@ module Extractor =
                 Some
                     ({ Name = data.Name
                        Type = convertTypeName data.Type
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : AttachedPropertyReaderData)
+                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderAttachedProperty)
         )
         |> Array.choose id
 
     let readPropertiesFromType
             (convertTypeName: string -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
-            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
+            (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
 
@@ -59,7 +59,8 @@ module Extractor =
                 Some
                     ({ Name = data.Name
                        Type = convertTypeName data.Type
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : PropertyReaderData)
+                       ElementType = Resolver.getElementTypeForType ``type``
+                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderProperty)
         )
         |> Array.choose id
 
@@ -67,7 +68,7 @@ module Extractor =
             (convertTypeName: string -> string)
             (convertEventType: string option -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
-            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
+            (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (baseTypeName: string)
             (tdef: TypeDefinition) =

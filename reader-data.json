@@ -40,11 +40,13 @@
       {
         "Name": "AutomationId",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ClassId",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -100,26 +102,31 @@
       {
         "Name": "Title",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Description",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Thumbnail",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "AppLinkUri",
         "Type": "System.Uri",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsLinkActive",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -167,36 +174,43 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsDestructive",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IconImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IconImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -260,6 +274,7 @@
       {
         "Name": "IsEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       }
     ]
@@ -282,36 +297,43 @@
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Label",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Placeholder",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "LabelColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Keyboard",
         "Type": "Xamarin.Forms.Keyboard",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Keyboard.Default"
       },
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       }
     ]
@@ -351,16 +373,19 @@
       {
         "Name": "On",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "OnColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -377,31 +402,37 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Detail",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "DetailColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -419,6 +450,7 @@
       {
         "Name": "ImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -474,56 +506,67 @@
       {
         "Name": "Style",
         "Type": "Xamarin.Forms.Style",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TextDecorations",
         "Type": "Xamarin.Forms.TextDecorations",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextDecorations.None"
       },
       {
         "Name": "BackgroundColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "System.String.Empty"
       },
       {
         "Name": "Font",
         "Type": "Xamarin.Forms.Font",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Font.Default"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "LineHeight",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       }
     ]
@@ -555,21 +598,25 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "NumberOfClicksRequired",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "Buttons",
         "Type": "Xamarin.Forms.ButtonsMask",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ButtonsMask.Primary"
       }
     ]
@@ -592,6 +639,7 @@
       {
         "Name": "TouchPoints",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "1"
       }
     ]
@@ -630,21 +678,25 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Direction",
         "Type": "Xamarin.Forms.SwipeDirection",
+        "ElementType": null,
         "DefaultValue": "Unchecked.defaultof<Xamarin.Forms.SwipeDirection>"
       },
       {
         "Name": "Threshold",
         "Type": "uint32",
+        "ElementType": null,
         "DefaultValue": "100u"
       }
     ]
@@ -667,26 +719,31 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "NumberOfTapsRequired",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "TappedCallback",
         "Type": "System.Action`2[[Xamarin.Forms.View, Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TappedCallbackParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -712,6 +769,7 @@
       {
         "Name": "File",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -728,21 +786,25 @@
       {
         "Name": "Size",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "30"
       },
       {
         "Name": "Glyph",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Color",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -759,6 +821,7 @@
       {
         "Name": "Stream",
         "Type": "System.Func`2[[System.Threading.CancellationToken, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task`1[[System.IO.Stream, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -774,11 +837,13 @@
       {
         "Name": "Navigation",
         "Type": "Xamarin.Forms.INavigation",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Style",
         "Type": "Xamarin.Forms.Style",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -795,36 +860,43 @@
       {
         "Name": "FlyoutIcon",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Icon",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsChecked",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "Title",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TabIndex",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "IsTabStop",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       }
     ]
@@ -842,16 +914,19 @@
       {
         "Name": "MenuItems",
         "Type": "Xamarin.Forms.MenuItemCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Content",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ContentTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -869,6 +944,7 @@
       {
         "Name": "FlyoutDisplayOptions",
         "Type": "Xamarin.Forms.FlyoutDisplayOptions",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlyoutDisplayOptions.AsSingleItem"
       }
     ]
@@ -887,11 +963,13 @@
       {
         "Name": "CurrentItem",
         "Type": "Xamarin.Forms.ShellSection",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Items",
         "Type": "Xamarin.Forms.ShellSectionCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -949,11 +1027,13 @@
       {
         "Name": "CurrentItem",
         "Type": "Xamarin.Forms.ShellContent",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Items",
         "Type": "Xamarin.Forms.ShellContentCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1030,151 +1110,181 @@
       {
         "Name": "InputTransparent",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "X",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Y",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "AnchorX",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0.5"
       },
       {
         "Name": "AnchorY",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0.5"
       },
       {
         "Name": "TranslationX",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "TranslationY",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Width",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "Height",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "Rotation",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "RotationX",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "RotationY",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Scale",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "ScaleX",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "ScaleY",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "Visual",
         "Type": "Xamarin.Forms.IVisual",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual"
       },
       {
         "Name": "IsVisible",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "Opacity",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "BackgroundColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Behaviors",
         "Type": "ViewElement list",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Triggers",
         "Type": "System.Collections.Generic.IList`1[[Xamarin.Forms.TriggerBase, Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "WidthRequest",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "HeightRequest",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "MinimumWidthRequest",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "MinimumHeightRequest",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "IsFocused",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "FlowDirection",
         "Type": "Xamarin.Forms.FlowDirection",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlowDirection.MatchParent"
       },
       {
         "Name": "TabIndex",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "IsTabStop",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       }
     ]
@@ -1208,36 +1318,43 @@
       {
         "Name": "BackgroundImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "BackgroundImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsBusy",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Padding",
         "Type": "Xamarin.Forms.Thickness",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Thickness(0.)"
       },
       {
         "Name": "Title",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IconImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IconImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1267,16 +1384,19 @@
       {
         "Name": "IsGestureEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "IsPresented",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "MasterBehavior",
         "Type": "Xamarin.Forms.MasterBehavior",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.MasterBehavior.Default"
       }
     ]
@@ -1332,21 +1452,25 @@
       {
         "Name": "BarBackgroundColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "BarTextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "UnselectedTabColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "SelectedTabColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -1437,26 +1561,31 @@
       {
         "Name": "Tint",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "BarBackgroundColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "BarTextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "CurrentPage",
         "Type": "Xamarin.Forms.Page",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "RootPage",
         "Type": "Xamarin.Forms.Page",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1562,61 +1691,73 @@
       {
         "Name": "FlyoutBehavior",
         "Type": "Xamarin.Forms.FlyoutBehavior",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlyoutBehavior.Flyout"
       },
       {
         "Name": "MenuItemTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ItemTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CurrentItem",
         "Type": "Xamarin.Forms.ShellItem",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CurrentState",
         "Type": "Xamarin.Forms.ShellNavigationState",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FlyoutBackgroundColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "FlyoutHeaderBehavior",
         "Type": "Xamarin.Forms.FlyoutHeaderBehavior",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlyoutHeaderBehavior.Default"
       },
       {
         "Name": "FlyoutHeader",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FlyoutHeaderTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FlyoutIsPresented",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Items",
         "Type": "Xamarin.Forms.ShellItemCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FlyoutIcon",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1635,6 +1776,7 @@
       {
         "Name": "ControlTemplate",
         "Type": "Xamarin.Forms.ControlTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1654,6 +1796,7 @@
       {
         "Name": "Content",
         "Type": "Xamarin.Forms.View",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -1685,16 +1828,19 @@
       {
         "Name": "VerticalOptions",
         "Type": "Xamarin.Forms.LayoutOptions",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.LayoutOptions.Fill"
       },
       {
         "Name": "HorizontalOptions",
         "Type": "Xamarin.Forms.LayoutOptions",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.LayoutOptions.Fill"
       },
       {
         "Name": "Margin",
         "Type": "Xamarin.Forms.Thickness",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Thickness(0.)"
       }
     ]
@@ -1713,11 +1859,13 @@
       {
         "Name": "IsRunning",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Color",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -1736,11 +1884,13 @@
       {
         "Name": "Color",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "CornerRadius",
         "Type": "Xamarin.Forms.CornerRadius",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.CornerRadius(0.)"
       }
     ]
@@ -1775,86 +1925,103 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ContentLayout",
         "Type": "Xamarin.Forms.Button.ButtonContentLayout",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Button.ButtonContentLayout(Xamarin.Forms.Button.ButtonContentLayout.ImagePosition.Left, 10)"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Font",
         "Type": "Xamarin.Forms.Font",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Font.Default"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "BorderWidth",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "BorderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "BorderRadius",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "5"
       },
       {
         "Name": "CornerRadius",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "Image",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Image",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Padding",
         "Type": "Xamarin.Forms.Thickness",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Thickness(0.)"
       },
       {
         "Name": "IsPressed",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -1879,11 +2046,13 @@
       {
         "Name": "IsChecked",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Color",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -1908,41 +2077,49 @@
       {
         "Name": "Format",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "d"
       },
       {
         "Name": "Date",
         "Type": "System.DateTime",
+        "ElementType": null,
         "DefaultValue": "System.DateTime.MinValue"
       },
       {
         "Name": "MinimumDate",
         "Type": "System.DateTime",
+        "ElementType": null,
         "DefaultValue": "System.DateTime(1900, 1, 1)"
       },
       {
         "Name": "MaximumDate",
         "Type": "System.DateTime",
+        "ElementType": null,
         "DefaultValue": "System.DateTime(2100, 12, 31)"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       }
     ]
@@ -1961,21 +2138,25 @@
       {
         "Name": "Source",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Aspect",
         "Type": "Xamarin.Forms.Aspect",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Aspect.AspectFit"
       },
       {
         "Name": "IsOpaque",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsLoading",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -2010,56 +2191,67 @@
       {
         "Name": "Command",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CornerRadius",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "BorderWidth",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "BorderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Source",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Aspect",
         "Type": "Xamarin.Forms.Aspect",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Aspect.AspectFit"
       },
       {
         "Name": "IsOpaque",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsLoading",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsPressed",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Padding",
         "Type": "Xamarin.Forms.Thickness",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Thickness(0.)"
       }
     ]
@@ -2078,21 +2270,25 @@
       {
         "Name": "Keyboard",
         "Type": "Xamarin.Forms.Keyboard",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Keyboard.Default"
       },
       {
         "Name": "IsSpellCheckEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "MaxLength",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "2147483647"
       },
       {
         "Name": "IsReadOnly",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -2123,46 +2319,55 @@
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Placeholder",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "PlaceholderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "IsTextPredictionEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "AutoSize",
         "Type": "Xamarin.Forms.EditorAutoSizeOption",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
       }
     ]
@@ -2193,76 +2398,91 @@
       {
         "Name": "ReturnType",
         "Type": "Xamarin.Forms.ReturnType",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ReturnType.Default"
       },
       {
         "Name": "ReturnCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ReturnCommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Placeholder",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "PlaceholderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "IsPassword",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "IsTextPredictionEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "CursorPosition",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "SelectionLength",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "0"
       }
     ]
@@ -2293,56 +2513,67 @@
       {
         "Name": "SearchCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SearchCommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CancelButtonColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Placeholder",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "PlaceholderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -2405,91 +2636,109 @@
       {
         "Name": "IsPullToRefreshEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "IsRefreshing",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "RefreshCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Header",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "HeaderTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "Footer",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FooterTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectedItem",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectionMode",
         "Type": "Xamarin.Forms.ListViewSelectionMode",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
       },
       {
         "Name": "HasUnevenRows",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "RowHeight",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "GroupHeaderTemplate",
         "Type": "Xamarin.Forms.DataTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "IsGroupingEnabled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "SeparatorVisibility",
         "Type": "Xamarin.Forms.SeparatorVisibility",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.SeparatorVisibility.Default"
       },
       {
         "Name": "SeparatorColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "RefreshControlColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "HorizontalScrollBarVisibility",
         "Type": "Xamarin.Forms.ScrollBarVisibility",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
       },
       {
         "Name": "VerticalScrollBarVisibility",
         "Type": "Xamarin.Forms.ScrollBarVisibility",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
       }
     ]
@@ -2570,26 +2819,31 @@
       {
         "Name": "SelectionMode",
         "Type": "Xamarin.Forms.SelectionMode",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.SelectionMode.None"
       },
       {
         "Name": "SelectedItem",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectedItems",
         "Type": "obj list",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectionChangedCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectionChangedCommandParameter",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -2637,76 +2891,91 @@
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "HorizontalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "VerticalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "VerticalTextAlignment",
         "Type": "Xamarin.Forms.TextAlignment",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextAlignment.Start"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Font",
         "Type": "Xamarin.Forms.Font",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Font.Default"
       },
       {
         "Name": "Text",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       },
       {
         "Name": "TextDecorations",
         "Type": "Xamarin.Forms.TextDecorations",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.TextDecorations.None"
       },
       {
         "Name": "FormattedText",
         "Type": "Xamarin.Forms.FormattedString",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "LineBreakMode",
         "Type": "Xamarin.Forms.LineBreakMode",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.LineBreakMode.WordWrap"
       },
       {
         "Name": "LineHeight",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "MaxLines",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       }
     ]
@@ -2731,16 +3000,19 @@
       {
         "Name": "IsClippedToBounds",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "CascadeInputTransparent",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "Padding",
         "Type": "Xamarin.Forms.Thickness",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Thickness(0.)"
       }
     ]
@@ -2760,6 +3032,7 @@
       {
         "Name": "Content",
         "Type": "Xamarin.Forms.View",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -2844,31 +3117,37 @@
       {
         "Name": "Direction",
         "Type": "Xamarin.Forms.FlexDirection",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexDirection.Row"
       },
       {
         "Name": "JustifyContent",
         "Type": "Xamarin.Forms.FlexJustify",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexJustify.Start"
       },
       {
         "Name": "AlignContent",
         "Type": "Xamarin.Forms.FlexAlignContent",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexAlignContent.Stretch"
       },
       {
         "Name": "AlignItems",
         "Type": "Xamarin.Forms.FlexAlignItems",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexAlignItems.Stretch"
       },
       {
         "Name": "Position",
         "Type": "Xamarin.Forms.FlexPosition",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexPosition.Relative"
       },
       {
         "Name": "Wrap",
         "Type": "Xamarin.Forms.FlexWrap",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FlexWrap.NoWrap"
       }
     ]
@@ -2910,21 +3189,25 @@
       {
         "Name": "RowSpacing",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "6"
       },
       {
         "Name": "ColumnSpacing",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "6"
       },
       {
         "Name": "ColumnDefinitions",
         "Type": "Xamarin.Forms.ColumnDefinitionCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "RowDefinitions",
         "Type": "Xamarin.Forms.RowDefinitionCollection",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -2985,11 +3268,13 @@
       {
         "Name": "Orientation",
         "Type": "Xamarin.Forms.StackOrientation",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.StackOrientation.Vertical"
       },
       {
         "Name": "Spacing",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "6"
       }
     ]
@@ -3020,31 +3305,37 @@
       {
         "Name": "Orientation",
         "Type": "Xamarin.Forms.ScrollOrientation",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ScrollOrientation.Vertical"
       },
       {
         "Name": "ScrollX",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "ScrollY",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "ContentSize",
         "Type": "Xamarin.Forms.Size",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Size.Zero"
       },
       {
         "Name": "HorizontalScrollBarVisibility",
         "Type": "Xamarin.Forms.ScrollBarVisibility",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
       },
       {
         "Name": "VerticalScrollBarVisibility",
         "Type": "Xamarin.Forms.ScrollBarVisibility",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
       }
     ]
@@ -3064,6 +3355,7 @@
       {
         "Name": "ControlTemplate",
         "Type": "Xamarin.Forms.ControlTemplate",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -3084,6 +3376,7 @@
       {
         "Name": "Content",
         "Type": "Xamarin.Forms.View",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -3105,21 +3398,25 @@
       {
         "Name": "BorderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "BorderColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "HasShadow",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "true"
       },
       {
         "Name": "CornerRadius",
         "Type": "single",
+        "ElementType": null,
         "DefaultValue": "-1f"
       }
     ]
@@ -3159,6 +3456,7 @@
       {
         "Name": "HasRenderLoop",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -3183,46 +3481,55 @@
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Title",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "TitleColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "SelectedIndex",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "ItemsSource",
         "Type": "obj list",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "SelectedItem",
         "Type": "object",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       }
     ]
@@ -3241,11 +3548,13 @@
       {
         "Name": "ProgressColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Progress",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       }
     ]
@@ -3280,51 +3589,61 @@
       {
         "Name": "Minimum",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Maximum",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       },
       {
         "Name": "Value",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "MinimumTrackColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "MaximumTrackColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "ThumbColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "ThumbImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "ThumbImageSource",
         "Type": "Xamarin.Forms.ImageSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "DragStartedCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "DragCompletedCommand",
         "Type": "unit -> unit",
+        "ElementType": null,
         "DefaultValue": "null"
       }
     ]
@@ -3349,21 +3668,25 @@
       {
         "Name": "Maximum",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "100"
       },
       {
         "Name": "Minimum",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Value",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "0"
       },
       {
         "Name": "Increment",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "1"
       }
     ]
@@ -3388,11 +3711,13 @@
       {
         "Name": "IsToggled",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "OnColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       }
     ]
@@ -3417,11 +3742,13 @@
       {
         "Name": "RowHeight",
         "Type": "int",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "HasUnevenRows",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
@@ -3440,31 +3767,37 @@
       {
         "Name": "Format",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "t"
       },
       {
         "Name": "TextColor",
         "Type": "Xamarin.Forms.Color",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.Color.Default"
       },
       {
         "Name": "Time",
         "Type": "System.TimeSpan",
+        "ElementType": null,
         "DefaultValue": "System.TimeSpan.Zero"
       },
       {
         "Name": "FontFamily",
         "Type": "string",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "FontSize",
         "Type": "float",
+        "ElementType": null,
         "DefaultValue": "-1"
       },
       {
         "Name": "FontAttributes",
         "Type": "Xamarin.Forms.FontAttributes",
+        "ElementType": null,
         "DefaultValue": "Xamarin.Forms.FontAttributes.None"
       }
     ]
@@ -3519,16 +3852,19 @@
       {
         "Name": "Source",
         "Type": "Xamarin.Forms.WebViewSource",
+        "ElementType": null,
         "DefaultValue": "null"
       },
       {
         "Name": "CanGoBack",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       },
       {
         "Name": "CanGoForward",
         "Type": "bool",
+        "ElementType": null,
         "DefaultValue": "false"
       }
     ]
