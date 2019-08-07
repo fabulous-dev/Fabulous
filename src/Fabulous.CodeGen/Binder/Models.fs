@@ -6,6 +6,7 @@ module Models =
           Name: string
           UniqueName: string
           DefaultValue: string
+          ElementType: string option
           InputType: string
           ModelType: string
           ConvertInputToModel: string
@@ -28,6 +29,7 @@ module Models =
           UniqueName: string
           DefaultValue: string
           OriginalType: string
+          ElementType: string option
           InputType: string
           ModelType: string
           ConvertInputToModel: string

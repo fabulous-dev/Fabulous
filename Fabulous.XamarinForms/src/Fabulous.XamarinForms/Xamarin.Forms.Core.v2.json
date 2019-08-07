@@ -380,6 +380,243 @@
           "source": "DragStarted"
         }
       ]
+    },
+    {
+      "type": "Xamarin.Forms.Stepper",
+      "properties": [
+        {
+          "source": null,
+          "name": "MinimumMaximum",
+          "defaultValue": "(0.0, 1.0)",
+          "inputType": "float * float",
+          "modelType": "float * float"
+        },
+        {
+          "source": "Value"
+        },
+        {
+          "source": "Increment"
+        }
+      ],
+      "events": [
+        {
+          "source": "ValueChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Switch",
+      "properties": [
+        {
+          "source": "IsToggled"
+        },
+        {
+          "source": "OnColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Toggled"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Cell",
+      "properties": [
+        {
+          "source": null,
+          "name": "Height",
+          "defaultValue": "-1.0",
+          "inputType": "float"
+        },
+        {
+          "source": "IsEnabled"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwitchCell",
+      "properties": [
+        {
+          "source": "On"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "OnColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "OnChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.TableView",
+      "properties":[
+        {
+          "source": null,
+          "name": "Intent",
+          "defaultValue": "Xamarin.Forms.TableIntent.Data",
+          "inputType": "Xamarin.Forms.TableIntent"
+        },
+        {
+          "source": "HasUnevenRows"
+        },
+        {
+          "source": "RowHeight"
+        },
+        {
+          "source": null,
+          "name": "Root",
+          "shortName": "items",
+          "defaultValue": "[]",
+          "inputType": "(string * ViewElement list) list",
+          "convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
+          "updateCode": "ViewUpdaters.updateTableViewItems"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Grid",
+      "properties": [
+        {
+          "source": "RowDefinitions"
+        },
+        {
+          "source": "ColumnDefinitions"
+        },
+        {
+          "source": "RowSpacing"
+        },
+        {
+          "source": "ColumnSpacing"
+        },
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "elementType": "Xamarin.Forms.View"
+        }
+      ],
+      "attachedProperties": [
+        {
+          "source": "Row"
+        },
+        {
+          "source": "RowSpan"
+        },
+        {
+          "source": "Column"
+        },
+        {
+          "source": "ColumnSpan"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.AbsoluteLayout",
+      "properties": [
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "elementType": "Xamarin.Forms.View"
+        }
+      ],
+      "attachedProperties": [
+        {
+          "source": "LayoutBounds"
+        },
+        {
+          "source": "LayoutFlags"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.RelativeLayout",
+      "properties": [
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "elementType": "Xamarin.Forms.View"
+        }
+      ],
+      "attachedProperties": [
+        {
+          "source": "BoundsConstraint"
+        },
+        {
+          "source": "HeightConstraint"
+        },
+        {
+          "source": "WidthConstraint"
+        },
+        {
+          "source": "XConstraint"
+        },
+        {
+          "source": "YConstraint"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.FlexLayout",
+      "properties": [
+        {
+          "source": "AlignContent"
+        },
+        {
+          "source": "AlignItems"
+        },
+        {
+          "source": "Direction"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "Wrap"
+        },
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "elementType": "Xamarin.Forms.View"
+        }
+      ],
+      "attachedProperties": [
+        {
+          "source": "AlignSelf"
+        },
+        {
+          "source": "Order"
+        },
+        {
+          "source": "Basis"
+        },
+        {
+          "source": "Grow"
+        },
+        {
+          "source": "Shrink"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ContentView",
+      "properties": [
+        {
+          "source": "Content"
+        }
+      ]
     }
   ]
 }

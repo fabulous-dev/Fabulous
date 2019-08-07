@@ -67,7 +67,7 @@ module Preparator =
               ModelType = p.ModelType
               ConvertModelToValue = p.ConvertModelToValue
               UpdateCode = ""
-              ElementType = None }    
+              ElementType = p.ElementType }    
         )
         
         { Name = ``type``.Name

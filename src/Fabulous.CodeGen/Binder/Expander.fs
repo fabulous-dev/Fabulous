@@ -16,8 +16,6 @@ module Expander =
                   for m in members do
                       yield m ]
         |> List.toArray
-        
-    let private recomputePositions () = () // TODO
     
     let expandType (readerDataTypes: ReaderType[]) (types: TypeBinding[]) (``type``: TypeBinding) =
         let readerDataType = readerDataTypes |> Array.find (fun t -> t.Name = ``type``.Type)

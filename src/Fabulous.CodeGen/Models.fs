@@ -31,6 +31,9 @@ module Models =
         abstract member ShortName : string option with get
 
     type IProperty =
+        /// The type of the elements if the property is a collection
+        abstract member ElementType : string option with get
+        
         /// The function that converts the model value to the actual type expected by the property
         abstract member ConvertModelToValue : string option with get
         
@@ -44,6 +47,7 @@ module Models =
           ShortName: string option
           UniqueName: string option
           DefaultValue: string option
+          ElementType: string option
           InputType: string option
           ModelType: string option
           ConvertInputToModel: string option
@@ -59,6 +63,7 @@ module Models =
         interface IConstructorMember with
             member x.ShortName = x.ShortName
         interface IProperty with
+            member x.ElementType = x.ElementType
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
 
@@ -87,6 +92,7 @@ module Models =
           Name: string option
           UniqueName: string option
           DefaultValue: string option
+          ElementType: string option
           InputType: string option
           ModelType: string option
           ConvertInputToModel: string option
@@ -100,6 +106,7 @@ module Models =
             member x.ModelType = x.ModelType
             member x.ConvertInputToModel = x.ConvertInputToModel
         interface IProperty with
+            member x.ElementType = x.ElementType
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
     

@@ -78,7 +78,7 @@ module Entry =
             let bindings = Binder.bind logger readerData overwriteData
             bindings |> writeOutputIfDebug options.Debug "bindings.json"
             
-            let optimizedBindings = Optimizer.optimizeKnownTypes bindings
+            let optimizedBindings = Optimizer.optimize bindings
             optimizedBindings |> writeOutputIfDebug options.Debug "optimized-bindings.json"
             
             let expandedBindings = Expander.expand readerData optimizedBindings

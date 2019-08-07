@@ -87,6 +87,53 @@ module ViewAttributes =
     let SliderMinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("SliderMinimumMaximum")
     let SliderValueAttribKey : AttributeKey<_> = AttributeKey<_>("SliderValue")
     let SliderThumbImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("SliderThumbImageSource")
+    let StepperValueChangedAttribKey : AttributeKey<_> = AttributeKey<_>("StepperValueChanged")
+    let StepperMinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("StepperMinimumMaximum")
+    let StepperValueAttribKey : AttributeKey<_> = AttributeKey<_>("StepperValue")
+    let StepperIncrementAttribKey : AttributeKey<_> = AttributeKey<_>("StepperIncrement")
+    let SwitchToggledAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchToggled")
+    let SwitchIsToggledAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchIsToggled")
+    let SwitchOnColorAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchOnColor")
+    let CellHeightAttribKey : AttributeKey<_> = AttributeKey<_>("CellHeight")
+    let CellIsEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("CellIsEnabled")
+    let SwitchCellOnChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchCellOnChanged")
+    let SwitchCellOnAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchCellOn")
+    let SwitchCellTextAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchCellText")
+    let SwitchCellOnColorAttribKey : AttributeKey<_> = AttributeKey<_>("SwitchCellOnColor")
+    let TableViewIntentAttribKey : AttributeKey<_> = AttributeKey<_>("TableViewIntent")
+    let TableViewHasUnevenRowsAttribKey : AttributeKey<_> = AttributeKey<_>("TableViewHasUnevenRows")
+    let TableViewRowHeightAttribKey : AttributeKey<_> = AttributeKey<_>("TableViewRowHeight")
+    let TableViewRootAttribKey : AttributeKey<_> = AttributeKey<_>("TableViewRoot")
+    let GridRowAttribKey : AttributeKey<_> = AttributeKey<_>("GridRow")
+    let GridRowSpanAttribKey : AttributeKey<_> = AttributeKey<_>("GridRowSpan")
+    let GridColumnAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumn")
+    let GridColumnSpanAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumnSpan")
+    let GridRowDefinitionsAttribKey : AttributeKey<_> = AttributeKey<_>("GridRowDefinitions")
+    let GridColumnDefinitionsAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumnDefinitions")
+    let GridRowSpacingAttribKey : AttributeKey<_> = AttributeKey<_>("GridRowSpacing")
+    let GridColumnSpacingAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumnSpacing")
+    let GridChildrenAttribKey : AttributeKey<_> = AttributeKey<_>("GridChildren")
+    let AbsoluteLayoutLayoutBoundsAttribKey : AttributeKey<_> = AttributeKey<_>("AbsoluteLayoutLayoutBounds")
+    let AbsoluteLayoutLayoutFlagsAttribKey : AttributeKey<_> = AttributeKey<_>("AbsoluteLayoutLayoutFlags")
+    let AbsoluteLayoutChildrenAttribKey : AttributeKey<_> = AttributeKey<_>("AbsoluteLayoutChildren")
+    let RelativeLayoutBoundsConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutBoundsConstraint")
+    let RelativeLayoutHeightConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutHeightConstraint")
+    let RelativeLayoutWidthConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutWidthConstraint")
+    let RelativeLayoutXConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutXConstraint")
+    let RelativeLayoutYConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutYConstraint")
+    let RelativeLayoutChildrenAttribKey : AttributeKey<_> = AttributeKey<_>("RelativeLayoutChildren")
+    let FlexLayoutAlignSelfAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutAlignSelf")
+    let FlexLayoutOrderAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutOrder")
+    let FlexLayoutBasisAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutBasis")
+    let FlexLayoutGrowAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutGrow")
+    let FlexLayoutShrinkAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutShrink")
+    let FlexLayoutAlignContentAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutAlignContent")
+    let FlexLayoutAlignItemsAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutAlignItems")
+    let FlexLayoutDirectionAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutDirection")
+    let FlexLayoutPositionAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutPosition")
+    let FlexLayoutWrapAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutWrap")
+    let FlexLayoutChildrenAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutChildren")
+    let ContentViewContentAttribKey : AttributeKey<_> = AttributeKey<_>("ContentViewContent")
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -811,7 +858,7 @@ type ViewBuilders() =
         match horizontalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewHorizontalOptionsAttribKey, (v)) 
         match verticalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewVerticalOptionsAttribKey, (v)) 
         match margin with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewMarginAttribKey, (v)) 
-        match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewGestureRecognizersAttribKey, (v)) 
+        match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewGestureRecognizersAttribKey, Array.fromList(v)) 
         attribBuilder
 
     static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> ViewBuilders.CreateView()) with get, set
@@ -840,7 +887,7 @@ type ViewBuilders() =
             if kvp.Key = ViewAttributes.ViewMarginAttribKey.KeyValue then 
                 currViewMarginOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
             if kvp.Key = ViewAttributes.ViewGestureRecognizersAttribKey.KeyValue then 
-                currViewGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+                currViewGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement array)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -852,7 +899,7 @@ type ViewBuilders() =
                 if kvp.Key = ViewAttributes.ViewMarginAttribKey.KeyValue then 
                     prevViewMarginOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
                 if kvp.Key = ViewAttributes.ViewGestureRecognizersAttribKey.KeyValue then 
-                    prevViewGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+                    prevViewGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement array)
         match prevViewHorizontalOptionsOpt, currViewHorizontalOptionsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.HorizontalOptions <-  currValue
@@ -967,7 +1014,7 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, ?tag: obj, 
                                                       ?created: obj -> unit)
-        match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GestureElementGestureRecognizersAttribKey, (v)) 
+        match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GestureElementGestureRecognizersAttribKey, Array.fromList(v)) 
         attribBuilder
 
     static member val CreateFuncGestureElement : (unit -> Xamarin.Forms.GestureElement) = (fun () -> ViewBuilders.CreateGestureElement()) with get, set
@@ -984,13 +1031,13 @@ type ViewBuilders() =
         let mutable currGestureElementGestureRecognizersOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.GestureElementGestureRecognizersAttribKey.KeyValue then 
-                currGestureElementGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+                currGestureElementGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement array)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.GestureElementGestureRecognizersAttribKey.KeyValue then 
-                    prevGestureElementGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement list)
+                    prevGestureElementGestureRecognizersOpt <- ValueSome (kvp.Value :?> ViewElement array)
         match prevGestureElementGestureRecognizersOpt, currGestureElementGestureRecognizersOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.GestureRecognizers <-  currValue
@@ -2921,6 +2968,1909 @@ type ViewBuilders() =
 
         ViewElement.Create<Xamarin.Forms.Slider>(ViewBuilders.CreateFuncSlider, ViewBuilders.UpdateFuncSlider, attribBuilder)
 
+    /// Builds the attributes for a Stepper in the view
+    static member inline BuildStepper(attribCount: int,
+                                      ?minimumMaximum: float * float,
+                                      ?value: float,
+                                      ?increment: float,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: InputTypes.Thickness,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: float,
+                                      ?anchorY: float,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?flowDirection: Xamarin.Forms.FlowDirection,
+                                      ?height: float,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isTabStop: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeight: float,
+                                      ?minimumWidth: float,
+                                      ?opacity: float,
+                                      ?rotation: float,
+                                      ?rotationX: float,
+                                      ?rotationY: float,
+                                      ?scale: float,
+                                      ?scaleX: float,
+                                      ?scaleY: float,
+                                      ?tabIndex: int,
+                                      ?translationX: float,
+                                      ?translationY: float,
+                                      ?visual: Xamarin.Forms.IVisual,
+                                      ?width: float,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?styleClass: InputTypes.StyleClass,
+                                      ?automationId: string,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?ref: ViewRef,
+                                      ?tag: obj,
+                                      ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?created: obj -> unit) = 
+
+        let attribCount = match minimumMaximum with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, ?gestureRecognizers: ViewElement list, ?anchorX: float, 
+                                                   ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, ?height: float, ?inputTransparent: bool, 
+                                                   ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, ?minimumHeight: float, ?minimumWidth: float, 
+                                                   ?opacity: float, ?rotation: float, ?rotationX: float, ?rotationY: float, ?scale: float, 
+                                                   ?scaleX: float, ?scaleY: float, ?tabIndex: int, ?translationX: float, ?translationY: float, 
+                                                   ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, ?styleClass: InputTypes.StyleClass, ?automationId: string, 
+                                                   ?classId: string, ?styleId: string, ?ref: ViewRef, ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, 
+                                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match minimumMaximum with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StepperMinimumMaximumAttribKey, (v)) 
+        match value with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StepperValueAttribKey, (v)) 
+        match increment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StepperIncrementAttribKey, (v)) 
+        match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StepperValueChangedAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> ViewBuilders.CreateStepper()) with get, set
+
+    static member CreateStepper () : Xamarin.Forms.Stepper =
+        new Xamarin.Forms.Stepper()
+
+    static member val UpdateFuncStepper =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Stepper) -> ViewBuilders.UpdateStepper (prevOpt, curr, target)) 
+
+    static member UpdateStepper (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Stepper) = 
+        ViewBuilders.UpdateView (prevOpt, curr, target)
+        let mutable prevStepperValueChangedOpt = ValueNone
+        let mutable currStepperValueChangedOpt = ValueNone
+        let mutable prevStepperMinimumMaximumOpt = ValueNone
+        let mutable currStepperMinimumMaximumOpt = ValueNone
+        let mutable prevStepperValueOpt = ValueNone
+        let mutable currStepperValueOpt = ValueNone
+        let mutable prevStepperIncrementOpt = ValueNone
+        let mutable currStepperIncrementOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.StepperValueChangedAttribKey.KeyValue then 
+                currStepperValueChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>)
+            if kvp.Key = ViewAttributes.StepperMinimumMaximumAttribKey.KeyValue then 
+                currStepperMinimumMaximumOpt <- ValueSome (kvp.Value :?> float * float)
+            if kvp.Key = ViewAttributes.StepperValueAttribKey.KeyValue then 
+                currStepperValueOpt <- ValueSome (kvp.Value :?> float)
+            if kvp.Key = ViewAttributes.StepperIncrementAttribKey.KeyValue then 
+                currStepperIncrementOpt <- ValueSome (kvp.Value :?> float)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.StepperValueChangedAttribKey.KeyValue then 
+                    prevStepperValueChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>)
+                if kvp.Key = ViewAttributes.StepperMinimumMaximumAttribKey.KeyValue then 
+                    prevStepperMinimumMaximumOpt <- ValueSome (kvp.Value :?> float * float)
+                if kvp.Key = ViewAttributes.StepperValueAttribKey.KeyValue then 
+                    prevStepperValueOpt <- ValueSome (kvp.Value :?> float)
+                if kvp.Key = ViewAttributes.StepperIncrementAttribKey.KeyValue then 
+                    prevStepperIncrementOpt <- ValueSome (kvp.Value :?> float)
+        let shouldUpdateStepperValueChanged = not ((identical prevStepperValueChangedOpt currStepperValueChangedOpt))
+        if shouldUpdateStepperValueChanged then
+            match prevStepperValueChangedOpt with
+            | ValueSome prevValue -> target.ValueChanged.RemoveHandler(prevValue)
+            | ValueNone -> ()
+        match prevStepperMinimumMaximumOpt, currStepperMinimumMaximumOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.MinimumMaximum <-  currValue
+        | ValueSome _, ValueNone -> target.MinimumMaximum <- (0.0, 1.0)
+        | ValueNone, ValueNone -> ()
+        match prevStepperValueOpt, currStepperValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Value <-  currValue
+        | ValueSome _, ValueNone -> target.Value <- 0
+        | ValueNone, ValueNone -> ()
+        match prevStepperIncrementOpt, currStepperIncrementOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Increment <-  currValue
+        | ValueSome _, ValueNone -> target.Increment <- 1
+        | ValueNone, ValueNone -> ()
+        if shouldUpdateStepperValueChanged then
+            match currStepperValueChangedOpt with
+            | ValueSome currValue -> target.ValueChanged.AddHandler(currValue)
+            | ValueNone -> ()
+
+    static member inline ConstructStepper(?minimumMaximum: float * float,
+                                          ?value: float,
+                                          ?increment: float,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: InputTypes.Thickness,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: float,
+                                          ?anchorY: float,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?flowDirection: Xamarin.Forms.FlowDirection,
+                                          ?height: float,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isTabStop: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeight: float,
+                                          ?minimumWidth: float,
+                                          ?opacity: float,
+                                          ?rotation: float,
+                                          ?rotationX: float,
+                                          ?rotationY: float,
+                                          ?scale: float,
+                                          ?scaleX: float,
+                                          ?scaleY: float,
+                                          ?tabIndex: int,
+                                          ?translationX: float,
+                                          ?translationY: float,
+                                          ?visual: Xamarin.Forms.IVisual,
+                                          ?width: float,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?styleClass: InputTypes.StyleClass,
+                                          ?automationId: string,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?ref: ViewRef<Xamarin.Forms.Stepper>,
+                                          ?tag: obj,
+                                          ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?created: (Xamarin.Forms.Stepper -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildStepper(0,
+                               ?minimumMaximum=minimumMaximum,
+                               ?value=value,
+                               ?increment=increment,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Stepper>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?valueChanged=valueChanged,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Stepper> target))))
+
+        ViewElement.Create<Xamarin.Forms.Stepper>(ViewBuilders.CreateFuncStepper, ViewBuilders.UpdateFuncStepper, attribBuilder)
+
+    /// Builds the attributes for a Switch in the view
+    static member inline BuildSwitch(attribCount: int,
+                                     ?isToggled: bool,
+                                     ?onColor: Xamarin.Forms.Color,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: InputTypes.Thickness,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: float,
+                                     ?anchorY: float,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?flowDirection: Xamarin.Forms.FlowDirection,
+                                     ?height: float,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isTabStop: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeight: float,
+                                     ?minimumWidth: float,
+                                     ?opacity: float,
+                                     ?rotation: float,
+                                     ?rotationX: float,
+                                     ?rotationY: float,
+                                     ?scale: float,
+                                     ?scaleX: float,
+                                     ?scaleY: float,
+                                     ?tabIndex: int,
+                                     ?translationX: float,
+                                     ?translationY: float,
+                                     ?visual: Xamarin.Forms.IVisual,
+                                     ?width: float,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?styleClass: InputTypes.StyleClass,
+                                     ?automationId: string,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?ref: ViewRef,
+                                     ?tag: obj,
+                                     ?toggled: Xamarin.Forms.ToggledEventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?created: obj -> unit) = 
+
+        let attribCount = match isToggled with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, ?gestureRecognizers: ViewElement list, ?anchorX: float, 
+                                                   ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, ?height: float, ?inputTransparent: bool, 
+                                                   ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, ?minimumHeight: float, ?minimumWidth: float, 
+                                                   ?opacity: float, ?rotation: float, ?rotationX: float, ?rotationY: float, ?scale: float, 
+                                                   ?scaleX: float, ?scaleY: float, ?tabIndex: int, ?translationX: float, ?translationY: float, 
+                                                   ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, ?styleClass: InputTypes.StyleClass, ?automationId: string, 
+                                                   ?classId: string, ?styleId: string, ?ref: ViewRef, ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, 
+                                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match isToggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchIsToggledAttribKey, (v)) 
+        match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchOnColorAttribKey, (v)) 
+        match toggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchToggledAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> ViewBuilders.CreateSwitch()) with get, set
+
+    static member CreateSwitch () : Xamarin.Forms.Switch =
+        new Xamarin.Forms.Switch()
+
+    static member val UpdateFuncSwitch =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Switch) -> ViewBuilders.UpdateSwitch (prevOpt, curr, target)) 
+
+    static member UpdateSwitch (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Switch) = 
+        ViewBuilders.UpdateView (prevOpt, curr, target)
+        let mutable prevSwitchToggledOpt = ValueNone
+        let mutable currSwitchToggledOpt = ValueNone
+        let mutable prevSwitchIsToggledOpt = ValueNone
+        let mutable currSwitchIsToggledOpt = ValueNone
+        let mutable prevSwitchOnColorOpt = ValueNone
+        let mutable currSwitchOnColorOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.SwitchToggledAttribKey.KeyValue then 
+                currSwitchToggledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+            if kvp.Key = ViewAttributes.SwitchIsToggledAttribKey.KeyValue then 
+                currSwitchIsToggledOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.SwitchOnColorAttribKey.KeyValue then 
+                currSwitchOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.SwitchToggledAttribKey.KeyValue then 
+                    prevSwitchToggledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+                if kvp.Key = ViewAttributes.SwitchIsToggledAttribKey.KeyValue then 
+                    prevSwitchIsToggledOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.SwitchOnColorAttribKey.KeyValue then 
+                    prevSwitchOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+        let shouldUpdateSwitchToggled = not ((identical prevSwitchToggledOpt currSwitchToggledOpt))
+        if shouldUpdateSwitchToggled then
+            match prevSwitchToggledOpt with
+            | ValueSome prevValue -> target.Toggled.RemoveHandler(prevValue)
+            | ValueNone -> ()
+        match prevSwitchIsToggledOpt, currSwitchIsToggledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsToggled <-  currValue
+        | ValueSome _, ValueNone -> target.IsToggled <- false
+        | ValueNone, ValueNone -> ()
+        match prevSwitchOnColorOpt, currSwitchOnColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.OnColor <-  currValue
+        | ValueSome _, ValueNone -> target.OnColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        if shouldUpdateSwitchToggled then
+            match currSwitchToggledOpt with
+            | ValueSome currValue -> target.Toggled.AddHandler(currValue)
+            | ValueNone -> ()
+
+    static member inline ConstructSwitch(?isToggled: bool,
+                                         ?onColor: Xamarin.Forms.Color,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: InputTypes.Thickness,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: float,
+                                         ?anchorY: float,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?flowDirection: Xamarin.Forms.FlowDirection,
+                                         ?height: float,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isTabStop: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeight: float,
+                                         ?minimumWidth: float,
+                                         ?opacity: float,
+                                         ?rotation: float,
+                                         ?rotationX: float,
+                                         ?rotationY: float,
+                                         ?scale: float,
+                                         ?scaleX: float,
+                                         ?scaleY: float,
+                                         ?tabIndex: int,
+                                         ?translationX: float,
+                                         ?translationY: float,
+                                         ?visual: Xamarin.Forms.IVisual,
+                                         ?width: float,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?styleClass: InputTypes.StyleClass,
+                                         ?automationId: string,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?ref: ViewRef<Xamarin.Forms.Switch>,
+                                         ?tag: obj,
+                                         ?toggled: Xamarin.Forms.ToggledEventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?created: (Xamarin.Forms.Switch -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildSwitch(0,
+                               ?isToggled=isToggled,
+                               ?onColor=onColor,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Switch>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?toggled=toggled,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Switch> target))))
+
+        ViewElement.Create<Xamarin.Forms.Switch>(ViewBuilders.CreateFuncSwitch, ViewBuilders.UpdateFuncSwitch, attribBuilder)
+
+    /// Builds the attributes for a Cell in the view
+    static member inline BuildCell(attribCount: int,
+                                   ?height: float,
+                                   ?isEnabled: bool,
+                                   ?automationId: string,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?ref: ViewRef,
+                                   ?tag: obj,
+                                   ?created: obj -> unit) = 
+
+        let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isEnabled with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildElement(attribCount, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, ?tag: obj, 
+                                                      ?created: obj -> unit)
+        match height with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CellHeightAttribKey, (v)) 
+        match isEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CellIsEnabledAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> ViewBuilders.CreateCell()) with get, set
+
+    static member CreateCell () : Xamarin.Forms.Cell =
+        new Xamarin.Forms.Cell()
+
+    static member val UpdateFuncCell =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Cell) -> ViewBuilders.UpdateCell (prevOpt, curr, target)) 
+
+    static member UpdateCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Cell) = 
+        ViewBuilders.UpdateElement (prevOpt, curr, target)
+        let mutable prevCellHeightOpt = ValueNone
+        let mutable currCellHeightOpt = ValueNone
+        let mutable prevCellIsEnabledOpt = ValueNone
+        let mutable currCellIsEnabledOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CellHeightAttribKey.KeyValue then 
+                currCellHeightOpt <- ValueSome (kvp.Value :?> float)
+            if kvp.Key = ViewAttributes.CellIsEnabledAttribKey.KeyValue then 
+                currCellIsEnabledOpt <- ValueSome (kvp.Value :?> bool)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CellHeightAttribKey.KeyValue then 
+                    prevCellHeightOpt <- ValueSome (kvp.Value :?> float)
+                if kvp.Key = ViewAttributes.CellIsEnabledAttribKey.KeyValue then 
+                    prevCellIsEnabledOpt <- ValueSome (kvp.Value :?> bool)
+        match prevCellHeightOpt, currCellHeightOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Height <-  currValue
+        | ValueSome _, ValueNone -> target.Height <- -1.0
+        | ValueNone, ValueNone -> ()
+        match prevCellIsEnabledOpt, currCellIsEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.IsEnabled <- true
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructCell(?height: float,
+                                       ?isEnabled: bool,
+                                       ?automationId: string,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?ref: ViewRef<Xamarin.Forms.Cell>,
+                                       ?tag: obj,
+                                       ?created: (Xamarin.Forms.Cell -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildCell(0,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Cell>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Cell> target))))
+
+        ViewElement.Create<Xamarin.Forms.Cell>(ViewBuilders.CreateFuncCell, ViewBuilders.UpdateFuncCell, attribBuilder)
+
+    /// Builds the attributes for a SwitchCell in the view
+    static member inline BuildSwitchCell(attribCount: int,
+                                         ?on: bool,
+                                         ?text: string,
+                                         ?onColor: Xamarin.Forms.Color,
+                                         ?height: float,
+                                         ?isEnabled: bool,
+                                         ?automationId: string,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?ref: ViewRef,
+                                         ?tag: obj,
+                                         ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                         ?created: obj -> unit) = 
+
+        let attribCount = match on with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match onChanged with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildCell(attribCount, ?height: float, ?isEnabled: bool, ?automationId: string, ?classId: string, ?styleId: string, 
+                                                   ?ref: ViewRef, ?tag: obj, ?created: obj -> unit)
+        match on with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchCellOnAttribKey, (v)) 
+        match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchCellTextAttribKey, (v)) 
+        match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchCellOnColorAttribKey, (v)) 
+        match onChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwitchCellOnChangedAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> ViewBuilders.CreateSwitchCell()) with get, set
+
+    static member CreateSwitchCell () : Xamarin.Forms.SwitchCell =
+        new Xamarin.Forms.SwitchCell()
+
+    static member val UpdateFuncSwitchCell =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SwitchCell) -> ViewBuilders.UpdateSwitchCell (prevOpt, curr, target)) 
+
+    static member UpdateSwitchCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SwitchCell) = 
+        ViewBuilders.UpdateCell (prevOpt, curr, target)
+        let mutable prevSwitchCellOnChangedOpt = ValueNone
+        let mutable currSwitchCellOnChangedOpt = ValueNone
+        let mutable prevSwitchCellOnOpt = ValueNone
+        let mutable currSwitchCellOnOpt = ValueNone
+        let mutable prevSwitchCellTextOpt = ValueNone
+        let mutable currSwitchCellTextOpt = ValueNone
+        let mutable prevSwitchCellOnColorOpt = ValueNone
+        let mutable currSwitchCellOnColorOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.SwitchCellOnChangedAttribKey.KeyValue then 
+                currSwitchCellOnChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+            if kvp.Key = ViewAttributes.SwitchCellOnAttribKey.KeyValue then 
+                currSwitchCellOnOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.SwitchCellTextAttribKey.KeyValue then 
+                currSwitchCellTextOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.SwitchCellOnColorAttribKey.KeyValue then 
+                currSwitchCellOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.SwitchCellOnChangedAttribKey.KeyValue then 
+                    prevSwitchCellOnChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+                if kvp.Key = ViewAttributes.SwitchCellOnAttribKey.KeyValue then 
+                    prevSwitchCellOnOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.SwitchCellTextAttribKey.KeyValue then 
+                    prevSwitchCellTextOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.SwitchCellOnColorAttribKey.KeyValue then 
+                    prevSwitchCellOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+        let shouldUpdateSwitchCellOnChanged = not ((identical prevSwitchCellOnChangedOpt currSwitchCellOnChangedOpt))
+        if shouldUpdateSwitchCellOnChanged then
+            match prevSwitchCellOnChangedOpt with
+            | ValueSome prevValue -> target.OnChanged.RemoveHandler(prevValue)
+            | ValueNone -> ()
+        match prevSwitchCellOnOpt, currSwitchCellOnOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.On <-  currValue
+        | ValueSome _, ValueNone -> target.On <- false
+        | ValueNone, ValueNone -> ()
+        match prevSwitchCellTextOpt, currSwitchCellTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Text <-  currValue
+        | ValueSome _, ValueNone -> target.Text <- null
+        | ValueNone, ValueNone -> ()
+        match prevSwitchCellOnColorOpt, currSwitchCellOnColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.OnColor <-  currValue
+        | ValueSome _, ValueNone -> target.OnColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        if shouldUpdateSwitchCellOnChanged then
+            match currSwitchCellOnChangedOpt with
+            | ValueSome currValue -> target.OnChanged.AddHandler(currValue)
+            | ValueNone -> ()
+
+    static member inline ConstructSwitchCell(?on: bool,
+                                             ?text: string,
+                                             ?onColor: Xamarin.Forms.Color,
+                                             ?height: float,
+                                             ?isEnabled: bool,
+                                             ?automationId: string,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?ref: ViewRef<Xamarin.Forms.SwitchCell>,
+                                             ?tag: obj,
+                                             ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                             ?created: (Xamarin.Forms.SwitchCell -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildSwitchCell(0,
+                               ?on=on,
+                               ?text=text,
+                               ?onColor=onColor,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SwitchCell>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?onChanged=onChanged,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SwitchCell> target))))
+
+        ViewElement.Create<Xamarin.Forms.SwitchCell>(ViewBuilders.CreateFuncSwitchCell, ViewBuilders.UpdateFuncSwitchCell, attribBuilder)
+
+    /// Builds the attributes for a TableView in the view
+    static member inline BuildTableView(attribCount: int,
+                                        ?intent: Xamarin.Forms.TableIntent,
+                                        ?hasUnevenRows: bool,
+                                        ?rowHeight: int,
+                                        ?items: (string * ViewElement list) list,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: InputTypes.Thickness,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: float,
+                                        ?anchorY: float,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?flowDirection: Xamarin.Forms.FlowDirection,
+                                        ?height: float,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isTabStop: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeight: float,
+                                        ?minimumWidth: float,
+                                        ?opacity: float,
+                                        ?rotation: float,
+                                        ?rotationX: float,
+                                        ?rotationY: float,
+                                        ?scale: float,
+                                        ?scaleX: float,
+                                        ?scaleY: float,
+                                        ?tabIndex: int,
+                                        ?translationX: float,
+                                        ?translationY: float,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?width: float,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: InputTypes.StyleClass,
+                                        ?automationId: string,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?ref: ViewRef,
+                                        ?tag: obj,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?created: obj -> unit) = 
+
+        let attribCount = match intent with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match rowHeight with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, ?gestureRecognizers: ViewElement list, ?anchorX: float, 
+                                                   ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, ?height: float, ?inputTransparent: bool, 
+                                                   ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, ?minimumHeight: float, ?minimumWidth: float, 
+                                                   ?opacity: float, ?rotation: float, ?rotationX: float, ?rotationY: float, ?scale: float, 
+                                                   ?scaleX: float, ?scaleY: float, ?tabIndex: int, ?translationX: float, ?translationY: float, 
+                                                   ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, ?styleClass: InputTypes.StyleClass, ?automationId: string, 
+                                                   ?classId: string, ?styleId: string, ?ref: ViewRef, ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, 
+                                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match intent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableViewIntentAttribKey, (v)) 
+        match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableViewHasUnevenRowsAttribKey, (v)) 
+        match rowHeight with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableViewRowHeightAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableViewRootAttribKey, Array.fromList(v)) 
+        attribBuilder
+
+    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> ViewBuilders.CreateTableView()) with get, set
+
+    static member CreateTableView () : Xamarin.Forms.TableView =
+        new Xamarin.Forms.TableView()
+
+    static member val UpdateFuncTableView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TableView) -> ViewBuilders.UpdateTableView (prevOpt, curr, target)) 
+
+    static member UpdateTableView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TableView) = 
+        ViewBuilders.UpdateView (prevOpt, curr, target)
+        let mutable prevTableViewIntentOpt = ValueNone
+        let mutable currTableViewIntentOpt = ValueNone
+        let mutable prevTableViewHasUnevenRowsOpt = ValueNone
+        let mutable currTableViewHasUnevenRowsOpt = ValueNone
+        let mutable prevTableViewRowHeightOpt = ValueNone
+        let mutable currTableViewRowHeightOpt = ValueNone
+        let mutable prevTableViewRootOpt = ValueNone
+        let mutable currTableViewRootOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.TableViewIntentAttribKey.KeyValue then 
+                currTableViewIntentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TableIntent)
+            if kvp.Key = ViewAttributes.TableViewHasUnevenRowsAttribKey.KeyValue then 
+                currTableViewHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.TableViewRowHeightAttribKey.KeyValue then 
+                currTableViewRowHeightOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.TableViewRootAttribKey.KeyValue then 
+                currTableViewRootOpt <- ValueSome (kvp.Value :?> (string * ViewElement array) array)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.TableViewIntentAttribKey.KeyValue then 
+                    prevTableViewIntentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TableIntent)
+                if kvp.Key = ViewAttributes.TableViewHasUnevenRowsAttribKey.KeyValue then 
+                    prevTableViewHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.TableViewRowHeightAttribKey.KeyValue then 
+                    prevTableViewRowHeightOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.TableViewRootAttribKey.KeyValue then 
+                    prevTableViewRootOpt <- ValueSome (kvp.Value :?> (string * ViewElement array) array)
+        match prevTableViewIntentOpt, currTableViewIntentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Intent <-  currValue
+        | ValueSome _, ValueNone -> target.Intent <- Xamarin.Forms.TableIntent.Data
+        | ValueNone, ValueNone -> ()
+        match prevTableViewHasUnevenRowsOpt, currTableViewHasUnevenRowsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.HasUnevenRows <-  currValue
+        | ValueSome _, ValueNone -> target.HasUnevenRows <- false
+        | ValueNone, ValueNone -> ()
+        match prevTableViewRowHeightOpt, currTableViewRowHeightOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RowHeight <-  currValue
+        | ValueSome _, ValueNone -> target.RowHeight <- -1
+        | ValueNone, ValueNone -> ()
+        match prevTableViewRootOpt, currTableViewRootOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Root <-  currValue
+        | ValueSome _, ValueNone -> target.Root <- []
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructTableView(?intent: Xamarin.Forms.TableIntent,
+                                            ?hasUnevenRows: bool,
+                                            ?rowHeight: int,
+                                            ?items: (string * ViewElement list) list,
+                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?margin: InputTypes.Thickness,
+                                            ?gestureRecognizers: ViewElement list,
+                                            ?anchorX: float,
+                                            ?anchorY: float,
+                                            ?backgroundColor: Xamarin.Forms.Color,
+                                            ?flowDirection: Xamarin.Forms.FlowDirection,
+                                            ?height: float,
+                                            ?inputTransparent: bool,
+                                            ?isEnabled: bool,
+                                            ?isTabStop: bool,
+                                            ?isVisible: bool,
+                                            ?minimumHeight: float,
+                                            ?minimumWidth: float,
+                                            ?opacity: float,
+                                            ?rotation: float,
+                                            ?rotationX: float,
+                                            ?rotationY: float,
+                                            ?scale: float,
+                                            ?scaleX: float,
+                                            ?scaleY: float,
+                                            ?tabIndex: int,
+                                            ?translationX: float,
+                                            ?translationY: float,
+                                            ?visual: Xamarin.Forms.IVisual,
+                                            ?width: float,
+                                            ?style: Xamarin.Forms.Style,
+                                            ?styleClass: InputTypes.StyleClass,
+                                            ?automationId: string,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?ref: ViewRef<Xamarin.Forms.TableView>,
+                                            ?tag: obj,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?created: (Xamarin.Forms.TableView -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildTableView(0,
+                               ?intent=intent,
+                               ?hasUnevenRows=hasUnevenRows,
+                               ?rowHeight=rowHeight,
+                               ?items=items,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TableView>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TableView> target))))
+
+        ViewElement.Create<Xamarin.Forms.TableView>(ViewBuilders.CreateFuncTableView, ViewBuilders.UpdateFuncTableView, attribBuilder)
+
+    /// Builds the attributes for a Grid in the view
+    static member inline BuildGrid(attribCount: int,
+                                   ?rowDefinitions: Xamarin.Forms.RowDefinitionCollection,
+                                   ?columnDefinitions: Xamarin.Forms.ColumnDefinitionCollection,
+                                   ?rowSpacing: float,
+                                   ?columnSpacing: float,
+                                   ?children: ViewElement list,
+                                   ?isClippedToBounds: bool,
+                                   ?padding: Xamarin.Forms.Thickness,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: InputTypes.Thickness,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: float,
+                                   ?anchorY: float,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?flowDirection: Xamarin.Forms.FlowDirection,
+                                   ?height: float,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isTabStop: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeight: float,
+                                   ?minimumWidth: float,
+                                   ?opacity: float,
+                                   ?rotation: float,
+                                   ?rotationX: float,
+                                   ?rotationY: float,
+                                   ?scale: float,
+                                   ?scaleX: float,
+                                   ?scaleY: float,
+                                   ?tabIndex: int,
+                                   ?translationX: float,
+                                   ?translationY: float,
+                                   ?visual: Xamarin.Forms.IVisual,
+                                   ?width: float,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?styleClass: InputTypes.StyleClass,
+                                   ?automationId: string,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?ref: ViewRef,
+                                   ?tag: obj,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?created: obj -> unit) = 
+
+        let attribCount = match rowDefinitions with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match columnDefinitions with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match rowSpacing with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match columnSpacing with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds: bool, ?padding: Xamarin.Forms.Thickness, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, 
+                                                     ?gestureRecognizers: ViewElement list, ?anchorX: float, ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, 
+                                                     ?height: float, ?inputTransparent: bool, ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, 
+                                                     ?minimumHeight: float, ?minimumWidth: float, ?opacity: float, ?rotation: float, ?rotationX: float, 
+                                                     ?rotationY: float, ?scale: float, ?scaleX: float, ?scaleY: float, ?tabIndex: int, 
+                                                     ?translationX: float, ?translationY: float, ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, 
+                                                     ?styleClass: InputTypes.StyleClass, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, 
+                                                     ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match rowDefinitions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridRowDefinitionsAttribKey, (v)) 
+        match columnDefinitions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridColumnDefinitionsAttribKey, (v)) 
+        match rowSpacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridRowSpacingAttribKey, (v)) 
+        match columnSpacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridColumnSpacingAttribKey, (v)) 
+        match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridChildrenAttribKey, Array.fromList(v)) 
+        attribBuilder
+
+    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> ViewBuilders.CreateGrid()) with get, set
+
+    static member CreateGrid () : Xamarin.Forms.Grid =
+        new Xamarin.Forms.Grid()
+
+    static member val UpdateFuncGrid =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Grid) -> ViewBuilders.UpdateGrid (prevOpt, curr, target)) 
+
+    static member UpdateGrid (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Grid) = 
+        ViewBuilders.UpdateLayout (prevOpt, curr, target)
+        let mutable prevGridRowDefinitionsOpt = ValueNone
+        let mutable currGridRowDefinitionsOpt = ValueNone
+        let mutable prevGridColumnDefinitionsOpt = ValueNone
+        let mutable currGridColumnDefinitionsOpt = ValueNone
+        let mutable prevGridRowSpacingOpt = ValueNone
+        let mutable currGridRowSpacingOpt = ValueNone
+        let mutable prevGridColumnSpacingOpt = ValueNone
+        let mutable currGridColumnSpacingOpt = ValueNone
+        let mutable prevGridChildrenOpt = ValueNone
+        let mutable currGridChildrenOpt = ValueNone
+        let mutable prevGridRowOpt = ValueNone
+        let mutable currGridRowOpt = ValueNone
+        let mutable prevGridRowSpanOpt = ValueNone
+        let mutable currGridRowSpanOpt = ValueNone
+        let mutable prevGridColumnOpt = ValueNone
+        let mutable currGridColumnOpt = ValueNone
+        let mutable prevGridColumnSpanOpt = ValueNone
+        let mutable currGridColumnSpanOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.GridRowDefinitionsAttribKey.KeyValue then 
+                currGridRowDefinitionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.RowDefinitionCollection)
+            if kvp.Key = ViewAttributes.GridColumnDefinitionsAttribKey.KeyValue then 
+                currGridColumnDefinitionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ColumnDefinitionCollection)
+            if kvp.Key = ViewAttributes.GridRowSpacingAttribKey.KeyValue then 
+                currGridRowSpacingOpt <- ValueSome (kvp.Value :?> float)
+            if kvp.Key = ViewAttributes.GridColumnSpacingAttribKey.KeyValue then 
+                currGridColumnSpacingOpt <- ValueSome (kvp.Value :?> float)
+            if kvp.Key = ViewAttributes.GridChildrenAttribKey.KeyValue then 
+                currGridChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+            if kvp.Key = ViewAttributes.GridRowAttribKey.KeyValue then 
+                currGridRowOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.GridRowSpanAttribKey.KeyValue then 
+                currGridRowSpanOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.GridColumnAttribKey.KeyValue then 
+                currGridColumnOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.GridColumnSpanAttribKey.KeyValue then 
+                currGridColumnSpanOpt <- ValueSome (kvp.Value :?> int)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.GridRowDefinitionsAttribKey.KeyValue then 
+                    prevGridRowDefinitionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.RowDefinitionCollection)
+                if kvp.Key = ViewAttributes.GridColumnDefinitionsAttribKey.KeyValue then 
+                    prevGridColumnDefinitionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ColumnDefinitionCollection)
+                if kvp.Key = ViewAttributes.GridRowSpacingAttribKey.KeyValue then 
+                    prevGridRowSpacingOpt <- ValueSome (kvp.Value :?> float)
+                if kvp.Key = ViewAttributes.GridColumnSpacingAttribKey.KeyValue then 
+                    prevGridColumnSpacingOpt <- ValueSome (kvp.Value :?> float)
+                if kvp.Key = ViewAttributes.GridChildrenAttribKey.KeyValue then 
+                    prevGridChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+                if kvp.Key = ViewAttributes.GridRowAttribKey.KeyValue then 
+                    prevGridRowOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.GridRowSpanAttribKey.KeyValue then 
+                    prevGridRowSpanOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.GridColumnAttribKey.KeyValue then 
+                    prevGridColumnOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.GridColumnSpanAttribKey.KeyValue then 
+                    prevGridColumnSpanOpt <- ValueSome (kvp.Value :?> int)
+        match prevGridRowDefinitionsOpt, currGridRowDefinitionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RowDefinitions <-  currValue
+        | ValueSome _, ValueNone -> target.RowDefinitions <- null
+        | ValueNone, ValueNone -> ()
+        match prevGridColumnDefinitionsOpt, currGridColumnDefinitionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ColumnDefinitions <-  currValue
+        | ValueSome _, ValueNone -> target.ColumnDefinitions <- null
+        | ValueNone, ValueNone -> ()
+        match prevGridRowSpacingOpt, currGridRowSpacingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RowSpacing <-  currValue
+        | ValueSome _, ValueNone -> target.RowSpacing <- 6
+        | ValueNone, ValueNone -> ()
+        match prevGridColumnSpacingOpt, currGridColumnSpacingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ColumnSpacing <-  currValue
+        | ValueSome _, ValueNone -> target.ColumnSpacing <- 6
+        | ValueNone, ValueNone -> ()
+        ViewUpdaters.updateCollectionGeneric prevGridChildrenOpt currGridChildrenOpt target.Children
+            (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
+            ViewUpdaters.canReuseView
+            ViewUpdaters.updateChild
+
+    static member inline ConstructGrid(?rowDefinitions: Xamarin.Forms.RowDefinitionCollection,
+                                       ?columnDefinitions: Xamarin.Forms.ColumnDefinitionCollection,
+                                       ?rowSpacing: float,
+                                       ?columnSpacing: float,
+                                       ?children: ViewElement list,
+                                       ?isClippedToBounds: bool,
+                                       ?padding: Xamarin.Forms.Thickness,
+                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?margin: InputTypes.Thickness,
+                                       ?gestureRecognizers: ViewElement list,
+                                       ?anchorX: float,
+                                       ?anchorY: float,
+                                       ?backgroundColor: Xamarin.Forms.Color,
+                                       ?flowDirection: Xamarin.Forms.FlowDirection,
+                                       ?height: float,
+                                       ?inputTransparent: bool,
+                                       ?isEnabled: bool,
+                                       ?isTabStop: bool,
+                                       ?isVisible: bool,
+                                       ?minimumHeight: float,
+                                       ?minimumWidth: float,
+                                       ?opacity: float,
+                                       ?rotation: float,
+                                       ?rotationX: float,
+                                       ?rotationY: float,
+                                       ?scale: float,
+                                       ?scaleX: float,
+                                       ?scaleY: float,
+                                       ?tabIndex: int,
+                                       ?translationX: float,
+                                       ?translationY: float,
+                                       ?visual: Xamarin.Forms.IVisual,
+                                       ?width: float,
+                                       ?style: Xamarin.Forms.Style,
+                                       ?styleClass: InputTypes.StyleClass,
+                                       ?automationId: string,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?ref: ViewRef<Xamarin.Forms.Grid>,
+                                       ?tag: obj,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?created: (Xamarin.Forms.Grid -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildGrid(0,
+                               ?rowDefinitions=rowDefinitions,
+                               ?columnDefinitions=columnDefinitions,
+                               ?rowSpacing=rowSpacing,
+                               ?columnSpacing=columnSpacing,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Grid>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Grid> target))))
+
+        ViewElement.Create<Xamarin.Forms.Grid>(ViewBuilders.CreateFuncGrid, ViewBuilders.UpdateFuncGrid, attribBuilder)
+
+    /// Builds the attributes for a AbsoluteLayout in the view
+    static member inline BuildAbsoluteLayout(attribCount: int,
+                                             ?children: ViewElement list,
+                                             ?isClippedToBounds: bool,
+                                             ?padding: Xamarin.Forms.Thickness,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: InputTypes.Thickness,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: float,
+                                             ?anchorY: float,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?flowDirection: Xamarin.Forms.FlowDirection,
+                                             ?height: float,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isTabStop: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeight: float,
+                                             ?minimumWidth: float,
+                                             ?opacity: float,
+                                             ?rotation: float,
+                                             ?rotationX: float,
+                                             ?rotationY: float,
+                                             ?scale: float,
+                                             ?scaleX: float,
+                                             ?scaleY: float,
+                                             ?tabIndex: int,
+                                             ?translationX: float,
+                                             ?translationY: float,
+                                             ?visual: Xamarin.Forms.IVisual,
+                                             ?width: float,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: InputTypes.StyleClass,
+                                             ?automationId: string,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?ref: ViewRef,
+                                             ?tag: obj,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?created: obj -> unit) = 
+
+        let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds: bool, ?padding: Xamarin.Forms.Thickness, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, 
+                                                     ?gestureRecognizers: ViewElement list, ?anchorX: float, ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, 
+                                                     ?height: float, ?inputTransparent: bool, ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, 
+                                                     ?minimumHeight: float, ?minimumWidth: float, ?opacity: float, ?rotation: float, ?rotationX: float, 
+                                                     ?rotationY: float, ?scale: float, ?scaleX: float, ?scaleY: float, ?tabIndex: int, 
+                                                     ?translationX: float, ?translationY: float, ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, 
+                                                     ?styleClass: InputTypes.StyleClass, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, 
+                                                     ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AbsoluteLayoutChildrenAttribKey, Array.fromList(v)) 
+        attribBuilder
+
+    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> ViewBuilders.CreateAbsoluteLayout()) with get, set
+
+    static member CreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout =
+        new Xamarin.Forms.AbsoluteLayout()
+
+    static member val UpdateFuncAbsoluteLayout =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.AbsoluteLayout) -> ViewBuilders.UpdateAbsoluteLayout (prevOpt, curr, target)) 
+
+    static member UpdateAbsoluteLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.AbsoluteLayout) = 
+        ViewBuilders.UpdateLayout (prevOpt, curr, target)
+        let mutable prevAbsoluteLayoutChildrenOpt = ValueNone
+        let mutable currAbsoluteLayoutChildrenOpt = ValueNone
+        let mutable prevAbsoluteLayoutLayoutBoundsOpt = ValueNone
+        let mutable currAbsoluteLayoutLayoutBoundsOpt = ValueNone
+        let mutable prevAbsoluteLayoutLayoutFlagsOpt = ValueNone
+        let mutable currAbsoluteLayoutLayoutFlagsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.AbsoluteLayoutChildrenAttribKey.KeyValue then 
+                currAbsoluteLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+            if kvp.Key = ViewAttributes.AbsoluteLayoutLayoutBoundsAttribKey.KeyValue then 
+                currAbsoluteLayoutLayoutBoundsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Rectangle)
+            if kvp.Key = ViewAttributes.AbsoluteLayoutLayoutFlagsAttribKey.KeyValue then 
+                currAbsoluteLayoutLayoutFlagsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.AbsoluteLayoutFlags)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.AbsoluteLayoutChildrenAttribKey.KeyValue then 
+                    prevAbsoluteLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+                if kvp.Key = ViewAttributes.AbsoluteLayoutLayoutBoundsAttribKey.KeyValue then 
+                    prevAbsoluteLayoutLayoutBoundsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Rectangle)
+                if kvp.Key = ViewAttributes.AbsoluteLayoutLayoutFlagsAttribKey.KeyValue then 
+                    prevAbsoluteLayoutLayoutFlagsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.AbsoluteLayoutFlags)
+        ViewUpdaters.updateCollectionGeneric prevAbsoluteLayoutChildrenOpt currAbsoluteLayoutChildrenOpt target.Children
+            (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
+            ViewUpdaters.canReuseView
+            ViewUpdaters.updateChild
+
+    static member inline ConstructAbsoluteLayout(?children: ViewElement list,
+                                                 ?isClippedToBounds: bool,
+                                                 ?padding: Xamarin.Forms.Thickness,
+                                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?margin: InputTypes.Thickness,
+                                                 ?gestureRecognizers: ViewElement list,
+                                                 ?anchorX: float,
+                                                 ?anchorY: float,
+                                                 ?backgroundColor: Xamarin.Forms.Color,
+                                                 ?flowDirection: Xamarin.Forms.FlowDirection,
+                                                 ?height: float,
+                                                 ?inputTransparent: bool,
+                                                 ?isEnabled: bool,
+                                                 ?isTabStop: bool,
+                                                 ?isVisible: bool,
+                                                 ?minimumHeight: float,
+                                                 ?minimumWidth: float,
+                                                 ?opacity: float,
+                                                 ?rotation: float,
+                                                 ?rotationX: float,
+                                                 ?rotationY: float,
+                                                 ?scale: float,
+                                                 ?scaleX: float,
+                                                 ?scaleY: float,
+                                                 ?tabIndex: int,
+                                                 ?translationX: float,
+                                                 ?translationY: float,
+                                                 ?visual: Xamarin.Forms.IVisual,
+                                                 ?width: float,
+                                                 ?style: Xamarin.Forms.Style,
+                                                 ?styleClass: InputTypes.StyleClass,
+                                                 ?automationId: string,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?ref: ViewRef<Xamarin.Forms.AbsoluteLayout>,
+                                                 ?tag: obj,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?created: (Xamarin.Forms.AbsoluteLayout -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildAbsoluteLayout(0,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.AbsoluteLayout>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.AbsoluteLayout> target))))
+
+        ViewElement.Create<Xamarin.Forms.AbsoluteLayout>(ViewBuilders.CreateFuncAbsoluteLayout, ViewBuilders.UpdateFuncAbsoluteLayout, attribBuilder)
+
+    /// Builds the attributes for a RelativeLayout in the view
+    static member inline BuildRelativeLayout(attribCount: int,
+                                             ?children: ViewElement list,
+                                             ?isClippedToBounds: bool,
+                                             ?padding: Xamarin.Forms.Thickness,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: InputTypes.Thickness,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: float,
+                                             ?anchorY: float,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?flowDirection: Xamarin.Forms.FlowDirection,
+                                             ?height: float,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isTabStop: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeight: float,
+                                             ?minimumWidth: float,
+                                             ?opacity: float,
+                                             ?rotation: float,
+                                             ?rotationX: float,
+                                             ?rotationY: float,
+                                             ?scale: float,
+                                             ?scaleX: float,
+                                             ?scaleY: float,
+                                             ?tabIndex: int,
+                                             ?translationX: float,
+                                             ?translationY: float,
+                                             ?visual: Xamarin.Forms.IVisual,
+                                             ?width: float,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: InputTypes.StyleClass,
+                                             ?automationId: string,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?ref: ViewRef,
+                                             ?tag: obj,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?created: obj -> unit) = 
+
+        let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds: bool, ?padding: Xamarin.Forms.Thickness, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, 
+                                                     ?gestureRecognizers: ViewElement list, ?anchorX: float, ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, 
+                                                     ?height: float, ?inputTransparent: bool, ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, 
+                                                     ?minimumHeight: float, ?minimumWidth: float, ?opacity: float, ?rotation: float, ?rotationX: float, 
+                                                     ?rotationY: float, ?scale: float, ?scaleX: float, ?scaleY: float, ?tabIndex: int, 
+                                                     ?translationX: float, ?translationY: float, ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, 
+                                                     ?styleClass: InputTypes.StyleClass, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, 
+                                                     ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RelativeLayoutChildrenAttribKey, Array.fromList(v)) 
+        attribBuilder
+
+    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> ViewBuilders.CreateRelativeLayout()) with get, set
+
+    static member CreateRelativeLayout () : Xamarin.Forms.RelativeLayout =
+        new Xamarin.Forms.RelativeLayout()
+
+    static member val UpdateFuncRelativeLayout =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.RelativeLayout) -> ViewBuilders.UpdateRelativeLayout (prevOpt, curr, target)) 
+
+    static member UpdateRelativeLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.RelativeLayout) = 
+        ViewBuilders.UpdateLayout (prevOpt, curr, target)
+        let mutable prevRelativeLayoutChildrenOpt = ValueNone
+        let mutable currRelativeLayoutChildrenOpt = ValueNone
+        let mutable prevRelativeLayoutBoundsConstraintOpt = ValueNone
+        let mutable currRelativeLayoutBoundsConstraintOpt = ValueNone
+        let mutable prevRelativeLayoutHeightConstraintOpt = ValueNone
+        let mutable currRelativeLayoutHeightConstraintOpt = ValueNone
+        let mutable prevRelativeLayoutWidthConstraintOpt = ValueNone
+        let mutable currRelativeLayoutWidthConstraintOpt = ValueNone
+        let mutable prevRelativeLayoutXConstraintOpt = ValueNone
+        let mutable currRelativeLayoutXConstraintOpt = ValueNone
+        let mutable prevRelativeLayoutYConstraintOpt = ValueNone
+        let mutable currRelativeLayoutYConstraintOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.RelativeLayoutChildrenAttribKey.KeyValue then 
+                currRelativeLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+            if kvp.Key = ViewAttributes.RelativeLayoutBoundsConstraintAttribKey.KeyValue then 
+                currRelativeLayoutBoundsConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.BoundsConstraint)
+            if kvp.Key = ViewAttributes.RelativeLayoutHeightConstraintAttribKey.KeyValue then 
+                currRelativeLayoutHeightConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+            if kvp.Key = ViewAttributes.RelativeLayoutWidthConstraintAttribKey.KeyValue then 
+                currRelativeLayoutWidthConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+            if kvp.Key = ViewAttributes.RelativeLayoutXConstraintAttribKey.KeyValue then 
+                currRelativeLayoutXConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+            if kvp.Key = ViewAttributes.RelativeLayoutYConstraintAttribKey.KeyValue then 
+                currRelativeLayoutYConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.RelativeLayoutChildrenAttribKey.KeyValue then 
+                    prevRelativeLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+                if kvp.Key = ViewAttributes.RelativeLayoutBoundsConstraintAttribKey.KeyValue then 
+                    prevRelativeLayoutBoundsConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.BoundsConstraint)
+                if kvp.Key = ViewAttributes.RelativeLayoutHeightConstraintAttribKey.KeyValue then 
+                    prevRelativeLayoutHeightConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+                if kvp.Key = ViewAttributes.RelativeLayoutWidthConstraintAttribKey.KeyValue then 
+                    prevRelativeLayoutWidthConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+                if kvp.Key = ViewAttributes.RelativeLayoutXConstraintAttribKey.KeyValue then 
+                    prevRelativeLayoutXConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+                if kvp.Key = ViewAttributes.RelativeLayoutYConstraintAttribKey.KeyValue then 
+                    prevRelativeLayoutYConstraintOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Constraint)
+        ViewUpdaters.updateCollectionGeneric prevRelativeLayoutChildrenOpt currRelativeLayoutChildrenOpt target.Children
+            (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
+            ViewUpdaters.canReuseView
+            ViewUpdaters.updateChild
+
+    static member inline ConstructRelativeLayout(?children: ViewElement list,
+                                                 ?isClippedToBounds: bool,
+                                                 ?padding: Xamarin.Forms.Thickness,
+                                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?margin: InputTypes.Thickness,
+                                                 ?gestureRecognizers: ViewElement list,
+                                                 ?anchorX: float,
+                                                 ?anchorY: float,
+                                                 ?backgroundColor: Xamarin.Forms.Color,
+                                                 ?flowDirection: Xamarin.Forms.FlowDirection,
+                                                 ?height: float,
+                                                 ?inputTransparent: bool,
+                                                 ?isEnabled: bool,
+                                                 ?isTabStop: bool,
+                                                 ?isVisible: bool,
+                                                 ?minimumHeight: float,
+                                                 ?minimumWidth: float,
+                                                 ?opacity: float,
+                                                 ?rotation: float,
+                                                 ?rotationX: float,
+                                                 ?rotationY: float,
+                                                 ?scale: float,
+                                                 ?scaleX: float,
+                                                 ?scaleY: float,
+                                                 ?tabIndex: int,
+                                                 ?translationX: float,
+                                                 ?translationY: float,
+                                                 ?visual: Xamarin.Forms.IVisual,
+                                                 ?width: float,
+                                                 ?style: Xamarin.Forms.Style,
+                                                 ?styleClass: InputTypes.StyleClass,
+                                                 ?automationId: string,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?ref: ViewRef<Xamarin.Forms.RelativeLayout>,
+                                                 ?tag: obj,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?created: (Xamarin.Forms.RelativeLayout -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildRelativeLayout(0,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.RelativeLayout>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.RelativeLayout> target))))
+
+        ViewElement.Create<Xamarin.Forms.RelativeLayout>(ViewBuilders.CreateFuncRelativeLayout, ViewBuilders.UpdateFuncRelativeLayout, attribBuilder)
+
+    /// Builds the attributes for a FlexLayout in the view
+    static member inline BuildFlexLayout(attribCount: int,
+                                         ?alignContent: Xamarin.Forms.FlexAlignContent,
+                                         ?alignItems: Xamarin.Forms.FlexAlignItems,
+                                         ?direction: Xamarin.Forms.FlexDirection,
+                                         ?position: Xamarin.Forms.FlexPosition,
+                                         ?wrap: Xamarin.Forms.FlexWrap,
+                                         ?children: ViewElement list,
+                                         ?isClippedToBounds: bool,
+                                         ?padding: Xamarin.Forms.Thickness,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: InputTypes.Thickness,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: float,
+                                         ?anchorY: float,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?flowDirection: Xamarin.Forms.FlowDirection,
+                                         ?height: float,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isTabStop: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeight: float,
+                                         ?minimumWidth: float,
+                                         ?opacity: float,
+                                         ?rotation: float,
+                                         ?rotationX: float,
+                                         ?rotationY: float,
+                                         ?scale: float,
+                                         ?scaleX: float,
+                                         ?scaleY: float,
+                                         ?tabIndex: int,
+                                         ?translationX: float,
+                                         ?translationY: float,
+                                         ?visual: Xamarin.Forms.IVisual,
+                                         ?width: float,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?styleClass: InputTypes.StyleClass,
+                                         ?automationId: string,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?ref: ViewRef,
+                                         ?tag: obj,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?created: obj -> unit) = 
+
+        let attribCount = match alignContent with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match alignItems with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match direction with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match position with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match wrap with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds: bool, ?padding: Xamarin.Forms.Thickness, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, 
+                                                     ?gestureRecognizers: ViewElement list, ?anchorX: float, ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, 
+                                                     ?height: float, ?inputTransparent: bool, ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, 
+                                                     ?minimumHeight: float, ?minimumWidth: float, ?opacity: float, ?rotation: float, ?rotationX: float, 
+                                                     ?rotationY: float, ?scale: float, ?scaleX: float, ?scaleY: float, ?tabIndex: int, 
+                                                     ?translationX: float, ?translationY: float, ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, 
+                                                     ?styleClass: InputTypes.StyleClass, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, 
+                                                     ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match alignContent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutAlignContentAttribKey, (v)) 
+        match alignItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutAlignItemsAttribKey, (v)) 
+        match direction with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutDirectionAttribKey, (v)) 
+        match position with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutPositionAttribKey, (v)) 
+        match wrap with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutWrapAttribKey, (v)) 
+        match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutChildrenAttribKey, Array.fromList(v)) 
+        attribBuilder
+
+    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> ViewBuilders.CreateFlexLayout()) with get, set
+
+    static member CreateFlexLayout () : Xamarin.Forms.FlexLayout =
+        new Xamarin.Forms.FlexLayout()
+
+    static member val UpdateFuncFlexLayout =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.FlexLayout) -> ViewBuilders.UpdateFlexLayout (prevOpt, curr, target)) 
+
+    static member UpdateFlexLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.FlexLayout) = 
+        ViewBuilders.UpdateLayout (prevOpt, curr, target)
+        let mutable prevFlexLayoutAlignContentOpt = ValueNone
+        let mutable currFlexLayoutAlignContentOpt = ValueNone
+        let mutable prevFlexLayoutAlignItemsOpt = ValueNone
+        let mutable currFlexLayoutAlignItemsOpt = ValueNone
+        let mutable prevFlexLayoutDirectionOpt = ValueNone
+        let mutable currFlexLayoutDirectionOpt = ValueNone
+        let mutable prevFlexLayoutPositionOpt = ValueNone
+        let mutable currFlexLayoutPositionOpt = ValueNone
+        let mutable prevFlexLayoutWrapOpt = ValueNone
+        let mutable currFlexLayoutWrapOpt = ValueNone
+        let mutable prevFlexLayoutChildrenOpt = ValueNone
+        let mutable currFlexLayoutChildrenOpt = ValueNone
+        let mutable prevFlexLayoutAlignSelfOpt = ValueNone
+        let mutable currFlexLayoutAlignSelfOpt = ValueNone
+        let mutable prevFlexLayoutOrderOpt = ValueNone
+        let mutable currFlexLayoutOrderOpt = ValueNone
+        let mutable prevFlexLayoutBasisOpt = ValueNone
+        let mutable currFlexLayoutBasisOpt = ValueNone
+        let mutable prevFlexLayoutGrowOpt = ValueNone
+        let mutable currFlexLayoutGrowOpt = ValueNone
+        let mutable prevFlexLayoutShrinkOpt = ValueNone
+        let mutable currFlexLayoutShrinkOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.FlexLayoutAlignContentAttribKey.KeyValue then 
+                currFlexLayoutAlignContentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignContent)
+            if kvp.Key = ViewAttributes.FlexLayoutAlignItemsAttribKey.KeyValue then 
+                currFlexLayoutAlignItemsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignItems)
+            if kvp.Key = ViewAttributes.FlexLayoutDirectionAttribKey.KeyValue then 
+                currFlexLayoutDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
+            if kvp.Key = ViewAttributes.FlexLayoutPositionAttribKey.KeyValue then 
+                currFlexLayoutPositionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexPosition)
+            if kvp.Key = ViewAttributes.FlexLayoutWrapAttribKey.KeyValue then 
+                currFlexLayoutWrapOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexWrap)
+            if kvp.Key = ViewAttributes.FlexLayoutChildrenAttribKey.KeyValue then 
+                currFlexLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+            if kvp.Key = ViewAttributes.FlexLayoutAlignSelfAttribKey.KeyValue then 
+                currFlexLayoutAlignSelfOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignSelf)
+            if kvp.Key = ViewAttributes.FlexLayoutOrderAttribKey.KeyValue then 
+                currFlexLayoutOrderOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.FlexLayoutBasisAttribKey.KeyValue then 
+                currFlexLayoutBasisOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexBasis)
+            if kvp.Key = ViewAttributes.FlexLayoutGrowAttribKey.KeyValue then 
+                currFlexLayoutGrowOpt <- ValueSome (kvp.Value :?> single)
+            if kvp.Key = ViewAttributes.FlexLayoutShrinkAttribKey.KeyValue then 
+                currFlexLayoutShrinkOpt <- ValueSome (kvp.Value :?> single)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.FlexLayoutAlignContentAttribKey.KeyValue then 
+                    prevFlexLayoutAlignContentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignContent)
+                if kvp.Key = ViewAttributes.FlexLayoutAlignItemsAttribKey.KeyValue then 
+                    prevFlexLayoutAlignItemsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignItems)
+                if kvp.Key = ViewAttributes.FlexLayoutDirectionAttribKey.KeyValue then 
+                    prevFlexLayoutDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
+                if kvp.Key = ViewAttributes.FlexLayoutPositionAttribKey.KeyValue then 
+                    prevFlexLayoutPositionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexPosition)
+                if kvp.Key = ViewAttributes.FlexLayoutWrapAttribKey.KeyValue then 
+                    prevFlexLayoutWrapOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexWrap)
+                if kvp.Key = ViewAttributes.FlexLayoutChildrenAttribKey.KeyValue then 
+                    prevFlexLayoutChildrenOpt <- ValueSome (kvp.Value :?> ViewElement array)
+                if kvp.Key = ViewAttributes.FlexLayoutAlignSelfAttribKey.KeyValue then 
+                    prevFlexLayoutAlignSelfOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignSelf)
+                if kvp.Key = ViewAttributes.FlexLayoutOrderAttribKey.KeyValue then 
+                    prevFlexLayoutOrderOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.FlexLayoutBasisAttribKey.KeyValue then 
+                    prevFlexLayoutBasisOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexBasis)
+                if kvp.Key = ViewAttributes.FlexLayoutGrowAttribKey.KeyValue then 
+                    prevFlexLayoutGrowOpt <- ValueSome (kvp.Value :?> single)
+                if kvp.Key = ViewAttributes.FlexLayoutShrinkAttribKey.KeyValue then 
+                    prevFlexLayoutShrinkOpt <- ValueSome (kvp.Value :?> single)
+        match prevFlexLayoutAlignContentOpt, currFlexLayoutAlignContentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.AlignContent <-  currValue
+        | ValueSome _, ValueNone -> target.AlignContent <- Xamarin.Forms.FlexAlignContent.Stretch
+        | ValueNone, ValueNone -> ()
+        match prevFlexLayoutAlignItemsOpt, currFlexLayoutAlignItemsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.AlignItems <-  currValue
+        | ValueSome _, ValueNone -> target.AlignItems <- Xamarin.Forms.FlexAlignItems.Stretch
+        | ValueNone, ValueNone -> ()
+        match prevFlexLayoutDirectionOpt, currFlexLayoutDirectionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Direction <-  currValue
+        | ValueSome _, ValueNone -> target.Direction <- Xamarin.Forms.FlexDirection.Row
+        | ValueNone, ValueNone -> ()
+        match prevFlexLayoutPositionOpt, currFlexLayoutPositionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Position <-  currValue
+        | ValueSome _, ValueNone -> target.Position <- Xamarin.Forms.FlexPosition.Relative
+        | ValueNone, ValueNone -> ()
+        match prevFlexLayoutWrapOpt, currFlexLayoutWrapOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Wrap <-  currValue
+        | ValueSome _, ValueNone -> target.Wrap <- Xamarin.Forms.FlexWrap.NoWrap
+        | ValueNone, ValueNone -> ()
+        ViewUpdaters.updateCollectionGeneric prevFlexLayoutChildrenOpt currFlexLayoutChildrenOpt target.Children
+            (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
+            ViewUpdaters.canReuseView
+            ViewUpdaters.updateChild
+
+    static member inline ConstructFlexLayout(?alignContent: Xamarin.Forms.FlexAlignContent,
+                                             ?alignItems: Xamarin.Forms.FlexAlignItems,
+                                             ?direction: Xamarin.Forms.FlexDirection,
+                                             ?position: Xamarin.Forms.FlexPosition,
+                                             ?wrap: Xamarin.Forms.FlexWrap,
+                                             ?children: ViewElement list,
+                                             ?isClippedToBounds: bool,
+                                             ?padding: Xamarin.Forms.Thickness,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: InputTypes.Thickness,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: float,
+                                             ?anchorY: float,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?flowDirection: Xamarin.Forms.FlowDirection,
+                                             ?height: float,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isTabStop: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeight: float,
+                                             ?minimumWidth: float,
+                                             ?opacity: float,
+                                             ?rotation: float,
+                                             ?rotationX: float,
+                                             ?rotationY: float,
+                                             ?scale: float,
+                                             ?scaleX: float,
+                                             ?scaleY: float,
+                                             ?tabIndex: int,
+                                             ?translationX: float,
+                                             ?translationY: float,
+                                             ?visual: Xamarin.Forms.IVisual,
+                                             ?width: float,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: InputTypes.StyleClass,
+                                             ?automationId: string,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?ref: ViewRef<Xamarin.Forms.FlexLayout>,
+                                             ?tag: obj,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?created: (Xamarin.Forms.FlexLayout -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildFlexLayout(0,
+                               ?alignContent=alignContent,
+                               ?alignItems=alignItems,
+                               ?direction=direction,
+                               ?position=position,
+                               ?wrap=wrap,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FlexLayout>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FlexLayout> target))))
+
+        ViewElement.Create<Xamarin.Forms.FlexLayout>(ViewBuilders.CreateFuncFlexLayout, ViewBuilders.UpdateFuncFlexLayout, attribBuilder)
+
+    /// Builds the attributes for a ContentView in the view
+    static member inline BuildContentView(attribCount: int,
+                                          ?content: ViewElement,
+                                          ?isClippedToBounds: bool,
+                                          ?padding: Xamarin.Forms.Thickness,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: InputTypes.Thickness,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: float,
+                                          ?anchorY: float,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?flowDirection: Xamarin.Forms.FlowDirection,
+                                          ?height: float,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isTabStop: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeight: float,
+                                          ?minimumWidth: float,
+                                          ?opacity: float,
+                                          ?rotation: float,
+                                          ?rotationX: float,
+                                          ?rotationY: float,
+                                          ?scale: float,
+                                          ?scaleX: float,
+                                          ?scaleY: float,
+                                          ?tabIndex: int,
+                                          ?translationX: float,
+                                          ?translationY: float,
+                                          ?visual: Xamarin.Forms.IVisual,
+                                          ?width: float,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?styleClass: InputTypes.StyleClass,
+                                          ?automationId: string,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?ref: ViewRef,
+                                          ?tag: obj,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?created: obj -> unit) = 
+
+        let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds: bool, ?padding: Xamarin.Forms.Thickness, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: InputTypes.Thickness, 
+                                                     ?gestureRecognizers: ViewElement list, ?anchorX: float, ?anchorY: float, ?backgroundColor: Xamarin.Forms.Color, ?flowDirection: Xamarin.Forms.FlowDirection, 
+                                                     ?height: float, ?inputTransparent: bool, ?isEnabled: bool, ?isTabStop: bool, ?isVisible: bool, 
+                                                     ?minimumHeight: float, ?minimumWidth: float, ?opacity: float, ?rotation: float, ?rotationX: float, 
+                                                     ?rotationY: float, ?scale: float, ?scaleX: float, ?scaleY: float, ?tabIndex: int, 
+                                                     ?translationX: float, ?translationY: float, ?visual: Xamarin.Forms.IVisual, ?width: float, ?style: Xamarin.Forms.Style, 
+                                                     ?styleClass: InputTypes.StyleClass, ?automationId: string, ?classId: string, ?styleId: string, ?ref: ViewRef, 
+                                                     ?tag: obj, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?created: obj -> unit)
+        match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentViewContentAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> ViewBuilders.CreateContentView()) with get, set
+
+    static member CreateContentView () : Xamarin.Forms.ContentView =
+        new Xamarin.Forms.ContentView()
+
+    static member val UpdateFuncContentView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ContentView) -> ViewBuilders.UpdateContentView (prevOpt, curr, target)) 
+
+    static member UpdateContentView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ContentView) = 
+        ViewBuilders.UpdateLayout (prevOpt, curr, target)
+        let mutable prevContentViewContentOpt = ValueNone
+        let mutable currContentViewContentOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ContentViewContentAttribKey.KeyValue then 
+                currContentViewContentOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ContentViewContentAttribKey.KeyValue then 
+                    prevContentViewContentOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevContentViewContentOpt, currContentViewContentOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.Content)
+        | _, ValueSome newValue ->
+            target.Content <- (newValue.Create() :?> Xamarin.Forms.View)
+        | ValueSome _, ValueNone ->
+            target.Content <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructContentView(?content: ViewElement,
+                                              ?isClippedToBounds: bool,
+                                              ?padding: Xamarin.Forms.Thickness,
+                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                              ?margin: InputTypes.Thickness,
+                                              ?gestureRecognizers: ViewElement list,
+                                              ?anchorX: float,
+                                              ?anchorY: float,
+                                              ?backgroundColor: Xamarin.Forms.Color,
+                                              ?flowDirection: Xamarin.Forms.FlowDirection,
+                                              ?height: float,
+                                              ?inputTransparent: bool,
+                                              ?isEnabled: bool,
+                                              ?isTabStop: bool,
+                                              ?isVisible: bool,
+                                              ?minimumHeight: float,
+                                              ?minimumWidth: float,
+                                              ?opacity: float,
+                                              ?rotation: float,
+                                              ?rotationX: float,
+                                              ?rotationY: float,
+                                              ?scale: float,
+                                              ?scaleX: float,
+                                              ?scaleY: float,
+                                              ?tabIndex: int,
+                                              ?translationX: float,
+                                              ?translationY: float,
+                                              ?visual: Xamarin.Forms.IVisual,
+                                              ?width: float,
+                                              ?style: Xamarin.Forms.Style,
+                                              ?styleClass: InputTypes.StyleClass,
+                                              ?automationId: string,
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?ref: ViewRef<Xamarin.Forms.ContentView>,
+                                              ?tag: obj,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?created: (Xamarin.Forms.ContentView -> unit)) = 
+
+        let attribBuilder = ViewBuilders.BuildContentView(0,
+                               ?content=content,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ContentView>) -> Some ref.Unbox),
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ContentView> target))))
+
+        ViewElement.Create<Xamarin.Forms.ContentView>(ViewBuilders.CreateFuncContentView, ViewBuilders.UpdateFuncContentView, attribBuilder)
+
 /// Viewer that allows to read the properties of a ViewElement representing a Element
 type ElementViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.Element>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Element' is expected, but '%s' was provided." element.TargetType.FullName
@@ -3153,6 +5103,150 @@ type SliderViewer(element: ViewElement) =
     member this.DragCompleted = element.GetAttributeKeyed(ViewAttributes.SliderDragCompletedAttribKey)
     /// Get the value of the DragStarted member
     member this.DragStarted = element.GetAttributeKeyed(ViewAttributes.SliderDragStartedAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Stepper
+type StepperViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.Stepper>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Stepper' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the MinimumMaximum member
+    member this.MinimumMaximum = element.GetAttributeKeyed(ViewAttributes.StepperMinimumMaximumAttribKey)
+    /// Get the value of the Value member
+    member this.Value = element.GetAttributeKeyed(ViewAttributes.StepperValueAttribKey)
+    /// Get the value of the Increment member
+    member this.Increment = element.GetAttributeKeyed(ViewAttributes.StepperIncrementAttribKey)
+    /// Get the value of the ValueChanged member
+    member this.ValueChanged = element.GetAttributeKeyed(ViewAttributes.StepperValueChangedAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Switch
+type SwitchViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.Switch>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Switch' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the IsToggled member
+    member this.IsToggled = element.GetAttributeKeyed(ViewAttributes.SwitchIsToggledAttribKey)
+    /// Get the value of the OnColor member
+    member this.OnColor = element.GetAttributeKeyed(ViewAttributes.SwitchOnColorAttribKey)
+    /// Get the value of the Toggled member
+    member this.Toggled = element.GetAttributeKeyed(ViewAttributes.SwitchToggledAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Cell
+type CellViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.Cell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Cell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Height member
+    member this.Height = element.GetAttributeKeyed(ViewAttributes.CellHeightAttribKey)
+    /// Get the value of the IsEnabled member
+    member this.IsEnabled = element.GetAttributeKeyed(ViewAttributes.CellIsEnabledAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a SwitchCell
+type SwitchCellViewer(element: ViewElement) =
+    inherit CellViewer(element)
+    do if not ((typeof<Xamarin.Forms.SwitchCell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SwitchCell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the On member
+    member this.On = element.GetAttributeKeyed(ViewAttributes.SwitchCellOnAttribKey)
+    /// Get the value of the Text member
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.SwitchCellTextAttribKey)
+    /// Get the value of the OnColor member
+    member this.OnColor = element.GetAttributeKeyed(ViewAttributes.SwitchCellOnColorAttribKey)
+    /// Get the value of the OnChanged member
+    member this.OnChanged = element.GetAttributeKeyed(ViewAttributes.SwitchCellOnChangedAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a TableView
+type TableViewViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.TableView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.TableView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Intent member
+    member this.Intent = element.GetAttributeKeyed(ViewAttributes.TableViewIntentAttribKey)
+    /// Get the value of the HasUnevenRows member
+    member this.HasUnevenRows = element.GetAttributeKeyed(ViewAttributes.TableViewHasUnevenRowsAttribKey)
+    /// Get the value of the RowHeight member
+    member this.RowHeight = element.GetAttributeKeyed(ViewAttributes.TableViewRowHeightAttribKey)
+    /// Get the value of the Root member
+    member this.Root = element.GetAttributeKeyed(ViewAttributes.TableViewRootAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Grid
+type GridViewer(element: ViewElement) =
+    inherit LayoutViewer(element)
+    do if not ((typeof<Xamarin.Forms.Grid>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Grid' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the RowDefinitions member
+    member this.RowDefinitions = element.GetAttributeKeyed(ViewAttributes.GridRowDefinitionsAttribKey)
+    /// Get the value of the ColumnDefinitions member
+    member this.ColumnDefinitions = element.GetAttributeKeyed(ViewAttributes.GridColumnDefinitionsAttribKey)
+    /// Get the value of the RowSpacing member
+    member this.RowSpacing = element.GetAttributeKeyed(ViewAttributes.GridRowSpacingAttribKey)
+    /// Get the value of the ColumnSpacing member
+    member this.ColumnSpacing = element.GetAttributeKeyed(ViewAttributes.GridColumnSpacingAttribKey)
+    /// Get the value of the Children member
+    member this.Children = element.GetAttributeKeyed(ViewAttributes.GridChildrenAttribKey)
+    /// Get the value of the Row member
+    member this.Row = element.GetAttributeKeyed(ViewAttributes.GridRowAttribKey)
+    /// Get the value of the RowSpan member
+    member this.RowSpan = element.GetAttributeKeyed(ViewAttributes.GridRowSpanAttribKey)
+    /// Get the value of the Column member
+    member this.Column = element.GetAttributeKeyed(ViewAttributes.GridColumnAttribKey)
+    /// Get the value of the ColumnSpan member
+    member this.ColumnSpan = element.GetAttributeKeyed(ViewAttributes.GridColumnSpanAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a AbsoluteLayout
+type AbsoluteLayoutViewer(element: ViewElement) =
+    inherit LayoutViewer(element)
+    do if not ((typeof<Xamarin.Forms.AbsoluteLayout>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.AbsoluteLayout' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Children member
+    member this.Children = element.GetAttributeKeyed(ViewAttributes.AbsoluteLayoutChildrenAttribKey)
+    /// Get the value of the LayoutBounds member
+    member this.LayoutBounds = element.GetAttributeKeyed(ViewAttributes.AbsoluteLayoutLayoutBoundsAttribKey)
+    /// Get the value of the LayoutFlags member
+    member this.LayoutFlags = element.GetAttributeKeyed(ViewAttributes.AbsoluteLayoutLayoutFlagsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a RelativeLayout
+type RelativeLayoutViewer(element: ViewElement) =
+    inherit LayoutViewer(element)
+    do if not ((typeof<Xamarin.Forms.RelativeLayout>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.RelativeLayout' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Children member
+    member this.Children = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutChildrenAttribKey)
+    /// Get the value of the BoundsConstraint member
+    member this.BoundsConstraint = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutBoundsConstraintAttribKey)
+    /// Get the value of the HeightConstraint member
+    member this.HeightConstraint = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutHeightConstraintAttribKey)
+    /// Get the value of the WidthConstraint member
+    member this.WidthConstraint = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutWidthConstraintAttribKey)
+    /// Get the value of the XConstraint member
+    member this.XConstraint = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutXConstraintAttribKey)
+    /// Get the value of the YConstraint member
+    member this.YConstraint = element.GetAttributeKeyed(ViewAttributes.RelativeLayoutYConstraintAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a FlexLayout
+type FlexLayoutViewer(element: ViewElement) =
+    inherit LayoutViewer(element)
+    do if not ((typeof<Xamarin.Forms.FlexLayout>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.FlexLayout' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the AlignContent member
+    member this.AlignContent = element.GetAttributeKeyed(ViewAttributes.FlexLayoutAlignContentAttribKey)
+    /// Get the value of the AlignItems member
+    member this.AlignItems = element.GetAttributeKeyed(ViewAttributes.FlexLayoutAlignItemsAttribKey)
+    /// Get the value of the Direction member
+    member this.Direction = element.GetAttributeKeyed(ViewAttributes.FlexLayoutDirectionAttribKey)
+    /// Get the value of the Position member
+    member this.Position = element.GetAttributeKeyed(ViewAttributes.FlexLayoutPositionAttribKey)
+    /// Get the value of the Wrap member
+    member this.Wrap = element.GetAttributeKeyed(ViewAttributes.FlexLayoutWrapAttribKey)
+    /// Get the value of the Children member
+    member this.Children = element.GetAttributeKeyed(ViewAttributes.FlexLayoutChildrenAttribKey)
+    /// Get the value of the AlignSelf member
+    member this.AlignSelf = element.GetAttributeKeyed(ViewAttributes.FlexLayoutAlignSelfAttribKey)
+    /// Get the value of the Order member
+    member this.Order = element.GetAttributeKeyed(ViewAttributes.FlexLayoutOrderAttribKey)
+    /// Get the value of the Basis member
+    member this.Basis = element.GetAttributeKeyed(ViewAttributes.FlexLayoutBasisAttribKey)
+    /// Get the value of the Grow member
+    member this.Grow = element.GetAttributeKeyed(ViewAttributes.FlexLayoutGrowAttribKey)
+    /// Get the value of the Shrink member
+    member this.Shrink = element.GetAttributeKeyed(ViewAttributes.FlexLayoutShrinkAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ContentView
+type ContentViewViewer(element: ViewElement) =
+    inherit LayoutViewer(element)
+    do if not ((typeof<Xamarin.Forms.ContentView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ContentView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Content member
+    member this.Content = element.GetAttributeKeyed(ViewAttributes.ContentViewContentAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -4037,6 +6131,738 @@ type View() =
                                ?unfocused=unfocused,
                                ?created=created)
 
+    /// Describes a Stepper in the view
+    static member inline Stepper(?minimumMaximum: float * float,
+                                 ?value: float,
+                                 ?increment: float,
+                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?margin: InputTypes.Thickness,
+                                 ?gestureRecognizers: ViewElement list,
+                                 ?anchorX: float,
+                                 ?anchorY: float,
+                                 ?backgroundColor: Xamarin.Forms.Color,
+                                 ?flowDirection: Xamarin.Forms.FlowDirection,
+                                 ?height: float,
+                                 ?inputTransparent: bool,
+                                 ?isEnabled: bool,
+                                 ?isTabStop: bool,
+                                 ?isVisible: bool,
+                                 ?minimumHeight: float,
+                                 ?minimumWidth: float,
+                                 ?opacity: float,
+                                 ?rotation: float,
+                                 ?rotationX: float,
+                                 ?rotationY: float,
+                                 ?scale: float,
+                                 ?scaleX: float,
+                                 ?scaleY: float,
+                                 ?tabIndex: int,
+                                 ?translationX: float,
+                                 ?translationY: float,
+                                 ?visual: Xamarin.Forms.IVisual,
+                                 ?width: float,
+                                 ?style: Xamarin.Forms.Style,
+                                 ?styleClass: InputTypes.StyleClass,
+                                 ?automationId: string,
+                                 ?classId: string,
+                                 ?styleId: string,
+                                 ?ref: ViewRef<Xamarin.Forms.Stepper>,
+                                 ?tag: obj,
+                                 ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?created: (Xamarin.Forms.Stepper -> unit)) =
+
+        ViewBuilders.ConstructStepper(?minimumMaximum=minimumMaximum,
+                               ?value=value,
+                               ?increment=increment,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?valueChanged=valueChanged,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a Switch in the view
+    static member inline Switch(?isToggled: bool,
+                                ?onColor: Xamarin.Forms.Color,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: InputTypes.Thickness,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: float,
+                                ?anchorY: float,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?flowDirection: Xamarin.Forms.FlowDirection,
+                                ?height: float,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isTabStop: bool,
+                                ?isVisible: bool,
+                                ?minimumHeight: float,
+                                ?minimumWidth: float,
+                                ?opacity: float,
+                                ?rotation: float,
+                                ?rotationX: float,
+                                ?rotationY: float,
+                                ?scale: float,
+                                ?scaleX: float,
+                                ?scaleY: float,
+                                ?tabIndex: int,
+                                ?translationX: float,
+                                ?translationY: float,
+                                ?visual: Xamarin.Forms.IVisual,
+                                ?width: float,
+                                ?style: Xamarin.Forms.Style,
+                                ?styleClass: InputTypes.StyleClass,
+                                ?automationId: string,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?ref: ViewRef<Xamarin.Forms.Switch>,
+                                ?tag: obj,
+                                ?toggled: Xamarin.Forms.ToggledEventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?created: (Xamarin.Forms.Switch -> unit)) =
+
+        ViewBuilders.ConstructSwitch(?isToggled=isToggled,
+                               ?onColor=onColor,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?toggled=toggled,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a Cell in the view
+    static member inline Cell(?height: float,
+                              ?isEnabled: bool,
+                              ?automationId: string,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?ref: ViewRef<Xamarin.Forms.Cell>,
+                              ?tag: obj,
+                              ?created: (Xamarin.Forms.Cell -> unit)) =
+
+        ViewBuilders.ConstructCell(?height=height,
+                               ?isEnabled=isEnabled,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?created=created)
+
+    /// Describes a SwitchCell in the view
+    static member inline SwitchCell(?on: bool,
+                                    ?text: string,
+                                    ?onColor: Xamarin.Forms.Color,
+                                    ?height: float,
+                                    ?isEnabled: bool,
+                                    ?automationId: string,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?ref: ViewRef<Xamarin.Forms.SwitchCell>,
+                                    ?tag: obj,
+                                    ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                    ?created: (Xamarin.Forms.SwitchCell -> unit)) =
+
+        ViewBuilders.ConstructSwitchCell(?on=on,
+                               ?text=text,
+                               ?onColor=onColor,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?onChanged=onChanged,
+                               ?created=created)
+
+    /// Describes a TableView in the view
+    static member inline TableView(?intent: Xamarin.Forms.TableIntent,
+                                   ?hasUnevenRows: bool,
+                                   ?rowHeight: int,
+                                   ?items: (string * ViewElement list) list,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: InputTypes.Thickness,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: float,
+                                   ?anchorY: float,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?flowDirection: Xamarin.Forms.FlowDirection,
+                                   ?height: float,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isTabStop: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeight: float,
+                                   ?minimumWidth: float,
+                                   ?opacity: float,
+                                   ?rotation: float,
+                                   ?rotationX: float,
+                                   ?rotationY: float,
+                                   ?scale: float,
+                                   ?scaleX: float,
+                                   ?scaleY: float,
+                                   ?tabIndex: int,
+                                   ?translationX: float,
+                                   ?translationY: float,
+                                   ?visual: Xamarin.Forms.IVisual,
+                                   ?width: float,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?styleClass: InputTypes.StyleClass,
+                                   ?automationId: string,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?ref: ViewRef<Xamarin.Forms.TableView>,
+                                   ?tag: obj,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?created: (Xamarin.Forms.TableView -> unit)) =
+
+        ViewBuilders.ConstructTableView(?intent=intent,
+                               ?hasUnevenRows=hasUnevenRows,
+                               ?rowHeight=rowHeight,
+                               ?items=items,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a Grid in the view
+    static member inline Grid(?rowDefinitions: Xamarin.Forms.RowDefinitionCollection,
+                              ?columnDefinitions: Xamarin.Forms.ColumnDefinitionCollection,
+                              ?rowSpacing: float,
+                              ?columnSpacing: float,
+                              ?children: ViewElement list,
+                              ?isClippedToBounds: bool,
+                              ?padding: Xamarin.Forms.Thickness,
+                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                              ?margin: InputTypes.Thickness,
+                              ?gestureRecognizers: ViewElement list,
+                              ?anchorX: float,
+                              ?anchorY: float,
+                              ?backgroundColor: Xamarin.Forms.Color,
+                              ?flowDirection: Xamarin.Forms.FlowDirection,
+                              ?height: float,
+                              ?inputTransparent: bool,
+                              ?isEnabled: bool,
+                              ?isTabStop: bool,
+                              ?isVisible: bool,
+                              ?minimumHeight: float,
+                              ?minimumWidth: float,
+                              ?opacity: float,
+                              ?rotation: float,
+                              ?rotationX: float,
+                              ?rotationY: float,
+                              ?scale: float,
+                              ?scaleX: float,
+                              ?scaleY: float,
+                              ?tabIndex: int,
+                              ?translationX: float,
+                              ?translationY: float,
+                              ?visual: Xamarin.Forms.IVisual,
+                              ?width: float,
+                              ?style: Xamarin.Forms.Style,
+                              ?styleClass: InputTypes.StyleClass,
+                              ?automationId: string,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?ref: ViewRef<Xamarin.Forms.Grid>,
+                              ?tag: obj,
+                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?created: (Xamarin.Forms.Grid -> unit)) =
+
+        ViewBuilders.ConstructGrid(?rowDefinitions=rowDefinitions,
+                               ?columnDefinitions=columnDefinitions,
+                               ?rowSpacing=rowSpacing,
+                               ?columnSpacing=columnSpacing,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a AbsoluteLayout in the view
+    static member inline AbsoluteLayout(?children: ViewElement list,
+                                        ?isClippedToBounds: bool,
+                                        ?padding: Xamarin.Forms.Thickness,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: InputTypes.Thickness,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: float,
+                                        ?anchorY: float,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?flowDirection: Xamarin.Forms.FlowDirection,
+                                        ?height: float,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isTabStop: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeight: float,
+                                        ?minimumWidth: float,
+                                        ?opacity: float,
+                                        ?rotation: float,
+                                        ?rotationX: float,
+                                        ?rotationY: float,
+                                        ?scale: float,
+                                        ?scaleX: float,
+                                        ?scaleY: float,
+                                        ?tabIndex: int,
+                                        ?translationX: float,
+                                        ?translationY: float,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?width: float,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: InputTypes.StyleClass,
+                                        ?automationId: string,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?ref: ViewRef<Xamarin.Forms.AbsoluteLayout>,
+                                        ?tag: obj,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?created: (Xamarin.Forms.AbsoluteLayout -> unit)) =
+
+        ViewBuilders.ConstructAbsoluteLayout(?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a RelativeLayout in the view
+    static member inline RelativeLayout(?children: ViewElement list,
+                                        ?isClippedToBounds: bool,
+                                        ?padding: Xamarin.Forms.Thickness,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: InputTypes.Thickness,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: float,
+                                        ?anchorY: float,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?flowDirection: Xamarin.Forms.FlowDirection,
+                                        ?height: float,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isTabStop: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeight: float,
+                                        ?minimumWidth: float,
+                                        ?opacity: float,
+                                        ?rotation: float,
+                                        ?rotationX: float,
+                                        ?rotationY: float,
+                                        ?scale: float,
+                                        ?scaleX: float,
+                                        ?scaleY: float,
+                                        ?tabIndex: int,
+                                        ?translationX: float,
+                                        ?translationY: float,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?width: float,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: InputTypes.StyleClass,
+                                        ?automationId: string,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?ref: ViewRef<Xamarin.Forms.RelativeLayout>,
+                                        ?tag: obj,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?created: (Xamarin.Forms.RelativeLayout -> unit)) =
+
+        ViewBuilders.ConstructRelativeLayout(?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a FlexLayout in the view
+    static member inline FlexLayout(?alignContent: Xamarin.Forms.FlexAlignContent,
+                                    ?alignItems: Xamarin.Forms.FlexAlignItems,
+                                    ?direction: Xamarin.Forms.FlexDirection,
+                                    ?position: Xamarin.Forms.FlexPosition,
+                                    ?wrap: Xamarin.Forms.FlexWrap,
+                                    ?children: ViewElement list,
+                                    ?isClippedToBounds: bool,
+                                    ?padding: Xamarin.Forms.Thickness,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: InputTypes.Thickness,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: float,
+                                    ?anchorY: float,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?flowDirection: Xamarin.Forms.FlowDirection,
+                                    ?height: float,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isTabStop: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeight: float,
+                                    ?minimumWidth: float,
+                                    ?opacity: float,
+                                    ?rotation: float,
+                                    ?rotationX: float,
+                                    ?rotationY: float,
+                                    ?scale: float,
+                                    ?scaleX: float,
+                                    ?scaleY: float,
+                                    ?tabIndex: int,
+                                    ?translationX: float,
+                                    ?translationY: float,
+                                    ?visual: Xamarin.Forms.IVisual,
+                                    ?width: float,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?styleClass: InputTypes.StyleClass,
+                                    ?automationId: string,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?ref: ViewRef<Xamarin.Forms.FlexLayout>,
+                                    ?tag: obj,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?created: (Xamarin.Forms.FlexLayout -> unit)) =
+
+        ViewBuilders.ConstructFlexLayout(?alignContent=alignContent,
+                               ?alignItems=alignItems,
+                               ?direction=direction,
+                               ?position=position,
+                               ?wrap=wrap,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
+    /// Describes a ContentView in the view
+    static member inline ContentView(?content: ViewElement,
+                                     ?isClippedToBounds: bool,
+                                     ?padding: Xamarin.Forms.Thickness,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: InputTypes.Thickness,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: float,
+                                     ?anchorY: float,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?flowDirection: Xamarin.Forms.FlowDirection,
+                                     ?height: float,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isTabStop: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeight: float,
+                                     ?minimumWidth: float,
+                                     ?opacity: float,
+                                     ?rotation: float,
+                                     ?rotationX: float,
+                                     ?rotationY: float,
+                                     ?scale: float,
+                                     ?scaleX: float,
+                                     ?scaleY: float,
+                                     ?tabIndex: int,
+                                     ?translationX: float,
+                                     ?translationY: float,
+                                     ?visual: Xamarin.Forms.IVisual,
+                                     ?width: float,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?styleClass: InputTypes.StyleClass,
+                                     ?automationId: string,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?ref: ViewRef<Xamarin.Forms.ContentView>,
+                                     ?tag: obj,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?created: (Xamarin.Forms.ContentView -> unit)) =
+
+        ViewBuilders.ConstructContentView(?content=content,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?flowDirection=flowDirection,
+                               ?height=height,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isTabStop=isTabStop,
+                               ?isVisible=isVisible,
+                               ?minimumHeight=minimumHeight,
+                               ?minimumWidth=minimumWidth,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?visual=visual,
+                               ?width=width,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?automationId=automationId,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?ref=ref,
+                               ?tag=tag,
+                               ?focused=focused,
+                               ?unfocused=unfocused,
+                               ?created=created)
+
 
 [<AutoOpen>]
 module ViewElementExtensions = 
@@ -4146,10 +6972,10 @@ module ViewElementExtensions =
         member x.ViewMargin(value: InputTypes.Thickness) = x.WithAttribute(ViewAttributes.ViewMarginAttribKey, (value))
 
         /// Adjusts the ViewGestureRecognizers property in the visual element
-        member x.ViewGestureRecognizers(value: ViewElement list) = x.WithAttribute(ViewAttributes.ViewGestureRecognizersAttribKey, (value))
+        member x.ViewGestureRecognizers(value: ViewElement list) = x.WithAttribute(ViewAttributes.ViewGestureRecognizersAttribKey, Array.fromList(value))
 
         /// Adjusts the GestureElementGestureRecognizers property in the visual element
-        member x.GestureElementGestureRecognizers(value: ViewElement list) = x.WithAttribute(ViewAttributes.GestureElementGestureRecognizersAttribKey, (value))
+        member x.GestureElementGestureRecognizers(value: ViewElement list) = x.WithAttribute(ViewAttributes.GestureElementGestureRecognizersAttribKey, Array.fromList(value))
 
         /// Adjusts the PanGestureRecognizerTouchPoints property in the visual element
         member x.PanGestureRecognizerTouchPoints(value: int) = x.WithAttribute(ViewAttributes.PanGestureRecognizerTouchPointsAttribKey, (value))
@@ -4274,6 +7100,147 @@ module ViewElementExtensions =
         /// Adjusts the SliderDragStarted property in the visual element
         member x.SliderDragStarted(value: unit -> unit) = x.WithAttribute(ViewAttributes.SliderDragStartedAttribKey, (value))
 
+        /// Adjusts the StepperMinimumMaximum property in the visual element
+        member x.StepperMinimumMaximum(value: float * float) = x.WithAttribute(ViewAttributes.StepperMinimumMaximumAttribKey, (value))
+
+        /// Adjusts the StepperValue property in the visual element
+        member x.StepperValue(value: float) = x.WithAttribute(ViewAttributes.StepperValueAttribKey, (value))
+
+        /// Adjusts the StepperIncrement property in the visual element
+        member x.StepperIncrement(value: float) = x.WithAttribute(ViewAttributes.StepperIncrementAttribKey, (value))
+
+        /// Adjusts the StepperValueChanged property in the visual element
+        member x.StepperValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.StepperValueChangedAttribKey, (value))
+
+        /// Adjusts the SwitchIsToggled property in the visual element
+        member x.SwitchIsToggled(value: bool) = x.WithAttribute(ViewAttributes.SwitchIsToggledAttribKey, (value))
+
+        /// Adjusts the SwitchOnColor property in the visual element
+        member x.SwitchOnColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.SwitchOnColorAttribKey, (value))
+
+        /// Adjusts the SwitchToggled property in the visual element
+        member x.SwitchToggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = x.WithAttribute(ViewAttributes.SwitchToggledAttribKey, (value))
+
+        /// Adjusts the CellHeight property in the visual element
+        member x.CellHeight(value: float) = x.WithAttribute(ViewAttributes.CellHeightAttribKey, (value))
+
+        /// Adjusts the CellIsEnabled property in the visual element
+        member x.CellIsEnabled(value: bool) = x.WithAttribute(ViewAttributes.CellIsEnabledAttribKey, (value))
+
+        /// Adjusts the SwitchCellOn property in the visual element
+        member x.SwitchCellOn(value: bool) = x.WithAttribute(ViewAttributes.SwitchCellOnAttribKey, (value))
+
+        /// Adjusts the SwitchCellText property in the visual element
+        member x.SwitchCellText(value: string) = x.WithAttribute(ViewAttributes.SwitchCellTextAttribKey, (value))
+
+        /// Adjusts the SwitchCellOnColor property in the visual element
+        member x.SwitchCellOnColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.SwitchCellOnColorAttribKey, (value))
+
+        /// Adjusts the SwitchCellOnChanged property in the visual element
+        member x.SwitchCellOnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = x.WithAttribute(ViewAttributes.SwitchCellOnChangedAttribKey, (value))
+
+        /// Adjusts the TableViewIntent property in the visual element
+        member x.TableViewIntent(value: Xamarin.Forms.TableIntent) = x.WithAttribute(ViewAttributes.TableViewIntentAttribKey, (value))
+
+        /// Adjusts the TableViewHasUnevenRows property in the visual element
+        member x.TableViewHasUnevenRows(value: bool) = x.WithAttribute(ViewAttributes.TableViewHasUnevenRowsAttribKey, (value))
+
+        /// Adjusts the TableViewRowHeight property in the visual element
+        member x.TableViewRowHeight(value: int) = x.WithAttribute(ViewAttributes.TableViewRowHeightAttribKey, (value))
+
+        /// Adjusts the TableViewRoot property in the visual element
+        member x.TableViewRoot(value: (string * ViewElement list) list) = x.WithAttribute(ViewAttributes.TableViewRootAttribKey, Array.fromList(value))
+
+        /// Adjusts the GridRowDefinitions property in the visual element
+        member x.GridRowDefinitions(value: Xamarin.Forms.RowDefinitionCollection) = x.WithAttribute(ViewAttributes.GridRowDefinitionsAttribKey, (value))
+
+        /// Adjusts the GridColumnDefinitions property in the visual element
+        member x.GridColumnDefinitions(value: Xamarin.Forms.ColumnDefinitionCollection) = x.WithAttribute(ViewAttributes.GridColumnDefinitionsAttribKey, (value))
+
+        /// Adjusts the GridRowSpacing property in the visual element
+        member x.GridRowSpacing(value: float) = x.WithAttribute(ViewAttributes.GridRowSpacingAttribKey, (value))
+
+        /// Adjusts the GridColumnSpacing property in the visual element
+        member x.GridColumnSpacing(value: float) = x.WithAttribute(ViewAttributes.GridColumnSpacingAttribKey, (value))
+
+        /// Adjusts the GridChildren property in the visual element
+        member x.GridChildren(value: ViewElement list) = x.WithAttribute(ViewAttributes.GridChildrenAttribKey, Array.fromList(value))
+
+        /// Adjusts the GridRow property in the visual element
+        member x.GridRow(value: int) = x.WithAttribute(ViewAttributes.GridRowAttribKey, (value))
+
+        /// Adjusts the GridRowSpan property in the visual element
+        member x.GridRowSpan(value: int) = x.WithAttribute(ViewAttributes.GridRowSpanAttribKey, (value))
+
+        /// Adjusts the GridColumn property in the visual element
+        member x.GridColumn(value: int) = x.WithAttribute(ViewAttributes.GridColumnAttribKey, (value))
+
+        /// Adjusts the GridColumnSpan property in the visual element
+        member x.GridColumnSpan(value: int) = x.WithAttribute(ViewAttributes.GridColumnSpanAttribKey, (value))
+
+        /// Adjusts the AbsoluteLayoutChildren property in the visual element
+        member x.AbsoluteLayoutChildren(value: ViewElement list) = x.WithAttribute(ViewAttributes.AbsoluteLayoutChildrenAttribKey, Array.fromList(value))
+
+        /// Adjusts the AbsoluteLayoutLayoutBounds property in the visual element
+        member x.AbsoluteLayoutLayoutBounds(value: Xamarin.Forms.Rectangle) = x.WithAttribute(ViewAttributes.AbsoluteLayoutLayoutBoundsAttribKey, (value))
+
+        /// Adjusts the AbsoluteLayoutLayoutFlags property in the visual element
+        member x.AbsoluteLayoutLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = x.WithAttribute(ViewAttributes.AbsoluteLayoutLayoutFlagsAttribKey, (value))
+
+        /// Adjusts the RelativeLayoutChildren property in the visual element
+        member x.RelativeLayoutChildren(value: ViewElement list) = x.WithAttribute(ViewAttributes.RelativeLayoutChildrenAttribKey, Array.fromList(value))
+
+        /// Adjusts the RelativeLayoutBoundsConstraint property in the visual element
+        member x.RelativeLayoutBoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = x.WithAttribute(ViewAttributes.RelativeLayoutBoundsConstraintAttribKey, (value))
+
+        /// Adjusts the RelativeLayoutHeightConstraint property in the visual element
+        member x.RelativeLayoutHeightConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute(ViewAttributes.RelativeLayoutHeightConstraintAttribKey, (value))
+
+        /// Adjusts the RelativeLayoutWidthConstraint property in the visual element
+        member x.RelativeLayoutWidthConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute(ViewAttributes.RelativeLayoutWidthConstraintAttribKey, (value))
+
+        /// Adjusts the RelativeLayoutXConstraint property in the visual element
+        member x.RelativeLayoutXConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute(ViewAttributes.RelativeLayoutXConstraintAttribKey, (value))
+
+        /// Adjusts the RelativeLayoutYConstraint property in the visual element
+        member x.RelativeLayoutYConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute(ViewAttributes.RelativeLayoutYConstraintAttribKey, (value))
+
+        /// Adjusts the FlexLayoutAlignContent property in the visual element
+        member x.FlexLayoutAlignContent(value: Xamarin.Forms.FlexAlignContent) = x.WithAttribute(ViewAttributes.FlexLayoutAlignContentAttribKey, (value))
+
+        /// Adjusts the FlexLayoutAlignItems property in the visual element
+        member x.FlexLayoutAlignItems(value: Xamarin.Forms.FlexAlignItems) = x.WithAttribute(ViewAttributes.FlexLayoutAlignItemsAttribKey, (value))
+
+        /// Adjusts the FlexLayoutDirection property in the visual element
+        member x.FlexLayoutDirection(value: Xamarin.Forms.FlexDirection) = x.WithAttribute(ViewAttributes.FlexLayoutDirectionAttribKey, (value))
+
+        /// Adjusts the FlexLayoutPosition property in the visual element
+        member x.FlexLayoutPosition(value: Xamarin.Forms.FlexPosition) = x.WithAttribute(ViewAttributes.FlexLayoutPositionAttribKey, (value))
+
+        /// Adjusts the FlexLayoutWrap property in the visual element
+        member x.FlexLayoutWrap(value: Xamarin.Forms.FlexWrap) = x.WithAttribute(ViewAttributes.FlexLayoutWrapAttribKey, (value))
+
+        /// Adjusts the FlexLayoutChildren property in the visual element
+        member x.FlexLayoutChildren(value: ViewElement list) = x.WithAttribute(ViewAttributes.FlexLayoutChildrenAttribKey, Array.fromList(value))
+
+        /// Adjusts the FlexLayoutAlignSelf property in the visual element
+        member x.FlexLayoutAlignSelf(value: Xamarin.Forms.FlexAlignSelf) = x.WithAttribute(ViewAttributes.FlexLayoutAlignSelfAttribKey, (value))
+
+        /// Adjusts the FlexLayoutOrder property in the visual element
+        member x.FlexLayoutOrder(value: int) = x.WithAttribute(ViewAttributes.FlexLayoutOrderAttribKey, (value))
+
+        /// Adjusts the FlexLayoutBasis property in the visual element
+        member x.FlexLayoutBasis(value: Xamarin.Forms.FlexBasis) = x.WithAttribute(ViewAttributes.FlexLayoutBasisAttribKey, (value))
+
+        /// Adjusts the FlexLayoutGrow property in the visual element
+        member x.FlexLayoutGrow(value: single) = x.WithAttribute(ViewAttributes.FlexLayoutGrowAttribKey, (value))
+
+        /// Adjusts the FlexLayoutShrink property in the visual element
+        member x.FlexLayoutShrink(value: single) = x.WithAttribute(ViewAttributes.FlexLayoutShrinkAttribKey, (value))
+
+        /// Adjusts the ContentViewContent property in the visual element
+        member x.ContentViewContent(value: ViewElement) = x.WithAttribute(ViewAttributes.ContentViewContentAttribKey, (value))
+
         member inline x.With(?ElementAutomationId: string, ?ElementClassId: string, ?ElementStyleId: string, ?ElementTag: obj, ?NavigableElementStyle: Xamarin.Forms.Style, 
                       ?NavigableElementStyleClass: InputTypes.StyleClass, ?VisualElementAnchorX: float, ?VisualElementAnchorY: float, ?VisualElementBackgroundColor: Xamarin.Forms.Color, ?VisualElementFlowDirection: Xamarin.Forms.FlowDirection, 
                       ?VisualElementHeight: float, ?VisualElementInputTransparent: bool, ?VisualElementIsEnabled: bool, ?VisualElementIsTabStop: bool, ?VisualElementIsVisible: bool, 
@@ -4289,7 +7256,16 @@ module ViewElementExtensions =
                       ?ButtonCommand: unit -> unit, ?ButtonBorderColor: Xamarin.Forms.Color, ?ButtonBorderWidth: float, ?ButtonContentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?ButtonCornerRadius: int, 
                       ?ButtonFontFamily: string, ?ButtonFontAttributes: Xamarin.Forms.FontAttributes, ?ButtonFontSize: float, ?ButtonImage: InputTypes.Image, ?ButtonTextColor: Xamarin.Forms.Color, 
                       ?ButtonPadding: Xamarin.Forms.Thickness, ?SliderMinimumMaximum: float * float, ?SliderValue: float, ?SliderThumbImageSource: Xamarin.Forms.ImageSource, ?SliderValueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, 
-                      ?SliderDragCompleted: unit -> unit, ?SliderDragStarted: unit -> unit) =
+                      ?SliderDragCompleted: unit -> unit, ?SliderDragStarted: unit -> unit, ?StepperMinimumMaximum: float * float, ?StepperValue: float, ?StepperIncrement: float, 
+                      ?StepperValueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?SwitchIsToggled: bool, ?SwitchOnColor: Xamarin.Forms.Color, ?SwitchToggled: Xamarin.Forms.ToggledEventArgs -> unit, ?CellHeight: float, 
+                      ?CellIsEnabled: bool, ?SwitchCellOn: bool, ?SwitchCellText: string, ?SwitchCellOnColor: Xamarin.Forms.Color, ?SwitchCellOnChanged: Xamarin.Forms.ToggledEventArgs -> unit, 
+                      ?TableViewIntent: Xamarin.Forms.TableIntent, ?TableViewHasUnevenRows: bool, ?TableViewRowHeight: int, ?TableViewRoot: (string * ViewElement list) list, ?GridRowDefinitions: Xamarin.Forms.RowDefinitionCollection, 
+                      ?GridColumnDefinitions: Xamarin.Forms.ColumnDefinitionCollection, ?GridRowSpacing: float, ?GridColumnSpacing: float, ?GridChildren: ViewElement list, ?GridRow: int, 
+                      ?GridRowSpan: int, ?GridColumn: int, ?GridColumnSpan: int, ?AbsoluteLayoutChildren: ViewElement list, ?AbsoluteLayoutLayoutBounds: Xamarin.Forms.Rectangle, 
+                      ?AbsoluteLayoutLayoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?RelativeLayoutChildren: ViewElement list, ?RelativeLayoutBoundsConstraint: Xamarin.Forms.BoundsConstraint, ?RelativeLayoutHeightConstraint: Xamarin.Forms.Constraint, ?RelativeLayoutWidthConstraint: Xamarin.Forms.Constraint, 
+                      ?RelativeLayoutXConstraint: Xamarin.Forms.Constraint, ?RelativeLayoutYConstraint: Xamarin.Forms.Constraint, ?FlexLayoutAlignContent: Xamarin.Forms.FlexAlignContent, ?FlexLayoutAlignItems: Xamarin.Forms.FlexAlignItems, ?FlexLayoutDirection: Xamarin.Forms.FlexDirection, 
+                      ?FlexLayoutPosition: Xamarin.Forms.FlexPosition, ?FlexLayoutWrap: Xamarin.Forms.FlexWrap, ?FlexLayoutChildren: ViewElement list, ?FlexLayoutAlignSelf: Xamarin.Forms.FlexAlignSelf, ?FlexLayoutOrder: int, 
+                      ?FlexLayoutBasis: Xamarin.Forms.FlexBasis, ?FlexLayoutGrow: single, ?FlexLayoutShrink: single, ?ContentViewContent: ViewElement) =
             let x = match ElementAutomationId with None -> x | Some opt -> x.ElementAutomationId(opt)
             let x = match ElementClassId with None -> x | Some opt -> x.ElementClassId(opt)
             let x = match ElementStyleId with None -> x | Some opt -> x.ElementStyleId(opt)
@@ -4367,6 +7343,53 @@ module ViewElementExtensions =
             let x = match SliderValueChanged with None -> x | Some opt -> x.SliderValueChanged(opt)
             let x = match SliderDragCompleted with None -> x | Some opt -> x.SliderDragCompleted(opt)
             let x = match SliderDragStarted with None -> x | Some opt -> x.SliderDragStarted(opt)
+            let x = match StepperMinimumMaximum with None -> x | Some opt -> x.StepperMinimumMaximum(opt)
+            let x = match StepperValue with None -> x | Some opt -> x.StepperValue(opt)
+            let x = match StepperIncrement with None -> x | Some opt -> x.StepperIncrement(opt)
+            let x = match StepperValueChanged with None -> x | Some opt -> x.StepperValueChanged(opt)
+            let x = match SwitchIsToggled with None -> x | Some opt -> x.SwitchIsToggled(opt)
+            let x = match SwitchOnColor with None -> x | Some opt -> x.SwitchOnColor(opt)
+            let x = match SwitchToggled with None -> x | Some opt -> x.SwitchToggled(opt)
+            let x = match CellHeight with None -> x | Some opt -> x.CellHeight(opt)
+            let x = match CellIsEnabled with None -> x | Some opt -> x.CellIsEnabled(opt)
+            let x = match SwitchCellOn with None -> x | Some opt -> x.SwitchCellOn(opt)
+            let x = match SwitchCellText with None -> x | Some opt -> x.SwitchCellText(opt)
+            let x = match SwitchCellOnColor with None -> x | Some opt -> x.SwitchCellOnColor(opt)
+            let x = match SwitchCellOnChanged with None -> x | Some opt -> x.SwitchCellOnChanged(opt)
+            let x = match TableViewIntent with None -> x | Some opt -> x.TableViewIntent(opt)
+            let x = match TableViewHasUnevenRows with None -> x | Some opt -> x.TableViewHasUnevenRows(opt)
+            let x = match TableViewRowHeight with None -> x | Some opt -> x.TableViewRowHeight(opt)
+            let x = match TableViewRoot with None -> x | Some opt -> x.TableViewRoot(opt)
+            let x = match GridRowDefinitions with None -> x | Some opt -> x.GridRowDefinitions(opt)
+            let x = match GridColumnDefinitions with None -> x | Some opt -> x.GridColumnDefinitions(opt)
+            let x = match GridRowSpacing with None -> x | Some opt -> x.GridRowSpacing(opt)
+            let x = match GridColumnSpacing with None -> x | Some opt -> x.GridColumnSpacing(opt)
+            let x = match GridChildren with None -> x | Some opt -> x.GridChildren(opt)
+            let x = match GridRow with None -> x | Some opt -> x.GridRow(opt)
+            let x = match GridRowSpan with None -> x | Some opt -> x.GridRowSpan(opt)
+            let x = match GridColumn with None -> x | Some opt -> x.GridColumn(opt)
+            let x = match GridColumnSpan with None -> x | Some opt -> x.GridColumnSpan(opt)
+            let x = match AbsoluteLayoutChildren with None -> x | Some opt -> x.AbsoluteLayoutChildren(opt)
+            let x = match AbsoluteLayoutLayoutBounds with None -> x | Some opt -> x.AbsoluteLayoutLayoutBounds(opt)
+            let x = match AbsoluteLayoutLayoutFlags with None -> x | Some opt -> x.AbsoluteLayoutLayoutFlags(opt)
+            let x = match RelativeLayoutChildren with None -> x | Some opt -> x.RelativeLayoutChildren(opt)
+            let x = match RelativeLayoutBoundsConstraint with None -> x | Some opt -> x.RelativeLayoutBoundsConstraint(opt)
+            let x = match RelativeLayoutHeightConstraint with None -> x | Some opt -> x.RelativeLayoutHeightConstraint(opt)
+            let x = match RelativeLayoutWidthConstraint with None -> x | Some opt -> x.RelativeLayoutWidthConstraint(opt)
+            let x = match RelativeLayoutXConstraint with None -> x | Some opt -> x.RelativeLayoutXConstraint(opt)
+            let x = match RelativeLayoutYConstraint with None -> x | Some opt -> x.RelativeLayoutYConstraint(opt)
+            let x = match FlexLayoutAlignContent with None -> x | Some opt -> x.FlexLayoutAlignContent(opt)
+            let x = match FlexLayoutAlignItems with None -> x | Some opt -> x.FlexLayoutAlignItems(opt)
+            let x = match FlexLayoutDirection with None -> x | Some opt -> x.FlexLayoutDirection(opt)
+            let x = match FlexLayoutPosition with None -> x | Some opt -> x.FlexLayoutPosition(opt)
+            let x = match FlexLayoutWrap with None -> x | Some opt -> x.FlexLayoutWrap(opt)
+            let x = match FlexLayoutChildren with None -> x | Some opt -> x.FlexLayoutChildren(opt)
+            let x = match FlexLayoutAlignSelf with None -> x | Some opt -> x.FlexLayoutAlignSelf(opt)
+            let x = match FlexLayoutOrder with None -> x | Some opt -> x.FlexLayoutOrder(opt)
+            let x = match FlexLayoutBasis with None -> x | Some opt -> x.FlexLayoutBasis(opt)
+            let x = match FlexLayoutGrow with None -> x | Some opt -> x.FlexLayoutGrow(opt)
+            let x = match FlexLayoutShrink with None -> x | Some opt -> x.FlexLayoutShrink(opt)
+            let x = match ContentViewContent with None -> x | Some opt -> x.ContentViewContent(opt)
             x
 
     /// Adjusts the ElementAutomationId property in the visual element
@@ -4523,3 +7546,97 @@ module ViewElementExtensions =
     let SliderDragCompleted (value: unit -> unit) (x: ViewElement) = x.SliderDragCompleted(value)
     /// Adjusts the SliderDragStarted property in the visual element
     let SliderDragStarted (value: unit -> unit) (x: ViewElement) = x.SliderDragStarted(value)
+    /// Adjusts the StepperMinimumMaximum property in the visual element
+    let StepperMinimumMaximum (value: float * float) (x: ViewElement) = x.StepperMinimumMaximum(value)
+    /// Adjusts the StepperValue property in the visual element
+    let StepperValue (value: float) (x: ViewElement) = x.StepperValue(value)
+    /// Adjusts the StepperIncrement property in the visual element
+    let StepperIncrement (value: float) (x: ViewElement) = x.StepperIncrement(value)
+    /// Adjusts the StepperValueChanged property in the visual element
+    let StepperValueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: ViewElement) = x.StepperValueChanged(value)
+    /// Adjusts the SwitchIsToggled property in the visual element
+    let SwitchIsToggled (value: bool) (x: ViewElement) = x.SwitchIsToggled(value)
+    /// Adjusts the SwitchOnColor property in the visual element
+    let SwitchOnColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.SwitchOnColor(value)
+    /// Adjusts the SwitchToggled property in the visual element
+    let SwitchToggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: ViewElement) = x.SwitchToggled(value)
+    /// Adjusts the CellHeight property in the visual element
+    let CellHeight (value: float) (x: ViewElement) = x.CellHeight(value)
+    /// Adjusts the CellIsEnabled property in the visual element
+    let CellIsEnabled (value: bool) (x: ViewElement) = x.CellIsEnabled(value)
+    /// Adjusts the SwitchCellOn property in the visual element
+    let SwitchCellOn (value: bool) (x: ViewElement) = x.SwitchCellOn(value)
+    /// Adjusts the SwitchCellText property in the visual element
+    let SwitchCellText (value: string) (x: ViewElement) = x.SwitchCellText(value)
+    /// Adjusts the SwitchCellOnColor property in the visual element
+    let SwitchCellOnColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.SwitchCellOnColor(value)
+    /// Adjusts the SwitchCellOnChanged property in the visual element
+    let SwitchCellOnChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: ViewElement) = x.SwitchCellOnChanged(value)
+    /// Adjusts the TableViewIntent property in the visual element
+    let TableViewIntent (value: Xamarin.Forms.TableIntent) (x: ViewElement) = x.TableViewIntent(value)
+    /// Adjusts the TableViewHasUnevenRows property in the visual element
+    let TableViewHasUnevenRows (value: bool) (x: ViewElement) = x.TableViewHasUnevenRows(value)
+    /// Adjusts the TableViewRowHeight property in the visual element
+    let TableViewRowHeight (value: int) (x: ViewElement) = x.TableViewRowHeight(value)
+    /// Adjusts the TableViewRoot property in the visual element
+    let TableViewRoot (value: (string * ViewElement list) list) (x: ViewElement) = x.TableViewRoot(value)
+    /// Adjusts the GridRowDefinitions property in the visual element
+    let GridRowDefinitions (value: Xamarin.Forms.RowDefinitionCollection) (x: ViewElement) = x.GridRowDefinitions(value)
+    /// Adjusts the GridColumnDefinitions property in the visual element
+    let GridColumnDefinitions (value: Xamarin.Forms.ColumnDefinitionCollection) (x: ViewElement) = x.GridColumnDefinitions(value)
+    /// Adjusts the GridRowSpacing property in the visual element
+    let GridRowSpacing (value: float) (x: ViewElement) = x.GridRowSpacing(value)
+    /// Adjusts the GridColumnSpacing property in the visual element
+    let GridColumnSpacing (value: float) (x: ViewElement) = x.GridColumnSpacing(value)
+    /// Adjusts the GridChildren property in the visual element
+    let GridChildren (value: ViewElement list) (x: ViewElement) = x.GridChildren(value)
+    /// Adjusts the GridRow property in the visual element
+    let GridRow (value: int) (x: ViewElement) = x.GridRow(value)
+    /// Adjusts the GridRowSpan property in the visual element
+    let GridRowSpan (value: int) (x: ViewElement) = x.GridRowSpan(value)
+    /// Adjusts the GridColumn property in the visual element
+    let GridColumn (value: int) (x: ViewElement) = x.GridColumn(value)
+    /// Adjusts the GridColumnSpan property in the visual element
+    let GridColumnSpan (value: int) (x: ViewElement) = x.GridColumnSpan(value)
+    /// Adjusts the AbsoluteLayoutChildren property in the visual element
+    let AbsoluteLayoutChildren (value: ViewElement list) (x: ViewElement) = x.AbsoluteLayoutChildren(value)
+    /// Adjusts the AbsoluteLayoutLayoutBounds property in the visual element
+    let AbsoluteLayoutLayoutBounds (value: Xamarin.Forms.Rectangle) (x: ViewElement) = x.AbsoluteLayoutLayoutBounds(value)
+    /// Adjusts the AbsoluteLayoutLayoutFlags property in the visual element
+    let AbsoluteLayoutLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: ViewElement) = x.AbsoluteLayoutLayoutFlags(value)
+    /// Adjusts the RelativeLayoutChildren property in the visual element
+    let RelativeLayoutChildren (value: ViewElement list) (x: ViewElement) = x.RelativeLayoutChildren(value)
+    /// Adjusts the RelativeLayoutBoundsConstraint property in the visual element
+    let RelativeLayoutBoundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: ViewElement) = x.RelativeLayoutBoundsConstraint(value)
+    /// Adjusts the RelativeLayoutHeightConstraint property in the visual element
+    let RelativeLayoutHeightConstraint (value: Xamarin.Forms.Constraint) (x: ViewElement) = x.RelativeLayoutHeightConstraint(value)
+    /// Adjusts the RelativeLayoutWidthConstraint property in the visual element
+    let RelativeLayoutWidthConstraint (value: Xamarin.Forms.Constraint) (x: ViewElement) = x.RelativeLayoutWidthConstraint(value)
+    /// Adjusts the RelativeLayoutXConstraint property in the visual element
+    let RelativeLayoutXConstraint (value: Xamarin.Forms.Constraint) (x: ViewElement) = x.RelativeLayoutXConstraint(value)
+    /// Adjusts the RelativeLayoutYConstraint property in the visual element
+    let RelativeLayoutYConstraint (value: Xamarin.Forms.Constraint) (x: ViewElement) = x.RelativeLayoutYConstraint(value)
+    /// Adjusts the FlexLayoutAlignContent property in the visual element
+    let FlexLayoutAlignContent (value: Xamarin.Forms.FlexAlignContent) (x: ViewElement) = x.FlexLayoutAlignContent(value)
+    /// Adjusts the FlexLayoutAlignItems property in the visual element
+    let FlexLayoutAlignItems (value: Xamarin.Forms.FlexAlignItems) (x: ViewElement) = x.FlexLayoutAlignItems(value)
+    /// Adjusts the FlexLayoutDirection property in the visual element
+    let FlexLayoutDirection (value: Xamarin.Forms.FlexDirection) (x: ViewElement) = x.FlexLayoutDirection(value)
+    /// Adjusts the FlexLayoutPosition property in the visual element
+    let FlexLayoutPosition (value: Xamarin.Forms.FlexPosition) (x: ViewElement) = x.FlexLayoutPosition(value)
+    /// Adjusts the FlexLayoutWrap property in the visual element
+    let FlexLayoutWrap (value: Xamarin.Forms.FlexWrap) (x: ViewElement) = x.FlexLayoutWrap(value)
+    /// Adjusts the FlexLayoutChildren property in the visual element
+    let FlexLayoutChildren (value: ViewElement list) (x: ViewElement) = x.FlexLayoutChildren(value)
+    /// Adjusts the FlexLayoutAlignSelf property in the visual element
+    let FlexLayoutAlignSelf (value: Xamarin.Forms.FlexAlignSelf) (x: ViewElement) = x.FlexLayoutAlignSelf(value)
+    /// Adjusts the FlexLayoutOrder property in the visual element
+    let FlexLayoutOrder (value: int) (x: ViewElement) = x.FlexLayoutOrder(value)
+    /// Adjusts the FlexLayoutBasis property in the visual element
+    let FlexLayoutBasis (value: Xamarin.Forms.FlexBasis) (x: ViewElement) = x.FlexLayoutBasis(value)
+    /// Adjusts the FlexLayoutGrow property in the visual element
+    let FlexLayoutGrow (value: single) (x: ViewElement) = x.FlexLayoutGrow(value)
+    /// Adjusts the FlexLayoutShrink property in the visual element
+    let FlexLayoutShrink (value: single) (x: ViewElement) = x.FlexLayoutShrink(value)
+    /// Adjusts the ContentViewContent property in the visual element
+    let ContentViewContent (value: ViewElement) (x: ViewElement) = x.ContentViewContent(value)

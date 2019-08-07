@@ -132,10 +132,10 @@ module CodeGenerator =
                 // Check if the property is a collection
                 match p.ElementType with 
                 | Some elementType when not hasApply ->
-                    w.printfn "        updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                    w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" elementType
-                    w.printfn "            canReuseView"
-                    w.printfn "            updateChild"
+                    w.printfn "            ViewUpdaters.canReuseView"
+                    w.printfn "            ViewUpdaters.updateChild"
 
                 | _ -> 
                     // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
