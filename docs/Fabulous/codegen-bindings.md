@@ -71,12 +71,12 @@ CodeGen - Bindings file format
 
 | Field      | Type      | Required | Description | Remarks |
 | ---------- | --------- | ----------- | -- | -- |
-| Source | string | ❔Depends | Name of the property to include (and overwrite) | |
-| Name | string | ❔Depends | Name of the property used in the generated code (e.g. `buttonViewElement.MyProperty(value)`) | If not specified, `Source` will be used instead |
+| Source | string | ❓Depends | Name of the property to include (and overwrite) | |
+| Name | string | ❓Depends | Name of the property used in the generated code (e.g. `buttonViewElement.MyProperty(value)`) | If not specified, `Source` will be used instead |
 | UniqueName | string | ❌ No | Name to uniquely identify the property in the generated code | Use with caution. If not specified, `Type` and `Name` will be concatenated to create a unique name. (e.g. `ButtonText`). Subject to optimization |
 | ShortName | string | ❌ No | Name (lower camel case) to use in ViewElement constructor (e.g. `View.Button(myProperty=value)`) | If not specified, `Name` will be used in lower camel case |
-| ElementType | string | ❔Depends | (Apply only if property is a collection) Full name of the item type of the collection | If `null`, the property is not considered to be a collection |
-| InputType | string | ❔Depends | Type expected in the constructor (e.g. `string` => `View.Button(text = "some string")`) | |
+| ElementType | string | ❓Depends | (Apply only if property is a collection) Full name of the item type of the collection | If `null`, the property is not considered to be a collection |
+| InputType | string | ❓Depends | Type expected in the constructor (e.g. `string` => `View.Button(text = "some string")`) | |
 | ModelType | string | ❌ No | Type as which the value will be stored in the ViewElement attributes dictionary | Make sure this type is efficient |
 | ConvertInputToModel | string | ❌ No | Function to convert the input value to the model type | Expects a signature of type `'Input -> 'Model`. Function can be written directly inside the json, or make a reference to an existing function. If not specified, no conversion will be applied. |
 | ConvertModelToValue | string | ❌ No | Function to convert the model value to the expected type of the real property | Expects a signature of type `'Model -> 'Value`. Function can be written directly inside the json, or make a reference to an existing function. If not specified, no conversion will be applied. |
@@ -194,7 +194,7 @@ See examples for these categories below.
 | Name                | string | ❌ No     |         |
 | UniqueName          | string | ❌ No     |         |
 | ShortName           | string | ❌ No     |         |
-| ElementType         | string | ❔Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
+| ElementType         | string | ❓Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
 | InputType           | string | ❌ No     |         |
 | ModelType           | string | ❌ No     |         |
 | ConvertInputToModel | string | ❌ No     |         |
@@ -217,7 +217,7 @@ See examples for these categories below.
 | Name                | string | ✅ Yes    |         |
 | UniqueName          | string | ❌ No     |         |
 | ShortName           | string | ❌ No     |         |
-| ElementType         | string | ❔Depends | Must be declared if property is a collection |
+| ElementType         | string | ❓Depends | Must be declared if property is a collection |
 | InputType           | string | ✅ Yes    |         |
 | ModelType           | string | ❌ No     |         |
 | ConvertInputToModel | string | ❌ No     |         |
