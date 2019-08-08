@@ -18,12 +18,6 @@
     <Compile Include="Binder\Binder.fs" />
     <Compile Include="Binder\Optimizer.fs" />
     <Compile Include="Binder\Expander.fs" />
-    <Compile Include="Generator\v1\Helpers.fs" />
-    <Compile Include="Generator\v1\Models.fs" />
-    <Compile Include="Generator\v1\Resolvers.fs" />
-    <Compile Include="Generator\v1\CodeGenerator.Models.fs" />
-    <Compile Include="Generator\v1\CodeGenerator.Preparation.fs" />
-    <Compile Include="Generator\v1\CodeGenerator.fs" />
     <Compile Include="Generator\Models.fs" />
     <Compile Include="Generator\Preparator.fs" />
     <Compile Include="Generator\CodeGenerator.fs" />

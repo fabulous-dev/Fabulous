@@ -6,11 +6,6 @@ open System.IO
 module Helpers =
     let removeText textToRemove (originalStr: string) =
         originalStr.Replace(textToRemove, "")
-
-    let toOption value =
-        match value with
-        | null -> None
-        | _ -> Some value
         
     type TextWriter with
         member this.printf fmt = fprintf this fmt

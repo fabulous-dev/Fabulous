@@ -1,7 +1,6 @@
 namespace Fabulous.XamarinForms.Generator
 
 open System.Diagnostics
-open System.Diagnostics
 open System.IO
 open CommandLine
 open Fabulous.CodeGen.AssemblyReader
@@ -28,6 +27,7 @@ module Entry =
     
     let baseTypeName = "Xamarin.Forms.Element"
     let propertyBaseType = "Xamarin.Forms.BindableProperty"
+    let baseTargetTypeForAttachedProperties = "Xamarin.Forms.Element"
     
     type Options = {
         [<Option('m', "Mapping file", Required = true, HelpText = "Mapping file")>] MappingFile: string
@@ -75,7 +75,7 @@ module Entry =
             let readerData = getReaderData overwriteData.Assemblies
             readerData |> writeOutputIfDebug options.Debug "reader-data.json"
             
-            let bindings = Binder.bind logger readerData overwriteData
+            let bindings = Binder.bind logger baseTargetTypeForAttachedProperties readerData overwriteData
             bindings |> writeOutputIfDebug options.Debug "bindings.json"
             
             let optimizedBindings = Optimizer.optimize bindings

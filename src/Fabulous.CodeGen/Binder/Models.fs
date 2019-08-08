@@ -11,7 +11,7 @@ module Models =
           ModelType: string
           ConvertInputToModel: string
           ConvertModelToValue: string
-          IsInherited: bool  }
+          IsInherited: bool }
     
     type EventBinding =
         { Name: string
@@ -48,5 +48,4 @@ module Models =
     type Bindings =
         { Assemblies: string array
           OutputNamespace: string
-          BaseAttachedPropertyTargetType: string
           Types: TypeBinding array }
