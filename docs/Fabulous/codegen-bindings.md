@@ -161,17 +161,17 @@ See examples for these categories below.
 }
 ```
 
-| Field | Type | Required |
-| -- | -- | -- | -- |
-| Source | string | ✅ Yes |
-| Name | string | ❌ No |
-| UniqueName | string | ❌ No |
-| ShortName | string | ❌ No |
-| InputType | string | ❌ No |
-| ModelType | string | ❌ No |
-| ConvertInputToModel | string | ❌ No |
-| ConvertModelToValue | string | ❌ No |
-| UpdateCode | string | ❌ No |
+| Field               | Type   | Required |
+| ------------------- | ------ | -------- |
+| Source              | string | ✅ Yes   |
+| Name                | string | ❌ No    |
+| UniqueName          | string | ❌ No    |
+| ShortName           | string | ❌ No    |
+| InputType           | string | ❌ No    |
+| ModelType           | string | ❌ No    |
+| ConvertInputToModel | string | ❌ No    |
+| ConvertModelToValue | string | ❌ No    |
+| UpdateCode          | string | ❌ No    |
 
 #### Existing collection property
 
@@ -188,18 +188,18 @@ See examples for these categories below.
 }
 ```
 
-| Field | Type | Required | Remarks |
-| -- | -- | -- | -- | -- |
-| Source | string | ✅ Yes | |
-| Name | string | ❌ No | |
-| UniqueName | string | ❌ No | |
-| ShortName | string | ❌ No | |
-| ElementType | string | ❔Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
-| InputType | string | ❌ No | |
-| ModelType | string | ❌ No | |
-| ConvertInputToModel | string | ❌ No | |
-| ConvertModelToValue | string | ❌ No | |
-| UpdateCode | string | ❌ No | |
+| Field               | Type   | Required  | Remarks |
+| ------------------- | ------ | --------- | ------- |
+| Source              | string | ✅ Yes    |         |
+| Name                | string | ❌ No     |         |
+| UniqueName          | string | ❌ No     |         |
+| ShortName           | string | ❌ No     |         |
+| ElementType         | string | ❔Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
+| InputType           | string | ❌ No     |         |
+| ModelType           | string | ❌ No     |         |
+| ConvertInputToModel | string | ❌ No     |         |
+| ConvertModelToValue | string | ❌ No     |         |
+| UpdateCode          | string | ❌ No     |         |
 
 #### Dummy property
 
@@ -211,15 +211,15 @@ See examples for these categories below.
 }
 ```
 
-| Field | Type | Required | Remarks |
-| -- | -- | -- | -- | -- |
-| Source | string | ❌ No | Must be `null` or not declared |
-| Name | string | ✅ Yes | |
-| UniqueName | string | ❌ No | |
-| ShortName | string | ❌ No | |
-| ElementType | string | ❔Depends | Must be declared if property is a collection |
-| InputType | string | ✅ Yes | |
-| ModelType | string | ❌ No | |
-| ConvertInputToModel | string | ❌ No | |
-| ConvertModelToValue | string | ❌ No | |
-| UpdateCode | string | ❌ No | |
+| Field               | Type   | Required  | Remarks |
+| ------------------- | ------ | --------- | ------- |
+| Source              | string | ❌ No     | Must be `null` or not declared |
+| Name                | string | ✅ Yes    |         |
+| UniqueName          | string | ❌ No     |         |
+| ShortName           | string | ❌ No     |         |
+| ElementType         | string | ❔Depends | Must be declared if property is a collection |
+| InputType           | string | ✅ Yes    |         |
+| ModelType           | string | ❌ No     |         |
+| ConvertInputToModel | string | ❌ No     |         |
+| ConvertModelToValue | string | ❌ No     |         |
+| UpdateCode          | string | ❌ No     |         |
