@@ -108,6 +108,7 @@ Let's take this code for example:
 let view (model: Model) dispatch =  
     View.ContentPage(
         content=View.StackLayout(
+            automationId="stackLayoutId" // used for tryFindViewElement
             children=[ 
                 View.Label(text=sprintf "%d" model.Count)
                 View.Button(text="Increment", command=(fun () -> dispatch Increment))
@@ -150,6 +151,22 @@ let ``View should generate a valid interface``() =
     stepSlider.Value |> should equal 4.0
     stepSizeLabel.Text |> should equal "Step size: 4"
 ```
+
+We can use `tryFindViewElement` to check if a ViewElement is available. We can use it as follows with the view which we declared before:
+
+```fsharp
+ [<Test>]
+    let ``Check if ViewElement is available in View with tryFindViewElement``() =
+        let model = { Count = 5; Step = 4; TimerOn = true }
+        let actualView = App.view model ignore
+        // the params of tryFindViewElement is the AutomationId and the App.View
+        let stackElement = tryFindViewElement "stackLayoutId" actualView
+        let stack = match stackElement with // here we can check if the StackLayout is avaiable
+                    | Some v -> v |> StackLayoutViewer
+                    | _ -> failwithf "not found" 
+                        // Maybe you expect that there is no stacklayout which you want to handle in the tests here
+        stack.Children.Length |> should equal 6
+``` 
 
 ### Testing if a control dispatches the correct message
 
