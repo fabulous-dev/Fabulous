@@ -21,6 +21,14 @@
           "defaultValue": "null"
         },
         {
+          "name": "Effects",
+          "defaultValue": "null",
+          "inputType": "string list",
+          "modelType": "string[]",
+          "convToModel": "Array.ofList",
+          "updateCode": "updateEffects"
+        },
+        {
           "name": "Created",
           "uniqueName": "ElementCreated",
           "inputType": "obj -> unit",

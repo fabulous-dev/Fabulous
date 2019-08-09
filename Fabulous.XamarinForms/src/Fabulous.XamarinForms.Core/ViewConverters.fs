@@ -830,4 +830,19 @@ module Converters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> setUseSafeArea currValue
         | ValueSome _, ValueNone -> setUseSafeArea false
+
+    let updateEffects (prevValueOpt: string[] voption) (currValueOpt: string[] voption) (target: Xamarin.Forms.Element) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> 
+            let createEffect effectName = Effect.Resolve effectName
+            currValue 
+            |> Array.iter (fun v -> 
+                let effect = createEffect v
+                match target.Effects.Contains(effect) with
+                | true -> ()
+                | false -> target.Effects.Add(effect)
+            )
+        | ValueSome _, ValueNone -> target.Effects.Clear()
         
