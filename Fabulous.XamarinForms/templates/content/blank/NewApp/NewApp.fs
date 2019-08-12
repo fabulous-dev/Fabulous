@@ -4,6 +4,7 @@ namespace NewApp
 open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
+open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
 module App = 
