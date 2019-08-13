@@ -109,9 +109,9 @@ Let's take this code for example:
 let view (model: Model) dispatch =  
     View.ContentPage(
         content=View.StackLayout(
-            automationId="stackLayoutId" // used for tryFindViewElement and findViewElement
+            automationId="stackLayoutId"
             children=[ 
-                View.Label(text=sprintf "%d" model.Count)
+                View.Label(automationId="CountLabel", text=sprintf "%d" model.Count)
                 View.Button(text="Increment", command=(fun () -> dispatch Increment))
                 View.Button(text="Decrement", command=(fun () -> dispatch Decrement)) 
                 View.StackLayout(
@@ -139,21 +139,15 @@ The following approach uses the Viewer API. This is a way but with this you have
 
 ```fsharp
 [<Test>]
-let ``View should generate a valid interface``() =
+let ``View should generate a label showing the count number of the model``() =
     let model = { Count = 5; Step = 4; TimerOn = true }
     let actualView = App.view model ignore
-
+    
     let contentPage = ContentPageViewer(actualView)
     let stackLayout = StackLayoutViewer(contentPage.Content)
     let countLabel = LabelViewer(stackLayout.Children.[0])
-    let timerSwitch = SwitchViewer(StackLayoutViewer(stackLayout.Children.[3]).Children.[1])
-    let stepSlider = SliderViewer(stackLayout.Children.[4])
-    let stepSizeLabel = LabelViewer(stackLayout.Children.[5])
-
+    
     countLabel.Text |> should equal "5"
-    timerSwitch.IsToggled |> should equal true
-    stepSlider.Value |> should equal 4.0
-    stepSizeLabel.Text |> should equal "Step size: 4"
 ```
 
 #### FindViewElement / TryFindViewElement
@@ -162,27 +156,26 @@ This approach is the recommended way for testing and to get the ViewElements in 
 
 ##### findViewElement
 ```fsharp
-let actualView = App.view  model  ignore
-let stacklayout = actualView 
-		|> findViewElement "stackLayoutId" 
-		|> StackLayoutViewer
+[<Test>]
+let ``View should generate a label showing the count number of the model``() =
+    let model = { Count = 5; Step = 4; TimerOn = true }
+    let actualView = App.view model ignore
+    
+    let countLabel = findViewElement "CountLabel" actualView |> LabelViewer
+    
+    countLabel.Text |> should equal "5"
 ```
 
 ##### tryFindViewElement
 `tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement. 
 
 ```fsharp
- [<Test>]
-    let ``Check if ViewElement is available in View with tryFindViewElement``() =
-        let model = { Count = 5; Step = 4; TimerOn = true }
-        let actualView = App.view model ignore
-        // the params of tryFindViewElement is the AutomationId and the App.View
-        let stackElement = tryFindViewElement "stackLayoutId" actualView
-        let stack = match stackElement with // here we can check if the StackLayout is avaiable
-                    | Some v -> v |> StackLayoutViewer
-                    | _ -> failwithf "not found" 
-                        // Maybe you expect that there is no stacklayout which you want to handle in the tests here
-        stack.Children.Length |> should equal 6
+[<Test>]
+let ``When user is authenticated, View should not include a connection button``() =
+    let model = { Count = 5; Step = 4; TimerOn = true }
+    let actualView = App.view model ignore
+    
+    tryFindViewElement "ConnectionButton" actualView |> should equal None
 ``` 
 
 ### Testing if a control dispatches the correct message
