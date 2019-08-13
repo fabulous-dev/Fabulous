@@ -27,7 +27,7 @@ module Extractor =
         
     let readAttachedPropertiesFromType
             (convertTypeName: string -> string)
-            (getStringRepresentationOfDefaultValue: obj -> string)
+            (tryGetStringRepresentationOfDefaultValue: obj -> string option)
             (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
@@ -37,19 +37,28 @@ module Extractor =
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
             | Some data ->
+                let attachedPropertyType = convertTypeName data.Type
+                let defaultValue = 
+                    tryGetStringRepresentationOfDefaultValue data.DefaultValue
+                    |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" attachedPropertyType)
+
                 Some
                     ({ Name = data.Name
-                       Type = convertTypeName data.Type
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderAttachedProperty)
+                       Type = attachedPropertyType
+                       DefaultValue = defaultValue } : ReaderAttachedProperty)
         )
         |> Array.choose id
 
     let readPropertiesFromType
             (convertTypeName: string -> string)
-            (getStringRepresentationOfDefaultValue: obj -> string)
+            (tryGetStringRepresentationOfDefaultValue: obj -> string option)
             (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
+
+        let getDefaultValueAsString typeName (value: obj) =
+            tryGetStringRepresentationOfDefaultValue value
+            |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" typeName)
 
         let propertiesWithBindingFields =
             Resolver.getAllPropertiesWithBindingFieldForType propertyBaseType ``type``
@@ -57,21 +66,25 @@ module Extractor =
                 match tryGetProperty (``type``.FullName, tdef.Name) with
                 | None -> None
                 | Some data ->
+                    let propertyType = convertTypeName data.Type
+
                     Some
                         ({ Name = data.Name
-                           Type = convertTypeName data.Type
+                           Type = propertyType
                            ElementType = Resolver.getElementTypeForType ``type``
-                           DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : ReaderProperty)
+                           DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : ReaderProperty)
             )
             |> Array.choose id
 
         let listPropertiesWithNoSetter =
             Resolver.getAllListPropertiesWithNoSetterForType ``type``
             |> Array.map (fun pdef ->
+                let propertyType = convertTypeName pdef.PropertyType.FullName
+
                 { Name = pdef.Name
-                  Type = convertTypeName pdef.PropertyType.FullName
+                  Type = propertyType
                   ElementType = Resolver.getElementTypeForType ``type``
-                  DefaultValue = getStringRepresentationOfDefaultValue null } : ReaderProperty
+                  DefaultValue = getDefaultValueAsString propertyType null } : ReaderProperty
             )
 
         Array.concat [ propertiesWithBindingFields; listPropertiesWithNoSetter ]
@@ -79,7 +92,7 @@ module Extractor =
     let readType
             (convertTypeName: string -> string)
             (convertEventType: string option -> string)
-            (getStringRepresentationOfDefaultValue: obj -> string)
+            (tryGetStringRepresentationOfDefaultValue: obj -> string option)
             (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
             (baseTypeName: string)
@@ -87,5 +100,5 @@ module Extractor =
         { Name = tdef.FullName
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertEventType tdef
-          AttachedProperties = readAttachedPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
-          Properties = readPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
+          AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
+          Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }

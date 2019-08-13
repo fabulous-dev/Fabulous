@@ -37,9 +37,9 @@ module Resolver =
             findAllDerivingTypes allTypes remainingTypesToCheck newMatchingTypes
     
     /// Finds all types that derive from a given base type (on all depth levels)
-    let getAllTypesDerivingFromBaseType (shouldIgnoreType: TypeDefinition -> bool) (allTypes: TypeDefinition list) baseTypeName =
+    let getAllTypesDerivingFromBaseType (isTypeResolvable: string -> bool) (allTypes: TypeDefinition list) baseTypeName =
         getAllTypesDerivingFromBaseTypeInner allTypes baseTypeName
-        |> List.filter (not << shouldIgnoreType)
+        |> List.filter (fun tdef -> tdef.FullName |> isTypeResolvable)
         |> List.rev
         |> List.toArray
         

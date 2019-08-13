@@ -7,18 +7,16 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyReaderTests\ConvertersTests.fs" />
-    <Compile Include="BinderTests.fs" />
+    <Compile Include="XFConvertersTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="FsUnit" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
+    <ProjectReference Include="..\..\tools\Fabulous.XamarinForms.Generator\Fabulous.XamarinForms.Generator.fsproj" />
   </ItemGroup>
-  <Import Project="..\..\Packages.targets" />
+  <Import Project="..\..\..\Packages.targets" />
 </Project>

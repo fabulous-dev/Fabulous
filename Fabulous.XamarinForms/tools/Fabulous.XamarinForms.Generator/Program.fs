@@ -46,12 +46,12 @@ module Entry =
         let assemblies = Reflection.loadAllAssemblies assemblies
         
         let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
-        let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.shouldIgnoreType allTypes baseTypeName
+        let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.isTypeResolvable allTypes baseTypeName
         
         let tryGetProperty = Reflection.tryGetProperty assemblies
         
         allTypesDerivingFromBaseType
-        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.convertEventType XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
+        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.convertEventType XFConverters.tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
         
     let writeOutputIfDebug debug path data =
         if debug then Json.serialize data |> File.write path

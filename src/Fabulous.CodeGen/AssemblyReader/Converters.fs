@@ -21,45 +21,45 @@ module Converters =
         | "System.Single" -> "single"
         | "System.Decimal" -> "decimal"
         | "System.String" -> "string"
-        | "System.Object" -> "object"
-        | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "obj list"
+        | "System.Object" -> "obj"
+        | "System.Collections.Generic.IList`1[System.Object]" -> "obj list"
         | "System.Collections.IList" -> "obj list"
-        | _ -> typeName.Replace("+", ".")
+        | _ -> typeName
                
     /// Converts the event args type to the event type (e.g. Xamarin.Forms.TextChangedEventArgs => Xamarin.Forms.TextChangedEventArgs -> unit)
-    let convertEventType eventArgsType =
-        match eventArgsType with
+    let convertEventType eventArgsTypeOpt =
+        match eventArgsTypeOpt with
         | None -> "unit -> unit"
-        | Some eventArgs -> sprintf "%s -> unit" eventArgs
+        | Some eventArgsType -> eventArgsType + " -> unit"
         
     /// Gets the string representation of the default value
-    let getStringRepresentationOfDefaultValue (defaultValue: obj) =
+    let tryGetStringRepresentationOfDefaultValue (defaultValue: obj) =
         match defaultValue with
-        | null -> "null"
-        | :? bool as b when b = true -> "true"
-        | :? bool as b when b = false -> "false"
-        | :? sbyte as sbyte -> sbyte.ToString() + "y"
-        | :? byte as byte -> byte.ToString() + "uy"
-        | :? int16 as int16 -> int16.ToString() + "s"
-        | :? uint16 as uint16 -> uint16.ToString() + "us"
-        | :? int as int -> int.ToString()
-        | :? uint32 as uint32 -> uint32.ToString() + "u"
-        | :? int64 as int64 -> int64.ToString() + "L"
-        | :? uint64 as uint64 -> uint64.ToString() + "UL"
-        | :? bigint as bigint -> bigint.ToString() + "I"
-        | :? float as float -> float.ToString()
-        | :? double as double -> double.ToString()
-        | :? float32 as float32 -> float32.ToString() + "f"
-        | :? single as single -> single.ToString() + "m"
-        | :? decimal as decimal -> decimal.ToString() + "m"
-        | :? DateTime as dateTime when dateTime = DateTime.MinValue -> "System.DateTime.MinValue"
-        | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> "System.DateTime.MaxValue"
-        | :? DateTime as dateTime -> sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day
-        | :? string as string when string = "" -> "System.String.Empty"
+        | null -> Some "null"
+        | :? bool as b when b = true -> Some "true"
+        | :? bool as b when b = false -> Some "false"
+        | :? sbyte as sbyte -> Some (sbyte.ToString() + "y")
+        | :? byte as byte -> Some (byte.ToString() + "uy")
+        | :? int16 as int16 -> Some (int16.ToString() + "s")
+        | :? uint16 as uint16 -> Some (uint16.ToString() + "us")
+        | :? int as int -> Some (int.ToString())
+        | :? uint32 as uint32 -> Some (uint32.ToString() + "u")
+        | :? int64 as int64 -> Some (int64.ToString() + "L")
+        | :? uint64 as uint64 -> Some (uint64.ToString() + "UL")
+        | :? bigint as bigint -> Some (bigint.ToString() + "I")
+        | :? float as float -> Some (float.ToString())
+        | :? double as double -> Some (double.ToString())
+        | :? float32 as float32 -> Some (float32.ToString() + "f")
+        | :? single as single -> Some (single.ToString() + "f")
+        | :? decimal as decimal -> Some (decimal.ToString() + "m")
+        | :? DateTime as dateTime when dateTime = DateTime.MinValue -> Some "System.DateTime.MinValue"
+        | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> Some "System.DateTime.MaxValue"
+        | :? DateTime as dateTime -> Some (sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day)
+        | :? string as string when string = "" -> Some "System.String.Empty"
         | value when value.GetType().IsEnum ->
             let typ = defaultValue.GetType()
             let valueName = Enum.GetName(typ, defaultValue)
             match valueName with
-            | null -> sprintf "Unchecked.defaultof<%s>" typ.FullName
-            | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
-        | _ -> defaultValue.ToString().Replace("+", ".")
+            | null -> None
+            | _ -> Some (sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName)
+        | _ -> Some (defaultValue.ToString().Replace("+", "."))
