@@ -8,6 +8,7 @@
   "types": [
     {
       "type": "Xamarin.Forms.Element",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "AutomationId"
@@ -44,7 +45,16 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.FormattedString",
+      "properties": [
+        {
+          "source": "Spans"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.NavigableElement",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "Style"
@@ -60,6 +70,7 @@
     },
     {
       "type": "Xamarin.Forms.VisualElement",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "AnchorX"
@@ -146,6 +157,7 @@
     },
     {
       "type": "Xamarin.Forms.View",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "HorizontalOptions"
@@ -169,6 +181,7 @@
     },
     {
       "type": "Xamarin.Forms.GestureElement",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": null,
@@ -264,6 +277,7 @@
     },
     {
       "type": "Xamarin.Forms.Layout",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "IsClippedToBounds"
@@ -454,6 +468,37 @@
       ]
     },
     {
+      "type": "Fabulous.XamarinForms.CustomEntryCell",
+      "name": "EntryCell",
+      "properties": [
+        {
+          "source": "Label"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Keyboard"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+        },
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.TableView",
       "properties":[
         {
@@ -474,7 +519,7 @@
           "shortName": "items",
           "defaultValue": "[]",
           "inputType": "(string * ViewElement list) list",
-          "convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
+          "convertInputToModel": "ViewConverters.convertTableViewRoot",
           "updateCode": "ViewUpdaters.updateTableViewItems"
         }
       ]
@@ -615,6 +660,321 @@
       "properties": [
         {
           "source": "Content"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.DatePicker",
+      "properties": [
+        {
+          "source": "Date"
+        },
+        {
+          "source": "Format"
+        },
+        {
+          "source": "MinimumDate"
+        },
+        {
+          "source": "MaximumDate"
+        }
+      ],
+      "events": [
+        {
+          "source": "DateSelected"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Picker",
+      "properties": [
+        {
+          "source": "ItemsSource",
+          "name": "items",
+          "inputType": "seq<'T>",
+          "modelType": "System.Collections.IList",
+          "convertInputToModel": "ViewConverters.convertSeqToIListUntyped"
+        },
+        {
+          "source": "SelectedIndex"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "Title"
+        },
+        {
+          "source": "TitleColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "SelectedIndexChanged"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.Frame",
+      "properties": [
+        {
+          "source": "BorderColor"
+        },
+        {
+          "source": "CornerRadius"
+        },
+        {
+          "source": "HasShadow"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Image",
+      "properties": [
+        {
+          "source": "Source"
+        },
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "IsOpaque"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ImageButton",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "BorderColor"
+        },
+        {
+          "source": "BorderWidth"
+        },
+        {
+          "source": "CornerRadius"
+        },
+        {
+          "source": "IsOpaque"
+        },
+        {
+          "source": "Padding"
+        }
+      ],
+      "events":[
+        {
+          "source": "Clicked"
+        },
+        {
+          "source": "Pressed"
+        },
+        {
+          "source": "Released"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.InputView",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "Keyboard"
+        },
+        {
+          "source": "IsReadOnly"
+        },
+        {
+          "source": "IsSpellCheckEnabled"
+        },
+        {
+          "source": "MaxLength"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SearchBar",
+      "properties": [
+        {
+          "source": "CancelButtonColor"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "CanExecute"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Editor",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "AutoSize"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "IsTextPredictionEnabled"
+        }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+        },
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Entry",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "IsPassword"
+        },
+        {
+          "source": "IsTextPredictionEnabled"
+        },
+        {
+          "source": "ReturnType"
+        },
+        {
+          "source": "CursorPosition",
+          "updateCode": "ViewUpdaters.updateEntryCursorPosition"
+        },
+        {
+          "source": "SelectionLength",
+          "updateCode": "ViewUpdaters.updateEntryCursorPosition"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Label",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "VerticalTextAlignment"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "FormattedText"
+        },
+        {
+          "source": "LineBreakMode"
+        },
+        {
+          "source": "LineHeight"
+        },
+        {
+          "source": "MaxLines"
+        },
+        {
+          "source": "TextDecorations"
         }
       ]
     }

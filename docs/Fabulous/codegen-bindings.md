@@ -31,6 +31,7 @@ CodeGen - Bindings file format
 {
     "type": "Xamarin.Forms.ListView",
     "customType": "Fabulous.XamarinForms.CustomListView",
+    "canBeInstantiated": true,
     "name": "ListView",
     "properties": [
         // See Property
@@ -48,6 +49,8 @@ CodeGen - Bindings file format
 | ---------- | --------- | ----------- | -- |
 | Type | string | ✅ Yes | Full name of a control inside one of the dlls to bind |
 | CustomType | string | ❌ No | If specified, this type will be used when instantiating this control instead of the binded type. Not necessary that the control exists at generation time |
+| CanBeInstantiated | boolean | ❌ No | Indicates if the code generator should provide a public constructor for this type. If not specified, the value defaults to `true` |
+| Name | boolean | ❌ No | The name that will be used when generating code (e.g. `View.MyCustomControl()`). If not specified, the name will be inferred from the `Type` field |
 | Properties | Property array | ❌ No | All properties of this control to include in the code generation |
 | Events | Event array | ❌ No | All events of this control to include in the code generation |
 | AttachedProperties | AttachedProperty array | ❌ No | All attached properties of this control to include in the code generation |

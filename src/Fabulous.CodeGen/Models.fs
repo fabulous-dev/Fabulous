@@ -82,6 +82,9 @@ module Models =
         /// The full name of the type to instantiate (e.g. Fabulous.XamarinForms.CustomButton)
         member val CustomType: string option = None with get, set
 
+        /// Indicates if this type can be instantiated by itself and if the generator should provide a public constructor for it
+        member val CanBeInstantiated: bool = true with get, set
+
         /// The name of the type as used inside Fabulous (e.g. MyWonderfulButton => View.MyWonderfulButton(...))
         member val Name: string option = None with get, set
         
