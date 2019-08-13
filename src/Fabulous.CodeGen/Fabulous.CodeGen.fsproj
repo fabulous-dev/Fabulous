@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <Description>F# Functional App Dev Framework</Description>
+    <Description>Code generator for wrapping existing controls to be able to use them in Fabulous-based frameworks</Description>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers.fs" />

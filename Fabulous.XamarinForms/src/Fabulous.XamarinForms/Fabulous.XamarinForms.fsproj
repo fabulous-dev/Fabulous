@@ -19,7 +19,5 @@
     <PackageReference Include="Xamarin.Forms" />
     <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>

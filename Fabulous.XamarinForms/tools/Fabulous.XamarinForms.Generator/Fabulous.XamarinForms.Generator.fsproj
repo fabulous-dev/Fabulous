@@ -9,8 +9,8 @@
     <PackageReference Include="Mono.Cecil" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Xamarin.Forms" />
-    <PackageReference Include="Microsoft.FSharpLu.Json" Version="0.11.2" />
-    <PackageReference Include="CommandLineParser.FSharp" Version="2.5.0" />
+    <PackageReference Include="Microsoft.FSharpLu.Json" />
+    <PackageReference Include="CommandLineParser.FSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Reflection.fs" />
