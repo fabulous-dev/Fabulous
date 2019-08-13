@@ -1,3 +1,4 @@
+
 Fabulous for Xamarin.Forms - Guide
 =======
 
@@ -108,7 +109,7 @@ Let's take this code for example:
 let view (model: Model) dispatch =  
     View.ContentPage(
         content=View.StackLayout(
-            automationId="stackLayoutId" // used for tryFindViewElement
+            automationId="stackLayoutId" // used for tryFindViewElement and findViewElement
             children=[ 
                 View.Label(text=sprintf "%d" model.Count)
                 View.Button(text="Increment", command=(fun () -> dispatch Increment))
@@ -133,6 +134,9 @@ From there, we create the Viewers to help us read the properties of the controls
 
 And finally, we assert that the properties have the expected values.
 
+#### Viewer API
+The following approach uses the Viewer API. This is a way but with this you have to know exactly at which position the child you need is. 
+
 ```fsharp
 [<Test>]
 let ``View should generate a valid interface``() =
@@ -152,7 +156,20 @@ let ``View should generate a valid interface``() =
     stepSizeLabel.Text |> should equal "Step size: 4"
 ```
 
-We can use `tryFindViewElement` to check if a ViewElement is available. We can use it as follows with the view which we declared before:
+#### FindViewElement / TryFindViewElement
+With `findViewElement` and `tryFindViewElement` you don't need to know where exactly the child is positioned. You have to set `automationId` on the ViewElements which will be used by those functions to find the element in the tree. 
+This approach is the recommended way for testing and to get the ViewElements in a View.
+
+##### findViewElement
+```fsharp
+let actualView = App.view  model  ignore
+let stacklayout = actualView 
+		|> findViewElement "stackLayoutId" 
+		|> StackLayoutViewer
+```
+
+##### tryFindViewElement
+`tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement. 
 
 ```fsharp
  [<Test>]
