@@ -1,3 +1,4 @@
+
 Fabulous for Xamarin.Forms - Guide
 =======
 
@@ -108,8 +109,9 @@ Let's take this code for example:
 let view (model: Model) dispatch =  
     View.ContentPage(
         content=View.StackLayout(
+            automationId="stackLayoutId"
             children=[ 
-                View.Label(text=sprintf "%d" model.Count)
+                View.Label(automationId="CountLabel", text=sprintf "%d" model.Count)
                 View.Button(text="Increment", command=(fun () -> dispatch Increment))
                 View.Button(text="Decrement", command=(fun () -> dispatch Decrement)) 
                 View.StackLayout(
@@ -132,24 +134,49 @@ From there, we create the Viewers to help us read the properties of the controls
 
 And finally, we assert that the properties have the expected values.
 
+#### Viewer API
+The following approach uses the Viewer API. This is a way but with this you have to know exactly at which position the child you need is. 
+
 ```fsharp
 [<Test>]
-let ``View should generate a valid interface``() =
+let ``View should generate a label showing the count number of the model``() =
     let model = { Count = 5; Step = 4; TimerOn = true }
     let actualView = App.view model ignore
-
+    
     let contentPage = ContentPageViewer(actualView)
     let stackLayout = StackLayoutViewer(contentPage.Content)
     let countLabel = LabelViewer(stackLayout.Children.[0])
-    let timerSwitch = SwitchViewer(StackLayoutViewer(stackLayout.Children.[3]).Children.[1])
-    let stepSlider = SliderViewer(stackLayout.Children.[4])
-    let stepSizeLabel = LabelViewer(stackLayout.Children.[5])
-
+    
     countLabel.Text |> should equal "5"
-    timerSwitch.IsToggled |> should equal true
-    stepSlider.Value |> should equal 4.0
-    stepSizeLabel.Text |> should equal "Step size: 4"
 ```
+
+#### FindViewElement / TryFindViewElement
+With `findViewElement` and `tryFindViewElement` you don't need to know where exactly the child is positioned. You have to set `automationId` on the ViewElements which will be used by those functions to find the element in the tree. 
+This approach is the recommended way for testing and to get the ViewElements in a View.
+
+##### findViewElement
+```fsharp
+[<Test>]
+let ``View should generate a label showing the count number of the model``() =
+    let model = { Count = 5; Step = 4; TimerOn = true }
+    let actualView = App.view model ignore
+    
+    let countLabel = findViewElement "CountLabel" actualView |> LabelViewer
+    
+    countLabel.Text |> should equal "5"
+```
+
+##### tryFindViewElement
+`tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement. 
+
+```fsharp
+[<Test>]
+let ``When user is authenticated, View should not include a connection button``() =
+    let model = { Count = 5; Step = 4; TimerOn = true }
+    let actualView = App.view model ignore
+    
+    tryFindViewElement "ConnectionButton" actualView |> should equal None
+``` 
 
 ### Testing if a control dispatches the correct message
 
