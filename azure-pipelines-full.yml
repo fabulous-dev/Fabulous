@@ -10,6 +10,12 @@ jobs:
       sudo apt-get update
       sudo apt-get install fsharp
     displayName: 'Install F#'
+  - task: UseDotNet@2
+    displayName: Stick with .NET Core SDK version compatible to Mono toolchain
+    inputs:
+      packageType: sdk
+      version: 2.2.301  # See also: https://github.com/mono/mono/issues/13537
+      installationPath: $(Agent.ToolsDirectory)/dotnet
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
