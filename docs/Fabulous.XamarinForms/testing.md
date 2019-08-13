@@ -96,7 +96,7 @@ The `view` function returns a `ViewElement` value (which is a dictionary of attr
 Unfortunately when creating a control through `View.XXX`, we lose the control's type and access to its properties. Fabulous creates a `ViewElement` which encapsulates all those data.  
 
 In order to test in a safe way, Fabulous provides type-safe helpers for every controls from `Xamarin.Forms.Core`.  
-You can find them in the `Fabulous.DynamicViews` namespace. They are each named after the control they represent.
+You can find them in the `Fabulous.XamarinForms` namespace. They are each named after the control they represent.
 
 Example: `StackLayoutViewer` will let you access the properties of a `StackLayout`.  
 
