@@ -39,13 +39,14 @@ module XFConverters =
             | x when x = LayoutOptions.CenterAndExpand -> Some "Xamarin.Forms.LayoutOptions.CenterAndExpand"
             | x when x = LayoutOptions.EndAndExpand -> Some "Xamarin.Forms.LayoutOptions.EndAndExpand"
             | x when x = LayoutOptions.FillAndExpand -> Some "Xamarin.Forms.LayoutOptions.FillAndExpand"
-            | _ -> None
+            | x -> Some (sprintf "Xamarin.Forms.LayoutOptions(Xamarin.Forms.LayoutAlignment.%s, %s)" (Enum.GetName(typeof<LayoutAlignment>, x.Alignment)) (if x.Expands then "true" else "false"))
         | :? Button.ButtonContentLayout as buttonContentLayout ->
             tryGetStringRepresentationOfDefaultValue buttonContentLayout.Position
             |> Option.map (fun positionName -> sprintf "Xamarin.Forms.Button.ButtonContentLayout(%s, %s)" positionName (buttonContentLayout.Spacing.ToString()))
         | :? Rectangle as rectangle when rectangle = Rectangle.Zero -> Some "Xamarin.Forms.Rectangle.Zero"
-        | :? Rectangle as rectangle -> Some (sprintf "Xamarin.Forms.Rectangle(%0f, %0f, %0f, %0f)" rectangle.X rectangle.Y rectangle.Width rectangle.Height)
+        | :? Rectangle as rectangle -> Some (sprintf "Xamarin.Forms.Rectangle(%s, %s, %s, %s)" (rectangle.X.ToString()) (rectangle.Y.ToString()) (rectangle.Width.ToString()) (rectangle.Height.ToString()))
         | :? Size as size when size.IsZero -> Some "Xamarin.Forms.Size.Zero"
+        | :? Size as size -> Some (sprintf "Xamarin.Forms.Size(%s, %s)" (size.Width.ToString()) (size.Height.ToString()))
         | _ -> Converters.tryGetStringRepresentationOfDefaultValue defaultValue
         
     let convertEventType (eventArgsType: string option) =
