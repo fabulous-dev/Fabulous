@@ -20,3 +20,13 @@ Fabulous\.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
 Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\/Xamarin\.Forms\.Core\.fs
 Fabulous\.StaticView/samples/**/*\.designer\.cs
 Fabulous\.XamarinForms/samples/**/*\.designer\.cs
+
+bindings\.json
+
+expanded-bindings\.json
+
+Fabulous\.XamarinForms/src/Fabulous\.XamarinForms/Xamarin\.Forms\.Core\.v2\.fs
+
+optimized-bindings\.json
+
+reader-data\.json
