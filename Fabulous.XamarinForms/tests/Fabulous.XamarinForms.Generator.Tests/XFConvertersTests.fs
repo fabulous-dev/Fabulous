@@ -35,10 +35,6 @@ module XFConvertersTests =
         testTryGetStringRepresentationOfDefaultValue Unchecked.defaultof<Color> "Xamarin.Forms.Color.Default"
         
     [<Test>]
-    let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for TimeSpan.Zero``() =
-        testTryGetStringRepresentationOfDefaultValue TimeSpan.Zero "System.TimeSpan.Zero"
-        
-    [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for Keyboard.Default``() =
         testTryGetStringRepresentationOfDefaultValue Keyboard.Default "Xamarin.Forms.Keyboard.Default"
         

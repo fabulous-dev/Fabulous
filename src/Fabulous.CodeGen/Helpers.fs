@@ -2,6 +2,20 @@
 namespace Fabulous.CodeGen
 
 open System.IO
+open Newtonsoft.Json
+
+module Json =
+    let jsonSettings =
+        let settings = JsonSerializerSettings()
+        settings.Formatting <- Formatting.Indented
+        settings.Converters.Add(Microsoft.FSharpLu.Json.CompactUnionJsonConverter())
+        settings
+        
+    let serialize obj = JsonConvert.SerializeObject(obj, jsonSettings)
+    let deserialize<'a> str = JsonConvert.DeserializeObject<'a>(str, jsonSettings)
+    
+module File =
+    let write path content = File.WriteAllText(path, content)
 
 module Helpers =
     let removeText textToRemove (originalStr: string) =
@@ -15,6 +29,11 @@ module Helpers =
         { traceInformation: string -> unit
           traceWarning: string -> unit
           traceError: string -> unit }
+        
+    type Configuration =
+        { baseTypeName: string
+          propertyBaseType: string
+          baseTargetTypeForAttachedProperties: string }
         
     type MaybeBuilder() =
         let mutable _logger: Logger option = None
@@ -64,3 +83,6 @@ module Helpers =
             None
        
     let nullable = new NullableBuilder()
+        
+    let writeOutputIfDebug debug path data =
+        if debug then Json.serialize data |> File.write path

@@ -9,7 +9,6 @@
     <PackageReference Include="Mono.Cecil" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Xamarin.Forms" />
-    <PackageReference Include="Microsoft.FSharpLu.Json" />
     <PackageReference Include="CommandLineParser.FSharp" />
   </ItemGroup>
   <ItemGroup>

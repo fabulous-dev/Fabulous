@@ -24,7 +24,6 @@ module XFConverters =
     let rec tryGetStringRepresentationOfDefaultValue (defaultValue: obj) : string option =
         match defaultValue with
         | :? Color as color when color = Color.Default || color = Unchecked.defaultof<Color> -> Some "Xamarin.Forms.Color.Default"
-        | :? TimeSpan as timeSpan when timeSpan = TimeSpan.Zero -> Some "System.TimeSpan.Zero"
         | :? Keyboard as keyboard when keyboard = Keyboard.Default -> Some "Xamarin.Forms.Keyboard.Default"
         | :? Font as font when font.IsDefault -> Some "Xamarin.Forms.Font.Default"
         | :? Thickness as thickness when thickness = Unchecked.defaultof<Thickness> -> Some "Xamarin.Forms.Thickness(0.)"

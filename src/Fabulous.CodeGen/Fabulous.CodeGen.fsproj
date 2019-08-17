@@ -21,11 +21,13 @@
     <Compile Include="Generator\Models.fs" />
     <Compile Include="Generator\Preparator.fs" />
     <Compile Include="Generator\CodeGenerator.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Mono.Cecil" />
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Microsoft.FSharpLu.Json" />
   </ItemGroup>
   <Import Project="..\..\Packages.targets" />
 </Project>

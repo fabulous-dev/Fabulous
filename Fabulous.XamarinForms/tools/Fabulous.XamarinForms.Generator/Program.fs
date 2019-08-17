@@ -1,34 +1,11 @@
 namespace Fabulous.XamarinForms.Generator
 
 open System.Diagnostics
-open System.IO
 open CommandLine
-open Fabulous.CodeGen.AssemblyReader
-open Fabulous.CodeGen.Binder
-open Fabulous.CodeGen.Generator
+open Fabulous.CodeGen
 open Fabulous.CodeGen.Helpers
-open Fabulous.CodeGen.Models
-open Newtonsoft.Json
-
-module Json =
-    let jsonSettings =
-        let settings = JsonSerializerSettings()
-        settings.Formatting <- Formatting.Indented
-        settings.Converters.Add(Microsoft.FSharpLu.Json.CompactUnionJsonConverter())
-        settings
-        
-    let serialize obj = JsonConvert.SerializeObject(obj, jsonSettings)
-    let deserialize<'a> str = JsonConvert.DeserializeObject<'a>(str, jsonSettings)
-    
-module File =
-    let write path content = File.WriteAllText(path, content)
     
 module Entry =
-    
-    let baseTypeName = "Xamarin.Forms.Element"
-    let propertyBaseType = "Xamarin.Forms.BindableProperty"
-    let baseTargetTypeForAttachedProperties = "Xamarin.Forms.Element"
-    
     type Options = {
         [<Option('m', "Mapping file", Required = true, HelpText = "Mapping file")>] MappingFile: string
         [<Option('o', "Output file", Required = true, HelpText = "Output file")>] OutputFile: string
@@ -41,25 +18,15 @@ module Entry =
         | :? Parsed<Options> as parsedOptions -> Some (parsedOptions.Value)
         | _ -> None
         
-    let getReaderData assemblies =
-        let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
-        let assemblies = Reflection.loadAllAssemblies assemblies
-        
-        let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
-        let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.isTypeResolvable allTypes baseTypeName
-        
-        let tryGetProperty = Reflection.tryGetProperty assemblies
-        
-        allTypesDerivingFromBaseType
-        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.convertEventType XFConverters.tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
-        
-    let writeOutputIfDebug debug path data =
-        if debug then Json.serialize data |> File.write path
-        
     let logger =
         { traceInformation = Trace.TraceInformation
           traceWarning = Trace.TraceWarning
           traceError = Trace.TraceError }
+        
+    let configuration =
+        { baseTypeName = "Xamarin.Forms.Element"
+          propertyBaseType = "Xamarin.Forms.BindableProperty"
+          baseTargetTypeForAttachedProperties = "Xamarin.Forms.Element" }
 
     [<EntryPoint>]
     let main args =
@@ -68,23 +35,14 @@ module Entry =
         Trace.Listeners.Add(traceListener) |> ignore
         
         match tryReadOptions args with
-        | None -> 1 // Exit because no argument
+        | None -> 1 // Exit because missing arguments
         | Some options ->
-            let overwriteData = options.MappingFile |> File.ReadAllText |> Json.deserialize<OverwriteData>
-            
-            let readerData = getReaderData overwriteData.Assemblies
-            readerData |> writeOutputIfDebug options.Debug "reader-data.json"
-            
-            let bindings = Binder.bind logger baseTargetTypeForAttachedProperties readerData overwriteData
-            bindings |> writeOutputIfDebug options.Debug "bindings.json"
-            
-            let optimizedBindings = Optimizer.optimize bindings
-            optimizedBindings |> writeOutputIfDebug options.Debug "optimized-bindings.json"
-            
-            let expandedBindings = Expander.expand readerData optimizedBindings
-            expandedBindings |> writeOutputIfDebug options.Debug "expanded-bindings.json"
-            
-            CodeGenerator.generateCode expandedBindings
-            |> File.write options.OutputFile
-            
+            Program.mkProgram
+                Reflection.loadAllAssemblies
+                Reflection.tryGetProperty
+                configuration
+                logger
+            |> Program.withDebug options.Debug
+            |> Program.withIsTypeResolvable XFConverters.isTypeResolvable
+            |> Program.run options.MappingFile options.OutputFile
             0

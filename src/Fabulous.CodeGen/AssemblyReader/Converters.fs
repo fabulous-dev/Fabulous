@@ -56,6 +56,7 @@ module Converters =
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> Some "System.DateTime.MaxValue"
         | :? DateTime as dateTime -> Some (sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day)
         | :? string as string when string = "" -> Some "System.String.Empty"
+        | :? TimeSpan as timeSpan when timeSpan = TimeSpan.Zero -> Some "System.TimeSpan.Zero"
         | value when value.GetType().IsEnum ->
             let typ = defaultValue.GetType()
             let valueName = Enum.GetName(typ, defaultValue)

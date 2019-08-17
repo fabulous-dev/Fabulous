@@ -94,6 +94,10 @@ module ConvertersTests =
         let now = System.DateTime.UtcNow
         let expectedValue = sprintf "System.DateTime(%i, %i, %i)" now.Year now.Month now.Day
         Converters.tryGetStringRepresentationOfDefaultValue now |> should equal (Some expectedValue)
+        
+    [<Test>]
+    let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for TimeSpan.Zero``() =
+        Converters.tryGetStringRepresentationOfDefaultValue TimeSpan.Zero |> should equal "System.TimeSpan.Zero"
 
     [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for enum``() =
