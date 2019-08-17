@@ -468,8 +468,9 @@
       ]
     },
     {
-      "type": "Fabulous.XamarinForms.CustomEntryCell",
-      "name": "EntryCell",
+      "type": "Xamarin.Forms.EntryCell",
+      "name": "XFEntryCell",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "Label"
@@ -492,7 +493,13 @@
           "source": "Completed",
           "inputType": "string -> unit",
           "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
-        },
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomEntryCell",
+      "name": "EntryCell",
+      "events": [
         {
           "source": "TextChanged"
         }
@@ -724,7 +731,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.Frame",
+      "type": "Xamarin.Forms.Frame",
       "properties": [
         {
           "source": "BorderColor"
