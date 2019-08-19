@@ -3,9 +3,9 @@ namespace Fabulous.XamarinForms.Generator
 open System.Diagnostics
 open CommandLine
 open Fabulous.CodeGen
-open Fabulous.CodeGen.Helpers
+open Fabulous.CodeGen.Models
     
-module Entry =
+module Program =
     type Options = {
         [<Option('m', "Mapping file", Required = true, HelpText = "Mapping file")>] MappingFile: string
         [<Option('o', "Output file", Required = true, HelpText = "Output file")>] OutputFile: string
@@ -35,14 +35,22 @@ module Entry =
         Trace.Listeners.Add(traceListener) |> ignore
         
         match tryReadOptions args with
-        | None -> 1 // Exit because missing arguments
+        | None ->
+            logger.traceError "Missing required arguments"
+            1
         | Some options ->
-            Program.mkProgram
-                Reflection.loadAllAssemblies
-                Reflection.tryGetProperty
-                configuration
-                logger
-            |> Program.withDebug options.Debug
-            |> Program.withIsTypeResolvable XFConverters.isTypeResolvable
-            |> Program.run options.MappingFile options.OutputFile
-            0
+            let success =
+                Program.mkProgram
+                    Reflection.loadAllAssemblies
+                    Reflection.tryGetProperty
+                    configuration
+                    logger
+                |> Program.withDebug options.Debug
+                |> Program.withIsTypeResolvable XFConverters.isTypeResolvable
+                |> Program.withConvertTypeName XFConverters.convertTypeName
+                |> Program.withConvertEventType XFConverters.convertEventType
+                |> Program.withTryGetStringRepresentationOfDefaultValue XFConverters.tryGetStringRepresentationOfDefaultValue
+                |> Program.run options.MappingFile options.OutputFile
+                
+            // Exit code
+            if success then 0 else 1

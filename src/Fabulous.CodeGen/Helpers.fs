@@ -3,7 +3,8 @@ namespace Fabulous.CodeGen
 
 open System.IO
 open Newtonsoft.Json
-
+open Fabulous.CodeGen.Models
+        
 module Json =
     let jsonSettings =
         let settings = JsonSerializerSettings()
@@ -16,25 +17,8 @@ module Json =
     
 module File =
     let write path content = File.WriteAllText(path, content)
-
-module Helpers =
-    let removeText textToRemove (originalStr: string) =
-        originalStr.Replace(textToRemove, "")
-        
-    type TextWriter with
-        member this.printf fmt = fprintf this fmt
-        member this.printfn fmt = fprintfn this fmt
-
-    type Logger =
-        { traceInformation: string -> unit
-          traceWarning: string -> unit
-          traceError: string -> unit }
-        
-    type Configuration =
-        { baseTypeName: string
-          propertyBaseType: string
-          baseTargetTypeForAttachedProperties: string }
-        
+    
+module ComputationExpressions =
     type MaybeBuilder() =
         let mutable _logger: Logger option = None
         let mutable _containerType: string = ""
@@ -83,6 +67,27 @@ module Helpers =
             None
        
     let nullable = new NullableBuilder()
+    
+module Helpers =
+    type TextWriter with
+        member this.printf fmt = fprintf this fmt
+        member this.printfn fmt = fprintfn this fmt
+        
+    let removeText textToRemove (originalStr: string) =
+        originalStr.Replace(textToRemove, "")
         
     let writeOutputIfDebug debug path data =
         if debug then Json.serialize data |> File.write path
+        
+    let getValueOrDefault overwrittenValue defaultValue =
+        match overwrittenValue with
+        | None -> defaultValue
+        | Some value when System.String.IsNullOrWhiteSpace value -> defaultValue
+        | Some value -> value
+
+    let toLowerPascalCase (str : string) =
+        match str with
+        | null -> null
+        | "" -> ""
+        | x when x.Length = 1 -> x.ToLowerInvariant()
+        | x -> string (System.Char.ToLowerInvariant(x.[0])) + x.Substring(1)

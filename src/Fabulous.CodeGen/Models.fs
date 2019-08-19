@@ -2,6 +2,16 @@
 namespace Fabulous.CodeGen
 
 module Models =
+    type Logger =
+        { traceInformation: string -> unit
+          traceWarning: string -> unit
+          traceError: string -> unit }
+        
+    type Configuration =
+        { baseTypeName: string
+          propertyBaseType: string
+          baseTargetTypeForAttachedProperties: string }
+    
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
         /// If none is provided, the generator will consider it's a non-existent property and other fields will be mandatory

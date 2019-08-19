@@ -12,9 +12,9 @@ type Program =
     { debug: bool
       configuration: Configuration
       logger: Logger
-      readBindingsFile: string -> OverwriteData
       loadAllAssembliesByReflection: seq<string> -> Assembly[]
       tryGetAttachedPropertyByReflection: Assembly[] -> string * string -> Models.ReflectionAttachedProperty option
+      readBindingsFile: string -> OverwriteData
       isTypeResolvable: string -> bool
       convertTypeName: string -> string
       convertEventType: string option -> string
@@ -59,9 +59,9 @@ module Program =
         { debug = false
           configuration = configuration
           logger = logger
-          readBindingsFile = Functions.readBindingsFile
           loadAllAssembliesByReflection = loadAllAssembliesByReflection
           tryGetAttachedPropertyByReflection = tryGetAttachedPropertyByReflection
+          readBindingsFile = Functions.readBindingsFile
           isTypeResolvable = (fun _ -> true)
           convertTypeName = Converters.convertTypeName
           convertEventType = Converters.convertEventType
@@ -70,8 +70,21 @@ module Program =
     let withDebug debug program =
         { program with debug = debug }
         
+    let withReadBindingsFile func program =
+        { program with readBindingsFile = func }
+        
     let withIsTypeResolvable func program =
         { program with isTypeResolvable = func }
+        
+    let withConvertTypeName func program =
+        { program with convertTypeName = func }
+        
+    let withConvertEventType func program =
+        { program with convertEventType = func }
+        
+    let withTryGetStringRepresentationOfDefaultValue func program =
+        { program with tryGetStringRepresentationOfDefaultValue = func }
     
     let run bindingsFile outputFile program =
         Functions.runProgram program bindingsFile outputFile
+        true // TODO: true if successful (no error)

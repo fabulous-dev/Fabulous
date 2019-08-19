@@ -3,7 +3,7 @@ namespace Fabulous.XamarinForms.Generator
 open System
 open System.IO
 open System.Runtime.Loader
-open Fabulous.CodeGen.Helpers
+open Fabulous.CodeGen.ComputationExpressions
 open Fabulous.CodeGen.AssemblyReader.Models
 
 module Reflection =    

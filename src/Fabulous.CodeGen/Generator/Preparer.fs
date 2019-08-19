@@ -4,8 +4,7 @@ namespace Fabulous.CodeGen.Generator
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator.Models
 
-module Preparator =
-    
+module Preparer =
     let extractAttributes (types: TypeBinding[]) =
         [| for ``type`` in types do
                for a in ``type``.AttachedProperties do

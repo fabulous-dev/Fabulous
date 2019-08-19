@@ -1,5 +1,6 @@
-namespace Fabulous.XamarinForms.Core
+namespace Fabulous.XamarinForms
 
+[<AutoOpen>]
 module InputTypes =
     type StyleClass =
         | ClassName of string

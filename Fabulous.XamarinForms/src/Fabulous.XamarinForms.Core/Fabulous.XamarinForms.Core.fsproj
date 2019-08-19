@@ -10,6 +10,8 @@
     <Compile Include="Program.fs" />
     <Compile Include="CustomControls.fs" />
     <Compile Include="ViewConverters.fs" />
+    <Compile Include="ViewUpdaters.fs" />
+    <Compile Include="ViewExtensions.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />

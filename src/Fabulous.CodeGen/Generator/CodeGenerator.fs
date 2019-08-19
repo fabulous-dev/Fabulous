@@ -304,7 +304,7 @@ module CodeGenerator =
     let generateCode bindings =
         let toString (w: StringWriter) = w.ToString()
 
-        let data = Preparator.prepareData bindings
+        let data = Preparer.prepareData bindings
         use writer = new StringWriter()
         writer
         |> generateNamespace data.Namespace
