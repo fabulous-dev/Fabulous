@@ -75,14 +75,14 @@ type App () as app =
 //-:cnd:noEmit
 #if DEBUG
     // Uncomment this line to enable live update in debug mode. 
-    // See https://fsprojects.github.io/Fabulous/tools.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/tools.html#live-update for further  instructions.
     //
     //do runner.EnableLiveUpdate()
 #endif    
 //+:cnd:noEmit
 
     // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
-    // See https://fsprojects.github.io/Fabulous/models.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/models.html#saving-application-state for further  instructions.
 //-:cnd:noEmit
 #if APPSAVE
     let modelId = "model"
