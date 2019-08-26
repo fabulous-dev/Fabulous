@@ -1,5 +1,5 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.CodeGen
+namespace Fabulous.CodeGen.Helpers
 
 open System.IO
 open Newtonsoft.Json
@@ -68,7 +68,7 @@ module ComputationExpressions =
        
     let nullable = new NullableBuilder()
     
-module Helpers =
+module Text =
     type TextWriter with
         member this.printf fmt = fprintf this fmt
         member this.printfn fmt = fprintfn this fmt

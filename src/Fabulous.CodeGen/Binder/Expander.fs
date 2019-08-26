@@ -24,14 +24,14 @@ module Expander =
         let allBaseEvents = hierarchy |> getMembers types (fun t -> t.Events) (fun e -> { e with IsInherited = true })
         let allBaseProperties = hierarchy |> getMembers types (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
         
-        let firstBindedBaseType =
+        let firstBoundBaseType =
             hierarchy
             |> Array.tryPick (fun h ->
                 types |> Array.tryFind (fun t -> t.Type = h)
             )
         
         { ``type`` with
-            BaseTypeName = firstBindedBaseType |> Option.map (fun t -> t.Name)
+            BaseTypeName = firstBoundBaseType |> Option.map (fun t -> t.Name)
             AttachedProperties = Array.concat [ ``type``.AttachedProperties; allBaseAttachedProperties ]
             Events = Array.concat [ ``type``.Events; allBaseEvents ]
             Properties = Array.concat [ ``type``.Properties; allBaseProperties ] }

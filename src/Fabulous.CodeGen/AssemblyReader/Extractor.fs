@@ -17,7 +17,7 @@ module Extractor =
                   
             let eventHandlerType =
                 match edef.EventType with
-                | :? GenericInstanceType as git -> git.FullName |> removeText "`1"
+                | :? GenericInstanceType as git -> git.FullName |> Text.removeText "`1"
                 | _ -> "System.EventHandler"
             
             { Name = edef.Name

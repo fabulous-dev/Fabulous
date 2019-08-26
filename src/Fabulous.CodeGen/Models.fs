@@ -8,8 +8,13 @@ module Models =
           traceError: string -> unit }
         
     type Configuration =
-        { baseTypeName: string
+        { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
+          baseTypeName: string
+          
+          /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
           propertyBaseType: string
+          
+          /// The default type to which attached properties can be applied to (e.g. Xamarin.Forms.Element)
           baseTargetTypeForAttachedProperties: string }
     
     type Member() =
