@@ -4,7 +4,6 @@
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll"
   ],
   "outputNamespace": "Fabulous.XamarinForms",
-  "baseAttachedPropertyTargetType": "Xamarin.Forms.Element",
   "types": [
     {
       "type": "Xamarin.Forms.Element",
@@ -551,21 +550,21 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
-          "elementType": "Xamarin.Forms.View"
-        }
-      ],
-      "attachedProperties": [
-        {
-          "source": "Row"
-        },
-        {
-          "source": "RowSpan"
-        },
-        {
-          "source": "Column"
-        },
-        {
-          "source": "ColumnSpan"
+          "elementType": "Xamarin.Forms.View",
+          "attachedProperties": [
+            {
+              "source": "Row"
+            },
+            {
+              "source": "RowSpan"
+            },
+            {
+              "source": "Column"
+            },
+            {
+              "source": "ColumnSpan"
+            }
+          ]
         }
       ]
     },
@@ -577,15 +576,15 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
-          "elementType": "Xamarin.Forms.View"
-        }
-      ],
-      "attachedProperties": [
-        {
-          "source": "LayoutBounds"
-        },
-        {
-          "source": "LayoutFlags"
+          "elementType": "Xamarin.Forms.View",
+          "attachedProperties": [
+            {
+              "source": "LayoutBounds"
+            },
+            {
+              "source": "LayoutFlags"
+            }
+          ]
         }
       ]
     },
@@ -597,24 +596,24 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
-          "elementType": "Xamarin.Forms.View"
-        }
-      ],
-      "attachedProperties": [
-        {
-          "source": "BoundsConstraint"
-        },
-        {
-          "source": "HeightConstraint"
-        },
-        {
-          "source": "WidthConstraint"
-        },
-        {
-          "source": "XConstraint"
-        },
-        {
-          "source": "YConstraint"
+          "elementType": "Xamarin.Forms.View",
+          "attachedProperties": [
+            {
+              "source": "BoundsConstraint"
+            },
+            {
+              "source": "HeightConstraint"
+            },
+            {
+              "source": "WidthConstraint"
+            },
+            {
+              "source": "XConstraint"
+            },
+            {
+              "source": "YConstraint"
+            }
+          ]
         }
       ]
     },
@@ -641,24 +640,24 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
-          "elementType": "Xamarin.Forms.View"
-        }
-      ],
-      "attachedProperties": [
-        {
-          "source": "AlignSelf"
-        },
-        {
-          "source": "Order"
-        },
-        {
-          "source": "Basis"
-        },
-        {
-          "source": "Grow"
-        },
-        {
-          "source": "Shrink"
+          "elementType": "Xamarin.Forms.View",
+          "attachedProperties": [
+            {
+              "source": "AlignSelf"
+            },
+            {
+              "source": "Order"
+            },
+            {
+              "source": "Basis"
+            },
+            {
+              "source": "Grow"
+            },
+            {
+              "source": "Shrink"
+            }
+          ]
         }
       ]
     },

@@ -12,10 +12,7 @@ module Models =
           baseTypeName: string
           
           /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
-          propertyBaseType: string
-          
-          /// The default type to which attached properties can be applied to (e.g. Xamarin.Forms.Element)
-          baseTargetTypeForAttachedProperties: string }
+          propertyBaseType: string }
     
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
@@ -67,9 +64,11 @@ module Models =
         member val ElementType = None with get, set
         member val ConvertModelToValue = None with get, set
         member val UpdateCode = None with get, set
+        member val AttachedProperties = None with get, set
         
         interface IConstructorMember with
             member x.ShortName = x.ShortName
+        
         interface IProperty with
             member x.DefaultValue = x.DefaultValue
             member x.ElementType = x.ElementType
@@ -121,9 +120,6 @@ module Models =
         
         /// The properties to include/create/override for this type
         member val Properties : Property[] option = None with get, set
-        
-        /// The attached properties to include/create/override for this type
-        member val AttachedProperties : AttachedProperty[] option = None with get, set
         
         /// An ordered list of all direct members (events and properties, not attached properties) to determine the order of the constructor (e.g. ["Text", "TextChanged", "Font"] => View.Entry(text=..., textChanged=..., font=...)
         /// Values must be Name
