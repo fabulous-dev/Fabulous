@@ -45,7 +45,7 @@ module Extractor =
                 Some
                     ({ Name = data.Name
                        Type = attachedPropertyType
-                       DefaultValue = defaultValue } : ReaderAttachedProperty)
+                       DefaultValue = defaultValue } : AssemblyTypeAttachedProperty)
         )
         |> Array.choose id
 
@@ -72,7 +72,7 @@ module Extractor =
                         ({ Name = data.Name
                            Type = propertyType
                            CollectionElementType = Resolver.getElementTypeForType ``type``
-                           DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : ReaderProperty)
+                           DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : AssemblyTypeProperty)
             )
             |> Array.choose id
 
@@ -84,7 +84,7 @@ module Extractor =
                 { Name = pdef.Name
                   Type = propertyType
                   CollectionElementType = Resolver.getElementTypeForType ``type``
-                  DefaultValue = getDefaultValueAsString propertyType null } : ReaderProperty
+                  DefaultValue = getDefaultValueAsString propertyType null } : AssemblyTypeProperty
             )
 
         Array.concat [ propertiesWithBindingFields; listPropertiesWithNoSetter ]

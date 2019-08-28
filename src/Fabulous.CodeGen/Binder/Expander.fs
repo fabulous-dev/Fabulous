@@ -4,10 +4,10 @@ open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 
 module Expander =
-    let private tryFindType (boundTypes: BoundType[]) typeFullName =
+    let private tryFindType (boundTypes: BoundType array) typeFullName =
         boundTypes |> Array.tryFind (fun t2 -> t2.Type = typeFullName)
         
-    let private getMembers (boundTypes: BoundType[]) (getMemberBindings: BoundType -> 'a array) (setInherited: 'a -> 'a) (hierarchy: string[]) =
+    let private getMembers (boundTypes: BoundType array) (getMemberBindings: BoundType -> 'a array) (setInherited: 'a -> 'a) (hierarchy: string array) =
         [ for typ in hierarchy do
               match tryFindType boundTypes typ with
               | None -> ()
@@ -17,7 +17,7 @@ module Expander =
                       yield m ]
         |> List.toArray
     
-    let expandType (assemblyTypes: ReaderType[]) (boundTypes: BoundType[]) (boundType: BoundType) =
+    let expandType (assemblyTypes: AssemblyType array) (boundTypes: BoundType array) (boundType: BoundType) =
         let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Type)
         let hierarchy = readerDataType.InheritanceHierarchy
         let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events) (fun e -> { e with IsInherited = true })
@@ -36,7 +36,7 @@ module Expander =
     
     /// Expands the bound model by adding all the inherited events and properties to all types
     /// This results in a verbose bound model that can be directly read by the generator
-    let expand (assemblyTypes: ReaderType[]) (boundModel: BoundModel): BoundModel =
+    let expand (assemblyTypes: AssemblyType array) (boundModel: BoundModel): BoundModel =
         { boundModel with
             Types = boundModel.Types |> Array.map (expandType assemblyTypes boundModel.Types) }
 

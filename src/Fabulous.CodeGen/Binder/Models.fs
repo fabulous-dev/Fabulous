@@ -20,7 +20,7 @@ module Models =
           InputType: string
           ModelType: string
           ConvertInputToModel: string
-          RelatedProperties: string[]
+          RelatedProperties: string array
           IsInherited: bool }
         interface IBoundConstructorMember with
             member this.ShortName = this.ShortName

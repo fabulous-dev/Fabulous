@@ -12,8 +12,8 @@ type Program =
     { debug: bool
       configuration: Configuration
       logger: Logger
-      loadAllAssembliesByReflection: seq<string> -> Assembly[]
-      tryGetAttachedPropertyByReflection: Assembly[] -> string * string -> Models.ReflectionAttachedProperty option
+      loadAllAssembliesByReflection: seq<string> -> Assembly array
+      tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option
       readBindingsFile: string -> Bindings
       isTypeResolvable: string -> bool
       convertTypeName: string -> string

@@ -18,7 +18,7 @@ module CodeGenerator =
         w.printfn ""
         w
 
-    let generateAttributes (members: string []) (w: StringWriter) =
+    let generateAttributes (members: string array) (w: StringWriter) =
         w.printfn "module ViewAttributes ="
         for m in members do
             w.printfn "    let %sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m m
@@ -129,8 +129,6 @@ module CodeGenerator =
                 | Some collectionData when not hasApply ->
                     w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
-                    w.printfn "            ViewUpdaters.canReuseView"
-                    w.printfn "            ViewUpdaters.updateChild"
                     if (collectionData.AttachedProperties.Length > 0) then
                         w.printfn "            (fun prevChildOpt newChild targetChild -> "
                         for ap in collectionData.AttachedProperties do
@@ -148,6 +146,8 @@ module CodeGenerator =
                         w.printfn "                ())"
                     else
                         w.printfn "            (fun _ _ _ -> ())"
+                    w.printfn "            ViewUpdaters.canReuseView"
+                    w.printfn "            ViewUpdaters.updateChild"
 
                 | _ -> 
                     // If the type is ViewElement, then it's a type from the model
@@ -217,7 +217,7 @@ module CodeGenerator =
             w.printfn ""
 
 
-    let generateBuilders (data: BuilderData []) (w: StringWriter) =
+    let generateBuilders (data: BuilderData array) (w: StringWriter) =
         w.printfn "type ViewBuilders() ="
         for typ in data do
             w
@@ -227,7 +227,7 @@ module CodeGenerator =
             |> generateConstruct typ.Construct
         w
 
-    let generateViewers (data: ViewerData []) (w: StringWriter) =
+    let generateViewers (data: ViewerData array) (w: StringWriter) =
         for typ in data do
             w.printfn "/// Viewer that allows to read the properties of a ViewElement representing a %s" typ.Name
             w.printfn "type %sViewer(element: ViewElement) =" typ.Name
@@ -247,7 +247,7 @@ module CodeGenerator =
             w.printfn ""
         w
 
-    let generateConstructors (data: ConstructorData []) (w: StringWriter) =
+    let generateConstructors (data: ConstructorData array) (w: StringWriter) =
         w.printfn "type View() ="
 
         for d in data do
@@ -277,7 +277,7 @@ module CodeGenerator =
         w.printfn ""
         w
     
-    let generateViewExtensions (data: ViewExtensionsData []) (w: StringWriter) : StringWriter =
+    let generateViewExtensions (data: ViewExtensionsData array) (w: StringWriter) : StringWriter =
         let newLine = "\n                      "
 
         w.printfn "[<AutoOpen>]"

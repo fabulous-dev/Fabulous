@@ -6,7 +6,7 @@ open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator.Models
 
 module Preparer =
-    let extractAttributes (boundTypes: BoundType[]) =
+    let extractAttributes (boundTypes: BoundType array) =
         [| for boundType in boundTypes do
                for e in boundType.Events do
                    yield e.UniqueName

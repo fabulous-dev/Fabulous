@@ -32,8 +32,8 @@ module Optimizer =
             { boundModel with
                 Types = boundModel.Types |> Array.map (optimizeBoundTypeWithKnownTypes knownTypes) }
             
-    /// Optimizes efficiency when storing list of data
-    /// When a property/attached property accepts a list as an input type (and no specific instructions were given in the Bindings),
+    /// Optimizes storing list of data for efficiency
+    /// When a property/attached property accepts a list as an input type (and no specific instructions were given in the Bindings file),
     /// the model type is changed to be an array with the corresponding ConvertInputToModel function
     module OptimizeLists =
         let optimizeListsForTypeBinding (boundType: BoundType) =

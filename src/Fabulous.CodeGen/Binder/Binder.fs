@@ -40,8 +40,8 @@ module BinderHelpers =
             |> Array.choose tryBindMemberFunc
         
 module Binder =
-    /// Create an attached property binding from the AssemblyReader data and Overwrite data
-    let bindAttachedProperty containerTypeName (assemblyTypeAttachedProperty: ReaderAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
+    /// Bind an existing attached property
+    let bindAttachedProperty containerTypeName (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
         let name = Text.getValueOrDefault bindingsAttachedProperty.Name assemblyTypeAttachedProperty.Name
         { Name = name
           UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
@@ -52,7 +52,7 @@ module Binder =
           ConvertModelToValue = Text.getValueOrDefault bindingsAttachedProperty.ConvertModelToValue ""
           UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
        
-    /// Try to create an attached property binding from the Overwrite data only 
+    /// Try to create a bound attached property from the bindings data only 
     let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
         maybe {
             use_logger logger containerTypeName "attached property" (Text.getValueOrDefault bindingsAttachedProperty.Name "")
@@ -72,18 +72,18 @@ module Binder =
                   UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
         }
     
-    /// Try to bind or create an attached property binding
-    let tryBindAttachedProperty (logger: Logger) containerType (readerData: ReaderAttachedProperty array) (overwriteData: AttachedProperty) =
+    /// Try to bind or create a bound attached property
+    let tryBindAttachedProperty (logger: Logger) containerType (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty array) (overwriteData: AttachedProperty) =
         BinderHelpers.tryBindOrCreateMember
-            readerData
+            assemblyTypeAttachedProperty
             overwriteData.Source
             (fun a -> a.Name)
             (fun source -> logger.traceWarning (sprintf "Attached property '%s' on type '%s' not found" source containerType))
             (fun () -> tryCreateAttachedProperty logger containerType overwriteData)
             (fun a -> bindAttachedProperty containerType a overwriteData)
         
-    /// Create an event binding from the AssemblyReader data and Overwrite data
-    let bindEvent containerTypeName (assemblyTypeEvent: ReaderEvent) (bindingsTypeEvent: Event) =
+    /// Bind an existing event
+    let bindEvent containerTypeName (assemblyTypeEvent: AssemblyTypeEvent) (bindingsTypeEvent: Event) =
         let name = Text.getValueOrDefault bindingsTypeEvent.Name assemblyTypeEvent.Name
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
@@ -94,8 +94,8 @@ module Binder =
           RelatedProperties = match bindingsTypeEvent.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
           IsInherited = false }
     
-    /// Create a property binding from the AssemblyReader data and Overwrite data
-    let bindProperty logger containerTypeName (assemblyTypeProperty: ReaderProperty) (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
+    /// Bind an existing property
+    let bindProperty logger containerTypeName (assemblyTypeProperty: AssemblyTypeProperty) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         let name = Text.getValueOrDefault bindingsTypeProperty.Name assemblyTypeProperty.Name
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
@@ -117,7 +117,7 @@ module Binder =
                         (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
           IsInherited = false }
        
-    /// Try to create an event binding from the Overwrite data only 
+    /// Try to create a bound event binding from the bindings data only 
     let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
         maybe {
             use_logger logger containerTypeName "event" (Text.getValueOrDefault bindingsTypeEvent.Name "")
@@ -137,8 +137,8 @@ module Binder =
                   IsInherited = false }
         }
        
-    /// Try to create an event binding from the Overwrite data only 
-    let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
+    /// Try to create a bound property from the bindings data only 
+    let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         maybe {
             use_logger logger containerTypeName "property" (Text.getValueOrDefault bindingsTypeProperty.Name "")
             
@@ -169,7 +169,7 @@ module Binder =
         }
     
     /// Try to bind or create an event binding
-    let tryBindEvent (logger: Logger) containerType (assemblyTypeEvents: ReaderEvent array) (bindingsTypeEvent: Event) =
+    let tryBindEvent (logger: Logger) containerType (assemblyTypeEvents: AssemblyTypeEvent array) (bindingsTypeEvent: Event) =
         BinderHelpers.tryBindOrCreateMember
             assemblyTypeEvents
             bindingsTypeEvent.Source
@@ -179,7 +179,7 @@ module Binder =
             (fun e -> bindEvent containerType e bindingsTypeEvent)
     
     /// Try to bind or create a property binding
-    let tryBindProperty (logger: Logger) containerType (assemblyTypeProperties: ReaderProperty array) (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
+    let tryBindProperty (logger: Logger) containerType (assemblyTypeProperties: AssemblyTypeProperty array) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         BinderHelpers.tryBindOrCreateMember
             assemblyTypeProperties
             bindingsTypeProperty.Source
@@ -188,8 +188,8 @@ module Binder =
             (fun () -> tryCreateProperty logger containerType assemblyTypeAttachedProperties bindingsTypeProperty)
             (fun p -> bindProperty logger containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
     
-    /// Create a type binding
-    let bindType (logger: Logger) (assemblyType: ReaderType) (bindingsType: Type) =
+    /// Bind an existing type
+    let bindType (logger: Logger) (assemblyType: AssemblyType) (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
         { Type = assemblyType.Name
           CanBeInstantiated = Value.getValueOrDefault bindingsType.CanBeInstantiated assemblyType.CanBeInstantiated
@@ -206,7 +206,7 @@ module Binder =
                 (tryBindProperty logger typeName assemblyType.Properties assemblyType.AttachedProperties) }
     
     /// Try to bind a type
-    let tryBindType (logger: Logger) (assemblyTypes: ReaderType array) (bindingsType: Type) =
+    let tryBindType (logger: Logger) (assemblyTypes: AssemblyType array) (bindingsType: Type) =
         BinderHelpers.tryBind
             assemblyTypes
             bindingsType.Type
@@ -214,8 +214,8 @@ module Binder =
             (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
             (fun t -> bindType logger t bindingsType)
     
-    /// Bind all declared types
-    let bind (logger: Logger) (assemblyTypes: ReaderType array) (bindings: Bindings) =
+    /// Create a bound model using the types extracted from the assemblies and the bindings provided by the caller
+    let bind (logger: Logger) (assemblyTypes: AssemblyType array) (bindings: Bindings) =
         { Assemblies = bindings.Assemblies
           OutputNamespace = bindings.OutputNamespace
           Types =

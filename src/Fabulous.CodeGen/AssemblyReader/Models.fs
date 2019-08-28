@@ -2,7 +2,7 @@ namespace Fabulous.CodeGen.AssemblyReader
 
 module Models =
     /// An event extracted by the Assembly Reader
-    type ReaderEvent =
+    type AssemblyTypeEvent =
         { /// The name of the event (e.g. TextChanged)
           Name: string
           
@@ -13,7 +13,7 @@ module Models =
           EventHandlerType: string }
     
     /// An attached property extracted by the Assembly Reader 
-    type ReaderAttachedProperty =
+    type AssemblyTypeAttachedProperty =
         { /// The name of the attached property (e.g. Row)
           Name: string
           
@@ -24,7 +24,7 @@ module Models =
           DefaultValue: string }
     
     /// A property extracted by the Assembly Reader
-    type ReaderProperty =
+    type AssemblyTypeProperty =
         { /// The name of the property (e.g. Text)
           Name: string
           
@@ -38,7 +38,7 @@ module Models =
           DefaultValue: string }
     
     /// A type extracted by the Assembly Reader
-    type ReaderType =
+    type AssemblyType =
         { /// The name of the type
           Name: string
           
@@ -47,16 +47,16 @@ module Models =
           
           /// The types inherited by this type
           /// From first to last, the closest inherited type to the base
-          InheritanceHierarchy: string[]
+          InheritanceHierarchy: string array
           
           /// The extracted events
-          Events: ReaderEvent array
+          Events: AssemblyTypeEvent array
           
           /// The extracted properties
-          Properties: ReaderProperty array
+          Properties: AssemblyTypeProperty array
           
           /// The extracted attached properties
-          AttachedProperties: ReaderAttachedProperty array }
+          AttachedProperties: AssemblyTypeAttachedProperty array }
         
     /// An attached property extracted by reflection
     type ReflectionAttachedProperty =
