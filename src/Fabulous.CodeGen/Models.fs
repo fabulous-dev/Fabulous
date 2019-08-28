@@ -12,7 +12,10 @@ module Models =
           baseTypeName: string
           
           /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
-          propertyBaseType: string }
+          propertyBaseType: string
+          
+          /// The default type to which attached properties can be applied to (e.g. Xamarin.Forms.Element)
+          baseTargetTypeForAttachedProperties: string }
     
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
@@ -46,32 +49,44 @@ module Models =
         /// The default value of the property when none is given by the user
         abstract DefaultValue : string option
         
-        /// The type of the elements if the property is a collection
-        abstract ElementType : string option
-        
         /// The function that converts the model value to the actual type expected by the property
         abstract ConvertModelToValue : string option
         
         /// The function that will handle the update process for this property
         /// Completely replace the code generated for this property in Update*ControlType*
         abstract UpdateCode : string option
+        
+    type AttachedProperty() =
+        inherit Member()
+        
+        member val DefaultValue = None with get, set
+        member val ConvertModelToValue = None with get, set
+        member val UpdateCode = None with get, set
+        
+        interface IProperty with
+            member x.DefaultValue = x.DefaultValue
+            member x.ConvertModelToValue = x.ConvertModelToValue
+            member x.UpdateCode = x.UpdateCode
 
     type Property() =
         inherit Member()
         
+        /// The type of the elements if the property is a collection
+        member val CollectionElementType : string option = None with get, set
+        
+        /// Attached properties to applicable to the elements of a collection property (e.g. Grid => Row/RowSpan)
+        member val CollectionAttachedProperties : AttachedProperty[] option = None with get, set
+        
         member val ShortName = None with get, set
         member val DefaultValue = None with get, set
-        member val ElementType = None with get, set
         member val ConvertModelToValue = None with get, set
         member val UpdateCode = None with get, set
-        member val AttachedProperties = None with get, set
         
         interface IConstructorMember with
             member x.ShortName = x.ShortName
         
         interface IProperty with
             member x.DefaultValue = x.DefaultValue
-            member x.ElementType = x.ElementType
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
 
@@ -85,22 +100,6 @@ module Models =
         
         interface IConstructorMember with
             member x.ShortName = x.ShortName
-        
-    type AttachedProperty() =
-        inherit Member()
-        
-        /// The type to which this attached property will be applied to
-        member val TargetType : string option = None with get, set
-        member val DefaultValue = None with get, set
-        member val ElementType = None with get, set
-        member val ConvertModelToValue = None with get, set
-        member val UpdateCode = None with get, set
-        
-        interface IProperty with
-            member x.DefaultValue = x.DefaultValue
-            member x.ElementType = x.ElementType
-            member x.ConvertModelToValue = x.ConvertModelToValue
-            member x.UpdateCode = x.UpdateCode
     
     type Type() =
         /// The full name of the type to include (e.g. Xamarin.Forms.Button)
@@ -121,7 +120,7 @@ module Models =
         /// The properties to include/create/override for this type
         member val Properties : Property[] option = None with get, set
         
-        /// An ordered list of all direct members (events and properties, not attached properties) to determine the order of the constructor (e.g. ["Text", "TextChanged", "Font"] => View.Entry(text=..., textChanged=..., font=...)
+        /// An ordered list of all direct members (events and properties) to determine the order of the constructor (e.g. ["Text", "TextChanged", "Font"] => View.Entry(text=..., textChanged=..., font=...)
         /// Values must be Name
         /// Can order inherited members
         member val ConstructorMemberOrdering : string[] option = None with get, set

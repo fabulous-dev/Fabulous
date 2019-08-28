@@ -22,10 +22,12 @@ module AssemblyResolver =
             | true -> ()
             | false -> cache.[assembly.Name.FullName] <- assembly
 
-        member this.Dispose(disposing) =
-            cache.Values |> Seq.iter (fun asm -> asm.Dispose())
-            cache.Clear()
+        override this.Dispose(disposing) =
             base.Dispose()
+            
+            if disposing then
+                cache.Values |> Seq.iter (fun asm -> asm.Dispose())
+                cache.Clear()
 
     let loadAssembly (resolver : RegistrableResolver) (path : string) =
         let readerParameters = ReaderParameters()

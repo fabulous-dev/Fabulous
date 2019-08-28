@@ -25,7 +25,8 @@ module Program =
         
     let configuration =
         { baseTypeName = "Xamarin.Forms.Element"
-          propertyBaseType = "Xamarin.Forms.BindableProperty" }
+          propertyBaseType = "Xamarin.Forms.BindableProperty"
+          baseTargetTypeForAttachedProperties = "Xamarin.Forms.Element" }
 
     [<EntryPoint>]
     let main args =

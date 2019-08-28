@@ -45,11 +45,9 @@ module Binder =
     let bindAttachedProperty containerTypeName baseTargetTypeFullName (readerData: ReaderAttachedProperty) (overwriteData: AttachedProperty) =
         let property = overwriteData :> IProperty
         let name = Text.getValueOrDefault overwriteData.Name readerData.Name
-        { TargetType = Text.getValueOrDefault overwriteData.TargetType baseTargetTypeFullName
-          Name = name
+        { Name = name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
           DefaultValue = Text.getValueOrDefault property.DefaultValue readerData.DefaultValue
-          ElementType = property.ElementType
           InputType = Text.getValueOrDefault overwriteData.InputType readerData.Type
           ModelType = Text.getValueOrDefault overwriteData.ModelType readerData.Type
           ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
@@ -98,11 +96,9 @@ module Binder =
             let! inputType = "InputType", overwriteData.InputType
 
             return
-                { TargetType = Text.getValueOrDefault overwriteData.TargetType baseTargetTypeFullName
-                  Name = name
+                { Name = name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
                   DefaultValue = defaultValue
-                  ElementType = property.ElementType
                   InputType = inputType
                   ModelType = Text.getValueOrDefault overwriteData.ModelType inputType
                   ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""

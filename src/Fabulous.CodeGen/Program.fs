@@ -40,16 +40,16 @@ module private Functions =
         let overwriteData = program.readBindingsFile bindingsFile
         
         let readerData = getReaderData program overwriteData.Assemblies
-        readerData |> writeOutputIfDebug program.debug "reader-data.json"
+        readerData |> Text.writeOutputIfDebug program.debug "reader-data.json"
         
         let bindings = Binder.bind program.logger program.configuration.baseTargetTypeForAttachedProperties readerData overwriteData
-        bindings |> writeOutputIfDebug program.debug "bindings.json"
+        bindings |> Text.writeOutputIfDebug program.debug "bindings.json"
         
         let optimizedBindings = Optimizer.optimize bindings
-        optimizedBindings |> writeOutputIfDebug program.debug "optimized-bindings.json"
+        optimizedBindings |> Text.writeOutputIfDebug program.debug "optimized-bindings.json"
         
         let expandedBindings = Expander.expand readerData optimizedBindings
-        expandedBindings |> writeOutputIfDebug program.debug "expanded-bindings.json"
+        expandedBindings |> Text.writeOutputIfDebug program.debug "expanded-bindings.json"
         
         CodeGenerator.generateCode expandedBindings
         |> File.write outputFile

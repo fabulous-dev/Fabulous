@@ -2,16 +2,13 @@ namespace Fabulous.CodeGen.Binder
 
 module Models =
     type AttachedPropertyBinding =
-        { TargetType: string
-          Name: string
+        { Name: string
           UniqueName: string
           DefaultValue: string
-          ElementType: string option
           InputType: string
           ModelType: string
           ConvertInputToModel: string
-          ConvertModelToValue: string
-          IsInherited: bool }
+          ConvertModelToValue: string }
     
     type EventBinding =
         { Name: string
@@ -34,6 +31,7 @@ module Models =
           ModelType: string
           ConvertInputToModel: string
           ConvertModelToValue: string
+          AttachedProperties: AttachedPropertyBinding array
           IsInherited: bool }
     
     type TypeBinding =
@@ -41,7 +39,6 @@ module Models =
           TypeToInstantiate: string
           BaseTypeName: string option
           Name: string
-          AttachedProperties: AttachedPropertyBinding array
           Events: EventBinding array
           Properties: PropertyBinding array }
     
