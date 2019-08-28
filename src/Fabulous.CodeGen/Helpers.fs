@@ -52,7 +52,7 @@ module ComputationExpressions =
         member this.Return(x) = 
             Some x
        
-    let maybe = new MaybeBuilder()
+    let maybe = MaybeBuilder()
     
     type NullableBuilder() =
         member this.Bind(x, f) =
@@ -66,7 +66,7 @@ module ComputationExpressions =
         member this.Zero() =
             None
        
-    let nullable = new NullableBuilder()
+    let nullable = NullableBuilder()
     
 module Value =
     let getValueOrDefault overwrittenValue defaultValue =
@@ -103,3 +103,36 @@ module Text =
         | "" -> ""
         | x when x.Length = 1 -> x.ToLowerInvariant()
         | x -> string (System.Char.ToLowerInvariant(x.[0])) + x.Substring(1)
+        
+module WorkflowResult =
+    let bind f result =
+        match result with
+        | Error messages -> Error messages
+        | Ok (data, informations, warnings) ->
+            f data
+            |> Result.map (fun (d, i, w) -> (d, List.append informations i, List.append warnings w))
+            
+    let map f result =
+        match result with
+        | Error messages -> Error messages
+        | Ok (data, informations, warnings) -> Ok ((f data), informations, warnings)
+        
+    let tie f result =
+        match result with
+        | Error messages -> Error messages
+        | Ok (data, informations, warnings) ->
+            f data
+            Ok (data, informations, warnings) 
+        
+    let toProgramResult result : ProgramResult =
+        match result with
+        | Error messages -> Error messages
+        | Ok (_, informations, warnings) ->
+            Ok (informations, warnings)
+            
+    let debug isDebugMode fileName result =
+        match result with
+        | Error messages -> Error messages
+        | Ok (data, informations, warnings) ->
+            data |> Text.writeOutputIfDebug isDebugMode fileName
+            Ok (data, informations, warnings)

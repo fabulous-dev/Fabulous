@@ -1,5 +1,6 @@
 namespace Fabulous.CodeGen.Binder
 
+open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 
@@ -36,7 +37,8 @@ module Expander =
     
     /// Expands the bound model by adding all the inherited events and properties to all types
     /// This results in a verbose bound model that can be directly read by the generator
-    let expand (assemblyTypes: AssemblyType array) (boundModel: BoundModel): BoundModel =
-        { boundModel with
-            Types = boundModel.Types |> Array.map (expandType assemblyTypes boundModel.Types) }
-
+    let expand (assemblyTypes: AssemblyType array) (boundModel: BoundModel) : WorkflowResult<BoundModel> =
+        let data =
+            { boundModel with
+                Types = boundModel.Types |> Array.map (expandType assemblyTypes boundModel.Types) }
+        Ok (data, [], [])

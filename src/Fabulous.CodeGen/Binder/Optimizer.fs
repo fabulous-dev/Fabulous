@@ -1,5 +1,6 @@
 namespace Fabulous.CodeGen.Binder
 
+open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.Binder.Models
 
 module Optimizer =
@@ -68,7 +69,9 @@ module Optimizer =
                 Types = boundModel.Types |> Array.map optimizeListsForTypeBinding }
         
     /// Applies all optimizations to the bound model
-    let optimize boundModel =
-        boundModel
-        |> OptimizeKnownTypes.apply
-        |> OptimizeLists.apply
+    let optimize boundModel : WorkflowResult<BoundModel> =
+        let data =
+            boundModel
+            |> OptimizeKnownTypes.apply
+            |> OptimizeLists.apply
+        Ok (data, [], [])

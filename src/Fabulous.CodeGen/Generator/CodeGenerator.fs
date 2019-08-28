@@ -1,6 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.Generator
 
+open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.Helpers.Text
 open Fabulous.CodeGen.Generator.Models
 open System.IO
@@ -316,16 +317,20 @@ module CodeGenerator =
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
 
-    let generateCode bindings =
+    let generateCode bindings : WorkflowResult<string> =
         let toString (w: StringWriter) = w.ToString()
 
         let data = Preparer.prepareData bindings
         use writer = new StringWriter()
-        writer
-        |> generateNamespace data.Namespace
-        |> generateAttributes data.Attributes
-        |> generateBuilders data.Builders
-        |> generateViewers data.Viewers
-        |> generateConstructors data.Constructors
-        |> generateViewExtensions data.ViewExtensions
-        |> toString
+        
+        let result =
+            writer
+            |> generateNamespace data.Namespace
+            |> generateAttributes data.Attributes
+            |> generateBuilders data.Builders
+            |> generateViewers data.Viewers
+            |> generateConstructors data.Constructors
+            |> generateViewExtensions data.ViewExtensions
+            |> toString
+            
+        Ok (result, [], [])

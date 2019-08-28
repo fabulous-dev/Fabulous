@@ -2,6 +2,12 @@
 namespace Fabulous.CodeGen
 
 module Models =
+    type InformationMessage = string
+    type WarningMessage = string
+    type ErrorMessage = string
+    type WorkflowResult<'T> = Result<'T * InformationMessage list * WarningMessage list, ErrorMessage list>
+    type ProgramResult = Result<InformationMessage list * WarningMessage list, ErrorMessage list>
+    
     type Logger =
         { traceInformation: string -> unit
           traceWarning: string -> unit

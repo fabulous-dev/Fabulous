@@ -53,9 +53,9 @@ module Binder =
           UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
        
     /// Try to create a bound attached property from the bindings data only 
-    let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
+    let tryCreateAttachedProperty containerTypeName (bindingsAttachedProperty: AttachedProperty) =
         maybe {
-            use_logger logger containerTypeName "attached property" (Text.getValueOrDefault bindingsAttachedProperty.Name "")
+            use_logger containerTypeName "attached property" (Text.getValueOrDefault bindingsAttachedProperty.Name "")
             
             let! name = "Name", bindingsAttachedProperty.Name
             let! defaultValue = "DefaultValue", bindingsAttachedProperty.DefaultValue
@@ -73,13 +73,13 @@ module Binder =
         }
     
     /// Try to bind or create a bound attached property
-    let tryBindAttachedProperty (logger: Logger) containerType (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty array) (overwriteData: AttachedProperty) =
+    let tryBindAttachedProperty containerType (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty array) (overwriteData: AttachedProperty) =
         BinderHelpers.tryBindOrCreateMember
             assemblyTypeAttachedProperty
             overwriteData.Source
             (fun a -> a.Name)
-            (fun source -> logger.traceWarning (sprintf "Attached property '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateAttachedProperty logger containerType overwriteData)
+            (fun source -> sprintf "Attached property '%s' on type '%s' not found" source containerType)
+            (fun () -> tryCreateAttachedProperty containerType overwriteData)
             (fun a -> bindAttachedProperty containerType a overwriteData)
         
     /// Bind an existing event
@@ -95,7 +95,7 @@ module Binder =
           IsInherited = false }
     
     /// Bind an existing property
-    let bindProperty logger containerTypeName (assemblyTypeProperty: AssemblyTypeProperty) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
+    let bindProperty containerTypeName (assemblyTypeProperty: AssemblyTypeProperty) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         let name = Text.getValueOrDefault bindingsTypeProperty.Name assemblyTypeProperty.Name
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
@@ -114,13 +114,13 @@ module Binder =
                     AttachedProperties =
                       BinderHelpers.bindMembers
                         cd.AttachedProperties
-                        (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
+                        (tryBindAttachedProperty containerTypeName assemblyTypeAttachedProperties) })
           IsInherited = false }
        
     /// Try to create a bound event binding from the bindings data only 
-    let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
+    let tryCreateEvent containerTypeName (bindingsTypeEvent: Event) =
         maybe {
-            use_logger logger containerTypeName "event" (Text.getValueOrDefault bindingsTypeEvent.Name "")
+            use_logger containerTypeName "event" (Text.getValueOrDefault bindingsTypeEvent.Name "")
             
             let! name = "Name", bindingsTypeEvent.Name
             let! inputType = "InputType", bindingsTypeEvent.InputType
@@ -138,9 +138,9 @@ module Binder =
         }
        
     /// Try to create a bound property from the bindings data only 
-    let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
+    let tryCreateProperty containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         maybe {
-            use_logger logger containerTypeName "property" (Text.getValueOrDefault bindingsTypeProperty.Name "")
+            use_logger containerTypeName "property" (Text.getValueOrDefault bindingsTypeProperty.Name "")
             
             let! name = "Name", bindingsTypeProperty.Name
             let! defaultValue = "DefaultValue", bindingsTypeProperty.DefaultValue
@@ -169,27 +169,27 @@ module Binder =
         }
     
     /// Try to bind or create an event binding
-    let tryBindEvent (logger: Logger) containerType (assemblyTypeEvents: AssemblyTypeEvent array) (bindingsTypeEvent: Event) =
+    let tryBindEvent containerType (assemblyTypeEvents: AssemblyTypeEvent array) (bindingsTypeEvent: Event) =
         BinderHelpers.tryBindOrCreateMember
             assemblyTypeEvents
             bindingsTypeEvent.Source
             (fun e -> e.Name)
-            (fun source -> logger.traceWarning (sprintf "Event '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateEvent logger containerType bindingsTypeEvent)
+            (fun source -> sprintf "Event '%s' on type '%s' not found" source containerType)
+            (fun () -> tryCreateEvent containerType bindingsTypeEvent)
             (fun e -> bindEvent containerType e bindingsTypeEvent)
     
     /// Try to bind or create a property binding
-    let tryBindProperty (logger: Logger) containerType (assemblyTypeProperties: AssemblyTypeProperty array) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
+    let tryBindProperty containerType (assemblyTypeProperties: AssemblyTypeProperty array) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         BinderHelpers.tryBindOrCreateMember
             assemblyTypeProperties
             bindingsTypeProperty.Source
             (fun p -> p.Name)
-            (fun source -> logger.traceWarning (sprintf "Property '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateProperty logger containerType assemblyTypeAttachedProperties bindingsTypeProperty)
-            (fun p -> bindProperty logger containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
+            (fun source -> sprintf "Property '%s' on type '%s' not found" source containerType)
+            (fun () -> tryCreateProperty containerType assemblyTypeAttachedProperties bindingsTypeProperty)
+            (fun p -> bindProperty containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
     
     /// Bind an existing type
-    let bindType (logger: Logger) (assemblyType: AssemblyType) (bindingsType: Type) =
+    let bindType (assemblyType: AssemblyType) (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
         { Type = assemblyType.Name
           CanBeInstantiated = Value.getValueOrDefault bindingsType.CanBeInstantiated assemblyType.CanBeInstantiated
@@ -199,25 +199,30 @@ module Binder =
           Events =
               BinderHelpers.bindMembers
                 bindingsType.Events
-                (tryBindEvent logger typeName assemblyType.Events)
+                (tryBindEvent typeName assemblyType.Events)
           Properties =
               BinderHelpers.bindMembers
                 bindingsType.Properties
-                (tryBindProperty logger typeName assemblyType.Properties assemblyType.AttachedProperties) }
+                (tryBindProperty typeName assemblyType.Properties assemblyType.AttachedProperties) }
     
     /// Try to bind a type
-    let tryBindType (logger: Logger) (assemblyTypes: AssemblyType array) (bindingsType: Type) =
+    let tryBindType (assemblyTypes: AssemblyType array) (bindingsType: Type) =
         BinderHelpers.tryBind
             assemblyTypes
             bindingsType.Type
             (fun t -> t.Name)
-            (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
-            (fun t -> bindType logger t bindingsType)
+            (fun source -> sprintf "Type '%s' not found" source)
+            (fun t -> bindType t bindingsType)
     
     /// Create a bound model using the types extracted from the assemblies and the bindings provided by the caller
-    let bind (logger: Logger) (assemblyTypes: AssemblyType array) (bindings: Bindings) =
-        { Assemblies = bindings.Assemblies
-          OutputNamespace = bindings.OutputNamespace
-          Types =
-              bindings.Types
-              |> Array.choose (tryBindType logger assemblyTypes) }
+    let bind (assemblyTypes: AssemblyType array) (bindings: Bindings) : WorkflowResult<BoundModel> =
+        let types =
+            bindings.Types
+            |> Array.choose (tryBindType assemblyTypes)
+        
+        let data =
+            { Assemblies = bindings.Assemblies
+              OutputNamespace = bindings.OutputNamespace
+              Types = types}
+        
+        Ok (data, [], [])

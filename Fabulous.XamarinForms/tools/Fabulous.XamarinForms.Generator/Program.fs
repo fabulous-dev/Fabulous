@@ -18,11 +18,6 @@ module Program =
         | :? Parsed<Options> as parsedOptions -> Some (parsedOptions.Value)
         | _ -> None
         
-    let logger =
-        { traceInformation = Trace.TraceInformation
-          traceWarning = Trace.TraceWarning
-          traceError = Trace.TraceError }
-        
     let configuration =
         { baseTypeName = "Xamarin.Forms.Element"
           propertyBaseType = "Xamarin.Forms.BindableProperty" }
@@ -35,15 +30,14 @@ module Program =
         
         match tryReadOptions args with
         | None ->
-            logger.traceError "Missing required arguments"
+            Trace.TraceError "Missing required arguments"
             1
         | Some options ->
-            let success =
+            let result =
                 Program.mkProgram
                     Reflection.loadAllAssemblies
                     Reflection.tryGetProperty
                     configuration
-                    logger
                 |> Program.withDebug options.Debug
                 |> Program.withIsTypeResolvable XFConverters.isTypeResolvable
                 |> Program.withConvertTypeName XFConverters.convertTypeName
@@ -52,4 +46,12 @@ module Program =
                 |> Program.run options.MappingFile options.OutputFile
                 
             // Exit code
-            if success then 0 else 1
+            match result with
+            | Error messages ->
+                messages |> List.iter Trace.TraceError
+                1
+                
+            | Ok (informations, warnings) ->
+                warnings |> List.iter Trace.TraceWarning
+                informations |> List.iter Trace.TraceInformation
+                0
