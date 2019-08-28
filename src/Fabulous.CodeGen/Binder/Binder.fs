@@ -1,6 +1,5 @@
 namespace Fabulous.CodeGen.Binder
 
-open Fabulous.CodeGen
 open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
@@ -42,181 +41,183 @@ module BinderHelpers =
         
 module Binder =
     /// Create an attached property binding from the AssemblyReader data and Overwrite data
-    let bindAttachedProperty containerTypeName baseTargetTypeFullName (readerData: ReaderAttachedProperty) (overwriteData: AttachedProperty) =
-        let property = overwriteData :> IProperty
-        let name = Text.getValueOrDefault overwriteData.Name readerData.Name
+    let bindAttachedProperty containerTypeName (assemblyTypeAttachedProperty: ReaderAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
+        let name = Text.getValueOrDefault bindingsAttachedProperty.Name assemblyTypeAttachedProperty.Name
         { Name = name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-          DefaultValue = Text.getValueOrDefault property.DefaultValue readerData.DefaultValue
-          InputType = Text.getValueOrDefault overwriteData.InputType readerData.Type
-          ModelType = Text.getValueOrDefault overwriteData.ModelType readerData.Type
-          ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-          ConvertModelToValue = Text.getValueOrDefault property.ConvertModelToValue ""
-          IsInherited = false }
-    
-    /// Create an event binding from the AssemblyReader data and Overwrite data
-    let bindEvent containerTypeName (readerData: ReaderEvent) (overwriteData: Event) =
-        let constructorMember = overwriteData :> IConstructorMember
-        let name = Text.getValueOrDefault overwriteData.Name readerData.Name
-        { Name = name
-          ShortName = BinderHelpers.getShortName constructorMember.ShortName name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-          InputType = Text.getValueOrDefault overwriteData.InputType readerData.Type
-          ModelType = Text.getValueOrDefault overwriteData.ModelType readerData.EventHandlerType
-          ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-          RelatedProperties = match overwriteData.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
-          IsInherited = false }
-    
-    /// Create a property binding from the AssemblyReader data and Overwrite data
-    let bindProperty containerTypeName (readerData: ReaderProperty) (overwriteData: Property) =
-        let property = overwriteData :> IProperty
-        let constructorMember = overwriteData :> IConstructorMember
-        let name = Text.getValueOrDefault overwriteData.Name readerData.Name
-        { Name = name
-          ShortName = BinderHelpers.getShortName constructorMember.ShortName name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-          DefaultValue = Text.getValueOrDefault property.DefaultValue readerData.DefaultValue
-          OriginalType = readerData.Type
-          ElementType = property.ElementType
-          InputType = Text.getValueOrDefault overwriteData.InputType readerData.Type
-          ModelType = Text.getValueOrDefault overwriteData.ModelType readerData.Type
-          ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-          ConvertModelToValue = Text.getValueOrDefault property.ConvertModelToValue ""
-          IsInherited = false }
+          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+          DefaultValue = Text.getValueOrDefault bindingsAttachedProperty.DefaultValue assemblyTypeAttachedProperty.DefaultValue
+          InputType = Text.getValueOrDefault bindingsAttachedProperty.InputType assemblyTypeAttachedProperty.Type
+          ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType assemblyTypeAttachedProperty.Type
+          ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
+          ConvertModelToValue = Text.getValueOrDefault bindingsAttachedProperty.ConvertModelToValue ""
+          UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
        
     /// Try to create an attached property binding from the Overwrite data only 
-    let tryCreateAttachedProperty logger containerTypeName baseTargetTypeFullName (overwriteData: AttachedProperty) =
+    let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
         maybe {
-            use_logger logger containerTypeName "attached property" (Text.getValueOrDefault overwriteData.Name "")
+            use_logger logger containerTypeName "attached property" (Text.getValueOrDefault bindingsAttachedProperty.Name "")
             
-            let property = overwriteData :> IProperty
-            
-            let! name = "Name", overwriteData.Name
-            let! defaultValue = "DefaultValue", property.DefaultValue
-            let! inputType = "InputType", overwriteData.InputType
+            let! name = "Name", bindingsAttachedProperty.Name
+            let! defaultValue = "DefaultValue", bindingsAttachedProperty.DefaultValue
+            let! inputType = "InputType", bindingsAttachedProperty.InputType
 
             return
                 { Name = name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
+                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
                   DefaultValue = defaultValue
                   InputType = inputType
-                  ModelType = Text.getValueOrDefault overwriteData.ModelType inputType
-                  ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-                  ConvertModelToValue = Text.getValueOrDefault property.ConvertModelToValue ""
-                  IsInherited = false }
-        }
-       
-    /// Try to create an event binding from the Overwrite data only 
-    let tryCreateEvent logger containerTypeName (overwriteData: Event) =
-        maybe {
-            use_logger logger containerTypeName "event" (Text.getValueOrDefault overwriteData.Name "")
-            
-            let constructorMember = overwriteData :> IConstructorMember
-            
-            let! name = "Name", overwriteData.Name
-            let! inputType = "InputType", overwriteData.InputType
-            let! modelType = "ModelType", overwriteData.ModelType
-            
-            return
-                { Name = name
-                  ShortName = BinderHelpers.getShortName constructorMember.ShortName name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-                  InputType = inputType
-                  ModelType = modelType
-                  ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-                  RelatedProperties = match overwriteData.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
-                  IsInherited = false }
-        }
-       
-    /// Try to create an event binding from the Overwrite data only 
-    let tryCreateProperty logger containerTypeName (overwriteData: Property) =
-        maybe {
-            use_logger logger containerTypeName "property" (Text.getValueOrDefault overwriteData.Name "")
-            
-            let property = overwriteData :> IProperty
-            let constructorMember = overwriteData :> IConstructorMember
-            
-            let! name = "Name", overwriteData.Name
-            let! defaultValue = "DefaultValue", property.DefaultValue
-            let! inputType = "InputType", overwriteData.InputType
-
-            return
-                { Name = name
-                  ShortName = BinderHelpers.getShortName constructorMember.ShortName name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
-                  DefaultValue = defaultValue
-                  OriginalType = inputType
-                  ElementType = property.ElementType
-                  InputType = inputType
-                  ModelType = Text.getValueOrDefault overwriteData.ModelType inputType
-                  ConvertInputToModel = Text.getValueOrDefault overwriteData.ConvertInputToModel ""
-                  ConvertModelToValue = Text.getValueOrDefault property.ConvertModelToValue ""
-                  IsInherited = false }
+                  ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
+                  ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
+                  ConvertModelToValue = Text.getValueOrDefault bindingsAttachedProperty.ConvertModelToValue ""
+                  UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
         }
     
     /// Try to bind or create an attached property binding
-    let tryBindAttachedProperty (logger: Logger) containerType baseTargetType (readerData: ReaderAttachedProperty array) (overwriteData: AttachedProperty) =
+    let tryBindAttachedProperty (logger: Logger) containerType (readerData: ReaderAttachedProperty array) (overwriteData: AttachedProperty) =
         BinderHelpers.tryBindOrCreateMember
             readerData
             overwriteData.Source
             (fun a -> a.Name)
             (fun source -> logger.traceWarning (sprintf "Attached property '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateAttachedProperty logger containerType baseTargetType overwriteData)
-            (fun a -> bindAttachedProperty containerType baseTargetType a overwriteData)
+            (fun () -> tryCreateAttachedProperty logger containerType overwriteData)
+            (fun a -> bindAttachedProperty containerType a overwriteData)
+        
+    /// Create an event binding from the AssemblyReader data and Overwrite data
+    let bindEvent containerTypeName (assemblyTypeEvent: ReaderEvent) (bindingsTypeEvent: Event) =
+        let name = Text.getValueOrDefault bindingsTypeEvent.Name assemblyTypeEvent.Name
+        { Name = name
+          ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
+          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+          InputType = Text.getValueOrDefault bindingsTypeEvent.InputType assemblyTypeEvent.Type
+          ModelType = Text.getValueOrDefault bindingsTypeEvent.ModelType assemblyTypeEvent.EventHandlerType
+          ConvertInputToModel = Text.getValueOrDefault bindingsTypeEvent.ConvertInputToModel ""
+          RelatedProperties = match bindingsTypeEvent.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
+          IsInherited = false }
+    
+    /// Create a property binding from the AssemblyReader data and Overwrite data
+    let bindProperty logger containerTypeName (assemblyTypeProperty: ReaderProperty) (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
+        let name = Text.getValueOrDefault bindingsTypeProperty.Name assemblyTypeProperty.Name
+        { Name = name
+          ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
+          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+          DefaultValue = Text.getValueOrDefault bindingsTypeProperty.DefaultValue assemblyTypeProperty.DefaultValue
+          OriginalType = assemblyTypeProperty.Type
+          InputType = Text.getValueOrDefault bindingsTypeProperty.InputType assemblyTypeProperty.Type
+          ModelType = Text.getValueOrDefault bindingsTypeProperty.ModelType assemblyTypeProperty.Type
+          ConvertInputToModel = Text.getValueOrDefault bindingsTypeProperty.ConvertInputToModel ""
+          ConvertModelToValue = Text.getValueOrDefault bindingsTypeProperty.ConvertModelToValue ""
+          UpdateCode = Text.getValueOrDefault bindingsTypeProperty.UpdateCode ""
+          CollectionData =
+              bindingsTypeProperty.Collection
+              |> Option.map (fun cd ->
+                  { ElementType = Text.eitherOrDefault cd.ElementType assemblyTypeProperty.CollectionElementType ""
+                    AttachedProperties =
+                      BinderHelpers.bindMembers
+                        cd.AttachedProperties
+                        (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
+          IsInherited = false }
+       
+    /// Try to create an event binding from the Overwrite data only 
+    let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
+        maybe {
+            use_logger logger containerTypeName "event" (Text.getValueOrDefault bindingsTypeEvent.Name "")
+            
+            let! name = "Name", bindingsTypeEvent.Name
+            let! inputType = "InputType", bindingsTypeEvent.InputType
+            let! modelType = "ModelType", bindingsTypeEvent.ModelType
+            
+            return
+                { Name = name
+                  ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
+                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+                  InputType = inputType
+                  ModelType = modelType
+                  ConvertInputToModel = Text.getValueOrDefault bindingsTypeEvent.ConvertInputToModel ""
+                  RelatedProperties = match bindingsTypeEvent.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
+                  IsInherited = false }
+        }
+       
+    /// Try to create an event binding from the Overwrite data only 
+    let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
+        maybe {
+            use_logger logger containerTypeName "property" (Text.getValueOrDefault bindingsTypeProperty.Name "")
+            
+            let! name = "Name", bindingsTypeProperty.Name
+            let! defaultValue = "DefaultValue", bindingsTypeProperty.DefaultValue
+            let! inputType = "InputType", bindingsTypeProperty.InputType
+
+            return
+                { Name = name
+                  ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
+                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+                  DefaultValue = defaultValue
+                  OriginalType = inputType
+                  InputType = inputType
+                  ModelType = Text.getValueOrDefault bindingsTypeProperty.ModelType inputType
+                  ConvertInputToModel = Text.getValueOrDefault bindingsTypeProperty.ConvertInputToModel ""
+                  ConvertModelToValue = Text.getValueOrDefault bindingsTypeProperty.ConvertModelToValue ""
+                  UpdateCode = Text.getValueOrDefault bindingsTypeProperty.UpdateCode ""
+                  CollectionData =
+                      bindingsTypeProperty.Collection
+                      |> Option.map (fun cd ->
+                          { ElementType = Text.getValueOrDefault cd.ElementType ""
+                            AttachedProperties =
+                                BinderHelpers.bindMembers
+                                    cd.AttachedProperties
+                                    (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })                      
+                  IsInherited = false }
+        }
     
     /// Try to bind or create an event binding
-    let tryBindEvent (logger: Logger) containerType (readerData: ReaderEvent array) (overwriteData: Event) =
+    let tryBindEvent (logger: Logger) containerType (assemblyTypeEvents: ReaderEvent array) (bindingsTypeEvent: Event) =
         BinderHelpers.tryBindOrCreateMember
-            readerData
-            overwriteData.Source
+            assemblyTypeEvents
+            bindingsTypeEvent.Source
             (fun e -> e.Name)
             (fun source -> logger.traceWarning (sprintf "Event '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateEvent logger containerType overwriteData)
-            (fun e -> bindEvent containerType e overwriteData)
+            (fun () -> tryCreateEvent logger containerType bindingsTypeEvent)
+            (fun e -> bindEvent containerType e bindingsTypeEvent)
     
     /// Try to bind or create a property binding
-    let tryBindProperty (logger: Logger) containerType (readerData: ReaderProperty array) (overwriteData: Property) =
+    let tryBindProperty (logger: Logger) containerType (assemblyTypeProperties: ReaderProperty array) (assemblyTypeAttachedProperties: ReaderAttachedProperty array) (bindingsTypeProperty: Property) =
         BinderHelpers.tryBindOrCreateMember
-            readerData
-            overwriteData.Source
+            assemblyTypeProperties
+            bindingsTypeProperty.Source
             (fun p -> p.Name)
             (fun source -> logger.traceWarning (sprintf "Property '%s' on type '%s' not found" source containerType))
-            (fun () -> tryCreateProperty logger containerType overwriteData)
-            (fun p -> bindProperty containerType p overwriteData)
+            (fun () -> tryCreateProperty logger containerType assemblyTypeAttachedProperties bindingsTypeProperty)
+            (fun p -> bindProperty logger containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
     
     /// Create a type binding
-    let bindType (logger: Logger) baseAttachedPropertyTargetType (readerData: ReaderType) (overwriteData: Type) =
-        let typeName = BinderHelpers.getTypeName readerData.Name overwriteData.Name
-        { Type = readerData.Name
-          TypeToInstantiate = Text.getValueOrDefault overwriteData.CustomType readerData.Name
+    let bindType (logger: Logger) (assemblyType: ReaderType) (bindingsType: Type) =
+        let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
+        { Type = assemblyType.Name
+          CanBeInstantiated = Value.getValueOrDefault bindingsType.CanBeInstantiated assemblyType.CanBeInstantiated
+          TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
           BaseTypeName = None
           Name = typeName
-          AttachedProperties =
-              BinderHelpers.bindMembers
-                overwriteData.AttachedProperties
-                (tryBindAttachedProperty logger typeName baseAttachedPropertyTargetType readerData.AttachedProperties)
           Events =
               BinderHelpers.bindMembers
-                overwriteData.Events
-                (tryBindEvent logger typeName readerData.Events)
+                bindingsType.Events
+                (tryBindEvent logger typeName assemblyType.Events)
           Properties =
               BinderHelpers.bindMembers
-                overwriteData.Properties
-                (tryBindProperty logger typeName readerData.Properties) }
+                bindingsType.Properties
+                (tryBindProperty logger typeName assemblyType.Properties assemblyType.AttachedProperties) }
     
     /// Try to bind a type
-    let tryBindType (logger: Logger) baseAttachedPropertyTargetTypeFullName (readerData: ReaderType array) (overwriteData: Type) =
+    let tryBindType (logger: Logger) (assemblyTypes: ReaderType array) (bindingsType: Type) =
         BinderHelpers.tryBind
-            readerData
-            overwriteData.Type
+            assemblyTypes
+            bindingsType.Type
             (fun t -> t.Name)
             (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
-            (fun t -> bindType logger baseAttachedPropertyTargetTypeFullName t overwriteData)
+            (fun t -> bindType logger t bindingsType)
     
     /// Bind all declared types
-    let bind (logger: Logger) (baseAttachedPropertyTargetType: string) (readerData: ReaderType array) (overwriteData: OverwriteData) =
-        { Assemblies = overwriteData.Assemblies
-          OutputNamespace = overwriteData.OutputNamespace
+    let bind (logger: Logger) (assemblyTypes: ReaderType array) (bindings: Bindings) =
+        { Assemblies = bindings.Assemblies
+          OutputNamespace = bindings.OutputNamespace
           Types =
-              overwriteData.Types
-              |> Array.choose (tryBindType logger baseAttachedPropertyTargetType readerData) }
+              bindings.Types
+              |> Array.choose (tryBindType logger assemblyTypes) }

@@ -4,12 +4,12 @@ open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 
 module Expander =
-    let private tryFindTypeInBindings (types: TypeBinding[]) typeFullName =
-        types |> Array.tryFind (fun t2 -> t2.Type = typeFullName)
+    let private tryFindType (boundTypes: BoundType[]) typeFullName =
+        boundTypes |> Array.tryFind (fun t2 -> t2.Type = typeFullName)
         
-    let private getMembers (types: TypeBinding[]) (getMemberBindings: TypeBinding -> 'a array) (setInherited: 'a -> 'a) (hierarchy: string[]) =
+    let private getMembers (boundTypes: BoundType[]) (getMemberBindings: BoundType -> 'a array) (setInherited: 'a -> 'a) (hierarchy: string[]) =
         [ for typ in hierarchy do
-              match tryFindTypeInBindings types typ with
+              match tryFindType boundTypes typ with
               | None -> ()
               | Some t ->
                   let members = getMemberBindings t |> Array.map setInherited
@@ -17,26 +17,26 @@ module Expander =
                       yield m ]
         |> List.toArray
     
-    let expandType (readerDataTypes: ReaderType[]) (types: TypeBinding[]) (``type``: TypeBinding) =
-        let readerDataType = readerDataTypes |> Array.find (fun t -> t.Name = ``type``.Type)
+    let expandType (assemblyTypes: ReaderType[]) (boundTypes: BoundType[]) (boundType: BoundType) =
+        let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Type)
         let hierarchy = readerDataType.InheritanceHierarchy
-        let allBaseAttachedProperties = hierarchy |> getMembers types (fun t -> t.AttachedProperties) (fun a -> { a with IsInherited = true })
-        let allBaseEvents = hierarchy |> getMembers types (fun t -> t.Events) (fun e -> { e with IsInherited = true })
-        let allBaseProperties = hierarchy |> getMembers types (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
+        let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events) (fun e -> { e with IsInherited = true })
+        let allBaseProperties = hierarchy |> getMembers boundTypes (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
         
         let firstBoundBaseType =
             hierarchy
             |> Array.tryPick (fun h ->
-                types |> Array.tryFind (fun t -> t.Type = h)
+                boundTypes |> Array.tryFind (fun t -> t.Type = h)
             )
         
-        { ``type`` with
+        { boundType with
             BaseTypeName = firstBoundBaseType |> Option.map (fun t -> t.Name)
-            AttachedProperties = Array.concat [ ``type``.AttachedProperties; allBaseAttachedProperties ]
-            Events = Array.concat [ ``type``.Events; allBaseEvents ]
-            Properties = Array.concat [ ``type``.Properties; allBaseProperties ] }
+            Events = Array.concat [ boundType.Events; allBaseEvents ]
+            Properties = Array.concat [ boundType.Properties; allBaseProperties ] }
     
-    let expand (readerDataTypes: ReaderType[]) (bindings: Bindings): Bindings =
-        { bindings with
-            Types = bindings.Types |> Array.map (expandType readerDataTypes bindings.Types) }
+    /// Expands the bound model by adding all the inherited events and properties to all types
+    /// This results in a verbose bound model that can be directly read by the generator
+    let expand (assemblyTypes: ReaderType[]) (boundModel: BoundModel): BoundModel =
+        { boundModel with
+            Types = boundModel.Types |> Array.map (expandType assemblyTypes boundModel.Types) }
 

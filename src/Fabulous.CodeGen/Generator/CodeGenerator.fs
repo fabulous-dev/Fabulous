@@ -64,26 +64,21 @@ module CodeGenerator =
         w.printfn ""
         w
 
-    let generateCreateFunction (data: CreateData) (w: StringWriter) =
-        w.printfn "    static member val CreateFunc%s : (unit -> %s) = (fun () -> ViewBuilders.Create%s()) with get, set" data.Name data.FullName data.Name
-        w.printfn ""
-        w.printfn "    static member Create%s () : %s =" data.Name data.FullName
-
-        match data.HasCustomConstructor with
-        | true ->
-            w.printfn "        failwith \"can't create %s\"" data.FullName
-        | false ->
-            match data.Parameters with
-            | [||] ->
-                if data.TypeToInstantiate = data.FullName then
-                    w.printfn "        new %s()" data.TypeToInstantiate
-                else
-                    w.printfn "        upcast (new %s())" data.TypeToInstantiate
-            | ps ->
-                // TODO
-                failwith "Constructor with parameters not implemented"
-        w.printfn ""
-        w
+    let generateCreateFunction (data: CreateData option) (w: StringWriter) =
+        match data with
+        | None -> w
+        | Some data ->
+            w.printfn "    static member val CreateFunc%s : (unit -> %s) = (fun () -> ViewBuilders.Create%s()) with get, set" data.Name data.FullName data.Name
+            w.printfn ""
+            w.printfn "    static member Create%s () : %s =" data.Name data.FullName
+            
+            if data.TypeToInstantiate = data.FullName then
+                w.printfn "        new %s()" data.TypeToInstantiate
+            else
+                w.printfn "        upcast (new %s())" data.TypeToInstantiate
+            
+            w.printfn ""
+            w
         
     let generateUpdateFunction (data: UpdateData) (w: StringWriter) =
         w.printfn "    static member val UpdateFunc%s =" data.Name 
@@ -130,16 +125,33 @@ module CodeGenerator =
                 let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
 
                 // Check if the property is a collection
-                match p.ElementType with 
-                | Some elementType when not hasApply ->
+                match p.CollectionData with 
+                | Some collectionData when not hasApply ->
                     w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                    w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" elementType
+                    w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
                     w.printfn "            ViewUpdaters.canReuseView"
                     w.printfn "            ViewUpdaters.updateChild"
+                    if (collectionData.AttachedProperties.Length > 0) then
+                        w.printfn "            (fun prevChildOpt newChild targetChild -> "
+                        for ap in collectionData.AttachedProperties do
+                            w.printfn "                // Adjust the attached properties"
+                            w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
+                            w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
+                            if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
+                                w.printfn "                match prevChildValueOpt, childValueOpt with"
+                                w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
+                                w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
+                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
+                                w.printfn "                | _ -> ()"
+                            else
+                                w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
+                        w.printfn "                ())"
+                    else
+                        w.printfn "            (fun _ _ _ -> ())"
 
                 | _ -> 
-                    // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed 'object' by default (thus disabling control reuse in the generator)
+                    // If the type is ViewElement, then it's a type from the model
+                    // Issue recursive calls to "Create" and "UpdateIncremental"
                     if p.ModelType = "ViewElement" && not hasApply then
                         w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
@@ -173,33 +185,36 @@ module CodeGenerator =
         w.printfn ""
         w
 
-    let generateConstruct (data: ConstructData) (w: StringWriter) =
-        let memberNewLine = "\n                                  " + String.replicate data.Name.Length " " + " "
-        let space = "\n                               "
-        let membersForConstructor =
-            data.Members
-            |> Array.mapi (fun i m ->
-                let commaSpace = if i = 0 then "" else "," + memberNewLine
-                match m.Name with
-                | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name data.FullName
-                | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name data.FullName
-                | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
-            |> Array.fold (+) ""
-        let membersForBuild =
-            data.Members
-            |> Array.map (fun m ->
-                match m.Name with
-                | "created" -> sprintf ",%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" space m.Name m.Name data.FullName
-                | "ref" ->     sprintf ",%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" space m.Name m.Name data.FullName
-                | _ ->         sprintf ",%s?%s=%s" space m.Name m.Name)
-            |> Array.fold (+) ""
+    let generateConstruct (data: ConstructData option) (w: StringWriter) =
+        match data with
+        | None -> ()
+        | Some data ->
+            let memberNewLine = "\n                                  " + String.replicate data.Name.Length " " + " "
+            let space = "\n                               "
+            let membersForConstructor =
+                data.Members
+                |> Array.mapi (fun i m ->
+                    let commaSpace = if i = 0 then "" else "," + memberNewLine
+                    match m.Name with
+                    | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name data.FullName
+                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name data.FullName
+                    | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
+                |> Array.fold (+) ""
+            let membersForBuild =
+                data.Members
+                |> Array.map (fun m ->
+                    match m.Name with
+                    | "created" -> sprintf ",%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" space m.Name m.Name data.FullName
+                    | "ref" ->     sprintf ",%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" space m.Name m.Name data.FullName
+                    | _ ->         sprintf ",%s?%s=%s" space m.Name m.Name)
+                |> Array.fold (+) ""
 
-        w.printfn "    static member inline Construct%s(%s) = " data.Name membersForConstructor
-        w.printfn ""
-        w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
-        w.printfn ""
-        w.printfn "        ViewElement.Create<%s>(ViewBuilders.CreateFunc%s, ViewBuilders.UpdateFunc%s, attribBuilder)" data.FullName data.Name data.Name
-        w.printfn ""
+            w.printfn "    static member inline Construct%s(%s) = " data.Name membersForConstructor
+            w.printfn ""
+            w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
+            w.printfn ""
+            w.printfn "        ViewElement.Create<%s>(ViewBuilders.CreateFunc%s, ViewBuilders.UpdateFunc%s, attribBuilder)" data.FullName data.Name data.Name
+            w.printfn ""
 
 
     let generateBuilders (data: BuilderData []) (w: StringWriter) =
@@ -271,8 +286,8 @@ module CodeGenerator =
         w.printfn "    type ViewElement with"
 
         for m in data do
-            match m.LowerShortName with
-            | "created" | "ref" -> ()
+            match m.UniqueName with
+            | "Created" | "Ref" -> ()
             | _ ->
                 w.printfn ""
                 w.printfn "        /// Adjusts the %s property in the visual element" m.UniqueName
@@ -280,22 +295,22 @@ module CodeGenerator =
 
         let members =
             data
-            |> Array.filter (fun m -> m.LowerShortName <> "created" && m.LowerShortName <> "ref")
+            |> Array.filter (fun m -> m.UniqueName <> "Created" && m.UniqueName <> "Ref")
             |> Array.mapi (fun index m -> sprintf "%s%s?%s: %s" (if index > 0 then ", " else "") (if index > 0 && index % 5 = 0 then newLine else "") m.LowerUniqueName m.InputType)
             |> Array.fold (+) ""
 
         w.printfn ""
         w.printfn "        member inline x.With(%s) =" members
         for m in data do
-            match m.LowerShortName with
-            | "created" | "ref" -> ()
+            match m.UniqueName with
+            | "Created" | "ref" -> ()
             | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
         w.printfn "            x"
         w.printfn ""
 
         for m in data do
-            match m.LowerShortName with
-            | "created" | "ref" -> ()
+            match m.UniqueName with
+            | "Created" | "Ref" -> ()
             | _ ->
                 w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName

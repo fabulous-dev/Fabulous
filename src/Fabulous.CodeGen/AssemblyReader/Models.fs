@@ -32,7 +32,7 @@ module Models =
           Type: string
           
           /// The type of the items in case the property is a list (e.g. IGridList<View> => View)
-          ElementType: string option
+          CollectionElementType: string option
           
           /// The default value of the property (e.g. null)
           DefaultValue: string }
@@ -41,6 +41,9 @@ module Models =
     type ReaderType =
         { /// The name of the type
           Name: string
+          
+          /// Indicates if the type can be instantiated (non-abstract type with a public parameter-less constructor)
+          CanBeInstantiated: bool
           
           /// The types inherited by this type
           /// From first to last, the closest inherited type to the base

@@ -14,7 +14,7 @@ type Program =
       logger: Logger
       loadAllAssembliesByReflection: seq<string> -> Assembly[]
       tryGetAttachedPropertyByReflection: Assembly[] -> string * string -> Models.ReflectionAttachedProperty option
-      readBindingsFile: string -> OverwriteData
+      readBindingsFile: string -> Bindings
       isTypeResolvable: string -> bool
       convertTypeName: string -> string
       convertEventType: string option -> string
@@ -22,7 +22,7 @@ type Program =
     
 module private Functions =
     let readBindingsFile path =
-        path |> File.ReadAllText |> Json.deserialize<OverwriteData>
+        path |> File.ReadAllText |> Json.deserialize<Bindings>
     
     let getReaderData program assemblies =
         let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
@@ -42,7 +42,7 @@ module private Functions =
         let readerData = getReaderData program overwriteData.Assemblies
         readerData |> Text.writeOutputIfDebug program.debug "reader-data.json"
         
-        let bindings = Binder.bind program.logger program.configuration.baseTargetTypeForAttachedProperties readerData overwriteData
+        let bindings = Binder.bind program.logger readerData overwriteData
         bindings |> Text.writeOutputIfDebug program.debug "bindings.json"
         
         let optimizedBindings = Optimizer.optimize bindings

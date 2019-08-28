@@ -12,10 +12,7 @@ module Models =
           baseTypeName: string
           
           /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
-          propertyBaseType: string
-          
-          /// The default type to which attached properties can be applied to (e.g. Xamarin.Forms.Element)
-          baseTargetTypeForAttachedProperties: string }
+          propertyBaseType: string }
     
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
@@ -68,14 +65,18 @@ module Models =
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
 
+    type PropertyCollectionData() =
+        /// The type of the elements if the property is a collection
+        member val ElementType : string option = None with get, set
+        
+        /// Attached properties to applicable to the elements of a collection property (e.g. Grid => Row/RowSpan)
+        member val AttachedProperties : AttachedProperty[] option = None with get, set
+    
     type Property() =
         inherit Member()
         
-        /// The type of the elements if the property is a collection
-        member val CollectionElementType : string option = None with get, set
-        
-        /// Attached properties to applicable to the elements of a collection property (e.g. Grid => Row/RowSpan)
-        member val CollectionAttachedProperties : AttachedProperty[] option = None with get, set
+        /// Indications on the collection if the property is of a collection type
+        member val Collection : PropertyCollectionData option = None with get, set
         
         member val ShortName = None with get, set
         member val DefaultValue = None with get, set
@@ -109,7 +110,7 @@ module Models =
         member val CustomType : string option = None with get, set
 
         /// Indicates if this type can be instantiated by itself and if the generator should provide a public constructor for it
-        member val CanBeInstantiated : bool = true with get, set
+        member val CanBeInstantiated : bool option = None with get, set
 
         /// The name of the type as used inside Fabulous (e.g. MyWonderfulButton => View.MyWonderfulButton(...))
         member val Name : string option = None with get, set
@@ -125,7 +126,7 @@ module Models =
         /// Can order inherited members
         member val ConstructorMemberOrdering : string[] option = None with get, set
     
-    type OverwriteData() =
+    type Bindings() =
         /// Assemblies to read (can be relative paths to dlls)
         member val Assemblies : string[] = [||] with get, set
         

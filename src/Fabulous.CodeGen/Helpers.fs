@@ -68,6 +68,12 @@ module ComputationExpressions =
        
     let nullable = new NullableBuilder()
     
+module Value =
+    let getValueOrDefault overwrittenValue defaultValue =
+        match overwrittenValue with
+        | None -> defaultValue
+        | Some value -> value
+    
 module Text =
     type TextWriter with
         member this.printf fmt = fprintf this fmt
@@ -84,6 +90,12 @@ module Text =
         | None -> defaultValue
         | Some value when System.String.IsNullOrWhiteSpace value -> defaultValue
         | Some value -> value
+        
+    let eitherOrDefault val1 val2 defaultValue =
+        match val1, val2 with
+        | Some value, _
+        | _, Some value -> value
+        | _ -> defaultValue
 
     let toLowerPascalCase (str : string) =
         match str with

@@ -71,7 +71,7 @@ module Extractor =
                     Some
                         ({ Name = data.Name
                            Type = propertyType
-                           ElementType = Resolver.getElementTypeForType ``type``
+                           CollectionElementType = Resolver.getElementTypeForType ``type``
                            DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : ReaderProperty)
             )
             |> Array.choose id
@@ -83,7 +83,7 @@ module Extractor =
 
                 { Name = pdef.Name
                   Type = propertyType
-                  ElementType = Resolver.getElementTypeForType ``type``
+                  CollectionElementType = Resolver.getElementTypeForType ``type``
                   DefaultValue = getDefaultValueAsString propertyType null } : ReaderProperty
             )
 
@@ -97,7 +97,14 @@ module Extractor =
             (propertyBaseType: string)
             (baseTypeName: string)
             (tdef: TypeDefinition) =
+        let ctor =
+            tdef.Methods
+             |> Seq.filter (fun x -> x.IsConstructor && x.IsPublic)
+             |> Seq.sortBy (fun x -> x.Parameters.Count)
+             |> Seq.tryHead
+        
         { Name = tdef.FullName
+          CanBeInstantiated = (tdef.IsAbstract || ctor.IsNone || ctor.Value.Parameters.Count > 0)
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertEventType tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
