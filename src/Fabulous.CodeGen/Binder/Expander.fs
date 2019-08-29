@@ -1,6 +1,7 @@
 namespace Fabulous.CodeGen.Binder
 
 open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Helpers
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 
@@ -41,4 +42,4 @@ module Expander =
         let data =
             { boundModel with
                 Types = boundModel.Types |> Array.map (expandType assemblyTypes boundModel.Types) }
-        Ok (data, [], [])
+        WorkflowResult.ok data

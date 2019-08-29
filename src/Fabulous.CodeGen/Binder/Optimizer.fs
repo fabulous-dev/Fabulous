@@ -1,6 +1,7 @@
 namespace Fabulous.CodeGen.Binder
 
 open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Helpers
 open Fabulous.CodeGen.Binder.Models
 
 module Optimizer =
@@ -74,4 +75,4 @@ module Optimizer =
             boundModel
             |> OptimizeKnownTypes.apply
             |> OptimizeLists.apply
-        Ok (data, [], [])
+        WorkflowResult.ok data

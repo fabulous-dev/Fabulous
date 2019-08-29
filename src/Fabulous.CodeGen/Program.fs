@@ -10,6 +10,21 @@ open Fabulous.CodeGen.Binder
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator
 
+type Configuration =
+    { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
+      baseTypeName: string
+      
+      /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
+      propertyBaseType: string }
+    
+type ReadAssembliesConfiguration =
+    { loadAllAssembliesByReflection: seq<string> -> Assembly array
+      tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option
+      isTypeResolvable: string -> bool
+      convertTypeName: string -> string
+      convertEventType: string option -> string
+      tryGetStringRepresentationOfDefaultValue: obj -> string option }
+    
 type WorkflowConfiguration =
     { loadBindings: string -> WorkflowResult<Bindings>
       readAssemblies: Configuration -> ReadAssembliesConfiguration -> string array -> WorkflowResult<AssemblyType array>
@@ -17,16 +32,8 @@ type WorkflowConfiguration =
       optimize: BoundModel -> WorkflowResult<BoundModel>
       expand: AssemblyType array -> BoundModel -> WorkflowResult<BoundModel>
       generateCode: BoundModel -> WorkflowResult<string> }
-    
-and ReadAssembliesConfiguration =
-    { loadAllAssembliesByReflection: seq<string> -> Assembly array
-      tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option
-      isTypeResolvable: string -> bool
-      convertTypeName: string -> string
-      convertEventType: string option -> string
-      tryGetStringRepresentationOfDefaultValue: obj -> string option }
 
-and Program =
+type Program =
     { debug: bool
       configuration: Configuration
       workflow: WorkflowConfiguration
@@ -36,29 +43,19 @@ module private Functions =
     let readBindingsFile path =
         let bindings =
             path |> File.ReadAllText |> Json.deserialize<Bindings>
-        Ok (bindings, [], [])
+        WorkflowResult.ok bindings
     
     let readAssemblies configuration readAssembliesConfiguration assemblies =
-        let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
-        let assemblies = readAssembliesConfiguration.loadAllAssembliesByReflection assemblies
-        
-        let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
-        let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType readAssembliesConfiguration.isTypeResolvable allTypes configuration.baseTypeName
-        
-        let tryGetProperty = readAssembliesConfiguration.tryGetAttachedPropertyByReflection assemblies
-        
-        let data =
-            allTypesDerivingFromBaseType
-            |> Array.map
-                   (Extractor.readType
-                        readAssembliesConfiguration.convertTypeName
-                        readAssembliesConfiguration.convertEventType
-                        readAssembliesConfiguration.tryGetStringRepresentationOfDefaultValue
-                        tryGetProperty
-                        configuration.propertyBaseType
-                        configuration.baseTypeName)
-        
-        Ok (data, [], [])
+        Reader.readAssemblies
+            readAssembliesConfiguration.loadAllAssembliesByReflection
+            readAssembliesConfiguration.tryGetAttachedPropertyByReflection
+            readAssembliesConfiguration.isTypeResolvable
+            readAssembliesConfiguration.convertTypeName
+            readAssembliesConfiguration.convertEventType
+            readAssembliesConfiguration.tryGetStringRepresentationOfDefaultValue
+            configuration.propertyBaseType
+            configuration.baseTypeName
+            assemblies
     
     let runProgram program bindingsFile outputFile =        
         let readAssemblies (bindings: Bindings) =

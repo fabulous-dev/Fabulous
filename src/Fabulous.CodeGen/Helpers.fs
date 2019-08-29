@@ -19,6 +19,26 @@ module File =
     let write path content = File.WriteAllText(path, content)
     
 module ComputationExpressions =
+    type Logger =
+        { traceInformation: string -> unit
+          traceWarning: string -> unit
+          traceError: string -> unit
+          getInformations: unit -> string list
+          getWarnings: unit -> string list
+          getErrors: unit -> string list }
+            
+    let createLogger () =
+        let mutable _informations = []
+        let mutable _warnings = []
+        let mutable _errors = []
+        
+        { traceInformation = fun s -> _informations <- s :: _informations
+          traceWarning = fun s -> _warnings <- s :: _warnings
+          traceError = fun s -> _errors <- s :: _errors
+          getInformations = fun () -> List.rev _informations
+          getWarnings = fun () -> List.rev _warnings
+          getErrors = fun () -> List.rev _errors }
+    
     type MaybeBuilder() =
         let mutable _logger: Logger option = None
         let mutable _containerType: string = ""
@@ -136,3 +156,12 @@ module WorkflowResult =
         | Ok (data, informations, warnings) ->
             data |> Text.writeOutputIfDebug isDebugMode fileName
             Ok (data, informations, warnings)
+            
+    let ok data =
+        Ok (data, [], [])
+        
+    let okWarnings data informations warnings =
+        Ok (data, informations, warnings)
+        
+    let error messages =
+        Error messages

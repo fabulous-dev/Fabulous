@@ -2,6 +2,7 @@
 namespace Fabulous.CodeGen.Generator
 
 open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Helpers
 open Fabulous.CodeGen.Helpers.Text
 open Fabulous.CodeGen.Generator.Models
 open System.IO
@@ -333,4 +334,4 @@ module CodeGenerator =
             |> generateViewExtensions data.ViewExtensions
             |> toString
             
-        Ok (result, [], [])
+        WorkflowResult.ok result

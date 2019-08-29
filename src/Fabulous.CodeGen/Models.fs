@@ -8,18 +8,6 @@ module Models =
     type WorkflowResult<'T> = Result<'T * InformationMessage list * WarningMessage list, ErrorMessage list>
     type ProgramResult = Result<InformationMessage list * WarningMessage list, ErrorMessage list>
     
-    type Logger =
-        { traceInformation: string -> unit
-          traceWarning: string -> unit
-          traceError: string -> unit }
-        
-    type Configuration =
-        { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
-          baseTypeName: string
-          
-          /// The type full name of the object used for properties declared with a bindable/dependency property (e.g. Xamarin.Forms.BindableProperty)
-          propertyBaseType: string }
-    
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
         /// If none is provided, the generator will consider it's a non-existent property and other fields will be mandatory

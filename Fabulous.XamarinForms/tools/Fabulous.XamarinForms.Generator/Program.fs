@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms.Generator
 open System.Diagnostics
 open CommandLine
 open Fabulous.CodeGen
-open Fabulous.CodeGen.Models
     
 module Program =
     type Options = {
