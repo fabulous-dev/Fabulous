@@ -17,19 +17,19 @@ module AssemblyResolver =
                 cache.[name.FullName] <- assembly
                 assembly
 
-        member this.RegisterAssembly(assembly : AssemblyDefinition) : unit =
+        member this.RegisterAssembly(assembly: AssemblyDefinition) : unit =
             match cache.ContainsKey(assembly.Name.FullName) with
             | true -> ()
             | false -> cache.[assembly.Name.FullName] <- assembly
 
         override this.Dispose(disposing) =
-            base.Dispose()
+            base.Dispose(disposing)
             
             if disposing then
                 cache.Values |> Seq.iter (fun asm -> asm.Dispose())
                 cache.Clear()
 
-    let loadAssembly (resolver : RegistrableResolver) (path : string) =
+    let loadAssembly (resolver: RegistrableResolver) (path: string) =
         let readerParameters = ReaderParameters()
         readerParameters.AssemblyResolver <- resolver
         let assembly = AssemblyDefinition.ReadAssembly(path, readerParameters)

@@ -39,6 +39,13 @@ module BinderHelpers =
             members
             |> Array.choose tryBindMemberFunc
         
+    let either elm (cd: PropertyCollectionData option) : (string * PropertyCollectionData) option =
+        match elm, cd with
+        | Some elmV, None -> Some (elmV, PropertyCollectionData(ElementType = None, AttachedProperties = None))
+        | None, Some cdV -> Some ("", cdV)
+        | Some elmV, Some cdV -> Some (elmV, cdV)
+        | None, None -> None
+        
 module Binder =
     /// Bind an existing attached property
     let bindAttachedProperty containerTypeName (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
@@ -108,12 +115,12 @@ module Binder =
           ConvertModelToValue = Text.getValueOrDefault bindingsTypeProperty.ConvertModelToValue ""
           UpdateCode = Text.getValueOrDefault bindingsTypeProperty.UpdateCode ""
           CollectionData =
-              bindingsTypeProperty.Collection
-              |> Option.map (fun cd ->
-                  { ElementType = Text.eitherOrDefault cd.ElementType assemblyTypeProperty.CollectionElementType ""
+              BinderHelpers.either assemblyTypeProperty.CollectionElementType bindingsTypeProperty.Collection
+              |> Option.map (fun (assemblyElementType, bindingsCollection) ->
+                  { ElementType = Text.getValueOrDefault bindingsCollection.ElementType assemblyElementType
                     AttachedProperties =
                       BinderHelpers.bindMembers
-                        cd.AttachedProperties
+                        bindingsCollection.AttachedProperties
                         (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
           IsInherited = false }
        

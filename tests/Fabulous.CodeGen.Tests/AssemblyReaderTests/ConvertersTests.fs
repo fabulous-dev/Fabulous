@@ -97,7 +97,7 @@ module ConvertersTests =
         
     [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for TimeSpan.Zero``() =
-        Converters.tryGetStringRepresentationOfDefaultValue TimeSpan.Zero |> should equal "System.TimeSpan.Zero"
+        Converters.tryGetStringRepresentationOfDefaultValue TimeSpan.Zero |> should equal (Some "System.TimeSpan.Zero")
 
     [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for enum``() =

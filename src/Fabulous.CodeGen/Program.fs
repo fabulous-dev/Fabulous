@@ -60,28 +60,28 @@ module private Functions =
     let runProgram program bindingsFile outputFile =        
         let readAssemblies (bindings: Bindings) =
             program.Workflow.readAssemblies program.Configuration program.ReadAssembliesConfiguration bindings.Assemblies
-            |> WorkflowResult.debug program.Debug "reader-data.json"
+            |> WorkflowResult.debug program.Debug "1-assembly-types.json"
             |> WorkflowResult.map (fun x -> (x, bindings))
             
         let bind (readerData, bindings) =
             program.Workflow.bind readerData bindings
-            |> WorkflowResult.debug program.Debug "bindings.json"
+            |> WorkflowResult.debug program.Debug "2-bound-model.json"
             |> WorkflowResult.map (fun x -> (x, readerData))
             
         let optimize (boundModel, readerData) =
             program.Workflow.optimize boundModel
-            |> WorkflowResult.debug program.Debug "optimized-bindings.json"
+            |> WorkflowResult.debug program.Debug "3-optimized-bound-model.json"
             |> WorkflowResult.map (fun x -> (x, readerData))
             
         let expand (boundModel, readerData) =
             program.Workflow.expand readerData boundModel
-            |> WorkflowResult.debug program.Debug "expanded-bindings.json"
+            |> WorkflowResult.debug program.Debug "4-expanded-bound-model.json"
             
         let generateCode boundModel =
             program.Workflow.generateCode boundModel
             
         let write outputFile generatedCode =
-            File.write generatedCode outputFile
+            File.write outputFile generatedCode
         
         program.Workflow.loadBindings bindingsFile
         |> WorkflowResult.bind readAssemblies

@@ -133,8 +133,8 @@ module CodeGenerator =
                     w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
                     if (collectionData.AttachedProperties.Length > 0) then
                         w.printfn "            (fun prevChildOpt newChild targetChild -> "
+                        w.printfn "                // Adjust the attached properties"
                         for ap in collectionData.AttachedProperties do
-                            w.printfn "                // Adjust the attached properties"
                             w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
                             w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
                             if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
