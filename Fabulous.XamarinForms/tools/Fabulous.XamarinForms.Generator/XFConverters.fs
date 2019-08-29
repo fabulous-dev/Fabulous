@@ -14,10 +14,11 @@ module XFConverters =
         
     let convertTypeName (typeName: string) =
         match typeName with
-        | "Xamarin.Forms.Grid.IGridList`1<Xamarin.Forms.View>" -> "ViewElement list"
-        | "System.Collections.Generic.IList`1<Xamarin.Forms.Effect>" -> "ViewElement list"
-        | "System.Collections.Generic.IList`1<T>" -> "ViewElement list"
-        | "System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>" -> "ViewElement list"
+        | "Xamarin.Forms.Grid.IGridList`1<Xamarin.Forms.View>"
+        | "System.Collections.Generic.IList`1<Xamarin.Forms.Effect>"
+        | "System.Collections.Generic.IList`1<T>"
+        | "System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>"
+        | "System.Collections.Generic.IList`1<Xamarin.Forms.Span>" -> "ViewElement list"
         | "System.Windows.Input.ICommand" -> "unit -> unit"
         | _ -> Converters.convertTypeName typeName
         

@@ -105,7 +105,7 @@ module Reader =
              |> Seq.tryHead
         
         { Name = tdef.FullName
-          CanBeInstantiated = (tdef.IsAbstract || ctor.IsNone || ctor.Value.Parameters.Count > 0)
+          CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertEventType tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef

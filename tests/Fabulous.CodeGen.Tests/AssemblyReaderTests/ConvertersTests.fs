@@ -70,6 +70,7 @@ module ConvertersTests =
     [<TestCase(10.1f :> float32, "10.1f")>]
     [<TestCase(10.2f :> single, "10.2f")>]
     [<TestCase("", "System.String.Empty")>]
+    [<TestCase("Hello", "\"Hello\"")>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for known CLR types``(defaultValue, expectedValue) =
         Converters.tryGetStringRepresentationOfDefaultValue defaultValue |> should equal (Some expectedValue)
         

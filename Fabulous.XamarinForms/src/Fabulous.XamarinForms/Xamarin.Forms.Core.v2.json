@@ -991,6 +991,207 @@
           "source": "TextDecorations"
         }
       ]
+    },
+    {
+      "type": "Xamarin.Forms.StackLayout",
+      "properties": [
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.View"
+          }
+        },
+        {
+          "source": "Orientation"
+        },
+        {
+          "source": "Spacing"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Span",
+      "properties": [
+        {
+          "source": "BackgroundColor"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "Font"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "LineHeight"
+        },
+        {
+          "source": "Style"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "TextDecorations"
+        },
+        {
+          "source": "Text"
+        }
+      ],
+      "primaryConstructorMember": "Text"
+    },
+    {
+      "type": "Xamarin.Forms.TimePicker",
+      "properties": [
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "Format"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "Time"
+        }
+      ],
+      "primaryConstructorMember": "Time"
+    },
+    {
+      "type": "Xamarin.Forms.WebView",
+      "properties": [
+        {
+          "source": "CanGoBack"
+        },
+        {
+          "source": "CanGoForward"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": null,
+          "name": "Reload",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateWebViewReload"
+        }
+      ],
+      "events": [
+        {
+          "source": "GoBackRequested"
+        },
+        {
+          "source": "GoForwardRequested"
+        },
+        {
+          "source": "Navigated"
+        },
+        {
+          "source": "Navigating"
+        },
+        {
+          "source": "ReloadRequested"
+        }
+      ],
+      "primaryConstructorMember": "Source"
+    },
+    {
+      "type": "Xamarin.Forms.Page",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "BackgroundImage"
+        },
+        {
+          "source": "BackgroundImageSource"
+        },
+        {
+          "source": "IconImageSource"
+        },
+        {
+          "source": "Icon"
+        },
+        {
+          "source": "IsBusy"
+        },
+        {
+          "source": "Padding"
+        },
+        {
+          "source": "Title"
+        },
+        {
+          "source": "ToolbarItems"
+        },
+        {
+          "source": null,
+          "name": "UseSafeArea",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updatePageUseSafeArea"
+        },
+        {
+          "source": null,
+          "name": "ShellSearchHandler",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SearchHandler",
+          "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
+        }
+      ],
+      "events": [
+        {
+          "source": "Appearing"
+        },
+        {
+          "source": "Disappearing"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CarouselPage",
+      "properties": [
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.View"
+          }
+        },
+        {
+          "source": null,
+          "name": "CurrentPage",
+          "defaultValue": "0",
+          "inputType": "int",
+          "updateCode": "ViewUpdaters.updateCarouselPageCurrentPage"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "CurrentPageChanged",
+          "inputType": "unit -> unit",
+          "modelType": "System.EventHandler"
+        }
+      ],
+      "primaryConstructorMember": "Children"
     }
   ]
 }

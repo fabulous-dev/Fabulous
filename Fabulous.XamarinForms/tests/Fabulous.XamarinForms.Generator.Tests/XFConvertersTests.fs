@@ -19,6 +19,7 @@ module XFConvertersTests =
     [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Effect>", "ViewElement list")>]
     [<TestCase("System.Collections.Generic.IList`1<T>", "ViewElement list")>]
     [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Span>", "ViewElement list")>]
     [<TestCase("System.Windows.Input.ICommand", "unit -> unit")>]
     let ``convertTypeName should convert known Xamarin.Forms types``(typeName, expectedValue) =
         XFConverters.convertTypeName typeName |> should equal expectedValue
