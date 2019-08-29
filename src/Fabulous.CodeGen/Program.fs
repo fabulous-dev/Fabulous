@@ -34,10 +34,10 @@ type WorkflowConfiguration =
       generateCode: BoundModel -> WorkflowResult<string> }
 
 type Program =
-    { debug: bool
-      configuration: Configuration
-      workflow: WorkflowConfiguration
-      readAssembliesConfiguration: ReadAssembliesConfiguration }
+    { Debug: bool
+      Configuration: Configuration
+      Workflow: WorkflowConfiguration
+      ReadAssembliesConfiguration: ReadAssembliesConfiguration }
     
 module private Functions =
     let readBindingsFile path =
@@ -59,31 +59,31 @@ module private Functions =
     
     let runProgram program bindingsFile outputFile =        
         let readAssemblies (bindings: Bindings) =
-            program.workflow.readAssemblies program.configuration program.readAssembliesConfiguration bindings.Assemblies
-            |> WorkflowResult.debug program.debug "reader-data.json"
+            program.Workflow.readAssemblies program.Configuration program.ReadAssembliesConfiguration bindings.Assemblies
+            |> WorkflowResult.debug program.Debug "reader-data.json"
             |> WorkflowResult.map (fun x -> (x, bindings))
             
         let bind (readerData, bindings) =
-            program.workflow.bind readerData bindings
-            |> WorkflowResult.debug program.debug "bindings.json"
+            program.Workflow.bind readerData bindings
+            |> WorkflowResult.debug program.Debug "bindings.json"
             |> WorkflowResult.map (fun x -> (x, readerData))
             
         let optimize (boundModel, readerData) =
-            program.workflow.optimize boundModel
-            |> WorkflowResult.debug program.debug "optimized-bindings.json"
+            program.Workflow.optimize boundModel
+            |> WorkflowResult.debug program.Debug "optimized-bindings.json"
             |> WorkflowResult.map (fun x -> (x, readerData))
             
         let expand (boundModel, readerData) =
-            program.workflow.expand readerData boundModel
-            |> WorkflowResult.debug program.debug "expanded-bindings.json"
+            program.Workflow.expand readerData boundModel
+            |> WorkflowResult.debug program.Debug "expanded-bindings.json"
             
         let generateCode boundModel =
-            program.workflow.generateCode boundModel
+            program.Workflow.generateCode boundModel
             
         let write outputFile generatedCode =
             File.write generatedCode outputFile
         
-        program.workflow.loadBindings bindingsFile
+        program.Workflow.loadBindings bindingsFile
         |> WorkflowResult.bind readAssemblies
         |> WorkflowResult.bind bind
         |> WorkflowResult.bind optimize
@@ -94,16 +94,16 @@ module private Functions =
     
 module Program =
     let mkProgram loadAllAssembliesByReflection tryGetAttachedPropertyByReflection configuration =
-        { debug = false
-          configuration = configuration
-          workflow =
+        { Debug = false
+          Configuration = configuration
+          Workflow =
               { loadBindings = Functions.readBindingsFile
                 readAssemblies = Functions.readAssemblies
                 bind = Binder.bind
                 optimize = Optimizer.optimize
                 expand = Expander.expand
                 generateCode = CodeGenerator.generateCode }
-          readAssembliesConfiguration =
+          ReadAssembliesConfiguration =
               { loadAllAssembliesByReflection = loadAllAssembliesByReflection
                 tryGetAttachedPropertyByReflection = tryGetAttachedPropertyByReflection
                 isTypeResolvable = (fun _ -> true)
@@ -112,22 +112,22 @@ module Program =
                 tryGetStringRepresentationOfDefaultValue = Converters.tryGetStringRepresentationOfDefaultValue } }
         
     let withDebug debug program =
-        { program with debug = debug }
+        { program with Debug = debug }
         
     let withReadBindingsFile func program =
-        { program with workflow = { program.workflow with loadBindings = func } }
+        { program with Workflow = { program.Workflow with loadBindings = func } }
         
     let withIsTypeResolvable func program =
-        { program with readAssembliesConfiguration = { program.readAssembliesConfiguration with isTypeResolvable = func } }
+        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with isTypeResolvable = func } }
         
     let withConvertTypeName func program =
-        { program with readAssembliesConfiguration = { program.readAssembliesConfiguration with convertTypeName = func } }
+        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with convertTypeName = func } }
         
     let withConvertEventType func program =
-        { program with readAssembliesConfiguration = { program.readAssembliesConfiguration with convertEventType = func } }
+        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with convertEventType = func } }
         
     let withTryGetStringRepresentationOfDefaultValue func program =
-        { program with readAssembliesConfiguration = { program.readAssembliesConfiguration with tryGetStringRepresentationOfDefaultValue = func } }
+        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with tryGetStringRepresentationOfDefaultValue = func } }
     
     let run bindingsFile outputFile program =
         Functions.runProgram program bindingsFile outputFile
