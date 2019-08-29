@@ -2,10 +2,6 @@
 namespace Fabulous.CodeGen.Generator
 
 module Models =
-    type BoundTypeX =
-        { Name: string
-          FullName: string }
-
     type ConstructType =
         { Name: string
           InputType: string }

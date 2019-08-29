@@ -2,13 +2,13 @@ namespace Fabulous.CodeGen
 
 open System.IO
 open System.Reflection
+open Fabulous.CodeGen
 open Fabulous.CodeGen.AssemblyReader
 open Fabulous.CodeGen.AssemblyReader.Models
-open Fabulous.CodeGen.Models
-open Fabulous.CodeGen.Helpers
 open Fabulous.CodeGen.Binder
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator
+open Fabulous.CodeGen.Models
 
 type Configuration =
     { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
@@ -81,7 +81,7 @@ module private Functions =
             program.Workflow.generateCode boundModel
             
         let write outputFile generatedCode =
-            File.write outputFile generatedCode
+            File.WriteAllText(outputFile, generatedCode)
         
         program.Workflow.loadBindings bindingsFile
         |> WorkflowResult.bind readAssemblies

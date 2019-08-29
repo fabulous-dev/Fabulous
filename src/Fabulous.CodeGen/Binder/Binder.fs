@@ -1,12 +1,31 @@
 namespace Fabulous.CodeGen.Binder
 
+open Fabulous.CodeGen
 open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
-open Fabulous.CodeGen.Helpers
-open Fabulous.CodeGen.Helpers.ComputationExpressions
 
+type Logger =
+    { traceInformation: string -> unit
+      traceWarning: string -> unit
+      traceError: string -> unit
+      getInformations: unit -> string list
+      getWarnings: unit -> string list
+      getErrors: unit -> string list }
+        
 module BinderHelpers =
+    let createLogger () =
+        let mutable _informations = []
+        let mutable _warnings = []
+        let mutable _errors = []
+        
+        { traceInformation = fun s -> _informations <- s :: _informations
+          traceWarning = fun s -> _warnings <- s :: _warnings
+          traceError = fun s -> _errors <- s :: _errors
+          getInformations = fun () -> List.rev _informations
+          getWarnings = fun () -> List.rev _warnings
+          getErrors = fun () -> List.rev _errors }
+        
     let makeUniqueName (typeName: string) memberName =
         typeName + memberName
         
@@ -45,6 +64,25 @@ module BinderHelpers =
         | None, Some cdV -> Some ("", cdV)
         | Some elmV, Some cdV -> Some (elmV, cdV)
         | None, None -> None
+       
+    let createBinding logger containerTypeName memberKind memberNameOpt func values =
+        // Trace invalid values
+        let invalidValues =
+            values
+            |> List.filter (snd >> Option.isNone)
+            
+        match invalidValues with
+        | [] ->
+            let memberName = Text.getValueOrDefault memberNameOpt ""
+            
+            for (fieldName, _) in invalidValues do
+                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" fieldName memberKind memberName containerTypeName)
+            None
+        | _ ->
+            values
+            |> List.map (snd >> Option.get)
+            |> func
+            |> Some
         
 module Binder =
     /// Bind an existing attached property
@@ -61,23 +99,26 @@ module Binder =
        
     /// Try to create a bound attached property from the bindings data only 
     let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
-        maybe {
-            use_logger logger containerTypeName "attached property" (Text.getValueOrDefault bindingsAttachedProperty.Name "")
-            
-            let! name = "Name", bindingsAttachedProperty.Name
-            let! defaultValue = "DefaultValue", bindingsAttachedProperty.DefaultValue
-            let! inputType = "InputType", bindingsAttachedProperty.InputType
-
-            return
-                { Name = name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
-                  DefaultValue = defaultValue
-                  InputType = inputType
-                  ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
-                  ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
-                  ConvertModelToValue = Text.getValueOrDefault bindingsAttachedProperty.ConvertModelToValue ""
-                  UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
-        }
+        [
+            "Name", bindingsAttachedProperty.Name
+            "DefaultValue", bindingsAttachedProperty.DefaultValue
+            "InputType", bindingsAttachedProperty.InputType
+        ]
+        |> BinderHelpers.createBinding logger containerTypeName "attached property" bindingsAttachedProperty.Name
+               (fun values ->
+                    let name = values.[0]
+                    let defaultValue = values.[1]
+                    let inputType = values.[2]
+                           
+                    { Name = name
+                      UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+                      DefaultValue = defaultValue
+                      InputType = inputType
+                      ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
+                      ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
+                      ConvertModelToValue = Text.getValueOrDefault bindingsAttachedProperty.ConvertModelToValue ""
+                      UpdateCode = Text.getValueOrDefault bindingsAttachedProperty.UpdateCode "" }
+                )
     
     /// Try to bind or create a bound attached property
     let tryBindAttachedProperty logger containerType (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty array) (overwriteData: AttachedProperty) =
@@ -126,14 +167,17 @@ module Binder =
        
     /// Try to create a bound event binding from the bindings data only 
     let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
-        maybe {
-            use_logger logger containerTypeName "event" (Text.getValueOrDefault bindingsTypeEvent.Name "")
+        [
+            "Name", bindingsTypeEvent.Name
+            "InputType", bindingsTypeEvent.InputType
+            "ModelType", bindingsTypeEvent.ModelType
+        ]
+        |> BinderHelpers.createBinding logger containerTypeName "event" bindingsTypeEvent.Name
+            (fun values ->
+                let name = values.[0]
+                let inputType = values.[1]
+                let modelType = values.[2]
             
-            let! name = "Name", bindingsTypeEvent.Name
-            let! inputType = "InputType", bindingsTypeEvent.InputType
-            let! modelType = "ModelType", bindingsTypeEvent.ModelType
-            
-            return
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
@@ -142,18 +186,21 @@ module Binder =
                   ConvertInputToModel = Text.getValueOrDefault bindingsTypeEvent.ConvertInputToModel ""
                   RelatedProperties = match bindingsTypeEvent.RelatedProperties with None -> [||] | Some relatedProperties -> relatedProperties
                   IsInherited = false }
-        }
+            )
        
     /// Try to create a bound property from the bindings data only 
     let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
-        maybe {
-            use_logger logger containerTypeName "property" (Text.getValueOrDefault bindingsTypeProperty.Name "")
-            
-            let! name = "Name", bindingsTypeProperty.Name
-            let! defaultValue = "DefaultValue", bindingsTypeProperty.DefaultValue
-            let! inputType = "InputType", bindingsTypeProperty.InputType
-
-            return
+        [
+            "Name", bindingsTypeProperty.Name
+            "DefaultValue", bindingsTypeProperty.DefaultValue
+            "InputType", bindingsTypeProperty.InputType
+        ]
+        |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name
+            (fun values ->
+                let name = values.[0]
+                let defaultValue = values.[1]
+                let inputType = values.[2]
+                
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
@@ -173,7 +220,7 @@ module Binder =
                                     cd.AttachedProperties
                                     (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })                      
                   IsInherited = false }
-        }
+            )
     
     /// Try to bind or create an event binding
     let tryBindEvent logger containerType (assemblyTypeEvents: AssemblyTypeEvent array) (bindingsTypeEvent: Event) =
@@ -199,7 +246,7 @@ module Binder =
     let bindType logger (assemblyType: AssemblyType) (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
         { Type = assemblyType.Name
-          CanBeInstantiated = Value.getValueOrDefault bindingsType.CanBeInstantiated assemblyType.CanBeInstantiated
+          CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
           TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
           BaseTypeName = None
           Name = typeName
@@ -223,7 +270,7 @@ module Binder =
     
     /// Create a bound model using the types extracted from the assemblies and the bindings provided by the caller
     let bind (assemblyTypes: AssemblyType array) (bindings: Bindings) : WorkflowResult<BoundModel> =
-        let logger = createLogger ()
+        let logger = BinderHelpers.createLogger ()
         
         let data =
             { Assemblies = bindings.Assemblies

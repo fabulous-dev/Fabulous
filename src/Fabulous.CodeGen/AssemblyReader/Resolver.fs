@@ -1,6 +1,6 @@
 namespace Fabulous.CodeGen.AssemblyReader
 
-open Fabulous.CodeGen.Helpers
+open Fabulous.CodeGen
 open Mono.Cecil
 
 module Resolver =
@@ -103,6 +103,7 @@ module Resolver =
             |> List.rev
             |> List.toArray
             
+    /// Resolves the element type is the type is a generic collection
     let getElementTypeForType (``type``: TypeDefinition) =
         if ``type``.HasGenericParameters then
             Some ``type``.GenericParameters.[0].FullName

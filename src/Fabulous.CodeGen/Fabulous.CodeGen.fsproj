@@ -9,11 +9,11 @@
   <ItemGroup>
     <Compile Include="Models.fs" />
     <Compile Include="Helpers.fs" />
+    <Compile Include="Result.fs" />
     <Compile Include="AssemblyReader\Models.fs" />
     <Compile Include="AssemblyReader\Converters.fs" />
     <Compile Include="AssemblyReader\AssemblyResolver.fs" />
     <Compile Include="AssemblyReader\Resolver.fs" />
-    <Compile Include="AssemblyReader\Extractor.fs" />
     <Compile Include="AssemblyReader\Reader.fs" />
     <Compile Include="Binder\Models.fs" />
     <Compile Include="Binder\Binder.fs" />

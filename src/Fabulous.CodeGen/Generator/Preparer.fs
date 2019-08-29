@@ -1,7 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.Generator
 
-open Fabulous.CodeGen.Helpers
+open Fabulous.CodeGen
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator.Models
 

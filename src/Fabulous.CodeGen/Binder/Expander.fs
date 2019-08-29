@@ -1,7 +1,6 @@
 namespace Fabulous.CodeGen.Binder
 
-open Fabulous.CodeGen.Models
-open Fabulous.CodeGen.Helpers
+open Fabulous.CodeGen
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Binder.Models
 

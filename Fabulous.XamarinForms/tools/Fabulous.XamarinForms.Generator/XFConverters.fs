@@ -1,8 +1,8 @@
 namespace Fabulous.XamarinForms.Generator
 
+open System
 open Fabulous.CodeGen.AssemblyReader
 open Xamarin.Forms
-open System
 
 module XFConverters =
     let isTypeResolvable typeName =

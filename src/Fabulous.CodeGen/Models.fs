@@ -1,13 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen
 
-module Models =
-    type InformationMessage = string
-    type WarningMessage = string
-    type ErrorMessage = string
-    type WorkflowResult<'T> = Result<'T * InformationMessage list * WarningMessage list, ErrorMessage list>
-    type ProgramResult = Result<InformationMessage list * WarningMessage list, ErrorMessage list>
-    
+module Models =    
     type Member() =
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
         /// If none is provided, the generator will consider it's a non-existent property and other fields will be mandatory
