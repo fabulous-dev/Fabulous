@@ -475,7 +475,7 @@ module ViewUpdaters =
         updateCollectionGeneric prevArray currArray target.SelectedItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
-    let triggerScrollToAsync (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
+    let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
         match currValue with
         | ValueSome (x, y, animationKind) when x <> target.ScrollX || y <> target.ScrollY ->
             let animated =
@@ -562,7 +562,7 @@ module ViewUpdaters =
             tryFindGroupedListViewItemIndex items item
         | _ -> None
 
-    let updateShellSearchHandler prevValueOpt (currValueOpt: ViewElement voption) target =
+    let updatePageShellSearchHandler prevValueOpt (currValueOpt: ViewElement voption) target =
         match prevValueOpt, currValueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -661,7 +661,7 @@ module ViewUpdaters =
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
         
-    let updateUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
+    let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         let setUseSafeArea newValue =
                 Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(
                     (target : Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(),
@@ -673,3 +673,6 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> setUseSafeArea currValue
         | ValueSome _, ValueNone -> setUseSafeArea false
+
+    let triggerWebViewReload _ curr (target: Xamarin.Forms.WebView) =
+        if curr = ValueSome true then target.Reload()

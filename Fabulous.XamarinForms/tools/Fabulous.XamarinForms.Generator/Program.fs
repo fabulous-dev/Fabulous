@@ -18,7 +18,7 @@ module Program =
         | _ -> None
         
     let configuration =
-        { baseTypeName = "Xamarin.Forms.Element"
+        { baseTypeName = "Xamarin.Forms.BindableObject"
           propertyBaseType = "Xamarin.Forms.BindableProperty" }
 
     [<EntryPoint>]

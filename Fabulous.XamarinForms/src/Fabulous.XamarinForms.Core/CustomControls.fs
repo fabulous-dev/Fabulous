@@ -226,11 +226,15 @@ type ViewElementDataTemplate(viewElement: ViewElement) =
 /// A custom SearchHandler which exposes the overridable methods OnQueryChanged, OnQueryConfirmed and OnItemSelected as events
 type CustomSearchHandler() =
     inherit SearchHandler(ItemTemplate=DataTemplate(typeof<ContentViewElement>))
+    
+    let queryChanged = Event<EventHandler<string * string>, _>()
+    let queryConfirmed = Event<EventHandler, _>()
+    let itemSelected = Event<EventHandler<obj>, _>()
+    
+    [<CLIEvent>] member __.QueryChanged = queryChanged.Publish
+    [<CLIEvent>] member __.QueryConfirmed = queryConfirmed.Publish
+    [<CLIEvent>] member __.ItemSelected = itemSelected.Publish
 
-    member val QueryChanged = ignore with get, set
-    member val QueryConfirmed = ignore with get, set
-    member val ItemSelected: obj -> unit = ignore with get, set
-
-    override this.OnQueryChanged(oldValue, newValue) = this.QueryChanged (oldValue, newValue)
-    override this.OnQueryConfirmed() = this.QueryConfirmed ()
-    override this.OnItemSelected(item) = this.ItemSelected item
+    override this.OnQueryChanged(oldValue, newValue) = queryChanged.Trigger(this, (oldValue, newValue))
+    override this.OnQueryConfirmed() = queryConfirmed.Trigger(this, null)
+    override this.OnItemSelected(item) = itemSelected.Trigger(this, item)

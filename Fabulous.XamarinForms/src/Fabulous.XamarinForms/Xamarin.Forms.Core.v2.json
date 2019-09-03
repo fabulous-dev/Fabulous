@@ -313,7 +313,7 @@
           "name": "ScrollTo",
           "defaultValue": "null",
           "inputType": "double * double * AnimationKind",
-          "updateCode": "(fun _ curr target -> ViewUpdaters.triggerScrollToAsync curr target)"
+          "updateCode": "ViewUpdaters.triggerScrollToAsync"
         }
       ],
       "events": [
@@ -954,7 +954,7 @@
         },
         {
           "source": "SelectionLength",
-          "updateCode": "ViewUpdaters.updateEntryCursorPosition"
+          "updateCode": "ViewUpdaters.updateEntrySelectionLength"
         }
       ]
     },
@@ -1090,7 +1090,7 @@
           "name": "Reload",
           "defaultValue": "false",
           "inputType": "bool",
-          "updateCode": "ViewUpdaters.updateWebViewReload"
+          "updateCode": "ViewUpdaters.triggerWebViewReload"
         }
       ],
       "events": [
@@ -1198,6 +1198,142 @@
     {
       "type": "Xamarin.Forms.CarouselPage",
       "primaryConstructorMember": "Children"
+    },
+    {
+      "type": "Xamarin.Forms.SearchHandler",
+      "canBeInstantiated": false,
+      "name": "XFSearchHandler",
+      "members": [
+        {
+          "source": "ClearIcon"
+        },
+        {
+          "source": "ClearIconHelpText"
+        },
+        {
+          "source": "ClearIconName"
+        },
+        {
+          "source": "ClearPlaceholderCommand"
+        },
+        {
+          "source": "ClearPlaceholderEnabled"
+        },
+        {
+          "source": "ClearPlaceholderHelpText"
+        },
+        {
+          "source": "ClearPlaceholderIcon"
+        },
+        {
+          "source": "ClearPlaceholderName"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "DisplayMemberName"
+        },
+        {
+          "source": "IsSearchEnabled"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "Query"
+        },
+        {
+          "source": "QueryIcon"
+        },
+        {
+          "source": "QueryIconHelpText"
+        },
+        {
+          "source": "QueryIconName"
+        },
+        {
+          "source": "SearchBoxVisibility"
+        },
+        {
+          "source": "ShowsResults"
+        },
+        {
+          "source": null,
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "updateCode": "updateSearchHandlerItems"
+        },
+        {
+          "source": "BackgroundColor"
+        },
+        {
+          "source": "CancelButtonColor"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": null,
+          "name": "IsFocused",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateIsFocused"
+        },
+        {
+          "source": "Keyboard"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": null,
+          "name": "SelectedItem",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "updateCode": "ViewUpdaters.updateSelectedItem"
+        }
+      ],
+      "events": [
+        {
+          "source": "Unfocused"
+        },
+        {
+          "source": "Focused"
+        },
+        {
+          "source": "FocusChangeRequested"
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomSearchHandler",
+      "name": "SearchHandler",
+      "events": [
+        {
+          "source": "QueryChanged"
+        },
+        {
+          "source": "QueryConfirmed"
+        },
+        {
+          "source": "ItemSelected"
+        }
+      ]
     }
   ]
 }
