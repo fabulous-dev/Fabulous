@@ -20,6 +20,7 @@ module XFConverters =
         | "System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>"
         | "System.Collections.Generic.IList`1<Xamarin.Forms.Span>" -> "ViewElement list"
         | "System.Windows.Input.ICommand" -> "unit -> unit"
+        | "Xamarin.Forms.Button+ButtonContentLayout" -> "Xamarin.Forms.Button.ButtonContentLayout"
         | _ -> Converters.convertTypeName typeName
         
     let rec tryGetStringRepresentationOfDefaultValue (defaultValue: obj) : string option =
@@ -42,17 +43,19 @@ module XFConverters =
             | x -> Some (sprintf "Xamarin.Forms.LayoutOptions(Xamarin.Forms.LayoutAlignment.%s, %s)" (Enum.GetName(typeof<LayoutAlignment>, x.Alignment)) (if x.Expands then "true" else "false"))
         | :? Button.ButtonContentLayout as buttonContentLayout ->
             tryGetStringRepresentationOfDefaultValue buttonContentLayout.Position
-            |> Option.map (fun positionName -> sprintf "Xamarin.Forms.Button.ButtonContentLayout(%s, %s)" positionName (buttonContentLayout.Spacing.ToString()))
+            |> Option.map (fun positionName -> sprintf "Xamarin.Forms.Button.ButtonContentLayout(%s, %s)" positionName (Converters.floatToString buttonContentLayout.Spacing))
         | :? Rectangle as rectangle when rectangle = Rectangle.Zero -> Some "Xamarin.Forms.Rectangle.Zero"
-        | :? Rectangle as rectangle -> Some (sprintf "Xamarin.Forms.Rectangle(%s, %s, %s, %s)" (rectangle.X.ToString()) (rectangle.Y.ToString()) (rectangle.Width.ToString()) (rectangle.Height.ToString()))
+        | :? Rectangle as rectangle -> Some (sprintf "Xamarin.Forms.Rectangle(%s, %s, %s, %s)" (Converters.floatToString rectangle.X) (Converters.floatToString rectangle.Y) (Converters.floatToString rectangle.Width) (Converters.floatToString rectangle.Height))
         | :? Size as size when size.IsZero -> Some "Xamarin.Forms.Size.Zero"
-        | :? Size as size -> Some (sprintf "Xamarin.Forms.Size(%s, %s)" (size.Width.ToString()) (size.Height.ToString()))
+        | :? Size as size -> Some (sprintf "Xamarin.Forms.Size(%s, %s)" (Converters.floatToString size.Width) (Converters.floatToString size.Height))
         | :? IVisual as visual ->
             match visual.GetType().Name with
             | "MatchParentVisual" -> Some "Xamarin.Forms.VisualMarker.MatchParent"
             | "Default" -> Some "Xamarin.Forms.VisualMarker.Default"
             | "Material" -> Some "Xamarin.Forms.VisualMarker.Material"
             | _ -> None
+        | :? FlexBasis as flexBasis when flexBasis = FlexBasis.Auto -> Some "Xamarin.Forms.FlexBasis.Auto"
+        | :? FlexBasis as flexBasis -> Some (sprintf "Xamarin.Forms.FlexBasis(%s)" (Converters.float32ToString flexBasis.Length))
         | _ -> Converters.tryGetStringRepresentationOfDefaultValue defaultValue
         
     let convertEventType (eventArgsType: string option) =

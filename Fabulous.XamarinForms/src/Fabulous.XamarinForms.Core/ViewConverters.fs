@@ -110,4 +110,19 @@ module ViewConverters =
         | Uniform value -> Thickness(value)
         | Mirror (leftRight, topBottom) -> Thickness(leftRight, topBottom)
         | AllSides (left, top, right, bottom) -> Thickness(left, top, right, bottom)
-        | Value thickness -> thickness
+        | InputTypes.Thickness.Value thickness -> thickness
+        
+    /// Converts a string, byte array or ImageSource to a Xamarin.Forms ImageSource
+    let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image) =
+        match v with
+        | Path path -> ImageSource.op_Implicit path
+        | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
+        | InputTypes.Image.Value imageSource -> imageSource
+        
+    let convertCompletedFuncToEventHandler (v: string -> unit) =
+        System.EventHandler(fun _sender _args -> v (_sender :?> Xamarin.Forms.EntryCell).Text)
+        
+    let convertTableViewRoot (v: (string * ViewElement list) list) =
+        v
+        |> Array.ofList
+        |> Array.map (fun (title, es) -> (title, Array.ofList es))

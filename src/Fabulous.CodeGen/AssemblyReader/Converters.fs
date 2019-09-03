@@ -38,6 +38,21 @@ module Converters =
             str + "."
         else
             str
+            
+    let decimalToString (v: decimal) =
+        let str = v.ToString()
+        if Math.Round(v, 0) = v then
+            str + ".m"
+        else
+            str + "m"
+        
+    let float32ToString (v: float32) =
+        let d = decimal v
+        let str = d.ToString()
+        if Math.Round(d, 0) = d then
+            str + ".f"
+        else
+            str + "f"
         
     /// Gets the string representation of the default value
     let tryGetStringRepresentationOfDefaultValue (defaultValue: obj) =
@@ -56,9 +71,9 @@ module Converters =
         | :? bigint as bigint -> Some (bigint.ToString() + "I")
         | :? float as float -> Some (floatToString float)
         | :? double as double -> Some (floatToString double)
-        | :? float32 as float32 -> Some (float32.ToString() + "f")
-        | :? single as single -> Some (single.ToString() + "f")
-        | :? decimal as decimal -> Some (decimal.ToString() + "m")
+        | :? float32 as float32 -> Some (float32ToString float32)
+        | :? single as single -> Some (float32ToString single)
+        | :? decimal as decimal -> Some (decimalToString decimal)
         | :? DateTime as dateTime when dateTime = DateTime.MinValue -> Some "System.DateTime.MinValue"
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> Some "System.DateTime.MaxValue"
         | :? DateTime as dateTime -> Some (sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day)

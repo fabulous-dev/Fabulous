@@ -11,3 +11,8 @@ module InputTypes =
         | Mirror of leftRight: double * upDown: double
         | AllSides of left: double * up: double * right: double * bottom: double
         | Value of Xamarin.Forms.Thickness
+        
+    type Image =
+        | Path of string
+        | Bytes of byte[]
+        | Value of Xamarin.Forms.ImageSource

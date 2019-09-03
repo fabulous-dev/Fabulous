@@ -172,7 +172,10 @@
           "source": null,
           "name": "GestureRecognizers",
           "defaultValue": "[]",
-          "inputType": "ViewElement list"
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.IGestureRecognizer"
+          }
         }
       ]
     },
@@ -184,7 +187,10 @@
           "source": null,
           "name": "GestureRecognizers",
           "defaultValue": "[]",
-          "inputType": "ViewElement list"
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.IGestureRecognizer"
+          }
         }
       ]
     },
@@ -291,7 +297,7 @@
           "source": null,
           "name": "Content",
           "defaultValue": "null",
-          "inputType": "ViewElement"
+          "inputType": "Xamarin.Forms.View"
         },
         {
           "source": "Orientation"
@@ -306,7 +312,8 @@
           "source": null,
           "name": "ScrollTo",
           "defaultValue": "null",
-          "inputType": "double * double * InputTypes.AnimationKind"
+          "inputType": "double * double * AnimationKind",
+          "updateCode": "(fun _ curr target -> ViewUpdaters.triggerScrollToAsync curr target)"
         }
       ],
       "events": [
@@ -347,8 +354,8 @@
         },
         {
           "source": null,
-          "name": "Image",
-          "defaultValue": "InputTypes.Image.None",
+          "name": "ImageSource",
+          "defaultValue": "null",
           "inputType": "InputTypes.Image",
           "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
         },
@@ -366,9 +373,9 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "(0.0, 1.0)",
+          "defaultValue": "SHOULD NOT BE SET",
           "inputType": "float * float",
-          "modelType": "float * float"
+          "updateCode": "updateSliderMinimumMaximum"
         },
         {
           "source": "Value"
@@ -381,7 +388,7 @@
         {
           "source": "ValueChanged",
           "relatedProperties": [
-            "Value"
+            "SliderValue"
           ]
         },
         {
@@ -398,9 +405,9 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "(0.0, 1.0)",
+          "defaultValue": "SHOULD NOT BE SET",
           "inputType": "float * float",
-          "modelType": "float * float"
+          "updateCode": "updateStepperMinimumMaximum"
         },
         {
           "source": "Value"
@@ -523,6 +530,7 @@
           "shortName": "items",
           "defaultValue": "[]",
           "inputType": "(string * ViewElement list) list",
+          "modelType": "(string * ViewElement array) array",
           "convertInputToModel": "ViewConverters.convertTableViewRoot",
           "updateCode": "ViewUpdaters.updateTableViewItems"
         }
@@ -702,10 +710,11 @@
       "properties": [
         {
           "source": "ItemsSource",
-          "name": "items",
-          "inputType": "seq<'T>",
-          "modelType": "System.Collections.IList",
-          "convertInputToModel": "ViewConverters.convertSeqToIListUntyped"
+          "name": "Items",
+          "inputType": "string list",
+          "collection": {
+            "elementType": "string"
+          }
         },
         {
           "source": "SelectedIndex"
@@ -1073,12 +1082,6 @@
     {
       "type": "Xamarin.Forms.WebView",
       "properties": [
-        {
-          "source": "CanGoBack"
-        },
-        {
-          "source": "CanGoForward"
-        },
         {
           "source": "Source"
         },
