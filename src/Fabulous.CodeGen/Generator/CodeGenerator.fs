@@ -54,7 +54,7 @@ module CodeGenerator =
             let baseMembers =
                 data.Members
                 |> Array.filter (fun m -> m.IsInherited)
-                |> Array.mapi (fun index m -> sprintf ", %s?%s: %s" (if index > 0 && index % 5 = 0 then baseMemberNewLine else "") m.Name m.InputType)
+                |> Array.mapi (fun index m -> sprintf ", %s?%s=%s" (if index > 0 && index % 5 = 0 then baseMemberNewLine else "") m.Name m.Name)
                 |> Array.fold (+) ""
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(attribCount%s)" nameOfBaseCreator baseMembers
 
@@ -148,10 +148,10 @@ module CodeGenerator =
                         w.printfn "                ())"
                     else
                         w.printfn "            (fun _ _ _ -> ())"
-                    w.printfn "            ViewUpdaters.canReuseView"
+                    w.printfn "            ViewHelpers.canReuseView"
                     w.printfn "            ViewUpdaters.updateChild"
 
-                | _ -> 
+                | _ ->
                     // If the type is ViewElement, then it's a type from the model
                     // Issue recursive calls to "Create" and "UpdateIncremental"
                     if p.ModelType = "ViewElement" && not hasApply then
@@ -260,8 +260,8 @@ module CodeGenerator =
                 |> Array.mapi (fun i m ->
                     let commaSpace = if i = 0 then "" else "," + memberNewLine
                     match m.Name with
-                    | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
-                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
+                    | "Created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
+                    | "Ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForConstruct =
@@ -305,7 +305,7 @@ module CodeGenerator =
         w.printfn "        member inline x.With(%s) =" members
         for m in data do
             match m.UniqueName with
-            | "Created" | "ref" -> ()
+            | "Created" | "Ref" -> ()
             | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
         w.printfn "            x"
         w.printfn ""

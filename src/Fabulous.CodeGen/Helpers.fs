@@ -27,6 +27,15 @@ module Text =
         | None -> defaultValue
         | Some value when System.String.IsNullOrWhiteSpace value -> defaultValue
         | Some value -> value
+        
+    let eitherOrDefault v1 v2 defaultValue =
+        let value1 = getValueOrDefault v1 ""
+        let value2 = getValueOrDefault v2 ""
+        
+        match value1, value2 with
+        | "", "" -> defaultValue
+        | "", value2 -> value2
+        | value1, _ -> value1
 
     let toLowerPascalCase (str : string) =
         match str with

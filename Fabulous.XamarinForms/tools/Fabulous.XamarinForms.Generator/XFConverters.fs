@@ -47,6 +47,12 @@ module XFConverters =
         | :? Rectangle as rectangle -> Some (sprintf "Xamarin.Forms.Rectangle(%s, %s, %s, %s)" (rectangle.X.ToString()) (rectangle.Y.ToString()) (rectangle.Width.ToString()) (rectangle.Height.ToString()))
         | :? Size as size when size.IsZero -> Some "Xamarin.Forms.Size.Zero"
         | :? Size as size -> Some (sprintf "Xamarin.Forms.Size(%s, %s)" (size.Width.ToString()) (size.Height.ToString()))
+        | :? IVisual as visual ->
+            match visual.GetType().Name with
+            | "MatchParentVisual" -> Some "Xamarin.Forms.VisualMarker.MatchParent"
+            | "Default" -> Some "Xamarin.Forms.VisualMarker.Default"
+            | "Material" -> Some "Xamarin.Forms.VisualMarker.Material"
+            | _ -> None
         | _ -> Converters.tryGetStringRepresentationOfDefaultValue defaultValue
         
     let convertEventType (eventArgsType: string option) =

@@ -43,8 +43,8 @@ module Preparer =
           TypeToInstantiate = boundType.TypeToInstantiate }
 
     let toUpdateData (boundType: BoundType) =
-        let immediateEvents = boundType.Events |> Array.filter (fun e -> not e.IsInherited)
-        let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited)
+        let immediateEvents = boundType.Events |> Array.filter (fun e -> not e.IsInherited && e.CanBeUpdated)
+        let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CanBeUpdated)
         
         let eventMembers = immediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; ModelType = e.ModelType })
         let propertyMembers = immediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; ModelType = p.ModelType })

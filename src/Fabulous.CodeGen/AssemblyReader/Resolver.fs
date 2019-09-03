@@ -109,3 +109,11 @@ module Resolver =
             Some ``type``.GenericParameters.[0].FullName
         else
             None
+            
+    /// Resolves the element type is the property type is a generic collection
+    let getElementTypeForPropertyType (``type``: TypeReference) =
+        match ``type`` with
+        | :? GenericInstanceType as genericType when genericType.HasGenericArguments ->
+            Some genericType.GenericArguments.[0].FullName
+        | _ ->
+            None

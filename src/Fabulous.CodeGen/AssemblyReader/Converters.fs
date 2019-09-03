@@ -32,6 +32,13 @@ module Converters =
         | None -> "unit -> unit"
         | Some eventArgsType -> eventArgsType + " -> unit"
         
+    let floatToString (v: float) =
+        let str = v.ToString()
+        if Math.Round(v, 0) = v then
+            str + "."
+        else
+            str
+        
     /// Gets the string representation of the default value
     let tryGetStringRepresentationOfDefaultValue (defaultValue: obj) =
         match defaultValue with
@@ -47,8 +54,8 @@ module Converters =
         | :? int64 as int64 -> Some (int64.ToString() + "L")
         | :? uint64 as uint64 -> Some (uint64.ToString() + "UL")
         | :? bigint as bigint -> Some (bigint.ToString() + "I")
-        | :? float as float -> Some (float.ToString())
-        | :? double as double -> Some (double.ToString())
+        | :? float as float -> Some (floatToString float)
+        | :? double as double -> Some (floatToString double)
         | :? float32 as float32 -> Some (float32.ToString() + "f")
         | :? single as single -> Some (single.ToString() + "f")
         | :? decimal as decimal -> Some (decimal.ToString() + "m")

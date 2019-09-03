@@ -24,12 +24,14 @@
         { 
           "source": null,
           "Name": "Ref",
+          "canBeUpdated": false,
           "defaultValue": "null",
           "inputType": "ViewRef"
         },
         { 
           "source": null,
-          "Name": "Tag",
+          "name": "Tag",
+          "canBeUpdated": false,
           "defaultValue": "null",
           "inputType": "obj"
         }
@@ -38,6 +40,7 @@
         {
           "source": null,
           "name": "Created",
+          "canBeUpdated": false,
           "inputType": "obj -> unit",
           "modelType": "obj -> unit"
         }
@@ -61,7 +64,7 @@
         {
           "source": null,
           "name": "StyleClass",
-          "defaultValue": "InputTypes.StyleClass.None",
+          "defaultValue": "null",
           "inputType": "InputTypes.StyleClass",
           "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
         }
@@ -84,8 +87,7 @@
           "source": "FlowDirection"
         },
         {
-          "source": "HeightRequest",
-          "name": "Height"
+          "source": "HeightRequest"
         },
         {
           "source": "InputTransparent"
@@ -100,12 +102,10 @@
           "source": "IsVisible"
         },
         {
-          "source": "MinimumHeightRequest",
-          "name": "MinimumHeight"
+          "source": "MinimumHeightRequest"
         },
         {
-          "source": "MinimumWidthRequest",
-          "name": "MinimumWidth"
+          "source": "MinimumWidthRequest"
         },
         {
           "source": "Opacity"
@@ -141,8 +141,7 @@
           "source": "Visual"
         },
         {
-          "source": "WidthRequest",
-          "name": "Width"
+          "source": "WidthRequest"
         }
       ],
       "events": [
@@ -166,7 +165,6 @@
         },
         {
           "source": "Margin",
-          "defaultValue": "InputTypes.Thickness.Uniform 0.",
           "inputType": "InputTypes.Thickness",
           "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },

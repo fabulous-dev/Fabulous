@@ -91,6 +91,7 @@ module Binder =
         let name = Text.getValueOrDefault bindingsAttachedProperty.Name assemblyTypeAttachedProperty.Name
         { Name = name
           UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+          CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
           DefaultValue = Text.getValueOrDefault bindingsAttachedProperty.DefaultValue assemblyTypeAttachedProperty.DefaultValue
           InputType = Text.getValueOrDefault bindingsAttachedProperty.InputType assemblyTypeAttachedProperty.Type
           ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType assemblyTypeAttachedProperty.Type
@@ -113,6 +114,7 @@ module Binder =
                            
                     { Name = name
                       UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+                      CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
                       DefaultValue = defaultValue
                       InputType = inputType
                       ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
@@ -137,6 +139,7 @@ module Binder =
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+          CanBeUpdated = bindingsTypeEvent.CanBeUpdated |> Option.defaultValue true
           InputType = Text.getValueOrDefault bindingsTypeEvent.InputType assemblyTypeEvent.Type
           ModelType = Text.getValueOrDefault bindingsTypeEvent.ModelType assemblyTypeEvent.EventHandlerType
           ConvertInputToModel = Text.getValueOrDefault bindingsTypeEvent.ConvertInputToModel ""
@@ -149,10 +152,16 @@ module Binder =
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+          CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
           DefaultValue = Text.getValueOrDefault bindingsTypeProperty.DefaultValue assemblyTypeProperty.DefaultValue
           OriginalType = assemblyTypeProperty.Type
           InputType = Text.getValueOrDefault bindingsTypeProperty.InputType assemblyTypeProperty.Type
-          ModelType = Text.getValueOrDefault bindingsTypeProperty.ModelType assemblyTypeProperty.Type
+          ModelType =
+              match bindingsTypeProperty.ConvertInputToModel with
+              | None ->
+                  Text.eitherOrDefault bindingsTypeProperty.ModelType bindingsTypeProperty.InputType assemblyTypeProperty.Type
+              | Some _ ->
+                  Text.getValueOrDefault bindingsTypeProperty.ModelType assemblyTypeProperty.Type
           ConvertInputToModel = Text.getValueOrDefault bindingsTypeProperty.ConvertInputToModel ""
           ConvertModelToValue = Text.getValueOrDefault bindingsTypeProperty.ConvertModelToValue ""
           UpdateCode = Text.getValueOrDefault bindingsTypeProperty.UpdateCode ""
@@ -182,6 +191,7 @@ module Binder =
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+                  CanBeUpdated = bindingsTypeEvent.CanBeUpdated |> Option.defaultValue true
                   InputType = inputType
                   ModelType = modelType
                   ConvertInputToModel = Text.getValueOrDefault bindingsTypeEvent.ConvertInputToModel ""
@@ -205,6 +215,7 @@ module Binder =
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+                  CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
                   DefaultValue = defaultValue
                   OriginalType = inputType
                   InputType = inputType

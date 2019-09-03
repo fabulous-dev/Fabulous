@@ -17,6 +17,7 @@ module Models =
         { Name: string
           ShortName: string
           UniqueName: string
+          CanBeUpdated: bool
           InputType: string
           ModelType: string
           ConvertInputToModel: string
@@ -38,6 +39,7 @@ module Models =
         { Name: string
           UniqueName: string
           DefaultValue: string
+          CanBeUpdated: bool
           InputType: string
           ModelType: string
           ConvertInputToModel: string
@@ -56,6 +58,7 @@ module Models =
         { Name: string
           ShortName: string
           UniqueName: string
+          CanBeUpdated: bool
           DefaultValue: string
           OriginalType: string
           InputType: string

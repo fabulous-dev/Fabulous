@@ -84,7 +84,7 @@ module Reader =
 
                 { Name = pdef.Name
                   Type = propertyType
-                  CollectionElementType = Resolver.getElementTypeForType ``type``
+                  CollectionElementType = Resolver.getElementTypeForPropertyType pdef.PropertyType
                   DefaultValue = getDefaultValueAsString propertyType null } : AssemblyTypeProperty
             )
 

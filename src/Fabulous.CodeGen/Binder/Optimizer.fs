@@ -42,7 +42,7 @@ module Optimizer =
                 if p.InputType.EndsWith(" list") && p.ModelType.EndsWith(" list") && p.ConvertInputToModel = "" then
                     { p with
                         ModelType = p.ModelType.Replace(" list",  " array")
-                        ConvertInputToModel = "Array.fromList"
+                        ConvertInputToModel = "Array.ofList"
                         CollectionData =
                             p.CollectionData
                             |> Option.map (fun cd ->
@@ -52,7 +52,7 @@ module Optimizer =
                                             if p.InputType.EndsWith(" list") && p.ModelType.EndsWith(" list") && p.ConvertInputToModel = "" then
                                                 { p with
                                                     ModelType =  p.ModelType.Replace(" list",  " array")
-                                                    ConvertInputToModel = "Array.fromList" }
+                                                    ConvertInputToModel = "Array.ofList" }
                                             else
                                                 p
                                         ) }) }

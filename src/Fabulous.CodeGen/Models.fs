@@ -3,6 +3,9 @@ namespace Fabulous.CodeGen
 
 module Models =    
     type Member() =
+        /// Indicates if the field will be checked upon updating the control
+        member val CanBeUpdated: bool option = None with get, set
+        
         /// Indicates the source property/event name as found by the Assembly Reader to include (and override if needed)
         /// If none is provided, the generator will consider it's a non-existent property and other fields will be mandatory
         member val Source: string option = None with get, set
