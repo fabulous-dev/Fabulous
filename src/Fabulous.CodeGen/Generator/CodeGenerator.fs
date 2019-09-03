@@ -87,12 +87,13 @@ module CodeGenerator =
         w.printfn ""
         w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
 
-        if data.BaseName.IsSome then
+        
+        if (data.BaseName.IsNone && data.ImmediateMembers.Length = 0) then
+            w.printfn "        ()"
+        elif data.BaseName.IsSome then
             w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" data.BaseName.Value
 
-        if (data.ImmediateMembers.Length = 0) then
-            w.printfn "        ()"
-        else
+        if (data.ImmediateMembers.Length > 0) then
             for m in data.ImmediateMembers do
                 w.printfn "        let mutable prev%sOpt = ValueNone" m.UniqueName
                 w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName

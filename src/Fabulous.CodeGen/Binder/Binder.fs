@@ -9,20 +9,20 @@ type Logger =
     { traceInformation: string -> unit
       traceWarning: string -> unit
       traceError: string -> unit
-      getInformations: unit -> string list
+      getMessages: unit -> string list
       getWarnings: unit -> string list
       getErrors: unit -> string list }
         
 module BinderHelpers =
     let createLogger () =
-        let mutable _informations = []
+        let mutable _messages = []
         let mutable _warnings = []
         let mutable _errors = []
         
-        { traceInformation = fun s -> _informations <- s :: _informations
+        { traceInformation = fun s -> _messages <- s :: _messages
           traceWarning = fun s -> _warnings <- s :: _warnings
           traceError = fun s -> _errors <- s :: _errors
-          getInformations = fun () -> List.rev _informations
+          getMessages = fun () -> List.rev _messages
           getWarnings = fun () -> List.rev _warnings
           getErrors = fun () -> List.rev _errors }
         
@@ -73,16 +73,17 @@ module BinderHelpers =
             
         match invalidValues with
         | [] ->
-            let memberName = Text.getValueOrDefault memberNameOpt ""
-            
-            for (fieldName, _) in invalidValues do
-                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" fieldName memberKind memberName containerTypeName)
-            None
-        | _ ->
             values
             |> List.map (snd >> Option.get)
             |> func
             |> Some
+
+        | _ ->
+            let memberName = Text.getValueOrDefault memberNameOpt ""
+
+            for (fieldName, _) in invalidValues do
+                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" fieldName memberKind memberName containerTypeName)
+            None
         
 module Binder =
     /// Bind an existing attached property
@@ -280,7 +281,7 @@ module Binder =
                   |> Array.choose (tryBindType logger assemblyTypes) }
         
         match logger.getErrors () with
-        | [] -> WorkflowResult.okWarnings data (logger.getInformations ()) (logger.getWarnings ())
+        | [] -> WorkflowResult.okWarnings data (logger.getMessages ()) (logger.getWarnings ())
         | errors -> WorkflowResult.error errors
         
         

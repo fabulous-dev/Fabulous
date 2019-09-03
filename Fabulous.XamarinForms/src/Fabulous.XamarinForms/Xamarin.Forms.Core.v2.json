@@ -1164,7 +1164,9 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.CarouselPage",
+      "type": "Xamarin.Forms.MultiPage`1",
+      "name": "MultiPageOfT",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": null,
@@ -1190,7 +1192,10 @@
           "inputType": "unit -> unit",
           "modelType": "System.EventHandler"
         }
-      ],
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CarouselPage",
       "primaryConstructorMember": "Children"
     }
   ]
