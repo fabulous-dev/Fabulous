@@ -19,7 +19,6 @@ module XFConverters =
         | "System.Collections.Generic.IList<T>"
         | "System.Collections.Generic.IList<Xamarin.Forms.Behavior>"
         | "System.Collections.Generic.IList<Xamarin.Forms.Span>" -> "ViewElement list"
-        | "System.Windows.Input.ICommand" -> "unit -> unit"
         | "Xamarin.Forms.Button+ButtonContentLayout" -> "Xamarin.Forms.Button.ButtonContentLayout"
         | "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>" -> "System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>"
         | "System.EventHandler<System.Tuple<System.String,System.String>>" -> "System.EventHandler<string * string>"

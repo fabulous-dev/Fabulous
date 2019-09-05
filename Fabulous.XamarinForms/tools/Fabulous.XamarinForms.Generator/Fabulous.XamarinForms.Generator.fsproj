@@ -15,6 +15,7 @@
     <Compile Include="Helpers.fs" />
     <Compile Include="Reflection.fs" />
     <Compile Include="XFConverters.fs" />
+    <Compile Include="XFOptimizer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

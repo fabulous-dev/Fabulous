@@ -114,20 +114,11 @@ module Program =
     let withDebug debug program =
         { program with Debug = debug }
         
-    let withReadBindingsFile func program =
-        { program with Workflow = { program.Workflow with loadBindings = func } }
+    let withWorkflow func program =
+        { program with Workflow = func program.Workflow }
         
-    let withIsTypeResolvable func program =
-        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with isTypeResolvable = func } }
-        
-    let withConvertTypeName func program =
-        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with convertTypeName = func } }
-        
-    let withConvertEventType func program =
-        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with convertEventType = func } }
-        
-    let withTryGetStringRepresentationOfDefaultValue func program =
-        { program with ReadAssembliesConfiguration = { program.ReadAssembliesConfiguration with tryGetStringRepresentationOfDefaultValue = func } }
+    let withReadAssembliesConfiguration func program =
+        { program with ReadAssembliesConfiguration = func program.ReadAssembliesConfiguration }
     
     let run bindingsFile outputFile program =
         Functions.runProgram program bindingsFile outputFile

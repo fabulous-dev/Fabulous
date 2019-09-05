@@ -38,19 +38,24 @@ module Program =
                     Reflection.tryGetProperty
                     configuration
                 |> Program.withDebug options.Debug
-                |> Program.withIsTypeResolvable XFConverters.isTypeResolvable
-                |> Program.withConvertTypeName XFConverters.convertTypeName
-                |> Program.withConvertEventType XFConverters.convertEventType
-                |> Program.withTryGetStringRepresentationOfDefaultValue XFConverters.tryGetStringRepresentationOfDefaultValue
+                |> Program.withWorkflow (fun workflow ->
+                    { workflow with
+                        optimize = XFOptimizer.optimize })
+                |> Program.withReadAssembliesConfiguration (fun configuration ->
+                    { configuration with
+                        isTypeResolvable = XFConverters.isTypeResolvable
+                        convertTypeName = XFConverters.convertTypeName
+                        convertEventType = XFConverters.convertEventType
+                        tryGetStringRepresentationOfDefaultValue = XFConverters.tryGetStringRepresentationOfDefaultValue })
                 |> Program.run options.MappingFile options.OutputFile
                 
             // Exit code
             match result with
-            | Error messages ->
-                messages |> List.iter Trace.TraceError
+            | Error errors ->
+                errors |> List.iter Trace.TraceError
                 1
                 
-            | Ok (informations, warnings) ->
+            | Ok (messages, warnings) ->
                 warnings |> List.iter Trace.TraceWarning
-                informations |> List.iter Trace.TraceInformation
+                messages |> List.iter Trace.TraceInformation
                 0

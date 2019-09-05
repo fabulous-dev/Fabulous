@@ -12,27 +12,27 @@ module WorkflowResult =
     let bind f result =
         match result with
         | Error messages -> Error messages
-        | Ok (data, informations, warnings) ->
+        | Ok (data, messages, warnings) ->
             f data
-            |> Result.map (fun (d, i, w) -> (d, List.append informations i, List.append warnings w))
+            |> Result.map (fun (d, i, w) -> (d, List.append messages i, List.append warnings w))
             
     let map f result =
         match result with
         | Error messages -> Error messages
-        | Ok (data, informations, warnings) -> Ok ((f data), informations, warnings)
+        | Ok (data, messages, warnings) -> Ok ((f data), messages, warnings)
         
     let tie f result =
         match result with
         | Error messages -> Error messages
-        | Ok (data, informations, warnings) ->
+        | Ok (data, messages, warnings) ->
             f data
-            Ok (data, informations, warnings) 
+            Ok (data, messages, warnings) 
         
     let toProgramResult result : ProgramResult =
         match result with
         | Error messages -> Error messages
-        | Ok (_, informations, warnings) ->
-            Ok (informations, warnings)
+        | Ok (_, messages, warnings) ->
+            Ok (messages, warnings)
             
     let debug isDebugMode fileName =
         tie (fun d ->
@@ -44,8 +44,8 @@ module WorkflowResult =
     let ok data =
         Ok (data, [], [])
         
-    let okWarnings data informations warnings =
-        Ok (data, informations, warnings)
+    let okWarnings data messages warnings =
+        Ok (data, messages, warnings)
         
     let error messages =
         Error messages
