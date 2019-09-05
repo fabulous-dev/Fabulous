@@ -19,7 +19,7 @@ module Expander =
         |> List.toArray
     
     let expandType (assemblyTypes: AssemblyType array) (boundTypes: BoundType array) (boundType: BoundType) =
-        let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Type)
+        let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Id)
         let hierarchy = readerDataType.InheritanceHierarchy
         let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events) (fun e -> { e with IsInherited = true })
         let allBaseProperties = hierarchy |> getMembers boundTypes (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
@@ -27,7 +27,7 @@ module Expander =
         let firstBoundBaseType =
             hierarchy
             |> Array.tryPick (fun h ->
-                boundTypes |> Array.tryFind (fun t -> t.Type = h)
+                boundTypes |> Array.tryFind (fun t -> t.Id = h)
             )
         
         { boundType with

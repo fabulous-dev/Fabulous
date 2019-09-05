@@ -1032,9 +1032,6 @@
           "source": "FontFamily"
         },
         {
-          "source": "Font"
-        },
-        {
           "source": "FontSize"
         },
         {
@@ -1175,7 +1172,7 @@
           "defaultValue": "[]",
           "inputType": "ViewElement list",
           "collection": {
-            "elementType": "Xamarin.Forms.View"
+            "elementType": "'T"
           }
         },
         {
@@ -1183,7 +1180,7 @@
           "name": "CurrentPage",
           "defaultValue": "0",
           "inputType": "int",
-          "updateCode": "ViewUpdaters.updateCarouselPageCurrentPage"
+          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<'T>"
         }
       ],
       "events": [
@@ -1314,9 +1311,6 @@
         },
         {
           "source": "Focused"
-        },
-        {
-          "source": "FocusChangeRequested"
         }
       ]
     },

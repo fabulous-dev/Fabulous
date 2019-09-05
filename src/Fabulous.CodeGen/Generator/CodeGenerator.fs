@@ -260,8 +260,8 @@ module CodeGenerator =
                 |> Array.mapi (fun i m ->
                     let commaSpace = if i = 0 then "" else "," + memberNewLine
                     match m.Name with
-                    | "Created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
-                    | "Ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
+                    | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
+                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForConstruct =
@@ -280,7 +280,7 @@ module CodeGenerator =
         w
     
     let generateViewExtensions (data: ViewExtensionsData array) (w: StringWriter) : StringWriter =
-        let newLine = "\n                      "
+        let newLine = "\n                             "
 
         w.printfn "[<AutoOpen>]"
         w.printfn "module ViewElementExtensions = "

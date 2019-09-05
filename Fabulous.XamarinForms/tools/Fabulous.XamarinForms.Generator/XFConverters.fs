@@ -14,14 +14,23 @@ module XFConverters =
         
     let convertTypeName (typeName: string) =
         match typeName with
-        | "Xamarin.Forms.Grid.IGridList`1<Xamarin.Forms.View>"
-        | "System.Collections.Generic.IList`1<Xamarin.Forms.Effect>"
-        | "System.Collections.Generic.IList`1<T>"
-        | "System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>"
-        | "System.Collections.Generic.IList`1<Xamarin.Forms.Span>" -> "ViewElement list"
+        | "Xamarin.Forms.Grid.IGridList<Xamarin.Forms.View>"
+        | "System.Collections.Generic.IList<Xamarin.Forms.Effect>"
+        | "System.Collections.Generic.IList<T>"
+        | "System.Collections.Generic.IList<Xamarin.Forms.Behavior>"
+        | "System.Collections.Generic.IList<Xamarin.Forms.Span>" -> "ViewElement list"
         | "System.Windows.Input.ICommand" -> "unit -> unit"
         | "Xamarin.Forms.Button+ButtonContentLayout" -> "Xamarin.Forms.Button.ButtonContentLayout"
+        | "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>" -> "System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>"
+        | "System.EventHandler<System.Tuple<System.String,System.String>>" -> "System.EventHandler<string * string>"
         | _ -> Converters.convertTypeName typeName
+        
+    let convertEventType (eventArgsTypeOpt: string option) =
+        match eventArgsTypeOpt with
+        | Some "Xamarin.Forms.VisualElement/FocusRequestArgs" -> "Xamarin.Forms.VisualElement.FocusRequestArgs"
+        | Some "System.Tuple<System.String,System.String>" -> "(string * string) -> unit"
+        | Some "System.Object" -> "obj -> unit"
+        | _ -> Converters.convertEventType eventArgsTypeOpt
         
     let rec tryGetStringRepresentationOfDefaultValue (defaultValue: obj) : string option =
         match defaultValue with
@@ -57,7 +66,4 @@ module XFConverters =
         | :? FlexBasis as flexBasis when flexBasis = FlexBasis.Auto -> Some "Xamarin.Forms.FlexBasis.Auto"
         | :? FlexBasis as flexBasis -> Some (sprintf "Xamarin.Forms.FlexBasis(%s)" (Converters.float32ToString flexBasis.Length))
         | _ -> Converters.tryGetStringRepresentationOfDefaultValue defaultValue
-        
-    let convertEventType (eventArgsType: string option) =
-        Converters.convertEventType eventArgsType
 

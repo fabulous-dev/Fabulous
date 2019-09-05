@@ -147,6 +147,6 @@ module Preparer =
           Attributes = extractAttributes boundModel.Types
           Builders = boundModel.Types |> Array.map toBuilderData
           Viewers = boundModel.Types |> Array.map toViewerData
-          Constructors = boundModel.Types |> Array.map toConstructorData
+          Constructors = boundModel.Types |> Array.filter (fun t -> t.CanBeInstantiated) |> Array.map toConstructorData
           ViewExtensions = boundModel.Types |> getViewExtensionsData }
 

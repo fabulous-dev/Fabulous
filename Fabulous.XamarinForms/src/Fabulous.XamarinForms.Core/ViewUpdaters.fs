@@ -320,13 +320,12 @@ module ViewUpdaters =
         | _, _, ValueSome f, ValueSome k -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
 
     /// Update the CurrentPage of a control, given previous and current values
-    let updateCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: obj) =
-        let control = target :?> Xamarin.Forms.MultiPage<'a>
+    let updateMultiPageOfTCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: Xamarin.Forms.MultiPage<'a>) =
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome _, ValueNone -> control.CurrentPage <- null
-        | _, ValueSome curr -> control.CurrentPage <- control.Children.[curr]
+        | ValueSome _, ValueNone -> target.CurrentPage <- null
+        | _, ValueSome curr -> target.CurrentPage <- target.Children.[curr]
 
     /// Update the Minium and Maximum values of a slider, given previous and current values
     let updateSliderMinimumMaximum prevValueOpt valueOpt (target: obj) =
@@ -676,3 +675,13 @@ module ViewUpdaters =
 
     let triggerWebViewReload _ curr (target: Xamarin.Forms.WebView) =
         if curr = ValueSome true then target.Reload()
+    
+    let updateEntryCursorPosition _ curr (target: Xamarin.Forms.Entry) =
+        match curr with
+        | ValueNone -> ()
+        | ValueSome value -> target.CursorPosition <- value
+    
+    let updateEntrySelectionLength _ curr (target: Xamarin.Forms.Entry) =
+        match curr with
+        | ValueNone -> ()
+        | ValueSome value -> target.SelectionLength <- value

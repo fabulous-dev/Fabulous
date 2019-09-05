@@ -2,6 +2,7 @@
 namespace Fabulous.CodeGen
 
 open System.IO
+open System.Text.RegularExpressions
 open Newtonsoft.Json
         
 module Json =
@@ -43,4 +44,7 @@ module Text =
         | "" -> ""
         | x when x.Length = 1 -> x.ToLowerInvariant()
         | x -> string (System.Char.ToLowerInvariant(x.[0])) + x.Substring(1)
+        
+    let removeDotNetGenericNotation str =
+        Regex.Replace(str, "`[0-9]*<",  "<")
         

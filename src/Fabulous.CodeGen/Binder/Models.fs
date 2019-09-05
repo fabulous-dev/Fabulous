@@ -80,7 +80,8 @@ module Models =
             member this.ConvertInputToModel = this.ConvertInputToModel
     
     type BoundType =
-        { Type: string
+        { Id: string
+          Type: string
           CanBeInstantiated: bool
           TypeToInstantiate: string
           BaseTypeName: string option

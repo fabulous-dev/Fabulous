@@ -67,6 +67,18 @@ module Optimizer =
         let apply (boundModel: BoundModel) =
             { boundModel with
                 Types = boundModel.Types |> Array.map optimizeListsForTypeBinding }
+            
+    /// Converts .NET generic notation into F# generic notation
+    module OptimizeGenerics =
+        let optimizeGenericsForTypeBinding (boundType: BoundType) =
+            { boundType with
+                Type = boundType.Type.Replace("`1", "<'T>")
+                TypeToInstantiate = boundType.TypeToInstantiate.Replace("`1", "<'T>") }
+        
+        let apply (boundModel: BoundModel) =
+            { boundModel with
+                Types = boundModel.Types |> Array.map optimizeGenericsForTypeBinding }
+            
         
     /// Applies all optimizations to the bound model
     let optimize boundModel : WorkflowResult<BoundModel> =
@@ -74,4 +86,5 @@ module Optimizer =
             boundModel
             |> OptimizeKnownTypes.apply
             |> OptimizeLists.apply
+            |> OptimizeGenerics.apply
         WorkflowResult.ok data

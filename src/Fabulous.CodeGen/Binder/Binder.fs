@@ -257,7 +257,8 @@ module Binder =
     /// Bind an existing type
     let bindType logger (assemblyType: AssemblyType) (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
-        { Type = assemblyType.Name
+        { Id = assemblyType.Name
+          Type = assemblyType.Name
           CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
           TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
           BaseTypeName = None

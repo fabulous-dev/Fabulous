@@ -7,23 +7,25 @@ open Mono.Cecil
 
 module Reader =
     let readEventsFromType
+            (convertTypeName: string -> string)
             (convertEventType: string option -> string)
             (``type``: TypeDefinition) =
+        
         Resolver.getAllEventsForType ``type``
         |> Array.map (fun edef ->
             let eventArgsType =
                   match edef.EventType with
-                  | :? GenericInstanceType as git -> Some git.GenericArguments.[0].FullName
+                  | :? GenericInstanceType as git -> Some (git.GenericArguments.[0].FullName |> Text.removeDotNetGenericNotation)
                   | _ -> None
                   
             let eventHandlerType =
                 match edef.EventType with
-                | :? GenericInstanceType as git -> git.FullName |> Text.removeText "`1"
+                | :? GenericInstanceType as git -> git.FullName |> Text.removeDotNetGenericNotation
                 | _ -> "System.EventHandler"
             
             { Name = edef.Name
               Type = convertEventType eventArgsType
-              EventHandlerType = eventHandlerType }    
+              EventHandlerType = convertTypeName eventHandlerType }    
         )
         
     let readAttachedPropertiesFromType
@@ -38,7 +40,7 @@ module Reader =
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
             | Some data ->
-                let attachedPropertyType = convertTypeName data.Type
+                let attachedPropertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
                 let defaultValue = 
                     tryGetStringRepresentationOfDefaultValue data.DefaultValue
                     |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" attachedPropertyType)
@@ -67,7 +69,7 @@ module Reader =
                 match tryGetProperty (``type``.FullName, tdef.Name) with
                 | None -> None
                 | Some data ->
-                    let propertyType = convertTypeName data.Type
+                    let propertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
 
                     Some
                         ({ Name = data.Name
@@ -80,7 +82,7 @@ module Reader =
         let listPropertiesWithNoSetter =
             Resolver.getAllListPropertiesWithNoSetterForType ``type``
             |> Array.map (fun pdef ->
-                let propertyType = convertTypeName pdef.PropertyType.FullName
+                let propertyType = pdef.PropertyType.FullName |> Text.removeDotNetGenericNotation |> convertTypeName
 
                 { Name = pdef.Name
                   Type = propertyType
@@ -107,7 +109,7 @@ module Reader =
         { Name = tdef.FullName
           CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
-          Events = readEventsFromType convertEventType tdef
+          Events = readEventsFromType convertTypeName convertEventType tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
           Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
         
