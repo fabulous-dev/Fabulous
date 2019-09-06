@@ -84,14 +84,13 @@ module Optimizer =
         let private optimizeForBoundEvent (boundEvent: BoundEvent) =
             if not (System.String.IsNullOrWhiteSpace(boundEvent.ConvertInputToModel)) then
                 boundEvent // Should not optimize if convert input to model specified by user
-            elif boundEvent.UniqueName = "ElementCreated" then
-                boundEvent // Should not optimize if Created event
             else
                 { boundEvent with
                     ConvertInputToModel =
                         match boundEvent.ModelType with
                         | "System.EventHandler" -> "(fun f -> System.EventHandler(fun _sender _args -> f()))"
-                        | _ -> sprintf "(fun f -> System.EventHandler<%s>(fun _sender _args -> f _args))" boundEvent.EventArgsType }
+                        | _ when not (System.String.IsNullOrWhiteSpace(boundEvent.EventArgsType)) -> sprintf "(fun f -> System.EventHandler<%s>(fun _sender _args -> f _args))" boundEvent.EventArgsType
+                        | _ -> boundEvent.ConvertInputToModel }
 
         let private optimizeForBoundType (boundType: BoundType) =
             { boundType with
@@ -100,13 +99,40 @@ module Optimizer =
         let apply (boundModel: BoundModel) =
             { boundModel with
                 Types = boundModel.Types |> Array.map optimizeForBoundType }
+            
+    /// Reduce the number of instantiated attribute keys by regrouping similarly named and typed properties under a single UniqueName
+    /// (e.g. EntryCell.Text and Entry.Text don't inherit from one another, but the Text property can be represented by a single attribute key)
+    module OptimizeAttributeKeys =
+        let private optimizeForBoundProperty (keysToUpdate: (string * string) array) (boundProperty: BoundProperty) =
+            if not (keysToUpdate |> Array.contains (boundProperty.Name, boundProperty.ModelType)) then
+                boundProperty
+            else
+                { boundProperty with
+                    UniqueName = boundProperty.Name }        
+        
+        let private optimizeForBoundType (keysToUpdate: (string * string) array) (boundType: BoundType) =
+            { boundType with
+                Properties = boundType.Properties |> Array.map (optimizeForBoundProperty keysToUpdate) }
+        
+        let apply (boundModel: BoundModel) =
+            let keysToUpdate =
+                boundModel.Types
+                |> Array.collect (fun t -> t.Properties)
+                |> Array.map (fun p -> p.Name, p.ModelType)
+                |> Array.groupBy id
+                |> Array.map (fun (key, items) -> (key, items.Length))
+                |> Array.filter (fun (_, count) -> count > 1)
+                |> Array.map (fun (key, _) -> key)
+                
+            { boundModel with
+                Types = boundModel.Types |> Array.map (optimizeForBoundType keysToUpdate) }
 
     /// Applies all optimizations to the bound model
     let optimize boundModel : WorkflowResult<BoundModel> =
-        let data =
-            boundModel
-            |> OptimizeKnownTypes.apply
-            |> OptimizeLists.apply
-            |> OptimizeGenerics.apply
-            |> OptimizeEvents.apply
-        WorkflowResult.ok data
+        boundModel
+        |> OptimizeKnownTypes.apply
+        |> OptimizeLists.apply
+        |> OptimizeGenerics.apply
+        |> OptimizeEvents.apply
+        |> OptimizeAttributeKeys.apply
+        |> WorkflowResult.ok
