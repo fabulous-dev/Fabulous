@@ -7,7 +7,7 @@ module Optimizer =
     /// When a type references another one available in the bound model, the referenced type is replaced with ViewElement
     /// This enables recursive incremental updates
     module OptimizeKnownTypes =
-        let private optimizeBoundTypeWithKnownTypes (knownTypes: string array) (boundType: BoundType) =
+        let private optimizeForBoundType (knownTypes: string array) (boundType: BoundType) =
             let replaceKnownTypeWithViewElement knownTypes typeName =
                 if Array.contains typeName knownTypes then "ViewElement" else typeName
             
@@ -31,13 +31,13 @@ module Optimizer =
         let apply (boundModel: BoundModel) =
             let knownTypes = boundModel.Types |> Array.map (fun t -> t.Type)
             { boundModel with
-                Types = boundModel.Types |> Array.map (optimizeBoundTypeWithKnownTypes knownTypes) }
+                Types = boundModel.Types |> Array.map (optimizeForBoundType knownTypes) }
             
     /// Optimizes storing list of data for efficiency
     /// When a property/attached property accepts a list as an input type (and no specific instructions were given in the Bindings file),
     /// the model type is changed to be an array with the corresponding ConvertInputToModel function
     module OptimizeLists =
-        let optimizeListsForTypeBinding (boundType: BoundType) =
+        let private optimizeForBoundType (boundType: BoundType) =
             let properties = boundType.Properties |> Array.map (fun p ->
                 if p.InputType.EndsWith(" list") && p.ModelType.EndsWith(" list") && p.ConvertInputToModel = "" then
                     { p with
@@ -66,20 +66,41 @@ module Optimizer =
             
         let apply (boundModel: BoundModel) =
             { boundModel with
-                Types = boundModel.Types |> Array.map optimizeListsForTypeBinding }
+                Types = boundModel.Types |> Array.map optimizeForBoundType }
             
     /// Converts .NET generic notation into F# generic notation
     module OptimizeGenerics =
-        let optimizeGenericsForTypeBinding (boundType: BoundType) =
+        let private optimizeForBoundType (boundType: BoundType) =
             { boundType with
                 Type = boundType.Type.Replace("`1", "<'T>")
                 TypeToInstantiate = boundType.TypeToInstantiate.Replace("`1", "<'T>") }
         
         let apply (boundModel: BoundModel) =
             { boundModel with
-                Types = boundModel.Types |> Array.map optimizeGenericsForTypeBinding }
-            
+                Types = boundModel.Types |> Array.map optimizeForBoundType }
         
+    /// Optimize events by storing them as EventHandlers
+    module OptimizeEvents =
+        let private optimizeForBoundEvent (boundEvent: BoundEvent) =
+            if not (System.String.IsNullOrWhiteSpace(boundEvent.ConvertInputToModel)) then
+                boundEvent // Should not optimize if convert input to model specified by user
+            elif boundEvent.UniqueName = "ElementCreated" then
+                boundEvent // Should not optimize if Created event
+            else
+                { boundEvent with
+                    ConvertInputToModel =
+                        match boundEvent.ModelType with
+                        | "System.EventHandler" -> "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+                        | _ -> sprintf "(fun f -> System.EventHandler<%s>(fun _sender _args -> f _args))" boundEvent.EventArgsType }
+
+        let private optimizeForBoundType (boundType: BoundType) =
+            { boundType with
+                Events = boundType.Events |> Array.map optimizeForBoundEvent }
+            
+        let apply (boundModel: BoundModel) =
+            { boundModel with
+                Types = boundModel.Types |> Array.map optimizeForBoundType }
+
     /// Applies all optimizations to the bound model
     let optimize boundModel : WorkflowResult<BoundModel> =
         let data =
@@ -87,4 +108,5 @@ module Optimizer =
             |> OptimizeKnownTypes.apply
             |> OptimizeLists.apply
             |> OptimizeGenerics.apply
+            |> OptimizeEvents.apply
         WorkflowResult.ok data

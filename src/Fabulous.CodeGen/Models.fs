@@ -87,6 +87,9 @@ module Models =
         
         member val ShortName = None with get, set
         
+        /// The event args type (e.g. Xamarin.Forms.TextChangedEventArgs)
+        member val EventArgsType : string option = None with get, set
+        
         /// The properties' name which are linked to this event (e.g. TextChanged => Text)
         member val RelatedProperties: string array option = None with get, set
         

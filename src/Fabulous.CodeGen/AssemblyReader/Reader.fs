@@ -8,7 +8,6 @@ open Mono.Cecil
 module Reader =
     let readEventsFromType
             (convertTypeName: string -> string)
-            (convertEventType: string option -> string)
             (``type``: TypeDefinition) =
         
         Resolver.getAllEventsForType ``type``
@@ -24,7 +23,7 @@ module Reader =
                 | _ -> "System.EventHandler"
             
             { Name = edef.Name
-              Type = convertEventType eventArgsType
+              EventArgsType = eventArgsType |> Option.map convertTypeName |> Option.defaultValue "unit"
               EventHandlerType = convertTypeName eventHandlerType }    
         )
         
@@ -94,7 +93,6 @@ module Reader =
 
     let readType
             (convertTypeName: string -> string)
-            (convertEventType: string option -> string)
             (tryGetStringRepresentationOfDefaultValue: obj -> string option)
             (tryGetProperty: string * string -> ReflectionAttachedProperty option)
             (propertyBaseType: string)
@@ -109,7 +107,7 @@ module Reader =
         { Name = tdef.FullName
           CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
-          Events = readEventsFromType convertTypeName convertEventType tdef
+          Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
           Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
         
@@ -118,7 +116,6 @@ module Reader =
         (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
         (isTypeResolvable: string -> bool)
         (convertTypeName: string -> string)
-        (convertEventType: string option -> string)
         (tryGetStringRepresentationOfDefaultValue: obj -> string option)
         (propertyBaseType: string)
         (baseTypeName: string)
@@ -137,7 +134,6 @@ module Reader =
             |> Array.map
                    (readType
                         convertTypeName
-                        convertEventType
                         tryGetStringRepresentationOfDefaultValue
                         tryGetProperty
                         propertyBaseType

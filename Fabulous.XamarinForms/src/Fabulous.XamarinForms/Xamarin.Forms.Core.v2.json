@@ -87,7 +87,8 @@
           "source": "FlowDirection"
         },
         {
-          "source": "HeightRequest"
+          "source": "HeightRequest",
+          "shortName": "height"
         },
         {
           "source": "InputTransparent"
@@ -102,10 +103,12 @@
           "source": "IsVisible"
         },
         {
-          "source": "MinimumHeightRequest"
+          "source": "MinimumHeightRequest",
+          "shortName": "minimumHeight"
         },
         {
-          "source": "MinimumWidthRequest"
+          "source": "MinimumWidthRequest",
+          "shortName": "minimumWidth"
         },
         {
           "source": "Opacity"
@@ -141,7 +144,8 @@
           "source": "Visual"
         },
         {
-          "source": "WidthRequest"
+          "source": "WidthRequest",
+          "shortName": "width"
         }
       ],
       "events": [
@@ -710,11 +714,8 @@
       "properties": [
         {
           "source": "ItemsSource",
-          "name": "Items",
-          "inputType": "string list",
-          "collection": {
-            "elementType": "string"
-          }
+          "shortName": "Items",
+          "inputType": "string list"
         },
         {
           "source": "SelectedIndex"

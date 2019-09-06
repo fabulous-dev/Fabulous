@@ -45,7 +45,6 @@ module Program =
                     { configuration with
                         isTypeResolvable = XFConverters.isTypeResolvable
                         convertTypeName = XFConverters.convertTypeName
-                        convertEventType = XFConverters.convertEventType
                         tryGetStringRepresentationOfDefaultValue = XFConverters.tryGetStringRepresentationOfDefaultValue })
                 |> Program.run options.MappingFile options.OutputFile
                 

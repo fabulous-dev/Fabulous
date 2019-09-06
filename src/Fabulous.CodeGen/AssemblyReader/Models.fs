@@ -6,8 +6,8 @@ module Models =
         { /// The name of the event (e.g. TextChanged)
           Name: string
           
-          /// The type of the function to subscribe to this event (e.g. Xamarin.Forms.TextChangedEventArgs -> unit)
-          Type: string
+          /// The type of the event args (e.g. Xamarin.Forms.TextChangedEventArgs)
+          EventArgsType: string
           
           /// The type of the event handler (e.g. System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
           EventHandlerType: string }

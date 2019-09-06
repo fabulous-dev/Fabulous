@@ -18,6 +18,7 @@ module Models =
           ShortName: string
           UniqueName: string
           CanBeUpdated: bool
+          EventArgsType: string
           InputType: string
           ModelType: string
           ConvertInputToModel: string

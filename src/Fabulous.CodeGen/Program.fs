@@ -22,7 +22,6 @@ type ReadAssembliesConfiguration =
       tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option
       isTypeResolvable: string -> bool
       convertTypeName: string -> string
-      convertEventType: string option -> string
       tryGetStringRepresentationOfDefaultValue: obj -> string option }
     
 type WorkflowConfiguration =
@@ -51,7 +50,6 @@ module private Functions =
             readAssembliesConfiguration.tryGetAttachedPropertyByReflection
             readAssembliesConfiguration.isTypeResolvable
             readAssembliesConfiguration.convertTypeName
-            readAssembliesConfiguration.convertEventType
             readAssembliesConfiguration.tryGetStringRepresentationOfDefaultValue
             configuration.propertyBaseType
             configuration.baseTypeName
@@ -108,7 +106,6 @@ module Program =
                 tryGetAttachedPropertyByReflection = tryGetAttachedPropertyByReflection
                 isTypeResolvable = (fun _ -> true)
                 convertTypeName = Converters.convertTypeName
-                convertEventType = Converters.convertEventType
                 tryGetStringRepresentationOfDefaultValue = Converters.tryGetStringRepresentationOfDefaultValue } }
         
     let withDebug debug program =

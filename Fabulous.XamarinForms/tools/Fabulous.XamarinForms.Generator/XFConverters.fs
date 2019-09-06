@@ -22,14 +22,8 @@ module XFConverters =
         | "Xamarin.Forms.Button+ButtonContentLayout" -> "Xamarin.Forms.Button.ButtonContentLayout"
         | "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>" -> "System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>"
         | "System.EventHandler<System.Tuple<System.String,System.String>>" -> "System.EventHandler<string * string>"
+        | "System.Tuple<System.String,System.String>" -> "(string * string)"
         | _ -> Converters.convertTypeName typeName
-        
-    let convertEventType (eventArgsTypeOpt: string option) =
-        match eventArgsTypeOpt with
-        | Some "Xamarin.Forms.VisualElement/FocusRequestArgs" -> "Xamarin.Forms.VisualElement.FocusRequestArgs"
-        | Some "System.Tuple<System.String,System.String>" -> "(string * string) -> unit"
-        | Some "System.Object" -> "obj -> unit"
-        | _ -> Converters.convertEventType eventArgsTypeOpt
         
     let rec tryGetStringRepresentationOfDefaultValue (defaultValue: obj) : string option =
         match defaultValue with

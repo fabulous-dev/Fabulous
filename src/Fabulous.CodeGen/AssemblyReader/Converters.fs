@@ -25,12 +25,6 @@ module Converters =
         | "System.Collections.Generic.IList[System.Object]" -> "obj list"
         | "System.Collections.IList" -> "obj list"
         | _ -> typeName
-               
-    /// Converts the event args type to the event type (e.g. Xamarin.Forms.TextChangedEventArgs => Xamarin.Forms.TextChangedEventArgs -> unit)
-    let convertEventType eventArgsTypeOpt =
-        match eventArgsTypeOpt with
-        | None -> "unit -> unit"
-        | Some eventArgsType -> eventArgsType + " -> unit"
         
     let floatToString (v: float) =
         let str = v.ToString()

@@ -22,7 +22,11 @@ module CodeGenerator =
     let generateAttributes (members: string array) (w: StringWriter) =
         w.printfn "module ViewAttributes ="
         for m in members do
-            w.printfn "    let %sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m m
+            match m with
+            | "ElementCreated" ->
+                w.printfn "    let ElementCreatedAttribKey : AttributeKey<(obj -> unit)> = AttributeKey<(obj -> unit)>(\"ElementCreated\")"
+            | _ ->
+                w.printfn "    let %sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m m
         w.printfn ""
         w
 
