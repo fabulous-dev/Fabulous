@@ -2,6 +2,7 @@
 namespace Fabulous.CodeGen.Generator
 
 open Fabulous.CodeGen
+open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Text
 open Fabulous.CodeGen.Generator.Models
 open System.IO
@@ -236,12 +237,12 @@ module CodeGenerator =
     let generateViewers (data: ViewerData array) (w: StringWriter) =
         for typ in data do
             w.printfn "/// Viewer that allows to read the properties of a ViewElement representing a %s" typ.Name
-            w.printfn "type %sViewer(element: ViewElement) =" typ.Name
+            w.printfn "type %s(element: ViewElement) =" typ.ViewerName
 
-            match typ.BaseName with
+            match typ.InheritedViewerName with
             | None -> ()
-            | Some baseName ->
-                w.printfn "    inherit %sViewer(element)" baseName
+            | Some inheritedViewerName ->
+                w.printfn "    inherit %s(element)" inheritedViewerName
 
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
             for m in typ.Members do
@@ -321,21 +322,26 @@ module CodeGenerator =
                 w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
-
-    let generateCode bindings : WorkflowResult<string> =
+        
+    let generate data =
         let toString (w: StringWriter) = w.ToString()
-
-        let data = Preparer.prepareData bindings
         use writer = new StringWriter()
         
-        let result =
-            writer
-            |> generateNamespace data.Namespace
-            |> generateAttributes data.Attributes
-            |> generateBuilders data.Builders
-            |> generateViewers data.Viewers
-            |> generateConstructors data.Constructors
-            |> generateViewExtensions data.ViewExtensions
-            |> toString
-            
-        WorkflowResult.ok result
+        writer
+        |> generateNamespace data.Namespace
+        |> generateAttributes data.Attributes
+        |> generateBuilders data.Builders
+        |> generateViewers data.Viewers
+        |> generateConstructors data.Constructors
+        |> generateViewExtensions data.ViewExtensions
+        |> toString
+
+    let generateCode
+        (prepareData: BoundModel -> GeneratorData)
+        (generate: GeneratorData -> string)
+        (bindings: BoundModel) : WorkflowResult<string> =
+        
+        bindings
+        |> prepareData
+        |> generate
+        |> WorkflowResult.ok

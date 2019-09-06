@@ -9,6 +9,7 @@ open Fabulous.CodeGen.Binder
 open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator
 open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Generator.Models
 
 type Configuration =
     { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
@@ -24,19 +25,24 @@ type ReadAssembliesConfiguration =
       convertTypeName: string -> string
       tryGetStringRepresentationOfDefaultValue: obj -> string option }
     
+type GeneratorConfiguration =
+    { prepareData: BoundModel -> GeneratorData
+      generate: GeneratorData -> string }
+    
 type WorkflowConfiguration =
     { loadBindings: string -> WorkflowResult<Bindings>
       readAssemblies: Configuration -> ReadAssembliesConfiguration -> string array -> WorkflowResult<AssemblyType array>
       bind: AssemblyType array -> Bindings -> WorkflowResult<BoundModel>
       optimize: BoundModel -> WorkflowResult<BoundModel>
       expand: AssemblyType array -> BoundModel -> WorkflowResult<BoundModel>
-      generateCode: BoundModel -> WorkflowResult<string> }
+      generateCode: GeneratorConfiguration -> BoundModel -> WorkflowResult<string> }
 
 type Program =
     { Debug: bool
       Configuration: Configuration
       Workflow: WorkflowConfiguration
-      ReadAssembliesConfiguration: ReadAssembliesConfiguration }
+      ReadAssembliesConfiguration: ReadAssembliesConfiguration
+      GeneratorConfiguration: GeneratorConfiguration }
     
 module private Functions =
     let readBindingsFile path =
@@ -54,6 +60,12 @@ module private Functions =
             configuration.propertyBaseType
             configuration.baseTypeName
             assemblies
+    
+    let generateCode configuration bindings =
+        CodeGenerator.generateCode
+            configuration.prepareData
+            configuration.generate
+            bindings
     
     let runProgram program bindingsFile outputFile =        
         let readAssemblies (bindings: Bindings) =
@@ -76,7 +88,7 @@ module private Functions =
             |> WorkflowResult.debug program.Debug "4-expanded-bound-model.json"
             
         let generateCode boundModel =
-            program.Workflow.generateCode boundModel
+            program.Workflow.generateCode program.GeneratorConfiguration boundModel
             
         let write outputFile generatedCode =
             File.WriteAllText(outputFile, generatedCode)
@@ -100,13 +112,16 @@ module Program =
                 bind = Binder.bind
                 optimize = Optimizer.optimize
                 expand = Expander.expand
-                generateCode = CodeGenerator.generateCode }
+                generateCode = Functions.generateCode }
           ReadAssembliesConfiguration =
               { loadAllAssembliesByReflection = loadAllAssembliesByReflection
                 tryGetAttachedPropertyByReflection = tryGetAttachedPropertyByReflection
                 isTypeResolvable = (fun _ -> true)
                 convertTypeName = Converters.convertTypeName
-                tryGetStringRepresentationOfDefaultValue = Converters.tryGetStringRepresentationOfDefaultValue } }
+                tryGetStringRepresentationOfDefaultValue = Converters.tryGetStringRepresentationOfDefaultValue }
+          GeneratorConfiguration =
+              { prepareData = Preparer.prepareData
+                generate = CodeGenerator.generate } }
         
     let withDebug debug program =
         { program with Debug = debug }
@@ -116,6 +131,9 @@ module Program =
         
     let withReadAssembliesConfiguration func program =
         { program with ReadAssembliesConfiguration = func program.ReadAssembliesConfiguration }
+        
+    let withGeneratorConfiguration func program =
+        { program with GeneratorConfiguration = func program.GeneratorConfiguration }
     
     let run bindingsFile outputFile program =
         Functions.runProgram program bindingsFile outputFile

@@ -84,7 +84,8 @@ module Models =
     type ViewerData =
         { Name: string
           FullName: string
-          BaseName: string option
+          ViewerName: string
+          InheritedViewerName: string option
           Members: ViewerMember array }
 
     type ConstructorData =

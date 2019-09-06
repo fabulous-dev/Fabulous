@@ -109,7 +109,8 @@ module Preparer =
             
         { Name = boundType.Name
           FullName = boundType.Type
-          BaseName = boundType.BaseTypeName
+          ViewerName = sprintf "%sViewer" boundType.Name
+          InheritedViewerName = boundType.BaseTypeName |> Option.map (sprintf "%sViewer")
           Members = members }
 
     let toConstructorData (boundType: BoundType) =
