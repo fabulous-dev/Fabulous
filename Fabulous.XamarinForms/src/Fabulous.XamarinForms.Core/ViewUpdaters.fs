@@ -409,7 +409,7 @@ module ViewUpdaters =
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
         
     /// Update the menu items of a ShellContent, given previous and current view elements
-    let updateMenuItemsShellContent (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellContent) =
+    let updateShellContentMenuItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellContent) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.MenuItem
 
@@ -458,20 +458,12 @@ module ViewUpdaters =
         | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.SearchHandler.SelectedItemProperty, newVal)
 
     /// Update the IsCheckedProperty of a BaseShellItem, given previous and current IsChecked
-    let updateIsChecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
+    let updateBaseShellItemIsChecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
         | _, ValueNone -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, null)
         | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, newVal)
-
-    /// Update the selectedItems of a SelectableItemsView, given previous and current view elements
-    let updateSelectedItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SelectableItemsView) =
-        let create (desc: ViewElement) = desc.Create()
-
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.SelectedItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
@@ -496,7 +488,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Trigger Shell.GoToAsync if needed, given the current values
-    let triggerGoToAsync (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
+    let triggerShellGoToAsync _ (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
         match currValue with
         | ValueSome (navigationState, animationKind) ->
             let animated =
@@ -648,7 +640,7 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Shell.SetTabBarIsVisible(target, currValue)
         | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true)
 
-    let updateShellContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
+    let updateShellContentContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueNone, ValueNone -> ()

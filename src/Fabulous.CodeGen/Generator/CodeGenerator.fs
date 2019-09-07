@@ -115,79 +115,85 @@ module CodeGenerator =
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
 
             // Unsubscribe previous event handlers
-            for e in data.Events do
-                let relatedProperties =
-                    e.RelatedProperties
-                    |> Array.map (fun p -> sprintf "(identical prev%sOpt curr%sOpt)" p p)
-                    |> Array.fold (fun a b -> a + " && " + b) ""
+            if data.Events.Length > 0 then
+                w.printfn "        // Unsubscribe previous event handlers"
+                for e in data.Events do
+                    let relatedProperties =
+                        e.RelatedProperties
+                        |> Array.map (fun p -> sprintf "(identical prev%sOpt curr%sOpt)" p p)
+                        |> Array.fold (fun a b -> a + " && " + b) ""
 
-                w.printfn "        let shouldUpdate%s = not ((identical prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
-                w.printfn "        if shouldUpdate%s then" e.UniqueName
-                w.printfn "            match prev%sOpt with" e.UniqueName
-                w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
-                w.printfn "            | ValueNone -> ()"
+                    w.printfn "        let shouldUpdate%s = not ((identical prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
+                    w.printfn "        if shouldUpdate%s then" e.UniqueName
+                    w.printfn "            match prev%sOpt with" e.UniqueName
+                    w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
+                    w.printfn "            | ValueNone -> ()"
             
             // Update properties
-            for p in data.Properties do
-                let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
+            if data.Properties.Length > 0 then
+                w.printfn "        // Update properties"
+                for p in data.Properties do
+                    let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
 
-                // Check if the property is a collection
-                match p.CollectionData with 
-                | Some collectionData when not hasApply ->
-                    w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                    w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
-                    if (collectionData.AttachedProperties.Length > 0) then
-                        w.printfn "            (fun prevChildOpt newChild targetChild -> "
-                        w.printfn "                // Adjust the attached properties"
-                        for ap in collectionData.AttachedProperties do
-                            w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-                            w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
-                            if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
-                                w.printfn "                match prevChildValueOpt, childValueOpt with"
-                                w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                                w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
-                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
-                                w.printfn "                | _ -> ()"
-                            else
-                                w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
-                        w.printfn "                ())"
-                    else
-                        w.printfn "            (fun _ _ _ -> ())"
-                    w.printfn "            ViewHelpers.canReuseView"
-                    w.printfn "            ViewUpdaters.updateChild"
+                    // Check if the property is a collection
+                    match p.CollectionData with 
+                    | Some collectionData when not hasApply ->
+                        w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                        w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
+                        if (collectionData.AttachedProperties.Length > 0) then
+                            w.printfn "            (fun prevChildOpt newChild targetChild -> "
+                            w.printfn "                // Adjust the attached properties"
+                            for ap in collectionData.AttachedProperties do
+                                w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
+                                w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.ModelType ap.UniqueName
+                                if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
+                                    w.printfn "                match prevChildValueOpt, childValueOpt with"
+                                    w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
+                                    w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
+                                    w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
+                                    w.printfn "                | _ -> ()"
+                                else
+                                    w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
+                            w.printfn "                ())"
+                        else
+                            w.printfn "            (fun _ _ _ -> ())"
+                        w.printfn "            ViewHelpers.canReuseView"
+                        w.printfn "            ViewUpdaters.updateChild"
 
-                | _ ->
-                    // If the type is ViewElement, then it's a type from the model
-                    // Issue recursive calls to "Create" and "UpdateIncremental"
-                    if p.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
-                        w.printfn "        // For structured objects, dependsOn on reference equality"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
-                        w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
-                        w.printfn "        | _, ValueSome newValue ->"
-                        w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
-                        w.printfn "        | ValueSome _, ValueNone ->"
-                        w.printfn "            target.%s <- null"  p.Name
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                    | _ ->
+                        // If the type is ViewElement, then it's a type from the model
+                        // Issue recursive calls to "Create" and "UpdateIncremental"
+                        if p.ModelType = "ViewElement" && not hasApply then
+                            w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                            w.printfn "        // For structured objects, dependsOn on reference equality"
+                            w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
+                            w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                            w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
+                            w.printfn "        | _, ValueSome newValue ->"
+                            w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
+                            w.printfn "        | ValueSome _, ValueNone ->"
+                            w.printfn "            target.%s <- null"  p.Name
+                            w.printfn "        | ValueNone, ValueNone -> ()"
 
-                    // Explicit update code
-                    elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
-                        w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
+                        // Explicit update code
+                        elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
+                            w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
 
-                    else
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
-                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
-                        w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  p.Name p.DefaultValue
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                        else
+                            w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                            w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
+                            w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
+                            w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  p.Name p.DefaultValue
+                            w.printfn "        | ValueNone, ValueNone -> ()"
             
             // Subscribe event handlers
-            for e in data.Events do
-                w.printfn "        if shouldUpdate%s then" e.UniqueName
-                w.printfn "            match curr%sOpt with" e.UniqueName
-                w.printfn "            | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
-                w.printfn "            | ValueNone -> ()"
+            if data.Events.Length > 0 then
+                w.printfn "        // Subscribe new event handlers"
+                for e in data.Events do
+                    w.printfn "        if shouldUpdate%s then" e.UniqueName
+                    w.printfn "            match curr%sOpt with" e.UniqueName
+                    w.printfn "            | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
+                    w.printfn "            | ValueNone -> ()"
                 
         w.printfn ""
         w
