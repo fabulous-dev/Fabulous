@@ -20,11 +20,8 @@ module Text =
         member this.printf fmt = fprintf this fmt
         member this.printfn fmt = fprintfn this fmt
         
-    let removeText textToRemove (originalStr: string) =
-        originalStr.Replace(textToRemove, "")
-        
-    let getValueOrDefault overwrittenValue defaultValue =
-        match overwrittenValue with
+    let getValueOrDefault value defaultValue =
+        match value with
         | None -> defaultValue
         | Some value when System.String.IsNullOrWhiteSpace value -> defaultValue
         | Some value -> value
@@ -46,5 +43,7 @@ module Text =
         | x -> string (System.Char.ToLowerInvariant(x.[0])) + x.Substring(1)
         
     let removeDotNetGenericNotation str =
-        Regex.Replace(str, "`[0-9]*<",  "<")
+        match str with
+        | null -> null
+        | x -> Regex.Replace(x, "`[0-9]*<",  "<")
         

@@ -50,7 +50,7 @@ module Resolver =
         else
             ``type``.Fields
             |> Seq.filter (fun fdef -> fdef.IsStatic && fdef.FieldType.FullName = propertyBaseType && fdef.Name.EndsWith("Property"))
-            |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = (fdef.Name |> Text.removeText "Property")) |> not)
+            |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = fdef.Name.Replace("Property", "")) |> not)
             |> Seq.toArray
     
     /// Finds all not settable list properties for a given type
@@ -70,7 +70,7 @@ module Resolver =
         else
             ``type``.Fields
             |> Seq.filter (fun fdef -> fdef.IsStatic && fdef.FieldType.FullName = propertyBaseType && fdef.Name.EndsWith("Property"))
-            |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = (fdef.Name |> Text.removeText "Property")))
+            |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = fdef.Name.Replace("Property", "")))
             |> Seq.toArray
         
     /// Finds all events for a given type

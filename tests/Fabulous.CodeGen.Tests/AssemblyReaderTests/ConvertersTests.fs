@@ -34,7 +34,7 @@ module ConvertersTests =
         Converters.convertTypeName typeName |> should equal expectedValue
 
     [<TestCase("System.Collections.IList")>]
-    [<TestCase("System.Collections.Generic.IList`1[System.Object]")>]
+    [<TestCase("System.Collections.Generic.IList<System.Object>")>]
     let ``convertTypeName should convert IList/IList<System.Object> to obj list``(typeName) =
         Converters.convertTypeName typeName |> should equal "obj list"
 
@@ -42,14 +42,22 @@ module ConvertersTests =
     let ``convertTypeName should not convert an unknown type``() =
         Converters.convertTypeName "UnknownType" |> should equal "UnknownType"
 
-    [<Test>]
-    let ``convertEventType should return unit -> unit when eventArgsTypeOpt is None``() =
-        Converters.convertEventType None |> should equal "unit -> unit"
-
-    [<TestCase("Xamarin.Forms.TextChangedEventArgs", "Xamarin.Forms.TextChangedEventArgs -> unit")>]
-    [<TestCase("Xamarin.Forms.EntryCompletedEventArgs", "Xamarin.Forms.EntryCompletedEventArgs -> unit")>]
-    let ``convertEventType should a function signature accepting the EventArgs type and returning unit when eventArgsTypeOpt is Some``(eventArgsType, expectedValue) =
-        Converters.convertEventType (Some eventArgsType) |> should equal expectedValue
+    [<TestCase(1. :> float, "", "1.")>]
+    [<TestCase(1.5 :> float, "", "1.5")>]
+    [<TestCase(2. :> double, "", "2.")>]
+    [<TestCase(2.5 :> double, "", "2.5")>]
+    [<TestCase(3.f :> float32, "f", "3.f")>]
+    [<TestCase(3.5f :> float32, "f", "3.5f")>]
+    [<TestCase(4.f :> single, "f", "4.f")>]
+    [<TestCase(4.5f :> single, "f", "4.5f")>]
+    let ``numberWithDecimalsToString should return string representation of number with decimals and type literal``(value, literal, expected) =
+        Converters.numberWithDecimalsToString literal value |> should equal expected
+        
+    let ``numberWithDecimalsToString should return string representation of decimal with no decimal and type literal``() =
+        Converters.numberWithDecimalsToString "m" 5.m |> should equal "5.m"
+        
+    let ``numberWithDecimalsToString should return string representation of decimal with decimals and type literal``() =
+        Converters.numberWithDecimalsToString "m" 5.5m |> should equal "5.5m"
         
     [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for null``() =

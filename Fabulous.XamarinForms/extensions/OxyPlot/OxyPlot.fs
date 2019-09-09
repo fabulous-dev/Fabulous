@@ -20,9 +20,9 @@ module OxyPlotExtension =
         static member inline PlotView
             (model: PlotModel, ?controller: PlotController, 
              // inherited attributes common to all views
-             ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?heightRequest,
-             ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity,
-             ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
+             ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?height,
+             ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeight, ?minimumWidth, ?opacity,
+             ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?width,
              ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created, ?styleClass) =
 
             // Count the number of additional attributes
@@ -33,11 +33,11 @@ module OxyPlotExtension =
             let attribs =
                 ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
                                        ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
-                                       ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
-                                       ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
-                                       ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation,
+                                       ?backgroundColor=backgroundColor, ?height=height, ?inputTransparent=inputTransparent,
+                                       ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeight=minimumHeight,
+                                       ?minimumWidth=minimumWidth, ?opacity=opacity, ?rotation=rotation,
                                        ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style,
-                                       ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest,
+                                       ?translationX=translationX, ?translationY=translationY, ?width=width,
                                        ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
                                        ?automationId=automationId, ?created=created, ?styleClass=styleClass)
 
@@ -79,10 +79,10 @@ module OxyPlotExtension =
         let plotModels = [ plotModelCos; plotModelHeatMap ]
 
         let sample = 
-            View.CarouselPage(children=
+            View.CarouselPage(
                 [ for m in plotModels ->
-                        View.ContentPage(content =
-                        View.PlotView(model=m,
-                                        horizontalOptions=LayoutOptions.FillAndExpand, 
-                                        verticalOptions=LayoutOptions.FillAndExpand)) ])
+                    View.ContentPage(
+                        View.PlotView(m,
+                                      horizontalOptions=LayoutOptions.FillAndExpand, 
+                                      verticalOptions=LayoutOptions.FillAndExpand)) ])
 #endif

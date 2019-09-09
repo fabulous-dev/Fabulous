@@ -162,6 +162,11 @@ Target.create "RunFabulousTests" (fun _ ->
     |> dotnetTest "Fabulous/TestResults"
 )
 
+Target.create "BuildFabulousXamarinFormsTools" (fun _ ->
+    !! "Fabulous.XamarinForms/tools/**/*.fsproj"
+    |> dotnetBuild "Fabulous.XamarinForms/tools"
+)
+
 Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
     !! "Fabulous.XamarinForms/src/**/*.fsproj"
     -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj" // This one needs to run the generator beforehand
@@ -169,11 +174,11 @@ Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
 )
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
-    let generatorPath = buildDir + "/tools/Generator/Generator.dll"
+    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
     let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
     let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
-    DotNet.exec id generatorPath (sprintf "%s %s" bindingsFilePath outputFilePath)
+    DotNet.exec id generatorPath (sprintf "-m %s -o %s" bindingsFilePath outputFilePath)
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -350,6 +355,7 @@ open Fake.Core.TargetOperators
     ==> "Fabulous.StaticView"
 
 "Fabulous"
+    ==> "BuildFabulousXamarinFormsTools"
     ==> "BuildFabulousXamarinFormsDependencies"
     ==> "RunGeneratorForFabulousXamarinForms"
     ==> "BuildFabulousXamarinForms"

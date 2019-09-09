@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms.Generator
 open System
 open System.IO
 open System.Runtime.Loader
+open Fabulous.CodeGen
 open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.XamarinForms.Generator.Helpers
 
@@ -15,19 +16,24 @@ module Reflection =
         |> Seq.toArray
     
     let tryGetPropertyInAssembly (assembly: System.Reflection.Assembly) (typeName, propertyName) =
+        let toCleanTypeName propertyReturnType =
+            propertyReturnType.ToString()
+                              .Replace("[", "<")
+                              .Replace("]", ">")
+            |> Text.removeDotNetGenericNotation
+        
         nullable {
             let! ``type`` = assembly.GetType(typeName)
             match ``type``.ContainsGenericParameters with
             | true -> return None // Generic types are not supported
             | false ->
                 let! propertyInfo = ``type``.GetField(propertyName)
-                let! property = propertyInfo.GetValue(null)
-                let propertyType = property.GetType()
+                let! property = propertyInfo.GetValue(null) :?> Xamarin.Forms.BindableProperty
                 return
                     Some
-                        { Name = propertyType.GetProperty("PropertyName").GetValue(property) :?> string
-                          Type = (propertyType.GetProperty("ReturnType").GetValue(property) :?> Type).FullName
-                          DefaultValue = propertyType.GetProperty("DefaultValue").GetValue(property) }
+                        { Name = property.PropertyName
+                          Type = property.ReturnType |> toCleanTypeName
+                          DefaultValue = property.DefaultValue }
         }
                         
                             

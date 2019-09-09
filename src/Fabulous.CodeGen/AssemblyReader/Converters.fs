@@ -22,14 +22,14 @@ module Converters =
         | "System.Decimal" -> "decimal"
         | "System.String" -> "string"
         | "System.Object" -> "obj"
-        | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "obj list"
+        | "System.Collections.Generic.IList<System.Object>" -> "obj list"
         | "System.Collections.IList" -> "obj list"
         | _ -> typeName
         
-    let inline numberWithDecimalsToString modifier v =
+    let inline numberWithDecimalsToString literal v =
         let str = v.ToString()
         let separator = if not (str.Contains(".")) then "." else ""
-        str + separator + modifier
+        str + separator + literal
         
     /// Gets the string representation of the default value
     let tryGetStringRepresentationOfDefaultValue (defaultValue: obj) =
