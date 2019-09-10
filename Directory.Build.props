@@ -27,4 +27,7 @@
   <PropertyGroup Condition="($(IsPackable) == '' OR $(IsPackable) == 'true') AND $(Configuration) == 'Release'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
 </Project>
