@@ -1,10 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.40.4</Version>
+    <Version>0.41.1</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.40.4</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Fixed an issue preventing reuse of existing views (https://github.com/fsprojects/Fabulous/pull/507)</PackageReleaseNotes>
+    <PackageVersion>0.41.1</PackageVersion>
+    <PackageReleaseNotes>[All] Added XML documentations inside NuGet packages (https://github.com/fsprojects/Fabulous/pull/528)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
@@ -23,6 +23,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.2'">
     <OtherFlags>/warnon:1182</OtherFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition="($(IsPackable) == '' OR $(IsPackable) == 'true') AND $(Configuration) == 'Release'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>

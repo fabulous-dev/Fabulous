@@ -1,4 +1,4 @@
-﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
 open Fabulous
@@ -14,6 +14,8 @@ module ViewHelpers =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
+            elif newChild.TargetType.IsAssignableFrom(typeof<CustomEffect>) then
+                canReuseCustomEffect prevChild newChild
             else
                 true
         else
@@ -40,6 +42,17 @@ module ViewHelpers =
         match prevAutomationId with
         | ValueSome _ when prevAutomationId <> newAutomationId -> false
         | _ -> true
+        
+    /// Checks whether the CustomEffect can be reused given the previous and the new Effect name
+    /// The effect is instantiated by Effect.Resolve and can't be reused when asking for a new effect
+    and internal canReuseCustomEffect (prevChild:ViewElement) (newChild:ViewElement) =
+        let prevName = prevChild.TryGetAttribute<string>("Name")
+        let newName = newChild.TryGetAttribute<string>("Name")
+
+        match prevName with
+        | ValueSome _ when prevName <> newName -> false
+        | _ -> true
+        
 
     /// Debounce multiple calls to a single function
     let debounce<'T> =

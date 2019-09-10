@@ -5,9 +5,9 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomControls.fs" />
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="Program.fs" />
-    <Compile Include="CustomControls.fs" />
     <Compile Include="ViewConverters.fs" />
   </ItemGroup>
   <ItemGroup>
