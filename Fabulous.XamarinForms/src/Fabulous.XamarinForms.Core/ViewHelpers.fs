@@ -1,4 +1,4 @@
-﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
 open Fabulous
@@ -14,6 +14,8 @@ module ViewHelpers =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
+            elif newChild.TargetType.IsAssignableFrom(typeof<CustomEffect>) then
+                false // CustomEffect is not reusable because it is statically instantiated
             else
                 true
         else
