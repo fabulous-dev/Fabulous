@@ -234,3 +234,6 @@ type CustomSearchHandler() =
     override this.OnQueryChanged(oldValue, newValue) = this.QueryChanged (oldValue, newValue)
     override this.OnQueryConfirmed() = this.QueryConfirmed ()
     override this.OnItemSelected(item) = this.ItemSelected item
+
+type CustomEffect() =
+    member val Name = "" with get, set

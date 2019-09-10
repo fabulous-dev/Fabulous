@@ -6,6 +6,16 @@
   "outputNamespace": "Fabulous.XamarinForms",
   "types": [
     {
+      "name": "Fabulous.XamarinForms.CustomEffect",
+      "modelName": "Effect",
+      "members": [
+        {
+          "name": "Name",
+          "defaultValue": "\"\""
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.Element",
       "members": [
         {
@@ -19,6 +29,14 @@
         {
           "name": "AutomationId",
           "defaultValue": "null"
+        },
+        {
+          "name": "Effects",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement[]",
+          "convToModel": "Array.ofList",
+          "updateCode": "updateEffects"
         },
         {
           "name": "Created",
@@ -1629,7 +1647,7 @@
           "inputType": "bool",
           "modelType": "bool",
           "defaultValue": "false",
-          "updateCode": "updateUseSafeArea"      
+          "updateCode": "updateUseSafeArea"
         },
         {
           "name": "Appearing",
@@ -2254,16 +2272,16 @@
           "inputType": "int"
         },
         {
-            "name": "HorizontalItemSpacing",
-            "defaultValue": "0.0",
-            "modelType": "double",
-            "inputType": "double"
+          "name": "HorizontalItemSpacing",
+          "defaultValue": "0.0",
+          "modelType": "double",
+          "inputType": "double"
         },
         {
-            "name": "VerticalItemSpacing",
-            "defaultValue": "0.0",
-            "modelType": "double",
-            "inputType": "double"
+          "name": "VerticalItemSpacing",
+          "defaultValue": "0.0",
+          "modelType": "double",
+          "inputType": "double"
         }
       ]
     },

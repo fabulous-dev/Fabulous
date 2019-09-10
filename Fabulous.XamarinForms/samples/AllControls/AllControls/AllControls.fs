@@ -6,6 +6,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 open FSharp.Data
+open AllControls.Effects
 
 type RootPageKind = 
     | Choice of bool
@@ -22,6 +23,7 @@ type RootPageKind =
     | ShellView
     | CollectionView
     | CarouselView
+    | Effects
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -363,6 +365,7 @@ module App =
                                  View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
                                  View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
                                  View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
+                                 View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -991,6 +994,27 @@ module App =
                                             MainPageButton
                                             View.Label(text="Your Platform does not support CarouselView")
                                         ]))
+                
+        | Effects ->
+            View.ScrollingContentPage("Effects", [
+                View.Label("Samples available on iOS and Android only")
+                
+                View.Label("Focus effect (no properties)", fontSize=15., margin=Thickness(0., 30., 0., 0.))
+                View.Label("Classic Entry field", margin=Thickness(0., 15., 0., 0.))
+                View.Entry()
+                View.Label("Entry field with Focus effect", margin=Thickness(0., 15., 0., 0.))
+                View.Entry(effects = [
+                    View.Effect("FabulousXamarinForms.FocusEffect")
+                ])
+                
+                View.Label("Shadow effect (with properties)", fontSize=15., margin=Thickness(0., 30., 0., 0.))
+                View.Label("Classic Label field", margin=Thickness(0., 15., 0., 0.))
+                View.Label("This is a label without shadows")
+                View.Label("Label field with Shadow effect", margin=Thickness(0., 15., 0., 0.))
+                View.Label("This is a label with shadows", effects = [
+                    View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
+                ])
+            ])
 
     
 type App () as app = 
