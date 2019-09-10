@@ -833,8 +833,7 @@ module Converters =
 
     let updateEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) =
         let create (viewElement: ViewElement) =
-            let effect = viewElement.Create()
-            match effect with
+            match viewElement.Create() with
             | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
-            | _ -> effect :?> Xamarin.Forms.Effect
+            | effect -> effect :?> Xamarin.Forms.Effect
         updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild

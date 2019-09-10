@@ -48,10 +48,10 @@ module ShadowEffectViewExtension =
     open Fabulous
     open Fabulous.XamarinForms
     
-    let RadiusAttribKey = AttributeKey<_> "ShadowEffectRadius"
-    let ColorAttribKey = AttributeKey<_> "ShadowEffectColor"
-    let DistanceXAttribKey = AttributeKey<_> "ShadowEffectDistanceX"
-    let DistanceYAttribKey = AttributeKey<_> "ShadowEffectDistanceY"
+    let RadiusAttribKey = AttributeKey "ShadowEffectRadius"
+    let ColorAttribKey = AttributeKey "ShadowEffectColor"
+    let DistanceXAttribKey = AttributeKey "ShadowEffectDistanceX"
+    let DistanceYAttribKey = AttributeKey "ShadowEffectDistanceY"
     
     type Fabulous.XamarinForms.View with
         static member inline ShadowEffect(?radius, ?color, ?distanceX, ?distanceY) =
@@ -90,8 +90,9 @@ View.Label(effects = [
 Alternatively you can do it without an extension, and use both the `created` event and the `Effects` collection of the Xamarin.Forms control.
 ```fsharp
 View.Label(created = fun e ->
-    let effect = new CustomRoutingEffect()
-    effect.PropA <- true
+    let effect = new ShadowEffect()
+    effect.Color <- Color.Black
+    effect.Radius <- 5.
     e.Effects.Add effect
 )
 ```
