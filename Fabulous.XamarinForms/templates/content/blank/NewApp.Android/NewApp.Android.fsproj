@@ -198,7 +198,7 @@
       <HintPath>..\packages\Xamarin.Android.Support.VersionedParcelable.XamarinAndroidSdkVersion\lib\monoandroid90\Xamarin.Android.Support.VersionedParcelable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Essentials">
-      <HintPath>..\packages\Xamarin.Essentials.1.1.0\lib\monoandroid90\Xamarin.Essentials.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\monoandroid90\Xamarin.Essentials.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\MonoAndroid90\Xamarin.Forms.Core.dll</HintPath>
