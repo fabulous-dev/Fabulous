@@ -48,7 +48,8 @@ module MyViewExtensions =
     // another View class (like Xamarin.Forms.View)
     type Fabulous.XamarinForms.View with
         /// Describes a ABC in the view
-        static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
+        /// The inline keyword is important for performance
+        static member inline ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
 
             // Count the number of additional attributes
             let attribCount = 0
