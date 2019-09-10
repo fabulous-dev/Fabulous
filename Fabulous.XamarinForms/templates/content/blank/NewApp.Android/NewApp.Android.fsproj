@@ -149,6 +149,12 @@
     <Reference Include="Xamarin.Android.Arch.Lifecycle.Runtime">
       <HintPath>..\packages\Xamarin.Android.Arch.Lifecycle.Runtime.XamarinAndroidArchVersion\lib\monoandroid90\Xamarin.Android.Arch.Lifecycle.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Android.FSharp.ResourceProvider">
+      <HintPath>..\packages\Xamarin.Android.FSharp.ResourceProvider.XamarinAndroidFSharpResourceProviderPkg\lib\monoandroid81\Xamarin.Android.FSharp.ResourceProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
+      <HintPath>..\packages\Xamarin.Android.FSharp.ResourceProvider.XamarinAndroidFSharpResourceProviderPkg\lib\monoandroid81\Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\packages\Xamarin.Android.Support.Annotations.XamarinAndroidSdkVersion\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
     </Reference>
