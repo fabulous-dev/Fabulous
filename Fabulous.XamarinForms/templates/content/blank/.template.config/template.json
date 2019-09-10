@@ -188,6 +188,12 @@
       "replaces": "OpenTKPkgVersion",
       "defaultValue": "3.0.1"
     },
+    "SystemNumericsVectorsPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "SystemNumericsVectorsPkgVersion",
+      "defaultValue": "4.5.0"
+    },
     "ProjectID": {
       "type": "generated",
       "generator": "guid",

@@ -103,13 +103,28 @@
   <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
   <Import Project="..\.nuget\NuGet.targets" />
   <ItemGroup>
+    <Reference Include="Fabulous">
+      <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
+    </Reference>
+    <Reference Include="Fabulous.LiveUpdate">
+      <HintPath>..\packages\Fabulous.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms">
+      <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms.LiveUpdate">
+      <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
+    </Reference>
     <Reference Include="FormsViewGroup">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\MonoAndroid90\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.4.6.2\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
@@ -190,18 +205,6 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\MonoAndroid90\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous">
-      <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.LiveUpdate">
-      <HintPath>..\packages\Fabulous.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.XamarinForms">
-      <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.XamarinForms.LiveUpdate">
-      <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
