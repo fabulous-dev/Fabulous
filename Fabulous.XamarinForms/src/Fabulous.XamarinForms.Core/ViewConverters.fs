@@ -832,7 +832,9 @@ module Converters =
         | ValueSome _, ValueNone -> setUseSafeArea false
 
     let updateEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) =
-        let create (viewElement: ViewElement) = 
-            let customEffect = viewElement.Create() :?> CustomEffect
-            Effect.Resolve(customEffect.Name)
+        let create (viewElement: ViewElement) =
+            let effect = viewElement.Create()
+            match effect with
+            | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
+            | _ -> effect :?> Xamarin.Forms.Effect
         updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild

@@ -8,29 +8,95 @@ Views: Effects
 -------
 Xamarin.Forms user interfaces are rendered using the native controls of the target platform, allowing Xamarin.Forms applications to retain the appropriate look and feel for each platform. Effects allow the native controls on each platform to be customized without having to resort to a custom renderer implementation.
 
-### Create Effects
-The process for creating an effect in each platform-specific project is as follows:
+### Using Effects in Fabulous.XamarinForms
 
-1.  Create a subclass of the `PlatformEffect` class.
-2.  Override the `OnAttached` method and write logic to customize the control.
-3.  Override the `OnDetached` method and write logic to clean up the control customization, if required.
-4.  Add a [`ResolutionGroupName`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.resolutiongroupnameattribute) attribute to the effect class. This attribute sets a company wide namespace for effects, preventing collisions with other effects with the same name. Note that this attribute can only be applied once per project.
-5.  Add an [`ExportEffect`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.exporteffectattribute) attribute to the effect class. This attribute registers the effect with a unique ID that's used by Xamarin.Forms, along with the group name, to locate the effect prior to applying it to a control. The attribute takes two parameters – the type name of the effect, and a unique string that will be used to locate the effect prior to applying it to a control.
+The recommended way to use an effect in Fabulous is by using the dedicated `View.Effect`.  
+This control accepts the effect's exported full name (`"SomeResolutionGroup.SomeEffectName"`) and it can be attached to any control with the `effects` properties.
 
-The effect can then be consumed by attaching it to the appropriate control.
-
-### Using Effects with Fabulous
-There are two ways to attach an effect to a `ViewElement`.
-1. Using the `created` function of the element:
 ```fsharp
-View.Label(created = fun e -> e.Effects.Add <| Effect.Resolve "SomeResolutionGroup.SomeEffectName")
+View.Button(effects = [
+    View.Effect(name = "SomeResolutionGroup.SomeEffectName")
+])
 ```
 
-Because the solution 1 is a lot to write there is another way:
-2. 
+This way is only suitable if your effect doesn't need any external values.
+
+### Create wrapper for custom effects with properties
+
+If you want to use your own effects with properties in Fabulous.XamarinForms, you will need to write an extension.  
+For more information, please read about [View Extensions](views-extending.md)
+
+Let's take this ShadowEffect for example:
+
 ```fsharp
-View.Button(effects = [View.Effect(name = "SomeResolutionGroup.SomeEffectName")])
+open Xamarin.Forms
+
+type ShadowEffect() =
+    inherit RoutingEffect("FabulousXamarinForms.ShadowEffect")
+
+    member val Radius = 0. with get, set
+    member val Color = Color.Default with get, set
+    member val DistanceX = 0. with get, set
+    member val DistanceY = 0. with get, set
 ```
+
+If we want to use it in our views, we will need to write the following extension:
+
+```fsharp
+[<AutoOpen>]
+module ShadowEffectViewExtension =
+    open Fabulous
+    open Fabulous.XamarinForms
+    
+    let RadiusAttribKey = AttributeKey<_> "ShadowEffectRadius"
+    let ColorAttribKey = AttributeKey<_> "ShadowEffectColor"
+    let DistanceXAttribKey = AttributeKey<_> "ShadowEffectDistanceX"
+    let DistanceYAttribKey = AttributeKey<_> "ShadowEffectDistanceY"
+    
+    type Fabulous.XamarinForms.View with
+        static member inline ShadowEffect(?radius, ?color, ?distanceX, ?distanceY) =
+            let attribCount = 0
+            let attribCount = match radius with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match distanceX with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match distanceY with Some _ -> attribCount + 1 | None -> attribCount
+            
+            let attribs = AttributesBuilder(attribCount)
+                
+            match radius with None -> () | Some v -> attribs.Add(RadiusAttribKey, v)
+            match color with None -> () | Some v -> attribs.Add(ColorAttribKey, v)
+            match distanceX with None -> () | Some v -> attribs.Add(DistanceXAttribKey, v)
+            match distanceY with None -> () | Some v -> attribs.Add(DistanceYAttribKey, v)
+            
+            let create () = ShadowEffect()
+            
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: ShadowEffect) =
+                source.UpdatePrimitive(prevOpt, target, RadiusAttribKey, (fun target v -> target.Radius <- v))
+                source.UpdatePrimitive(prevOpt, target, ColorAttribKey, (fun target v -> target.Color <- v))
+                source.UpdatePrimitive(prevOpt, target, DistanceXAttribKey, (fun target v -> target.DistanceX <- v))
+                source.UpdatePrimitive(prevOpt, target, DistanceYAttribKey, (fun target v -> target.DistanceY <- v))
+                
+            ViewElement.Create(create, update, attribs)
+```
+
+This then enables us to use it like this:
+
+```fsharp
+View.Label(effects = [
+    View.ShadowEffect(color = Color.Black, radius = 5.)
+])
+```
+
+Alternatively you can do it without an extension, and use both the `created` event and the `Effects` collection of the Xamarin.Forms control.
+```fsharp
+View.Label(created = fun e ->
+    let effect = new CustomRoutingEffect()
+    effect.PropA <- true
+    e.Effects.Add effect
+)
+```
+
+This way is not recommended because it can't make use of the incremental update mecanism.
 
 
 See also:
