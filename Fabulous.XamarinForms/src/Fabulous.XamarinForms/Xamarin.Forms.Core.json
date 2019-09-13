@@ -2776,6 +2776,25 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.GroupableItemsView",
+      "members": [
+        {
+          "name": "GroupFooterTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "GroupHeaderTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsGrouped",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "modelType": "bool"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.ShellContent",
       "members": [
         {
@@ -2928,25 +2947,6 @@
           "defaultValue": "0.0",
           "inputType": "double",
           "modelType": "double"
-        }
-      ]
-    },
-    {
-      "name": "Xamarin.Forms.GroupableItemsView",
-      "members": [
-        {
-          "name": "GroupFooterTemplate",
-          "defaultValue": "null"
-        },
-        {
-          "name": "GroupHeaderTemplate",
-          "defaultValue": "null"
-        },
-        {
-          "name": "IsGrouped",
-          "defaultValue": "false",
-          "inputType": "bool",
-          "modelType": "bool"
         }
       ]
     }
