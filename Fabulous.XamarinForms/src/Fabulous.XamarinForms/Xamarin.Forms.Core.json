@@ -2326,15 +2326,7 @@
           "defaultValue": "null"
         },
         {
-          "name": "FooterTemplate",
-          "defaultValue": "null"
-        },
-        {
           "name": "Header",
-          "defaultValue": "null"
-        },
-        {
-          "name": "HeaderTemplate",
           "defaultValue": "null"
         },
         {
