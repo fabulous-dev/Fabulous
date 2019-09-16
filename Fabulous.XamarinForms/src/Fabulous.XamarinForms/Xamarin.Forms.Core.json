@@ -649,6 +649,10 @@
         {
           "name": "OnColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "ThumbColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -2316,6 +2320,51 @@
           "inputType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.XamarinForms.AnimationKind",
           "modelType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.XamarinForms.AnimationKind",
           "updateCode": "(fun _ curr target -> triggerScrollTo curr target)"
+        },
+        {
+          "name": "Footer",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Header",
+          "defaultValue": "null"
+        },
+        {
+          "name": "HorizontalScrollBarVisibility",
+          "defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+        },
+        {
+          "name": "VerticalScrollBarVisibility",
+          "defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+        },
+        {
+          "name": "ItemsUpdatingScrollMode",
+          "defaultValue": "Xamarin.Forms.ItemsUpdatingScrollMode.KeepItemsInView"
+        },
+        {
+          "name": "RemainingItemsThreshold",
+          "defaultValue": "-1"
+        },
+        {
+          "name": "RemainingItemsThresholdReachedCommand",
+          "defaultValue": "null"
+        },
+        {
+          "name": "RemainingItemsThresholdReachedCommandParameter",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Scrolled",
+          "uniqueName": "iScrolled",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ItemsViewScrolledEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemsViewScrolledEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "RemainingItemsThresholdReached",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
         }
       ]
     },
@@ -2584,6 +2633,18 @@
           "inputType": "bool",
           "modelType": "bool",
           "updateCode": "updateIsChecked"
+        },
+        {
+          "name": "Appearing",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Disappearing",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
         }
       ]
     },
@@ -2650,6 +2711,17 @@
           "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
           "modelType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
           "updateCode": "(fun _ curr target -> triggerGoToAsync curr target)"
+        },
+        {
+          "name": "FlyoutBackgroundImage",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource"
+        },
+        {
+          "name": "FlyoutBackgroundImageAspect",
+          "defaultValue": "Xamarin.Forms.Aspect.AspectFit"
         }
       ]
     },
@@ -2692,6 +2764,25 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.GroupableItemsView",
+      "members": [
+        {
+          "name": "GroupFooterTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "GroupHeaderTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsGrouped",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "modelType": "bool"
         }
       ]
     },
