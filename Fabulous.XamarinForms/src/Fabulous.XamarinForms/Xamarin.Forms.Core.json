@@ -1198,6 +1198,61 @@
       "primaryConstructorMember": "Children"
     },
     {
+      "type": "Xamarin.Forms.NavigationPage",
+      "properties": [
+        {
+          "source": null,
+          "name": "Pages",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateNavigationPages",
+          "collection": {
+            "elementType": "Xamarin.Forms.Page",
+            "attachedProperties": [
+              {
+                "source": "BackButtonTitle"
+              },
+              {
+                "source": "HasBackButton"
+              },
+              {
+                "source": "HasNavigationBar"
+              },
+              {
+                "source": "TitleIcon"
+              },
+              {
+                "source": "TitleView"
+              },
+              {
+                "source": "TitleIconImageSource"
+              }
+            ]
+          }
+        },
+        {
+          "source": "BarBackgroundColor"
+        },
+        {
+          "source": "BarTextColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Popped"
+        },
+        {
+          "source": "PoppedToRoot"
+        },
+        {
+          "source": "Pushed"
+        }
+      ]
+    },
+    
+    
+    
+    {
       "type": "Xamarin.Forms.SearchHandler",
       "canBeInstantiated": false,
       "name": "XFSearchHandler",
