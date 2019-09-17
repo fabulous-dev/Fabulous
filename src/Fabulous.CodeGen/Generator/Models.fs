@@ -40,6 +40,7 @@ module Models =
         { Name: string
           UniqueName: string
           DefaultValue: string
+          OriginalType: string
           ModelType: string
           ConvertModelToValue: string
           UpdateCode: string }

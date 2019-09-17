@@ -41,6 +41,7 @@ module Models =
           UniqueName: string
           DefaultValue: string
           CanBeUpdated: bool
+          OriginalType: string
           InputType: string
           ModelType: string
           ConvertInputToModel: string

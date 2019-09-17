@@ -14,5 +14,6 @@ module XFPreparer =
                           match d.Name with
                           | "MultiPageOfT" -> { d with ViewerName = "MultiPageOfTViewer<'T when 'T :> Xamarin.Forms.Page>" }
                           | "CarouselPage" -> { d with InheritedViewerName = Some "MultiPageOfTViewer<Xamarin.Forms.ContentPage>" }
+                          | "TabbedPage" -> { d with InheritedViewerName = Some "MultiPageOfTViewer<Xamarin.Forms.Page>" }
                           | _ -> d
                       ) }

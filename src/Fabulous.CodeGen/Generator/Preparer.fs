@@ -76,6 +76,7 @@ module Preparer =
                                     { Name = ap.Name
                                       UniqueName = ap.UniqueName
                                       DefaultValue = ap.DefaultValue
+                                      OriginalType = ap.OriginalType
                                       ModelType = ap.ModelType
                                       ConvertModelToValue = ap.ConvertModelToValue
                                       UpdateCode = ap.UpdateCode }) }) })

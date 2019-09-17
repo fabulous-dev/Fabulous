@@ -94,7 +94,7 @@ module App =
                 .TextColor(Color.Black) 
 
         View.ContentPage(
-            View.Grid(rowdefs=[ "*"; "*"; "*"; "*"; "*"; "*" ], coldefs=[ "*"; "*"; "*"; "*" ],
+            View.Grid(rowdefs=[ Row.Star; Row.Star; Row.Star; Row.Star; Row.Star; Row.Star ], coldefs=[ Column.Star; Column.Star; Column.Star; Column.Star ],
                 children=[
                     View.Label(text = display model, fontSize = 48.0, fontAttributes = FontAttributes.Bold, backgroundColor = Color.Black, textColor = Color.White, horizontalTextAlignment = TextAlignment.End, verticalTextAlignment = TextAlignment.Center).GridColumnSpan(4)
                     mkNumberButton 7 1 0; mkNumberButton 8 1 1; mkNumberButton 9 1 2

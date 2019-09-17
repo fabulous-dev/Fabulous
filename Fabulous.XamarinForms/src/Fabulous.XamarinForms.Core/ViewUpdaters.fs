@@ -320,11 +320,11 @@ module ViewUpdaters =
         | _, _, ValueSome f, ValueSome k -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
 
     /// Update the CurrentPage of a control, given previous and current values
-    let updateMultiPageOfTCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: Xamarin.Forms.MultiPage<'a>) =
+    let updateMultiPageOfTCurrentPage<'a when 'a :> Xamarin.Forms.Page> prevValueOpt valueOpt (target: Xamarin.Forms.MultiPage<'a>) =
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome _, ValueNone -> target.CurrentPage <- null
+        | ValueSome _, ValueNone -> target.CurrentPage <- Unchecked.defaultof<'a>
         | _, ValueSome curr -> target.CurrentPage <- target.Children.[curr]
 
     /// Update the Minium and Maximum values of a slider, given previous and current values
@@ -386,7 +386,7 @@ module ViewUpdaters =
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
     /// Update the items of a Shell, given previous and current view elements
-    let updateShellItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Shell) =
+    let updateShellItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Shell) _ =
         let create (desc: ViewElement) =
             match desc.Create() with
             | :? ShellContent as shellContent -> ShellItem.op_Implicit shellContent

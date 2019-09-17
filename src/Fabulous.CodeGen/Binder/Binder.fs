@@ -30,6 +30,11 @@ module BinderHelpers =
         typeName + memberName
         
     let getShortName value defaultName =
+        match value with
+        | Some x ->
+            ()
+        | None ->
+            ()
         Text.getValueOrDefault value (Text.toLowerPascalCase defaultName)
         
     let getUniqueName (typeName: string) value defaultName =
@@ -93,6 +98,7 @@ module Binder =
           UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
           CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
           DefaultValue = Text.getValueOrDefault bindingsAttachedProperty.DefaultValue assemblyTypeAttachedProperty.DefaultValue
+          OriginalType = assemblyTypeAttachedProperty.Type
           InputType = Text.getValueOrDefault bindingsAttachedProperty.InputType assemblyTypeAttachedProperty.Type
           ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType assemblyTypeAttachedProperty.Type
           ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
@@ -116,6 +122,7 @@ module Binder =
                       UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
                       CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
                       DefaultValue = defaultValue
+                      OriginalType = inputType
                       InputType = inputType
                       ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
                       ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""

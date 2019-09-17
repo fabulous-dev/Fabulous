@@ -290,7 +290,9 @@
           "source": "IsClippedToBounds"
         },
         {
-          "source": "Padding"
+          "source": "Padding",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
+          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         }
       ]
     },
@@ -544,10 +546,16 @@
       "type": "Xamarin.Forms.Grid",
       "properties": [
         {
-          "source": "RowDefinitions"
+          "source": "RowDefinitions",
+          "shortName": "rowdefs",
+          "inputTypes": "Fabulous.XamarinForms.InputTypes.RowDefinition list",
+          "convertModelToValue": "ViewConverters.convertFabulousRowToXamarinFormsRowDefinition"
         },
         {
-          "source": "ColumnDefinitions"
+          "source": "ColumnDefinitions",
+          "shortName": "coldefs",
+          "inputTypes": "Fabulous.XamarinForms.InputTypes.ColumnDefinition list",
+          "convertModelToValue": "ViewConverters.convertFabulousColumnToXamarinFormsColumnDefinition"
         },
         {
           "source": "RowSpacing"
@@ -1249,9 +1257,130 @@
         }
       ]
     },
-    
-    
-    
+    {
+      "type": "Xamarin.Forms.TabbedPage",
+      "properties": [
+        {
+          "source": "BarBackgroundColor"
+        },
+        {
+          "source": "BarTextColor"
+        },
+        {
+          "source": "SelectedTabColor"
+        },
+        {
+          "source": "UnselectedTabColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "CurrentPageChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ContentPage",
+      "customType": "Fabulous.XamarinForms.CustomContentPage",
+      "properties": [
+        {
+          "source": "Content"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MasterDetailPage",
+      "properties": [
+        {
+          "source": "Master"
+        },
+        {
+          "source": "Detail"
+        },
+        {
+          "source": "IsGestureEnabled"
+        },
+        {
+          "source": "IsPresented"
+        },
+        {
+          "source": "MasterBehavior"
+        }
+      ],
+      "events": [
+        {
+          "source": "IsPresentedChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MenuItem",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Icon"
+        },
+        {
+          "source": "Accelerator",
+          "updateCode": "ViewUpdaters.updateAccelerator"
+        },
+        {
+          "source": "IconImageSource"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.TextCell",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Detail"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "DetailColor"
+        },
+        {
+          "source": "Command"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ToolbarItem",
+      "properties": [
+        {
+          "source": "Order"
+        },
+        {
+          "source": "Priority"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ImageCell",
+      "properties": [
+        {
+          "source": "ImageSource"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ViewCell",
+      "properties": [
+        {
+          "source": "View"
+        }
+      ]
+    },
     {
       "type": "Xamarin.Forms.SearchHandler",
       "canBeInstantiated": false,

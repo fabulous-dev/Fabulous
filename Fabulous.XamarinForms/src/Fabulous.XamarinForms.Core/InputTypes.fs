@@ -16,3 +16,13 @@ module InputTypes =
         | Path of string
         | Bytes of byte[]
         | Value of Xamarin.Forms.ImageSource
+        
+    type Row =
+        | Auto
+        | Star of float
+        | Absolute of float
+        
+    type Column =
+        | Auto
+        | Star of float
+        | Absolute of float
