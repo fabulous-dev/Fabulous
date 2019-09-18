@@ -356,7 +356,9 @@
           "source": "FontAttributes"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": null,
@@ -548,14 +550,14 @@
         {
           "source": "RowDefinitions",
           "shortName": "rowdefs",
-          "inputTypes": "Fabulous.XamarinForms.InputTypes.RowDefinition list",
-          "convertModelToValue": "ViewConverters.convertFabulousRowToXamarinFormsRowDefinition"
+          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
+          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsRowDefinition"
         },
         {
           "source": "ColumnDefinitions",
           "shortName": "coldefs",
-          "inputTypes": "Fabulous.XamarinForms.InputTypes.ColumnDefinition list",
-          "convertModelToValue": "ViewConverters.convertFabulousColumnToXamarinFormsColumnDefinition"
+          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
+          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsColumnDefinition"
         },
         {
           "source": "RowSpacing"
@@ -738,7 +740,9 @@
           "source": "FontAttributes"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "Title"
@@ -771,7 +775,9 @@
       "type": "Xamarin.Forms.Image",
       "properties": [
         {
-          "source": "Source"
+          "source": "Source",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Image",
+          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
         },
         {
           "source": "Aspect"
@@ -852,7 +858,9 @@
           "source": "FontAttributes"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "HorizontalTextAlignment"
@@ -889,7 +897,9 @@
           "source": "Text"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "FontFamily"
@@ -937,7 +947,9 @@
           "source": "HorizontalTextAlignment"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "FontAttributes"
@@ -980,7 +992,9 @@
           "source": "VerticalTextAlignment"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "FontFamily"
@@ -1041,7 +1055,9 @@
           "source": "FontFamily"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "LineHeight"
@@ -1071,7 +1087,9 @@
           "source": "FontFamily"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "Format"
@@ -1281,10 +1299,20 @@
     },
     {
       "type": "Xamarin.Forms.ContentPage",
-      "customType": "Fabulous.XamarinForms.CustomContentPage",
+      "name": "XFContentPage",
+      "canBeInstantiated": "false",
       "properties": [
         {
           "source": "Content"
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomContentPage",
+      "name": "ContentPage",
+      "events": [
+        {
+          "source": "SizeAllocated"
         }
       ]
     },
@@ -1461,7 +1489,9 @@
           "source": "FontFamily"
         },
         {
-          "source": "FontSize"
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
           "source": "HorizontalTextAlignment"

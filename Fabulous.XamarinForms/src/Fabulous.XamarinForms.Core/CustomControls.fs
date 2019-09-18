@@ -211,13 +211,14 @@ type CustomGroupListView() =
 type CustomContentPage() as self = 
     inherit ContentPage()
     do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
-    let sizeAllocated: Event<double * double> = Event<_>() 
+    
+    let sizeAllocated = Event<EventHandler<double * double>, _>()
 
-    member __.SizeAllocated = sizeAllocated.Publish
+    [<CLIEvent>] member __.SizeAllocated = sizeAllocated.Publish
 
-    override __.OnSizeAllocated(width, height) =
+    override this.OnSizeAllocated(width, height) =
         base.OnSizeAllocated(width, height)
-        sizeAllocated.Trigger(width, height)
+        sizeAllocated.Trigger(this, (width, height))
 
 /// DataTemplate that can inflate a View from a ViewElement instead of a Type
 type ViewElementDataTemplate(viewElement: ViewElement) =

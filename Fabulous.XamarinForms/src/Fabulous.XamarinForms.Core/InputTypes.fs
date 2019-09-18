@@ -17,12 +17,12 @@ module InputTypes =
         | Bytes of byte[]
         | Value of Xamarin.Forms.ImageSource
         
-    type Row =
+    type RowOrColumn =
         | Auto
-        | Star of float
+        | Star
+        | Stars of float
         | Absolute of float
         
-    type Column =
-        | Auto
-        | Star of float
-        | Absolute of float
+    type FontSize =
+        | Named of Xamarin.Forms.NamedSize
+        | Value of float

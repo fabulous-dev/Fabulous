@@ -126,30 +126,37 @@ module ViewConverters =
         v
         |> Array.ofList
         |> Array.map (fun (title, es) -> (title, Array.ofList es))
-        
-    let convertFabulousRowToXamarinFormsRowDefinition (v: InputTypes.Row array) =
+                
+    let convertFabulousRowOrColumnToXamarinFormsRowDefinition (v: InputTypes.RowOrColumn array) =
         let rows =
             Array.map (fun vi ->
                 match vi with
-                | Row.Auto -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength.Auto; rd
-                | Row.Star value -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength(value, GridUnitType.Star); rd
-                | Row.Absolute value -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength(value, GridUnitType.Absolute); rd
+                | Auto -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength.Auto; rd
+                | Star -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength.Star; rd
+                | Stars value -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength(value, GridUnitType.Star); rd
+                | Absolute value -> let rd = Xamarin.Forms.RowDefinition() in rd.Height <- GridLength(value, GridUnitType.Absolute); rd
             ) v
         
         let collection = Xamarin.Forms.RowDefinitionCollection()
         rows |> Array.iter collection.Add
         collection
         
-    let convertFabulousColumnToXamarinFormsColumnDefinition (v: InputTypes.Column array) =
+    let convertFabulousRowOrColumnToXamarinFormsColumnDefinition (v: InputTypes.RowOrColumn array) =
         let columns =
             Array.map (fun vi ->
                 match vi with
-                | Column.Auto -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength.Auto; rd
-                | Column.Star value -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength(value, GridUnitType.Star); rd
-                | Column.Absolute value -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength(value, GridUnitType.Absolute); rd
+                | Auto -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength.Auto; rd
+                | Star -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength.Star; rd
+                | Stars value -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength(value, GridUnitType.Star); rd
+                | Absolute value -> let rd = Xamarin.Forms.ColumnDefinition() in rd.Width <- GridLength(value, GridUnitType.Absolute); rd
             ) v
         
         let collection = Xamarin.Forms.ColumnDefinitionCollection()
         columns |> Array.iter collection.Add
         collection
+        
+    let convertFabulousFontSizeToXamarinFormsDouble (targetType: Type) (v: InputTypes.FontSize) =
+        match v with
+        | Named namedSize -> Device.GetNamedSize(namedSize, targetType)
+        | Value value -> value
             

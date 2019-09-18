@@ -5,6 +5,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
+open Xamarin.Forms
 
 /// Represents a player and a player's move
 type Player = 
@@ -61,9 +62,6 @@ type Model =
 /// The model, update and view content of the app. This is placed in an 
 /// independent model to facilitate unit testing.
 module App = 
-    open System.Windows.Input
-    open System.Runtime.CompilerServices
-
     let positions = 
         [ for x in 0 .. 2 do 
             for y in 0 .. 2 do 
@@ -146,16 +144,18 @@ module App =
     /// A helper used in the 'view' function to get the name 
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
-        match cell with
-        | Full X -> 
-            match Device.RuntimePlatform with
-            | Device.macOS -> "Cross"
-            | _ -> "Cross.png"
-        | Full O -> 
-            match Device.RuntimePlatform with
-            | Device.macOS -> "Nought"
-            | _ -> "Nought.png"
-        | Empty -> ""
+        let path =
+            match cell with
+            | Full X -> 
+                match Device.RuntimePlatform with
+                | Device.macOS -> "Cross"
+                | _ -> "Cross.png"
+            | Full O -> 
+                match Device.RuntimePlatform with
+                | Device.macOS -> "Nought"
+                | _ -> "Nought.png"
+            | Empty -> ""
+        Path path
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
     let uiText (row,col) = sprintf "%d%d" row col
@@ -170,9 +170,9 @@ module App =
         barTextColor = Color.Black,
         pages=
           [View.ContentPage(
-            View.Grid(rowdefs=[ "*"; "auto"; "auto" ],
+            View.Grid(rowdefs=[ Star; Auto; Auto ],
               children=[
-                View.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
+                View.Grid(rowdefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ], coldefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
                     children=[
                         yield View.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
                         yield View.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
@@ -185,7 +185,7 @@ module App =
                                     View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
                                     View.Image(source=imageForPos model.Board.[pos],
-                                     margin=10.0, horizontalOptions=LayoutOptions.Center,
+                                     margin=Uniform 10.0, horizontalOptions=LayoutOptions.Center,
                                      verticalOptions=LayoutOptions.Center)
                             item.GridRow(row*2).GridColumn(col*2) ],
 
@@ -193,19 +193,19 @@ module App =
                     columnSpacing=0.0,
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
-                    ?widthRequest = model.VisualBoardSize,
-                    ?heightRequest = model.VisualBoardSize).GridRow(0)
+                    ?width = model.VisualBoardSize,
+                    ?height = model.VisualBoardSize).GridRow(0)
 
-                View.Label(text=getMessage model, margin=10.0, textColor=Color.Black, 
+                View.Label(text=getMessage model, margin=Uniform 10.0, textColor=Color.Black, 
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
-                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize="Large").GridRow(1)
+                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=Named NamedSize.Large).GridRow(1)
 
-                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
+                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=Named NamedSize.Large).GridRow(2)
               ]),
 
              // This requests a square board based on the width we get allocated on the device 
-             onSizeAllocated=(fun (width, height) ->
+             sizeAllocated=(fun (width, height) ->
                match model.VisualBoardSize with 
                | None -> 
                    let sz = min width height - 80.0
