@@ -156,10 +156,10 @@ module MyExtension =
     // Test some adhoc functional abstractions
     type View with 
         static member ScrollingContentPage(title, children) =
-            View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
+            View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=Uniform 20.0, children=children) ), useSafeArea=true)
 
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            View.ContentPage(title=title, content=View.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
+            View.ContentPage(title=title, content=View.StackLayout(padding=Uniform 20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
 
 module App = 
@@ -378,7 +378,7 @@ module App =
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
-                                   View.Label(text = "Now with CSS styling", styleClass = "cssCallout")
+                                   View.Label(text = "Now with CSS styling", styleClass = ClassName "cssCallout")
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
@@ -495,8 +495,8 @@ module App =
                dependsOn () (fun model () -> 
                    View.NonScrollingContentPage("Grid", 
                        [ View.Label(text=sprintf "Grid (6x6, auto):")
-                         View.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], 
-                             coldefs=[for i in 1 .. 6 -> box "auto"], 
+                         View.Grid(rowdefs= [for i in 1 .. 6 -> Auto], 
+                             coldefs=[for i in 1 .. 6 -> Auto], 
                              children = 
                                  [ for i in 1 .. 6 do 
                                       for j in 1 .. 6 -> 
@@ -550,7 +550,7 @@ module App =
                dependsOn () (fun model () -> 
                    View.NonScrollingContentPage("Grid", 
                        [ View.Label(text=sprintf "Grid (6x6, *):")
-                         View.Grid(rowdefs= [for i in 1 .. 6 -> box "*"], coldefs=[for i in 1 .. 6 -> box "*"], 
+                         View.Grid(rowdefs= [for i in 1 .. 6 -> Star], coldefs=[for i in 1 .. 6 -> Star], 
                             children = [ 
                                 for i in 1 .. 6 do 
                                     for j in 1 .. 6 -> 
@@ -564,7 +564,7 @@ module App =
                       [ View.Label(text=sprintf "Grid (nxn, pinch, size = %f):" newGridSize)
                         // The Grid doesn't change during the pinch...
                         dependsOn gridSize (fun _ _ -> 
-                          View.Grid(rowdefs= [for i in 1 .. gridSize -> box "*"], coldefs=[for i in 1 .. gridSize -> box "*"], 
+                          View.Grid(rowdefs= [for i in 1 .. gridSize -> Star], coldefs=[for i in 1 .. gridSize -> Star], 
                               children = [ 
                                   for i in 1 .. gridSize do 
                                       for j in 1 .. gridSize -> 
@@ -580,7 +580,7 @@ module App =
                   View.NonScrollingContentPage("Grid+Pan", 
                       children=
                           [ View.Label(text= sprintf "Grid (nxn, auto, edit entries, 1-touch pan, (%d, %d):" dx dy)
-                            View.Grid(rowdefs= [for row in 1 .. 6 -> box "*"], coldefs=[for col in 1 .. 6 -> box "*"], 
+                            View.Grid(rowdefs= [for row in 1 .. 6 -> Star], coldefs=[for col in 1 .. 6 -> Star], 
                                children = [ for row in 1 .. 6 do 
                                                for col in 1 .. 6 ->
                                                   let item = View.Label(text=sprintf "(%d, %d)" (col+dx) (row+dy), backgroundColor=Color.White, textColor=Color.Black) 
@@ -594,11 +594,11 @@ module App =
                dependsOn () (fun model () -> 
                  View.NonScrollingContentPage("Image", 
                      [ View.Label(text="Image (URL):")
-                       View.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
+                       View.Image(source=Path "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
                            horizontalOptions=LayoutOptions.FillAndExpand,
                            verticalOptions=LayoutOptions.FillAndExpand)
-                       View.Label(text="Image (Embedded):", margin=Thickness(0., 20., 0., 0.))
-                       View.Image(source=ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly), 
+                       View.Label(text="Image (Embedded):", margin = AllSides (0., 20., 0., 0.))
+                       View.Image(source=Image.Value (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly)), 
                               horizontalOptions=LayoutOptions.FillAndExpand,
                               verticalOptions=LayoutOptions.FillAndExpand) 
                        MainPageButton ]))
@@ -610,7 +610,7 @@ module App =
                dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
                   View.ScrollingContentPage("Picker", 
                      [ View.Label(text="Picker:")
-                       View.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                       View.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, items=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
                        MainPageButton
                      ]))
                       
@@ -679,39 +679,39 @@ module App =
                                 View.ScrollView(orientation=ScrollOrientation.Both,
                                   content = View.FlexLayout(
                                       children = [
-                                          View.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          View.Frame(height=480.0, width=300.0, 
                                               content = View.FlexLayout( direction=FlexDirection.Column,
                                                   children = [ 
-                                                      View.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                      View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Image(heightRequest=240.0, 
-                                                          widthRequest=160.0, 
-                                                          source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                      View.Label(text="Seated Monkey", margin=Mirror (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
+                                                      View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Often smiles mysteriously", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Sleeps sitting up", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Image(height=240.0, 
+                                                          width=160.0, 
+                                                          source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
                                                       ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                      View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexGrow(1.0)
+                                                      View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
-                                              margin=10.0,
+                                              margin=Uniform 10.0,
                                               cornerRadius=15.0)
-                                          View.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          View.Frame(height=480.0, width=300.0, 
                                               content = View.FlexLayout( direction=FlexDirection.Column,
                                                   children = [ 
-                                                      View.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                      View.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                      View.Image(heightRequest=213.0, 
-                                                          widthRequest=320.0, 
-                                                          source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                      View.Label(text="Banana Monkey", margin=Mirror (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
+                                                      View.Label(text="Watch this monkey eat a giant banana.", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • More fun than a barrel of monkeys", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Banana not included", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Image(height=213.0, 
+                                                          width=320.0, 
+                                                          source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
                                                       ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                      View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexGrow(1.0)
+                                                      View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
-                                              margin=10.0,
+                                              margin=Uniform 10.0,
                                               cornerRadius=15.0)
                                           
                                       ] ))
@@ -751,7 +751,7 @@ module App =
                        padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                        content= View.StackLayout(
                            children=[ 
-                               View.Label(text = "AbsoluteLayout Demo", fontSize = Device.GetNamedSize(NamedSize.Large, typeof<Label>), horizontalOptions = LayoutOptions.Center)
+                               View.Label(text = "AbsoluteLayout Demo", fontSize = Named NamedSize.Large, horizontalOptions = LayoutOptions.Center)
                                View.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), 
                                    verticalOptions = LayoutOptions.FillAndExpand, 
                                    children = [

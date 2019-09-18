@@ -724,7 +724,7 @@
       "properties": [
         {
           "source": "ItemsSource",
-          "shortName": "Items",
+          "shortName": "items",
           "inputType": "string list"
         },
         {
@@ -764,7 +764,9 @@
           "source": "BorderColor"
         },
         {
-          "source": "CornerRadius"
+          "source": "CornerRadius",
+          "inputType": "float",
+          "convertModelToValue": "single"
         },
         {
           "source": "HasShadow"
