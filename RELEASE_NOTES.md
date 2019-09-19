@@ -1,3 +1,10 @@
+#### 0.42.0
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.2 (https://github.com/fsprojects/Fabulous/pull/559)
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms.Effect (https://github.com/fsprojects/Fabulous/pull/544)
+* [Fabulous.XamarinForms] [Extensions] Added missing properties coming from Xamarin.Forms.View (https://github.com/fsprojects/Fabulous/pull/562)
+* [Fabulous.XamarinForms] [Templates] Fixed opened namespaces and docs links in templates (https://github.com/fsprojects/Fabulous/pull/547 + https://github.com/fsprojects/Fabulous/pull/548 + https://github.com/fsprojects/Fabulous/pull/553)
+
 #### 0.41.1
 
 * [All] Added XML documentations inside NuGet packages (https://github.com/fsprojects/Fabulous/pull/528)
