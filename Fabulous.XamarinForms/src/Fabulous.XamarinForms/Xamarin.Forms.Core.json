@@ -37,6 +37,13 @@
           "source": "ClassId"
         },
         {
+          "source": "Effects",
+          "updateCode": "ViewUpdaters.updateElementEffects",
+          "collectionData": {
+            "elementType": "Xamarin.Forms.Effect"
+          }
+        },
+        {
           "source": null,
           "name": "StyleId",
           "defaultValue": "null",
@@ -84,8 +91,6 @@
           "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
-          "modelType": "ViewElement array",
-          "convertInputToModel": "Array.ofList",
           "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateMenuChildren",
           "collectionData": {
@@ -98,20 +103,160 @@
       "type": "Xamarin.Forms.MenuItem",
       "properties": [
         {
-          "source": "Text"
+          "source": null,
+          "name": "Accelerator",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Accelerator",
+          "defaultValue": "null",
+          "updateCode": "ViewUpdaters.updateMenuItemAccelerator"
         },
         {
           "source": "Command"
         },
         {
-          "source": "Icon"
+          "source": "IconImageSource",
+          "shortName": "icon"
         },
         {
-          "source": "Accelerator",
-          "updateCode": "ViewUpdaters.updateAccelerator"
+          "source": "IsDestructive"
         },
         {
-          "source": "IconImageSource"
+          "source": "Text"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ToolbarItem",
+      "properties": [
+        {
+          "source": null,
+          "name": "Order",
+          "inputType": "Xamarin.Forms.ToolbarItemOrder",
+          "defaultValue": "Xamarin.Forms.ToolbarItemOrder.Default"
+        },
+        {
+          "source": null,
+          "name": "Priority",
+          "inputType": "int",
+          "defaultValue": "0"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Cell",
+      "properties": [
+        {
+          "source": "ContextActions"
+        },
+        {
+          "source": null,
+          "name": "Height",
+          "defaultValue": "-1.0",
+          "inputType": "float"
+        },
+        {
+          "source": "IsEnabled"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.EntryCell",
+      "name": "XFEntryCell",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "Keyboard"
+        },
+        {
+          "source": "Label"
+        },
+        {
+          "source": "LabelColor"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "XAlign"
+        }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomEntryCell",
+      "name": "EntryCell",
+      "events": [
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwitchCell",
+      "properties": [
+        {
+          "source": "On"
+        },
+        {
+          "source": "OnColor"
+        },
+        {
+          "source": "Text"
+        }
+      ],
+      "events": [
+        {
+          "source": "OnChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.TextCell",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Detail"
+        },
+        {
+          "source": "DetailColor"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ImageCell",
+      "properties": [
+        {
+          "source": "ImageSource"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ViewCell",
+      "properties": [
+        {
+          "source": null,
+          "name": "View",
+          "inputType": "ViewElement",
+          "defaultValue": "null"
         }
       ]
     },
@@ -512,77 +657,6 @@
       "events": [
         {
           "source": "Toggled"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Cell",
-      "properties": [
-        {
-          "source": null,
-          "name": "Height",
-          "defaultValue": "-1.0",
-          "inputType": "float"
-        },
-        {
-          "source": "IsEnabled"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.SwitchCell",
-      "properties": [
-        {
-          "source": "On"
-        },
-        {
-          "source": "Text"
-        },
-        {
-          "source": "OnColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "OnChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.EntryCell",
-      "name": "XFEntryCell",
-      "canBeInstantiated": false,
-      "properties": [
-        {
-          "source": "Label"
-        },
-        {
-          "source": "Text"
-        },
-        {
-          "source": "Keyboard"
-        },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "HorizontalTextAlignment"
-        }
-      ],
-      "events": [
-        {
-          "source": "Completed",
-          "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
-        }
-      ]
-    },
-    {
-      "type": "Fabulous.XamarinForms.CustomEntryCell",
-      "name": "EntryCell",
-      "events": [
-        {
-          "source": "TextChanged"
         }
       ]
     },
@@ -1212,16 +1286,12 @@
       "canBeInstantiated": false,
       "properties": [
         {
-          "source": "BackgroundImage"
+          "source": "BackgroundImageSource",
+          "shortName": "backgroundImage"
         },
         {
-          "source": "BackgroundImageSource"
-        },
-        {
-          "source": "IconImageSource"
-        },
-        {
-          "source": "Icon"
+          "source": "IconImageSource",
+          "shortName": "icon"
         },
         {
           "source": "IsBusy"
@@ -1316,13 +1386,11 @@
                 "source": "HasNavigationBar"
               },
               {
-                "source": "TitleIcon"
-              },
-              {
                 "source": "TitleView"
               },
               {
-                "source": "TitleIconImageSource"
+                "source": "TitleIconImageSource",
+                "shortName": "titleIcon"
               }
             ]
           }
@@ -1409,53 +1477,6 @@
       "events": [
         {
           "source": "IsPresentedChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.TextCell",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "Detail"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "DetailColor"
-        },
-        {
-          "source": "Command"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ToolbarItem",
-      "properties": [
-        {
-          "source": "Order"
-        },
-        {
-          "source": "Priority"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ImageCell",
-      "properties": [
-        {
-          "source": "ImageSource"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ViewCell",
-      "properties": [
-        {
-          "source": "View"
         }
       ]
     },

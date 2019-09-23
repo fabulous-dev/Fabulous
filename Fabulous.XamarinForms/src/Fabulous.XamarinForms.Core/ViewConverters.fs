@@ -36,7 +36,10 @@ module ViewConverters =
         | _ -> failwithf "makeImageSource: invalid argument %O" v
 
     /// Converts a string to a Xamarin.Forms Accelerator
-    let makeAccelerator (accelerator: string) = Accelerator.op_Implicit accelerator
+    let makeAccelerator (accelerator: InputTypes.Accelerator) =
+        match accelerator with
+        | String value -> Accelerator.op_Implicit value
+        | Value value -> value
 
     /// Converts a string to a Xamarin.Forms FileImageSource
     let makeFileImageSource (image: string) = FileImageSource.op_Implicit image
@@ -157,6 +160,6 @@ module ViewConverters =
         
     let convertFabulousFontSizeToXamarinFormsDouble (targetType: Type) (v: InputTypes.FontSize) =
         match v with
-        | Named namedSize -> Device.GetNamedSize(namedSize, targetType)
-        | Value value -> value
+        | InputTypes.FontSize.Named namedSize -> Device.GetNamedSize(namedSize, targetType)
+        | InputTypes.FontSize.Value value -> value
             

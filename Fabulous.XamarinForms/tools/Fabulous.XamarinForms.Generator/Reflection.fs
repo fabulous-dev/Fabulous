@@ -31,7 +31,7 @@ module Reflection =
                 let! property = propertyInfo.GetValue(null) :?> Xamarin.Forms.BindableProperty
                 return
                     Some
-                        { Name = property.PropertyName
+                        { Name = propertyName.Replace("Property", "")
                           Type = property.ReturnType |> toCleanTypeName
                           DefaultValue = property.DefaultValue }
         }

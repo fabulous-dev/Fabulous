@@ -378,7 +378,7 @@ module ViewUpdaters =
         | _, _ -> ()
 
     /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
-    let updateAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
+    let updateMenuItemAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
@@ -677,3 +677,13 @@ module ViewUpdaters =
         match curr with
         | ValueNone -> ()
         | ValueSome value -> target.SelectionLength <- value
+        
+    let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) =
+        updateCollectionGeneric prevCollOpt currCollOpt target (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        
+    let updateElementEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) attach =
+        let create (viewElement: ViewElement) =
+            match viewElement.Create() with
+            | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
+            | effect -> effect :?> Xamarin.Forms.Effect
+        updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild 

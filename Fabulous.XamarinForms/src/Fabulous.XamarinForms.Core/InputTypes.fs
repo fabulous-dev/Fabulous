@@ -26,3 +26,7 @@ module InputTypes =
     type FontSize =
         | Named of Xamarin.Forms.NamedSize
         | Value of float
+        
+    type Accelerator =
+        | String of string
+        | Value of Xamarin.Forms.Accelerator

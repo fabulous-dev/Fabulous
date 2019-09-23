@@ -239,3 +239,7 @@ type CustomSearchHandler() =
     override this.OnQueryChanged(oldValue, newValue) = queryChanged.Trigger(this, (oldValue, newValue))
     override this.OnQueryConfirmed() = queryConfirmed.Trigger(this, null)
     override this.OnItemSelected(item) = itemSelected.Trigger(this, item)
+    
+/// A name holder for effects that don't require to create a cross-platform type to use them
+type CustomEffect() =
+    member val Name = "" with get, set 
