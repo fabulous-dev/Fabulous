@@ -6,6 +6,27 @@
   "outputNamespace": "Fabulous.XamarinForms",
   "types": [
     {
+      "type": "Xamarin.Forms.BindableObject",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Xamarin.Forms.BackButtonBehavior",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "IconOverride"
+        },
+        {
+          "source": "IsEnabled"
+        },
+        {
+          "source": "TextOverride"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.Element",
       "canBeInstantiated": false,
       "properties": [
@@ -43,6 +64,54 @@
           "canBeUpdated": false,
           "inputType": "obj -> unit",
           "modelType": "obj -> unit"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.BaseMenuItem",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Xamarin.Forms.Menu",
+      "properties": [
+        {
+          "source": null,
+          "name": "Text",
+          "inputType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "source": null,
+          "name": "Children",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "convertInputToModel": "Array.ofList",
+          "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updateMenuChildren",
+          "collectionData": {
+            "elementType": "Xamarin.Forms.Menu"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MenuItem",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Icon"
+        },
+        {
+          "source": "Accelerator",
+          "updateCode": "ViewUpdaters.updateAccelerator"
+        },
+        {
+          "source": "IconImageSource"
         }
       ]
     },
@@ -1340,27 +1409,6 @@
       "events": [
         {
           "source": "IsPresentedChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.MenuItem",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "Command"
-        },
-        {
-          "source": "Icon"
-        },
-        {
-          "source": "Accelerator",
-          "updateCode": "ViewUpdaters.updateAccelerator"
-        },
-        {
-          "source": "IconImageSource"
         }
       ]
     },
