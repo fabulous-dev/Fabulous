@@ -39,7 +39,7 @@
         {
           "source": "Effects",
           "updateCode": "ViewUpdaters.updateElementEffects",
-          "collectionData": {
+          "collection": {
             "elementType": "Xamarin.Forms.Effect"
           }
         },
@@ -93,7 +93,7 @@
           "inputType": "ViewElement list",
           "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateMenuChildren",
-          "collectionData": {
+          "collection": {
             "elementType": "Xamarin.Forms.Menu"
           }
         }
@@ -180,9 +180,6 @@
         },
         {
           "source": "Text"
-        },
-        {
-          "source": "XAlign"
         }
       ],
       "events": [
@@ -417,6 +414,99 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.BaseShellItem",
+      "properties": [
+        {
+          "source": "FlyoutIcon"
+        },
+        {
+          "source": "Icon"
+        },
+        {
+          "source": "IsChecked",
+          "updateCode": "ViewUpdaters.updateBaseShellItemIsChecked"
+        },
+        {
+          "source": "IsEnabled"
+        },
+        {
+          "source": "IsTabStop"
+        },
+        {
+          "source": null,
+          "name": "Route",
+          "inputType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "source": "TabIndex"
+        },
+        {
+          "source": "Title"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ShellContent",
+      "properties": [
+        {
+          "source": "ContentTemplate",
+          "shortName": "content",
+          "inputType": "ViewElement",
+          "updateCode": "ViewUpdaters.updateShellContentContentTemplate"
+        },
+        {
+          "name": "MenuItems",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateShellContentMenuItems"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ShellGroupItem",
+      "properties": [
+        {
+          "source": "FlyoutDisplayOptions"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ShellItem",
+      "properties": [
+        {
+          "source": "CurrentItem"
+        },
+        {
+          "source": "Items",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateShellItemItems"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.FlyoutItem"
+    },
+    {
+      "type": "Xamarin.Forms.TabBar"
+    },
+    {
+      "type": "Xamarin.Forms.ShellSection",
+      "properties": [
+        {
+          "source": "CurrentItem"
+        },
+        {
+          "source": "Items",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateShellSectionItems"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Tab"
+    },
+    {
       "type": "Xamarin.Forms.VisualElement",
       "canBeInstantiated": false,
       "properties": [
@@ -428,6 +518,12 @@
         },
         {
           "source": "BackgroundColor"
+        },
+        {
+          "source": "Behaviors",
+          "collection": {
+            "elementType": "Xamarin.Forms.Behavior"
+          }
         },
         {
           "source": "FlowDirection"
@@ -500,6 +596,61 @@
         },
         {
           "source": "Unfocused"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Page",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "BackgroundImageSource",
+          "shortName": "backgroundImage"
+        },
+        {
+          "source": "IconImageSource",
+          "shortName": "icon"
+        },
+        {
+          "source": "IsBusy"
+        },
+        {
+          "source": "Padding"
+        },
+        {
+          "source": "Title"
+        },
+        {
+          "source": null,
+          "name": "ToolbarItems",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updatePageToolbarItems",
+          "collection": {
+            "elementType": "Xamarin.Forms.ToolbarItem"
+          }
+        },
+        {
+          "source": null,
+          "name": "UseSafeArea",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updatePageUseSafeArea"
+        },
+        {
+          "source": null,
+          "name": "ShellSearchHandler",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SearchHandler",
+          "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
+        }
+      ],
+      "events": [
+        {
+          "source": "Appearing"
+        },
+        {
+          "source": "Disappearing"
         }
       ]
     },
@@ -1310,54 +1461,6 @@
       "primaryConstructorMember": "Source"
     },
     {
-      "type": "Xamarin.Forms.Page",
-      "canBeInstantiated": false,
-      "properties": [
-        {
-          "source": "BackgroundImageSource",
-          "shortName": "backgroundImage"
-        },
-        {
-          "source": "IconImageSource",
-          "shortName": "icon"
-        },
-        {
-          "source": "IsBusy"
-        },
-        {
-          "source": "Padding"
-        },
-        {
-          "source": "Title"
-        },
-        {
-          "source": "ToolbarItems"
-        },
-        {
-          "source": null,
-          "name": "UseSafeArea",
-          "defaultValue": "false",
-          "inputType": "bool",
-          "updateCode": "ViewUpdaters.updatePageUseSafeArea"
-        },
-        {
-          "source": null,
-          "name": "ShellSearchHandler",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.SearchHandler",
-          "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
-        }
-      ],
-      "events": [
-        {
-          "source": "Appearing"
-        },
-        {
-          "source": "Disappearing"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.MultiPage`1",
       "name": "MultiPageOfT",
       "canBeInstantiated": false,
@@ -1644,40 +1747,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.BaseShellItem",
-      "properties": [
-        {
-          "source": "FlyoutIcon",
-          "inputType": "InputTypes.Image",
-          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
-        },
-        {
-          "source": "Icon",
-          "inputType": "InputTypes.Image",
-          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
-        },
-        {
-          "source": "IsEnabled"
-        },
-        {
-          "source": "IsTabStop"
-        },
-        {
-          "source": "Route"
-        },
-        {
-          "source": "TabIndex"
-        },
-        {
-          "source": "Title"
-        },
-        {
-          "source": "IsChecked",
-          "updateCode": "ViewUpdaters.updateBaseShellItemIsChecked"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.Shell",
       "properties": [
         {
@@ -1733,14 +1802,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.ShellGroupItem",
-      "properties": [
-        {
-          "source": "FlyoutDisplayOptions"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.SelectableItemsView",
       "properties": [
         {
@@ -1759,49 +1820,6 @@
       "events": [
         {
           "source": "SelectionChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ShellContent",
-      "properties": [
-        {
-          "source": "ContentTemplate",
-          "shortName": "content",
-          "inputType": "ViewElement",
-          "updateCode": "ViewUpdaters.updateShellContentContentTemplate"
-        },
-        {
-          "name": "MenuItems",
-          "defaultValue": "null",
-          "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellContentMenuItems"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ShellItem",
-      "properties": [
-        {
-          "source": "CurrentItem"
-        },
-        {
-          "source": "Items",
-          "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellItemItems"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ShellSection",
-      "properties": [
-        {
-          "source": "CurrentItem"
-        },
-        {
-          "source": "Items",
-          "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellSectionItems"
         }
       ]
     },
@@ -1825,15 +1843,6 @@
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView"
-    },
-    {
-      "type": "Xamarin.Forms.FlyoutItem"
-    },
-    {
-      "type": "Xamarin.Forms.Tab"
-    },
-    {
-      "type": "Xamarin.Forms.TabBar"
     },
     {
       "type": "Xamarin.Forms.CheckBox",

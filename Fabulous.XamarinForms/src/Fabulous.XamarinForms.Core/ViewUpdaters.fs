@@ -678,7 +678,7 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome value -> target.SelectionLength <- value
         
-    let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) =
+    let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) attach =
         updateCollectionGeneric prevCollOpt currCollOpt target (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
         
     let updateElementEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) attach =
@@ -686,4 +686,10 @@ module ViewUpdaters =
             match viewElement.Create() with
             | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
             | effect -> effect :?> Xamarin.Forms.Effect
-        updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild 
+        updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
+        
+    let updatePageToolbarItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Page) attach =
+        let create (viewElement: ViewElement) =
+            viewElement.Create() :?> Xamarin.Forms.ToolbarItem
+        
+        updateCollectionGeneric prevCollOpt collOpt target.ToolbarItems create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
