@@ -27,16 +27,45 @@ module XFOptimizer =
     
     /// Optimize command properties by asking for an F# function for the input type instead of ICommand
     module OptimizeCommands =
-        let optimizeBoundProperty (boundProperty: BoundProperty) =
+        let optimizeBoundProperty (typeName: string) (boundProperty: BoundProperty) : BoundProperty[] =
             match boundProperty.ModelType with
             | "System.Windows.Input.ICommand" ->
-                { boundProperty with
-                    InputType = "unit -> unit"
-                    ConvertInputToModel = "ViewConverters.makeCommand" }
+                
+                [|
+                    // Accepts a function but don't apply it now
+                    { boundProperty with
+                        InputType = "unit -> unit"
+                        ModelType = "unit -> unit"
+                        UpdateCode = "(fun _ _ _ -> ())" }
+                    
+                    // Accepts a boolean to know when the function can be executed
+                    // Creates a Command for both CanExecute and the function
+                    { Name = sprintf "%sCanExecute" boundProperty.Name
+                      ShortName = sprintf "%sCanExecute" boundProperty.ShortName
+                      UniqueName = sprintf "%sCanExecute" boundProperty.UniqueName
+                      CanBeUpdated = true
+                      DefaultValue = "true"
+                      OriginalType = "bool"
+                      InputType = "bool"
+                      ModelType = "bool"
+                      ConvertInputToModel = ""
+                      ConvertModelToValue = ""
+                      UpdateCode = sprintf "ViewUpdaters.updateCommand prev%sOpt curr%sOpt (fun _target -> ()) (fun (target: %s) cmd -> target.%s <- cmd)" boundProperty.UniqueName boundProperty.UniqueName typeName boundProperty.Name
+                      CollectionData = None
+                      IsInherited = false }
+                |]
+                
+                
             | _ ->
-                boundProperty
+                [| boundProperty |]
+                
+        let optimizeBoundType (boundType: BoundType) =
+            { boundType with
+                Properties = boundType.Properties |> Array.collect (optimizeBoundProperty boundType.Type) }
         
-        let apply = optimizerForProperty optimizeBoundProperty
+        let apply (boundModel: BoundModel) =
+            { boundModel with
+                Types = boundModel.Types |> Array.map optimizeBoundType }
     
     /// Optimize ImageSource properties by asking for InputTypes.Image instead of ImageSource  
     module OptimizeImageSource =

@@ -255,7 +255,7 @@
         {
           "source": null,
           "name": "View",
-          "inputType": "ViewElement",
+          "inputType": "Xamarin.Forms.View",
           "defaultValue": "null"
         }
       ]
@@ -265,6 +265,138 @@
       "properties": [
         {
           "source": "Spans"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.GestureElement",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": null,
+          "name": "GestureRecognizers",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "collection": {
+            "elementType": "Xamarin.Forms.IGestureRecognizer"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Span",
+      "properties": [
+        {
+          "source": "BackgroundColor"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "LineHeight"
+        },
+        {
+          "source": "Style"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "TextDecorations"
+        }
+      ],
+      "primaryConstructorMember": "Text"
+    },
+    {
+      "type": "Xamarin.Forms.ClickGestureRecognizer",
+      "properties": [
+        {
+          "source": "Buttons"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "NumberOfClicksRequired"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.PanGestureRecognizer",
+      "properties": [
+        {
+          "source": "TouchPoints"
+        }
+      ],
+      "events": [
+        {
+          "source": "PanUpdated"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.PinchGestureRecognizer",
+      "events": [
+        {
+          "source": "PinchUpdated"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeGestureRecognizer",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Direction"
+        },
+        {
+          "source": "Threshold"
+        }
+      ],
+      "events": [
+        {
+          "source": "Swiped"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.TapGestureRecognizer",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "NumberOfTapsRequired"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.FontImageSource",
+      "properties": [
+        {
+          "source": "Color"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "Glyph"
+        },
+        {
+          "source": "Size"
         }
       ]
     },
@@ -394,75 +526,6 @@
           "collection": {
             "elementType": "Xamarin.Forms.IGestureRecognizer"
           }
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.GestureElement",
-      "canBeInstantiated": false,
-      "properties": [
-        {
-          "source": null,
-          "name": "GestureRecognizers",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "Xamarin.Forms.IGestureRecognizer"
-          }
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.PanGestureRecognizer",
-      "properties": [
-        {
-          "source": "TouchPoints"
-        }
-      ],
-      "events": [
-        {
-          "source": "PanUpdated"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ClickGestureRecognizer",
-      "properties": [
-        {
-          "source": "Command"
-        },
-        {
-          "source": "NumberOfClicksRequired"
-        },
-        {
-          "source": "Buttons"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.PinchGestureRecognizer",
-      "events": [
-        {
-          "source": "PinchUpdated"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.SwipeGestureRecognizer",
-      "properties": [
-        {
-          "source": "Command"
-        },
-        {
-          "source": "Direction"
-        },
-        {
-          "source": "Threshold"
-        }
-      ],
-      "events": [
-        {
-          "source": "Swiped"
         }
       ]
     },
@@ -1188,41 +1251,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.Span",
-      "properties": [
-        {
-          "source": "BackgroundColor"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "LineHeight"
-        },
-        {
-          "source": "Style"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "TextDecorations"
-        },
-        {
-          "source": "Text"
-        }
-      ],
-      "primaryConstructorMember": "Text"
-    },
-    {
       "type": "Xamarin.Forms.TimePicker",
       "properties": [
         {
@@ -1797,23 +1825,6 @@
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView"
-    },
-    {
-      "type": "Xamarin.Forms.FontImageSource",
-      "properties": [
-        {
-          "source": "Color"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "Glyph"
-        },
-        {
-          "source": "Size"
-        }
-      ]
     },
     {
       "type": "Xamarin.Forms.FlyoutItem"
