@@ -269,9 +269,11 @@ module Binder =
         let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
         { Id = assemblyType.Name
           Type = assemblyType.Name
+          GenericConstraint = bindingsType.GenericConstraint
           CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
           TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
           BaseTypeName = None
+          BaseGenericConstraint = bindingsType.BaseGenericConstraint
           Name = typeName
           Events =
               BinderHelpers.bindMembers

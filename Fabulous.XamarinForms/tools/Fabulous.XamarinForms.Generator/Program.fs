@@ -46,9 +46,6 @@ module Program =
                         isTypeResolvable = XFConverters.isTypeResolvable
                         convertTypeName = XFConverters.convertTypeName
                         tryGetStringRepresentationOfDefaultValue = XFConverters.tryGetStringRepresentationOfDefaultValue })
-                |> Program.withGeneratorConfiguration (fun configuration ->
-                    { configuration with
-                        prepareData = XFPreparer.prepareData })
                 |> Program.run options.MappingFile options.OutputFile
                 
             // Exit code

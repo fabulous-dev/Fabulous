@@ -102,6 +102,12 @@ module Models =
         
         /// The full name of the type to instantiate (e.g. Fabulous.XamarinForms.CustomButton)
         member val CustomType: string option = None with get, set
+        
+        /// The generic constraint in case the type is generic (e.g. 'T :> Xamarin.Forms.Page)
+        member val GenericConstraint: string option = None with get, set
+        
+        /// The generic constraint for the inherited base type in case the base type is generic (e.g. Xamarin.Forms.ContentPage)
+        member val BaseGenericConstraint: string option = None with get, set
 
         /// Indicates if this type can be instantiated by itself and if the generator should provide a public constructor for it
         member val CanBeInstantiated: bool option = None with get, set

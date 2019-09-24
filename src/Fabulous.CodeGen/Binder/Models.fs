@@ -84,9 +84,11 @@ module Models =
     type BoundType =
         { Id: string
           Type: string
+          GenericConstraint: string option
           CanBeInstantiated: bool
           TypeToInstantiate: string
           BaseTypeName: string option
+          BaseGenericConstraint: string option
           Name: string
           Events: BoundEvent array
           Properties: BoundProperty array }

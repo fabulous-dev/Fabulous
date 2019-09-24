@@ -86,7 +86,9 @@ module Models =
         { Name: string
           FullName: string
           ViewerName: string
+          GenericConstraint: string option
           InheritedViewerName: string option
+          InheritedGenericConstraint: string option
           Members: ViewerMember array }
 
     type ConstructorData =

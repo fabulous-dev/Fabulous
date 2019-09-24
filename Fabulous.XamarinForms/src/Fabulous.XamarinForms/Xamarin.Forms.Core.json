@@ -655,6 +655,207 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.MasterDetailPage",
+      "properties": [
+        {
+          "source": null,
+          "name": "Detail",
+          "inputType": "Xamarin.Forms.Page",
+          "defaultValue": "null"
+        },
+        {
+          "source": "IsGestureEnabled"
+        },
+        {
+          "source": "IsPresented"
+        },
+        {
+          "source": null,
+          "name": "Master",
+          "inputType": "Xamarin.Forms.Page",
+          "defaultValue": "null"
+        },
+        {
+          "source": "MasterBehavior"
+        }
+      ],
+      "events": [
+        {
+          "source": "IsPresentedChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MultiPage`1",
+      "name": "MultiPageOfT",
+      "genericConstraint": "'T when 'T :> Xamarin.Forms.Page",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": null,
+          "name": "Children",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "collection": {
+            "elementType": "'T"
+          }
+        },
+        {
+          "source": null,
+          "name": "CurrentPage",
+          "defaultValue": "0",
+          "inputType": "int",
+          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<'T>"
+        }
+      ],
+      "events": [
+        {
+          "source": "CurrentPageChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CarouselPage",
+      "baseGenericConstraint": "Xamarin.Forms.ContentPage",
+      "primaryConstructorMember": "Children"
+    },
+    {
+      "type": "Xamarin.Forms.TabbedPage",
+      "baseGenericConstraint": "Xamarin.Forms.Page",
+      "properties": [
+        {
+          "source": "BarBackgroundColor"
+        },
+        {
+          "source": "BarTextColor"
+        },
+        {
+          "source": "SelectedTabColor"
+        },
+        {
+          "source": "UnselectedTabColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.NavigationPage",
+      "properties": [
+        {
+          "source": "BarBackgroundColor"
+        },
+        {
+          "source": "BarTextColor"
+        },
+        {
+          "source": null,
+          "name": "Pages",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updateNavigationPages",
+          "collection": {
+            "elementType": "Xamarin.Forms.Page",
+            "attachedProperties": [
+              {
+                "source": "BackButtonTitle"
+              },
+              {
+                "source": "HasBackButton"
+              },
+              {
+                "source": "HasNavigationBar"
+              },
+              {
+                "source": "TitleView"
+              },
+              {
+                "source": "TitleIconImageSource",
+                "shortName": "titleIcon"
+              }
+            ]
+          }
+        }
+      ],
+      "events": [
+        {
+          "source": "Popped"
+        },
+        {
+          "source": "PoppedToRoot"
+        },
+        {
+          "source": "Pushed"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shell",
+      "properties": [
+        {
+          "source": "FlyoutBackgroundColor"
+        },
+        {
+          "source": "FlyoutBehavior"
+        },
+        {
+          "source": "FlyoutHeader",
+          "inputType": "ViewElement"
+        },
+        {
+          "source": "FlyoutHeaderBehavior"
+        },
+        {
+          "source": "FlyoutIcon"
+        },
+        {
+          "source": "FlyoutIsPresented"
+        },
+        {
+          "source": null,
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateShellItems",
+          "collection": {
+            "elementType": "Xamarin.Forms.ShellItem"
+          }
+        },
+        {
+          "source": null,
+          "name": "GoToAsync",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
+          "updateCode": "ViewUpdaters.triggerShellGoToAsync"
+        }
+      ],
+      "events": [
+        {
+          "source": "Navigated"
+        },
+        {
+          "source": "Navigating"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ContentPage",
+      "name": "XFContentPage",
+      "canBeInstantiated": "false",
+      "properties": [
+        {
+          "source": "Content"
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomContentPage",
+      "name": "ContentPage",
+      "events": [
+        {
+          "source": "SizeAllocated"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.View",
       "canBeInstantiated": false,
       "properties": [
@@ -1461,157 +1662,6 @@
       "primaryConstructorMember": "Source"
     },
     {
-      "type": "Xamarin.Forms.MultiPage`1",
-      "name": "MultiPageOfT",
-      "canBeInstantiated": false,
-      "properties": [
-        {
-          "source": null,
-          "name": "Children",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "'T"
-          }
-        },
-        {
-          "source": null,
-          "name": "CurrentPage",
-          "defaultValue": "0",
-          "inputType": "int",
-          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<'T>"
-        }
-      ],
-      "events": [
-        {
-          "source": null,
-          "name": "CurrentPageChanged",
-          "inputType": "unit -> unit",
-          "modelType": "System.EventHandler"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.CarouselPage",
-      "primaryConstructorMember": "Children"
-    },
-    {
-      "type": "Xamarin.Forms.NavigationPage",
-      "properties": [
-        {
-          "source": null,
-          "name": "Pages",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateNavigationPages",
-          "collection": {
-            "elementType": "Xamarin.Forms.Page",
-            "attachedProperties": [
-              {
-                "source": "BackButtonTitle"
-              },
-              {
-                "source": "HasBackButton"
-              },
-              {
-                "source": "HasNavigationBar"
-              },
-              {
-                "source": "TitleView"
-              },
-              {
-                "source": "TitleIconImageSource",
-                "shortName": "titleIcon"
-              }
-            ]
-          }
-        },
-        {
-          "source": "BarBackgroundColor"
-        },
-        {
-          "source": "BarTextColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "Popped"
-        },
-        {
-          "source": "PoppedToRoot"
-        },
-        {
-          "source": "Pushed"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.TabbedPage",
-      "properties": [
-        {
-          "source": "BarBackgroundColor"
-        },
-        {
-          "source": "BarTextColor"
-        },
-        {
-          "source": "SelectedTabColor"
-        },
-        {
-          "source": "UnselectedTabColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "CurrentPageChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ContentPage",
-      "name": "XFContentPage",
-      "canBeInstantiated": "false",
-      "properties": [
-        {
-          "source": "Content"
-        }
-      ]
-    },
-    {
-      "type": "Fabulous.XamarinForms.CustomContentPage",
-      "name": "ContentPage",
-      "events": [
-        {
-          "source": "SizeAllocated"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.MasterDetailPage",
-      "properties": [
-        {
-          "source": "Master"
-        },
-        {
-          "source": "Detail"
-        },
-        {
-          "source": "IsGestureEnabled"
-        },
-        {
-          "source": "IsPresented"
-        },
-        {
-          "source": "MasterBehavior"
-        }
-      ],
-      "events": [
-        {
-          "source": "IsPresentedChanged"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.SearchHandler",
       "canBeInstantiated": false,
       "name": "XFSearchHandler",
@@ -1743,61 +1793,6 @@
         },
         {
           "source": "ItemSelected"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Shell",
-      "properties": [
-        {
-          "source": null,
-          "name": "Items",
-          "defaultValue": "null",
-          "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellItems",
-          "collection": {
-            "elementType": "Xamarin.Forms.ShellItem"
-          }
-        },
-        {
-          "source": "CurrentItem"
-        },
-        {
-          "source": "FlyoutBackgroundColor"
-        },
-        {
-          "source": "FlyoutBehavior"
-        },
-        {
-          "source": "FlyoutHeader",
-          "inputType": "ViewElement"
-        },
-        {
-          "source": "FlyoutHeaderBehavior"
-        },
-        {
-          "source": "FlyoutIcon",
-          "inputType": "InputTypes.Image",
-          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
-        },
-        {
-          "source": "FlyoutIsPresented"
-        },
-        {
-          "source": null,
-          "name": "GoToAsync",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
-          "modelType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
-          "updateCode": "ViewUpdaters.triggerShellGoToAsync"
-        }
-      ],
-      "events": [
-        {
-          "source": "Navigated"
-        },
-        {
-          "source": "Navigating"
         }
       ]
     },

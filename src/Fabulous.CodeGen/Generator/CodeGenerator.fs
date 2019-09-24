@@ -260,13 +260,23 @@ module CodeGenerator =
 
     let generateViewers (data: ViewerData array) (w: StringWriter) =
         for typ in data do
+            let genericConstraint =
+                match typ.GenericConstraint with
+                | None -> ""
+                | Some constr -> sprintf "<%s>" constr
+            
             w.printfn "/// Viewer that allows to read the properties of a ViewElement representing a %s" typ.Name
-            w.printfn "type %s(element: ViewElement) =" typ.ViewerName
+            w.printfn "type %s%s(element: ViewElement) =" typ.ViewerName genericConstraint
 
             match typ.InheritedViewerName with
             | None -> ()
             | Some inheritedViewerName ->
-                w.printfn "    inherit %s(element)" inheritedViewerName
+                let inheritedGenericConstraint =
+                    match typ.InheritedGenericConstraint with
+                    | None -> ""
+                    | Some constr -> sprintf "<%s>" constr
+                
+                w.printfn "    inherit %s%s(element)" inheritedViewerName inheritedGenericConstraint
 
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
             for m in typ.Members do
