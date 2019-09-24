@@ -36,6 +36,8 @@ module XFOptimizer =
                     { boundProperty with
                         InputType = "unit -> unit"
                         ModelType = "unit -> unit"
+                        ConvertInputToModel = ""
+                        ConvertModelToValue = ""
                         UpdateCode = "(fun _ _ _ -> ())" }
                     
                     // Accepts a boolean to know when the function can be executed
