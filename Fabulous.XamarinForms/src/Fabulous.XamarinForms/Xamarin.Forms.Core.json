@@ -860,10 +860,16 @@
       "canBeInstantiated": false,
       "properties": [
         {
-          "source": "HorizontalOptions"
+          "source": null,
+          "name": "GestureRecognizers",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "collection": {
+            "elementType": "Xamarin.Forms.IGestureRecognizer"
+          }
         },
         {
-          "source": "VerticalOptions"
+          "source": "HorizontalOptions"
         },
         {
           "source": "Margin",
@@ -871,13 +877,7 @@
           "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
-          "source": null,
-          "name": "GestureRecognizers",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "Xamarin.Forms.IGestureRecognizer"
-          }
+          "source": "VerticalOptions"
         }
       ]
     },
@@ -900,6 +900,480 @@
         },
         {
           "source": "CornerRadius"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Button",
+      "properties": [
+        {
+          "source": "BorderColor"
+        },
+        {
+          "source": "BorderWidth"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "ContentLayout"
+        },
+        {
+          "source": "CornerRadius"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "ImageSource",
+          "shortName": "Image"
+        },
+        {
+          "source": "Padding"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CheckBox",
+      "properties": [
+        {
+          "source": "Color"
+        },
+        {
+          "source": "IsChecked"
+        }
+      ],
+      "events": [
+        {
+          "source": "CheckedChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.DatePicker",
+      "properties": [
+        {
+          "source": "Date"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "Format"
+        },
+        {
+          "source": "MaximumDate"
+        },
+        {
+          "source": "MinimumDate"
+        },
+        {
+          "source": "TextColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "DateSelected"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Image",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "IsOpaque"
+        },
+        {
+          "source": "Source"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ImageButton",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "BorderColor"
+        },
+        {
+          "source": "BorderWidth"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "CornerRadius"
+        },
+        {
+          "source": "IsOpaque"
+        },
+        {
+          "source": "Padding"
+        },
+        {
+          "source": "Source"
+        }
+      ],
+      "events":[
+        {
+          "source": "Clicked"
+        },
+        {
+          "source": "Pressed"
+        },
+        {
+          "source": "Released"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.InputView",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "IsReadOnly"
+        },
+        {
+          "source": "IsSpellCheckEnabled"
+        },
+        {
+          "source": "Keyboard"
+        },
+        {
+          "source": "MaxLength"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Editor",
+      "properties": [
+        {
+          "source": "AutoSize"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "IsTextPredictionEnabled"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+        },
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Entry",
+      "properties": [
+        {
+          "source": "CursorPosition",
+          "updateCode": "ViewUpdaters.updateEntryCursorPosition"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "IsPassword"
+        },
+        {
+          "source": "IsTextPredictionEnabled"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "ReturnCommand"
+        },
+        {
+          "source": "ReturnType"
+        },
+        {
+          "source": "SelectionLength",
+          "updateCode": "ViewUpdaters.updateEntrySelectionLength"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SearchBar",
+      "properties": [
+        {
+          "source": "CancelButtonColor"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "SearchCommand"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "TextChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ItemsView`1",
+      "name": "ItemsViewOfT",
+      "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
+      "canBeInstantiated": "false",
+      "properties": [
+        {
+          "source": null,
+          "name": "Items",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updateItemsViewItems<'T>"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ListView",
+      "name": "XFListView",
+      "baseGenericConstraint": "Xamarin.Forms.Cell",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "Footer",
+          "inputType": "InputTypes.ViewOrText",
+          "convertModelToValue": "ViewConverters.convertFabulousViewOrTextToObject"
+        },
+        {
+          "source": "HasUnevenRows"
+        },
+        {
+          "source": "Header",
+          "inputType": "InputTypes.ViewOrText",
+          "convertModelToValue": "ViewConverters.convertFabulousViewOrTextToObject"
+        },
+        {
+          "source": "HorizontalScrollBarVisibility"
+        },
+        {
+          "source": "IsGroupingEnabled"
+        },
+        {
+          "source": "IsPullToRefreshEnabled"
+        },
+        {
+          "source": "IsRefreshing"
+        },
+        {
+          "source": "RefreshCommand"
+        },
+        {
+          "source": "RefreshControlColor"
+        },
+        {
+          "source": "RowHeight"
+        },
+        {
+          "source": "SelectedItem",
+          "inputType": "int option",
+          "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
+        },
+        {
+          "source": "SelectionMode"
+        },
+        {
+          "source": "SeparatorColor"
+        },
+        {
+          "source": "SeparatorVisibility"
+        },
+        {
+          "source": "VerticalScrollBarVisibility"
+        }
+      ],
+      "events": [
+        {
+          "source": "ItemAppearing",
+          "inputType": "int -> unit",
+          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "source": "ItemDisappearing",
+          "inputType": "int -> unit",
+          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "source": "ItemSelected",
+          "inputType": "int option -> unit",
+          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
+        },
+        {
+          "source": "ItemTapped",
+          "inputType": "int -> unit",
+          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "source": "Refreshing"
+        }
+      ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomListView",
+      "name": "ListView"
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomGroupListView",
+      "name": "ListViewGrouped",
+      "properties": [
+        {
+          "source": null,
+          "name": "ItemsSource",
+          "shortName": "items",
+          "inputType": "(string * ViewElement * ViewElement list) list",
+          "modelType": "(string * ViewElement * ViewElement[])[]",
+          "defaultValue": "[]",
+          "convertInputToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
+          "updateCode": "ViewUpdaters.updateListViewGroupedItems"
+        },
+        {
+          "source": null,
+          "name": "ShowJumpList",
+          "inputType": "bool",
+          "defaultValue": "false",
+          "updateCode": "ViewUpdaters.updateListViewGroupedShowJumpList"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Label",
+      "properties": [
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "FormattedText"
+        },
+        {
+          "source": "HorizontalTextAlignment"
+        },
+        {
+          "source": "LineBreakMode"
+        },
+        {
+          "source": "LineHeight"
+        },
+        {
+          "source": "MaxLines"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "TextDecorations"
+        },
+        {
+          "source": "VerticalTextAlignment"
         }
       ]
     },
@@ -954,53 +1428,6 @@
       "events": [
         {
           "source": "Scrolled"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Button",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "Command"
-        },
-        {
-          "source": "BorderColor"
-        },
-        {
-          "source": "BorderWidth"
-        },
-        {
-          "source": "ContentLayout"
-        },
-        {
-          "source": "CornerRadius"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": null,
-          "name": "ImageSource",
-          "defaultValue": "null",
-          "inputType": "InputTypes.Image",
-          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "Padding"
         }
       ]
     },
@@ -1256,28 +1683,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.DatePicker",
-      "properties": [
-        {
-          "source": "Date"
-        },
-        {
-          "source": "Format"
-        },
-        {
-          "source": "MinimumDate"
-        },
-        {
-          "source": "MaximumDate"
-        }
-      ],
-      "events": [
-        {
-          "source": "DateSelected"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.Picker",
       "properties": [
         {
@@ -1328,257 +1733,6 @@
         },
         {
           "source": "HasShadow"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Image",
-      "properties": [
-        {
-          "source": "Source",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Image",
-          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
-        },
-        {
-          "source": "Aspect"
-        },
-        {
-          "source": "IsOpaque"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.ImageButton",
-      "properties": [
-        {
-          "source": "Command"
-        },
-        {
-          "source": "Source"
-        },
-        {
-          "source": "Aspect"
-        },
-        {
-          "source": "BorderColor"
-        },
-        {
-          "source": "BorderWidth"
-        },
-        {
-          "source": "CornerRadius"
-        },
-        {
-          "source": "IsOpaque"
-        },
-        {
-          "source": "Padding"
-        }
-      ],
-      "events":[
-        {
-          "source": "Clicked"
-        },
-        {
-          "source": "Pressed"
-        },
-        {
-          "source": "Released"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.InputView",
-      "canBeInstantiated": false,
-      "properties": [
-        {
-          "source": "Keyboard"
-        },
-        {
-          "source": "IsReadOnly"
-        },
-        {
-          "source": "IsSpellCheckEnabled"
-        },
-        {
-          "source": "MaxLength"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.SearchBar",
-      "properties": [
-        {
-          "source": "CancelButtonColor"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "HorizontalTextAlignment"
-        },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
-          "source": "Command"
-        },
-        {
-          "source": "CanExecute"
-        },
-        {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "TextChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Editor",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "AutoSize"
-        },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
-          "source": "IsTextPredictionEnabled"
-        }
-      ],
-      "events": [
-        {
-          "source": "Completed",
-          "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
-        },
-        {
-          "source": "TextChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Entry",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "HorizontalTextAlignment"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
-          "source": "IsPassword"
-        },
-        {
-          "source": "IsTextPredictionEnabled"
-        },
-        {
-          "source": "ReturnType"
-        },
-        {
-          "source": "CursorPosition",
-          "updateCode": "ViewUpdaters.updateEntryCursorPosition"
-        },
-        {
-          "source": "SelectionLength",
-          "updateCode": "ViewUpdaters.updateEntrySelectionLength"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Label",
-      "properties": [
-        {
-          "source": "Text"
-        },
-        {
-          "source": "HorizontalTextAlignment"
-        },
-        {
-          "source": "VerticalTextAlignment"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "FormattedText"
-        },
-        {
-          "source": "LineBreakMode"
-        },
-        {
-          "source": "LineHeight"
-        },
-        {
-          "source": "MaxLines"
-        },
-        {
-          "source": "TextDecorations"
         }
       ]
     },
@@ -1819,41 +1973,12 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.ItemsView`1",
-      "name": "ItemsViewOfT",
-      "canBeInstantiated": "false",
-      "properties": [
-        {
-          "source": "ItemsSource",
-          "shortName": "items",
-          "inputType": "ViewElement array",
-          "updateCode": "ViewUpdaters.updateItemsViewItems"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.CarouselView",
       "customType": "Fabulous.XamarinForms.CustomCarouselView"
     },
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView"
-    },
-    {
-      "type": "Xamarin.Forms.CheckBox",
-      "properties": [
-        {
-          "source": "Color"
-        },
-        {
-          "source": "IsChecked"
-        }
-      ],
-      "events": [
-        {
-          "source": "CheckedChanged"
-        }
-      ]
     },
     {
       "type": "Xamarin.Forms.ListItemsLayout",

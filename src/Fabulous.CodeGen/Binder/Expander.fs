@@ -6,7 +6,7 @@ open Fabulous.CodeGen.Binder.Models
 
 module Expander =
     let private tryFindType (boundTypes: BoundType array) typeFullName =
-        boundTypes |> Array.tryFind (fun t2 -> t2.Type = typeFullName)
+        boundTypes |> Array.tryFind (fun t2 -> t2.Id = typeFullName)
         
     let private getMembers (boundTypes: BoundType array) (getMemberBindings: BoundType -> 'a array) (setInherited: 'a -> 'a) (hierarchy: string array) =
         [ for typ in hierarchy do
@@ -19,10 +19,20 @@ module Expander =
         |> List.toArray
     
     let expandType (assemblyTypes: AssemblyType array) (boundTypes: BoundType array) (boundType: BoundType) =
+        let hasNotOverridenEvent (boundEvent: BoundEvent) =
+            boundType.Events
+            |> Array.exists (fun e -> e.ShortName = boundEvent.ShortName)
+            |> not
+            
+        let hasNotOverridenProperty (boundProperty: BoundProperty) =
+            boundType.Properties
+            |> Array.exists (fun e -> e.ShortName = boundProperty.ShortName)
+            |> not
+        
         let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Id)
         let hierarchy = readerDataType.InheritanceHierarchy
-        let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events) (fun e -> { e with IsInherited = true })
-        let allBaseProperties = hierarchy |> getMembers boundTypes (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
+        let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events |> Array.filter hasNotOverridenEvent) (fun e -> { e with IsInherited = true })
+        let allBaseProperties = hierarchy |> getMembers boundTypes (fun t -> t.Properties |> Array.filter hasNotOverridenProperty) (fun p -> { p with IsInherited = true })
         
         let firstBoundBaseType =
             hierarchy

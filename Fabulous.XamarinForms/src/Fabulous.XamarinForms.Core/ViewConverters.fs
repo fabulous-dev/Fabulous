@@ -163,3 +163,18 @@ module ViewConverters =
         | InputTypes.FontSize.Named namedSize -> Device.GetNamedSize(namedSize, targetType)
         | InputTypes.FontSize.Value value -> value
             
+    let convertFabulousViewOrTextToObject (v: InputTypes.ViewOrText) =
+        match v with
+        | InputTypes.ViewOrText.Text text -> text :> obj
+        | InputTypes.ViewOrText.ViewElement viewElement -> viewElement.Create()
+        | InputTypes.ViewOrText.View view -> view :> obj
+            
+    let convertListViewSelectedItemIndexToObj (target: Xamarin.Forms.ListView) (v: int option) =
+        match v with
+        | None -> null
+        | Some i ->
+            let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData>
+            if i >= 0 && i < items.Count then
+                items.[i]
+            else
+                null

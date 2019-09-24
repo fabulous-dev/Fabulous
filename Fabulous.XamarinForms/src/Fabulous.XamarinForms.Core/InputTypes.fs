@@ -30,3 +30,8 @@ module InputTypes =
     type Accelerator =
         | String of string
         | Value of Xamarin.Forms.Accelerator
+        
+    type ViewOrText =
+        | Text of string
+        | ViewElement of Fabulous.ViewElement
+        | View of Xamarin.Forms.View

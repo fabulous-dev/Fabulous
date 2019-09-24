@@ -60,6 +60,17 @@ module ViewUpdaters =
                         else
                             prevChildOpt, targetColl.[i]
                     attach prevChildOpt newChild targetChild
+                    
+    /// Update the items in a ListView control, given previous and current view elements
+    let updateItemsViewItems<'T when 'T :> Xamarin.Forms.BindableObject> (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView<'T>) = 
+        let targetColl = 
+            match target.ItemsSource with 
+            | :? ObservableCollection<ListElementData> as oc -> oc
+            | _ -> 
+                let oc = ObservableCollection<ListElementData>()
+                target.ItemsSource <- oc
+                oc
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
         
     /// Update the items in a ListView control, given previous and current view elements
     let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
