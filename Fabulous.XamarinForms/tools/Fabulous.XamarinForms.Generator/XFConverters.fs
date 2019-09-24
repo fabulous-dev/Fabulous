@@ -7,9 +7,7 @@ open Xamarin.Forms
 module XFConverters =
     let isTypeResolvable typeName =
         match typeName with
-        | "Xamarin.Forms.UriImageSource"
-        | "Xamarin.Forms.ItemsView"
-        | "Xamarin.Forms.ListItemsLayout" -> false
+        | "Xamarin.Forms.UriImageSource" -> false
         | _ -> true
         
     let convertTypeName (typeName: string) =

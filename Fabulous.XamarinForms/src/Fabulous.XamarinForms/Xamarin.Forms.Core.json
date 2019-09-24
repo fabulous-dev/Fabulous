@@ -1378,17 +1378,12 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.ProgressBar",
-      "properties": [
-        {
-          "source": "Progress"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.Layout",
       "canBeInstantiated": false,
       "properties": [
+        {
+          "source": "CascadeInputTransparent"
+        },
         {
           "source": "IsClippedToBounds"
         },
@@ -1400,156 +1395,97 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.ScrollView",
+      "type": "Xamarin.Forms.Layout`1",
+      "name": "LayoutOfT",
+      "genericConstraint": "'T when 'T :> Xamarin.Forms.View",
+      "canBeInstantiated": false,
       "properties": [
         {
-          "source": null,
-          "name": "Content",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.View"
-        },
-        {
-          "source": "Orientation"
-        },
-        {
-          "source": "HorizontalScrollBarVisibility"
-        },
-        {
-          "source": "VerticalScrollBarVisibility"
-        },
-        {
-          "source": null,
-          "name": "ScrollTo",
-          "defaultValue": "null",
-          "inputType": "double * double * AnimationKind",
-          "updateCode": "ViewUpdaters.triggerScrollToAsync"
-        }
-      ],
-      "events": [
-        {
-          "source": "Scrolled"
+          "source": "Children",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "'T"
+          }
         }
       ]
     },
     {
-      "type": "Xamarin.Forms.Slider",
+      "type": "Xamarin.Forms.AbsoluteLayout",
+      "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
           "source": null,
-          "name": "MinimumMaximum",
-          "defaultValue": "SHOULD NOT BE SET",
-          "inputType": "float * float",
-          "updateCode": "updateSliderMinimumMaximum"
-        },
-        {
-          "source": "Value"
-        },
-        {
-          "source": "ThumbImageSource"
-        }
-      ],
-      "events": [
-        {
-          "source": "ValueChanged",
-          "relatedProperties": [
-            "Value"
-          ]
-        },
-        {
-          "source": "DragCompleted"
-        },
-        {
-          "source": "DragStarted"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Stepper",
-      "properties": [
-        {
-          "source": null,
-          "name": "MinimumMaximum",
-          "defaultValue": "SHOULD NOT BE SET",
-          "inputType": "float * float",
-          "updateCode": "updateStepperMinimumMaximum"
-        },
-        {
-          "source": "Value"
-        },
-        {
-          "source": "Increment"
-        }
-      ],
-      "events": [
-        {
-          "source": "ValueChanged"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Switch",
-      "properties": [
-        {
-          "source": "IsToggled"
-        },
-        {
-          "source": "OnColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "Toggled"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.TableView",
-      "properties":[
-        {
-          "source": null,
-          "name": "Intent",
-          "defaultValue": "Xamarin.Forms.TableIntent.Data",
-          "inputType": "Xamarin.Forms.TableIntent"
-        },
-        {
-          "source": "HasUnevenRows"
-        },
-        {
-          "source": "RowHeight"
-        },
-        {
-          "source": null,
-          "name": "Root",
-          "shortName": "items",
+          "name": "Children",
+          "inputType": "ViewElement list",
           "defaultValue": "[]",
-          "inputType": "(string * ViewElement list) list",
-          "modelType": "(string * ViewElement array) array",
-          "convertInputToModel": "ViewConverters.convertTableViewRoot",
-          "updateCode": "ViewUpdaters.updateTableViewItems"
+          "collection": {
+            "elementType": "Xamarin.Forms.View",
+            "attachedProperties": [
+              {
+                "source": "LayoutBounds"
+              },
+              {
+                "source": "LayoutFlags"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.FlexLayout",
+      "baseGenericConstraint": "Xamarin.Forms.View",
+      "properties": [
+        {
+          "source": "AlignContent"
+        },
+        {
+          "source": "AlignItems"
+        },
+        {
+          "source": null,
+          "name": "Children",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.View",
+            "attachedProperties": [
+              {
+                "source": "AlignSelf"
+              },
+              {
+                "source": "Order"
+              },
+              {
+                "source": "Basis"
+              },
+              {
+                "source": "Grow"
+              },
+              {
+                "source": "Shrink"
+              }
+            ]
+          }
+        },
+        {
+          "source": "Direction"
+        },
+        {
+          "source": "JustifyContent"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "Wrap"
         }
       ]
     },
     {
       "type": "Xamarin.Forms.Grid",
+      "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
-        {
-          "source": "RowDefinitions",
-          "shortName": "rowdefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
-          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsRowDefinition"
-        },
-        {
-          "source": "ColumnDefinitions",
-          "shortName": "coldefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
-          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsColumnDefinition"
-        },
-        {
-          "source": "RowSpacing"
-        },
-        {
-          "source": "ColumnSpacing"
-        },
         {
           "source": null,
           "name": "Children",
@@ -1572,33 +1508,30 @@
               }
             ]
           }
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.AbsoluteLayout",
-      "properties": [
+        },
         {
-          "source": null,
-          "name": "Children",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "Xamarin.Forms.View",
-            "attachedProperties": [
-              {
-                "source": "LayoutBounds"
-              },
-              {
-                "source": "LayoutFlags"
-              }
-            ]
-          }
+          "source": "ColumnDefinitions",
+          "shortName": "coldefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
+          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsColumnDefinition"
+        },
+        {
+          "source": "ColumnSpacing"
+        },
+        {
+          "source": "RowDefinitions",
+          "shortName": "rowdefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
+          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsRowDefinition"
+        },
+        {
+          "source": "RowSpacing"
         }
       ]
     },
     {
       "type": "Xamarin.Forms.RelativeLayout",
+      "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
           "source": null,
@@ -1629,48 +1562,46 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.FlexLayout",
+      "type": "Xamarin.Forms.StackLayout",
+      "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
-          "source": "AlignContent"
+          "source": "Orientation"
         },
         {
-          "source": "AlignItems"
+          "source": "Spacing"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ScrollView",
+      "properties": [
+        {
+          "source": null,
+          "name": "Content",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.View"
         },
         {
-          "source": "Direction"
+          "source": "HorizontalScrollBarVisibility"
         },
         {
-          "source": "Position"
-        },
-        {
-          "source": "Wrap"
+          "source": "Orientation"
         },
         {
           "source": null,
-          "name": "Children",
-          "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "Xamarin.Forms.View",
-            "attachedProperties": [
-              {
-                "source": "AlignSelf"
-              },
-              {
-                "source": "Order"
-              },
-              {
-                "source": "Basis"
-              },
-              {
-                "source": "Grow"
-              },
-              {
-                "source": "Shrink"
-              }
-            ]
-          }
+          "name": "ScrollTo",
+          "defaultValue": "null",
+          "inputType": "double * double * AnimationKind",
+          "updateCode": "ViewUpdaters.triggerScrollToAsync"
+        },
+        {
+          "source": "VerticalScrollBarVisibility"
+        }
+      ],
+      "events": [
+        {
+          "source": "Scrolled"
         }
       ]
     },
@@ -1679,44 +1610,6 @@
       "properties": [
         {
           "source": "Content"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Picker",
-      "properties": [
-        {
-          "source": "ItemsSource",
-          "shortName": "items",
-          "inputType": "string list"
-        },
-        {
-          "source": "SelectedIndex"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "Title"
-        },
-        {
-          "source": "TitleColor"
-        }
-      ],
-      "events": [
-        {
-          "source": "SelectedIndexChanged"
         }
       ]
     },
@@ -1737,22 +1630,167 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.StackLayout",
+      "type": "Xamarin.Forms.OpenGLView",
       "properties": [
         {
+          "source": "HasRenderLoop"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Picker",
+      "properties": [
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "ItemsSource",
+          "shortName": "items",
+          "inputType": "string list"
+        },
+        {
+          "source": "SelectedIndex"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "Title"
+        },
+        {
+          "source": "TitleColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "SelectedIndexChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ProgressBar",
+      "properties": [
+        {
+          "source": "Progress"
+        },
+        {
+          "source": "ProgressColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Slider",
+      "properties": [
+        {
+          "source": "MaximumTrackColor"
+        },
+        {
           "source": null,
-          "name": "Children",
+          "name": "MinimumMaximum",
+          "defaultValue": "SHOULD NOT BE SET",
+          "inputType": "float * float",
+          "updateCode": "ViewUpdaters.updateSliderMinimumMaximum"
+        },
+        {
+          "source": "MinimumTrackColor"
+        },
+        {
+          "source": "ThumbColor"
+        },
+        {
+          "source": "ThumbImageSource",
+          "shortName": "ThumbImage"
+        },
+        {
+          "source": "Value"
+        }
+      ],
+      "events": [
+        {
+          "source": "ValueChanged",
+          "relatedProperties": [
+            "Value"
+          ]
+        },
+        {
+          "source": "DragCompleted"
+        },
+        {
+          "source": "DragStarted"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Stepper",
+      "properties": [
+        {
+          "source": "Increment"
+        },
+        {
+          "source": null,
+          "name": "MinimumMaximum",
+          "defaultValue": "SHOULD NOT BE SET",
+          "inputType": "float * float",
+          "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
+        },
+        {
+          "source": "Value"
+        }
+      ],
+      "events": [
+        {
+          "source": "ValueChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Switch",
+      "properties": [
+        {
+          "source": "IsToggled"
+        },
+        {
+          "source": "OnColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Toggled"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.TableView",
+      "properties":[
+        {
+          "source": "HasUnevenRows"
+        },
+        {
+          "source": null,
+          "name": "Intent",
+          "inputType": "Xamarin.Forms.TableIntent",
+          "defaultValue": "Xamarin.Forms.TableIntent.Data"
+        },
+        {
+          "source": "RowHeight"
+        },
+        {
+          "source": null,
+          "name": "Root",
+          "shortName": "items",
+          "inputType": "(string * ViewElement list) list",
+          "modelType": "(string * ViewElement array) array",
           "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "collection": {
-            "elementType": "Xamarin.Forms.View"
-          }
-        },
-        {
-          "source": "Orientation"
-        },
-        {
-          "source": "Spacing"
+          "convertInputToModel": "ViewConverters.convertTableViewRoot",
+          "updateCode": "ViewUpdaters.updateTableViewItems"
         }
       ]
     },
@@ -1814,6 +1852,39 @@
         }
       ],
       "primaryConstructorMember": "Source"
+    },
+    {
+      "type": "Xamarin.Forms.ItemsLayout",
+      "properties": [
+        {
+          "source": "SnapPointsAlignment"
+        },
+        {
+          "source": "SnapPointsType"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.GridItemsLayout",
+      "properties": [
+        {
+          "source": "HorizontalItemSpacing"
+        },
+        {
+          "source": "Span"
+        },
+        {
+          "source": "VerticalItemSpacing"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.ListItemsLayout",
+      "properties": [
+        {
+          "source": "ItemSpacing"
+        }
+      ]
     },
     {
       "type": "Xamarin.Forms.SearchHandler",
@@ -1979,14 +2050,6 @@
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView"
-    },
-    {
-      "type": "Xamarin.Forms.ListItemsLayout",
-      "properties": [
-        {
-          "source": "ItemSpacing"
-        }
-      ]
     }
   ]
 }
