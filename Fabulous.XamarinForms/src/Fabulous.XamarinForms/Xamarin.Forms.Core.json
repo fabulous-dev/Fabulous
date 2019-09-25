@@ -298,6 +298,9 @@
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
+          "source": "ForegroundColor"
+        },
+        {
           "source": "LineHeight"
         },
         {
@@ -1521,7 +1524,9 @@
                 "source": "Basis"
               },
               {
-                "source": "Grow"
+                "source": "Grow",
+                "inputType": "float",
+                "convertInputToModel": "single"
               },
               {
                 "source": "Shrink"

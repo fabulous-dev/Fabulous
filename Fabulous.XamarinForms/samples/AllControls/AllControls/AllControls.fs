@@ -325,14 +325,14 @@ module App =
             { model with ScrollPosition = (x, y); IsScrolling = false; IsScrollingWithFabulous = false }, Cmd.none 
 
     let pickerItems = 
-        [| ("Aqua", Color.Aqua); ("Black", Color.Black);
+        [ ("Aqua", Color.Aqua); ("Black", Color.Black);
            ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
            ("Gray", Color.Gray); ("Green", Color.Green);
            ("Lime", Color.Lime); ("Maroon", Color.Maroon);
            ("Navy", Color.Navy); ("Olive", Color.Olive);
            ("Purple", Color.Purple); ("Red", Color.Red);
            ("Silver", Color.Silver); ("Teal", Color.Teal);
-           ("White", Color.White); ("Yellow", Color.Yellow ) |]
+           ("White", Color.White); ("Yellow", Color.Yellow ) ]
 
     let view (model: Model) dispatch =
 
@@ -610,7 +610,7 @@ module App =
                dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
                   View.ScrollingContentPage("Picker", 
                      [ View.Label(text="Picker:")
-                       View.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, items=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                       View.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, items=(List.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
                        MainPageButton
                      ]))
                       
@@ -637,7 +637,7 @@ module App =
                        View.SearchBar(
                             placeholder = "Enter search term",
                             searchCommand = (fun searchBarText -> dispatch (ExecuteSearch searchBarText)),
-                            canExecute=true) 
+                            searchCommandCanExecute=true) 
                        View.Label(text="You searched for " + searchTerm) 
                        MainPageButton ]))
 
@@ -689,8 +689,8 @@ module App =
                                                       View.Image(height=240.0, 
                                                           width=160.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
-                                                      ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexGrow(1.0)
+                                                      ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexLayoutGrow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
@@ -706,8 +706,8 @@ module App =
                                                       View.Image(height=213.0, 
                                                           width=320.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
-                                                      ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexGrow(1.0)
+                                                      ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexLayoutGrow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
@@ -737,12 +737,12 @@ module App =
                   content= View.RelativeLayout(
                       children=[ 
                           View.Label(text = "RelativeLayout Example", textColor = Color.Red)
-                                .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
                           View.Label(text = "Positioned relative to my parent", textColor = Color.Red)
-                                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
-                                .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+                                .RelativeLayoutYConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
                           MainPageButton
-                                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 2.0))
+                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 2.0))
                       ])))
 
 
@@ -756,14 +756,14 @@ module App =
                                    verticalOptions = LayoutOptions.FillAndExpand, 
                                    children = [
                                       View.Label(text = "Top Left", textColor = Color.Black)
-                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .AbsoluteLayoutLayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
                                       View.Label(text = "Centered", textColor = Color.Black)
-                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .AbsoluteLayoutLayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
                                       View.Label(text = "Bottom Right", textColor = Color.Black)
-                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .AbsoluteLayoutLayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                                MainPageButton
                             ])))
 
@@ -786,7 +786,7 @@ module App =
                                          View.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                 
                                          View.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                                        ]) ).HasNavigationBar(true).HasBackButton(false)
+                                        ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(false)
                           | Some "A" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -799,7 +799,7 @@ module App =
                                         View.Button(text="Replace by Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "B")))
                                         View.Button(text="Replace by Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "C")))
                                         View.Button(text="Back", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                        ]) ).HasNavigationBar(true).HasBackButton(true)
+                                        ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(true)
                           | Some "B" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -810,7 +810,7 @@ module App =
                                               View.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
                                               View.Button(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
                                               View.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                             ]) ).HasNavigationBar(true).HasBackButton(false)
+                                             ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(false)
                           | Some "C" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -822,7 +822,7 @@ module App =
                                         View.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                                         View.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
                                         MainPageButton
-                                        ]) ).HasNavigationBar(false).HasBackButton(false)
+                                        ]) ).NavigationPageHasNavigationBar(false).NavigationPageHasBackButton(false)
 
                           | _ -> 
                                ()  ], 
@@ -852,7 +852,7 @@ module App =
                         View.StackLayout(backgroundColor=Color.Gray, 
                           children=[ View.Label(text="Detail " + detailPage, textColor=Color.White, backgroundColor=Color.Navy)
                                      View.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)  ]) 
-                          ).HasNavigationBar(true).HasBackButton(true) ], 
+                          ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(true) ], 
                    poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
 
          | InfiniteScrollList -> 
@@ -983,7 +983,7 @@ module App =
                                 View.Label(text="Person12")
                                 View.Label(text="Person13")
                                 View.Label(text="Person14")
-                            ], margin=10.)
+                            ], margin= Thickness.Uniform 10.)
                         ]
                     ))
 

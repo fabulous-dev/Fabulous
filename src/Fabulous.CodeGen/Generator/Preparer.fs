@@ -116,14 +116,27 @@ module Preparer =
           InheritedGenericConstraint = boundType.BaseGenericConstraint
           Members = members }
     
+    type TempConstructorMember = { Name: string; ShortName: string; InputType: string }
+    
     let toConstructorData (boundType: BoundType) =
-        let properties = boundType.Properties |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
-        let events = boundType.Events |> Array.map (fun e -> { Name = e.ShortName; InputType = e.InputType })
+        let properties = boundType.Properties |> Array.map (fun p -> { Name = p.Name; ShortName = p.ShortName; InputType = p.InputType })
+        let events = boundType.Events |> Array.map (fun e -> { Name = e.Name; ShortName = e.ShortName; InputType = e.InputType })
         let members = Array.concat [ properties; events ]
+        
+        let orderedMembers =
+            match boundType.PrimaryConstructorMember with
+            | None -> members
+            | Some memberName ->
+                match members |> Array.tryFind (fun m -> m.Name = memberName) with
+                | None -> members
+                | Some primaryMember ->
+                    Array.concat [ [| primaryMember |]; (members |> Array.filter (fun m -> m.Name <> memberName)) ]
+        
+        let realMembers = orderedMembers |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
         
         { Name = boundType.Name
           FullName = boundType.Type
-          Members = members }
+          Members = realMembers }
 
     let getViewExtensionsData (types: BoundType array) =
         let toViewExtensionsMember (m: IBoundMember) =
