@@ -24,7 +24,8 @@
         {
           "source": "TextOverride"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Command"
     },
     {
       "type": "Xamarin.Forms.Element",
@@ -45,16 +46,16 @@
         },
         {
           "source": null,
-          "name": "StyleId",
-          "defaultValue": "null",
-          "inputType": "string"
-        },
-        { 
-          "source": null,
           "Name": "Ref",
           "canBeUpdated": false,
           "defaultValue": "null",
           "inputType": "ViewRef"
+        },
+        {
+          "source": null,
+          "name": "StyleId",
+          "defaultValue": "null",
+          "inputType": "string"
         },
         { 
           "source": null,
@@ -83,12 +84,6 @@
       "properties": [
         {
           "source": null,
-          "name": "Text",
-          "inputType": "string",
-          "defaultValue": "null"
-        },
-        {
-          "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
           "defaultValue": "[]",
@@ -96,8 +91,15 @@
           "collection": {
             "elementType": "Xamarin.Forms.Menu"
           }
+        },
+        {
+          "source": null,
+          "name": "Text",
+          "inputType": "string",
+          "defaultValue": "null"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Text"
     },
     {
       "type": "Xamarin.Forms.MenuItem",
@@ -122,7 +124,8 @@
         {
           "source": "Text"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Text"
     },
     {
       "type": "Xamarin.Forms.ToolbarItem",
@@ -139,10 +142,12 @@
           "inputType": "int",
           "defaultValue": "0"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Text"
     },
     {
       "type": "Xamarin.Forms.Cell",
+      "canBeInstantiated": "false",
       "properties": [
         {
           "source": "ContextActions"
@@ -155,6 +160,11 @@
         },
         {
           "source": "IsEnabled"
+        }
+      ],
+      "events": [
+        { 
+          "source": "Tapped"
         }
       ]
     },
@@ -188,14 +198,26 @@
           "inputType": "string -> unit",
           "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Text"
     },
     {
       "type": "Fabulous.XamarinForms.CustomEntryCell",
       "name": "EntryCell",
+      "properties": [
+        {
+          "source": null,
+          "name": "Text",
+          "inputType": "string",
+          "defaultValue": "null"
+        }
+      ],
       "events": [
         {
-          "source": "TextChanged"
+          "source": "TextChanged",
+          "relatedProperties": [
+            "Text"
+          ]
         }
       ]
     },
@@ -214,7 +236,10 @@
       ],
       "events": [
         {
-          "source": "OnChanged"
+          "source": "OnChanged",
+          "relatedProperties": [
+            "On"
+          ]
         }
       ]
     },
@@ -670,7 +695,8 @@
           "source": "IsGestureEnabled"
         },
         {
-          "source": "IsPresented"
+          "source": "IsPresented",
+          "defaultValue": "(Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.macOS)"
         },
         {
           "source": null,
@@ -684,9 +710,15 @@
       ],
       "events": [
         {
+          "source": "BackButtonPressed"
+        },
+        {
           "source": "IsPresentedChanged",
           "inputType": "bool -> unit",
-          "convertInputToModel": "ViewConverters.makeMasterDetailPageIsPresentedChangedEventHandler"
+          "convertInputToModel": "ViewConverters.makeMasterDetailPageIsPresentedChangedEventHandler",
+          "relatedProperties": [
+            "IsPresented"
+          ]
         }
       ]
     },
@@ -717,7 +749,10 @@
         {
           "source": "CurrentPageChanged",
           "inputType": "int option -> unit",
-          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<'T>"
+          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<'T>",
+          "relatedProperties": [
+            "CurrentPage"
+          ]
         }
       ]
     },
@@ -966,7 +1001,10 @@
       ],
       "events": [
         {
-          "source": "CheckedChanged"
+          "source": "CheckedChanged",
+          "relatedProperties": [
+            "IsChecked"
+          ]
         }
       ]
     },
@@ -1002,7 +1040,10 @@
       ],
       "events": [
         {
-          "source": "DateSelected"
+          "source": "DateSelected",
+          "relatedProperties": [
+            "Date"
+          ]
         }
       ]
     },
@@ -1118,7 +1159,10 @@
           "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
         },
         {
-          "source": "TextChanged"
+          "source": "TextChanged",
+          "relatedProperties": [
+            "Text"
+          ]
         }
       ]
     },
@@ -1179,7 +1223,10 @@
           "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
         },
         {
-          "source": "TextChanged"
+          "source": "TextChanged",
+          "relatedProperties": [
+            "Text"
+          ]
         }
       ]
     },
@@ -1232,7 +1279,10 @@
       ],
       "events": [
         {
-          "source": "TextChanged"
+          "source": "TextChanged",
+          "relatedProperties": [
+            "Text"
+          ]
         }
       ]
     },
@@ -1276,7 +1326,11 @@
       ],
       "events": [
         {
-          "source": "SelectionChanged"
+          "source": "SelectionChanged",
+          "relatedProperties": [
+            "SelectedItem",
+            "SelectedItems"
+          ]
         }
       ]
     },
@@ -1371,7 +1425,10 @@
         {
           "source": "ItemSelected",
           "inputType": "int option -> unit",
-          "convertInputToModel": "ViewConverters.makeListViewItemSelectedEventHandler"
+          "convertInputToModel": "ViewConverters.makeListViewItemSelectedEventHandler",
+          "relatedProperties": [
+            "SelectedItem"
+          ]
         },
         {
           "source": "ItemTapped",
@@ -1403,6 +1460,13 @@
         },
         {
           "source": null,
+          "name": "SelectedItem",
+          "inputType": "int option",
+          "defaultValue": "null",
+          "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
+        },
+        {
+          "source": null,
           "name": "ShowJumpList",
           "inputType": "bool",
           "defaultValue": "false",
@@ -1416,7 +1480,10 @@
           "inputType": "(int * int) option -> unit",
           "modelType": "System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>",
           "defaultValue": "null",
-          "convertInputToModel": "ViewConverters.makeListViewGroupedItemSelectedEventHandler"
+          "convertInputToModel": "ViewConverters.makeListViewGroupedItemSelectedEventHandler",
+          "relatedProperties": [
+            "SelectedItem"
+          ]
         }
       ]
     },
@@ -1762,7 +1829,10 @@
         {
           "source": "SelectedIndexChanged",
           "inputType": "(int * string option) -> unit",
-          "convertInputToModel": "ViewConverters.makePickerSelectedIndexChangedEventHandler"
+          "convertInputToModel": "ViewConverters.makePickerSelectedIndexChangedEventHandler",
+          "relatedProperties": [
+            "SelectedIndex"
+          ]
         }
       ]
     },
@@ -1806,16 +1876,16 @@
       ],
       "events": [
         {
-          "source": "ValueChanged",
-          "relatedProperties": [
-            "Value"
-          ]
-        },
-        {
           "source": "DragCompleted"
         },
         {
           "source": "DragStarted"
+        },
+        {
+          "source": "ValueChanged",
+          "relatedProperties": [
+            "Value"
+          ]
         }
       ]
     },
@@ -1838,7 +1908,10 @@
       ],
       "events": [
         {
-          "source": "ValueChanged"
+          "source": "ValueChanged",
+          "relatedProperties": [
+            "Value"
+          ]
         }
       ]
     },
@@ -1854,7 +1927,10 @@
       ],
       "events": [
         {
-          "source": "Toggled"
+          "source": "Toggled",
+          "relatedProperties": [
+            "IsToggled"
+          ]
         }
       ]
     },
@@ -1887,6 +1963,7 @@
     },
     {
       "type": "Xamarin.Forms.TimePicker",
+      "canBeInstantiated": "false",
       "properties": [
         {
           "source": "FontAttributes"
@@ -1912,6 +1989,16 @@
       "primaryConstructorMember": "Time"
     },
     {
+      "type": "Fabulous.XamarinForms.CustomTimePicker",
+      "events": [
+        {
+          "source": "TimeChanged",
+          "inputType": "System.TimeSpan -> unit",
+          "convertInputToModel": "ViewConverters.makeCustomTimePickerTimeChangedEventHandler"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.WebView",
       "properties": [
         {
@@ -1926,6 +2013,9 @@
         }
       ],
       "events": [
+        {
+          "source": "EvalRequested"
+        },
         {
           "source": "GoBackRequested"
         },
@@ -2088,13 +2178,13 @@
       "name": "SearchHandler",
       "events": [
         {
+          "source": "ItemSelected"
+        },
+        {
           "source": "QueryChanged"
         },
         {
           "source": "QueryConfirmed"
-        },
-        {
-          "source": "ItemSelected"
         }
       ]
     },

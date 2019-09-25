@@ -51,9 +51,14 @@ module Preparer =
         let immediateMembers = Array.concat [ eventMembers; propertyMembers ]
         
         let updateEvents = immediateEvents |> Array.map (fun e ->
+            let relatedProperties = e.RelatedProperties |> Array.choose (fun rp ->
+                boundType.Properties
+                |> Array.tryFind (fun p -> p.Name = rp)
+                |> Option.map (fun p -> p.UniqueName))
+            
             { Name = e.Name
               UniqueName = e.UniqueName
-              RelatedProperties = e.RelatedProperties }
+              RelatedProperties = relatedProperties }
         )
         
         let updateProperties =

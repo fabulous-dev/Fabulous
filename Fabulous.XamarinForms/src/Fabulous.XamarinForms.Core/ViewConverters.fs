@@ -262,3 +262,8 @@ module ViewConverters =
         System.EventHandler(fun sender args ->
             f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented
         )
+        
+    let makeCustomTimePickerTimeChangedEventHandler f =
+        System.EventHandler<System.TimeSpan>(fun sender args ->
+            f args    
+        )
