@@ -178,3 +178,87 @@ module ViewConverters =
                 items.[i]
             else
                 null
+                
+    let makePickerSelectedIndexChangedEventHandler f =
+        System.EventHandler(fun sender args ->
+            let picker = (sender :?> Xamarin.Forms.Picker)
+            let selectedItem = (picker.SelectedItem |> Option.ofObj |> Option.map string)
+            f (picker.SelectedIndex, selectedItem)
+        )
+
+    /// Try and find a specific ListView item
+    let tryFindListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData as item -> 
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
+        | _ -> None
+
+    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData>) (item: ListElementData) =
+        // POSSIBLE IMPROVEMENT: don't use a linear search
+        items 
+        |> Seq.indexed 
+        |> Seq.tryPick (fun (i,items2) -> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items2 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+
+    /// Try and find a specific item in a GroupedListView 
+    let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
+        match item with 
+        | null -> None
+        | :? ListGroupData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
+            tryFindGroupedListViewItemIndex items item
+            |> (function
+                | None -> None
+                | Some (i, j) -> Some (i, Some j))
+        | _ -> None
+
+    /// Try and find a specific GroupedListView item
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
+            tryFindGroupedListViewItemIndex items item
+        | _ -> None
+        
+    let makeListViewItemAppearingEventHandler f =
+        System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args ->
+            f (tryFindListViewItem sender args.Item).Value
+        )
+        
+    let makeListViewItemDisappearingEventHandler f =
+        System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args ->
+            f (tryFindListViewItem sender args.Item).Value
+        )
+        
+    let makeListViewItemSelectedEventHandler f =
+        System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args ->
+            f (tryFindListViewItem sender args.SelectedItem)
+        )
+        
+    let makeListViewItemTappedEventHandler f =
+        System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args ->
+            f (tryFindListViewItem sender args.Item).Value
+        )
+    
+    let makeListViewGroupedItemSelectedEventHandler f =
+        System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args ->
+            f (tryFindGroupedListViewItem sender args.SelectedItem)
+        )
+        
+    let makeMasterDetailPageIsPresentedChangedEventHandler f =
+        System.EventHandler(fun sender args ->
+            f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented
+        )

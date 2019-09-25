@@ -684,7 +684,9 @@
       ],
       "events": [
         {
-          "source": "IsPresentedChanged"
+          "source": "IsPresentedChanged",
+          "inputType": "bool -> unit",
+          "convertInputToModel": "ViewConverters.makeMasterDetailPageIsPresentedChangedEventHandler"
         }
       ]
     },
@@ -1208,7 +1210,18 @@
           "source": "PlaceholderColor"
         },
         {
-          "source": "SearchCommand"
+          "source": "SearchCommand",
+          "inputType": "string -> unit",
+          "modelType": "string -> unit",
+          "updateCode": "(fun _ _ _ -> ())"
+        },
+        {
+          "source": null,
+          "name": "SearchCommandCanExecute",
+          "inputType": "bool",
+          "modelType": "bool",
+          "defaultValue": "true",
+          "updateCode": "ViewUpdaters.updateCommand prevSearchBarSearchCommandOpt currSearchBarSearchCommandOpt (fun (_target: Xamarin.Forms.SearchBar) -> _target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
         },
         {
           "source": "Text"
@@ -1348,22 +1361,22 @@
         {
           "source": "ItemAppearing",
           "inputType": "int -> unit",
-          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+          "convertInputToModel": "ViewConverters.makeListViewItemAppearingEventHandler"
         },
         {
           "source": "ItemDisappearing",
           "inputType": "int -> unit",
-          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+          "convertInputToModel": "ViewConverters.makeListViewItemDisappearingEventHandler"
         },
         {
           "source": "ItemSelected",
           "inputType": "int option -> unit",
-          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
+          "convertInputToModel": "ViewConverters.makeListViewItemSelectedEventHandler"
         },
         {
           "source": "ItemTapped",
           "inputType": "int -> unit",
-          "convertInputToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+          "convertInputToModel": "ViewConverters.makeListViewItemTappedEventHandler"
         },
         {
           "source": "Refreshing"
@@ -1394,6 +1407,16 @@
           "inputType": "bool",
           "defaultValue": "false",
           "updateCode": "ViewUpdaters.updateListViewGroupedShowJumpList"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "ItemSelected",
+          "inputType": "(int * int) option -> unit",
+          "modelType": "System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>",
+          "defaultValue": "null",
+          "convertInputToModel": "ViewConverters.makeListViewGroupedItemSelectedEventHandler"
         }
       ]
     },
@@ -1737,7 +1760,9 @@
       ],
       "events": [
         {
-          "source": "SelectedIndexChanged"
+          "source": "SelectedIndexChanged",
+          "inputType": "(int * string option) -> unit",
+          "convertInputToModel": "ViewConverters.makePickerSelectedIndexChangedEventHandler"
         }
       ]
     },

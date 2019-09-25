@@ -637,7 +637,7 @@ module App =
                        View.SearchBar(
                             placeholder = "Enter search term",
                             searchCommand = (fun searchBarText -> dispatch (ExecuteSearch searchBarText)),
-                            searchCommandCanExecute=true) 
+                            searchCommandCanExecute = true) 
                        View.Label(text="You searched for " + searchTerm) 
                        MainPageButton ]))
 

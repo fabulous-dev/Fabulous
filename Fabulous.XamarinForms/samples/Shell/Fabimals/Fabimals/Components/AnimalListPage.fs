@@ -41,7 +41,7 @@ module AnimalList =
         | None -> ()
         | Some item ->
             let data = item :?> ItemListElementData
-            let animal = data.Key.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+            let animal = data.Key.GetAttributeKeyed(ViewAttributes.ElementTagAttribKey) :?> Animal
             dispatch (SelectAnimal animal)
 
     let view model dispatch =
@@ -58,7 +58,7 @@ module AnimalList =
                 title=pageTitle,
                 shellSearchHandler=(SearchHandlers.animalSearchHandler filteredAnimals (SearchHandlerMsg >> dispatch)),
                 content=View.CollectionView(
-                    margin=contentMargin,
+                    margin=Thickness.Value contentMargin,
                     selectionMode=SelectionMode.Single,
                     selectionChanged=(navigateToAfterSelectionChanged dispatch),
                     items=(allAnimals |> List.map Templates.animalTemplate)
