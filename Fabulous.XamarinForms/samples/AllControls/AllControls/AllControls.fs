@@ -364,8 +364,8 @@ module App =
                                  View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
                                  View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                             ]))
-                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
-                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
+                     .PageToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                     .NavigationPageTitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
                              View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
                              View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
                          ]
@@ -622,7 +622,7 @@ module App =
                            items = [ 
                                for i in 0 .. 10 do 
                                    yield View.Label "Ionide"
-                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = 10)]))
+                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = FontSize.Value 10.)]))
                                    yield View.Label "Emacs"
                                    yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", fontAttributes=FontAttributes.Bold); View.Span(text="Studio ", fontAttributes=FontAttributes.Italic); View.Span(text="Code", foregroundColor = Color.Blue)]))
                                    yield View.Label "Rider"], 

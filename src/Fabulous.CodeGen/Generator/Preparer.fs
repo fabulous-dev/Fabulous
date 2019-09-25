@@ -115,7 +115,7 @@ module Preparer =
           InheritedViewerName = boundType.BaseTypeName |> Option.map (sprintf "%sViewer")
           InheritedGenericConstraint = boundType.BaseGenericConstraint
           Members = members }
-
+    
     let toConstructorData (boundType: BoundType) =
         let properties = boundType.Properties |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
         let events = boundType.Events |> Array.map (fun e -> { Name = e.ShortName; InputType = e.InputType })

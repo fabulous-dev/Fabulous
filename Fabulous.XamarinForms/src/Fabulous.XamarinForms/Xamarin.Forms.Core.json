@@ -710,7 +710,9 @@
       ],
       "events": [
         {
-          "source": "CurrentPageChanged"
+          "source": "CurrentPageChanged",
+          "inputType": "int option -> unit",
+          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<'T>"
         }
       ]
     },
@@ -1164,6 +1166,16 @@
         {
           "source": "TextColor"
         }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+        },
+        {
+          "source": "TextChanged"
+        }
       ]
     },
     {
@@ -1209,6 +1221,54 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.ItemsView",
+      "properties": [
+        {
+          "source": "EmptyView"
+        },
+        {
+          "source": "ItemSizingStrategy"
+        },
+        {
+          "source": "ItemsLayout"
+        },
+        {
+          "source": "ItemsSource",
+          "shortName": "items",
+          "inputType": "ViewElement list",
+          "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updateItemsViewItems"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CarouselView",
+      "customType": "Fabulous.XamarinForms.CustomCarouselView"
+    },
+    {
+      "type": "Xamarin.Forms.SelectableItemsView",
+      "properties": [
+        {
+          "source": "SelectedItem"
+        },
+        {
+          "source": "SelectedItems"
+        },
+        {
+          "source": "SelectionMode"
+        }
+      ],
+      "events": [
+        {
+          "source": "SelectionChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.CollectionView",
+      "customType": "Fabulous.XamarinForms.CustomCollectionListView"
+    },
+    {
       "type": "Xamarin.Forms.ItemsView`1",
       "name": "ItemsViewOfT",
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
@@ -1219,7 +1279,7 @@
           "name": "Items",
           "inputType": "ViewElement list",
           "defaultValue": "[]",
-          "updateCode": "ViewUpdaters.updateItemsViewItems<'T>"
+          "updateCode": "ViewUpdaters.updateItemsViewOfTItems<'T>"
         }
       ]
     },
@@ -1375,7 +1435,8 @@
         {
           "source": "VerticalTextAlignment"
         }
-      ]
+      ],
+      "primaryConstructorMember": "Text"
     },
     {
       "type": "Xamarin.Forms.Layout",
@@ -1892,6 +1953,12 @@
       "name": "XFSearchHandler",
       "members": [
         {
+          "source": "BackgroundColor"
+        },
+        {
+          "source": "CancelButtonColor"
+        },
+        {
           "source": "ClearIcon"
         },
         {
@@ -1919,47 +1986,6 @@
           "source": "Command"
         },
         {
-          "source": "DisplayMemberName"
-        },
-        {
-          "source": "IsSearchEnabled"
-        },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "Query"
-        },
-        {
-          "source": "QueryIcon"
-        },
-        {
-          "source": "QueryIconHelpText"
-        },
-        {
-          "source": "QueryIconName"
-        },
-        {
-          "source": "SearchBoxVisibility"
-        },
-        {
-          "source": "ShowsResults"
-        },
-        {
-          "source": null,
-          "name": "Items",
-          "defaultValue": "null",
-          "inputType": "ViewElement list",
-          "modelType": "ViewElement array",
-          "updateCode": "updateSearchHandlerItems"
-        },
-        {
-          "source": "BackgroundColor"
-        },
-        {
-          "source": "CancelButtonColor"
-        },
-        {
           "source": "FontAttributes"
         },
         {
@@ -1974,27 +2000,48 @@
           "source": "HorizontalTextAlignment"
         },
         {
-          "source": null,
-          "name": "IsFocused",
-          "defaultValue": "false",
-          "inputType": "bool",
-          "updateCode": "ViewUpdaters.updateIsFocused"
+          "source": "IsSearchEnabled"
+        },
+        {
+          "source": "ItemsSource",
+          "shortName": "items",
+          "inputType": "ViewElement list",
+          "defaultValue": "null",
+          "updateCode": "ViewUpdaters.updateSearchHandlerItems"
         },
         {
           "source": "Keyboard"
         },
         {
+          "source": "Placeholder"
+        },
+        {
           "source": "PlaceholderColor"
         },
         {
-          "source": "TextColor"
+          "source": "Query"
         },
         {
-          "source": null,
-          "name": "SelectedItem",
-          "defaultValue": "null",
-          "inputType": "obj",
+          "source": "QueryIcon"
+        },
+        {
+          "source": "QueryIconHelpText"
+        },
+        {
+          "source": "QueryIconName"
+        },
+        {
+          "source": "SelectedItem",
           "updateCode": "ViewUpdaters.updateSelectedItem"
+        },
+        {
+          "source": "SearchBoxVisibility"
+        },
+        {
+          "source": "ShowsResults"
+        },
+        {
+          "source": "TextColor"
         }
       ],
       "events": [
@@ -2022,34 +2069,30 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.SelectableItemsView",
+      "type": "Xamarin.Forms.TableSectionBase",
+      "canBeInstantiated": "false",
       "properties": [
         {
-          "source": "SelectedItem"
+          "source": "TextColor"
         },
         {
-          "source": "SelectedItems"
-        },
-        {
-          "source": "SelectionChangedCommand"
-        },
-        {
-          "source": "SelectionMode"
-        }
-      ],
-      "events": [
-        {
-          "source": "SelectionChanged"
+          "source": "Title"
         }
       ]
     },
     {
-      "type": "Xamarin.Forms.CarouselView",
-      "customType": "Fabulous.XamarinForms.CustomCarouselView"
+      "type": "Xamarin.Forms.TableSectionBase`1",
+      "name": "TableSectionBaseOfT",
+      "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
+      "canBeInstantiated": "false"
     },
     {
-      "type": "Xamarin.Forms.CollectionView",
-      "customType": "Fabulous.XamarinForms.CustomCollectionListView"
+      "type": "Xamarin.Forms.TableRoot",
+      "baseGenericConstraint": "Xamarin.Forms.TableSection"
+    },
+    {
+      "type": "Xamarin.Forms.TableSection",
+      "baseGenericConstraint": "Xamarin.Forms.Cell"
     }
   ]
 }

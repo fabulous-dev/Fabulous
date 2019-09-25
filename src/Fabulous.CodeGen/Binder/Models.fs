@@ -91,7 +91,8 @@ module Models =
           BaseGenericConstraint: string option
           Name: string
           Events: BoundEvent array
-          Properties: BoundProperty array }
+          Properties: BoundProperty array
+          PrimaryConstructorMember: string option }
     
     type BoundModel =
         { Assemblies: string array

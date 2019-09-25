@@ -121,10 +121,8 @@ module Models =
         /// The properties to include/create/override for this type
         member val Properties: Property array option = None with get, set
         
-        /// An ordered list of all direct members (events and properties) to determine the order of the constructor (e.g. ["Text", "TextChanged", "Font"] => View.Entry(text=..., textChanged=..., font=...)
-        /// Values must be Name
-        /// Can order inherited members
-        member val ConstructorMemberOrdering: string array option = None with get, set
+        /// The property/event to place first in the constructor so it can be used without name
+        member val PrimaryConstructorMember: string option = None with get, set
     
     type Bindings() =
         /// Assemblies to read (can be relative paths to dlls)

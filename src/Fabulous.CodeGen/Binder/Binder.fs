@@ -282,7 +282,8 @@ module Binder =
           Properties =
               BinderHelpers.bindMembers
                 bindingsType.Properties
-                (tryBindProperty logger typeName assemblyType.Properties assemblyType.AttachedProperties) }
+                (tryBindProperty logger typeName assemblyType.Properties assemblyType.AttachedProperties)
+          PrimaryConstructorMember = bindingsType.PrimaryConstructorMember }
     
     /// Try to bind a type
     let tryBindType logger (assemblyTypes: AssemblyType array) (bindingsType: Type) =
