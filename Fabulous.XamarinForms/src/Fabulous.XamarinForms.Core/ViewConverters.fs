@@ -179,6 +179,16 @@ module ViewConverters =
             else
                 null
                 
+    let convertSelectableItemsViewSelectedItemIndexToObj (target: Xamarin.Forms.SelectableItemsView) (v: int option) =
+        match v with
+        | None -> null
+        | Some i ->
+            let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData>
+            if i >= 0 && i < items.Count then
+                items.[i]
+            else
+                null
+                
     let makePickerSelectedIndexChangedEventHandler f =
         System.EventHandler(fun sender args ->
             let picker = (sender :?> Xamarin.Forms.Picker)

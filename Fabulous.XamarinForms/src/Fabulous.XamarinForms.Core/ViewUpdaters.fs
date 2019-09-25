@@ -81,7 +81,7 @@ module ViewUpdaters =
                 let oc = ObservableCollection<ListElementData>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
+        updateCollectionGeneric prevCollOpt collOpt targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
         
     /// Update the items in a ListView control, given previous and current view elements
     let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
@@ -95,9 +95,9 @@ module ViewUpdaters =
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
 
     /// Update the items in a SearchHandler control, given previous and current view elements
-    let updateSearchHandlerItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SearchHandler) = 
+    let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
         let targetColl = List<ItemListElementData>()
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
+        updateCollectionGeneric prevCollOpt collOpt targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
         target.ItemsSource <- targetColl
 
     /// Update the items in a CollectionView control, given previous and current view elements
@@ -615,6 +615,41 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Shell.SetTabBarIsVisible(target, currValue)
         | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true)
 
+    let updateShellNavBarIsVisible prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetNavBarIsVisible(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetNavBarIsVisible(target, true)
+
+    let updateShellTabBarDisabledColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarDisabledColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarDisabledColor(target, Xamarin.Forms.Color.Default)
+
+    let updateShellTabBarTitleColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarTitleColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarTitleColor(target, Xamarin.Forms.Color.Default)
+
+    let updateShellTabBarUnselectedColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarUnselectedColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarUnselectedColor(target, Xamarin.Forms.Color.Default)
+
+    let updateNavigationPageHasNavigationBar prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> NavigationPage.SetHasNavigationBar(target, currValue)
+        | ValueSome _, ValueNone -> NavigationPage.SetHasNavigationBar(target, true)
+
     let updateShellContentContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
@@ -668,3 +703,10 @@ module ViewUpdaters =
             viewElement.Create() :?> Xamarin.Forms.ToolbarItem
         
         updateCollectionGeneric prevCollOpt collOpt target.ToolbarItems create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
+
+    let updateElementMenu prevValueOpt (currValueOpt: ViewElement voption) target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
+        | ValueSome _, ValueNone -> Element.SetMenu(target, null)

@@ -365,7 +365,7 @@ module App =
                                  View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                             ]))
                      .PageToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
-                     .NavigationPageTitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
+                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
                              View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
                              View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
                          ]
@@ -786,7 +786,7 @@ module App =
                                          View.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                 
                                          View.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                                        ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(false)
+                                        ]) ).HasNavigationBar(true).HasBackButton(false)
                           | Some "A" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -799,7 +799,7 @@ module App =
                                         View.Button(text="Replace by Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "B")))
                                         View.Button(text="Replace by Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "C")))
                                         View.Button(text="Back", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                        ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(true)
+                                        ]) ).HasNavigationBar(true).HasBackButton(true)
                           | Some "B" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -810,7 +810,7 @@ module App =
                                               View.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
                                               View.Button(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
                                               View.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                             ]) ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(false)
+                                             ]) ).HasNavigationBar(true).HasBackButton(false)
                           | Some "C" -> 
                               yield 
                                 View.ContentPage(useSafeArea=true,
@@ -822,7 +822,7 @@ module App =
                                         View.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                                         View.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
                                         MainPageButton
-                                        ]) ).NavigationPageHasNavigationBar(false).NavigationPageHasBackButton(false)
+                                        ]) ).HasNavigationBar(false).HasBackButton(false)
 
                           | _ -> 
                                ()  ], 
@@ -852,7 +852,7 @@ module App =
                         View.StackLayout(backgroundColor=Color.Gray, 
                           children=[ View.Label(text="Detail " + detailPage, textColor=Color.White, backgroundColor=Color.Navy)
                                      View.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)  ]) 
-                          ).NavigationPageHasNavigationBar(true).NavigationPageHasBackButton(true) ], 
+                          ).HasNavigationBar(true).HasBackButton(true) ], 
                    poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
 
          | InfiniteScrollList -> 

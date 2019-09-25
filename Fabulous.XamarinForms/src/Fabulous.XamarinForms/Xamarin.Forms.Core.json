@@ -46,6 +46,13 @@
         },
         {
           "source": null,
+          "name": "Menu",
+          "inputType": "Xamarin.Forms.Menu",
+          "defaultValue": "null",
+          "updateCode": "ViewUpdaters.updateElementMenu"
+        },
+        {
+          "source": null,
           "Name": "Ref",
           "canBeUpdated": false,
           "defaultValue": "null",
@@ -107,7 +114,7 @@
         {
           "source": null,
           "name": "Accelerator",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Accelerator",
+          "inputType": "InputTypes.Accelerator",
           "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateMenuItemAccelerator"
         },
@@ -438,6 +445,134 @@
           "defaultValue": "null",
           "inputType": "InputTypes.StyleClass",
           "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
+        },
+        {
+          "source": null,
+          "name": "ShellBackButtonBehavior",
+          "uniqueName": "ShellBackButtonBehavior",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.BackButtonBehavior",
+          "updateCode": "ViewUpdaters.updateShellBackButtonBehavior"
+        },
+        {
+          "source": null,
+          "name": "ShellBackgroundColor",
+          "uniqueName": "ShellBackgroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellBackgroundColor"
+        },
+        {
+          "source": null,
+          "name": "ShellDisabledColor",
+          "uniqueName": "ShellDisabledColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellDisabledColor"
+        },
+        {
+          "source": null,
+          "name": "ShellForegroundColor",
+          "uniqueName": "ShellForegroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellForegroundColor"
+        },
+        {
+          "source": null,
+          "name": "ShellFlyoutBehavior",
+          "uniqueName": "ShellFlyoutBehavior",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.FlyoutBehavior",
+          "updateCode": "ViewUpdaters.updateShellFlyoutBehavior"
+        },
+        {
+          "source": null,
+          "name": "ShellNavBarIsVisible",
+          "uniqueName": "ShellNavBarIsVisible",
+          "defaultValue": "true",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateShellNavBarIsVisible"
+        },
+        {
+          "source": null,
+          "name": "ShellSearchHandler",
+          "uniqueName": "ShellSearchHandler",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SearchHandler",
+          "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarBackgroundColor",
+          "uniqueName": "ShellTabBarBackgroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTabBarBackgroundColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarDisabledColor",
+          "uniqueName": "ShellTabBarDisabledColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTabBarDisabledColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarForegroundColor",
+          "uniqueName": "ShellTabBarForegroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTabBarForegroundColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarIsVisible",
+          "uniqueName": "ShellTabBarIsVisible",
+          "defaultValue": "true",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateShellTabBarIsVisible"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarTitleColor",
+          "uniqueName": "ShellTabBarTitleColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTabBarTitleColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTabBarUnselectedColor",
+          "uniqueName": "ShellTabBarUnselectedColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTabBarUnselectedColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTitleColor",
+          "uniqueName": "ShellTitleColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellTitleColor"
+        },
+        {
+          "source": null,
+          "name": "ShellTitleView",
+          "uniqueName": "ShellTitleView",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.View",
+          "updateCode": "ViewUpdaters.updateShellTitleView"
+        },
+        {
+          "source": null,
+          "name": "ShellUnselectedColor",
+          "uniqueName": "ShellUnselectedColor",
+          "defaultValue": "Xamarin.Forms.Color.Default",
+          "inputType": "Xamarin.Forms.Color",
+          "updateCode": "ViewUpdaters.updateShellUnselectedColor"
         }
       ]
     },
@@ -667,10 +802,11 @@
         },
         {
           "source": null,
-          "name": "ShellSearchHandler",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.SearchHandler",
-          "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
+          "name": "HasNavigationBar",
+          "uniqueName": "HasNavigationBar",
+          "inputType": "bool",
+          "defaultValue": "true",
+          "updateCode": "ViewUpdaters.updateNavigationPageHasNavigationBar"
         }
       ],
       "events": [
@@ -736,29 +872,33 @@
           "collection": {
             "elementType": "'T"
           }
-        },
-        {
-          "source": null,
-          "name": "CurrentPage",
-          "defaultValue": "0",
-          "inputType": "int",
-          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<'T>"
-        }
-      ],
-      "events": [
-        {
-          "source": "CurrentPageChanged",
-          "inputType": "int option -> unit",
-          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<'T>",
-          "relatedProperties": [
-            "CurrentPage"
-          ]
         }
       ]
     },
     {
       "type": "Xamarin.Forms.CarouselPage",
       "baseGenericConstraint": "Xamarin.Forms.ContentPage",
+      "properties": [
+        {
+          "source": null,
+          "name": "CurrentPage",
+          "defaultValue": "0",
+          "inputType": "int",
+          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<Xamarin.Forms.ContentPage>"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "CurrentPageChanged",
+          "inputType": "int option -> unit",
+          "modelType": "System.EventHandler",
+          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<Xamarin.Forms.ContentPage>",
+          "relatedProperties": [
+            "CurrentPage"
+          ]
+        }
+      ],
       "primaryConstructorMember": "Children"
     },
     {
@@ -772,10 +912,29 @@
           "source": "BarTextColor"
         },
         {
+          "source": null,
+          "name": "CurrentPage",
+          "defaultValue": "0",
+          "inputType": "int",
+          "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<Xamarin.Forms.Page>"
+        },
+        {
           "source": "SelectedTabColor"
         },
         {
           "source": "UnselectedTabColor"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "CurrentPageChanged",
+          "inputType": "int option -> unit",
+          "modelType": "System.EventHandler",
+          "convertInputToModel": "ViewConverters.makeCurrentPageChanged<Xamarin.Forms.Page>",
+          "relatedProperties": [
+            "CurrentPage"
+          ]
         }
       ]
     },
@@ -798,20 +957,21 @@
             "elementType": "Xamarin.Forms.Page",
             "attachedProperties": [
               {
-                "source": "BackButtonTitle"
+                "source": "BackButtonTitle",
+                "uniqueName": "BackButtonTitle"
               },
               {
-                "source": "HasBackButton"
-              },
-              {
-                "source": "HasNavigationBar"
-              },
-              {
-                "source": "TitleView"
+                "source": "HasBackButton",
+                "uniqueName": "HasBackButton"
               },
               {
                 "source": "TitleIconImageSource",
+                "uniqueName": "TitleIcon",
                 "shortName": "titleIcon"
+              },
+              {
+                "source": "TitleView",
+                "uniqueName": "TitleView"
               }
             ]
           }
@@ -1315,7 +1475,10 @@
       "type": "Xamarin.Forms.SelectableItemsView",
       "properties": [
         {
-          "source": "SelectedItem"
+          "source": "SelectedItem",
+          "inputType": "int option",
+          "modelType": "int option",
+          "convertModelToValue": "ViewConverters.convertSelectableItemsViewSelectedItemIndexToObj target"
         },
         {
           "source": "SelectedItems"
@@ -1396,6 +1559,7 @@
         {
           "source": "SelectedItem",
           "inputType": "int option",
+          "modelType": "int option",
           "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
         },
         {
@@ -1462,6 +1626,7 @@
           "source": null,
           "name": "SelectedItem",
           "inputType": "int option",
+          "modelType": "int option",
           "defaultValue": "null",
           "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
         },
@@ -2071,7 +2236,7 @@
       "type": "Xamarin.Forms.SearchHandler",
       "canBeInstantiated": false,
       "name": "XFSearchHandler",
-      "members": [
+      "properties": [
         {
           "source": "BackgroundColor"
         },
