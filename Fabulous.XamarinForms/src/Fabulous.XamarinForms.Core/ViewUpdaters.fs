@@ -165,14 +165,13 @@ module ViewUpdaters =
                 updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild) 
 
     /// Update the resources of a control, given previous and current view elements describing the resources
-    let updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
+    let updateResources (prevCollOpt: (string * obj) array voption) (collOpt: (string * obj) array voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
         | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
             let targetColl = target.Resources
-            let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
             else
@@ -182,7 +181,7 @@ module ViewUpdaters =
                             match prevCollOpt with 
                             | ValueNone -> ValueNone 
                             | ValueSome prevColl -> 
-                                match prevColl |> List.tryFind(fun (prevKey, _) -> key = prevKey) with 
+                                match prevColl |> Array.tryFind(fun (prevKey, _) -> key = prevKey) with 
                                 | Some (_, prevChild) -> ValueSome prevChild
                                 | None -> ValueNone
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
@@ -198,14 +197,13 @@ module ViewUpdaters =
     /// Update the style sheets of a control, given previous and current view elements describing them
     // Note, style sheets can't be removed
     // Note, style sheets are compared by object identity
-    let updateStyleSheets (prevCollOpt: list<StyleSheet> voption) (collOpt: list<StyleSheet> voption) (target: Xamarin.Forms.VisualElement) = 
+    let updateStyleSheets (prevCollOpt: StyleSheet array voption) (collOpt: StyleSheet array voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
         | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
             let targetColl = target.Resources
-            let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
             else
@@ -213,7 +211,7 @@ module ViewUpdaters =
                     let prevChildOpt = 
                         match prevCollOpt with 
                         | ValueNone -> None 
-                        | ValueSome prevColl -> prevColl |> List.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
+                        | ValueSome prevColl -> prevColl |> Array.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
                     match prevChildOpt with 
                     | None -> targetColl.Add(styleSheet)                            
                     | Some _ -> ()
@@ -224,7 +222,7 @@ module ViewUpdaters =
                         let childOpt = 
                             match prevCollOpt with 
                             | ValueNone -> None 
-                            | ValueSome prevColl -> prevColl |> List.tryFind(fun styleSheet -> identical styleSheet prevStyleSheet)
+                            | ValueSome prevColl -> prevColl |> Array.tryFind(fun styleSheet -> identical styleSheet prevStyleSheet)
                         match childOpt with 
                         | None -> 
                             eprintfn "**** WARNING: style sheets may not be removed, and are compared by object identity, so should be created independently of your update or view functions ****"
@@ -233,14 +231,13 @@ module ViewUpdaters =
     /// Update the styles of a control, given previous and current view elements describing them
     // Note, styles can't be removed
     // Note, styles are compared by object identity
-    let updateStyles (prevCollOpt: Style list voption) (collOpt: Style list voption) (target: Xamarin.Forms.VisualElement) = 
+    let updateStyles (prevCollOpt: Style array voption) (collOpt: Style array voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
         | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
             let targetColl = target.Resources
-            let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
             else
@@ -248,7 +245,7 @@ module ViewUpdaters =
                     let prevChildOpt = 
                         match prevCollOpt with 
                         | ValueNone -> None 
-                        | ValueSome prevColl -> prevColl |> Seq.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
+                        | ValueSome prevColl -> prevColl |> Array.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
                     match prevChildOpt with 
                     | None -> targetColl.Add(styleSheet)                            
                     | Some _ -> ()
@@ -259,7 +256,7 @@ module ViewUpdaters =
                         let childOpt = 
                             match prevCollOpt with 
                             | ValueNone -> None 
-                            | ValueSome prevColl -> prevColl |> Seq.tryFind(fun style-> identical style prevStyle)
+                            | ValueSome prevColl -> prevColl |> Array.tryFind(fun style-> identical style prevStyle)
                         match childOpt with 
                         | None -> 
                             eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
