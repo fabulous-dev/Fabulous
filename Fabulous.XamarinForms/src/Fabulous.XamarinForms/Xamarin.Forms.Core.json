@@ -154,7 +154,7 @@
     },
     {
       "type": "Xamarin.Forms.Cell",
-      "canBeInstantiated": "false",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "ContextActions"
@@ -578,6 +578,7 @@
     },
     {
       "type": "Xamarin.Forms.BaseShellItem",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "FlyoutIcon"
@@ -1062,7 +1063,7 @@
     {
       "type": "Xamarin.Forms.ContentPage",
       "name": "XFContentPage",
-      "canBeInstantiated": "false",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "Content"
@@ -1469,6 +1470,7 @@
     },
     {
       "type": "Xamarin.Forms.ItemsView",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "EmptyView"
@@ -1494,6 +1496,7 @@
     },
     {
       "type": "Xamarin.Forms.SelectableItemsView",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "SelectedItem",
@@ -1526,7 +1529,7 @@
       "type": "Xamarin.Forms.ItemsView`1",
       "name": "ItemsViewOfT",
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
-      "canBeInstantiated": "false",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": null,
@@ -2042,7 +2045,7 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "SHOULD NOT BE SET",
+          "defaultValue": "null",
           "inputType": "float * float",
           "updateCode": "ViewUpdaters.updateSliderMinimumMaximum"
         },
@@ -2084,7 +2087,7 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "SHOULD NOT BE SET",
+          "defaultValue": "null",
           "inputType": "float * float",
           "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
         },
@@ -2149,7 +2152,7 @@
     },
     {
       "type": "Xamarin.Forms.TimePicker",
-      "canBeInstantiated": "false",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "FontAttributes"
@@ -2222,6 +2225,7 @@
     },
     {
       "type": "Xamarin.Forms.ItemsLayout",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "SnapPointsAlignment"
@@ -2376,7 +2380,7 @@
     },
     {
       "type": "Xamarin.Forms.TableSectionBase",
-      "canBeInstantiated": "false",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "TextColor"
@@ -2390,7 +2394,7 @@
       "type": "Xamarin.Forms.TableSectionBase`1",
       "name": "TableSectionBaseOfT",
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
-      "canBeInstantiated": "false"
+      "canBeInstantiated": false
     },
     {
       "type": "Xamarin.Forms.TableRoot",
