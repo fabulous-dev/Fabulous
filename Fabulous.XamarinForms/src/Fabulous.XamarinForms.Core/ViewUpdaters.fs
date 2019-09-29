@@ -65,12 +65,12 @@ module ViewUpdaters =
     let updateItemsViewItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListElementData> as oc -> oc
+            | :? ObservableCollection<ItemListElementData> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListElementData>()
+                let oc = ObservableCollection<ItemListElementData>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
+        updateCollectionGeneric prevCollOpt collOpt targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
                     
     /// Update the items in a ItemsView<'T> control, given previous and current view elements
     let updateItemsViewOfTItems<'T when 'T :> Xamarin.Forms.BindableObject> (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView<'T>) = 

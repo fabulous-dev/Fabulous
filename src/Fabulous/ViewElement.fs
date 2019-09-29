@@ -46,10 +46,10 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         ViewElement(typeof<'T>, (create >> box), (fun prev curr target -> update prev curr (unbox target)), attribsBuilder.Close())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("ElementCreated")
+    static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ViewRefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("ElementViewRef")
+    static member val _RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -95,7 +95,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         match x.TryGetAttributeKeyed(ViewElement._CreatedAttribKey) with
         | ValueSome f -> f target
         | ValueNone -> ()
-        match x.TryGetAttributeKeyed(ViewElement._ViewRefAttribKey) with
+        match x.TryGetAttributeKeyed(ViewElement._RefAttribKey) with
         | ValueSome f -> f.Set (box target)
         | ValueNone -> ()
         target

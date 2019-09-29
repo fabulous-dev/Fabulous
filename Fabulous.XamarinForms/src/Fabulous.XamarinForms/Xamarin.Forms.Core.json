@@ -7,7 +7,35 @@
   "types": [
     {
       "type": "Xamarin.Forms.BindableObject",
-      "canBeInstantiated": false
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": null,
+          "UniqueName": "Ref",
+          "Name": "Ref",
+          "canBeUpdated": false,
+          "defaultValue": "null",
+          "inputType": "ViewRef"
+        },
+        {
+          "source": null,
+          "UniqueName": "Tag",
+          "name": "Tag",
+          "canBeUpdated": false,
+          "defaultValue": "null",
+          "inputType": "obj"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "UniqueName": "Created",
+          "name": "Created",
+          "canBeUpdated": false,
+          "inputType": "obj -> unit",
+          "modelType": "obj -> unit"
+        }
+      ]
     },
     {
       "type": "Xamarin.Forms.BackButtonBehavior",
@@ -65,32 +93,9 @@
         },
         {
           "source": null,
-          "Name": "Ref",
-          "canBeUpdated": false,
-          "defaultValue": "null",
-          "inputType": "ViewRef"
-        },
-        {
-          "source": null,
           "name": "StyleId",
           "defaultValue": "null",
           "inputType": "string"
-        },
-        { 
-          "source": null,
-          "name": "Tag",
-          "canBeUpdated": false,
-          "defaultValue": "null",
-          "inputType": "obj"
-        }
-      ],
-      "events": [
-        {
-          "source": null,
-          "name": "Created",
-          "canBeUpdated": false,
-          "inputType": "obj -> unit",
-          "modelType": "obj -> unit"
         }
       ]
     },
@@ -1567,7 +1572,7 @@
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMember": "ItemsSource"
     },
     {
       "type": "Xamarin.Forms.ItemsView`1",
@@ -1675,7 +1680,7 @@
     {
       "type": "Fabulous.XamarinForms.CustomListView",
       "name": "ListView",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMember": "ItemsSource"
     },
     {
       "type": "Fabulous.XamarinForms.CustomGroupListView",
@@ -1720,7 +1725,7 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMember": "ItemsSource"
     },
     {
       "type": "Xamarin.Forms.Label",

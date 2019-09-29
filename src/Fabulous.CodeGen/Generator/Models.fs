@@ -2,6 +2,10 @@
 namespace Fabulous.CodeGen.Generator
 
 module Models =
+    type AttributeData =
+        { UniqueName: string
+          Name: string }
+    
     type ConstructType =
         { Name: string
           InputType: string }
@@ -104,7 +108,7 @@ module Models =
         
     type GeneratorData =
         { Namespace: string
-          Attributes: string array
+          Attributes: AttributeData array
           Builders: BuilderData array
           Viewers: ViewerData array
           Constructors: ConstructorData array

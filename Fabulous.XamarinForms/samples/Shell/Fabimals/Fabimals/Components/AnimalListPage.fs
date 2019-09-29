@@ -41,7 +41,7 @@ module AnimalList =
         | None -> ()
         | Some item ->
             let data = item :?> ItemListElementData
-            let animal = data.Key.GetAttributeKeyed(ViewAttributes.ElementTagAttribKey) :?> Animal
+            let animal = data.Key.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
             dispatch (SelectAnimal animal)
 
     let view model dispatch =

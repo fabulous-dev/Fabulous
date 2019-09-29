@@ -6,19 +6,20 @@ open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator.Models
 
 module Preparer =
-    let extractAttributes (boundTypes: BoundType array) =
-        [| for boundType in boundTypes do
+    let extractAttributes (boundTypes: BoundType array) : AttributeData array =
+        (seq {
+            for boundType in boundTypes do
                for e in boundType.Events do
-                   yield e.UniqueName
+                   yield { UniqueName = e.UniqueName; Name = e.Name }
                for p in boundType.Properties do
-                   yield p.UniqueName
+                   yield { UniqueName = p.UniqueName; Name = p.Name }
                    
                    match p.CollectionData with
                    | None -> ()
                    | Some cd ->
                        for ap in cd.AttachedProperties do
-                           yield ap.UniqueName |]
-        |> Seq.distinctBy id
+                           yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
+        |> Seq.distinctBy (fun a -> a.UniqueName)
         |> Seq.toArray
 
     let toBuildData (boundType: BoundType) =
