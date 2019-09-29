@@ -123,12 +123,12 @@ module CodeGenerator =
         
         w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
         
-        if (data.BaseName.IsNone && data.ImmediateMembers.Length = 0) then
-            w.printfn "        ()"
-        elif data.BaseName.IsSome then
-            w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" data.BaseName.Value
-
-        if (data.ImmediateMembers.Length > 0) then
+        if (data.ImmediateMembers.Length = 0) then
+            if (data.BaseName.IsNone) then
+                w.printfn "        ()"
+            else
+                w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" data.BaseName.Value
+        else
             for m in data.ImmediateMembers do
                 w.printfn "        let mutable prev%sOpt = ValueNone" m.UniqueName
                 w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName
@@ -143,7 +143,7 @@ module CodeGenerator =
             for m in data.ImmediateMembers do
                 w.printfn "                if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
-
+            
             // Unsubscribe previous event handlers
             if data.Events.Length > 0 then
                 w.printfn "        // Unsubscribe previous event handlers"
@@ -158,7 +158,12 @@ module CodeGenerator =
                     w.printfn "            match prev%sOpt with" e.UniqueName
                     w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
                     w.printfn "            | ValueNone -> ()"
-            
+
+            // Update inherited members
+            if data.BaseName.IsSome then
+                w.printfn "        // Update inherited members"
+                w.printfn "        ViewBuilders.Update%s (prevOpt, curr, target)" data.BaseName.Value
+
             // Update properties
             if data.Properties.Length > 0 then
                 w.printfn "        // Update properties"
