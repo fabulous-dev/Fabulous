@@ -242,6 +242,8 @@ type CustomSearchHandler() =
     
 /// A name holder for effects that don't require to create a cross-platform type to use them
 type CustomEffect() =
+    inherit BindableObject()
+    
     member val Name = "" with get, set
     
 /// A custom TimePicker which exposes a TimeChanged event to notify when the user has selected a new time from the picker

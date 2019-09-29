@@ -29,8 +29,8 @@ module ViewHelpers =
     // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
     // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
     and internal canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
-        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
-        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
+        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("NavigationPagePages")
+        let newPages = newChild.TryGetAttribute<ViewElement[]>("NavigationPagePages")
 
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseView
@@ -39,8 +39,8 @@ module ViewHelpers =
     /// Checks whether the control can be reused given the previous and the new AutomationId.
     /// Xamarin.Forms can't change an already set AutomationId
     and internal canReuseAutomationId (prevChild: ViewElement) (newChild: ViewElement) =
-        let prevAutomationId = prevChild.TryGetAttribute<string>("AutomationId")
-        let newAutomationId = newChild.TryGetAttribute<string>("AutomationId")
+        let prevAutomationId = prevChild.TryGetAttribute<string>("ElementAutomationId")
+        let newAutomationId = newChild.TryGetAttribute<string>("ElementAutomationId")
 
         match prevAutomationId with
         | ValueSome _ when prevAutomationId <> newAutomationId -> false
@@ -49,8 +49,8 @@ module ViewHelpers =
     /// Checks whether the CustomEffect can be reused given the previous and the new Effect name
     /// The effect is instantiated by Effect.Resolve and can't be reused when asking for a new effect
     and internal canReuseCustomEffect (prevChild:ViewElement) (newChild:ViewElement) =
-        let prevName = prevChild.TryGetAttribute<string>("Name")
-        let newName = newChild.TryGetAttribute<string>("Name")
+        let prevName = prevChild.TryGetAttribute<string>("EffectName")
+        let newName = newChild.TryGetAttribute<string>("EffectName")
 
         match prevName with
         | ValueSome _ when prevName <> newName -> false
@@ -80,7 +80,7 @@ module ViewHelpers =
     /// Looks for a view element with the given Automation ID in the view hierarchy.
     /// This function is not optimized for efficiency and may execute slowly.
     let rec tryFindViewElement automationId (element:ViewElement) =
-        let elementAutomationId = element.TryGetAttribute<string>("AutomationId")
+        let elementAutomationId = element.TryGetAttribute<string>("ElementAutomationId")
         match elementAutomationId with
         | ValueSome automationIdValue when automationIdValue = automationId -> Some element
         | _ ->
@@ -88,7 +88,7 @@ module ViewHelpers =
                 match element.TryGetAttribute<ViewElement>("Content") with
                 | ValueSome content -> [| content |]
                 | ValueNone ->
-                    match element.TryGetAttribute<ViewElement[]>("Pages") with
+                    match element.TryGetAttribute<ViewElement[]>("NavigationPagePages") with
                     | ValueSome pages -> pages
                     | ValueNone ->
                         match element.TryGetAttribute<ViewElement[]>("Children") with
