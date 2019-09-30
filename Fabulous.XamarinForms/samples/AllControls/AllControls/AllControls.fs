@@ -459,17 +459,17 @@ module App =
                    View.ScrollingContentPage("Entry", 
                        [ View.Label(text="Entry:")
                          View.Entry(text= entryText, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                             textChanged=debounce 250 (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+                             textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
                              completed=(fun text -> dispatch (EntryEditCompleted text)))
 
                          View.Label(text="Entry (password):")
                          View.Entry(text= password, isPassword=true, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                             textChanged=debounce 250 (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+                             textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
                              completed=(fun text -> dispatch (PasswordEntryEditCompleted text)))
 
                          View.Label(text="Entry (placeholder):")
                          View.Entry(placeholder= placeholder, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                             textChanged=debounce 250 (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+                             textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
                              completed=(fun text -> dispatch (PlaceholderEntryEditCompleted text)))
 
                          MainPageButton
@@ -1019,7 +1019,7 @@ module App =
     
 type App () as app = 
     inherit Application ()
-    do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromResource("AllControls.styles.css", System.Reflection.Assembly.GetExecutingAssembly()))
+    do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
 
     let runner = 
         Program.mkProgram App.init App.update App.view
