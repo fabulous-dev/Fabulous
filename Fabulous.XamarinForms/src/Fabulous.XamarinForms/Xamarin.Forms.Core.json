@@ -840,7 +840,9 @@
           "source": "IsBusy"
         },
         {
-          "source": "Padding"
+          "source": "Padding",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
+          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
           "source": "Title"
@@ -1214,7 +1216,9 @@
           "shortName": "Image"
         },
         {
-          "source": "Padding"
+          "source": "Padding",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
+          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
           "source": "Text"
@@ -1322,7 +1326,9 @@
           "source": "IsOpaque"
         },
         {
-          "source": "Padding"
+          "source": "Padding",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
+          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
           "source": "Source"
