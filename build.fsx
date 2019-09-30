@@ -192,8 +192,8 @@ Target.create "BuildFabulousXamarinForms" (fun _ ->
 )
 
 Target.create "RunFabulousXamarinFormsTests" (fun _ ->
-    !! "tests/**/*.fsproj"
-    |> dotnetTest "Fabulous/TestResults"
+    !! "Fabulous.XamarinForms/tests/**/*.fsproj"
+    |> dotnetTest "Fabulous.XamarinForms/TestResults"
 )
 
 Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
@@ -242,7 +242,7 @@ Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
 
 Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
     !! "Fabulous.XamarinForms/samples/**/*.Tests.fsproj"
-    |> dotnetTest "Fabulous.XamarinForms/TestResults"
+    |> dotnetTest "Fabulous.XamarinForms/samples/TestResults"
 )
 
 Target.create "BuildFabulousStaticViewSamples" (fun _ ->

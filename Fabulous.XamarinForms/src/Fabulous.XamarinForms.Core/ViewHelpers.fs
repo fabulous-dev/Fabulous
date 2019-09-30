@@ -1,4 +1,4 @@
-﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
 open Fabulous
@@ -45,7 +45,7 @@ module ViewHelpers =
         match prevAutomationId with
         | ValueSome _ when prevAutomationId <> newAutomationId -> false
         | _ -> true
-
+        
     /// Checks whether the CustomEffect can be reused given the previous and the new Effect name
     /// The effect is instantiated by Effect.Resolve and can't be reused when asking for a new effect
     and internal canReuseCustomEffect (prevChild:ViewElement) (newChild:ViewElement) =

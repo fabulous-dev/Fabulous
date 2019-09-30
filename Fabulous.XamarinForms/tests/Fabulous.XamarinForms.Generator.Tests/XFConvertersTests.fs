@@ -9,18 +9,20 @@ open Xamarin.Forms
 
 module XFConvertersTests =
     [<TestCase("Xamarin.Forms.UriImageSource", false)>]
-    [<TestCase("Xamarin.Forms.ItemsView", false)>]
-    [<TestCase("Xamarin.Forms.ListItemsLayout", false)>]
     [<TestCase("Xamarin.Forms.Button", true)>]
     let ``isTypeResolvable should return false for excluded types``(typeName, expectedValue) =
         XFConverters.isTypeResolvable typeName |> should equal expectedValue
 
-    [<TestCase("Xamarin.Forms.Grid.IGridList`1<Xamarin.Forms.View>", "ViewElement list")>]
-    [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Effect>", "ViewElement list")>]
-    [<TestCase("System.Collections.Generic.IList`1<T>", "ViewElement list")>]
-    [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Behavior>", "ViewElement list")>]
-    [<TestCase("System.Collections.Generic.IList`1<Xamarin.Forms.Span>", "ViewElement list")>]
-    [<TestCase("System.Windows.Input.ICommand", "unit -> unit")>]
+    [<TestCase("Xamarin.Forms.Grid.IGridList<Xamarin.Forms.View>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList<Xamarin.Forms.Effect>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList<T>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList<Xamarin.Forms.Behavior>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList<Xamarin.Forms.Span>", "ViewElement list")>]
+    [<TestCase("System.Collections.Generic.IList<Xamarin.Forms.MenuItem>", "ViewElement list")>]
+    [<TestCase("Xamarin.Forms.Button+ButtonContentLayout", "Xamarin.Forms.Button.ButtonContentLayout")>]
+    [<TestCase("System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>", "System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>")>]
+    [<TestCase("System.EventHandler<System.Tuple<System.String,System.String>>", "System.EventHandler<string * string>")>]
+    [<TestCase("System.Tuple<System.String,System.String>", "(string * string)")>]
     let ``convertTypeName should convert known Xamarin.Forms types``(typeName, expectedValue) =
         XFConverters.convertTypeName typeName |> should equal expectedValue
         

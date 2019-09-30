@@ -12,6 +12,7 @@
   * [Performance hints](views-perf.html)
   * [Multi-page applications and Navigation](views-navigation.html)
   * [Styling](views-styling.html)
+  * [Effects](views-effects.html)
   * [Extensions](views-extending.html)
   * [Extensions: Maps](views-maps.html)
   * [Extensions: SkiaSharp (drawing)](views-skiasharp.html)

@@ -633,6 +633,14 @@
         {
           "source": "Title"
         }
+      ],
+      "events": [
+        {
+          "source": "Appearing"
+        },
+        {
+          "source": "Disappearing"
+        }
       ]
     },
     {
@@ -1051,6 +1059,12 @@
       "properties": [
         {
           "source": "FlyoutBackgroundColor"
+        },
+        {
+          "source": "FlyoutBackgroundImage"
+        },
+        {
+          "source": "FlyoutBackgroundImageAspect"
         },
         {
           "source": "FlyoutBehavior"
@@ -1523,10 +1537,22 @@
           "source": "EmptyView"
         },
         {
+          "source": "Footer"
+        },
+        {
+          "source": "Header"
+        },
+        {
+          "source": "HorizontalScrollBarVisibility"
+        },
+        {
           "source": "ItemSizingStrategy"
         },
         {
           "source": "ItemsLayout"
+        },
+        {
+          "source": "ItemsUpdatingScrollMode"
         },
         {
           "source": "ItemsSource",
@@ -1534,6 +1560,20 @@
           "inputType": "ViewElement list",
           "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateItemsViewItems"
+        },
+        {
+          "source": "RemainingItemsThreshold"
+        },
+        {
+          "source": "RemainingItemsThresholdReachedCommand"
+        },
+        {
+          "source": "VerticalScrollBarVisibility"
+        }
+      ],
+      "events": [
+        {
+          "source": "Scrolled"
         }
       ]
     },
@@ -1566,6 +1606,21 @@
             "SelectedItem",
             "SelectedItems"
           ]
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.GroupableItemsView",
+      "canBeInstantiated": "false",
+      "properties": [
+        {
+          "source": "GroupFooterTemplate"
+        },
+        {
+          "source": "GroupHeaderTemplate"
+        },
+        {
+          "source": "IsGrouped"
         }
       ]
     },
@@ -2176,6 +2231,9 @@
         },
         {
           "source": "OnColor"
+        },
+        {
+          "source": "ThumbColor"
         }
       ],
       "events": [
