@@ -348,7 +348,7 @@ module App =
             View.NavigationPage(pages=
                 [ yield 
                     View.ContentPage(useSafeArea=true,
-                        padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                        padding = AllSides (10.0, 20.0, 10.0, 5.0), 
                         content= View.ListView(
                             items=[ 
                                  View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
@@ -377,7 +377,7 @@ module App =
                   if showAbout then 
                     yield 
                         View.ContentPage(title="About", useSafeArea=true, 
-                            padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                            padding = AllSides (10.0, 20.0, 10.0, 5.0), 
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
@@ -674,7 +674,7 @@ module App =
              [ 
                dependsOn model.Count (fun model count -> 
                    View.ContentPage(title="FlexLayout", useSafeArea=true,
-                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                       padding = AllSides (10.0, 20.0, 10.0, 5.0), 
                        content= 
                            View.FlexLayout(
                             direction = FlexDirection.Column,
@@ -736,7 +736,7 @@ module App =
 
                dependsOn model.Count (fun model count -> 
                  View.ContentPage(title="RelativeLayout", 
-                  padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                  padding = AllSides (10.0, 20.0, 10.0, 5.0), 
                   content= View.RelativeLayout(
                       children=[ 
                           View.Label(text = "RelativeLayout Example", textColor = Color.Red)
@@ -751,7 +751,7 @@ module App =
 
                dependsOn model.Count (fun model count -> 
                    View.ContentPage(title="AbsoluteLayout", useSafeArea=true,
-                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                       padding = AllSides (10.0, 20.0, 10.0, 5.0), 
                        content= View.StackLayout(
                            children=[ 
                                View.Label(text = "AbsoluteLayout Demo", fontSize = Named NamedSize.Large, horizontalOptions = LayoutOptions.Center)
