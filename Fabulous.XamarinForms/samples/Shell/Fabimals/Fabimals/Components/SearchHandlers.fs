@@ -23,8 +23,8 @@ module SearchHandlers =
                 for animal in animals do
                     yield View.Grid(
                         tag=animal,
-                        padding=Thickness.Uniform 10.,
-                        coldefs=[ RowOrColumn.Stars 0.15; RowOrColumn.Stars 0.85],
+                        padding=Thickness 10.,
+                        coldefs=[ Stars 0.15; Stars 0.85],
                         children=[
                             View.Image(
                                 source=Image.Path animal.ImageUrl,

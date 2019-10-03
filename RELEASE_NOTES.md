@@ -1,3 +1,7 @@
+#### 0.50.0-preview1
+
+xxx
+
 #### 0.42.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.2 (https://github.com/fsprojects/Fabulous/pull/559)

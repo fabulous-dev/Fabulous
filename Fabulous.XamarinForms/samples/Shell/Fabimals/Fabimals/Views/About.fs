@@ -44,7 +44,7 @@ module About =
                                 backgroundColor=AboutStyles.primaryColor,
                                 verticalOptions=LayoutOptions.FillAndExpand,
                                 horizontalOptions=LayoutOptions.Fill,
-                                padding=Thickness.Mirror (0., 40.),
+                                padding=Thickness (0., 40.),
                                 content=View.Image(
                                     source=Image.Path "xamarin_logo.png",
                                     horizontalOptions=LayoutOptions.Center,
@@ -54,16 +54,16 @@ module About =
                             )
                             View.StackLayout(
                                 orientation=StackOrientation.Vertical,
-                                padding=Thickness.Mirror (16., 40.),
+                                padding=Thickness (16., 40.),
                                 spacing=10.,
                                 children=[
                                     View.Label(
-                                        fontSize=FontSize.Value 22.,
+                                        fontSize=FontSize 22.,
                                         formattedText=View.FormattedString([
                                             View.Span(
                                                 text="Fabulous Animals",
                                                 fontAttributes=FontAttributes.Bold,
-                                                fontSize=FontSize.Value 22.
+                                                fontSize=FontSize 22.
                                             )
                                             View.Span " "
                                             View.Span(
@@ -116,7 +116,7 @@ module About =
                                         ])
                                     )
                                     View.Button(
-                                        margin=Thickness.AllSides (0., 10., 0., 0.),
+                                        margin=Thickness (0., 10., 0., 0.),
                                         text="Learn more",
                                         command=(fun() -> dispatch ShowFabulous),
                                         backgroundColor=AboutStyles.primaryColor,

@@ -77,7 +77,7 @@ module App =
             View.Button(text = text, command=(fun () -> dispatch command))
                 .GridRow(row)
                 .GridColumn(column)
-                .FontSize(FontSize.Value 36.0)
+                .FontSize(FontSize 36.0)
                 //.ButtonCornerRadius(0)
 
         let mkNumberButton number row column =
@@ -96,7 +96,7 @@ module App =
         View.ContentPage(
             View.Grid(rowdefs=[ Star; Star; Star; Star; Star; Star ], coldefs=[ Star; Star; Star; Star ],
                 children=[
-                    View.Label(text = display model, fontSize = FontSize.Value 48.0, fontAttributes = FontAttributes.Bold, backgroundColor = Color.Black, textColor = Color.White, horizontalTextAlignment = TextAlignment.End, verticalTextAlignment = TextAlignment.Center).GridColumnSpan(4)
+                    View.Label(text = display model, fontSize = FontSize 48.0, fontAttributes = FontAttributes.Bold, backgroundColor = Color.Black, textColor = Color.White, horizontalTextAlignment = TextAlignment.End, verticalTextAlignment = TextAlignment.Center).GridColumnSpan(4)
                     mkNumberButton 7 1 0; mkNumberButton 8 1 1; mkNumberButton 9 1 2
                     mkNumberButton 4 2 0; mkNumberButton 5 2 1; mkNumberButton 6 2 2
                     mkNumberButton 1 3 0; mkNumberButton 2 3 1; mkNumberButton 3 3 2

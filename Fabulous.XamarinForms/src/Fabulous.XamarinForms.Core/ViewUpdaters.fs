@@ -402,7 +402,7 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
         | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
-        | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
+        | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, Xamarin.Forms.Accelerator.FromString newVal)
 
     /// Update the items of a Shell, given previous and current view elements
     let updateShellItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Shell) _ =

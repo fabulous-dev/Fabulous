@@ -131,7 +131,7 @@
         {
           "source": null,
           "name": "Accelerator",
-          "inputType": "InputTypes.Accelerator",
+          "inputType": "string",
           "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateMenuItemAccelerator"
         },
@@ -468,8 +468,7 @@
           "source": null,
           "name": "StyleClass",
           "defaultValue": "null",
-          "inputType": "InputTypes.StyleClass",
-          "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
+          "inputType": "string list"
         },
         {
           "source": null,
@@ -840,9 +839,7 @@
           "source": "IsBusy"
         },
         {
-          "source": "Padding",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
-          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "source": "Padding"
         },
         {
           "source": "Title"
@@ -1149,9 +1146,7 @@
           "source": "HorizontalOptions"
         },
         {
-          "source": "Margin",
-          "inputType": "InputTypes.Thickness",
-          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "source": "Margin"
         },
         {
           "source": "VerticalOptions"
@@ -1216,9 +1211,7 @@
           "shortName": "Image"
         },
         {
-          "source": "Padding",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
-          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "source": "Padding"
         },
         {
           "source": "Text"
@@ -1326,9 +1319,7 @@
           "source": "IsOpaque"
         },
         {
-          "source": "Padding",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
-          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "source": "Padding"
         },
         {
           "source": "Source"
@@ -1658,16 +1649,16 @@
       "properties": [
         {
           "source": "Footer",
-          "inputType": "InputTypes.ViewOrText",
-          "convertModelToValue": "ViewConverters.convertFabulousViewOrTextToObject"
+          "inputType": "ViewElement",
+          "modelType": "ViewElement"
         },
         {
           "source": "HasUnevenRows"
         },
         {
           "source": "Header",
-          "inputType": "InputTypes.ViewOrText",
-          "convertModelToValue": "ViewConverters.convertFabulousViewOrTextToObject"
+          "inputType": "ViewElement",
+          "modelType": "ViewElement"
         },
         {
           "source": "HorizontalScrollBarVisibility"
@@ -1843,9 +1834,7 @@
           "source": "IsClippedToBounds"
         },
         {
-          "source": "Padding",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Thickness",
-          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "source": "Padding"
         }
       ]
     },
@@ -1971,8 +1960,8 @@
         {
           "source": "ColumnDefinitions",
           "shortName": "coldefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
-          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsColumnDefinition"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
         },
         {
           "source": "ColumnSpacing"
@@ -1980,8 +1969,8 @@
         {
           "source": "RowDefinitions",
           "shortName": "rowdefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.RowOrColumn list",
-          "convertModelToValue": "ViewConverters.convertFabulousRowOrColumnToXamarinFormsRowDefinition"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
         },
         {
           "source": "RowSpacing"

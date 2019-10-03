@@ -48,17 +48,17 @@ module App =
 
     let view (model: Model) dispatch =  
         View.ContentPage(
-          content=View.StackLayout(padding = Uniform 30.0, verticalOptions = LayoutOptions.Center,
+          content=View.StackLayout(padding = Thickness 30.0, verticalOptions = LayoutOptions.Center,
             children=[
               View.Label(automationId="CountLabel", text=sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
               View.Button(automationId="IncrementButton", text="Increment", command= (fun () -> dispatch Increment))
               View.Button(automationId="DecrementButton", text="Decrement", command= (fun () -> dispatch Decrement)) 
-              View.StackLayout(padding = Uniform 20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
+              View.StackLayout(padding = Thickness 20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
                               children = [ View.Label(text="Timer")
                                            View.Switch(automationId="TimerSwitch", isToggled=model.TimerOn, toggled=(fun on -> dispatch (TimerToggled on.Value))) ])
               View.Slider(automationId="StepSlider", minimumMaximum=(0.0, 10.0), value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
               View.Label(automationId="StepSizeLabel", text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center)
-              View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch Reset))//, canExecute = (model <> initModel () ))
+              View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch Reset), commandCanExecute = (model <> initModel () ))
             ]))
              
     let program = 

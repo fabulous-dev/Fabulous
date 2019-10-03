@@ -25,7 +25,7 @@ module AnimalDetails =
 
             View.ScrollView(
                 View.StackLayout(
-                    margin=Thickness.Uniform 20.,
+                    margin=Thickness 20.,
                     children=[
                         View.Label(
                             text=animal.Name,

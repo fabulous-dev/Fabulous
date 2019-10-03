@@ -11,9 +11,9 @@ module Templates =
         dependsOn animal (fun _ animal ->
             View.Grid(
                 tag=animal,
-                padding=Thickness.Uniform 10.,
-                coldefs=[ RowOrColumn.Auto; RowOrColumn.Auto],
-                rowdefs=[ RowOrColumn.Auto; RowOrColumn.Auto ],
+                padding=Thickness 10.,
+                coldefs=[ Auto; Auto],
+                rowdefs=[ Auto; Auto ],
                 children=[
                     View.Image(
                         source=Image.Path animal.ImageUrl,

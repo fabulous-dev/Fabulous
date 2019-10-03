@@ -158,10 +158,10 @@ module MyExtension =
     // Test some adhoc functional abstractions
     type View with 
         static member ScrollingContentPage(title, children) =
-            View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=Uniform 20.0, children=children) ), useSafeArea=true)
+            View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=Thickness 20.0, children=children) ), useSafeArea=true)
 
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            View.ContentPage(title=title, content=View.StackLayout(padding=Uniform 20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
+            View.ContentPage(title=title, content=View.StackLayout(padding=Thickness 20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
 
 module App = 
@@ -348,7 +348,7 @@ module App =
             View.NavigationPage(pages=
                 [ yield 
                     View.ContentPage(useSafeArea=true,
-                        padding = AllSides (10.0, 20.0, 10.0, 5.0), 
+                        padding = Thickness (10.0, 20.0, 10.0, 5.0), 
                         content= View.ListView(
                             items=[ 
                                  View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
@@ -377,11 +377,11 @@ module App =
                   if showAbout then 
                     yield 
                         View.ContentPage(title="About", useSafeArea=true, 
-                            padding = AllSides (10.0, 20.0, 10.0, 5.0), 
+                            padding = Thickness (10.0, 20.0, 10.0, 5.0), 
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
-                                   View.Label(text = "Now with CSS styling", styleClass = ClassName "cssCallout")
+                                   View.Label(text = "Now with CSS styling", styleClass = [ "cssCallout" ])
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
@@ -600,8 +600,8 @@ module App =
                        View.Image(source=Path "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
                            horizontalOptions=LayoutOptions.FillAndExpand,
                            verticalOptions=LayoutOptions.FillAndExpand)
-                       View.Label(text="Image (Embedded):", margin = AllSides (0., 20., 0., 0.))
-                       View.Image(source=Image.Value (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly)), 
+                       View.Label(text="Image (Embedded):", margin = Thickness (0., 20., 0., 0.))
+                       View.Image(source=Source (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly)), 
                               horizontalOptions=LayoutOptions.FillAndExpand,
                               verticalOptions=LayoutOptions.FillAndExpand) 
                        MainPageButton ]))
@@ -625,7 +625,7 @@ module App =
                            items = [ 
                                for i in 0 .. 10 do 
                                    yield View.Label "Ionide"
-                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = FontSize.Value 10.)]))
+                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = FontSize 10.)]))
                                    yield View.Label "Emacs"
                                    yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", fontAttributes=FontAttributes.Bold); View.Span(text="Studio ", fontAttributes=FontAttributes.Italic); View.Span(text="Code", foregroundColor = Color.Blue)]))
                                    yield View.Label "Rider"], 
@@ -674,7 +674,7 @@ module App =
              [ 
                dependsOn model.Count (fun model count -> 
                    View.ContentPage(title="FlexLayout", useSafeArea=true,
-                       padding = AllSides (10.0, 20.0, 10.0, 5.0), 
+                       padding = Thickness (10.0, 20.0, 10.0, 5.0), 
                        content= 
                            View.FlexLayout(
                             direction = FlexDirection.Column,
@@ -685,36 +685,36 @@ module App =
                                           View.Frame(height=480.0, width=300.0, 
                                               content = View.FlexLayout( direction=FlexDirection.Column,
                                                   children = [ 
-                                                      View.Label(text="Seated Monkey", margin=Mirror (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
-                                                      View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Mirror (0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Often smiles mysteriously", margin=Mirror (0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Sleeps sitting up", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="Seated Monkey", margin=Thickness (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
+                                                      View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Often smiles mysteriously", margin=Thickness (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Sleeps sitting up", margin=Thickness (0.0, 4.0), textColor=Color.Black)
                                                       View.Image(height=240.0, 
                                                           width=160.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
                                                       ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexLayoutGrow(1.0)
+                                                      View.Label(margin=Thickness (0.0, 4.0)).FlexLayoutGrow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
-                                              margin=Uniform 10.0,
+                                              margin=Thickness 10.0,
                                               cornerRadius=15.0)
                                           View.Frame(height=480.0, width=300.0, 
                                               content = View.FlexLayout( direction=FlexDirection.Column,
                                                   children = [ 
-                                                      View.Label(text="Banana Monkey", margin=Mirror (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
-                                                      View.Label(text="Watch this monkey eat a giant banana.", margin=Mirror (0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • More fun than a barrel of monkeys", margin=Mirror (0.0, 4.0), textColor=Color.Black)
-                                                      View.Label(text="  • Banana not included", margin=Mirror (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="Banana Monkey", margin=Thickness (0.0, 8.0), fontSize=Named NamedSize.Large, textColor=Color.Blue)
+                                                      View.Label(text="Watch this monkey eat a giant banana.", margin=Thickness (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • More fun than a barrel of monkeys", margin=Thickness (0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Banana not included", margin=Thickness (0.0, 4.0), textColor=Color.Black)
                                                       View.Image(height=213.0, 
                                                           width=320.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
                                                       ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Mirror (0.0, 4.0)).FlexLayoutGrow(1.0)
+                                                      View.Label(margin=Thickness (0.0, 4.0)).FlexLayoutGrow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
-                                              margin=Uniform 10.0,
+                                              margin=Thickness 10.0,
                                               cornerRadius=15.0)
                                           
                                       ] ))
@@ -736,7 +736,7 @@ module App =
 
                dependsOn model.Count (fun model count -> 
                  View.ContentPage(title="RelativeLayout", 
-                  padding = AllSides (10.0, 20.0, 10.0, 5.0), 
+                  padding = Thickness (10.0, 20.0, 10.0, 5.0), 
                   content= View.RelativeLayout(
                       children=[ 
                           View.Label(text = "RelativeLayout Example", textColor = Color.Red)
@@ -751,7 +751,7 @@ module App =
 
                dependsOn model.Count (fun model count -> 
                    View.ContentPage(title="AbsoluteLayout", useSafeArea=true,
-                       padding = AllSides (10.0, 20.0, 10.0, 5.0), 
+                       padding = Thickness (10.0, 20.0, 10.0, 5.0), 
                        content= View.StackLayout(
                            children=[ 
                                View.Label(text = "AbsoluteLayout Demo", fontSize = Named NamedSize.Large, horizontalOptions = LayoutOptions.Center)
@@ -986,7 +986,7 @@ module App =
                                 View.Label(text="Person12")
                                 View.Label(text="Person13")
                                 View.Label(text="Person14")
-                            ], margin= Thickness.Uniform 10.)
+                            ], margin= Thickness 10.)
                         ]
                     ))
 
@@ -999,18 +999,18 @@ module App =
             View.ScrollingContentPage("Effects", [
                 View.Label("Samples available on iOS and Android only")
                 
-                View.Label("Focus effect (no properties)", fontSize=FontSize.Value 5., margin=AllSides (0., 30., 0., 0.))
-                View.Label("Classic Entry field", margin=AllSides (0., 15., 0., 0.))
+                View.Label("Focus effect (no properties)", fontSize=FontSize 5., margin=Thickness (0., 30., 0., 0.))
+                View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
                 View.Entry()
-                View.Label("Entry field with Focus effect", margin=AllSides (0., 15., 0., 0.))
+                View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
                 View.Entry(effects = [
                     View.Effect("FabulousXamarinForms.FocusEffect")
                 ])
                 
-                View.Label("Shadow effect (with properties)", fontSize=FontSize.Value 15., margin=AllSides (0., 30., 0., 0.))
-                View.Label("Classic Label field", margin=AllSides (0., 15., 0., 0.))
+                View.Label("Shadow effect (with properties)", fontSize=FontSize 15., margin=Thickness (0., 30., 0., 0.))
+                View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
                 View.Label("This is a label without shadows")
-                View.Label("Label field with Shadow effect", margin=AllSides (0., 15., 0., 0.))
+                View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))
                 View.Label("This is a label with shadows", effects = [
                     View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
                 ])

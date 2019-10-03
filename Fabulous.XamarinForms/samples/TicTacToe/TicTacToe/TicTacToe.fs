@@ -185,7 +185,7 @@ module App =
                                     View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
                                     View.Image(source=imageForPos model.Board.[pos],
-                                     margin=Uniform 10.0, horizontalOptions=LayoutOptions.Center,
+                                     margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
                                      verticalOptions=LayoutOptions.Center)
                             item.GridRow(row*2).GridColumn(col*2) ],
 
@@ -196,7 +196,7 @@ module App =
                     ?width = model.VisualBoardSize,
                     ?height = model.VisualBoardSize).GridRow(0)
 
-                View.Label(text=getMessage model, margin=Uniform 10.0, textColor=Color.Black, 
+                View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black, 
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
                     horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=Named NamedSize.Large).GridRow(1)

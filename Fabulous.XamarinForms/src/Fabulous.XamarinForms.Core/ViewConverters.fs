@@ -35,12 +35,6 @@ module ViewConverters =
         | :? ImageSource as imageSource -> imageSource
         | _ -> failwithf "makeImageSource: invalid argument %O" v
 
-    /// Converts a string to a Xamarin.Forms Accelerator
-    let makeAccelerator (accelerator: InputTypes.Accelerator) =
-        match accelerator with
-        | String value -> Accelerator.op_Implicit value
-        | Value value -> value
-
     /// Converts a string to a Xamarin.Forms FileImageSource
     let makeFileImageSource (image: string) = FileImageSource.op_Implicit image
 
@@ -101,26 +95,13 @@ module ViewConverters =
         match itemsSource with 
         | :? System.Collections.IList as arr -> arr
         | es -> (Array.ofSeq es :> System.Collections.IList)
-
-    /// Converts a string or collection of strings to a Xamarin.Forms StyleClass specification
-    let convertStyleClassToStringList (v: InputTypes.StyleClass) = 
-       match v with
-       | ClassName className -> [| className |]
-       | Classes classNames -> classNames |> Array.ofList
-       
-    let convertFabulousThicknessToXamarinFormsThickness (v: InputTypes.Thickness) =
-        match v with
-        | Uniform value -> Thickness(value)
-        | Mirror (leftRight, topBottom) -> Thickness(leftRight, topBottom)
-        | AllSides (left, top, right, bottom) -> Thickness(left, top, right, bottom)
-        | InputTypes.Thickness.Value thickness -> thickness
         
     /// Converts a string, byte array or ImageSource to a Xamarin.Forms ImageSource
     let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image) =
         match v with
         | Path path -> ImageSource.op_Implicit path
         | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
-        | InputTypes.Image.Value imageSource -> imageSource
+        | Source imageSource -> imageSource
         
     let convertCompletedFuncToEventHandler (v: string -> unit) =
         System.EventHandler(fun _sender _args -> v (_sender :?> Xamarin.Forms.EntryCell).Text)
@@ -130,7 +111,7 @@ module ViewConverters =
         |> Array.ofList
         |> Array.map (fun (title, es) -> (title, Array.ofList es))
                 
-    let convertFabulousRowOrColumnToXamarinFormsRowDefinition (v: InputTypes.RowOrColumn array) =
+    let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
             Array.map (fun vi ->
                 match vi with
@@ -144,7 +125,7 @@ module ViewConverters =
         rows |> Array.iter collection.Add
         collection
         
-    let convertFabulousRowOrColumnToXamarinFormsColumnDefinition (v: InputTypes.RowOrColumn array) =
+    let convertFabulousDimensionToXamarinFormsColumnDefinition (v: InputTypes.Dimension array) =
         let columns =
             Array.map (fun vi ->
                 match vi with
@@ -160,14 +141,8 @@ module ViewConverters =
         
     let convertFabulousFontSizeToXamarinFormsDouble (targetType: Type) (v: InputTypes.FontSize) =
         match v with
-        | InputTypes.FontSize.Named namedSize -> Device.GetNamedSize(namedSize, targetType)
-        | InputTypes.FontSize.Value value -> value
-            
-    let convertFabulousViewOrTextToObject (v: InputTypes.ViewOrText) =
-        match v with
-        | InputTypes.ViewOrText.Text text -> text :> obj
-        | InputTypes.ViewOrText.ViewElement viewElement -> viewElement.Create()
-        | InputTypes.ViewOrText.View view -> view :> obj
+        | Named namedSize -> Device.GetNamedSize(namedSize, targetType)
+        | FontSize value -> value
             
     let convertListViewSelectedItemIndexToObj (target: Xamarin.Forms.ListView) (v: int option) =
         match v with
