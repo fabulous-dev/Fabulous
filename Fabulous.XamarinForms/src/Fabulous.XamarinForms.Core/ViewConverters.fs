@@ -243,6 +243,11 @@ module ViewConverters =
             f (tryFindGroupedListViewItem sender args.SelectedItem)
         )
         
+    let makeListViewGroupedItemTappedEventHandler f =
+        System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args ->
+            f (tryFindGroupedListViewItem sender args.Item).Value
+        )
+        
     let makeMasterDetailPageIsPresentedChangedEventHandler f =
         System.EventHandler(fun sender args ->
             f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented
