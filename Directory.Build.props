@@ -3,14 +3,11 @@
   <PropertyGroup>
     <Version>0.50.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.50.0-alpha</PackageVersion>
+    <PackageVersion>0.50.0-alpha.2</PackageVersion>
     <PackageReleaseNotes>This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
-[Fabulous.XamarinForms] Fabulous is no longer triggering property-related events when internally updating the value. This fixes the really annoying infinite looping issue on Android once and for all!
-[Fabulous.XamarinForms] Properties asking for an `obj` value are now requesting a proper type
-[Fabulous.XamarinForms] Missing controls and properties have been added. Some existing properties have changed names.
-[Fabulous.CodeGen] Created this new library from the Generator that was private to Fabulous. This library allows creating your own Generator for your framework. It has been created with extensibility and overridability in mind.
-[Fabulous.XamarinForms] [Generator] A new .NET console app (will be a .NET CLI tool in the future) that uses the new Fabulous.CodeGen lib to replace the existing Generator of Fabulous</PackageReleaseNotes>
+[Fabulous.XamarinForms] Fixed an issue where events could be subscribed to several times in a row.
+[Fabulous.XamarinForms] Fixed naming/ordering issues in some exposed properties</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

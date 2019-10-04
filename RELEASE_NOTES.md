@@ -1,3 +1,11 @@
+#### 0.50.0-alpha.2
+
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+Please only use this version with a backup of your solution.
+
+* [Fabulous.XamarinForms] Fixed an issue where events could be subscribed to several times in a row.
+* [Fabulous.XamarinForms] Fixed naming/ordering issues in some exposed properties
+
 #### 0.50.0-alpha
 
 This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
