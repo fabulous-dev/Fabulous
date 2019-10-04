@@ -117,8 +117,8 @@ module CodeGenerator =
                         w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
                         w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
                         w.printfn "                | _ -> ()"
-                        
-                w.printfn "                ())"
+                
+                w.printfn "                )"
             else
                 w.printfn "            (fun _ _ _ -> ())"
         

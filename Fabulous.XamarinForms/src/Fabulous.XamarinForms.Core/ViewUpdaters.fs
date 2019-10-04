@@ -61,6 +61,31 @@ module ViewUpdaters =
                             prevChildOpt, targetColl.[i]
                     attach prevChildOpt newChild targetChild
                     
+    /// Update the attached properties for each item in an already updated collection
+    let updateAttachedPropertiesForCollection
+           (prevCollOpt: 'T[] voption)
+           (collOpt: 'T[] voption)
+           (targetColl: IList<'TargetT>)
+           (attach: 'T voption -> 'T -> 'TargetT -> unit) =
+        match collOpt with
+        | ValueNone -> ()
+        | ValueSome coll when coll = null || coll.Length = 0 -> ()
+        | ValueSome coll ->
+            // Count the existing targetColl
+            // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
+            let n' = targetColl.Count
+            let n = targetColl.Count
+
+            for i in 0 .. coll.Length-1 do
+                let targetChild = targetColl.[i]
+                let newChild = coll.[i]
+                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
+                attach prevChildOpt newChild targetChild
+                
+    /// Update the attached properties for each item in Layout<T>.Children
+    let updateAttachedPropertiesForLayoutOfT prevCollOpt collOpt (target: Xamarin.Forms.Layout<'T>) attach =
+        updateAttachedPropertiesForCollection prevCollOpt collOpt target.Children attach
+                    
     /// Update the items in a ItemsView control, given previous and current view elements
     let updateItemsViewItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView) = 
         let targetColl = 

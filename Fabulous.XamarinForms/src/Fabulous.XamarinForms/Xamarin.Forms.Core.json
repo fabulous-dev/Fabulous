@@ -1051,7 +1051,7 @@
           "source": "Pushed"
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMember": "Pages"
     },
     {
       "type": "Xamarin.Forms.Shell",
@@ -1779,7 +1779,9 @@
         {
           "source": null,
           "name": "ItemTapped",
-          "inputType": "(int * int) option -> unit",
+          "inputType": "(int * int) -> unit",
+          "modelType": "System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>",
+          "defaultValue": "null",
           "convertInputToModel": "ViewConverters.makeListViewGroupedItemTappedEventHandler"
         }
       ],
@@ -1868,6 +1870,7 @@
           "name": "Children",
           "inputType": "ViewElement list",
           "defaultValue": "[]",
+          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -1898,6 +1901,7 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -1945,6 +1949,7 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -1993,6 +1998,7 @@
           "name": "Children",
           "defaultValue": "[]",
           "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
