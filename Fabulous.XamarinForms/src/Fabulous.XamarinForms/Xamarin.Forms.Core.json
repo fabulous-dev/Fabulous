@@ -1822,7 +1822,7 @@
       "type": "Fabulous.XamarinForms.CustomListView",
       "name": "ListView",
       "primaryConstructorMembers": [
-        "ItemsSource"
+        "Items"
       ]
     },
     {
@@ -1877,7 +1877,7 @@
         }
       ],
       "primaryConstructorMembers": [
-        "ItemsSource"
+        "Items"
       ]
     },
     {
