@@ -127,22 +127,26 @@ module Preparer =
     let toConstructorData (boundType: BoundType) =
         let properties = boundType.Properties |> Array.map (fun p -> { Name = p.Name; ShortName = p.ShortName; InputType = p.InputType })
         let events = boundType.Events |> Array.map (fun e -> { Name = e.Name; ShortName = e.ShortName; InputType = e.InputType })
-        let members = Array.concat [ properties; events ]
+        let allMembers = Array.concat [ properties; events ]
         
-        let orderedMembers =
-            match boundType.PrimaryConstructorMember with
-            | None -> members
-            | Some memberName ->
-                match members |> Array.tryFind (fun m -> m.Name = memberName) with
-                | None -> members
-                | Some primaryMember ->
-                    Array.concat [ [| primaryMember |]; (members |> Array.filter (fun m -> m.Name <> memberName)) ]
+        let primaryMembers =
+            match boundType.PrimaryConstructorMembers with
+            | None -> [||]
+            | Some memberNames -> memberNames |> Array.choose (fun n -> allMembers |> Array.tryFind (fun m -> m.Name = n))
+            
+        let otherMembers =
+            allMembers
+            |> Array.except primaryMembers
+            |> Array.sortBy (fun m -> m.ShortName)
         
-        let realMembers = orderedMembers |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
+        let members =
+            [ primaryMembers; otherMembers ]
+            |> Array.concat
+            |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
         
         { Name = boundType.Name
           FullName = boundType.Type
-          Members = realMembers }
+          Members = members }
 
     let getViewExtensionsData (types: BoundType array) =
         let toViewExtensionsMember (m: IBoundMember) =

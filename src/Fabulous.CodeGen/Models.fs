@@ -121,8 +121,8 @@ module Models =
         /// The properties to include/create/override for this type
         member val Properties: Property array option = None with get, set
         
-        /// The property/event to place first in the constructor so it can be used without name
-        member val PrimaryConstructorMember: string option = None with get, set
+        /// The properties/events to place first in the constructor so it can be used without name
+        member val PrimaryConstructorMembers: string array option = None with get, set
     
     type Bindings() =
         /// Assemblies to read (can be relative paths to dlls)

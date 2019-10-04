@@ -92,7 +92,7 @@ module Models =
           Name: string
           Events: BoundEvent array
           Properties: BoundProperty array
-          PrimaryConstructorMember: string option }
+          PrimaryConstructorMembers: string array option }
     
     type BoundModel =
         { Assemblies: string array

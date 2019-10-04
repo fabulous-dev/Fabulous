@@ -53,7 +53,9 @@
           "source": "TextOverride"
         }
       ],
-      "primaryConstructorMember": "Command"
+      "primaryConstructorMembers": [
+        "Command"
+      ]
     },
     {
       "type": "Fabulous.XamarinForms.CustomEffect",
@@ -123,7 +125,9 @@
           "defaultValue": "null"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.MenuItem",
@@ -149,7 +153,9 @@
           "source": "Text"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.ToolbarItem",
@@ -167,7 +173,9 @@
           "defaultValue": "0"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.Cell",
@@ -223,7 +231,9 @@
           "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Fabulous.XamarinForms.CustomEntryCell",
@@ -244,7 +254,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.SwitchCell",
@@ -267,7 +279,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "On"
+      "primaryConstructorMembers": [
+        "On"
+      ]
     },
     {
       "type": "Xamarin.Forms.TextCell",
@@ -288,7 +302,9 @@
           "source": "TextColor"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.ImageCell",
@@ -298,7 +314,9 @@
           "shortName": "image"
         }
       ],
-      "primaryConstructorMember": "ImageSource"
+      "primaryConstructorMembers": [
+        "ImageSource"
+      ]
     },
     {
       "type": "Xamarin.Forms.ViewCell",
@@ -310,7 +328,9 @@
           "defaultValue": "null"
         }
       ],
-      "primaryConstructorMember": "View"
+      "primaryConstructorMembers": [
+        "View"
+      ]
     },
     {
       "type": "Xamarin.Forms.FormattedString",
@@ -319,7 +339,9 @@
           "source": "Spans"
         }
       ],
-      "primaryConstructorMember": "Spans"
+      "primaryConstructorMembers": [
+        "Spans"
+      ]
     },
     {
       "type": "Xamarin.Forms.GestureElement",
@@ -372,7 +394,9 @@
           "source": "TextDecorations"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.ClickGestureRecognizer",
@@ -387,7 +411,9 @@
           "source": "NumberOfClicksRequired"
         }
       ],
-      "primaryConstructorMember": "Command"
+      "primaryConstructorMembers": [
+        "Command"
+      ]
     },
     {
       "type": "Xamarin.Forms.PanGestureRecognizer",
@@ -401,7 +427,9 @@
           "source": "PanUpdated"
         }
       ],
-      "primaryConstructorMember": "PanUpdated"
+      "primaryConstructorMembers": [
+        "PanUpdated"
+      ]
     },
     {
       "type": "Xamarin.Forms.PinchGestureRecognizer",
@@ -410,7 +438,9 @@
           "source": "PinchUpdated"
         }
       ],
-      "primaryConstructorMember": "PinchUpdated"
+      "primaryConstructorMembers": [
+        "PinchUpdated"
+      ]
     },
     {
       "type": "Xamarin.Forms.SwipeGestureRecognizer",
@@ -425,7 +455,9 @@
           "source": "Threshold"
         }
       ],
-      "primaryConstructorMember": "Command"
+      "primaryConstructorMembers": [
+        "Command"
+      ]
     },
     {
       "type": "Xamarin.Forms.TapGestureRecognizer",
@@ -437,7 +469,9 @@
           "source": "NumberOfTapsRequired"
         }
       ],
-      "primaryConstructorMember": "Commandß"
+      "primaryConstructorMembers": [
+        "Command"
+      ]
     },
     {
       "type": "Xamarin.Forms.FontImageSource",
@@ -455,7 +489,9 @@
           "source": "Size"
         }
       ],
-      "primaryConstructorMember": "Glyph"
+      "primaryConstructorMembers": [
+        "Glyph"
+      ]
     },
     {
       "type": "Xamarin.Forms.NavigableElement",
@@ -658,7 +694,9 @@
           "updateCode": "ViewUpdaters.updateShellContentMenuItems"
         }
       ],
-      "primaryConstructorMember": "ContentTemplate"
+      "primaryConstructorMembers": [
+        "ContentTemplate"
+      ]
     },
     {
       "type": "Xamarin.Forms.ShellGroupItem",
@@ -681,15 +719,21 @@
           "updateCode": "ViewUpdaters.updateShellItemItems"
         }
       ],
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.FlyoutItem",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.TabBar",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.ShellSection",
@@ -703,11 +747,15 @@
           "updateCode": "ViewUpdaters.updateShellSectionItems"
         }
       ],
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.Tab",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.VisualElement",
@@ -918,7 +966,10 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Master"
+      "primaryConstructorMembers": [
+        "Master",
+        "Detail"
+      ]
     },
     {
       "type": "Xamarin.Forms.MultiPage`1",
@@ -961,7 +1012,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.TabbedPage",
@@ -999,7 +1052,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.NavigationPage",
@@ -1051,7 +1106,9 @@
           "source": "Pushed"
         }
       ],
-      "primaryConstructorMember": "Pages"
+      "primaryConstructorMembers": [
+        "Pages"
+      ]
     },
     {
       "type": "Xamarin.Forms.Shell",
@@ -1107,7 +1164,9 @@
           "source": "Navigating"
         }
       ],
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.ContentPage",
@@ -1127,7 +1186,9 @@
           "source": "SizeAllocated"
         }
       ],
-      "primaryConstructorMember": "Content"
+      "primaryConstructorMembers": [
+        "Content"
+      ]
     },
     {
       "type": "Xamarin.Forms.View",
@@ -1163,7 +1224,9 @@
           "source": "IsRunning"
         }
       ],
-      "primaryConstructorMember": "IsRunning"
+      "primaryConstructorMembers": [
+        "IsRunning"
+      ]
     },
     {
       "type": "Xamarin.Forms.BoxView",
@@ -1175,7 +1238,9 @@
           "source": "CornerRadius"
         }
       ],
-      "primaryConstructorMember": "Color"
+      "primaryConstructorMembers": [
+        "Color"
+      ]
     },
     {
       "type": "Xamarin.Forms.Button",
@@ -1220,7 +1285,10 @@
           "source": "TextColor"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text",
+        "Command"
+      ]
     },
     {
       "type": "Xamarin.Forms.CheckBox",
@@ -1240,7 +1308,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "IsChecked"
+      "primaryConstructorMembers": [
+        "IsChecked"
+      ]
     },
     {
       "type": "Xamarin.Forms.DatePicker",
@@ -1280,7 +1350,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Date"
+      "primaryConstructorMembers": [
+        "Date"
+      ]
     },
     {
       "type": "Xamarin.Forms.Image",
@@ -1295,7 +1367,9 @@
           "source": "Source"
         }
       ],
-      "primaryConstructorMember": "Source"
+      "primaryConstructorMembers": [
+        "Source"
+      ]
     },
     {
       "type": "Xamarin.Forms.ImageButton",
@@ -1336,7 +1410,9 @@
           "source": "Released"
         }
       ],
-      "primaryConstructorMember": "Source"
+      "primaryConstructorMembers": [
+        "Source"
+      ]
     },
     {
       "type": "Xamarin.Forms.InputView",
@@ -1402,7 +1478,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.Entry",
@@ -1467,7 +1545,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.SearchBar",
@@ -1524,7 +1604,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.ItemsView",
@@ -1577,7 +1659,9 @@
     {
       "type": "Xamarin.Forms.CarouselView",
       "customType": "Fabulous.XamarinForms.CustomCarouselView",
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.SelectableItemsView",
@@ -1624,7 +1708,9 @@
     {
       "type": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.XamarinForms.CustomCollectionListView",
-      "primaryConstructorMember": "ItemsSource"
+      "primaryConstructorMembers": [
+        "ItemsSource"
+      ]
     },
     {
       "type": "Xamarin.Forms.ItemsView`1",
@@ -1732,7 +1818,9 @@
     {
       "type": "Fabulous.XamarinForms.CustomListView",
       "name": "ListView",
-      "primaryConstructorMember": "ItemsSource"
+      "primaryConstructorMembers": [
+        "ItemsSource"
+      ]
     },
     {
       "type": "Fabulous.XamarinForms.CustomGroupListView",
@@ -1785,7 +1873,9 @@
           "convertInputToModel": "ViewConverters.makeListViewGroupedItemTappedEventHandler"
         }
       ],
-      "primaryConstructorMember": "ItemsSource"
+      "primaryConstructorMembers": [
+        "ItemsSource"
+      ]
     },
     {
       "type": "Xamarin.Forms.Label",
@@ -1829,7 +1919,9 @@
           "source": "VerticalTextAlignment"
         }
       ],
-      "primaryConstructorMember": "Text"
+      "primaryConstructorMembers": [
+        "Text"
+      ]
     },
     {
       "type": "Xamarin.Forms.Layout",
@@ -1884,7 +1976,9 @@
           }
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.FlexLayout",
@@ -1938,7 +2032,9 @@
           "source": "Wrap"
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.Grid",
@@ -1987,7 +2083,9 @@
           "source": "RowSpacing"
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.RelativeLayout",
@@ -2021,7 +2119,9 @@
           }
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.StackLayout",
@@ -2034,7 +2134,9 @@
           "source": "Spacing"
         }
       ],
-      "primaryConstructorMember": "Children"
+      "primaryConstructorMembers": [
+        "Children"
+      ]
     },
     {
       "type": "Xamarin.Forms.ScrollView",
@@ -2067,7 +2169,9 @@
           "source": "Scrolled"
         }
       ],
-      "primaryConstructorMember": "Content"
+      "primaryConstructorMembers": [
+        "Content"
+      ]
     },
     {
       "type": "Xamarin.Forms.ContentView",
@@ -2076,7 +2180,9 @@
           "source": "Content"
         }
       ],
-      "primaryConstructorMember": "Content"
+      "primaryConstructorMembers": [
+        "Content"
+      ]
     },
     {
       "type": "Xamarin.Forms.Frame",
@@ -2093,7 +2199,9 @@
           "source": "HasShadow"
         }
       ],
-      "primaryConstructorMember": "Content"
+      "primaryConstructorMembers": [
+        "Content"
+      ]
     },
     {
       "type": "Xamarin.Forms.OpenGLView",
@@ -2102,7 +2210,9 @@
           "source": "HasRenderLoop"
         }
       ],
-      "primaryConstructorMember": "HasRenderLoop"
+      "primaryConstructorMembers": [
+        "HasRenderLoop"
+      ]
     },
     {
       "type": "Xamarin.Forms.Picker",
@@ -2146,7 +2256,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Items"
+      "primaryConstructorMembers": [
+        "Items"
+      ]
     },
     {
       "type": "Xamarin.Forms.ProgressBar",
@@ -2158,7 +2270,9 @@
           "source": "ProgressColor"
         }
       ],
-      "primaryConstructorMember": "Progress"
+      "primaryConstructorMembers": [
+        "Progress"
+      ]
     },
     {
       "type": "Xamarin.Forms.Slider",
@@ -2201,7 +2315,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Value"
+      "primaryConstructorMembers": [
+        "Value"
+      ]
     },
     {
       "type": "Xamarin.Forms.Stepper",
@@ -2228,7 +2344,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "Value"
+      "primaryConstructorMembers": [
+        "Value"
+      ]
     },
     {
       "type": "Xamarin.Forms.Switch",
@@ -2251,7 +2369,9 @@
           ]
         }
       ],
-      "primaryConstructorMember": "IsToggled"
+      "primaryConstructorMembers": [
+        "IsToggled"
+      ]
     },
     {
       "type": "Xamarin.Forms.TableView",
@@ -2279,7 +2399,9 @@
           "updateCode": "ViewUpdaters.updateTableViewItems"
         }
       ],
-      "primaryConstructorMember": "Root"
+      "primaryConstructorMembers": [
+        "Root"
+      ]
     },
     {
       "type": "Xamarin.Forms.TimePicker",
@@ -2316,7 +2438,9 @@
           "convertInputToModel": "ViewConverters.makeCustomTimePickerTimeChangedEventHandler"
         }
       ],
-      "primaryConstructorMember": "Time"
+      "primaryConstructorMembers": [
+        "Time"
+      ]
     },
     {
       "type": "Xamarin.Forms.WebView",
@@ -2352,7 +2476,9 @@
           "source": "ReloadRequested"
         }
       ],
-      "primaryConstructorMember": "Source"
+      "primaryConstructorMembers": [
+        "Source"
+      ]
     },
     {
       "type": "Xamarin.Forms.ItemsLayout",
@@ -2379,7 +2505,9 @@
           "source": "VerticalItemSpacing"
         }
       ],
-      "primaryConstructorMember": "HorizontalItemSpacing"
+      "primaryConstructorMembers": [
+        "HorizontalItemSpacing"
+      ]
     },
     {
       "type": "Xamarin.Forms.ListItemsLayout",
@@ -2388,7 +2516,9 @@
           "source": "ItemSpacing"
         }
       ],
-      "primaryConstructorMember": "ItemSpacing"
+      "primaryConstructorMembers": [
+        "ItemSpacing"
+      ]
     },
     {
       "type": "Xamarin.Forms.SearchHandler",
@@ -2510,7 +2640,9 @@
           "source": "QueryConfirmed"
         }
       ],
-      "primaryConstructorMember": "Command"
+      "primaryConstructorMembers": [
+        "Command"
+      ]
     },
     {
       "type": "Xamarin.Forms.TableSectionBase",
@@ -2533,12 +2665,16 @@
     {
       "type": "Xamarin.Forms.TableRoot",
       "baseGenericConstraint": "Xamarin.Forms.TableSection",
-      "primaryConstructorMember": "Title"
+      "primaryConstructorMembers": [
+        "Title"
+      ]
     },
     {
       "type": "Xamarin.Forms.TableSection",
       "baseGenericConstraint": "Xamarin.Forms.Cell",
-      "primaryConstructorMember": "Title"
+      "primaryConstructorMembers": [
+        "Title"
+      ]
     }
   ]
 }
