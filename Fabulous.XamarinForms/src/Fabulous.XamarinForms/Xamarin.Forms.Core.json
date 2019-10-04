@@ -67,6 +67,9 @@
           "inputType": "string",
           "defaultValue": "\"\""
         }
+      ],
+      "primaryConstructorMembers": [
+        "Name"
       ]
     },
     {
