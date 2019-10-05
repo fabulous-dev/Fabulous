@@ -65,13 +65,12 @@ module Resolver =
             |> Seq.toArray
 
     /// Finds all settable properties for a given type
-    let getAllPropertiesWithBindingFieldForType propertyBaseType (``type``: TypeDefinition) =
+    let getAllPropertiesForType (``type``: TypeDefinition) =
         if not ``type``.HasProperties then
             [||]
         else
-            ``type``.Fields
-            |> Seq.filter (fun fdef -> fdef.IsStatic && fdef.FieldType.FullName = propertyBaseType && fdef.Name.EndsWith("Property"))
-            |> Seq.filter (fun fdef -> ``type``.Properties |> Seq.exists (fun pdef -> pdef.Name = fdef.Name.Replace("Property", "")))
+            ``type``.Properties
+            |> Seq.filter (fun pdef -> pdef.SetMethod <> null && pdef.SetMethod.IsPublic)
             |> Seq.toArray
         
     /// Finds all events for a given type

@@ -46,19 +46,10 @@ module AnimalList =
 
     let view model dispatch =
         dependsOn (model.PageTitle, model.IsTopBarDisplayed, model.AllAnimals, model.FilteredAnimals) (fun model (pageTitle, isTopBarDisplayed, allAnimals, filteredAnimals) ->
-
-            // Currently on iOS, when using a CollectionView and Shell (with a top tabbar), the CollectionView goes under the tabbar
-            // This is a bug in Xamarin.Forms (https://github.com/xamarin/Xamarin.Forms/pull/6457)
-            let contentMargin =
-                match isTopBarDisplayed, Xamarin.Forms.Device.RuntimePlatform with
-                | true, Device.iOS -> Thickness(0., 40., 0., 0.)
-                | _ -> Thickness(0.)
-
             View.ContentPage(
                 title=pageTitle,
                 shellSearchHandler=(SearchHandlers.animalSearchHandler filteredAnimals (SearchHandlerMsg >> dispatch)),
                 content=View.CollectionView(
-                    margin=contentMargin,
                     selectionMode=SelectionMode.Single,
                     selectionChanged=(navigateToAfterSelectionChanged dispatch),
                     items=(allAnimals |> List.map Templates.animalTemplate)

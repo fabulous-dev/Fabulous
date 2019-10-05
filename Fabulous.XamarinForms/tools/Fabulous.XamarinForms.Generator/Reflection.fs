@@ -27,11 +27,11 @@ module Reflection =
             match ``type``.ContainsGenericParameters with
             | true -> return None // Generic types are not supported
             | false ->
-                let! propertyInfo = ``type``.GetField(propertyName)
+                let! propertyInfo = ``type``.GetField(propertyName + "Property")
                 let! property = propertyInfo.GetValue(null) :?> Xamarin.Forms.BindableProperty
                 return
                     Some
-                        { Name = propertyName.Replace("Property", "")
+                        { Name = propertyName
                           Type = property.ReturnType |> toCleanTypeName
                           DefaultValue = property.DefaultValue }
         }

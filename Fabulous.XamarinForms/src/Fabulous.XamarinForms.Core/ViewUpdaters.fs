@@ -460,7 +460,7 @@ module ViewUpdaters =
         updateCollectionGeneric prevCollOpt collOpt target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the items of a ShellItem, given previous and current view elements
-    let updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) =
+    let updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) attach =
         let create (desc: ViewElement) =
             match desc.Create() with
             | :? ShellContent as shellContent -> ShellSection.op_Implicit shellContent
@@ -479,7 +479,7 @@ module ViewUpdaters =
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
 
     /// Update the items of a ShellSection, given previous and current view elements
-    let updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) =
+    let updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) attach =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellContent
 
@@ -492,22 +492,6 @@ module ViewUpdaters =
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
         | _, ValueNone -> target.SetIsFocused(false)
         | _, ValueSome newVal -> target.SetIsFocused(newVal)
-
-    /// Update the SelectedItemProperty of a SearchHandler, given previous and current SelectedItem
-    let updateSelectedItem prevValue currValue (target: Xamarin.Forms.SearchHandler) =
-        match prevValue, currValue with
-        | ValueNone, ValueNone -> ()
-        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
-        | _, ValueNone -> target.ClearValue(Xamarin.Forms.SearchHandler.SelectedItemProperty)
-        | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.SearchHandler.SelectedItemProperty, newVal)
-
-    /// Update the IsCheckedProperty of a BaseShellItem, given previous and current IsChecked
-    let updateBaseShellItemIsChecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
-        match prevValue, currValue with
-        | ValueNone, ValueNone -> ()
-        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
-        | _, ValueNone -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, null)
-        | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, newVal)
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =

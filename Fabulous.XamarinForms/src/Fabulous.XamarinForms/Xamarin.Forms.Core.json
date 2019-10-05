@@ -650,10 +650,6 @@
           "source": "Icon"
         },
         {
-          "source": "IsChecked",
-          "updateCode": "ViewUpdaters.updateBaseShellItemIsChecked"
-        },
-        {
           "source": "IsEnabled"
         },
         {
@@ -2605,10 +2601,6 @@
         },
         {
           "source": "QueryIconName"
-        },
-        {
-          "source": "SelectedItem",
-          "updateCode": "ViewUpdaters.updateSelectedItem"
         },
         {
           "source": "SearchBoxVisibility"

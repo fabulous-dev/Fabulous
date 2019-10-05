@@ -36,7 +36,7 @@ module Reader =
        
         Resolver.getAllAttachedPropertiesForType propertyBaseType ``type``
         |> Array.map (fun fdef ->
-            match tryGetProperty (``type``.FullName, fdef.Name) with
+            match tryGetProperty (``type``.FullName, fdef.Name.Replace("Property", "")) with
             | None -> None
             | Some data ->
                 let attachedPropertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
@@ -55,15 +55,14 @@ module Reader =
             (convertTypeName: string -> string)
             (tryGetStringRepresentationOfDefaultValue: obj -> string option)
             (tryGetProperty: string * string -> ReflectionAttachedProperty option)
-            (propertyBaseType: string)
             (``type``: TypeDefinition) =
 
         let getDefaultValueAsString typeName (value: obj) =
             tryGetStringRepresentationOfDefaultValue value
             |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" typeName)
 
-        let propertiesWithBindingFields =
-            Resolver.getAllPropertiesWithBindingFieldForType propertyBaseType ``type``
+        let settableProperties =
+            Resolver.getAllPropertiesForType ``type``
             |> Array.map (fun tdef ->
                 match tryGetProperty (``type``.FullName, tdef.Name) with
                 | None -> None
@@ -89,7 +88,7 @@ module Reader =
                   DefaultValue = getDefaultValueAsString propertyType null } : AssemblyTypeProperty
             )
 
-        Array.concat [ propertiesWithBindingFields; listPropertiesWithNoSetter ]
+        Array.concat [ settableProperties; listPropertiesWithNoSetter ]
 
     let readType
             (convertTypeName: string -> string)
@@ -109,7 +108,7 @@ module Reader =
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
-          Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
+          Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty tdef }
         
     let readAssemblies
         (loadAllAssembliesByReflection: seq<string> -> Assembly array)
