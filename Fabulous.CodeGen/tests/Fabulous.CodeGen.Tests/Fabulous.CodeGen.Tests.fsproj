@@ -21,5 +21,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
   </ItemGroup>
-  <Import Project="..\..\Packages.targets" />
+  <Import Project="..\..\..\Packages.targets" />
 </Project>

@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\SourceLink.props" />
+  <Import Project="..\..\..\SourceLink.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -30,5 +30,5 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Microsoft.FSharpLu.Json" />
   </ItemGroup>
-  <Import Project="..\..\Packages.targets" />
+  <Import Project="..\..\..\Packages.targets" />
 </Project>

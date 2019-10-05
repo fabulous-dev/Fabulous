@@ -137,15 +137,19 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TicTacToe.WPF", "Fabulous.X
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.macOS", "Fabulous.XamarinForms\samples\TicTacToe\macOS\TicTacToe.macOS.fsproj", "{B223E32C-3585-4D94-B001-DBEC12D80E02}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CodeGen", "src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj", "{69E688F6-2A84-4066-96B8-E3D79A8A5002}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CodeGen", "Fabulous.CodeGen\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj", "{69E688F6-2A84-4066-96B8-E3D79A8A5002}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{46502D0D-229C-414A-A45E-B16EBFF0A14D}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.XamarinForms.Generator", "Fabulous.XamarinForms\tools\Fabulous.XamarinForms.Generator\Fabulous.XamarinForms.Generator.fsproj", "{28B54530-2F13-4F6E-995E-779A2911A4B6}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CodeGen.Tests", "tests\Fabulous.CodeGen.Tests\Fabulous.CodeGen.Tests.fsproj", "{8E61B7AA-924C-49E9-A8D4-38230D8D13CD}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CodeGen.Tests", "Fabulous.CodeGen\tests\Fabulous.CodeGen.Tests\Fabulous.CodeGen.Tests.fsproj", "{8E61B7AA-924C-49E9-A8D4-38230D8D13CD}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.Generator.Tests", "Fabulous.XamarinForms\tests\Fabulous.XamarinForms.Generator.Tests\Fabulous.XamarinForms.Generator.Tests.fsproj", "{88A82BA9-2AC9-44E8-BB53-FF60E8463A63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fabulous.CodeGen", "Fabulous.CodeGen", "{137C3285-05C0-42AD-89DE-DC5F12DDBE24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8B4467AD-8368-4E84-A99F-0354FB746076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1840,8 +1844,10 @@ Global
 		{B223E32C-3585-4D94-B001-DBEC12D80E02} = {DF651DA3-FA3B-46DF-BF7E-46E0E37FC161}
 		{46502D0D-229C-414A-A45E-B16EBFF0A14D} = {D217C8E1-8219-482C-A8D3-524ECFB478C2}
 		{28B54530-2F13-4F6E-995E-779A2911A4B6} = {46502D0D-229C-414A-A45E-B16EBFF0A14D}
-		{8E61B7AA-924C-49E9-A8D4-38230D8D13CD} = {51034390-033B-4BD5-985A-DD65E5F287E9}
 		{88A82BA9-2AC9-44E8-BB53-FF60E8463A63} = {CA20DA5E-6BB6-4F76-9651-CC471D1C73C1}
+		{69E688F6-2A84-4066-96B8-E3D79A8A5002} = {137C3285-05C0-42AD-89DE-DC5F12DDBE24}
+		{8B4467AD-8368-4E84-A99F-0354FB746076} = {137C3285-05C0-42AD-89DE-DC5F12DDBE24}
+		{8E61B7AA-924C-49E9-A8D4-38230D8D13CD} = {8B4467AD-8368-4E84-A99F-0354FB746076}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E142F9FB-7EA9-4866-81D4-718660BDCAEB}

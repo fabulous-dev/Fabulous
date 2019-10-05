@@ -162,6 +162,16 @@ Target.create "RunFabulousTests" (fun _ ->
     |> dotnetTest "Fabulous/TestResults"
 )
 
+Target.create "BuildFabulousCodeGen" (fun _ -> 
+    !! "Fabulous.CodeGen/src/**/*.fsproj"
+    |> dotnetBuild "Fabulous.CodeGen"
+)
+
+Target.create "RunFabulousCodeGenTests" (fun _ ->
+    !! "Fabulous.CodeGen/tests/**/*.fsproj"
+    |> dotnetTest "Fabulous.CodeGen/TestResults"
+)
+
 Target.create "BuildFabulousXamarinFormsTools" (fun _ ->
     !! "Fabulous.XamarinForms/tools/**/*.fsproj"
     |> dotnetBuild "Fabulous.XamarinForms/tools"
@@ -349,12 +359,20 @@ open Fake.Core.TargetOperators
     ==> "BuildFabulous"
     ==> "RunFabulousTests"
     ==> "Fabulous"
+    ==> "StartFabulousXamarinForms"
+
+"Prepare"
+    ==> "BuildFabulousCodeGen"
+    ==> "RunFabulousCodeGenTests"
+    ==> "Fabulous.CodeGen"
+    ==> "StartFabulousXamarinForms"
 
 "Prepare"
     ==> "BuildFabulousStaticView"
     ==> "Fabulous.StaticView"
+    ==> "Build"
 
-"Fabulous"
+"StartFabulousXamarinForms"
     ==> "BuildFabulousXamarinFormsTools"
     ==> "BuildFabulousXamarinFormsDependencies"
     ==> "RunGeneratorForFabulousXamarinForms"
@@ -365,9 +383,7 @@ open Fake.Core.TargetOperators
 "Fabulous.XamarinForms"
     ==> "BuildFabulousXamarinFormsExtensions"
     ==> "Fabulous.XamarinForms.Extensions"
-
-"Build"
-    <== [ "Fabulous"; "Fabulous.XamarinForms"; "Fabulous.XamarinForms.Extensions"; "Fabulous.StaticView"]
+    ==> "Build"
 
 "Build"
     ==> "PackFabulous"
@@ -382,12 +398,11 @@ open Fake.Core.TargetOperators
     ==> "RunFabulousXamarinFormsSamplesTests"
     ==> "BuildFabulousStaticViewSamples"
     ==> "TestSamples"
+    ==> "Test"
 
 "Pack"
     ==> "TestTemplatesNuGet"
-
-"Test"
-    <== [ "TestSamples"; "TestTemplatesNuGet" ]
+    ==> "Test"
 
 "Test"
     ==> "CreateGitHubRelease"

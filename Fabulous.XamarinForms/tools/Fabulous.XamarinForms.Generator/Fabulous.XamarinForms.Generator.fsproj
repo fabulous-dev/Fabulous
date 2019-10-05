@@ -19,7 +19,7 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
+    <ProjectReference Include="..\..\..\Fabulous.CodeGen\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>
