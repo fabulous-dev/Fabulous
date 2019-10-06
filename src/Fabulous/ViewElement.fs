@@ -101,12 +101,21 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         target
 
     /// Produce a new visual element with an adjusted attribute
-    member __.WithAttribute(key: AttributeKey<'T>, value: 'T) = 
+    member __.WithAttribute(key: AttributeKey<'T>, value: 'T) =
+        let duplicateViewElement newAttribsLength attribIndex =
+            let attribs2 = Array.zeroCreate newAttribsLength
+            Array.blit attribs 0 attribs2 0 attribs.Length
+            attribs2.[attribIndex] <- KeyValuePair(key.KeyValue, box value)
+            ViewElement(targetType, create, update, attribs2)
+        
         let n = attribs.Length
-        let attribs2 = Array.zeroCreate (n + 1)
-        Array.blit attribs 0 attribs2 0 n
-        attribs2.[n] <- KeyValuePair(key.KeyValue, box value)
-        ViewElement(targetType, create, update, attribs2)
+        
+        let existingAttrIndexOpt = attribs |> Array.tryFindIndex (fun attr -> attr.Key = key.KeyValue)
+        match existingAttrIndexOpt with
+        | Some i ->
+            duplicateViewElement n i // duplicate and replace existing attribute
+        | None ->
+            duplicateViewElement (n + 1) n // duplicate and add new attribute
 
     override x.ToString() = sprintf "%s(...)@%d" x.TargetType.Name (x.GetHashCode())
 
