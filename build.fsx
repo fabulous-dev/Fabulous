@@ -221,6 +221,16 @@ Target.create "PackFabulous" (fun _ ->
     |> dotnetPack
 )
 
+Target.create "PackFabulousCodeGen" (fun _ -> 
+    !! "Fabulous.CodeGen/src/**/*.fsproj"
+    |> dotnetPack
+)
+
+Target.create "PackFabulousStaticView" (fun _ -> 
+    !! "Fabulous.StaticView/src/**/*.fsproj"
+    |> dotnetPack
+)
+
 Target.create "PackFabulousXamarinForms" (fun _ -> 
     !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms/*.fsproj"
     |> dotnetPack
@@ -236,11 +246,6 @@ Target.create "PackFabulousXamarinFormsTemplates" (fun _ ->
 
 Target.create "PackFabulousXamarinFormsExtensions" (fun _ -> 
     !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
-    |> dotnetPack
-)
-
-Target.create "PackFabulousStaticView" (fun _ -> 
-    !! "Fabulous.StaticView/src/**/*.fsproj"
     |> dotnetPack
 )
 
@@ -337,9 +342,11 @@ Target.create "PublishNuGetPackages" (fun _ ->
 
 Target.create "Prepare" ignore
 Target.create "Fabulous" ignore
+Target.create "Fabulous.CodeGen" ignore
+Target.create "Fabulous.StaticView" ignore
+Target.create "StartFabulousXamarinForms" ignore
 Target.create "Fabulous.XamarinForms" ignore
 Target.create "Fabulous.XamarinForms.Extensions" ignore
-Target.create "Fabulous.StaticView" ignore
 Target.create "Build" ignore
 Target.create "Pack" ignore
 Target.create "TestSamples" ignore
@@ -387,10 +394,11 @@ open Fake.Core.TargetOperators
 
 "Build"
     ==> "PackFabulous"
+    ==> "PackFabulousCodeGen"
+    ==> "PackFabulousStaticView"
     ==> "PackFabulousXamarinForms"
     ==> "PackFabulousXamarinFormsTemplates"
     ==> "PackFabulousXamarinFormsExtensions"
-    ==> "PackFabulousStaticView"
     ==> "Pack"
 
 "Build"
