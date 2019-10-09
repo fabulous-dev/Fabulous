@@ -71,15 +71,10 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome coll when coll = null || coll.Length = 0 -> ()
         | ValueSome coll ->
-            // Count the existing targetColl
-            // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
-            let n' = targetColl.Count
-            let n = targetColl.Count
-
             for i in 0 .. coll.Length-1 do
                 let targetChild = targetColl.[i]
                 let newChild = coll.[i]
-                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
+                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length -> ValueSome coll.[i] | _ -> ValueNone
                 attach prevChildOpt newChild targetChild
                 
     /// Update the attached properties for each item in Layout<T>.Children
