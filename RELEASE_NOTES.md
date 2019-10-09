@@ -1,3 +1,14 @@
+#### 0.50.0-alpha.3
+
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+Please only use this version with a backup of your solution.
+
+* [Fabulous.XamarinForms] Fixed an issue where an IndexOutOfRangeException could occur
+* [Fabulous.XamarinForms] Made `View` a real static class (can no longer be instantiated)
+* [Fabulous.XamarinForms] Removed some read-only properties
+* [Fabulous.XamarinForms] Fixed member ordering for ListView and ListViewGrouped
+* [Fabulous.CodeGen] Changed the way properties are resolved, to rely less on BindableProperty fields.
+
 #### 0.50.0-alpha.2
 
 This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
