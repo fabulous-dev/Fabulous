@@ -295,7 +295,8 @@ module CodeGenerator =
         w
 
     let generateConstructors (data: ConstructorData array) (w: StringWriter) =
-        w.printfn "type View() ="
+        w.printfn "[<AbstractClass; Sealed>]"
+        w.printfn "type View private () ="
 
         for d in data do
             let memberNewLine = "\n                         " + String.replicate d.Name.Length " " + " "
