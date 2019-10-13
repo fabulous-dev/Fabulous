@@ -1,4 +1,4 @@
-﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
 open Fabulous
@@ -116,7 +116,7 @@ type ViewElementCell() =
     let createView (newModel: ViewElement) =
         match newModel.Create () with 
         | :? View as v -> v
-        | x -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (x.GetType())
+        | x -> failwithf "The cells of an ItemsView must each be some kind of 'View' and not a '%A'" (x.GetType())
 
     member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
         match args.PropertyName, listElementOpt, modelOpt with
@@ -159,7 +159,7 @@ type ContentViewElement() =
     let createView (newModel: ViewElement) =
         match newModel.Create () with 
         | :? View as v -> v
-        | x -> failwithf "The cells of a CollectionView must each be some kind of 'View' and not a '%A'" (x.GetType())
+        | x -> failwithf "The cells of an ItemsView must each be some kind of 'View' and not a '%A'" (x.GetType())
 
     member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
         match args.PropertyName, listElementOpt, modelOpt with

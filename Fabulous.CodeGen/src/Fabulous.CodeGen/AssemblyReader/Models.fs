@@ -42,6 +42,9 @@ module Models =
         { /// The name of the type
           Name: string
           
+          /// The name of the assembly containing the type
+          AssemblyName: string
+          
           /// Indicates if the type can be instantiated (non-abstract type with a public parameter-less constructor)
           CanBeInstantiated: bool
           
