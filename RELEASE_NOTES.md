@@ -1,3 +1,10 @@
+#### 0.50.0-alpha.4
+
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+Please only use this version with a backup of your solution.
+
+* [Fabulous.XamarinForms] ListView now only accepts Cell types as items
+
 #### 0.50.0-alpha.3
 
 This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
