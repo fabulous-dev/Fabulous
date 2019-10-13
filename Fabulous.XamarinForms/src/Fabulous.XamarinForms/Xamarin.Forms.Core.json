@@ -231,7 +231,7 @@
         {
           "source": "Completed",
           "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+          "convertInputToModel": "ViewConverters.makeEntryCellCompletedEventHandler"
         }
       ],
       "primaryConstructorMembers": [
@@ -1151,7 +1151,7 @@
           "source": null,
           "name": "GoToAsync",
           "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.AnimationKind",
+          "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.InputTypes.AnimationKind",
           "updateCode": "ViewUpdaters.triggerShellGoToAsync"
         }
       ],
@@ -1468,7 +1468,7 @@
         {
           "source": "Completed",
           "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+          "convertInputToModel": "ViewConverters.makeEditorCompletedEventHandler"
         },
         {
           "source": "TextChanged",
@@ -1535,7 +1535,7 @@
         {
           "source": "Completed",
           "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.convertCompletedFuncToEventHandler"
+          "convertInputToModel": "ViewConverters.makeEntryCompletedEventHandler"
         },
         {
           "source": "TextChanged",
@@ -1657,9 +1657,14 @@
     },
     {
       "type": "Xamarin.Forms.CarouselView",
-      "customType": "Fabulous.XamarinForms.CustomCarouselView",
+      "name": "XFCarouselView",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Fabulous.XamarinForms.CustomCarouselView",
+      "name": "CarouselView",
       "primaryConstructorMembers": [
-        "Items"
+        "ItemsSource"
       ]
     },
     {
@@ -1670,7 +1675,7 @@
           "source": "SelectedItem",
           "inputType": "int option",
           "modelType": "int option",
-          "convertModelToValue": "ViewConverters.convertSelectableItemsViewSelectedItemIndexToObj target"
+          "convertModelToValue": "ViewConverters.convertItemsViewSelectedItemIndexToObj target"
         },
         {
           "source": "SelectedItems"
@@ -1706,7 +1711,7 @@
     },
     {
       "type": "Xamarin.Forms.CollectionView",
-      "customType": "Fabulous.XamarinForms.CustomCollectionListView",
+      "customType": "Fabulous.XamarinForms.CustomCollectionView",
       "primaryConstructorMembers": [
         "ItemsSource"
       ]
@@ -1770,7 +1775,7 @@
           "source": "SelectedItem",
           "inputType": "int option",
           "modelType": "int option",
-          "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
+          "convertModelToValue": "ViewConverters.convertItemsViewOfTSelectedItemIndexToObj target"
         },
         {
           "source": "SelectionMode"
@@ -1841,7 +1846,7 @@
           "inputType": "int option",
           "modelType": "int option",
           "defaultValue": "null",
-          "convertModelToValue": "ViewConverters.convertListViewSelectedItemIndexToObj target"
+          "convertModelToValue": "ViewConverters.convertItemsViewOfTSelectedItemIndexToObj target"
         },
         {
           "source": null,
@@ -1873,7 +1878,7 @@
         }
       ],
       "primaryConstructorMembers": [
-        "Items"
+        "ItemsSource"
       ]
     },
     {

@@ -5,6 +5,7 @@ open System.Collections.ObjectModel
 open System.Collections.Generic
 open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
+open System.Windows.Input
 
 [<AutoOpen>]
 module ViewUpdaters =
@@ -36,7 +37,7 @@ module ViewUpdaters =
 
                 // Count the existing targetColl
                 // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
-                let n' = targetColl.Count
+                let _ = targetColl.Count
                 let n = targetColl.Count
 
                 // Adjust the existing targetColl and create the new targetColl
@@ -85,78 +86,51 @@ module ViewUpdaters =
     let updateItemsViewItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | :? ObservableCollection<ViewElementHolder> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ItemListElementData>()
+                let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
                     
     /// Update the items in a ItemsView<'T> control, given previous and current view elements
     let updateItemsViewOfTItems<'T when 'T :> Xamarin.Forms.BindableObject> (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView<'T>) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListElementData> as oc -> oc
+            | :? ObservableCollection<ViewElementHolder> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListElementData>()
+                let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr)
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
         
-    /// Update the items in a ListView control, given previous and current view elements
-    let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
-        let targetColl = 
-            match target.ItemsSource with 
-            | :? ObservableCollection<ListElementData> as oc -> oc
-            | _ -> 
-                let oc = ObservableCollection<ListElementData>()
-                target.ItemsSource <- oc
-                oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
-
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
-        let targetColl = List<ItemListElementData>()
-        updateCollectionGeneric prevCollOpt collOpt targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
-        target.ItemsSource <- targetColl
-
-    /// Update the items in a CollectionView control, given previous and current view elements
-    let updateCollectionViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CollectionView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | :? ObservableCollection<ViewElementHolder> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ItemListElementData>()
+                let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
-
-    /// Update the items in a CarouselView control, given previous and current view elements
-    let updateCarouselViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CarouselView) = 
-        let targetColl = 
-            match target.ItemsSource with 
-            | :? ObservableCollection<ItemListElementData> as oc -> oc
-            | _ -> 
-                let oc = ObservableCollection<ItemListElementData>()
-                target.ItemsSource <- oc
-                oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
-
-    let private updateListGroupData (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ListGroupData) =
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
+        
+    let private updateViewElementHolderGroup (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ViewElementHolderGroup) =
         target.ShortName <- currShortName
-        target.Key <- currKey
-        updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ListElementData (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.Key <- curr) 
+        target.ViewElement <- currKey
+        updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.ViewElement <- curr) 
 
     /// Update the items in a GroupedListView control, given previous and current view elements
     let updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListGroupData> as oc -> oc
+            | :? ObservableCollection<ViewElementHolderGroup> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListGroupData>()
+                let oc = ObservableCollection<ViewElementHolderGroup>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) updateListGroupData
+                
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) updateViewElementHolderGroup
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
@@ -282,14 +256,6 @@ module ViewUpdaters =
                             eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
                         | Some _ -> ()
 
-    /// Update the style class of a control, given previous and current view elements 
-    let updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.NavigableElement) =
-        match prevCollOpt, collOpt with 
-        | ValueNone, ValueNone -> ()
-        | ValueSome prevColl, ValueSome newColl when prevColl = newColl -> ()
-        | _, ValueNone -> target.StyleClass <- null
-        | _, ValueSome coll -> target.StyleClass <- coll
-
     /// Incremental NavigationPage maintenance: push/pop the right pages
     let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
         match prevCollOpt, collOpt with 
@@ -347,6 +313,24 @@ module ViewUpdaters =
         let target = (target :?> CustomContentPage)
         match prevValueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.RemoveHandler(f)
         match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
+        
+    /// Converts an F# function to a Xamarin.Forms ICommand
+    let makeCommand f =
+        let ev = Event<_,_>()
+        { new ICommand with
+            member __.add_CanExecuteChanged h = ev.Publish.AddHandler h
+            member __.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
+            member __.CanExecute _ = true
+            member __.Execute _ = f() }
+
+    /// Converts an F# function to a Xamarin.Forms ICommand, with a CanExecute value
+    let makeCommandCanExecute f canExecute =
+        let ev = Event<_,_>()
+        { new ICommand with
+            member __.add_CanExecuteChanged h = ev.Publish.AddHandler h
+            member __.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
+            member __.CanExecute _ = canExecute
+            member __.Execute _ = f() }
 
     /// Update the Command and CanExecute properties of a control, given previous and current values
     let inline updateCommand prevCommandValueOpt commandValueOpt argTransform setter  prevCanExecuteValueOpt canExecuteValueOpt target = 
@@ -404,18 +388,6 @@ module ViewUpdaters =
         | ValueSome prev, ValueNone -> updateFunc prev defaultValue
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
-    /// Update the attached NavigationPage.TitleView property of a Page, given previous and current values
-    let updatePageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Page) =
-        match prevOpt, currOpt with
-        | ValueSome prev, ValueSome curr when identical prev curr -> ()
-        | ValueSome prev, ValueSome curr when ViewHelpers.canReuseView prev curr ->
-            updateChild prev curr (NavigationPage.GetTitleView(target))
-        | _, ValueSome curr ->
-            NavigationPage.SetTitleView(target, (curr.Create() :?> Xamarin.Forms.View))
-        | ValueSome _, ValueNone ->
-            NavigationPage.SetTitleView(target, null)
-        | _, _ -> ()
-
     /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
     let updateMenuItemAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
         match prevValue, currValue with
@@ -455,7 +427,7 @@ module ViewUpdaters =
         updateCollectionGeneric prevCollOpt collOpt target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the items of a ShellItem, given previous and current view elements
-    let updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) attach =
+    let updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) _ =
         let create (desc: ViewElement) =
             match desc.Create() with
             | :? ShellContent as shellContent -> ShellSection.op_Implicit shellContent
@@ -474,19 +446,11 @@ module ViewUpdaters =
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
 
     /// Update the items of a ShellSection, given previous and current view elements
-    let updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) attach =
+    let updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) _ =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellContent
 
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
-
-    /// Update the IsFocusedProperty of a SearchHandler, given previous and current IsFocused
-    let updateIsFocused prevValue currValue (target: Xamarin.Forms.SearchHandler) =
-        match prevValue, currValue with
-        | ValueNone, ValueNone -> ()
-        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
-        | _, ValueNone -> target.SetIsFocused(false)
-        | _, ValueSome newVal -> target.SetIsFocused(newVal)
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
@@ -520,14 +484,6 @@ module ViewUpdaters =
                 | NotAnimated -> false
             target.GoToAsync(navigationState, animated) |> ignore
         | _ -> ()
-        
-    /// Check if two LayoutOptions are equal
-    let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
-        x.Alignment = y.Alignment && x.Expands = y.Expands
-
-    /// Check if two Thickness values are equal
-    let equalThickness (x:Xamarin.Forms.Thickness) (y:Xamarin.Forms.Thickness)  =
-        x.Bottom = y.Bottom && x.Top = y.Top && x.Left = y.Left && x.Right = y.Right
 
     let updatePageShellSearchHandler prevValueOpt (currValueOpt: ViewElement voption) target =
         match prevValueOpt, currValueOpt with
@@ -656,9 +612,9 @@ module ViewUpdaters =
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueNone, ValueNone -> ()
         | ValueNone, ValueSome currValue ->
-            target.ContentTemplate <- ViewElementDataTemplate(currValue)
+            target.ContentTemplate <- DirectViewElementDataTemplate(currValue)
         | ValueSome prevValue, ValueSome currValue ->
-            target.ContentTemplate <- ViewElementDataTemplate(currValue)
+            target.ContentTemplate <- DirectViewElementDataTemplate(currValue)
             let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
@@ -689,17 +645,17 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome value -> target.SelectionLength <- value
         
-    let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) attach =
+    let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) _ =
         updateCollectionGeneric prevCollOpt currCollOpt target (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
         
-    let updateElementEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) attach =
+    let updateElementEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) _ =
         let create (viewElement: ViewElement) =
             match viewElement.Create() with
             | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
             | effect -> effect :?> Xamarin.Forms.Effect
         updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
         
-    let updatePageToolbarItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Page) attach =
+    let updatePageToolbarItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Page) _ =
         let create (viewElement: ViewElement) =
             viewElement.Create() :?> Xamarin.Forms.ToolbarItem
         

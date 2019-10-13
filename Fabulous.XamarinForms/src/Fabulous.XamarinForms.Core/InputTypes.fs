@@ -4,16 +4,16 @@ namespace Fabulous.XamarinForms
 module InputTypes =
     /// Represents an image source
     type Image =
-        /// Use a path (URL, UNC) as the image source
+        /// A path to the image
         | Path of string
-        /// Use a byte array representing the image
+        /// A byte array representing the image
         | Bytes of byte[]
-        /// Use an already defined ImageSource
+        /// An already defined ImageSource
         | Source of Xamarin.Forms.ImageSource
     
     /// Represents a dimension for either the row or column definition of a Grid    
     type Dimension =
-        /// Choose a size that fits the children of the row or column.
+        /// Use a size that fits the children of the row or column.
         | Auto
         /// Use a proportional size of 1
         | Star
@@ -28,3 +28,8 @@ module InputTypes =
         | Named of Xamarin.Forms.NamedSize
         /// Use a value as the size
         | FontSize of float
+
+    /// Defines if the action should be animated or not
+    type AnimationKind =
+        | Animated
+        | NotAnimated
