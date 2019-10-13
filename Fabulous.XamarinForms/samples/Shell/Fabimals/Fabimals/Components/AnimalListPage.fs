@@ -40,8 +40,8 @@ module AnimalList =
         match args.CurrentSelection |> Seq.tryHead with
         | None -> ()
         | Some item ->
-            let data = item :?> ItemListElementData
-            let animal = data.Key.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+            let data = item :?> ViewElementHolder
+            let animal = data.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
             dispatch (SelectAnimal animal)
 
     let view model dispatch =

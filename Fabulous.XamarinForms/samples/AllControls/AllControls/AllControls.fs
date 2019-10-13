@@ -349,24 +349,25 @@ module App =
                 [ yield 
                     View.ContentPage(useSafeArea=true,
                         padding = Thickness (10.0, 20.0, 10.0, 5.0), 
-                        content= View.ListView(
-                            items=[ 
-                                 View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
-                                 View.Button(text = "TabbedPage #2 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed2)))
-                                 View.Button(text = "TabbedPage #3 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed3)))
-                                 View.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)))
-                                 View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
-                                 View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
-                                 View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
-                                 View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
-                                 View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
-                                 View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
-                                 View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
-                                 View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
-                                 View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
-                                 View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
-                                 View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
-                            ]))
+                        content = View.ScrollView(
+                            content = View.StackLayout(
+                                children = [ 
+                                     View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
+                                     View.Button(text = "TabbedPage #2 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed2)))
+                                     View.Button(text = "TabbedPage #3 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed3)))
+                                     View.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)))
+                                     View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
+                                     View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
+                                     View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                                     View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
+                                     View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
+                                     View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
+                                     View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
+                                     View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
+                                     View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
+                                     View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
+                                     View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
+                                ])))
                      .PageToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
                              View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
@@ -624,11 +625,26 @@ module App =
                        View.ListView(
                            items = [ 
                                for i in 0 .. 10 do 
-                                   yield View.Label "Ionide"
-                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = FontSize 10.)]))
-                                   yield View.Label "Emacs"
-                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", fontAttributes=FontAttributes.Bold); View.Span(text="Studio ", fontAttributes=FontAttributes.Italic); View.Span(text="Code", foregroundColor = Color.Blue)]))
-                                   yield View.Label "Rider"], 
+                                   yield View.TextCell "Ionide"
+                                   yield View.ViewCell(
+                                        view = View.Label(
+                                            formattedText = View.FormattedString([
+                                                View.Span(text="Visual ", backgroundColor = Color.Green)
+                                                View.Span(text="Studio ", fontSize = FontSize 10.)
+                                            ])
+                                        )
+                                   ) 
+                                   yield View.TextCell "Emacs"
+                                   yield View.ViewCell(
+                                        view = View.Label(
+                                            formattedText = View.FormattedString([
+                                                View.Span(text="Visual ", fontAttributes=FontAttributes.Bold)
+                                                View.Span(text="Studio ", fontAttributes=FontAttributes.Italic)
+                                                View.Span(text="Code", foregroundColor = Color.Blue)
+                                            ])
+                                        )
+                                   )
+                                   yield View.TextCell "Rider" ], 
                            horizontalOptions=LayoutOptions.CenterAndExpand, 
                            itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
                 ]))
@@ -651,16 +667,16 @@ module App =
                              showJumpList=true,
                              items= 
                                 [ 
-                                    "B", View.Label "B", [ View.Label "Baboon"; View.Label "Blue Monkey" ]
-                                    "C", View.Label "C", [ View.Label "Capuchin Monkey"; View.Label "Common Marmoset" ]
-                                    "G", View.Label "G", [ View.Label "Gibbon"; View.Label "Golden Lion Tamarin" ]
-                                    "H", View.Label "H", [ View.Label "Howler Monkey" ]
-                                    "J", View.Label "J", [ View.Label "Japanese Macaque" ]
-                                    "M", View.Label "M", [ View.Label "Mandrill" ]
-                                    "P", View.Label "P", [ View.Label "Proboscis Monkey"; View.Label "Pygmy Marmoset" ]
-                                    "R", View.Label "R", [ View.Label "Rhesus Macaque" ]
-                                    "S", View.Label "S", [ View.Label "Spider Monkey"; View.Label "Squirrel Monkey" ]
-                                    "V", View.Label "V", [ View.Label "Vervet Monkey" ]
+                                    "B", View.TextCell "B", [ View.TextCell "Baboon"; View.TextCell "Blue Monkey" ]
+                                    "C", View.TextCell "C", [ View.TextCell "Capuchin Monkey"; View.TextCell "Common Marmoset" ]
+                                    "G", View.TextCell "G", [ View.TextCell "Gibbon"; View.TextCell "Golden Lion Tamarin" ]
+                                    "H", View.TextCell "H", [ View.TextCell "Howler Monkey" ]
+                                    "J", View.TextCell "J", [ View.TextCell "Japanese Macaque" ]
+                                    "M", View.TextCell "M", [ View.TextCell "Mandrill" ]
+                                    "P", View.TextCell "P", [ View.TextCell "Proboscis Monkey"; View.TextCell "Pygmy Marmoset" ]
+                                    "R", View.TextCell "R", [ View.TextCell "Rhesus Macaque" ]
+                                    "S", View.TextCell "S", [ View.TextCell "Spider Monkey"; View.TextCell "Squirrel Monkey" ]
+                                    "V", View.TextCell "V", [ View.TextCell "Vervet Monkey" ]
                                 ], 
                              horizontalOptions=LayoutOptions.CenterAndExpand,
                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
@@ -864,7 +880,7 @@ module App =
                 [MainPageButton
                  View.Label(text="InfiniteScrollList:")
                  View.ListView(items = [ for i in 1 .. max do 
-                                           yield dependsOn i (fun _ i -> View.Label("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
+                                           yield dependsOn i (fun _ i -> View.TextCell("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
                                horizontalOptions=LayoutOptions.CenterAndExpand, 
                                // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )

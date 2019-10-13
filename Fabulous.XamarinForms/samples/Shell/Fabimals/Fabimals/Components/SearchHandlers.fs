@@ -16,8 +16,8 @@ module SearchHandlers =
             showsResults=true,
             queryChanged=(fun (_, newValue) -> dispatch (QueryChanged newValue)),
             itemSelected=(fun item ->
-                let data = item :?> ItemListElementData
-                let animal = data.Key.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+                let data = item :?> ViewElementHolder
+                let animal = data.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
                 dispatch (AnimalSelected animal)),
             items=[
                 for animal in animals do
