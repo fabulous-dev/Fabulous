@@ -8,28 +8,28 @@ open System.IO
 open System.Collections.ObjectModel
 
 module CollectionHelpers =
-    /// Try and find a specific ItemsView item
-    let tryFindItemsViewItem (sender: obj) (item: obj) =
+    /// Try and find a specific ListView item
+    let tryFindListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ViewElement as item ->
-            let itemsView = sender :?> Xamarin.Forms.ItemsView
-            let items = itemsView.ItemsSource :?> ObservableCollection<ViewElement> 
+        | :? ViewElementHolder as item ->
+            let itemsView = sender :?> Xamarin.Forms.ListView
+            let items = itemsView.ItemsSource :?> ObservableCollection<ViewElementHolder> 
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items |> Seq.tryFindIndex (fun item2 -> identical item item2)
         | _ -> None
 
-    /// Try and find a specific grouped ItemsView item
-    let tryFindGroupedItemsViewItem (sender: obj) (item: obj) =
+    /// Try and find a specific grouped ListView item
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ViewElement as item ->
-            let itemsView = sender :?> Xamarin.Forms.ItemsView
-            let items = itemsView.ItemsSource :?> ObservableCollection<ViewElement * ObservableCollection<ViewElement>>
+        | :? ViewElementHolder as item ->
+            let itemsView = sender :?> Xamarin.Forms.ListView
+            let items = itemsView.ItemsSource :?> ObservableCollection<ViewElementHolderGroup>
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
-            |> Seq.tryPick (fun (i, (_, items2)) -> 
+            |> Seq.tryPick (fun (i, items2) -> 
                 // POSSIBLE IMPROVEMENT: don't use a linear search
                 items2
                 |> Seq.indexed
@@ -145,32 +145,32 @@ module ViewConverters =
         
     let makeListViewItemAppearingEventHandler f =
         System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindItemsViewItem sender args.Item |> Option.iter f
+            CollectionHelpers.tryFindListViewItem sender args.Item |> Option.iter f
         )
         
     let makeListViewItemDisappearingEventHandler f =
         System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindItemsViewItem sender args.Item |> Option.iter f
+            CollectionHelpers.tryFindListViewItem sender args.Item |> Option.iter f
         )
         
     let makeListViewItemSelectedEventHandler f =
         System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindItemsViewItem sender args.SelectedItem |> f
+            CollectionHelpers.tryFindListViewItem sender args.SelectedItem |> f
         )
         
     let makeListViewItemTappedEventHandler f =
         System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindItemsViewItem sender args.Item |> Option.iter f
+            CollectionHelpers.tryFindListViewItem sender args.Item |> Option.iter f
         )
     
     let makeListViewGroupedItemSelectedEventHandler f =
         System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindGroupedItemsViewItem sender args.SelectedItem |> f
+            CollectionHelpers.tryFindGroupedListViewItem sender args.SelectedItem |> f
         )
         
     let makeListViewGroupedItemTappedEventHandler f =
         System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args ->
-            CollectionHelpers.tryFindGroupedItemsViewItem sender args.Item |> Option.iter f
+            CollectionHelpers.tryFindGroupedListViewItem sender args.Item |> Option.iter f
         )
         
     let makeMasterDetailPageIsPresentedChangedEventHandler f =
