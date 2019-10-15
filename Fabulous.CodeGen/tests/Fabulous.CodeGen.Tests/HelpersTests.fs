@@ -1,10 +1,10 @@
-namespace Fabulous.CodeGen.Tests
+namespace Fabulous.CodeGen.Tests.HelpersTests
 
 open NUnit.Framework
 open FsUnit
 open Fabulous.CodeGen
 
-module HelpersTests =
+module TextTests =
     [<Test>]
     let ``Text.getValueOrDefault should return the default value when no value is given``() =
         Text.getValueOrDefault None "DEFAULT VALUE" |> should equal "DEFAULT VALUE"
