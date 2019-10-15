@@ -111,4 +111,13 @@ module ConvertersTests =
     [<Test>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for enum``() =
         Converters.tryGetStringRepresentationOfDefaultValue TestEnum.SecondValue |> should equal (Some "Fabulous.CodeGen.Tests.AssemblyReaderTests.TestEnum.SecondValue")
+        
+    type UnknownType(str) =
+        override __.ToString() = str
+    
+    [<Test>]    
+    let ``tryGetStringRepresentationOfDefaultValue should return the result of ToString of an unknown type``() =
+        let str = "Unknown type"
+        let unknownType = UnknownType(str)
+        Converters.tryGetStringRepresentationOfDefaultValue unknownType |> should equal (Some str)
 

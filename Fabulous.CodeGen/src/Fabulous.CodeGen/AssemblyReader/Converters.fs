@@ -63,4 +63,4 @@ module Converters =
             match valueName with
             | null -> None
             | _ -> Some (sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName)
-        | _ -> Some (defaultValue.ToString().Replace("+", "."))
+        | _ -> Some (defaultValue.ToString())
