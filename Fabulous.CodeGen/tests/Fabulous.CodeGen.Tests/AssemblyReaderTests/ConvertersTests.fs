@@ -77,6 +77,10 @@ module ConvertersTests =
     [<TestCase(9.2 :> double, "9.2")>]
     [<TestCase(10.1f :> float32, "10.1f")>]
     [<TestCase(10.2f :> single, "10.2f")>]
+    [<TestCase(Double.NaN :> float, "System.Double.NaN")>]
+    [<TestCase(Double.NaN :> double, "System.Double.NaN")>]
+    [<TestCase(Single.NaN :> float32, "System.Single.NaN")>]
+    [<TestCase(Single.NaN :> single, "System.Single.NaN")>]
     [<TestCase("", "System.String.Empty")>]
     [<TestCase("Hello", "\"Hello\"")>]
     let ``tryGetStringRepresentationOfDefaultValue should return the default F# representation for known CLR types``(defaultValue, expectedValue) =

@@ -46,6 +46,10 @@ module Converters =
         | :? int64 as int64 -> Some (int64.ToString() + "L")
         | :? uint64 as uint64 -> Some (uint64.ToString() + "UL")
         | :? bigint as bigint -> Some (bigint.ToString() + "I")
+        | :? float as float when Double.IsNaN(float) -> Some "System.Double.NaN"
+        | :? double as double when Double.IsNaN(double) -> Some "System.Double.NaN"
+        | :? float32 as float32 when Single.IsNaN(float32) -> Some "System.Single.NaN"
+        | :? single as single when Single.IsNaN(single) -> Some "System.Single.NaN"
         | :? float as float -> Some (numberWithDecimalsToString "" float)
         | :? double as double -> Some (numberWithDecimalsToString "" double)
         | :? float32 as float32 -> Some (numberWithDecimalsToString "f" float32)
