@@ -1,3 +1,12 @@
+#### 0.50.0-alpha.5
+
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+Please only use this version with a backup of your solution.
+
+* [Fabulous.XamarinForms] Fixed bug preventing use of events on ListView
+* [Fabulous.CodeGen] Added helpers for Optimizers
+* [Fabulous.CodeGen] Added missing converters for Double.NaN and Single.NaN
+
 #### 0.50.0-alpha.4
 
 This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
