@@ -1,4 +1,6 @@
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.Tests
+
 open Fabulous.CodeGen
 open FsUnit
 open NUnit.Framework

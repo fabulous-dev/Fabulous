@@ -1,6 +1,6 @@
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.AssemblyReader
 
-open Fabulous.CodeGen
 open Mono.Cecil
 
 module Resolver =
