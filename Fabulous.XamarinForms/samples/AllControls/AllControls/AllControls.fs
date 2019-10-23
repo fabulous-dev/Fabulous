@@ -382,7 +382,7 @@ module App =
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
-                                   View.Label(text = "Now with CSS styling", styleClass = [ "cssCallout" ])
+                                   View.Label(text = "Now with CSS styling", styleClasses = [ "cssCallout" ])
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
