@@ -12,16 +12,16 @@ Below you can find how to migrate your v0.42 views to v0.50.
 
 
 __Changes to properties__
-- [HeightRequest / WidthRequest renamed to Height / Width](#height_width)
-- [Margin / Padding properties input changed from `obj` to `Xamarin.Forms.Thickness`](#thickness)
-- [Image properties input changed from `obj` to `Image`](#imagesource)
-- [FontSize properties input changed from `obj` to `FontSize`](#fontsize)
-- [RowDefs / ColumnDefs input changed from `obj list` to `Dimension list`](#gridrow_gridcolumn)
-- [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclasses)
-- [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-cells)
+- [HeightRequest / WidthRequest renamed to Height / Width](#heightrequest--widthrequest-renamed-to-height--width)
+- [Margin / Padding properties input changed from `obj` to `Xamarin.Forms.Thickness`](#margin--padding-properties-input-changed-from-obj-to-xamarinformsthickness)
+- [Image properties input changed from `obj` to `Image`](#image-properties-input-changed-from-obj-to-image)
+- [FontSize properties input changed from `obj` to `FontSize`](#fontsize-properties-input-changed-from-obj-to-fontsize)
+- [RowDefs / ColumnDefs input changed from `obj list` to `Dimension list`](#rowdefs--columndefs-input-changed-from-obj-list-to-dimension-list)
+- [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclass-renamed-to-styleclasses-and-input-changed-from-obj-to-string-list)
+- [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-and-listviewgrouped-now-require-items-and-group-headers-to-be-cells-adds-support-for-textcell--imagecell--switchcell--entrycell--viewcell)
 
 __Changes to events__
-- [Events no longer triggered by changes in incremental updates](#events)
+- [Events no longer triggered by changes in incremental updates](#events-no-longer-triggered-by-changes-in-incremental-updates)
 
 ### HeightRequest / WidthRequest renamed to Height / Width
 
