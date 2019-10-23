@@ -111,7 +111,7 @@ Previously Fabulous.XamarinForms was able to implicitly convert `string` / `int`
 
 `FontSize` is a discriminated union with the following values:
 - `FontSize of float`: Represents an absolute size value
-- `Named of Xamarin.Forms.NamedSize`: Represents a device-dependent predefined size
+- `Named of Xamarin.Forms.NamedSize`: Represents a predefined size
 
 _Old:_
 ```fsharp
@@ -186,7 +186,7 @@ View.Label(styleClasses = [ "class-labelA"; "class-labelB" ])
 ### ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell
 
 ListView in Xamarin.Forms requires the items to inherit from Cell.  
-In v0.42 and before, Fabulous.XamarinForms was implicitly creating for you a ViewCell to let us create any cell content easily.  
+In v0.42 and before, Fabulous.XamarinForms was implicitly creating for you a ViewCell to let you create any kind of content easily.  
 While this was useful and required less code, it was preventing you from using premade cells like `TextCell`, `EntryCell`, etc. or even access the cell's properties like `ContextActions`.
 
 So to allow those missing features, the cell is no longer created implicitly for you.  
@@ -225,7 +225,7 @@ View.ListView(
 
         // ImageCell
         View.ImageCell(
-            image = Path "image.png",
+            imageSource = Path "image.png",
             text = model.Text,
             details = model.Details
         )
@@ -263,3 +263,34 @@ View.ListView(
 
 ### Events no longer triggered by changes in incremental updates
 
+Xamarin.Forms uses classic .NET events to let developers react to changes to properties.  
+Those events are triggered for both user and programmatical changes.
+
+But while programmatic changes triggering events is not an issue in Xamarin.Forms (due to usage of data-binding instead of event subscription), in Fabulous.XamarinForms it's the only way to react to a user interaction.
+
+Fabulous.XamarinForms was directly subscribing to those events to surface them in the View API.
+
+This led to unnecessary calls to `update => view` when a change came from the model.
+
+E.g.  
+```
+User presses a button
+-> update Model.Text = "New value"
+-> view Entry.Text = "New value"
+-> update EntryTextChanged "New value" (Model not changed)
+-> view Entry.Text = "New value" (UI already updated)
+```  
+which could be simplified to  
+```
+User presses a button
+-> update Model.Text = "New value"
+-> view Entry.Text = "New value"
+```
+
+This was particularly an issue on Android where, under some circumstances, this could lead to an infinite loop (Fabulous trying to catch up with the UI, while the UI keeps sending updates to Fabulous in response to Fabulous catching up).
+
+Thus the handling of events has changed in v0.50.
+
+Now event handlers passed in ViewElement will only be called when a user interacts with a control.
+
+No change in code is required, except if you were relying on this behavior.

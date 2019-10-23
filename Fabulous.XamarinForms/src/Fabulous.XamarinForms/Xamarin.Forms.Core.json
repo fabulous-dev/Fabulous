@@ -506,6 +506,8 @@
         {
           "source": null,
           "name": "StyleClass",
+          "uniqueName": "NavigableElementStyleClasses",
+          "shortName": "styleClasses",
           "defaultValue": "null",
           "inputType": "string list"
         },
