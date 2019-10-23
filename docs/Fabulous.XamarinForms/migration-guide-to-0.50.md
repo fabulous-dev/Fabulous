@@ -14,11 +14,11 @@ Below you can find how to migrate your v0.42 views to v0.50.
 __Changes to properties__
 - [HeightRequest / WidthRequest renamed to Height / Width](#height_width)
 - [Margin / Padding properties input changed from `obj` to `Xamarin.Forms.Thickness`](#thickness)
-- [Image properties input changed from `obj` to `Image` discriminated union](#imagesource)
-- [FontSize properties input changed from `obj` to `FontSize` discriminated union](#fontsize)
-- [RowDefs / ColumnDefs input changed from `obj list` to `Dimension list` discriminated union](#gridrow_gridcolumn)
-- [StyleClass renamed to `StyleClasses` and input changed from `obj` to `string list`](#styleclasses)
-- [ListView and ListViewGrouped now require items to be Cells, add support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-cells)
+- [Image properties input changed from `obj` to `Image`](#imagesource)
+- [FontSize properties input changed from `obj` to `FontSize`](#fontsize)
+- [RowDefs / ColumnDefs input changed from `obj list` to `Dimension list`](#gridrow_gridcolumn)
+- [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclasses)
+- [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-cells)
 
 __Changes to events__
 - [Events no longer triggered by changes in incremental updates](#events)
@@ -27,7 +27,7 @@ __Changes to events__
 
 We simplified the View API a bit by renaming `heightRequest` and `widthRequest` to respectively `height` and `width`.
 
-The `Request` part was only meaningful for Xamarin.Forms to differentiate the actual height/width and the requested height/width.  
+The `Request` part was only meaningful for Xamarin.Forms to differentiate the actual height/width from the requested height/width.  
 In Fabulous.XamarinForms, this differentiation wasn't useful since you only provide a representation of the view you want.
 
 _Old:_
@@ -68,7 +68,7 @@ View.StackLayout(
 )
 ```
 
-### Image properties input changed from `obj` to `Image` discriminated union
+### Image properties input changed from `obj` to `Image`
 
 Image properties are now requesting an `Image` value instead of `obj`.
 
@@ -88,8 +88,6 @@ View.Image(
 
 _New:_
 ```fsharp
-open Fabulous.XamarinForms
-
 // With a path
 View.Image(
     source = Path "image.png"
@@ -105,11 +103,11 @@ imageSource.File <- "image.png"
 View.Image(source = Source imageSource)
 ```
 
-### FontSize properties input changed from `obj` to `FontSize` discriminated union
+### FontSize properties input changed from `obj` to `FontSize`
 
 FontSize properties are now requesting a `FontSize` value instead of `obj`.
 
-Previously Fabulous.XamarinForms was able to implicitly convert `string` / `int` / `float` to `double`, but the input type wasn't providing type-safety.
+Previously Fabulous.XamarinForms was able to implicitly convert `string` / `int` to `float`, but the input type wasn't providing type-safety.
 
 `FontSize` is a discriminated union with the following values:
 - `FontSize of float`: Represents an absolute size value
@@ -132,11 +130,11 @@ View.Label(
 View.Label(fontSize = Named NamedSize.Large)
 ```
 
-### RowDefs / ColumnDefs input changed from `string list` to `Dimension list`
+### RowDefs / ColumnDefs input changed from `obj list` to `Dimension list`
 
-RowDefs and ColumnDefs properties are now requesting a `Dimension list` value instead of `string list`.
+RowDefs and ColumnDefs properties are now requesting a `Dimension list` value instead of `obj list`.
 
-Previously Fabulous.XamarinForms was able to implicitly convert `string` to either `RowDefinition` or `ColumnDefinition`, but the string could be set to anything and was case-sensitive, resulting in the properties being ignored.
+Previously Fabulous.XamarinForms was able to implicitly convert `string` / `int` to either `RowDefinition` or `ColumnDefinition`, but the string could be set to anything and was case-sensitive, resulting in the properties being ignored.
 
 `Dimension` is a discriminated union with the following values:
 - `Auto`: Represents a size that fits the children of the row or column
@@ -162,15 +160,16 @@ View.Grid(
 )
 ```
 
-### StyleClass renamed to `StyleClasses` and input changed from `obj` to `string list`
+### StyleClass renamed to StyleClasses and input changed from `obj` to `string list`
+
+The StyleClass property was accepting both a single class (`string`) and multiple (`string list`) requiring us to use `obj` as the input type.
+
+Since it wasn't adding much value and reducing type-safety, StyleClass has been renamed StyleClasses and only accepts `string list`.
 
 _Old:_
 ```fsharp
 View.Label(
-    styleClass = "class-label"
-)
-View.Label(
-    styleClasses = [ "class-labelA"; "class-labelB" ]
+    styleClass = "class-label" // or [ "class-labelA"; "class-labelB" ]
 )
 ```
 
@@ -179,18 +178,19 @@ _New:_
 View.Label(
     styleClasses = [ "class-label" ]
 )
-View.Label(
-    styleClasses = [ "class-labelA"; "class-labelB" ]
-)
+
+// or with multiple classes
+View.Label(styleClasses = [ "class-labelA"; "class-labelB" ])
 ```
 
-### ListView and ListViewGrouped now require items to be Cells, add support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell
+### ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell
 
-In v0.42 and before, Fabulous.XamarinForms implicitly created for you a ViewCell to represent your data.  
+ListView in Xamarin.Forms requires the items to inherit from Cell.  
+In v0.42 and before, Fabulous.XamarinForms was implicitly creating for you a ViewCell to let us create any cell content easily.  
 While this was useful and required less code, it was preventing you from using premade cells like `TextCell`, `EntryCell`, etc. or even access the cell's properties like `ContextActions`.
 
-So to allow those missing features, the cell is no longer created implicitly for you.
-`ListView` will only accept Cells as items.
+So to allow those missing features, the cell is no longer created implicitly for you.  
+`ListView` and `ListViewGrouped` will now only accept Cells as items.
 
 _Old:_
 ```fsharp
@@ -206,16 +206,13 @@ _New:_
 View.ListView(
     items = [
         View.ViewCell(
-            view = View.Label(text = model.Text),
-            contextActions = [
-                View.MenuItem(text = "Delete", command = fun () -> dispatch Delete)
-            ]
+            view = View.Label(text = model.Text)
         )
     ]
 )
 ```
 
-You now can use premade cells like this:
+You can now use premade cells like this:
 
 ```fsharp
 View.ListView(
@@ -243,10 +240,26 @@ View.ListView(
         View.SwitchCell(
             text = model.Text,
             on = model.IsToggled
-            onChanged = fun args -> dispatch (SetToggled args.NewValue)
+            onChanged = fun args -> dispatch (SetToggled args.Value)
+        )
+    ]
+)
+```
+
+And you can declare context actions like this
+
+```
+View.ListView(
+    items = [
+        View.ViewCell(
+            view = View.Label(text = model.Text),
+            contextActions = [
+                View.MenuItem(text = "Delete", isDestructive = true, command = fun() -> dispatch Delete)
+            ]
         )
     ]
 )
 ```
 
 ### Events no longer triggered by changes in incremental updates
+
