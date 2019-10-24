@@ -143,21 +143,12 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> target.GroupShortNameBinding <- null
         | _, _ -> ()
 
-    /// Update the items of a TableView control, given previous and current view elements
-    let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
-        let create (desc: ViewElement) = (desc.Create() :?> Cell)
-
-        match prevCollOpt with
-        | ValueNone -> target.Root <- TableRoot()
-        | ValueSome _ -> ()
-
-        updateCollectionGeneric prevCollOpt collOpt target.Root 
-            (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
-            (fun _ _ _ -> ()) // attach
-            (fun _ _ -> true) // canReuse
-            (fun (_prevTitle,prevChild) (newTitle, newChild) target ->
-                target.Title <- newTitle
-                updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild) 
+    /// Update the items of a TableSectionBase<'T> control, given previous and current view elements
+    let updateTableSectionBaseOfTItems<'T when 'T :> Xamarin.Forms.BindableObject> (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.TableSectionBase<'T>) _ =
+        let create (desc: ViewElement) =
+            desc.Create() :?> 'T
+        
+        updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
 
     /// Update the resources of a control, given previous and current view elements describing the resources
     let updateResources (prevCollOpt: (string * obj) array voption) (collOpt: (string * obj) array voption) (target: Xamarin.Forms.VisualElement) = 

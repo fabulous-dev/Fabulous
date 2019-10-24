@@ -2397,12 +2397,8 @@
         {
           "source": null,
           "name": "Root",
-          "shortName": "items",
-          "inputType": "(string * ViewElement list) list",
-          "modelType": "(string * ViewElement array) array",
-          "defaultValue": "[]",
-          "convertInputToModel": "ViewConverters.convertTableViewRoot",
-          "updateCode": "ViewUpdaters.updateTableViewItems"
+          "inputType": "Xamarin.Forms.TableRoot",
+          "defaultValue": "null"
         }
       ],
       "primaryConstructorMembers": [
@@ -2662,20 +2658,34 @@
       "type": "Xamarin.Forms.TableSectionBase`1",
       "name": "TableSectionBaseOfT",
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
-      "canBeInstantiated": false
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": null,
+          "name": "Items",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "defaultValue": "[]",
+          "convertInputToModel": "Array.ofList",
+          "updateCode": "ViewUpdaters.updateTableSectionBaseOfTItems<'T>",
+          "collection": {
+            "elementType": "'T"
+          }
+        }
+      ]
     },
     {
       "type": "Xamarin.Forms.TableRoot",
       "baseGenericConstraint": "Xamarin.Forms.TableSection",
       "primaryConstructorMembers": [
-        "Title"
+        "Items"
       ]
     },
     {
       "type": "Xamarin.Forms.TableSection",
       "baseGenericConstraint": "Xamarin.Forms.Cell",
       "primaryConstructorMembers": [
-        "Title"
+        "Items"
       ]
     }
   ]

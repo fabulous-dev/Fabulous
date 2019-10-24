@@ -44,11 +44,6 @@ module ViewConverters =
         | Path path -> ImageSource.op_Implicit path
         | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
         | Source imageSource -> imageSource
-        
-    let convertTableViewRoot (v: (string * ViewElement list) list) =
-        v
-        |> Array.ofList
-        |> Array.map (fun (title, es) -> (title, Array.ofList es))
                 
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
