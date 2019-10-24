@@ -2297,10 +2297,6 @@
           "defaultValue": "null"
         },
         {
-          "name": "ItemsLayout",
-          "defaultValue": "null"
-        },
-        {
           "name": "ItemsSource",
           "defaultValue": "null"
         },
@@ -2320,14 +2316,6 @@
           "inputType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.XamarinForms.AnimationKind",
           "modelType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.XamarinForms.AnimationKind",
           "updateCode": "(fun _ curr target -> triggerScrollTo curr target)"
-        },
-        {
-          "name": "Footer",
-          "defaultValue": "null"
-        },
-        {
-          "name": "Header",
-          "defaultValue": "null"
         },
         {
           "name": "HorizontalScrollBarVisibility",
@@ -2365,6 +2353,23 @@
           "defaultValue": "null",
           "inputType": "unit -> unit",
           "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.StructuredItemsView",
+      "members": [
+        {
+          "name": "Footer",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Header",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemsLayout",
+          "defaultValue": "null"
         }
       ]
     },
@@ -2932,7 +2937,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.ListItemsLayout",
+      "name": "Xamarin.Forms.LinearItemsLayout",
       "members": [
         {
           "name": "ItemSpacing",

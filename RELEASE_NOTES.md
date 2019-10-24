@@ -1,3 +1,7 @@
+#### 0.43.0
+
+* [Fabulous.XamarinForms] Recompiled to resolve the compile errors preventing to upgrade to Xamarin.Forms 4.3, due to breaking changes. Proper support for new stuff in Xamarin.Forms 4.3 will be added later. (https://github.com/fsprojects/Fabulous/pull/574)
+
 #### 0.42.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.2 (https://github.com/fsprojects/Fabulous/pull/559)
