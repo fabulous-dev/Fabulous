@@ -1,13 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.42.0</Version>
+    <Version>0.43.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.42.0</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Added support for Xamarin.Forms 4.2 (https://github.com/fsprojects/Fabulous/pull/559)
-[Fabulous.XamarinForms] Added support for Xamarin.Forms.Effect (https://github.com/fsprojects/Fabulous/pull/544)
-[Fabulous.XamarinForms] [Extensions] Added missing properties coming from Xamarin.Forms.View (https://github.com/fsprojects/Fabulous/pull/562)
-[Fabulous.XamarinForms] [Templates] Fixed opened namespaces and docs links in templates (https://github.com/fsprojects/Fabulous/pull/547 + https://github.com/fsprojects/Fabulous/pull/548 + https://github.com/fsprojects/Fabulous/pull/553)</PackageReleaseNotes>
+    <PackageVersion>0.43.0</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Recompiled to resolve the compile errors preventing to upgrade to Xamarin.Forms 4.3, due to breaking changes. Proper support for new stuff in Xamarin.Forms 4.3 will be added later. (https://github.com/fsprojects/Fabulous/pull/574)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
