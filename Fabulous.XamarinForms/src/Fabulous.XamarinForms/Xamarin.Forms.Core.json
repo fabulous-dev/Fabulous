@@ -1658,6 +1658,21 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.StructuredItemsView",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "Footer"
+        },
+        {
+          "source": "Header"
+        },
+        {
+          "source": "ItemsLayout"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.CarouselView",
       "name": "XFCarouselView",
       "canBeInstantiated": false
@@ -2512,7 +2527,7 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.ListItemsLayout",
+      "type": "Xamarin.Forms.LinearItemsLayout",
       "properties": [
         {
           "source": "ItemSpacing"
