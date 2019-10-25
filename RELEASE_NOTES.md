@@ -44,6 +44,10 @@ Please only use this version with a backup of your solution.
 * [Fabulous.CodeGen] Created this new library from the Generator that was private to Fabulous. This library allows creating your own Generator for your framework. It has been created with extensibility and overridability in mind.
 * [Fabulous.XamarinForms] [Generator] A new .NET console app (will be a .NET CLI tool in the future) that uses the new Fabulous.CodeGen lib to replace the existing Generator of Fabulous
 
+#### 0.43.0
+
+* [Fabulous.XamarinForms] Recompiled to resolve the compile errors preventing to upgrade to Xamarin.Forms 4.3, due to breaking changes. Proper support for new stuff in Xamarin.Forms 4.3 will be added later. (https://github.com/fsprojects/Fabulous/pull/574)
+
 #### 0.42.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.2 (https://github.com/fsprojects/Fabulous/pull/559)
