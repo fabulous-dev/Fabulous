@@ -61,10 +61,10 @@ module XFConverters =
             | _ -> None
         | :? FlexBasis as flexBasis when flexBasis = FlexBasis.Auto -> Some "Xamarin.Forms.FlexBasis.Auto"
         | :? FlexBasis as flexBasis -> Some (sprintf "Xamarin.Forms.FlexBasis(%s)" (float32ToString flexBasis.Length))
-        | :? ListItemsLayout as listItemsLayout when listItemsLayout = (ListItemsLayout.Horizontal :?> ListItemsLayout) -> Some (sprintf "Xamarin.Forms.ListItemsLayout.Horizontal")
-        | :? ListItemsLayout as listItemsLayout when listItemsLayout = (ListItemsLayout.Vertical :?> ListItemsLayout) -> Some (sprintf "Xamarin.Forms.ListItemsLayout.Vertical")
-        | :? ListItemsLayout as listItemsLayout ->
-            tryGetStringRepresentationOfDefaultValue listItemsLayout.Orientation
+        | :? LinearItemsLayout as linearItemsLayout when linearItemsLayout = (LinearItemsLayout.Horizontal :?> LinearItemsLayout) -> Some (sprintf "Xamarin.Forms.LinearItemsLayout.Horizontal")
+        | :? LinearItemsLayout as linearItemsLayout when linearItemsLayout = (LinearItemsLayout.Vertical :?> LinearItemsLayout) -> Some (sprintf "Xamarin.Forms.LinearItemsLayout.Vertical")
+        | :? LinearItemsLayout as linearItemsLayout ->
+            tryGetStringRepresentationOfDefaultValue linearItemsLayout.Orientation
             |> Option.map (fun orientation -> sprintf "Xamarin.Forms.ListItemsLayout(%s)" orientation)
         | _ -> Converters.tryGetStringRepresentationOfDefaultValue defaultValue
 

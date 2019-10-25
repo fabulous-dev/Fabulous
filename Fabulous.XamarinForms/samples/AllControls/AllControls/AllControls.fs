@@ -740,13 +740,34 @@ module App =
                dependsOn () (fun model () -> 
                 View.ScrollingContentPage("TableView", 
                  [View.Label(text="TableView:")
-                  View.TableView(items= [ ("Videos", [ View.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
-                                                       View.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
-                                          ("Books", [ View.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
-                                                      View.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
-                                          ("Contact", [ View.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
-                                                        View.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )], 
-                                  horizontalOptions=LayoutOptions.StartAndExpand)
+                  View.TableView(
+                    horizontalOptions = LayoutOptions.StartAndExpand,
+                    root = View.TableRoot(
+                        items = [
+                            View.TableSection(
+                                title = "Videos",
+                                items = [
+                                    View.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
+                                    View.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) )
+                                ]
+                            )
+                            View.TableSection(
+                                title = "Books",
+                                items = [
+                                    View.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
+                                    View.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) )
+                                ]
+                            )
+                            View.TableSection(
+                                title = "Contact",
+                                items = [
+                                    View.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
+                                    View.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )
+                                ]
+                            )
+                        ]
+                    )
+                  )
                   MainPageButton
                     ]))
 

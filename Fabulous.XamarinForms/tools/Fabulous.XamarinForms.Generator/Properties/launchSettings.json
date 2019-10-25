@@ -3,7 +3,7 @@
     "Fabulous.XamarinForms.Generator": {
       "commandName": "Project",
       "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs -d",
-      "workingDirectory": "/Git/GitHub/fabulous"
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     }
   }
 }
