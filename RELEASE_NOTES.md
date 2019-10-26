@@ -1,3 +1,11 @@
+#### 0.50.0-alpha.6
+
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+Please only use this version with a backup of your solution.
+
+* [Fabulous.XamarinForms] TableView now uses TableRoot and TableSections
+* [Fabulous.XamarinForms] Property methods now have a similar name than before.
+
 #### 0.50.0-alpha.5
 
 This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  

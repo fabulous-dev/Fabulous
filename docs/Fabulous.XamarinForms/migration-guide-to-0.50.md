@@ -3,12 +3,12 @@ Fabulous for Xamarin.Forms - Guide
 
 {% include_relative contents.md %}
 
-Migrating from v0.42 to v0.50
+Migrating from v0.43 to v0.50
 --------
 
 In Fabulous.XamarinForms v0.50, a few breaking changes have been introduced in order to provide support for missing controls, reduce unnecessary update calls (and fix a potential infinite loop on Android) as well as provide better type-safety for some properties.
 
-Below you can find how to migrate your v0.42 views to v0.50.
+Below you can find how to migrate your v0.43 views to v0.50.
 
 
 __Changes to properties__
@@ -19,6 +19,7 @@ __Changes to properties__
 - [RowDefs / ColumnDefs input changed from `obj list` to `Dimension list`](#rowdefs--columndefs-input-changed-from-obj-list-to-dimension-list)
 - [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclass-renamed-to-styleclasses-and-input-changed-from-obj-to-string-list)
 - [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-and-listviewgrouped-now-require-items-and-group-headers-to-be-cells-adds-support-for-textcell--imagecell--switchcell--entrycell--viewcell)
+- [TableView now require TableRoot and TableSections](#tableview-now-require-tableroot-and-tablesections)
 
 __Changes to events__
 - [Events no longer triggered by changes in incremental updates](#events-no-longer-triggered-by-changes-in-incremental-updates)
@@ -186,7 +187,7 @@ View.Label(styleClasses = [ "class-labelA"; "class-labelB" ])
 ### ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell
 
 ListView in Xamarin.Forms requires the items to inherit from Cell.  
-In v0.42 and before, Fabulous.XamarinForms was implicitly creating for you a ViewCell to let you create any kind of content easily.  
+In v0.43 and before, Fabulous.XamarinForms was implicitly creating for you a ViewCell to let you create any kind of content easily.  
 While this was useful and required less code, it was preventing you from using premade cells like `TextCell`, `EntryCell`, etc. or even access the cell's properties like `ContextActions`.
 
 So to allow those missing features, the cell is no longer created implicitly for you.  
@@ -258,6 +259,52 @@ View.ListView(
             ]
         )
     ]
+)
+```
+
+### TableView now require TableRoot and TableSections
+
+Previously, Fabulous.XamarinForms was creating implicitly TableRoot and TableSections for you.  
+This was great since you only had to give a string and F.XF would do the rest, this was also preventing you from using TableRoot/TableSection properties like `TextColor` as well as creating your own custom TableRoot/TableView and use it instead.
+
+_Old:_
+```fsharp
+View.TableView(
+    items = [
+        "Section 1", [
+            View.TextCell(text = "Global settings")
+            View.SwitchCell(text = "Dark mode", on = model.IsDarkModeEnabled)
+        ]
+        "Section 2", [
+            View.TextCell(text = "Email")
+            View.EntryCell(text = model.Email)
+        ]
+    ]
+)
+```
+
+_New:_
+```fsharp
+View.TableView(
+    root = View.TableRoot(
+        title = "Settings",
+        items = [
+            View.TableSection(
+                title = "Section 1",
+                items = [
+                    View.TextCell(text = "Global settings")
+                    View.SwitchCell(text = "Dark mode", on = model.IsDarkModeEnabled)
+                ]
+            )
+            View.TableSection(
+                title = "Section 2",
+                items = [
+                    View.TextCell(text = "Email")
+                    View.EntryCell(text = model.Email)
+                ]
+            )
+        ]
+    )
 )
 ```
 
