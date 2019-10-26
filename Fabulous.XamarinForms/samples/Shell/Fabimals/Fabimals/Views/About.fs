@@ -19,7 +19,7 @@ module About =
     type CmdMsg = GoToUrl of string
 
     let goToUrl url =
-        Device.OpenUri(new Uri(url))
+        Fabimals.Helper.openUri(url)
         Cmd.none
 
     let mapCommands cmdMsg =
@@ -123,7 +123,7 @@ module About =
                                         textColor=Color.White
                                     )
                                 ]
-                            ).FlexLayoutGrow(1.)
+                            ).Grow(1.)
                         ]
                     )
                 )

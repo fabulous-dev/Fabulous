@@ -20,16 +20,16 @@ module Templates =
                         aspect=Aspect.AspectFill,
                         height=40.,
                         width=40.
-                    ).GridRowSpan(2)
+                    ).RowSpan(2)
                     View.Label(
                         text=animal.Name,
                         fontAttributes=FontAttributes.Bold
-                    ).GridColumn(1)
+                    ).Column(1)
                     View.Label(
                         text=animal.Location,
                         fontAttributes=FontAttributes.Italic,
                         verticalOptions=LayoutOptions.End
-                    ).GridRow(1).GridColumn(1)
+                    ).Row(1).Column(1)
                 ]
             )
         )

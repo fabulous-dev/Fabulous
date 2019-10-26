@@ -11,7 +11,6 @@
       "properties": [
         {
           "source": null,
-          "UniqueName": "Ref",
           "Name": "Ref",
           "canBeUpdated": false,
           "defaultValue": "null",
@@ -19,7 +18,6 @@
         },
         {
           "source": null,
-          "UniqueName": "Tag",
           "name": "Tag",
           "canBeUpdated": false,
           "defaultValue": "null",
@@ -29,7 +27,6 @@
       "events": [
         {
           "source": null,
-          "UniqueName": "Created",
           "name": "Created",
           "canBeUpdated": false,
           "inputType": "obj -> unit",
@@ -506,7 +503,6 @@
         {
           "source": null,
           "name": "StyleClass",
-          "uniqueName": "NavigableElementStyleClasses",
           "shortName": "styleClasses",
           "defaultValue": "null",
           "inputType": "string list"
@@ -514,7 +510,6 @@
         {
           "source": null,
           "name": "ShellBackButtonBehavior",
-          "uniqueName": "ShellBackButtonBehavior",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.BackButtonBehavior",
           "updateCode": "ViewUpdaters.updateShellBackButtonBehavior"
@@ -522,7 +517,6 @@
         {
           "source": null,
           "name": "ShellBackgroundColor",
-          "uniqueName": "ShellBackgroundColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellBackgroundColor"
@@ -530,7 +524,6 @@
         {
           "source": null,
           "name": "ShellDisabledColor",
-          "uniqueName": "ShellDisabledColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellDisabledColor"
@@ -538,7 +531,6 @@
         {
           "source": null,
           "name": "ShellForegroundColor",
-          "uniqueName": "ShellForegroundColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellForegroundColor"
@@ -546,7 +538,6 @@
         {
           "source": null,
           "name": "ShellFlyoutBehavior",
-          "uniqueName": "ShellFlyoutBehavior",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.FlyoutBehavior",
           "updateCode": "ViewUpdaters.updateShellFlyoutBehavior"
@@ -554,7 +545,6 @@
         {
           "source": null,
           "name": "ShellNavBarIsVisible",
-          "uniqueName": "ShellNavBarIsVisible",
           "defaultValue": "true",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellNavBarIsVisible"
@@ -562,7 +552,6 @@
         {
           "source": null,
           "name": "ShellSearchHandler",
-          "uniqueName": "ShellSearchHandler",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.SearchHandler",
           "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
@@ -570,7 +559,6 @@
         {
           "source": null,
           "name": "ShellTabBarBackgroundColor",
-          "uniqueName": "ShellTabBarBackgroundColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarBackgroundColor"
@@ -578,7 +566,6 @@
         {
           "source": null,
           "name": "ShellTabBarDisabledColor",
-          "uniqueName": "ShellTabBarDisabledColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarDisabledColor"
@@ -586,7 +573,6 @@
         {
           "source": null,
           "name": "ShellTabBarForegroundColor",
-          "uniqueName": "ShellTabBarForegroundColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarForegroundColor"
@@ -594,7 +580,6 @@
         {
           "source": null,
           "name": "ShellTabBarIsVisible",
-          "uniqueName": "ShellTabBarIsVisible",
           "defaultValue": "true",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellTabBarIsVisible"
@@ -602,7 +587,6 @@
         {
           "source": null,
           "name": "ShellTabBarTitleColor",
-          "uniqueName": "ShellTabBarTitleColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarTitleColor"
@@ -610,7 +594,6 @@
         {
           "source": null,
           "name": "ShellTabBarUnselectedColor",
-          "uniqueName": "ShellTabBarUnselectedColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarUnselectedColor"
@@ -618,7 +601,6 @@
         {
           "source": null,
           "name": "ShellTitleColor",
-          "uniqueName": "ShellTitleColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTitleColor"
@@ -626,7 +608,6 @@
         {
           "source": null,
           "name": "ShellTitleView",
-          "uniqueName": "ShellTitleView",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.View",
           "updateCode": "ViewUpdaters.updateShellTitleView"
@@ -634,7 +615,6 @@
         {
           "source": null,
           "name": "ShellUnselectedColor",
-          "uniqueName": "ShellUnselectedColor",
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellUnselectedColor"
@@ -913,7 +893,6 @@
         {
           "source": null,
           "name": "HasNavigationBar",
-          "uniqueName": "HasNavigationBar",
           "inputType": "bool",
           "defaultValue": "true",
           "updateCode": "ViewUpdaters.updateNavigationPageHasNavigationBar"
@@ -1076,21 +1055,17 @@
             "elementType": "Xamarin.Forms.Page",
             "attachedProperties": [
               {
-                "source": "BackButtonTitle",
-                "uniqueName": "BackButtonTitle"
+                "source": "BackButtonTitle"
               },
               {
-                "source": "HasBackButton",
-                "uniqueName": "HasBackButton"
+                "source": "HasBackButton"
               },
               {
                 "source": "TitleIconImageSource",
-                "uniqueName": "TitleIcon",
                 "shortName": "titleIcon"
               },
               {
-                "source": "TitleView",
-                "uniqueName": "TitleView"
+                "source": "TitleView"
               }
             ]
           }
@@ -1588,7 +1563,7 @@
           "inputType": "bool",
           "modelType": "bool",
           "defaultValue": "true",
-          "updateCode": "ViewUpdaters.updateCommand prevSearchBarSearchCommandOpt currSearchBarSearchCommandOpt (fun (_target: Xamarin.Forms.SearchBar) -> _target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
+          "updateCode": "ViewUpdaters.updateCommand prevSearchCommandOpt currSearchCommandOpt (fun (_target: Xamarin.Forms.SearchBar) -> _target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
         },
         {
           "source": "Text"
@@ -1617,19 +1592,10 @@
           "source": "EmptyView"
         },
         {
-          "source": "Footer"
-        },
-        {
-          "source": "Header"
-        },
-        {
           "source": "HorizontalScrollBarVisibility"
         },
         {
           "source": "ItemSizingStrategy"
-        },
-        {
-          "source": "ItemsLayout"
         },
         {
           "source": "ItemsUpdatingScrollMode"

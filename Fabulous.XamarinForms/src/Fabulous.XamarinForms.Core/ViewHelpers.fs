@@ -80,7 +80,7 @@ module ViewHelpers =
     /// Looks for a view element with the given Automation ID in the view hierarchy.
     /// This function is not optimized for efficiency and may execute slowly.
     let rec tryFindViewElement automationId (element:ViewElement) =
-        let elementAutomationId = element.TryGetAttribute<string>("ElementAutomationId")
+        let elementAutomationId = element.TryGetAttribute<string>("AutomationId")
         match elementAutomationId with
         | ValueSome automationIdValue when automationIdValue = automationId -> Some element
         | _ ->
@@ -88,7 +88,7 @@ module ViewHelpers =
                 match element.TryGetAttribute<ViewElement>("Content") with
                 | ValueSome content -> [| content |]
                 | ValueNone ->
-                    match element.TryGetAttribute<ViewElement[]>("NavigationPagePages") with
+                    match element.TryGetAttribute<ViewElement[]>("Pages") with
                     | ValueSome pages -> pages
                     | ValueNone ->
                         match element.TryGetAttribute<ViewElement[]>("Children") with

@@ -35,7 +35,7 @@ module SearchHandlers =
                             View.Label(
                                 text=animal.Name,
                                 fontAttributes=FontAttributes.Bold
-                            ).GridColumn(1)
+                            ).Column(1)
                         ]
                     )
             ]

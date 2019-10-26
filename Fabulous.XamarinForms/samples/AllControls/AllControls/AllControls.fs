@@ -368,7 +368,7 @@ module App =
                                      View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                                      View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
                                 ])))
-                     .PageToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
                              View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
                              View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -505,7 +505,7 @@ module App =
                                  [ for i in 1 .. 6 do 
                                       for j in 1 .. 6 -> 
                                          let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
-                                         View.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+                                         View.BoxView(color).Row(i-1).Column(j-1) ] )
                          MainPageButton
                        ]))
            ])
@@ -559,7 +559,7 @@ module App =
                                 for i in 1 .. 6 do 
                                     for j in 1 .. 6 -> 
                                         let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
-                                        View.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+                                        View.BoxView(color).Row(i-1).Column(j-1) ] )
                          MainPageButton
                         ]))
 
@@ -573,7 +573,7 @@ module App =
                                   for i in 1 .. gridSize do 
                                       for j in 1 .. gridSize -> 
                                          let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
-                                         View.BoxView(color).GridRow(i-1).GridColumn(j-1) ]))
+                                         View.BoxView(color).Row(i-1).Column(j-1) ]))
                         MainPageButton
                       ], 
                       gestureRecognizers=[ View.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
@@ -588,7 +588,7 @@ module App =
                                children = [ for row in 1 .. 6 do 
                                                for col in 1 .. 6 ->
                                                   let item = View.Label(text=sprintf "(%d, %d)" (col+dx) (row+dy), backgroundColor=Color.White, textColor=Color.Black) 
-                                                  item.GridRow(row-1).GridColumn(col-1) ])
+                                                  item.Row(row-1).Column(col-1) ])
                             MainPageButton
                       ], 
                       gestureRecognizers=[ View.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
@@ -708,8 +708,8 @@ module App =
                                                       View.Image(height=240.0, 
                                                           width=160.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
-                                                      ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Thickness (0.0, 4.0)).FlexLayoutGrow(1.0)
+                                                      ).Order(-1).AlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Thickness (0.0, 4.0)).Grow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
@@ -725,8 +725,8 @@ module App =
                                                       View.Image(height=213.0, 
                                                           width=320.0, 
                                                           source=Path "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
-                                                      ).FlexLayoutOrder(-1).FlexLayoutAlignSelf(FlexAlignSelf.Center)
-                                                      View.Label(margin=Thickness (0.0, 4.0)).FlexLayoutGrow(1.0)
+                                                      ).Order(-1).AlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Thickness (0.0, 4.0)).Grow(1.0)
                                                       View.Button(text="Learn More", fontSize=Named NamedSize.Large, textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
                                               backgroundColor=Color.LightYellow,
                                               borderColor=Color.Blue,
@@ -777,12 +777,12 @@ module App =
                   content= View.RelativeLayout(
                       children=[ 
                           View.Label(text = "RelativeLayout Example", textColor = Color.Red)
-                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+                                .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
                           View.Label(text = "Positioned relative to my parent", textColor = Color.Red)
-                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
-                                .RelativeLayoutYConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+                                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+                                .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
                           MainPageButton
-                                .RelativeLayoutXConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 2.0))
+                                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 2.0))
                       ])))
 
 
@@ -796,14 +796,14 @@ module App =
                                    verticalOptions = LayoutOptions.FillAndExpand, 
                                    children = [
                                       View.Label(text = "Top Left", textColor = Color.Black)
-                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .AbsoluteLayoutLayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
                                       View.Label(text = "Centered", textColor = Color.Black)
-                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .AbsoluteLayoutLayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
                                       View.Label(text = "Bottom Right", textColor = Color.Black)
-                                          .AbsoluteLayoutLayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                          .AbsoluteLayoutLayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                                MainPageButton
                             ])))
 

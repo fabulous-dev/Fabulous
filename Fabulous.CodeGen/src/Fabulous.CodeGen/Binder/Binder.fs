@@ -27,20 +27,8 @@ module BinderHelpers =
           getWarnings = fun () -> List.rev _warnings
           getErrors = fun () -> List.rev _errors }
         
-    let makeUniqueName (typeName: string) memberName =
-        typeName + memberName
-        
     let getShortName value defaultName =
-        match value with
-        | Some x ->
-            ()
-        | None ->
-            ()
         Text.getValueOrDefault value (Text.toLowerPascalCase defaultName)
-        
-    let getUniqueName (typeName: string) value defaultName =
-        let defaultUniqueName = makeUniqueName typeName defaultName
-        Text.getValueOrDefault value defaultUniqueName
         
     let getTypeName (typeFullName: string) value =
         let shortTypeName = typeFullName.Substring(typeFullName.LastIndexOf(".") + 1)
@@ -93,10 +81,10 @@ module BinderHelpers =
         
 module Binder =
     /// Bind an existing attached property
-    let bindAttachedProperty containerTypeName (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
+    let bindAttachedProperty (assemblyTypeAttachedProperty: AssemblyTypeAttachedProperty) (bindingsAttachedProperty: AttachedProperty) =
         let name = Text.getValueOrDefault bindingsAttachedProperty.Name assemblyTypeAttachedProperty.Name
         { Name = name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+          UniqueName = Text.getValueOrDefault bindingsAttachedProperty.UniqueName name
           CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
           DefaultValue = Text.getValueOrDefault bindingsAttachedProperty.DefaultValue assemblyTypeAttachedProperty.DefaultValue
           OriginalType = assemblyTypeAttachedProperty.Type
@@ -120,7 +108,7 @@ module Binder =
                     let inputType = values.[2]
                            
                     { Name = name
-                      UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsAttachedProperty.UniqueName name
+                      UniqueName = Text.getValueOrDefault bindingsAttachedProperty.UniqueName name
                       CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
                       DefaultValue = defaultValue
                       OriginalType = inputType
@@ -139,15 +127,15 @@ module Binder =
             (fun a -> a.Name)
             (fun source -> logger.traceWarning (sprintf "Attached property '%s' on type '%s' not found" source containerType))
             (fun () -> tryCreateAttachedProperty logger containerType overwriteData)
-            (fun a -> bindAttachedProperty containerType a overwriteData)
+            (fun a -> bindAttachedProperty a overwriteData)
         
     /// Bind an existing event
-    let bindEvent containerTypeName (assemblyTypeEvent: AssemblyTypeEvent) (bindingsTypeEvent: Event) =
+    let bindEvent (assemblyTypeEvent: AssemblyTypeEvent) (bindingsTypeEvent: Event) =
         let name = Text.getValueOrDefault bindingsTypeEvent.Name assemblyTypeEvent.Name
         let inputType = sprintf "%s -> unit" assemblyTypeEvent.EventArgsType
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+          UniqueName = Text.getValueOrDefault bindingsTypeEvent.UniqueName name
           CanBeUpdated = bindingsTypeEvent.CanBeUpdated |> Option.defaultValue true
           EventArgsType = Text.getValueOrDefault bindingsTypeEvent.EventArgsType assemblyTypeEvent.EventArgsType
           InputType = Text.getValueOrDefault bindingsTypeEvent.InputType inputType
@@ -161,7 +149,7 @@ module Binder =
         let name = Text.getValueOrDefault bindingsTypeProperty.Name assemblyTypeProperty.Name
         { Name = name
           ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
-          UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+          UniqueName = Text.getValueOrDefault bindingsTypeProperty.UniqueName name
           CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
           DefaultValue = Text.getValueOrDefault bindingsTypeProperty.DefaultValue assemblyTypeProperty.DefaultValue
           OriginalType = assemblyTypeProperty.Type
@@ -200,7 +188,7 @@ module Binder =
             
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeEvent.ShortName name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeEvent.UniqueName name
+                  UniqueName = Text.getValueOrDefault bindingsTypeEvent.UniqueName name
                   CanBeUpdated = bindingsTypeEvent.CanBeUpdated |> Option.defaultValue true
                   EventArgsType = Text.getValueOrDefault bindingsTypeEvent.EventArgsType ""
                   InputType = inputType
@@ -225,7 +213,7 @@ module Binder =
                 
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
-                  UniqueName = BinderHelpers.getUniqueName containerTypeName bindingsTypeProperty.UniqueName name
+                  UniqueName = Text.getValueOrDefault bindingsTypeProperty.UniqueName name
                   CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
                   DefaultValue = defaultValue
                   OriginalType = inputType
@@ -253,7 +241,7 @@ module Binder =
             (fun e -> e.Name)
             (fun source -> logger.traceWarning (sprintf "Event '%s' on type '%s' not found" source containerType))
             (fun () -> tryCreateEvent logger containerType bindingsTypeEvent)
-            (fun e -> bindEvent containerType e bindingsTypeEvent)
+            (fun e -> bindEvent e bindingsTypeEvent)
     
     /// Try to bind or create a property binding
     let tryBindProperty logger containerType (assemblyTypeProperties: AssemblyTypeProperty array) (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =

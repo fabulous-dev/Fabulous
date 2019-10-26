@@ -5,6 +5,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
+open Xamarin.Essentials
 open System
 open Fabimals.Views
 open Fabimals.Data
@@ -54,7 +55,7 @@ module App =
     let shellRef = ViewRef<Shell>()
 
     let goToHelpWebsite () =
-        Device.OpenUri(new Uri("https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell"))
+        Fabimals.Helper.openUri("https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell")
         Cmd.none
         
     let navigateToAnimal (animal: Animal) =

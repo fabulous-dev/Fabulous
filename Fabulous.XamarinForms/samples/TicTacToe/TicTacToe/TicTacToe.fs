@@ -174,10 +174,10 @@ module App =
               children=[
                 View.Grid(rowdefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ], coldefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
                     children=[
-                        yield View.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
-                        yield View.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
-                        yield View.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
-                        yield View.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
+                        yield View.BoxView(Color.Black).Row(1).ColumnSpan(5)
+                        yield View.BoxView(Color.Black).Row(3).ColumnSpan(5)
+                        yield View.BoxView(Color.Black).Column(1).RowSpan(5)
+                        yield View.BoxView(Color.Black).Column(3).RowSpan(5)
 
                         for ((row,col) as pos) in positions ->
                             let item = 
@@ -187,21 +187,21 @@ module App =
                                     View.Image(source=imageForPos model.Board.[pos],
                                      margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
                                      verticalOptions=LayoutOptions.Center)
-                            item.GridRow(row*2).GridColumn(col*2) ],
+                            item.Row(row*2).Column(col*2) ],
 
                     rowSpacing=0.0,
                     columnSpacing=0.0,
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
                     ?width = model.VisualBoardSize,
-                    ?height = model.VisualBoardSize).GridRow(0)
+                    ?height = model.VisualBoardSize).Row(0)
 
                 View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black, 
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
-                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=Named NamedSize.Large).GridRow(1)
+                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=Named NamedSize.Large).Row(1)
 
-                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=Named NamedSize.Large).GridRow(2)
+                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=Named NamedSize.Large).Row(2)
               ]),
 
              // This requests a square board based on the width we get allocated on the device 

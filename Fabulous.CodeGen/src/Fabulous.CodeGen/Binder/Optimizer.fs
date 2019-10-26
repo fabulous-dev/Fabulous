@@ -132,24 +132,74 @@ module Optimizer =
     /// Reduce the number of instantiated attribute keys by regrouping similarly named and typed properties under a single UniqueName
     /// (e.g. EntryCell.Text and Entry.Text don't inherit from one another, but the Text property can be represented by a single attribute key)
     module OptimizeAttributeKeys =
-        let private canBeOptimized (keysToUpdate: (string * string) array) (boundProperty: BoundProperty) =
-            keysToUpdate |> Array.contains (boundProperty.Name, boundProperty.ModelType)
+        let inline canBeOptimized (keysToUpdate: string list) (item: ^T) =
+            let name = (^T: (member Name: string) item)
+            keysToUpdate |> List.contains name
+            
+        let inline applyFn keysToUpdate fn item =
+            match canBeOptimized keysToUpdate item with
+            | false -> item
+            | true -> fn item
         
-        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+        let private optimizeBoundAttachedProperty (boundType: BoundType) (boundAttachedProperty: BoundAttachedProperty) =
+            { boundAttachedProperty with
+                UniqueName = sprintf "%s%s" boundType.Name boundAttachedProperty.Name }
+        
+        let private optimizeBoundProperty (keysToUpdate: string list) (boundType: BoundType) (boundProperty: BoundProperty) =
+            let optimizeAttachedProperty =
+                applyFn keysToUpdate (optimizeBoundAttachedProperty boundType)
+            
+            let collectionData =
+                boundProperty.CollectionData
+                |> Option.map (fun collection ->
+                    { collection with
+                        AttachedProperties = collection.AttachedProperties |> Array.map optimizeAttachedProperty })
+                
             { boundProperty with
-                UniqueName = boundProperty.Name }
+                UniqueName = sprintf "%s%s" boundType.Name boundProperty.Name
+                CollectionData = collectionData }
+        
+        let private optimizeBoundEvent (boundType: BoundType) (boundEvent: BoundEvent) =
+            { boundEvent with
+                UniqueName = sprintf "%s%s" boundType.Name boundEvent.Name }
+            
+        let private optimizeType (keysToUpdate: string list) (boundType: BoundType) =
+            let optimizeProperty =
+                applyFn keysToUpdate (optimizeBoundProperty keysToUpdate boundType)
+            let optimizeEvent =
+                applyFn keysToUpdate (optimizeBoundEvent boundType)
+                
+            { boundType with
+                Properties = boundType.Properties |> Array.map optimizeProperty
+                Events = boundType.Events |> Array.map optimizeEvent }
         
         let apply (boundModel: BoundModel) =
-            let keysToUpdate =
-                boundModel.Types
-                |> Array.collect (fun t -> t.Properties)
-                |> Array.map (fun p -> p.Name, p.ModelType)
-                |> Array.groupBy id
-                |> Array.map (fun (key, items) -> (key, items.Length))
-                |> Array.filter (fun (_, count) -> count > 1)
-                |> Array.map (fun (key, _) -> key)
+            let allKeys =
+                [ for t in boundModel.Types do
+                      for p in t.Properties do
+                          yield (p.Name, p.ModelType)
+                          
+                          match p.CollectionData with
+                          | None -> ()
+                          | Some collection ->
+                              for ap in collection.AttachedProperties do
+                                  yield (ap.Name, ap.ModelType)
+                                  
+                      for e in t.Events do
+                          yield (e.Name, e.ModelType) ]
             
-            propertyOptimizer (fun _ prop -> canBeOptimized keysToUpdate prop) (fun _ prop -> [| optimizeBoundProperty prop |]) boundModel
+            let keysToUpdate =
+                allKeys
+                |> List.distinct
+                |> List.groupBy fst
+                |> List.filter (fun (_, items) -> items.Length > 1)
+                |> List.map fst
+            
+            if keysToUpdate.Length = 0 then
+                boundModel
+            else
+                { boundModel with
+                    Types = boundModel.Types |> Array.map (optimizeType keysToUpdate) }
 
     /// Applies all optimizations to the bound model
     let optimize boundModel : WorkflowResult<BoundModel> =
