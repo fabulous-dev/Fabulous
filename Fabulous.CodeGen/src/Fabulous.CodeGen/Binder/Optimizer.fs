@@ -130,7 +130,7 @@ module Optimizer =
         let apply = eventOptimizer (fun _ evt -> canBeOptimized evt) (fun _ evt -> [| optimizeBoundEvent evt |])
             
     /// Uses the member's name (property/event/attached property) as the unique name where possible
-    /// If there's a name collision between two members with the same name but different input types, keep using the complete unique name
+    /// If there's a name collision between two members with the same name but different model types, keep using the complete unique name
     /// This allows to write things like View.Entry().Text("XYZ") instead of View.Entry().EntryText("XYZ") 
     module OptimizeAttributeKeys =
         let inline canBeOptimized (keysToUpdate: string list) (item: ^T) =
