@@ -129,8 +129,9 @@ module Optimizer =
             
         let apply = eventOptimizer (fun _ evt -> canBeOptimized evt) (fun _ evt -> [| optimizeBoundEvent evt |])
             
-    /// Reduce the number of instantiated attribute keys by regrouping similarly named and typed properties under a single UniqueName
-    /// (e.g. EntryCell.Text and Entry.Text don't inherit from one another, but the Text property can be represented by a single attribute key)
+    /// Uses the member's name (property/event/attached property) as the unique name where possible
+    /// If there's a name collision between two members with the same name but different input types, keep using the complete unique name
+    /// This allows to write things like View.Entry().Text("XYZ") instead of View.Entry().EntryText("XYZ") 
     module OptimizeAttributeKeys =
         let inline canBeOptimized (keysToUpdate: string list) (item: ^T) =
             let name = (^T: (member Name: string) item)
