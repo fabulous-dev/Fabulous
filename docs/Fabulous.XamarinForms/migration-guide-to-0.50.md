@@ -249,7 +249,7 @@ View.ListView(
 
 And you can declare context actions like this
 
-```
+```fsharp
 View.ListView(
     items = [
         View.ViewCell(
