@@ -39,10 +39,9 @@ module FFImageLoadingExtension =
     // Fully-qualified name to avoid extending by mistake
     // another View class (like Xamarin.Forms.View)
     type Fabulous.XamarinForms.View with
-        /// Describes a CachedImage in the view
-        /// The inline keyword is important for performance
-
         // https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
+        /// Describes a CachedImage in the view
+        // The inline keyword is important for performance
         static member inline CachedImage
             (?source:ImageSource, ?aspect, ?isOpaque, // Align first 3 parameters with Image
             ?loadingPlaceholder:ImageSource, ?errorPlaceholder:ImageSource,
