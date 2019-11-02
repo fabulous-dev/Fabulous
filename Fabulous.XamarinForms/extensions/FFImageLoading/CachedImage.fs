@@ -140,7 +140,7 @@ module FFImageLoadingExtension =
             match transformations with None -> () | Some v -> attribs.Add (CachedImageTransformationsAttribKey, v)
             match downloadProgress with None -> () | Some v -> attribs.Add (CachedImageDownloadProgressAttribKey, EventHandler<_>(fun _ -> v))
             match downloadStarted with None -> () | Some v -> attribs.Add (CachedImageDownloadStartedAttribKey, EventHandler<_>(fun _ -> v))
-            match fileWriteFinished with None -> () | Some v -> attribs.Add (CachedImageDownloadStartedAttribKey, EventHandler<_>(fun _ -> v))
+            match fileWriteFinished with None -> () | Some v -> attribs.Add (CachedImageFileWriteFinishedAttribKey, EventHandler<_>(fun _ -> v))
             match finish with None -> () | Some v -> attribs.Add (CachedImageFinishAttribKey, EventHandler<_>(fun _ -> v))
             match success with None -> () | Some v -> attribs.Add (CachedImageSuccessAttribKey, EventHandler<_>(fun _ -> v))
             match error with None -> () | Some v -> attribs.Add (CachedImageErrorAttribKey, EventHandler<_>(fun _ -> v))
