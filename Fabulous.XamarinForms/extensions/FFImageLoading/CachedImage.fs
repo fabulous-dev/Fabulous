@@ -53,7 +53,7 @@ module FFImageLoadingExtension =
             ?downsampleWidth, ?downsampleHeight, ?downsampleToViewSize, ?downsampleUseDipUnits,
             ?fadeAnimationEnabled, ?fadeAnimationDuration, ?fadeAnimationForCachedImages,
             ?bitmapOptimizations, ?invalidateLayoutAfterLoaded,
-            ?transformPlaceholders, ?transformations,
+            ?transformPlaceholders, ?transformations:_ list,
             ?downloadStarted, ?downloadProgress, ?fileWriteFinished, ?finish, ?success, ?error,
             // inherited attributes common to all views
             ?gestureRecognizers, ?horizontalOptions, ?margin, ?verticalOptions, ?anchorX, ?anchorY, ?backgroundColor,
@@ -193,7 +193,7 @@ module FFImageLoadingExtension =
                 curr.UpdatePrimitive (prev, target, CachedImageTransformPlaceholdersAttribKey,
                     fun target transform -> target.TransformPlaceholders <- transform)
                 curr.UpdatePrimitive (prev, target, CachedImageTransformationsAttribKey,
-                    fun target transforms -> target.Transformations <- ResizeArray (transforms: _ list))
+                    fun target transforms -> target.Transformations <- ResizeArray transforms)
                 curr.UpdateEvent (prev, CachedImageDownloadStartedAttribKey, target.DownloadStarted)
                 curr.UpdateEvent (prev, CachedImageDownloadProgressAttribKey, target.DownloadProgress)
                 curr.UpdateEvent (prev, CachedImageFileWriteFinishedAttribKey, target.FileWriteFinished)
