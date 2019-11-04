@@ -2495,6 +2495,7 @@
     },
     {
       "type": "Xamarin.Forms.TimePicker",
+      "name": "XFTimePicker",
       "canBeInstantiated": false,
       "properties": [
         {
@@ -2524,6 +2525,7 @@
     },
     {
       "type": "Fabulous.XamarinForms.CustomTimePicker",
+      "name": "TimePicker",
       "events": [
         {
           "source": "TimeChanged",
