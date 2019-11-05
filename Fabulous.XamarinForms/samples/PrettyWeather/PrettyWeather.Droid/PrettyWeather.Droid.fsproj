@@ -25,7 +25,7 @@
     <Name>PrettyWeather.Droid</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <SelectedDevice>Samsung SM-G960U</SelectedDevice>
+    <SelectedDevice>my_device</SelectedDevice>
     <DefaultDevice>my_device</DefaultDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
