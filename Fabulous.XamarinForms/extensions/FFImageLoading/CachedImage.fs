@@ -43,8 +43,8 @@ module FFImageLoadingExtension =
         /// Describes a CachedImage in the view
         // The inline keyword is important for performance
         static member inline CachedImage
-            (?source:ImageSource, ?aspect, ?isOpaque, // Align first 3 parameters with Image
-            ?loadingPlaceholder:ImageSource, ?errorPlaceholder:ImageSource,
+            (?source, ?aspect, ?isOpaque, // Align first 3 parameters with Image
+            ?loadingPlaceholder, ?errorPlaceholder,
             ?cacheType, ?cacheDuration, ?cacheKeyFactory:ICacheKeyFactory,
             ?loadingDelay, ?loadingPriority,
             ?customDataResolver:FFImageLoading.Work.IDataResolver,
@@ -52,7 +52,7 @@ module FFImageLoadingExtension =
             ?downsampleWidth, ?downsampleHeight, ?downsampleToViewSize, ?downsampleUseDipUnits,
             ?fadeAnimationEnabled, ?fadeAnimationDuration, ?fadeAnimationForCachedImages,
             ?bitmapOptimizations, ?invalidateLayoutAfterLoaded,
-            ?transformPlaceholders, ?transformations:_ list,
+            ?transformPlaceholders, ?transformations,
             ?downloadStarted, ?downloadProgress, ?fileWriteFinished, ?finish, ?success, ?error,
             // inherited attributes common to all views
             ?gestureRecognizers, ?horizontalOptions, ?margin, ?verticalOptions, ?anchorX, ?anchorY, ?backgroundColor,
@@ -149,15 +149,15 @@ module FFImageLoadingExtension =
             let update (prev: ViewElement voption) (curr: ViewElement) (target: CachedImage) =
                 ViewBuilders.UpdateView(prev, curr, target)
                 curr.UpdatePrimitive (prev, target, CachedImageSourceAttribKey,
-                    fun target source -> target.Source <- source)
+                    fun target source -> target.Source <- ViewConverters.convertFabulousImageToXamarinFormsImageSource source)
                 curr.UpdatePrimitive (prev, target, AspectAttribKey,
                     fun target aspect -> target.Aspect <- aspect)
                 curr.UpdatePrimitive (prev, target, IsOpaqueAttribKey,
                     fun target isOpaque -> target.IsOpaque <- isOpaque)
                 curr.UpdatePrimitive (prev, target, CachedImageLoadingPlaceholderAttribKey,
-                    fun target loading -> target.LoadingPlaceholder <- loading)
+                    fun target loading -> target.LoadingPlaceholder <- ViewConverters.convertFabulousImageToXamarinFormsImageSource loading)
                 curr.UpdatePrimitive (prev, target, CachedImageErrorPlaceholderAttribKey,
-                    fun target error -> target.ErrorPlaceholder <- error)
+                    fun target error -> target.ErrorPlaceholder <- ViewConverters.convertFabulousImageToXamarinFormsImageSource error)
                 curr.UpdatePrimitive (prev, target, CachedImageCacheTypeAttribKey,
                     fun target cacheType -> target.CacheType <- cacheType)
                 curr.UpdatePrimitive (prev, target, CachedImageCacheDurationAttribKey,
@@ -194,8 +194,7 @@ module FFImageLoadingExtension =
                     fun target invalidate -> target.InvalidateLayoutAfterLoaded <- invalidate)
                 curr.UpdatePrimitive (prev, target, CachedImageTransformPlaceholdersAttribKey,
                     fun target transform -> target.TransformPlaceholders <- transform)
-                curr.UpdatePrimitive (prev, target, CachedImageTransformationsAttribKey,
-                    fun target transforms -> target.Transformations <- ResizeArray transforms)
+                curr.UpdateElementCollection (prev, CachedImageTransformationsAttribKey, target.Transformations)
                 curr.UpdateEvent (prev, CachedImageDownloadStartedAttribKey, target.DownloadStarted)
                 curr.UpdateEvent (prev, CachedImageDownloadProgressAttribKey, target.DownloadProgress)
                 curr.UpdateEvent (prev, CachedImageFileWriteFinishedAttribKey, target.FileWriteFinished)
@@ -204,4 +203,3 @@ module FFImageLoadingExtension =
                 curr.UpdateEvent (prev, CachedImageErrorAttribKey, target.Error)
             // Create a ViewElement with the instruction to create and update a CachedImage
             ViewElement.Create(CachedImage, update, attribs)
-   

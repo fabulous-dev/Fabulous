@@ -10,14 +10,27 @@ The FFImageLoading plugin allows you to cache images as opposed to wasting time 
 
 FFImageLoading was created by Daniel Luberda and Fabien Molinet. The original project can be found in [this github repository](https://github.com/luberda-molinet/FFImageLoading).
 
-The nuget [`Fabulous.XamarinForms.FFImageLoading`](https://www.nuget.org/packages/Fabulous.XamarinForms.FFImageLoading) implements a view component for the type [CahcedImage](https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API#basic-example).
+The nuget [`Fabulous.XamarinForms.FFImageLoading`](https://www.nuget.org/packages/Fabulous.XamarinForms.FFImageLoading) implements a view component for the type [CachedImage](https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API#basic-example).
 
 ![How the view looks](https://raw.githubusercontent.com/luberda-molinet/FFImageLoading/master/samples/Screenshots/ffimageloading_large.png)
 ###### Source: The FFImageLoading github project by Daniel Luberda and Fabien Molinet
 
-To use `Fabulous.XamarinForms.FFImageLoading`, you must add a reference to this [NuGet package](https://www.nuget.org/packages/Fabulous.XamarinForms.FFImageLoading) across your whole solution.  This will add appropriate references to your platform-specific Android, iOS, UWP, WPF etc projects too.
+### Installation
+To use `Fabulous.XamarinForms.FFImageLoading`, you must:
 
-After these steps you can use CachedImage in your view function. Here is a simple example of using CachedImage to display a scenic image:
+1. Add a reference to [this NuGet package](https://www.nuget.org/packages/Fabulous.XamarinForms.FFImageLoading) across your whole solution.  This will add appropriate references to your platform-specific Android, iOS, UWP, WPF etc projects too.
+
+2. Add this line to your platform specific projects (AppDelegate.fs, MainActivity.fs, MainPage.xaml.cs, etc) before you use FFImageLoading:
+- If you¡¦re using Android:
+```fs
+FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: [true]/[false])
+```
+- If you¡¦re using non-Android platforms:
+```fs
+FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
+```
+
+3. Use CachedImage in your view function. Here is a simple example of using CachedImage to display a scenic image:
 
 ```fsharp
 open Xamarin.Forms
