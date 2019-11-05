@@ -33,13 +33,11 @@ FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
 3. Use CachedImage in your view function. Here is a simple example of using CachedImage to display a scenic image:
 
 ```fsharp
-open Xamarin.Forms
-open Fabulous.XamarinForms
-
 View.CachedImage(
-  source = Image.Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
+  source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
   height = 600.,
-  width = 600.)
+  width = 600.
+)
 ```
 
 Performance considerations

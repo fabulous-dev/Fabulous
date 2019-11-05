@@ -1,8 +1,9 @@
 namespace Fabulous.XamarinForms
+
 open System
-open Xamarin.Forms
 open FFImageLoading.Forms
 open Fabulous
+
 module ViewAttributes =
     let CachedImageSourceAttribKey = AttributeKey "CachedImage_Source"
     let CachedImageLoadingPlaceholderAttribKey = AttributeKey "CachedImage_LoadingPlaceholder"
@@ -44,25 +45,25 @@ module FFImageLoadingExtension =
         // The inline keyword is important for performance
         static member inline CachedImage
             (?source, ?aspect, ?isOpaque, // Align first 3 parameters with Image
-            ?loadingPlaceholder, ?errorPlaceholder,
-            ?cacheType, ?cacheDuration, ?cacheKeyFactory:ICacheKeyFactory,
-            ?loadingDelay, ?loadingPriority,
-            ?customDataResolver:FFImageLoading.Work.IDataResolver,
-            ?retryCount, ?retryDelay,
-            ?downsampleWidth, ?downsampleHeight, ?downsampleToViewSize, ?downsampleUseDipUnits,
-            ?fadeAnimationEnabled, ?fadeAnimationDuration, ?fadeAnimationForCachedImages,
-            ?bitmapOptimizations, ?invalidateLayoutAfterLoaded,
-            ?transformPlaceholders, ?transformations,
-            ?downloadStarted, ?downloadProgress, ?fileWriteFinished, ?finish, ?success, ?error,
-            // inherited attributes common to all views
-            ?gestureRecognizers, ?horizontalOptions, ?margin, ?verticalOptions, ?anchorX, ?anchorY, ?backgroundColor,
-            ?behaviors, ?flowDirection, ?height, ?inputTransparent, ?isEnabled, ?isTabStop, ?isVisible, ?minimumHeight,
-            ?minimumWidth, ?opacity, ?resources, ?rotation, ?rotationX, ?rotationY, ?scale, ?scaleX, ?scaleY, ?styles,
-            ?styleSheets, ?tabIndex, ?translationX, ?translationY, ?visual, ?width, ?style, ?styleClasses, ?shellBackButtonBehavior,
-            ?shellBackgroundColor, ?shellDisabledColor, ?shellForegroundColor, ?shellFlyoutBehavior, ?shellNavBarIsVisible,
-            ?shellSearchHandler, ?shellTabBarBackgroundColor, ?shellTabBarDisabledColor, ?shellTabBarForegroundColor,
-            ?shellTabBarIsVisible, ?shellTabBarTitleColor, ?shellTabBarUnselectedColor, ?shellTitleColor, ?shellTitleView,
-            ?shellUnselectedColor, ?automationId, ?classId, ?effects, ?menu, ?ref, ?styleId, ?tag, ?focused, ?unfocused, ?created) =
+             ?loadingPlaceholder, ?errorPlaceholder,
+             ?cacheType, ?cacheDuration, ?cacheKeyFactory:ICacheKeyFactory,
+             ?loadingDelay, ?loadingPriority,
+             ?customDataResolver:FFImageLoading.Work.IDataResolver,
+             ?retryCount, ?retryDelay,
+             ?downsampleWidth, ?downsampleHeight, ?downsampleToViewSize, ?downsampleUseDipUnits,
+             ?fadeAnimationEnabled, ?fadeAnimationDuration, ?fadeAnimationForCachedImages,
+             ?bitmapOptimizations, ?invalidateLayoutAfterLoaded,
+             ?transformPlaceholders, ?transformations,
+             ?downloadStarted, ?downloadProgress, ?fileWriteFinished, ?finish, ?success, ?error,
+             // inherited attributes common to all views
+             ?gestureRecognizers, ?horizontalOptions, ?margin, ?verticalOptions, ?anchorX, ?anchorY, ?backgroundColor,
+             ?behaviors, ?flowDirection, ?height, ?inputTransparent, ?isEnabled, ?isTabStop, ?isVisible, ?minimumHeight,
+             ?minimumWidth, ?opacity, ?resources, ?rotation, ?rotationX, ?rotationY, ?scale, ?scaleX, ?scaleY, ?styles,
+             ?styleSheets, ?tabIndex, ?translationX, ?translationY, ?visual, ?width, ?style, ?styleClasses, ?shellBackButtonBehavior,
+             ?shellBackgroundColor, ?shellDisabledColor, ?shellForegroundColor, ?shellFlyoutBehavior, ?shellNavBarIsVisible,
+             ?shellSearchHandler, ?shellTabBarBackgroundColor, ?shellTabBarDisabledColor, ?shellTabBarForegroundColor,
+             ?shellTabBarIsVisible, ?shellTabBarTitleColor, ?shellTabBarUnselectedColor, ?shellTitleColor, ?shellTitleView,
+             ?shellUnselectedColor, ?automationId, ?classId, ?effects, ?menu, ?ref, ?styleId, ?tag, ?focused, ?unfocused, ?created) =
             
             // Count the number of additional attributes
             let attribCount = 0
@@ -159,13 +160,13 @@ module FFImageLoadingExtension =
                 curr.UpdatePrimitive (prev, target, CachedImageErrorPlaceholderAttribKey,
                     fun target error -> target.ErrorPlaceholder <- ViewConverters.convertFabulousImageToXamarinFormsImageSource error)
                 curr.UpdatePrimitive (prev, target, CachedImageCacheTypeAttribKey,
-                    fun target cacheType -> target.CacheType <- cacheType)
+                    fun target cacheType -> target.CacheType <- Option.toNullable cacheType)
                 curr.UpdatePrimitive (prev, target, CachedImageCacheDurationAttribKey,
-                    fun target cacheDuration -> target.CacheDuration <- cacheDuration)
+                    fun target cacheDuration -> target.CacheDuration <- Option.toNullable cacheDuration)
                 curr.UpdatePrimitive (prev, target, CachedImageCacheKeyFactoryAttribKey,
                     fun target keyFactory -> target.CacheKeyFactory <- keyFactory)
                 curr.UpdatePrimitive (prev, target, CachedImageLoadingDelayAttribKey,
-                    fun target delay -> target.LoadingDelay <- delay)
+                    fun target delay -> target.LoadingDelay <- Option.toNullable delay)
                 curr.UpdatePrimitive (prev, target, CachedImageLoadingPriorityAttribKey,
                     fun target priority -> target.LoadingPriority <- priority)
                 curr.UpdatePrimitive (prev, target, CachedImageCustomDataResolverAttribKey,
@@ -183,17 +184,17 @@ module FFImageLoadingExtension =
                 curr.UpdatePrimitive (prev, target, CachedImageDownsampleUseDipUnitsAttribKey,
                     fun target dip -> target.DownsampleUseDipUnits <- dip)
                 curr.UpdatePrimitive (prev, target, CachedImageFadeAnimationEnabledAttribKey,
-                    fun target fade -> target.FadeAnimationEnabled <- fade)
+                    fun target fade -> target.FadeAnimationEnabled <- Option.toNullable fade)
                 curr.UpdatePrimitive (prev, target, CachedImageFadeAnimationDurationAttribKey,
-                    fun target fadeDuration -> target.FadeAnimationDuration <- fadeDuration)
+                    fun target fadeDuration -> target.FadeAnimationDuration <- Option.toNullable fadeDuration)
                 curr.UpdatePrimitive (prev, target, CachedImageFadeAnimationForCachedImagesAttribKey,
-                    fun target fadeCached -> target.FadeAnimationForCachedImages <- fadeCached)
+                    fun target fadeCached -> target.FadeAnimationForCachedImages <- Option.toNullable fadeCached)
                 curr.UpdatePrimitive (prev, target, CachedImageBitmapOptimizationsAttribKey,
-                    fun target optimize -> target.BitmapOptimizations <- optimize)
+                    fun target optimize -> target.BitmapOptimizations <- Option.toNullable optimize)
                 curr.UpdatePrimitive (prev, target, CachedImageInvalidateLayoutAfterLoadedAttribKey,
-                    fun target invalidate -> target.InvalidateLayoutAfterLoaded <- invalidate)
+                    fun target invalidate -> target.InvalidateLayoutAfterLoaded <- Option.toNullable invalidate)
                 curr.UpdatePrimitive (prev, target, CachedImageTransformPlaceholdersAttribKey,
-                    fun target transform -> target.TransformPlaceholders <- transform)
+                    fun target transform -> target.TransformPlaceholders <- Option.toNullable transform)
                 curr.UpdateElementCollection (prev, CachedImageTransformationsAttribKey, target.Transformations)
                 curr.UpdateEvent (prev, CachedImageDownloadStartedAttribKey, target.DownloadStarted)
                 curr.UpdateEvent (prev, CachedImageDownloadProgressAttribKey, target.DownloadProgress)
@@ -201,5 +202,17 @@ module FFImageLoadingExtension =
                 curr.UpdateEvent (prev, CachedImageFinishAttribKey, target.Finish)
                 curr.UpdateEvent (prev, CachedImageSuccessAttribKey, target.Success)
                 curr.UpdateEvent (prev, CachedImageErrorAttribKey, target.Error)
+                
             // Create a ViewElement with the instruction to create and update a CachedImage
             ViewElement.Create(CachedImage, update, attribs)
+            
+#if DEBUG
+    let sample =
+        View.CachedImage(
+            source = Path "path/to/image.png",
+            loadingPlaceholder = Path "path/to/loading-placeholder.png",
+            errorPlaceholder = Path "path/to/error-placeholder.png",
+            height = 600.,
+            width = 600.
+        )
+#endif
