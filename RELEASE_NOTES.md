@@ -1,3 +1,8 @@
+#### 0.50.1
+
+* [Fabulous.XamarinForms] [Extensions] Added an extension for FFImageLoading (https://github.com/fsprojects/Fabulous/pull/581)
+* [Fabulous.XamarinForms] Fixed an issue where an InvalidCastException could occur (https://github.com/fsprojects/Fabulous/pull/589)
+
 #### 0.50.0
 
 BREAKING CHANGES: This release introduces many small breaking changes to provide better type-safety and reducing update calls when using events.
