@@ -21,11 +21,11 @@ To use `Fabulous.XamarinForms.FFImageLoading`, you must:
 1. Add a reference to [this NuGet package](https://www.nuget.org/packages/Fabulous.XamarinForms.FFImageLoading) across your whole solution.  This will add appropriate references to your platform-specific Android, iOS, UWP, WPF etc projects too.
 
 2. Add this line to your platform specific projects (AppDelegate.fs, MainActivity.fs, MainPage.xaml.cs, etc) before you use FFImageLoading:
-- If you¡¦re using Android:
+- If youâ€™re using Android:
 ```fs
 FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: [true]/[false])
 ```
-- If you¡¦re using non-Android platforms:
+- If youâ€™re using non-Android platforms:
 ```fs
 FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
 ```
@@ -37,7 +37,7 @@ open Xamarin.Forms
 open Fabulous.XamarinForms
 
 View.CachedImage(
-  source = ImageSource.FromFile "https://loremflickr.com/cache/resized/65535_48577442711_890a6e6d83_b_600_600_nofilter.jpg",
+  source = Image.Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
   height = 600.,
   width = 600.)
 ```
