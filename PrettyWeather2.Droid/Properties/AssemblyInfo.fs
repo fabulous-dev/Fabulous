@@ -1,4 +1,4 @@
-﻿namespace PrettyWeather.Droid
+﻿namespace PrettyWeather2.Droid
 module AssemblyInfo =
 
   open System.Reflection
@@ -8,11 +8,11 @@ module AssemblyInfo =
   // Information about this assembly is defined by the following attributes. 
   // Change them to the values specific to your project.
 
-  [<assembly: AssemblyTitle("PrettyWeather.Droid")>]
+  [<assembly: AssemblyTitle("PrettyWeather2.Droid")>]
   [<assembly: AssemblyDescription("")>]
   [<assembly: AssemblyConfiguration("")>]
   [<assembly: AssemblyCompany("")>]
-  [<assembly: AssemblyProduct("PrettyWeather.Droid")>]
+  [<assembly: AssemblyProduct("PrettyWeather2.Droid")>]
   [<assembly: AssemblyCopyright("Copyright ©  2019")>]
   [<assembly: AssemblyTrademark("")>]
   [<assembly: AssemblyCulture("")>]
