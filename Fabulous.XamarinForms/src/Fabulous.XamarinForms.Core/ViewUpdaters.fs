@@ -74,17 +74,18 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome coll when coll = null || coll.Length = 0 -> ()
         | ValueSome coll ->
-            let n = coll.Length
-            for i in 0 .. n-1 do
+            for i in 0 .. coll.Length-1 do
                 let targetChild = targetColl.[i]
                 let newChild = coll.[i]
                 let prevChildOpt =
-                    let childOpt = match prevCollOpt with ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                    let mustCreate = (i >= n || match childOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                    if mustCreate then
-                        ValueNone
-                    else
-                        childOpt
+                    match prevCollOpt with
+                    | ValueSome coll when i < coll.Length ->
+                        let child = coll.[i]
+                        if not (identical child newChild) && canReuseView child newChild then
+                            ValueSome child
+                        else
+                            ValueNone
+                    | _ -> ValueNone
                 attach prevChildOpt newChild targetChild
                 
     /// Update the attached properties for each item in Layout<T>.Children
