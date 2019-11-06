@@ -125,23 +125,6 @@ module App =
                 coldStartColor else coldEndColor
         
 
-        let dataView =
-            View.CollectionView(heightRequest=80.,verticalOptions=LayoutOptions.End).GridRow(5).Margin(new Thickness(0.,20.))
-                .ItemsLayout(new LinearItemsLayout(ItemsLayoutOrientation.Horizontal))
-                .Children(
-                    [for r in model.Items -> 
-                        View.Grid(padding=new Thickness(10.),children=[
-                            View.PancakeView(
-                                backgroundGradientStartColor=Color.FromHex("#98FFFFFF"),
-                                backgroundGradientEndColor=Color.FromHex("#60FFFFFF"),
-                                content=View.StackLayout(spacing=0.,verticalOptions=LayoutOptions.Center,children=[
-                                    View.Label(text=r.Name)
-                                    View.Label(text=r.Value.ToString())
-                                    ]),
-                                padding=new Thickness(8.),
-                                cornerRadius=new CornerRadius(20.,20.,20.,0.))])
-                                ]
-                        )
 
         let grid =
             View.Grid(rowdefs=[ "auto"; "*"; "auto"; "auto"; "auto"; "auto" ])
@@ -159,7 +142,11 @@ module App =
                             )
                         View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize="Large",textColor=MainTextColor).GridRow(3)
                         View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize="Small",textColor=MainTextColor).GridRow(4)
-                        dataView
+                        View.ScrollView(
+                                content=View.StackLayout(children=[for r in model.Items -> View.Label(text=r.Name + " " + r.Value.ToString(),textColor=MainTextColor).Padding(new Thickness(10.))],
+                                    orientation=StackOrientation.Horizontal).Margin(new Thickness(20.)))
+                            .GridRow(5)
+
                     ]
                     )
                 .GestureRecognizers([View.TapGestureRecognizer(command=(fun ()-> dispatch Refresh))])
