@@ -68,20 +68,28 @@ module ViewUpdaters =
            (prevCollOpt: 'T[] voption)
            (collOpt: 'T[] voption)
            (targetColl: IList<'TargetT>)
-           (attach: 'T voption -> 'T -> 'TargetT -> unit) =
+           (attach: 'T voption -> 'T -> 'TargetT -> unit)
+           (canReuse : 'T -> 'T -> bool) =
         match collOpt with
         | ValueNone -> ()
         | ValueSome coll when coll = null || coll.Length = 0 -> ()
         | ValueSome coll ->
-            for i in 0 .. coll.Length-1 do
+            let n = coll.Length
+            for i in 0 .. n-1 do
                 let targetChild = targetColl.[i]
                 let newChild = coll.[i]
-                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length -> ValueSome coll.[i] | _ -> ValueNone
+                let prevChildOpt =
+                    let childOpt = match prevCollOpt with ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
+                    let mustCreate = (i >= n || match childOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
+                    if mustCreate then
+                        ValueNone
+                    else
+                        childOpt
                 attach prevChildOpt newChild targetChild
                 
     /// Update the attached properties for each item in Layout<T>.Children
     let updateAttachedPropertiesForLayoutOfT prevCollOpt collOpt (target: Xamarin.Forms.Layout<'T>) attach =
-        updateAttachedPropertiesForCollection prevCollOpt collOpt target.Children attach
+        updateAttachedPropertiesForCollection prevCollOpt collOpt target.Children attach canReuseView
                     
     /// Update the items in a ItemsView control, given previous and current view elements
     let updateItemsViewItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView) = 
