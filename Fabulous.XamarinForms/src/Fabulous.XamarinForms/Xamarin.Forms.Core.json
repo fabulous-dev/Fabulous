@@ -1731,7 +1731,11 @@
           "convertModelToValue": "ViewConverters.convertItemsViewSelectedItemIndexToObj target"
         },
         {
-          "source": "SelectedItems"
+          "source": "SelectedItems",
+          "inputType": "int list option",
+          "modelType": "int array option",
+          "convertInputToModel": "(Option.map Array.ofList)",
+          "updateCode": "ViewUpdaters.updateSelectableItemsViewSelectedItems"
         },
         {
           "source": "SelectionMode"
@@ -1828,7 +1832,7 @@
           "source": "SelectedItem",
           "inputType": "int option",
           "modelType": "int option",
-          "convertModelToValue": "ViewConverters.convertItemsViewOfTSelectedItemIndexToObj target"
+          "convertModelToValue": "ViewConverters.convertItemsViewSelectedItemIndexToObj target"
         },
         {
           "source": "SelectionMode"
@@ -1902,7 +1906,7 @@
           "inputType": "int option",
           "modelType": "int option",
           "defaultValue": "null",
-          "convertModelToValue": "ViewConverters.convertItemsViewOfTSelectedItemIndexToObj target"
+          "convertModelToValue": "ViewConverters.convertItemsViewSelectedItemIndexToObj target"
         },
         {
           "source": null,
