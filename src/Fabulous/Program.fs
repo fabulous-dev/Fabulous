@@ -121,7 +121,10 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
     member runner.ChangeProgram(newProgram: Program<obj,obj, obj>) : unit =
         let action = program.syncAction (fun () -> 
             // TODO: transmogrify the model
-            alternativeRunner <- Some (ProgramRunner<obj,obj, obj>(host, newProgram, runner.Argument))
+            try
+                alternativeRunner <- Some (ProgramRunner<obj,obj, obj>(host, newProgram, runner.Argument))
+            with ex ->
+                program.onError ("Error changing the program:", ex)
         )
         action()
 
