@@ -339,7 +339,7 @@ module CodeGenerator =
             | _ ->
                 w.printfn ""
                 w.printfn "        /// Adjusts the %s property in the visual element" m.UniqueName
-                w.printfn "        member x.%s(value: %s) = x.WithAttribute(ViewAttributes.%sAttribKey, %s(value))" m.UniqueName m.InputType m.UniqueName m.ConvToModel
+                w.printfn "        member x.%s(value: %s) = x.WithAttribute(ViewAttributes.%sAttribKey, %s(value))" m.UniqueName m.InputType m.UniqueName m.ConvertInputToModel
 
         let members =
             data
