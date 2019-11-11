@@ -4,6 +4,7 @@ namespace NewApp
 open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
+open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
 module App = 
@@ -44,16 +45,16 @@ module App =
 
     let view (model: Model) dispatch =
         View.ContentPage(
-          content = View.StackLayout(padding = 20.0, verticalOptions = LayoutOptions.Center,
+          content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Center,
             children = [ 
-                View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, widthRequest=200.0, horizontalTextAlignment=TextAlignment.Center)
+                View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
                 View.Button(text = "Increment", command = (fun () -> dispatch Increment), horizontalOptions = LayoutOptions.Center)
                 View.Button(text = "Decrement", command = (fun () -> dispatch Decrement), horizontalOptions = LayoutOptions.Center)
                 View.Label(text = "Timer", horizontalOptions = LayoutOptions.Center)
                 View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)), horizontalOptions = LayoutOptions.Center)
                 View.Slider(minimumMaximum = (0.0, 10.0), value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))), horizontalOptions = LayoutOptions.FillAndExpand)
                 View.Label(text = sprintf "Step size: %d" model.Step, horizontalOptions = LayoutOptions.Center) 
-                View.Button(text = "Reset", horizontalOptions = LayoutOptions.Center, command = (fun () -> dispatch Reset), canExecute = (model <> initModel))
+                View.Button(text = "Reset", horizontalOptions = LayoutOptions.Center, command = (fun () -> dispatch Reset), commandCanExecute = (model <> initModel))
             ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
@@ -74,14 +75,14 @@ type App () as app =
 //-:cnd:noEmit
 #if DEBUG
     // Uncomment this line to enable live update in debug mode. 
-    // See https://fsprojects.github.io/Fabulous/tools.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/tools.html#live-update for further  instructions.
     //
     //do runner.EnableLiveUpdate()
 #endif    
 //+:cnd:noEmit
 
     // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
-    // See https://fsprojects.github.io/Fabulous/models.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/models.html#saving-application-state for further  instructions.
 //-:cnd:noEmit
 #if APPSAVE
     let modelId = "model"

@@ -47,7 +47,11 @@ Some manual set-up is required.
 2. Install or update the NuGet package `Fabulous.XamarinForms.LiveUpdate` for all projects in your app.  
 This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
 
-3. Uncomment or add the code in the `#if` section below:
+3. Add the following reference to enable live update:
+       
+       open Fabulous.XamarinForms.LiveUpdate
+
+4. Uncomment or add the code in the `#if` section below:
 
        type App () =
            inherit Application()
@@ -56,21 +60,21 @@ This is the default for apps created with templates 0.13.10 and higher. Do a cle
            do runner.EnableLiveUpdate ()
        #endif
 
-4. If running on Android, forward requests from localhost to the Android Debug Bridge:
+5. If running on Android, forward requests from localhost to the Android Debug Bridge:
 
        USB:
            adb -d forward  tcp:9867 tcp:9867
        EMULATOR:
            adb -e forward  tcp:9867 tcp:9867
 
-5. Launch your app in Debug mode (note: you can use Release mode but must set Linking options to `None` rather than `SDK Assemblies`)
+6. Launch your app in Debug mode (note: you can use Release mode but must set Linking options to `None` rather than `SDK Assemblies`)
 
-6. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
+7. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
 
         cd SqueakyApp\SqueakyApp
         fabulous --watch --send 
         
-7. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, `runner.EnableLiveUpdate()` may fail to start the HttpListener, which will cause LiveUpdate to fail.
+8. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, `runner.EnableLiveUpdate()` may fail to start the HttpListener, which will cause LiveUpdate to fail.
 
 Now, whenever you save a file in your core project directory, the `fabulous` watcher will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and

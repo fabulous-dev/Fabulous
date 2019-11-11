@@ -11,6 +11,7 @@ is typically needed to define a corresponding view element using the incremental
 
 The following additional view elements are available as pre-built nuget libraries:
 
+* [FFImageLoading](views-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
 * [Maps](views-maps.md) for platform maps
 * [SkiaSharp](views-skiasharp.md) for 2D graphics
 * [OxyPlot](views-oxyplot.md) for charting (in preparation)
@@ -18,7 +19,7 @@ The following additional view elements are available as pre-built nuget librarie
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
 
-> Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Fabulous/).
+> Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms/extensions).
 
 The basic shape of an extension view component is shown below. Here we assume the Xamarin.Forms control defines one extra element
 called ABC deriving from existing element kind BASE, and that ABC has one additional
@@ -37,8 +38,8 @@ The view element inherits attributes and update functionality from BASE via prot
 [<AutoOpen>]
 module MyViewExtensions =
 
-    open Fabulous.Core
-    open Fabulous.DynamicViews
+    open Fabulous
+    open Fabulous.XamarinForms
 
     // Define keys for the possible attributes
     let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
@@ -46,9 +47,10 @@ module MyViewExtensions =
 
     // Fully-qualified name to avoid extending by mistake
     // another View class (like Xamarin.Forms.View)
-    type Fabulous.DynamicViews.View with
+    type Fabulous.XamarinForms.View with
         /// Describes a ABC in the view
-        static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
+        /// The inline keyword is important for performance
+        static member inline ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
 
             // Count the number of additional attributes
             let attribCount = 0

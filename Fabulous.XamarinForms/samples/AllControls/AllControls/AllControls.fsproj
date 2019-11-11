@@ -4,6 +4,7 @@
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Include="Effects\ShadowEffect.fs" />
       <Compile Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
       <EmbeddedResource Include="styles.css" />
