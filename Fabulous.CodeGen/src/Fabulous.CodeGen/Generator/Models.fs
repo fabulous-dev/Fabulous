@@ -104,7 +104,7 @@ module Models =
         { LowerUniqueName: string
           UniqueName: string
           InputType: string
-          ConvToModel: string }
+          ConvertInputToModel: string }
         
     type GeneratorData =
         { Namespace: string
