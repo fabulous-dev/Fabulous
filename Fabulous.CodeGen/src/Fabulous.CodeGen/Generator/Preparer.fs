@@ -40,7 +40,7 @@ module Preparer =
 
     let toCreateData (boundType: BoundType) =
         { Name = boundType.Name
-          FullName = boundType.Type
+          FullName = boundType.FullName
           TypeToInstantiate = boundType.TypeToInstantiate }
 
     let toUpdateData (boundType: BoundType) =
@@ -88,7 +88,7 @@ module Preparer =
                                       UpdateCode = ap.UpdateCode }) }) })
         
         { Name = boundType.Name
-          FullName = boundType.Type
+          FullName = boundType.FullName
           BaseName = boundType.BaseTypeName
           ImmediateMembers = immediateMembers
           Events = updateEvents
@@ -100,7 +100,7 @@ module Preparer =
         let members = Array.concat [ properties; events ]
         
         { Name = boundType.Name
-          FullName = boundType.Type
+          FullName = boundType.FullName
           Members = members }
     
     let toBuilderData (boundType: BoundType) =
@@ -115,7 +115,7 @@ module Preparer =
         let members = Array.concat [ properties; events ]
             
         { Name = boundType.Name
-          FullName = boundType.Type
+          FullName = boundType.FullName
           ViewerName = sprintf "%sViewer" boundType.Name
           GenericConstraint = boundType.GenericConstraint
           InheritedViewerName = boundType.BaseTypeName |> Option.map (sprintf "%sViewer")
@@ -145,7 +145,7 @@ module Preparer =
             |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType })
         
         { Name = boundType.Name
-          FullName = boundType.Type
+          FullName = boundType.FullName
           Members = members }
 
     let getViewExtensionsData (types: BoundType array) =
@@ -153,7 +153,7 @@ module Preparer =
             { LowerUniqueName = Text.toLowerPascalCase m.UniqueName
               UniqueName = m.UniqueName
               InputType = m.InputType
-              ConvToModel = m.ConvertInputToModel }
+              ConvertInputToModel = m.ConvertInputToModel }
             
         [| for typ in types do
                for e in typ.Events do

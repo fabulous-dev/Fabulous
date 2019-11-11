@@ -255,12 +255,12 @@ module Binder =
     
     /// Bind an existing type
     let bindType logger (assemblyType: AssemblyType) (bindingsType: Type) =
-        let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
-        { Id = assemblyType.Name
-          Type = assemblyType.Name
+        let typeName = BinderHelpers.getTypeName assemblyType.FullName bindingsType.Name
+        { Id = assemblyType.FullName
+          FullName = assemblyType.FullName
           GenericConstraint = bindingsType.GenericConstraint
           CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
-          TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
+          TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.FullName
           BaseTypeName = None
           BaseGenericConstraint = bindingsType.BaseGenericConstraint
           Name = typeName
@@ -279,7 +279,7 @@ module Binder =
         BinderHelpers.tryBind
             assemblyTypes
             bindingsType.Type
-            (fun t -> t.Name)
+            (fun t -> t.FullName)
             (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
             (fun t -> bindType logger t bindingsType)
     

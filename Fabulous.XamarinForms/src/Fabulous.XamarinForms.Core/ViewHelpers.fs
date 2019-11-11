@@ -13,7 +13,7 @@ module ViewHelpers =
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
     /// Checks whether an underlying control can be reused given the previous and new view elements
-    let rec canReuseView (prevChild:ViewElement) (newChild:ViewElement) =
+    let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
