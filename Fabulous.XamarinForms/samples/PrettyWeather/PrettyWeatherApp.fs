@@ -92,7 +92,7 @@ module App =
     type DataItem = {Name:string;Value:int}
     type Model = {Temp:int;Items: DataItem list}
 
-    let initial = {Temp=40;Items=[
+    let initial = {Temp=61;Items=[
         {Name="Pressure";Value=10}
         {Name="UV Index";Value=3}
         {Name="Wind Speed";Value=0}
