@@ -16,7 +16,7 @@
   * [Extensions](views-extending.html)
   * [Extensions: FFImageLoading (image caching)](views-ffimageloading.html)
   * [Extensions: Maps](views-maps.html)
-  * [Extensions: SkiaSharp (drawing)](views-skiasharp.html)
+  * [Extensions: SkiaSharp (drawing 2D graphics)](views-skiasharp.html)
   * [Extensions: OxyPlot (charting)](views-oxyplot.html)
   * [Extensions: VideoManager (audio and video)](views-videomanager.html)
 * [Models](models.html)
