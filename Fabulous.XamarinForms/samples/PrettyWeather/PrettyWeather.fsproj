@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="PancakeViewExtensions.fs" />
     <Compile Include="PrettyWeatherApp.fs" />
   </ItemGroup>
 
