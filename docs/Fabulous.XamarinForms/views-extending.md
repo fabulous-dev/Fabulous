@@ -15,7 +15,7 @@ The following additional view elements are available as pre-built nuget librarie
 * [Maps](views-maps.md) for platform maps
 * [SkiaSharp](views-skiasharp.md) for 2D graphics
 * [OxyPlot](views-oxyplot.md) for charting
-* [VideoManager](views-videomanager.md) for play audio and video
+* [VideoManager](views-videomanager.md) for playing audio and video
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
