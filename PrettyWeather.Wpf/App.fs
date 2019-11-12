@@ -12,7 +12,9 @@ type PancakeViewRenderer() =
     inherit ViewRenderer<PancakeView.PancakeView, Grid>()
     override this.OnElementChanged e = 
         this.Control.Children.Clear()
-        this.Control.Children.Add(e.NewElement.Content)
+        let element = this.Element.Content;
+        
+        //this.Control.Children.Add(e.NewElement.Content)
         ()
 
 

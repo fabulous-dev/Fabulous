@@ -16,13 +16,14 @@ module PancakeViewExtensions =
     let contentPancakeAttribKey = AttributeKey "contentkey"
     let paddingKey = AttributeKey "paddingKey"
     let cornerRadiusKey = AttributeKey "cornerRadiusKey"
+    let backgroundGradientAngleKey = AttributeKey "backgroundGradientAngleKey"
     // Fully-qualified name to avoid extending by mistake
     // another View class (like Xamarin.Forms.View)
     type Fabulous.XamarinForms.View with
         /// Describes a ABC in the view
         /// The inline keyword is important for performance
         static member inline PancakeView(?backgroundGradientStartColor,?backgroundGradientEndColor,?content: ViewElement,
-                                            ?cornerRadius,?padding,
+                                            ?cornerRadius,?padding,?backgroundGradientAngle,
                                             ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor,
                                             ?flowDirection, ?heightRequest, ?inputTransparent, ?isEnabled, ?isTabStop, ?isVisible, ?minimumHeightRequest, 
                                             ?minimumWidthRequest, ?opacity, ?rotation, ?rotationX, ?rotationY, ?scale, ?scaleX, ?scaleY, ?tabIndex, 
@@ -38,6 +39,7 @@ module PancakeViewExtensions =
             let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match backgroundGradientAngle with Some _ -> attribCount + 1 | None -> attribCount
             let attribs = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin,
                                                     ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
                                                     ?backgroundColor=backgroundColor, ?flowDirection=flowDirection, ?heightRequest=heightRequest, 
@@ -62,6 +64,7 @@ module PancakeViewExtensions =
             match content with None -> () | Some v -> attribs.Add(contentPancakeAttribKey, v)
             match padding with None -> () | Some v -> attribs.Add(paddingKey, v)
             match cornerRadius with None -> () | Some v -> attribs.Add(cornerRadiusKey, v)
+            match backgroundGradientAngle with None -> () | Some v -> attribs.Add(backgroundGradientAngleKey, v)
 
             // The creation method
             let create () = new Xamarin.Forms.PancakeView.PancakeView()
@@ -74,6 +77,7 @@ module PancakeViewExtensions =
                 source.UpdatePrimitive(prev, target, backgroundGradientEndColorAttribKey, (fun target v -> target.BackgroundGradientEndColor <- v))
                 source.UpdatePrimitive(prev, target, paddingKey, (fun target v -> target.Padding <- v))
                 source.UpdatePrimitive(prev, target, cornerRadiusKey, (fun target v -> target.CornerRadius <- v))
+                source.UpdatePrimitive(prev, target, backgroundGradientAngleKey, (fun target v -> target.BackgroundGradientAngle <- v))
                 
 
             ViewElement.Create<Xamarin.Forms.PancakeView.PancakeView>(create, update, attribs)
@@ -88,7 +92,7 @@ module App =
     type DataItem = {Name:string;Value:int}
     type Model = {Temp:int;Items: DataItem list}
 
-    let initial = {Temp=61;Items=[
+    let initial = {Temp=40;Items=[
         {Name="Pressure";Value=10}
         {Name="UV Index";Value=3}
         {Name="Wind Speed";Value=0}
@@ -109,6 +113,8 @@ module App =
         let NightStartColor = Color.FromHex("#172941")
         let NightEndColor =   Color.FromHex("#3C6683")
         let MainTextColor =   Color.White
+        let itemStartColor = Color.FromHex("#98FFFFFF")
+        let itemEndColor = Color.FromHex("#60FFFFFF")
 
 
         
@@ -124,7 +130,20 @@ module App =
             else if isStart then 
                 coldStartColor else coldEndColor
         
-
+        let itemsView =
+            [for r in model.Items -> 
+                  View.PancakeView(content=
+                        View.Label(text=r.Name + "\r\n" + r.Value.ToString(),textColor=MainTextColor),
+                        cornerRadius=new CornerRadius(20.,20.,20.,0.),
+                        backgroundGradientStartColor=itemStartColor,
+                        backgroundGradientEndColor=itemEndColor,
+                        padding=new Thickness(8.),
+                        backgroundGradientAngle=315
+                        
+                        )
+                        
+                   
+                ]
 
         let grid =
             View.Grid(rowdefs=[ "auto"; "*"; "auto"; "auto"; "auto"; "auto" ])
@@ -143,8 +162,12 @@ module App =
                         View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize="Large",textColor=MainTextColor).GridRow(3)
                         View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize="Small",textColor=MainTextColor).GridRow(4)
                         View.ScrollView(
-                                content=View.StackLayout(children=[for r in model.Items -> View.Label(text=r.Name + " " + r.Value.ToString(),textColor=MainTextColor).Padding(new Thickness(10.))],
-                                    orientation=StackOrientation.Horizontal).Margin(new Thickness(20.)))
+                                content=View.StackLayout(
+                                        children=itemsView,
+                                        orientation=StackOrientation.Horizontal
+                                        ).Margin(new Thickness(10.)),
+                                orientation=ScrollOrientation.Horizontal
+                                    )
                             .GridRow(5)
 
                     ]
