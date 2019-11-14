@@ -44,7 +44,7 @@ module App =
         
 
         let createLabel value =
-            View.Label(text=value;).FontSize(100).HorizontalOptions(LayoutOptions.Center).TextColor(MainTextColor)
+            View.Label(text=value).FontSize(FontSize 100.).HorizontalOptions(LayoutOptions.Center).TextColor(MainTextColor)
 
         let getColor isStart temp =
             if temp > 60 then 
@@ -70,21 +70,21 @@ module App =
                 ]
 
         let grid =
-            View.Grid(rowdefs=[ "auto"; "*"; "auto"; "auto"; "auto"; "auto" ])
+            View.Grid(rowdefs=[ Auto; Star; Auto; Auto; Auto; Auto ])
                 .RowSpacing(0.0)
                 .Padding(if Device.RuntimePlatform = Device.Android then new Thickness(0.0,24.0,0.0,0.0) else new Thickness(0.,44.,0.,0.))
                 .Children(
                     [
-                        View.Label(text="SEATTLE",horizontalOptions=LayoutOptions.Center,fontSize="Large", textColor=MainTextColor)
-                        View.Image(source="spaceneedle.png",margin=new Thickness(0.,0.,0.,-80.),opacity=0.8, verticalOptions=LayoutOptions.FillAndExpand, horizontalOptions=LayoutOptions.FillAndExpand).GridRow(1)
-                        View.Grid(columnSpacing=0.,coldefs=["*";"auto";"*"]).GridRow(2).Children(
+                        View.Label(text="SEATTLE",horizontalOptions=LayoutOptions.Center,fontSize=Named NamedSize.Large, textColor=MainTextColor)
+                        View.Image(source=Path "spaceneedle.png",margin=new Thickness(0.,0.,0.,-80.),opacity=0.8, verticalOptions=LayoutOptions.FillAndExpand, horizontalOptions=LayoutOptions.FillAndExpand).Row(1)
+                        View.Grid(columnSpacing=0.,coldefs=[Star;Auto;Star]).Row(2).Children(
                             [
-                                (createLabel (model.Temp.ToString())).GridColumn(1)
-                                (createLabel "°").GridColumn(2).HorizontalOptions(LayoutOptions.Start)
+                                (createLabel (model.Temp.ToString())).Column(1)
+                                (createLabel "°").Column(2).HorizontalOptions(LayoutOptions.Start)
                             ]
                             )
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize="Large",textColor=MainTextColor).GridRow(3)
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize="Small",textColor=MainTextColor).GridRow(4)
+                        View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize=Named NamedSize.Large,textColor=MainTextColor).Row(3)
+                        View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize=Named NamedSize.Small,textColor=MainTextColor).Row(4)
                         View.ScrollView(
                                 content=View.StackLayout(
                                         children=itemsView,
@@ -92,7 +92,7 @@ module App =
                                         ).Margin(new Thickness(10.)),
                                 orientation=ScrollOrientation.Horizontal
                                     )
-                            .GridRow(5)
+                            .Row(5)
 
                     ]
                     )
