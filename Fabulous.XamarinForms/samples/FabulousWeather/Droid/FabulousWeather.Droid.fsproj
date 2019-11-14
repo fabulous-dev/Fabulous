@@ -120,6 +120,9 @@
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms\lib\MonoAndroid90\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
