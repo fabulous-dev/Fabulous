@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="HelpersTests.fs" />
+    <Compile Include="ResultTests.fs" />
+    <Compile Include="AssemblyReaderTests\ConvertersTests.fs" />
+    <Compile Include="BinderTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="FsUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>
