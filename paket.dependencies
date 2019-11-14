@@ -48,6 +48,7 @@ group androidapp
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
   nuget Xamarin.Essentials 1.3.1
+  nuget Xamarin.Forms.PancakeView 1.3.6
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
 # latest Xamarin.Forms though we pin them for now.

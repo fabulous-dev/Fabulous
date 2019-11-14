@@ -253,6 +253,9 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms\lib\MonoAndroid90\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Forms.PancakeView">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.PancakeView\lib\MonoAndroid90\Xamarin.Forms.PancakeView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
