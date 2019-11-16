@@ -56,22 +56,22 @@ module App =
             [for r in model.Items -> 
                   View.PancakeView(content=
                             View.Label(sprintf "%s%s%i" r.Name System.Environment.NewLine r.Value,textColor=AppStyles.MainTextColor),
-                            cornerRadius=new CornerRadius(20.,20.,20.,0.),
+                            cornerRadius=CornerRadius(20.,20.,20.,0.),
                             backgroundGradientStartColor=AppStyles.itemStartColor,
                             backgroundGradientEndColor=AppStyles.itemEndColor,
-                            padding=new Thickness(8.),
+                            padding=Thickness(8.),
                             backgroundGradientAngle=315
                         ) ]
 
         let grid =
             View.Grid(rowdefs=[ Auto; Star; Auto; Auto; Auto; Auto ])
                 .RowSpacing(0.0)
-                .Padding(if Device.RuntimePlatform = Device.Android then new Thickness(0.0,24.0,0.0,0.0) else new Thickness(0.,44.,0.,0.))
+                .Padding(if Device.RuntimePlatform = Device.Android then Thickness(0.0,24.0,0.0,0.0) else Thickness(0.,44.,0.,0.))
                 .Children(
                     [
                         View.Label(text="SEATTLE",horizontalOptions=LayoutOptions.Center,fontSize=Named NamedSize.Large, textColor=AppStyles.MainTextColor)
                         View.Image( source=Path "spaceneedle.png",
-                                    margin=new Thickness(0.,0.,0.,-80.),
+                                    margin=Thickness(0.,0.,0.,-80.),
                                     opacity=0.8, 
                                     verticalOptions=LayoutOptions.FillAndExpand, 
                                     horizontalOptions=LayoutOptions.FillAndExpand
@@ -88,7 +88,7 @@ module App =
                                 content=View.StackLayout(
                                         children=itemsView,
                                         orientation=StackOrientation.Horizontal
-                                        ).Margin(new Thickness(10.)),
+                                        ).Margin(Thickness(10.)),
                                 orientation=ScrollOrientation.Horizontal
                                     )
                             .Row(5)
