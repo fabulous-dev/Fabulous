@@ -5,6 +5,28 @@ open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
+module AppStyles =
+    let coldStartColor = Color.FromHex("#BDE3FA")
+    let coldEndColor = Color.FromHex("#A5C9FD")
+    let WarmStartColor =  Color.FromHex("#F6CC66")
+    let WarmEndColor    = Color.FromHex("#FCA184")
+    let NightStartColor = Color.FromHex("#172941")
+    let NightEndColor =   Color.FromHex("#3C6683")
+    let MainTextColor =   Color.White
+    let itemStartColor = Color.FromHex("#98FFFFFF")
+    let itemEndColor = Color.FromHex("#60FFFFFF")
+
+    let getGradientColor isStart temp =
+        if temp > 60 then 
+            if isStart then WarmStartColor else WarmEndColor
+        else if temp = -100 then 
+            if isStart then NightStartColor else NightEndColor
+        else if isStart then 
+            coldStartColor else coldEndColor
+
+    let createLabel value =
+        View.Label(text=value).FontSize(FontSize 100.).HorizontalOptions(LayoutOptions.Center).TextColor(MainTextColor)
+
 module App =
     type Msg =
         | Refresh
@@ -29,44 +51,17 @@ module App =
         | Refresh -> initial
 
     let view (model: Model) dispatch =
-        let coldStartColor = Color.FromHex("#BDE3FA")
-        let coldEndColor = Color.FromHex("#A5C9FD")
-        let WarmStartColor =  Color.FromHex("#F6CC66")
-        let WarmEndColor    = Color.FromHex("#FCA184")
-        let NightStartColor = Color.FromHex("#172941")
-        let NightEndColor =   Color.FromHex("#3C6683")
-        let MainTextColor =   Color.White
-        let itemStartColor = Color.FromHex("#98FFFFFF")
-        let itemEndColor = Color.FromHex("#60FFFFFF")
-
-
-        
-
-        let createLabel value =
-            View.Label(text=value).FontSize(FontSize 100.).HorizontalOptions(LayoutOptions.Center).TextColor(MainTextColor)
-
-        let getColor isStart temp =
-            if temp > 60 then 
-                if isStart then WarmStartColor else WarmEndColor
-            else if temp = -100 then 
-                if isStart then NightStartColor else NightEndColor
-            else if isStart then 
-                coldStartColor else coldEndColor
         
         let itemsView =
             [for r in model.Items -> 
                   View.PancakeView(content=
-                        View.Label(text=r.Name + "\r\n" + r.Value.ToString(),textColor=MainTextColor),
-                        cornerRadius=new CornerRadius(20.,20.,20.,0.),
-                        backgroundGradientStartColor=itemStartColor,
-                        backgroundGradientEndColor=itemEndColor,
-                        padding=new Thickness(8.),
-                        backgroundGradientAngle=315
-                        
-                        )
-                        
-                   
-                ]
+                            View.Label(text=r.Name + "\r\n" + r.Value.ToString(),textColor=AppStyles.MainTextColor),
+                            cornerRadius=new CornerRadius(20.,20.,20.,0.),
+                            backgroundGradientStartColor=AppStyles.itemStartColor,
+                            backgroundGradientEndColor=AppStyles.itemEndColor,
+                            padding=new Thickness(8.),
+                            backgroundGradientAngle=315
+                        ) ]
 
         let grid =
             View.Grid(rowdefs=[ Auto; Star; Auto; Auto; Auto; Auto ])
@@ -74,16 +69,21 @@ module App =
                 .Padding(if Device.RuntimePlatform = Device.Android then new Thickness(0.0,24.0,0.0,0.0) else new Thickness(0.,44.,0.,0.))
                 .Children(
                     [
-                        View.Label(text="SEATTLE",horizontalOptions=LayoutOptions.Center,fontSize=Named NamedSize.Large, textColor=MainTextColor)
-                        View.Image(source=Path "spaceneedle.png",margin=new Thickness(0.,0.,0.,-80.),opacity=0.8, verticalOptions=LayoutOptions.FillAndExpand, horizontalOptions=LayoutOptions.FillAndExpand).Row(1)
+                        View.Label(text="SEATTLE",horizontalOptions=LayoutOptions.Center,fontSize=Named NamedSize.Large, textColor=AppStyles.MainTextColor)
+                        View.Image( source=Path "spaceneedle.png",
+                                    margin=new Thickness(0.,0.,0.,-80.),
+                                    opacity=0.8, 
+                                    verticalOptions=LayoutOptions.FillAndExpand, 
+                                    horizontalOptions=LayoutOptions.FillAndExpand
+                                   ).Row(1)
                         View.Grid(columnSpacing=0.,coldefs=[Star;Auto;Star]).Row(2).Children(
                             [
-                                (createLabel (model.Temp.ToString())).Column(1)
-                                (createLabel "°").Column(2).HorizontalOptions(LayoutOptions.Start)
+                                (AppStyles.createLabel (model.Temp.ToString())).Column(1)
+                                (AppStyles.createLabel "°").Column(2).HorizontalOptions(LayoutOptions.Start)
                             ]
-                            )
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize=Named NamedSize.Large,textColor=MainTextColor).Row(3)
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize=Named NamedSize.Small,textColor=MainTextColor).Row(4)
+                        )
+                        View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize=Named NamedSize.Large,textColor=AppStyles.MainTextColor).Row(3)
+                        View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize=Named NamedSize.Small,textColor=AppStyles.MainTextColor).Row(4)
                         View.ScrollView(
                                 content=View.StackLayout(
                                         children=itemsView,
@@ -101,8 +101,8 @@ module App =
 
         View.ContentPage(
             content=View.PancakeView(
-                backgroundGradientStartColor=getColor true (model.Temp), 
-                backgroundGradientEndColor=getColor false (model.Temp),
+                backgroundGradientStartColor=AppStyles.getGradientColor true (model.Temp), 
+                backgroundGradientEndColor=AppStyles.getGradientColor false (model.Temp),
                 content=grid
                 )
             )
