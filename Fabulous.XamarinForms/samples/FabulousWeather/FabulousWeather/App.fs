@@ -55,7 +55,7 @@ module App =
         let itemsView =
             [for r in model.Items -> 
                   View.PancakeView(content=
-                            View.Label(text=r.Name + "\r\n" + r.Value.ToString(),textColor=AppStyles.MainTextColor),
+                            View.Label(sprintf "%s%s%i" r.Name System.Environment.NewLine r.Value,textColor=AppStyles.MainTextColor),
                             cornerRadius=new CornerRadius(20.,20.,20.,0.),
                             backgroundGradientStartColor=AppStyles.itemStartColor,
                             backgroundGradientEndColor=AppStyles.itemEndColor,
