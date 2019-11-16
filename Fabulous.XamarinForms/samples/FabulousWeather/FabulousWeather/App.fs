@@ -6,24 +6,23 @@ open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
 module App =
-    type Operator = Add | Subtract | Multiply | Divide 
-
-    /// Represents a calculator button press
     type Msg =
         | Refresh
 
     
-    type DataItem = {Name:string;Value:int}
-    type Model = {Temp:int;Items: DataItem list}
+    type DataItem = { Name:string
+                      Value:int }
+    type Model = { Temp:int
+                   Items: DataItem list }
 
-    let initial = {Temp=61;Items=[
-        {Name="Pressure";Value=10}
-        {Name="UV Index";Value=3}
-        {Name="Wind Speed";Value=0}
-        {Name="Humidity";Value=65}
-        {Name="Min Temp";Value=50}
-        {Name="Max Temp";Value=80}
-        ]}
+    let initial = { Temp=61
+                    Items=[ 
+                        { Name="Pressure";   Value=10 }
+                        { Name="UV Index";   Value=3 }
+                        { Name="Wind Speed"; Value=0 }
+                        { Name="Humidity";   Value=65 }
+                        { Name="Min Temp";   Value=50 }
+                        { Name="Max Temp";   Value=80 } ] }
      
     let update msg model =
         match msg with
