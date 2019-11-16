@@ -7,12 +7,12 @@ open Fabulous.XamarinForms
 module PancakeViewExtensions =
 
     // Define keys for the possible attributes
-    let backgroundGradientStartColorAttribKey = AttributeKey "backgroundGradientStartColorAttribKey"
-    let backgroundGradientEndColorAttribKey = AttributeKey "backgroundGradientEndColorAttribKey"
-    let contentPancakeAttribKey = AttributeKey "contentkey"
-    let paddingKey = AttributeKey "paddingKey"
-    let cornerRadiusKey = AttributeKey "cornerRadiusKey"
-    let backgroundGradientAngleKey = AttributeKey "backgroundGradientAngleKey"
+    let backgroundGradientStartColorAttribKey = AttributeKey "BackgroundGradientStartColor"
+    let backgroundGradientEndColorAttribKey = AttributeKey "BackgroundGradientEndColor"
+    let pancakeContentAttribKey = AttributeKey "PancakeContent"
+    let paddingAttribKey = AttributeKey "Padding"
+    let cornerRadiusKey = AttributeKey "CornerRadius"
+    let backgroundGradientAngleKey = AttributeKey "BackgroundGradientAngle"
     
     // Fully-qualified name to avoid extending by mistake
     // another View class (like Xamarin.Forms.View)
@@ -55,8 +55,8 @@ module PancakeViewExtensions =
 
             match backgroundGradientStartColor with None -> () | Some v -> attribs.Add(backgroundGradientStartColorAttribKey, v)
             match backgroundGradientEndColor with None -> () | Some v -> attribs.Add(backgroundGradientEndColorAttribKey, v)
-            match content with None -> () | Some v -> attribs.Add(contentPancakeAttribKey, v)
-            match padding with None -> () | Some v -> attribs.Add(paddingKey, v)
+            match content with None -> () | Some v -> attribs.Add(pancakeContentAttribKey, v)
+            match padding with None -> () | Some v -> attribs.Add(paddingAttribKey, v)
             match cornerRadius with None -> () | Some v -> attribs.Add(cornerRadiusKey, v)
             match backgroundGradientAngle with None -> () | Some v -> attribs.Add(backgroundGradientAngleKey, v)
 
@@ -66,10 +66,10 @@ module PancakeViewExtensions =
             // The incremental update method
             let update (prev: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.PancakeView.PancakeView) =
                 ViewBuilders.UpdateView(prev,source,target)
-                source.UpdateElement(prev,target, contentPancakeAttribKey,(fun target -> target.Content), (fun target v -> target.Content <- v))
+                source.UpdateElement(prev,target, pancakeContentAttribKey,(fun target -> target.Content), (fun target v -> target.Content <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientStartColorAttribKey, (fun target v -> target.BackgroundGradientStartColor <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientEndColorAttribKey, (fun target v -> target.BackgroundGradientEndColor <- v))
-                source.UpdatePrimitive(prev, target, paddingKey, (fun target v -> target.Padding <- v))
+                source.UpdatePrimitive(prev, target, paddingAttribKey, (fun target v -> target.Padding <- v))
                 source.UpdatePrimitive(prev, target, cornerRadiusKey, (fun target v -> target.CornerRadius <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientAngleKey, (fun target v -> target.BackgroundGradientAngle <- v))
                 
