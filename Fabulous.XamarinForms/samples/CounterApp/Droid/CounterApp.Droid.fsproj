@@ -116,11 +116,6 @@
       <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
       <Name>Fabulous.XamarinForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp (Fabulous.XamarinForms\samples\CounterApp\CounterApp)</Name>
-      <Project>{49318c29-43f7-4b2f-ae4a-77b9643be6c9}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
@@ -271,5 +266,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
+      <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
+      <Name>CounterApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
