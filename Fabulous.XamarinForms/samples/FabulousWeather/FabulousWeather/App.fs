@@ -17,9 +17,9 @@ module AppStyles =
     let itemEndColor = Color.FromHex("#60FFFFFF")
 
     let getGradientColor isStart temp =
-        if temp > 60 then 
+        if temp > 60m then 
             if isStart then WarmStartColor else WarmEndColor
-        else if temp = -100 then 
+        else if temp = -100m then 
             if isStart then NightStartColor else NightEndColor
         else if isStart then 
             coldStartColor else coldEndColor
@@ -28,34 +28,53 @@ module AppStyles =
         View.Label(text=value).FontSize(FontSize 100.).HorizontalOptions(LayoutOptions.Center).TextColor(MainTextColor)
 
 module App =
-    type Msg =
-        | Refresh
-
     
     type DataItem = { Name:string
-                      Value:int }
-    type Model = { Temp:int
+                      Value:obj }
+    type Model = { Temp:decimal
                    Items: DataItem list }
+    type Msg =
+           | RequestRefresh
+           | WeatherRefreshed of Model
+    let apiKey = "testKey"
+    type jsonProvider = FSharp.Data.JsonProvider<"https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22">
 
-    let initial = { Temp=61
+    let getOpenWeatherData apiKey = async {
+                let url = sprintf "http://api.openweathermap.org/data/2.5/weather?q=seattle&APPID=%s" apiKey
+                let! result = jsonProvider.AsyncLoad(url)
+                
+                let model = { Temp=result.Main.Temp
+                              Items=[ 
+                                   { Name="Pressure";   Value=result.Main.Pressure }
+                                   { Name="Humidity";   Value=result.Main.Humidity }
+                                   { Name="Wind Speed"; Value=result.Wind.Speed }
+                                   { Name="Min Temp";   Value=result.Main.TempMin }
+                                   { Name="Max Temp";   Value=result.Main.TempMax } ] } 
+                return WeatherRefreshed model } |> Cmd.ofAsyncMsg
+                
+    
+
+    let initial = { Temp=61m
                     Items=[ 
                         { Name="Pressure";   Value=10 }
                         { Name="UV Index";   Value=3 }
                         { Name="Wind Speed"; Value=0 }
                         { Name="Humidity";   Value=65 }
                         { Name="Min Temp";   Value=50 }
-                        { Name="Max Temp";   Value=80 } ] }
-     
+                        { Name="Max Temp";   Value=80 } ] } 
+
+
     let update msg model =
         match msg with
-        | Refresh -> initial
+        | RequestRefresh -> model, getOpenWeatherData apiKey
+        | WeatherRefreshed newModel -> newModel, Cmd.none
 
     let view (model: Model) dispatch =
         
         let itemsView =
             [for r in model.Items -> 
                   View.PancakeView(content=
-                            View.Label(sprintf "%s%s%i" r.Name System.Environment.NewLine r.Value,textColor=AppStyles.MainTextColor),
+                            View.Label(sprintf "%s%s%O" r.Name System.Environment.NewLine r.Value,textColor=AppStyles.MainTextColor),
                             cornerRadius=CornerRadius(20.,20.,20.,0.),
                             backgroundGradientStartColor=AppStyles.itemStartColor,
                             backgroundGradientEndColor=AppStyles.itemEndColor,
@@ -95,7 +114,7 @@ module App =
 
                     ]
                     )
-                .GestureRecognizers([View.TapGestureRecognizer(command=(fun ()-> dispatch Refresh))])
+                .GestureRecognizers([View.TapGestureRecognizer(command=(fun ()-> dispatch RequestRefresh))])
 
 
 
