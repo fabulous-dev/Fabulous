@@ -7,8 +7,8 @@
     <ProjectGuid>{EA10B4EC-0F47-4DB6-A2E6-D726AECD5E1A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CounterApp.UWP</RootNamespace>
-    <AssemblyName>CounterApp.UWP</AssemblyName>
+    <RootNamespace>FabulousWeather.UWP</RootNamespace>
+    <AssemblyName>FabulousWeather.UWP</AssemblyName>
     <DefaultLanguage>en</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>

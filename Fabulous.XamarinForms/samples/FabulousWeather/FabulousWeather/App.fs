@@ -37,7 +37,7 @@ module App =
     type Msg =
            | RequestRefresh
            | WeatherRefreshed of Model
-    let apiKey = "testKey"
+    let apiKey = "89add0da2f8d5cbad84fad1e987f3fad"
     type jsonProvider = FSharp.Data.JsonProvider<"https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22">
 
     let getOpenWeatherData apiKey = async {

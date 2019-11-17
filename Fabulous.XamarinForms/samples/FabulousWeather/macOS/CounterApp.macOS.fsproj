@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <TemplateGuid>{40ed8a7a-2bf4-42fa-b1a7-b43e1d3b7273}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CounterApp.MacOS</RootNamespace>
-    <AssemblyName>CounterApp.MacOS</AssemblyName>
+    <RootNamespace>FabulousWeather.MacOS</RootNamespace>
+    <AssemblyName>FabulousWeather.MacOS</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -121,9 +121,9 @@
       <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
       <Name>Fabulous.XamarinForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
+    <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
       <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
-      <Name>CounterApp</Name>
+      <Name>FabulousWeather</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

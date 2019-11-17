@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace CounterApp.UWP
+namespace FabulousWeather.UWP
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -42,7 +42,7 @@ namespace CounterApp.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 Xamarin.Forms.Forms.Init(e);
-
+                Xamarin.Forms.PancakeView.UWP.PancakeViewRenderer.Init();
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application

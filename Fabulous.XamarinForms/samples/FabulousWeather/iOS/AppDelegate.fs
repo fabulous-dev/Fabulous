@@ -12,7 +12,7 @@ type AppDelegate () =
 
     override this.FinishedLaunching (app, options) =
         Forms.Init()
-        this.LoadApplication (new CounterApp.CounterApp())
+        this.LoadApplication (new FabulousWeather.App())
         base.FinishedLaunching(app, options)
 
 module Main =

@@ -1,7 +1,7 @@
 ﻿using Windows.Foundation;
 using Windows.UI.ViewManagement;
 
-namespace CounterApp.UWP
+namespace FabulousWeather.UWP
 {
     public sealed partial class MainPage
     {

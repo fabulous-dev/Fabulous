@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>CounterApp</string>
+	<string>FabulousWeather</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.fabulous.CounterApp</string>
+	<string>org.fabulous.FabulousWeather</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

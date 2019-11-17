@@ -61,7 +61,7 @@ module PancakeViewExtensions =
             match backgroundGradientAngle with None -> () | Some v -> attribs.Add(backgroundGradientAngleKey, v)
 
             // The creation method
-            let create () = new Xamarin.Forms.PancakeView.PancakeView()
+            let create () = Xamarin.Forms.PancakeView.PancakeView()
 
             // The incremental update method
             let update (prev: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.PancakeView.PancakeView) =

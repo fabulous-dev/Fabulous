@@ -1,4 +1,4 @@
-﻿namespace CounterApp.MacOS
+﻿namespace FabulousWeather.MacOS
 
 open System
 open AppKit
@@ -19,7 +19,7 @@ type AppDelegate() =
 
     override this.DidFinishLaunching(notification: NSNotification) =
         Forms.Init()
-        this.LoadApplication(new CounterApp.CounterApp())
+        this.LoadApplication(new FabulousWeather.FabulousWeather())
 
         base.DidFinishLaunching(notification)
 

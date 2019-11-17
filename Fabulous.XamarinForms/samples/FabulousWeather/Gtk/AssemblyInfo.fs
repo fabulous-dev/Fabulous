@@ -1,8 +1,8 @@
-namespace CounterApp.Gtk
+namespace FabulousWeather.Gtk
 open System.Reflection
 open System.Runtime.CompilerServices
 
-[<assembly: AssemblyTitle("CounterApp.Gtk")>]
+[<assembly: AssemblyTitle("FabulousWeather.Gtk")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

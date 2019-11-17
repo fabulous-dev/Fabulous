@@ -1,4 +1,4 @@
-namespace CounterApp.Gtk
+namespace FabulousWeather.Gtk
 
 open System
 open Xamarin.Forms

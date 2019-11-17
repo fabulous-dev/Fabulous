@@ -1,4 +1,4 @@
-namespace CounterApp.WPF
+namespace FabulousWeather.WPF
 
 open System
 
