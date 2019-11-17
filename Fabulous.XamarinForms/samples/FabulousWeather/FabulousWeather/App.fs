@@ -32,7 +32,8 @@ module App =
     type DataItem = { Name:string
                       Value:obj }
     type Model = { Temp:decimal
-                   Items: DataItem list }
+                   Items: DataItem list
+                   IsRefreshing: bool}
     type Msg =
            | RequestRefresh
            | WeatherRefreshed of Model
@@ -42,32 +43,31 @@ module App =
     let getOpenWeatherData apiKey = async {
                 let url = sprintf "http://api.openweathermap.org/data/2.5/weather?q=seattle&APPID=%s" apiKey
                 let! result = jsonProvider.AsyncLoad(url)
-                
                 let model = { Temp=result.Main.Temp
                               Items=[ 
                                    { Name="Pressure";   Value=result.Main.Pressure }
                                    { Name="Humidity";   Value=result.Main.Humidity }
                                    { Name="Wind Speed"; Value=result.Wind.Speed }
                                    { Name="Min Temp";   Value=result.Main.TempMin }
-                                   { Name="Max Temp";   Value=result.Main.TempMax } ] } 
+                                   { Name="Max Temp";   Value=result.Main.TempMax } ]
+                              IsRefreshing = false } 
                 return WeatherRefreshed model } |> Cmd.ofAsyncMsg
                 
     
-
-    let initial = { Temp=61m
-                    Items=[ 
-                        { Name="Pressure";   Value=10 }
-                        { Name="UV Index";   Value=3 }
-                        { Name="Wind Speed"; Value=0 }
-                        { Name="Humidity";   Value=65 }
-                        { Name="Min Temp";   Value=50 }
-                        { Name="Max Temp";   Value=80 } ] } 
-
+    let initModel =   { Temp=61m
+                        Items=[ 
+                            { Name="Pressure";   Value=10 }
+                            { Name="Humidity";   Value=65 }
+                            { Name="Wind Speed"; Value=0 }
+                            { Name="Min Temp";   Value=50 }
+                            { Name="Max Temp";   Value=80 } ] 
+                        IsRefreshing = true }
+    let initial() = initModel, getOpenWeatherData apiKey
 
     let update msg model =
         match msg with
-        | RequestRefresh -> model, getOpenWeatherData apiKey
-        | WeatherRefreshed newModel -> newModel, Cmd.none
+        | RequestRefresh -> { model with IsRefreshing = true }, getOpenWeatherData apiKey
+        | WeatherRefreshed newModel -> { newModel with IsRefreshing = false }, Cmd.none
 
     let view (model: Model) dispatch =
         
@@ -116,8 +116,6 @@ module App =
                     )
                 .GestureRecognizers([View.TapGestureRecognizer(command=(fun ()-> dispatch RequestRefresh))])
 
-
-
         View.ContentPage(
             content=View.PancakeView(
                 backgroundGradientStartColor=AppStyles.getGradientColor true (model.Temp), 
@@ -127,7 +125,7 @@ module App =
             )
 
     let program = 
-        Program.mkSimple (fun() -> initial) update view
+        Program.mkProgram initial update view
         |> Program.withConsoleTrace
 
 type App () as app = 
