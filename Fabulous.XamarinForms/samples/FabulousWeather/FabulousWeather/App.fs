@@ -33,28 +33,34 @@ module App =
                       Value:obj }
     type Model = { Temp:decimal
                    Items: DataItem list
-                   IsRefreshing: bool}
+                   IsRefreshing: bool
+                   Weather:string}
     type Msg =
            | RequestRefresh
            | WeatherRefreshed of Model
-    let apiKey = "89add0da2f8d5cbad84fad1e987f3fad"
+    let apiKey = "APIKEY HERE"
+
+    let kelvinToFahrenheit K = 9.0m / 5.0m * (K - 273.0m) + 32.0m
+
     type jsonProvider = FSharp.Data.JsonProvider<"https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22">
 
     let getOpenWeatherData apiKey = async {
                 let url = sprintf "http://api.openweathermap.org/data/2.5/weather?q=seattle&APPID=%s" apiKey
                 let! result = jsonProvider.AsyncLoad(url)
-                let model = { Temp=result.Main.Temp
+                let model = { Temp=result.Main.Temp |> kelvinToFahrenheit
+                              Weather=(result.Weather |> Array.head).Main
                               Items=[ 
                                    { Name="Pressure";   Value=result.Main.Pressure }
                                    { Name="Humidity";   Value=result.Main.Humidity }
                                    { Name="Wind Speed"; Value=result.Wind.Speed }
-                                   { Name="Min Temp";   Value=result.Main.TempMin }
-                                   { Name="Max Temp";   Value=result.Main.TempMax } ]
+                                   { Name="Min Temp";   Value=result.Main.TempMin |> kelvinToFahrenheit }
+                                   { Name="Max Temp";   Value=result.Main.TempMax |> kelvinToFahrenheit } ]
                               IsRefreshing = false } 
                 return WeatherRefreshed model } |> Cmd.ofAsyncMsg
                 
     
     let initModel =   { Temp=61m
+                        Weather="SUNNY"
                         Items=[ 
                             { Name="Pressure";   Value=10 }
                             { Name="Humidity";   Value=65 }
@@ -97,12 +103,12 @@ module App =
                                    ).Row(1)
                         View.Grid(columnSpacing=0.,coldefs=[Star;Auto;Star]).Row(2).Children(
                             [
-                                (AppStyles.createLabel (model.Temp.ToString())).Column(1)
+                                (AppStyles.createLabel (model.Temp.ToString("n0"))).Column(1)
                                 (AppStyles.createLabel "°").Column(2).HorizontalOptions(LayoutOptions.Start)
                             ]
                         )
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="SUNNY",fontSize=Named NamedSize.Large,textColor=AppStyles.MainTextColor).Row(3)
-                        View.Label(horizontalOptions=LayoutOptions.Center,text="FRIDAY, SEPTEMBER 13",fontSize=Named NamedSize.Small,textColor=AppStyles.MainTextColor).Row(4)
+                        View.Label(horizontalOptions=LayoutOptions.Center,text=model.Weather.ToUpper(),fontSize=Named NamedSize.Large,textColor=AppStyles.MainTextColor).Row(3)
+                        View.Label(horizontalOptions=LayoutOptions.Center,text=System.DateTime.Now.ToString("D"),fontSize=Named NamedSize.Small,textColor=AppStyles.MainTextColor).Row(4)
                         View.ScrollView(
                                 content=View.StackLayout(
                                         children=itemsView,
@@ -120,7 +126,7 @@ module App =
             content=View.PancakeView(
                 backgroundGradientStartColor=AppStyles.getGradientColor true (model.Temp), 
                 backgroundGradientEndColor=AppStyles.getGradientColor false (model.Temp),
-                content=grid
+                content=if model.IsRefreshing then View.ActivityIndicator(isRunning=true) else grid
                 )
             )
 
