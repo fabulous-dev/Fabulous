@@ -38,7 +38,7 @@ module App =
     type Msg =
            | RequestRefresh
            | WeatherRefreshed of Model
-    let apiKey = "APIKEY HERE"
+    let apiKey = "89add0da2f8d5cbad84fad1e987f3fad"
 
     let kelvinToFahrenheit K = 9.0m / 5.0m * (K - 273.0m) + 32.0m
 
