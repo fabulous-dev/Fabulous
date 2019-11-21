@@ -121,6 +121,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.PancakeView">
+      <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">

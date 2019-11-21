@@ -60,7 +60,7 @@ group iosapp
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
   nuget Xamarin.Essentials 1.3.1
-
+  nuget Xamarin.Forms.PancakeView 1.3.6
 group macosapp
   framework: xamarinmac20
   source https://api.nuget.org/v3/index.json

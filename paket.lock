@@ -1044,6 +1044,9 @@ NUGET
       System.Numerics.Vectors (>= 4.5)
       System.ValueTuple (>= 4.5)
     Xamarin.Forms (4.3.0.908675)
+    Xamarin.Forms.PancakeView (1.3.6)
+      NETStandard.Library (>= 1.6.1)
+      Xamarin.Forms (>= 3.6.0.220655)
 
 GROUP macosapp
 RESTRICTION: == xamarinmac
