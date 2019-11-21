@@ -1,4 +1,4 @@
-﻿namespace FabulousWeather
+namespace FabulousWeather
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -122,8 +122,15 @@ module App =
                     )
                 .GestureRecognizers([View.TapGestureRecognizer(command=(fun ()-> dispatch RequestRefresh))])
 
+        let pancakeBackgroundPadding =
+            match Device.RuntimePlatform with
+            | Device.iOS -> new Thickness(0., 40., 0., 20.)
+            | _ -> new Thickness(0.)
+        
         View.ContentPage(
+            created=(fun self -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, false)),
             content=View.PancakeView(
+                padding=pancakeBackgroundPadding,
                 backgroundGradientStartColor=AppStyles.getGradientColor true (model.Temp), 
                 backgroundGradientEndColor=AppStyles.getGradientColor false (model.Temp),
                 content=if model.IsRefreshing then View.ActivityIndicator(isRunning=true) else grid

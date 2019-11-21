@@ -69,7 +69,7 @@
     <OutputPath>bin\iPhone\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <CodesignKey>iPhone Developer: donsyme@fastmail.com (3M26P4AK85)</CodesignKey>
+    <CodesignKey>iPhone Developer: Timothe Lariviere (8AK42GUU25)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -94,17 +94,28 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
+    <BundleResource Include="Resources\spaceneedle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
-  <Import Project="..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="Xamarin.iOS" />
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.PancakeView">
+      <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\xamarinios10\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
@@ -115,18 +126,7 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Data">
-      <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.PancakeView">
-      <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
-    </Reference>
+    <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
@@ -146,9 +146,9 @@
       <Name>Fabulous.XamarinForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
-      <Name>FabulousWeather (Fabulous.XamarinForms\samples\FabulousWeather\FabulousWeather)</Name>
       <Project>{39f73f10-b026-4dd4-a1be-2755c0757c85}</Project>
-      <Private>True</Private>
+      <Name>FabulousWeather</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>
