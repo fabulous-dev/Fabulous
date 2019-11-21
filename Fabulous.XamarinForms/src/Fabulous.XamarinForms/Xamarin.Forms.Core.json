@@ -1645,6 +1645,13 @@
           "source": "RemainingItemsThresholdReachedCommand"
         },
         {
+          "source": null,
+          "name": "ScrollTo",
+          "defaultValue": "null",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToItem",
+          "updateCode": "ViewUpdaters.triggerItemsViewScrollTo"
+        },
+        {
           "source": "VerticalScrollBarVisibility"
         }
       ],
@@ -1830,6 +1837,13 @@
           "source": "RowHeight"
         },
         {
+          "source": null,
+          "name": "ScrollTo",
+          "defaultValue": "null",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToItem",
+          "updateCode": "ViewUpdaters.triggerListViewScrollTo"
+        },
+        {
           "source": "SelectedItem",
           "inputType": "int option",
           "modelType": "int option",
@@ -1900,6 +1914,13 @@
           "defaultValue": "[]",
           "convertInputToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
           "updateCode": "ViewUpdaters.updateListViewGroupedItems"
+        },
+        {
+          "source": null,
+          "name": "ScrollTo",
+          "defaultValue": "null",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToGroupedItem",
+          "updateCode": "ViewUpdaters.triggerListViewGroupedScrollTo"
         },
         {
           "source": null,
