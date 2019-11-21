@@ -1687,7 +1687,9 @@
           "source": "IsSwipeEnabled"
         },
         {
-          "source": "ItemsLayout"
+          "source": "ItemsLayout",
+          "inputType": "Xamarin.Forms.LinearItemsLayout",
+          "defaultValue": "LinearItemsLayout.CarouselDefault"
         },
         {
           "source": "NumberOfSideItems"
