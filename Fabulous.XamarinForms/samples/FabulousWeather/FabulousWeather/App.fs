@@ -116,8 +116,9 @@ module App =
                 ) ]
 
         let grid (data: WeatherData) =
-            View.StackLayout(
-                spacing = 0.,
+            View.Grid(
+                rowdefs = [ Auto; Star; Auto; Auto; Auto; Auto ],
+                rowSpacing = 0.,
                 padding = (if Device.RuntimePlatform = Device.Android then Thickness(0.0,24.0,0.0,0.0) else Thickness(0.,44.,0.,0.)),
                 gestureRecognizers = [
                     View.TapGestureRecognizer(fun ()-> dispatch RequestRefresh)
@@ -133,27 +134,26 @@ module App =
                         source = Path data.CityLogo,
                         margin = Thickness(0.,0.,0.,-80.),
                         opacity = 0.8, 
-                        verticalOptions = LayoutOptions.FillAndExpand, 
-                        horizontalOptions = LayoutOptions.FillAndExpand
-                    )
+                        verticalOptions = LayoutOptions.FillAndExpand
+                    ).Row(1)
                     View.Label(
                         text = sprintf "%i°" data.Temp,
                         fontSize = FontSize 100.,
                         horizontalOptions = LayoutOptions.Center,
                         textColor = AppStyles.MainTextColor
-                    )
+                    ).Row(2)
                     View.Label(
                         horizontalOptions = LayoutOptions.Center,
                         text = data.Weather.ToUpper(),
                         fontSize = Named NamedSize.Large,
                         textColor = AppStyles.MainTextColor
-                    )
+                    ).Row(3)
                     View.Label(
                         horizontalOptions = LayoutOptions.Center,
                         text = data.Date.ToString("D"),
                         fontSize = Named NamedSize.Small,
                         textColor = AppStyles.MainTextColor
-                    )
+                    ).Row(4)
                     View.ScrollView(
                         orientation = ScrollOrientation.Horizontal,
                         padding = Thickness(20., 0., 20., 10.),
@@ -162,7 +162,7 @@ module App =
                             orientation = StackOrientation.Horizontal,
                             children = itemsView data.Items
                         )
-                    )
+                    ).Row(5)
                 ]
             )
 
