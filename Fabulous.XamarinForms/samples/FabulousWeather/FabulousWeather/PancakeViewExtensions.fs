@@ -19,8 +19,8 @@ module PancakeViewExtensions =
     type Fabulous.XamarinForms.View with
         /// Describes a ABC in the view
         /// The inline keyword is important for performance
-        static member inline PancakeView(?backgroundGradientStartColor,?backgroundGradientEndColor,?content,
-                                         ?cornerRadius,?padding,?backgroundGradientAngle,
+        static member inline PancakeView(?content, ?backgroundGradientStartColor, ?backgroundGradientEndColor,
+                                         ?cornerRadius, ?padding, ?backgroundGradientAngle,
                                          // inherited attributes common to all views
                                          ?gestureRecognizers, ?horizontalOptions, ?margin, ?verticalOptions, ?anchorX, ?anchorY, ?backgroundColor,
                                          ?behaviors, ?flowDirection, ?height, ?inputTransparent, ?isEnabled, ?isTabStop, ?isVisible, ?minimumHeight,
