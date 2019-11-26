@@ -67,12 +67,4 @@ module VideoManagerExtension =
             // The element
             ViewElement.Create(create, update, attribs)
 
-#if DEBUG
-    let sample1 =
-        View.VideoView(
-            source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            showControls = false,
-            height = 500.,
-            width = 200.)
-#endif
 

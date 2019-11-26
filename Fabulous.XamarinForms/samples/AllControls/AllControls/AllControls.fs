@@ -8,6 +8,9 @@ open Xamarin.Forms
 open FSharp.Data
 open SkiaSharp
 open SkiaSharp.Views.Forms
+open OxyPlot
+open OxyPlot.Axes
+open OxyPlot.Series
 open AllControls.Effects
 
 type RootPageKind = 
@@ -28,6 +31,8 @@ type RootPageKind =
     | Effects
     | RefreshView
     | SkiaCanvas
+    | MapSamples
+    | VideoSamples
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -386,6 +391,8 @@ module App =
                                     View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
                                     View.Button(text = "RefreshView", command=(fun () -> dispatch (SetRootPageKind RefreshView)))
                                     View.Button(text = "Skia Canvas", command = (fun () -> dispatch (SetRootPageKind SkiaCanvas)))
+                                    View.Button(text = "Map Samples", command = (fun () -> dispatch (SetRootPageKind MapSamples)))
+                                    View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
                             ])))
                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -913,28 +920,6 @@ module App =
             ])
         ])
 
-    let skiaCanvasSample model dispatch = 
-        View.ScrollingContentPage("SkiaCanvas", [ 
-            View.SKCanvasView(enableTouchEvents = true, 
-                paintSurface = (fun args -> 
-                    let info = args.Info
-                    let surface = args.Surface
-                    let canvas = surface.Canvas
-
-                    canvas.Clear() 
-                    use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
-                    canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
-                ),
-                horizontalOptions = LayoutOptions.FillAndExpand, 
-                verticalOptions = LayoutOptions.FillAndExpand, 
-                touch = (fun args -> 
-                    if args.InContact then
-                        dispatch (SKSurfaceTouched args.Location)
-                ))
-
-            mainPageButton dispatch
-        ])
-
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
@@ -1122,6 +1107,65 @@ module App =
             mainPageButton dispatch
         ]))
 
+    let skiaCanvasSample model dispatch = 
+        View.ScrollingContentPage("SkiaCanvas", [ 
+            View.SKCanvasView(enableTouchEvents = true, 
+                paintSurface = (fun args -> 
+                    let info = args.Info
+                    let surface = args.Surface
+                    let canvas = surface.Canvas
+
+                    canvas.Clear() 
+                    use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
+                    canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
+                ),
+                horizontalOptions = LayoutOptions.FillAndExpand, 
+                verticalOptions = LayoutOptions.FillAndExpand, 
+                touch = (fun args -> 
+                    if args.InContact then
+                        dispatch (SKSurfaceTouched args.Location)
+                ))
+
+            mainPageButton dispatch
+        ])
+
+    let mapSamples model dispatch = 
+        let plotModelCos =
+            let model = PlotModel(Title = "Example 1")
+            model.Series.Add(new OxyPlot.Series.FunctionSeries(Math.Cos, 0.0, 10.0, 0.1, "cos(x)"))
+            model
+
+        let plotModelHeatMap =
+            let model = PlotModel (Title = "Heatmap")
+            model.Axes.Add(LinearColorAxis (Palette = OxyPalettes.Rainbow(100)))
+            let singleData = [ for x in 0 .. 99 -> Math.Exp((-1.0 / 2.0) * Math.Pow(((double)x - 50.0) / 20.0, 2.0)) ]
+            let data = Array2D.init 100 100 (fun x y -> singleData.[x] * singleData.[(y + 30) % 100] * 100.0)
+            let heatMapSeries =
+                HeatMapSeries(X0 = 0.0, X1 = 99.0, Y0 = 0.0, Y1 = 99.0, Interpolate = true,
+                                RenderMethod = HeatMapRenderMethod.Bitmap, Data = data)
+            model.Series.Add(heatMapSeries)
+            model
+
+        let plotModels = [ plotModelCos; plotModelHeatMap ]
+
+        View.CarouselPage(
+            [ for m in plotModels ->
+                View.ScrollingContentPage("Plot Samples", [ 
+                    mainPageButton dispatch
+                    View.PlotView(m,
+                        horizontalOptions=LayoutOptions.FillAndExpand, 
+                        verticalOptions=LayoutOptions.FillAndExpand) ]) ])
+
+
+    let videoSamples model dispatch = 
+        View.ScrollingContentPage("VideoManager Sample", [ 
+            mainPageButton dispatch
+            View.VideoView(
+                source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                showControls = false,
+                height = 500.,
+                width = 200.) ])
+
     let view (model: Model) dispatch =
 
         match model.RootPageKind with 
@@ -1142,6 +1186,8 @@ module App =
         | Effects -> viewEffectsSample ()
         | RefreshView -> refreshViewSample model dispatch
         | SkiaCanvas -> skiaCanvasSample model dispatch
+        | MapSamples -> mapSamples model dispatch
+        | VideoSamples -> videoSamples model dispatch
 
     
 type App () as app = 

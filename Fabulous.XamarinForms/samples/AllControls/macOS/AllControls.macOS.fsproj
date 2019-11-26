@@ -81,7 +81,7 @@
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\macosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\macosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
