@@ -209,7 +209,7 @@ module FFImageLoadingExtension =
 #if DEBUG
     let sample =
         View.CachedImage(
-            source = Path "AllControls/Baboon_Serengeti.jpg",
+            source = Path "path/to/image.png",
             loadingPlaceholder = Path "path/to/loading-placeholder.png",
             errorPlaceholder = Path "path/to/error-placeholder.png",
             height = 600.,
