@@ -25,10 +25,13 @@
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="FSharp.Data" />
-        <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.1" />
-        <PackageReference Include="SkiaSharp.Views.Forms.WPF" Version="1.68.1" />
-        <PackageReference Include="SkiaSharp.Views.WPF" Version="1.68.1" />
+        <PackageReference Include="SkiaSharp.Views.Forms" />
+        <PackageReference Include="SkiaSharp.Views.Forms.WPF" />
+        <PackageReference Include="SkiaSharp.Views.WPF" />
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
+        <PackageReference Include="Xamarin.Forms.Maps" />
+        <PackageReference Include="Xamarin.Forms.Maps.WPF" />
+        <PackageReference Include="Xamarin.FFImageLoading.Forms" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AllControls\AllControls.fsproj" />

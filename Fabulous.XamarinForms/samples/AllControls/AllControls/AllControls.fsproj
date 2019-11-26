@@ -11,7 +11,6 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="FSharp.Data" />
-      <PackageReference Include="SkiaSharp.Views.Forms" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" />

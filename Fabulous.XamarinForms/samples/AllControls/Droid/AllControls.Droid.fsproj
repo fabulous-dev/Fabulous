@@ -17,8 +17,8 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <SelectedDevice>Samsung SM-G955F</SelectedDevice>
-    <DefaultDevice>Android_Accelerated_x86_Oreo</DefaultDevice>
+    <SelectedDevice>Google Pixel 2</SelectedDevice>
+    <DefaultDevice>Android_Accelerated_x86_Nougat</DefaultDevice>
     <Name>AllControls.Droid</Name>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
