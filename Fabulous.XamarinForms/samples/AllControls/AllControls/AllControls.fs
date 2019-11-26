@@ -5,6 +5,7 @@ open System
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
+open Xamarin.Forms.Maps
 open FSharp.Data
 open SkiaSharp
 open SkiaSharp.Views.Forms
@@ -32,7 +33,9 @@ type RootPageKind =
     | RefreshView
     | SkiaCanvas
     | MapSamples
-    | VideoSamples
+    | OxyPlotSamples
+    //| VideoSamples
+    | CachedImageSamples
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -392,7 +395,9 @@ module App =
                                     View.Button(text = "RefreshView", command=(fun () -> dispatch (SetRootPageKind RefreshView)))
                                     View.Button(text = "Skia Canvas", command = (fun () -> dispatch (SetRootPageKind SkiaCanvas)))
                                     View.Button(text = "Map Samples", command = (fun () -> dispatch (SetRootPageKind MapSamples)))
-                                    View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
+                                    View.Button(text = "OxyPlot Samples", command = (fun () -> dispatch (SetRootPageKind OxyPlotSamples)))
+                                    //View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
+                                    View.Button(text = "CachedImage Samples", command = (fun () -> dispatch (SetRootPageKind CachedImageSamples)))
                             ])))
                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -899,26 +904,34 @@ module App =
                      popped=(fun args -> dispatch PagePopped) , 
                      poppedToRoot=(fun args -> dispatch GoHomePage)  ))
 
-    let viewEffectsSample () =
-        View.ScrollingContentPage("Effects", [
-            View.Label("Samples available on iOS and Android only")
+    let viewEffectsSample dispatch =
+        match Device.RuntimePlatform with
+        | Device.iOS | Device.Android -> 
+            View.ScrollingContentPage("Effects", [
+                View.Label("Effects samples available on iOS and Android only")
+                mainPageButton dispatch
+                View.Label("Focus effect (no properties)", fontSize=FontSize 5., margin=Thickness (0., 30., 0., 0.))
+                View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
+                View.Entry()
+                View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
+                View.Entry(effects = [
+                    View.Effect("FabulousXamarinForms.FocusEffect")
+                ])
             
-            View.Label("Focus effect (no properties)", fontSize=FontSize 5., margin=Thickness (0., 30., 0., 0.))
-            View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
-            View.Entry()
-            View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
-            View.Entry(effects = [
-                View.Effect("FabulousXamarinForms.FocusEffect")
+                View.Label("Shadow effect (with properties)", fontSize=FontSize 15., margin=Thickness (0., 30., 0., 0.))
+                View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
+                View.Label("This is a label without shadows")
+                View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))
+                View.Label("This is a label with shadows", effects = [
+                    View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
+                ])
             ])
-            
-            View.Label("Shadow effect (with properties)", fontSize=FontSize 15., margin=Thickness (0., 30., 0., 0.))
-            View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
-            View.Label("This is a label without shadows")
-            View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))
-            View.Label("This is a label with shadows", effects = [
-                View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
-            ])
-        ])
+        | _ -> 
+            View.ContentPage(content = 
+                View.StackLayout( children = [
+                    mainPageButton dispatch
+                    View.Label(text="Effects samples available on iOS and Android only")
+                ]))
 
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
@@ -1060,7 +1073,12 @@ module App =
                     ])
                 ])
             ])
-        | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support Shell"))
+        | _ -> 
+            View.ContentPage(content = 
+                View.StackLayout( children = [
+                    mainPageButton dispatch
+                    View.Label(text="Your Platform does not support Shell")
+                ]))
 
     let collectionViewSample model dispatch =
         match Device.RuntimePlatform with
@@ -1108,7 +1126,9 @@ module App =
         ]))
 
     let skiaCanvasSample model dispatch = 
-        View.ScrollingContentPage("SkiaCanvas", [ 
+        match Device.RuntimePlatform with
+        | Device.Android  | Device.macOS   | Device.iOS  | Device.Tizen | Device.UWP   | Device.WPF -> 
+          View.ScrollingContentPage("SkiaCanvas", [ 
             View.SKCanvasView(enableTouchEvents = true, 
                 paintSurface = (fun args -> 
                     let info = args.Info
@@ -1127,9 +1147,43 @@ module App =
                 ))
 
             mainPageButton dispatch
-        ])
+          ])
+        | _ -> 
+            View.ContentPage(content = 
+                View.StackLayout( children = [
+                    mainPageButton dispatch
+                    View.Label(text="Your Platform does not support SkiaSharp")
+                    View.Label(text="For GTK status see https://github.com/mono/SkiaSharp/issues/379")
+                ]))
+                    
 
     let mapSamples model dispatch = 
+        let sample1 = View.Map(hasZoomEnabled = true, hasScrollEnabled = true)
+
+        let sample2 = 
+            let timbuktu = Position(16.7666, -3.0026)
+            View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
+                     requestedRegion = MapSpan.FromCenterAndRadius(timbuktu, Distance.FromKilometers(1.0)))
+
+        let sample3 = 
+            let paris = Position(48.8566, 2.3522)
+            let london = Position(51.5074, -0.1278)
+            let calais = Position(50.9513, 1.8587)
+            View.Map(hasZoomEnabled = true, hasScrollEnabled = true, 
+                     pins = [ View.Pin(paris, label="Paris", pinType = PinType.Place)
+                              View.Pin(london, label="London", pinType = PinType.Place) ] ,
+                     requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0)))
+
+        View.ScrollingContentPage("Map Samples", [ 
+            View.Label "Note, may require setup to access maps, see "
+            View.Label "fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-maps.html"
+            for map in [ sample1; sample2; sample3] do
+                map
+                mainPageButton dispatch
+        ])
+
+
+    let oxyPlotSamples model dispatch = 
         let plotModelCos =
             let model = PlotModel(Title = "Example 1")
             model.Series.Add(new OxyPlot.Series.FunctionSeries(Math.Cos, 0.0, 10.0, 0.1, "cos(x)"))
@@ -1148,23 +1202,34 @@ module App =
 
         let plotModels = [ plotModelCos; plotModelHeatMap ]
 
-        View.CarouselPage(
-            [ for m in plotModels ->
-                View.ScrollingContentPage("Plot Samples", [ 
-                    mainPageButton dispatch
-                    View.PlotView(m,
-                        horizontalOptions=LayoutOptions.FillAndExpand, 
-                        verticalOptions=LayoutOptions.FillAndExpand) ]) ])
+        View.ScrollingContentPage("Plot Samples", 
+            [ for m in plotModels do
+                mainPageButton dispatch
+                View.PlotView(m,
+                    horizontalOptions=LayoutOptions.FillAndExpand, 
+                    verticalOptions=LayoutOptions.FillAndExpand) ])
 
 
-    let videoSamples model dispatch = 
-        View.ScrollingContentPage("VideoManager Sample", [ 
+    // let videoSamples model dispatch = 
+    //     View.ScrollingContentPage("VideoManager Sample", [ 
+    //         mainPageButton dispatch
+    //         View.VideoView(
+    //             source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    //             showControls = false,
+    //             height = 500.,
+    //             width = 200.) ])
+
+    let chachedImageSamples model dispatch =
+        View.ScrollingContentPage("CachedImage Sample", [ 
+            View.Label "Note, when last checked this did not work on Android"
             mainPageButton dispatch
-            View.VideoView(
-                source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                showControls = false,
-                height = 500.,
-                width = 200.) ])
+            View.CachedImage(
+                source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
+                //loadingPlaceholder = Path "path/to/loading-placeholder.png",
+                //errorPlaceholder = Path "path/to/error-placeholder.png",
+                height = 600.,
+                width = 600.
+            ) ])
 
     let view (model: Model) dispatch =
 
@@ -1183,11 +1248,13 @@ module App =
         | ShellView -> shellViewSample model dispatch
         | CollectionView -> collectionViewSample model dispatch
         | CarouselView -> carouselViewSample model dispatch
-        | Effects -> viewEffectsSample ()
+        | Effects -> viewEffectsSample dispatch
         | RefreshView -> refreshViewSample model dispatch
         | SkiaCanvas -> skiaCanvasSample model dispatch
         | MapSamples -> mapSamples model dispatch
-        | VideoSamples -> videoSamples model dispatch
+        //| VideoSamples -> videoSamples model dispatch
+        | CachedImageSamples -> chachedImageSamples model dispatch
+        | OxyPlotSamples -> oxyPlotSamples model dispatch
 
     
 type App () as app = 

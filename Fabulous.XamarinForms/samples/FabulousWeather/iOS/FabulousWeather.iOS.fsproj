@@ -99,7 +99,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
