@@ -1125,9 +1125,7 @@ module App =
             mainPageButton dispatch
         ]))
 
-    let skiaCanvasSample model dispatch = 
-        match Device.RuntimePlatform with
-        | Device.Android  | Device.macOS   | Device.iOS  | Device.Tizen | Device.UWP   | Device.WPF -> 
+    let skiaCanvasSampleActual model dispatch = 
           View.ScrollingContentPage("SkiaCanvas", [ 
             View.SKCanvasView(enableTouchEvents = true, 
                 paintSurface = (fun args -> 
@@ -1148,6 +1146,11 @@ module App =
 
             mainPageButton dispatch
           ])
+
+    let skiaCanvasSample model dispatch = 
+        match Device.RuntimePlatform with
+        | Device.Android  | Device.macOS   | Device.iOS  | Device.Tizen | Device.UWP   | Device.WPF -> 
+          skiaCanvasSampleActual model dispatch 
         | _ -> 
             View.ContentPage(content = 
                 View.StackLayout( children = [
@@ -1183,7 +1186,7 @@ module App =
         ])
 
 
-    let oxyPlotSamples model dispatch = 
+    let oxyPlotSamplesActual model dispatch = 
         let plotModelCos =
             let model = PlotModel(Title = "Example 1")
             model.Series.Add(new OxyPlot.Series.FunctionSeries(Math.Cos, 0.0, 10.0, 0.1, "cos(x)"))
@@ -1209,7 +1212,18 @@ module App =
                     horizontalOptions=LayoutOptions.FillAndExpand, 
                     verticalOptions=LayoutOptions.FillAndExpand) ])
 
-
+    let oxyPlotSamples model dispatch = 
+        match Device.RuntimePlatform with
+        | Device.Android  | Device.iOS  -> 
+            oxyPlotSamplesActual model dispatch 
+        | _ -> 
+            View.ContentPage(content = 
+                View.StackLayout( children = [
+                    mainPageButton dispatch
+                    View.Label(text="OxyPlot for XamarinForms 1.0.0 does not support your platform")
+                    View.Label(text="For status see https://github.com/oxyplot/oxyplot-xamarin")
+                ]))
+       
     // let videoSamples model dispatch = 
     //     View.ScrollingContentPage("VideoManager Sample", [ 
     //         mainPageButton dispatch
@@ -1219,9 +1233,10 @@ module App =
     //             height = 500.,
     //             width = 200.) ])
 
-    let chachedImageSamples model dispatch =
+    let chachedImageSamplesActual model dispatch =
         View.ScrollingContentPage("CachedImage Sample", [ 
             View.Label "Note, when last checked this did not work on Android"
+            View.Label "However maybe the sample is not configured correctly"
             mainPageButton dispatch
             View.CachedImage(
                 source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
@@ -1230,6 +1245,18 @@ module App =
                 height = 600.,
                 width = 600.
             ) ])
+
+    let chachedImageSamples model dispatch =
+        match Device.RuntimePlatform with
+        | Device.Android  | Device.iOS  | Device.Tizen | Device.UWP | Device.macOS -> 
+            chachedImageSamplesActual model dispatch
+        | _ -> 
+            View.ContentPage(content = 
+                View.StackLayout( children = [
+                    mainPageButton dispatch
+                    View.Label(text="Theis version of FFImageLoading for XamarinForms does not support your platform")
+                    View.Label(text="For status see https://github.com/luberda-molinet/FFImageLoading")
+                ]))
 
     let view (model: Model) dispatch =
 
