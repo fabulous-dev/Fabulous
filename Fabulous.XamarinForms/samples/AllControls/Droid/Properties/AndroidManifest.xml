@@ -3,6 +3,6 @@
 	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="28" />
   <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
   <application android:label="AllControls">
-    <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDryOi9nfhfHXSMSapB_4mCrDy5i3N0R6s" />
+    <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="PUT-YOUR-API-KEY-HERE" />
   </application>
 </manifest>

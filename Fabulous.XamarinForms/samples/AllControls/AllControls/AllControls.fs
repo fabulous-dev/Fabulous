@@ -1180,6 +1180,8 @@ module App =
         View.ScrollingContentPage("Map Samples", [ 
             View.Label "Note, may require setup to access maps, see "
             View.Label "fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-maps.html"
+            View.Label ""
+            View.Label "Android - put your Google Maps API Key in AllControls\Droid\Properties\AndroidManifest.xml"
             for map in [ sample1; sample2; sample3] do
                 map
                 mainPageButton dispatch
