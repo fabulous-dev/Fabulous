@@ -6,6 +6,8 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 open FSharp.Data
+open SkiaSharp
+open SkiaSharp.Views.Forms
 open AllControls.Effects
 
 type RootPageKind = 
@@ -25,6 +27,7 @@ type RootPageKind =
     | CarouselView
     | Effects
     | RefreshView
+    | SkiaCanvas
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -67,6 +70,7 @@ type Model =
     IsScrolling: bool
     // For RefreshView
     RefreshViewIsRefreshing: bool
+    SKPoints: SKPoint list
     }
 
 type Msg = 
@@ -112,6 +116,7 @@ type Msg =
     | AnimationPoked
     | AnimationPoked2
     | AnimationPoked3
+    | SKSurfaceTouched of SKPoint
     | SetCarouselCurrentPage of int
     | SetTabbed1CurrentPage of int
     | ReceivedLowMemoryWarning
@@ -205,7 +210,8 @@ module App =
           AnimatedScroll = Animated
           IsScrollingWithFabulous = false
           IsScrolling = false
-          RefreshViewIsRefreshing = false }, Cmd.none
+          RefreshViewIsRefreshing = false
+          SKPoints = [] }, Cmd.none
 
     let getWebData =
         async {
@@ -343,6 +349,7 @@ module App =
             { model with RefreshViewIsRefreshing = true }, refreshAsync ()
         | RefreshViewRefreshDone ->
             { model with RefreshViewIsRefreshing = false }, Cmd.none
+        | SKSurfaceTouched point -> { model with SKPoints = point :: model.SKPoints }, Cmd.none
 
     let pickerItems = 
         [ ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -407,6 +414,7 @@ module App =
                                      View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                                      View.Button(text = "Effects", command=(fun () -> dispatch (SetRootPageKind Effects)))
                                      View.Button(text = "RefreshView", command=(fun () -> dispatch (SetRootPageKind RefreshView)))
+                                     View.Button(text = "Skia Canvas", command = (fun () -> dispatch (SetRootPageKind SkiaCanvas)))
                                 ])))
                      .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -1089,6 +1097,27 @@ module App =
                     )
                 )
             )
+        | SkiaCanvas ->
+            View.ScrollingContentPage("SkiaCanvas", [ 
+                View.SKCanvasView(enableTouchEvents = true, 
+                    paintSurface = (fun args -> 
+                        let info = args.Info
+                        let surface = args.Surface
+                        let canvas = surface.Canvas
+
+                        canvas.Clear() 
+                        use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
+                        canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
+                    ),
+                    horizontalOptions = LayoutOptions.FillAndExpand, 
+                    verticalOptions = LayoutOptions.FillAndExpand, 
+                    touch = (fun args -> 
+                        if args.InContact then
+                            dispatch (SKSurfaceTouched args.Location)
+                    ))
+
+                MainPageButton
+            ])
 
     
 type App () as app = 
