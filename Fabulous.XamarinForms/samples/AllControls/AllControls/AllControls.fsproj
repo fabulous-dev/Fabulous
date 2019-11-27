@@ -13,7 +13,7 @@
       <PackageReference Include="FSharp.Data" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" />
+<!--      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" /> -->
       <ProjectReference Include="..\..\..\extensions\Maps\Fabulous.XamarinForms.Maps.fsproj" />
       <ProjectReference Include="..\..\..\extensions\OxyPlot\Fabulous.XamarinForms.OxyPlot.fsproj" />
       <ProjectReference Include="..\..\..\extensions\SkiaSharp\Fabulous.XamarinForms.SkiaSharp.fsproj" />

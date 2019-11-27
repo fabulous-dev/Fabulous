@@ -21,7 +21,7 @@ type AppDelegate() =
         Forms.Init()
         Xamarin.FormsMaps.Init() 
         //OxyPlot.Xamarin.Forms.Platform. .Android.PlotViewRenderer.Init()
-        FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
+        //FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
         this.LoadApplication(new AllControls.App())
 
         base.DidFinishLaunching(notification)

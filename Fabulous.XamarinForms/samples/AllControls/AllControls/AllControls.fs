@@ -35,7 +35,7 @@ type RootPageKind =
     | MapSamples
     | OxyPlotSamples
     //| VideoSamples
-    | CachedImageSamples
+    //| CachedImageSamples
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -372,10 +372,9 @@ module App =
     let frontPage model showAbout dispatch =
         View.NavigationPage(pages=
             [ yield 
-                View.ContentPage(useSafeArea=true,
-                    padding = Thickness (10.0, 20.0, 10.0, 5.0), 
-                    content = View.ScrollView(
-                        content = View.StackLayout(
+                View.ContentPage(
+                    View.ScrollView(
+                        View.StackLayout(
                             children = [ 
                                     View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
                                     View.Button(text = "TabbedPage #2 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed2)))
@@ -398,12 +397,18 @@ module App =
                                     View.Button(text = "OxyPlot Samples", command = (fun () -> dispatch (SetRootPageKind OxyPlotSamples)))
                                     //View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
                                     View.Button(text = "CachedImage Samples", command = (fun () -> dispatch (SetRootPageKind CachedImageSamples)))
-                            ])))
-                    .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
-                    .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
+                            ])),
+                    useSafeArea=true,
+                    padding = Thickness (10.0, 20.0, 10.0, 5.0)
+                )
+                .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                .TitleView(
+                    View.StackLayout(
+                        [
                             View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
                             View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
-                        ]
+                        ],
+                        orientation=StackOrientation.Horizontal
                     ))
 
               if showAbout then 
@@ -646,7 +651,8 @@ module App =
             ])
 
     let tabbedPageSamples2 model dispatch =
-        View.TabbedPage(useSafeArea=true, children= [
+        View.TabbedPage(useSafeArea=true, 
+          children= [
             dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
                 View.ScrollingContentPage("Picker", 
                     [ View.Label(text="Picker:")
@@ -658,25 +664,28 @@ module App =
                 View.ScrollingContentPage("ListView", 
                     [ mainPageButton dispatch
                       View.Label(text="ListView:")
-                      View.ListView( items = [ 
+                      View.ListView( 
+                          items = [ 
                             for i in 0 .. 10 do 
                                 yield View.TextCell "Ionide"
                                 yield View.ViewCell(
                                     view = View.Label(
-                                        formattedText = View.FormattedString([
+                                        formattedText = View.FormattedString(
+                                          [
                                             View.Span(text="Visual ", backgroundColor = Color.Green)
                                             View.Span(text="Studio ", fontSize = FontSize 10.)
-                                        ])
+                                          ])
                                     )
                                 ) 
                                 yield View.TextCell "Emacs"
                                 yield View.ViewCell(
                                     view = View.Label(
-                                        formattedText = View.FormattedString([
+                                        formattedText = View.FormattedString(
+                                          [
                                             View.Span(text="Visual ", fontAttributes=FontAttributes.Bold)
                                             View.Span(text="Studio ", fontAttributes=FontAttributes.Italic)
                                             View.Span(text="Code", foregroundColor = Color.Blue)
-                                        ])
+                                          ])
                                     )
                                 )
                                 yield View.TextCell "Rider" ], 
@@ -730,8 +739,8 @@ module App =
                            View.FlexLayout(
                             direction = FlexDirection.Column,
                             children = [
-                                View.ScrollView(orientation=ScrollOrientation.Both,
-                                  content = View.FlexLayout(
+                                View.ScrollView(
+                                  View.FlexLayout(
                                       children = [
                                           View.Frame(height=480.0, width=300.0, 
                                               content = View.FlexLayout( direction=FlexDirection.Column,
@@ -767,8 +776,9 @@ module App =
                                               borderColor=Color.Blue,
                                               margin=Thickness 10.0,
                                               cornerRadius=15.0)
-                                          
-                                      ] ))
+
+                                      ] ),
+                                  orientation=ScrollOrientation.Both)
                                 mainPageButton dispatch
                             ])) )
 
@@ -907,39 +917,45 @@ module App =
     let viewEffectsSample dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
-            View.ScrollingContentPage("Effects", [
+            View.ScrollingContentPage("Effects", 
+              [
                 View.Label("Effects samples available on iOS and Android only")
                 mainPageButton dispatch
                 View.Label("Focus effect (no properties)", fontSize=FontSize 5., margin=Thickness (0., 30., 0., 0.))
                 View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
                 View.Entry()
                 View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
-                View.Entry(effects = [
+                View.Entry(effects = 
+                  [
                     View.Effect("FabulousXamarinForms.FocusEffect")
-                ])
+                  ])
             
                 View.Label("Shadow effect (with properties)", fontSize=FontSize 15., margin=Thickness (0., 30., 0., 0.))
                 View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
                 View.Label("This is a label without shadows")
                 View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))
-                View.Label("This is a label with shadows", effects = [
+                View.Label("This is a label with shadows", effects = 
+                  [
                     View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
-                ])
-            ])
+                  ])
+              ])
         | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
+            View.ContentPage(
+                View.StackLayout( 
+                  [
                     mainPageButton dispatch
                     View.Label(text="Effects samples available on iOS and Android only")
-                ]))
+                  ]))
 
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
-            View.ContentPage(content=
-                View.StackLayout(children = [
+            View.ContentPage(
+                View.StackLayout 
+                  [
                     mainPageButton dispatch
-                    View.CarouselView(items = [
+                    View.CarouselView(items = 
+                      [
                         View.Label(text="Person1") 
                         View.Label(text="Person2")
                         View.Label(text="Person3")
@@ -953,16 +969,16 @@ module App =
                         View.Label(text="Person12")
                         View.Label(text="Person13")
                         View.Label(text="Person14")
-                    ], margin= Thickness 10.)
-                ]
-            ))
+                      ], margin= Thickness 10.)
+                  ]
+            )
 
         | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
+            View.ContentPage(
+                View.StackLayout [
                     mainPageButton dispatch
                     View.Label(text="Your Platform does not support CarouselView")
-                ]))
+                  ])
 
     let masterDetailPageSample model dispatch =
          // MasterDetail where the Master acts as a hamburger-style menu
@@ -1003,7 +1019,8 @@ module App =
                  ] ))
 
     let animationSamples model dispatch =
-        View.ScrollingContentPage("Animations", [ 
+        View.ScrollingContentPage("Animations", 
+          [ 
             View.Label(text="Rotate", created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) 
             View.Label(text="Hello!", ref=animatedLabelRef) 
             View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked))
@@ -1014,7 +1031,7 @@ module App =
                command=(fun () -> dispatch (SetRootPageKind (Choice false))),
                horizontalOptions=LayoutOptions.CenterAndExpand,
                verticalOptions=LayoutOptions.End)
-        ])
+          ])
 
     let webCallSample model dispatch =
         let data = match model.WebCallData with
@@ -1022,7 +1039,7 @@ module App =
                     | None -> ""
 
         View.ContentPage(
-            content = View.StackLayout(
+            View.StackLayout(
                 children = [
                     View.Button(text="Get Data", command=(fun () -> dispatch ReceiveData))
                     View.ActivityIndicator(isRunning=model.IsRunning)
@@ -1036,7 +1053,7 @@ module App =
             (x, y, animated)
 
         View.ContentPage(
-            content = View.StackLayout(
+            View.StackLayout(
                 children = [
                     mainPageButton dispatch
                     View.Label(text = (sprintf "Is scrolling: %b" model.IsScrolling))
@@ -1065,28 +1082,32 @@ module App =
             
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
-                    
-            View.Shell( title = "TitleShell", items = [
-                View.ShellItem(items = [
-                    View.ShellSection(items = [
+
+            View.Shell( title = "TitleShell", 
+              items = [
+                View.ShellItem(
+                  items = [
+                    View.ShellSection(
+                      items = [
                         View.ShellContent(content=View.ContentPage(content=mainPageButton dispatch, title="ContentpageTitle"))         
-                    ])
-                ])
-            ])
+                      ])
+                  ])
+              ])
         | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
+            View.ContentPage(
+                View.StackLayout [
                     mainPageButton dispatch
                     View.Label(text="Your Platform does not support Shell")
-                ]))
+                  ])
 
     let collectionViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
-            View.ContentPage(content=View.StackLayout(children = [
+            View.ContentPage(
+              View.StackLayout [
                     mainPageButton dispatch
                     // use Collectionview instead of listview 
-                    View.CollectionView(items= [
+                    View.CollectionView [
                         View.Label(text="Person 1") 
                         View.Label(text="Person2")
                         View.Label(text="Person3")
@@ -1099,34 +1120,36 @@ module App =
                         View.Label(text="Person11")
                         View.Label(text="Person12")
                         View.Label(text="Person13")
-                        View.Label(text="Person14")] )
-                ]
-            ))
+                        View.Label(text="Person14")
+                     ] 
+                ] )
 
         | _ ->
-            View.ContentPage(content = View.StackLayout( children = [
-                mainPageButton dispatch
-                View.Label(text="Your Platform does not support CollectionView")
-            ]))
+            View.ContentPage(
+              View.StackLayout [
+                  mainPageButton dispatch
+                  View.Label(text="Your Platform does not support CollectionView")
+                ])
 
     let refreshViewSample model dispatch =
-        View.ContentPage(content = View.StackLayout( children = [
+        View.ContentPage(
+           View.StackLayout [
             View.RefreshView(
-                isRefreshing = model.RefreshViewIsRefreshing,
-                refreshing = (fun () -> dispatch RefreshViewRefreshing),
-                content = View.ScrollView(
+                View.ScrollView(
                     View.BoxView(
                         height = 150.,
                         width = 150.,
                         color = if model.RefreshViewIsRefreshing then Color.Red else Color.Blue
-                    )
-                )
+                    )),
+                isRefreshing = model.RefreshViewIsRefreshing,
+                refreshing = (fun () -> dispatch RefreshViewRefreshing)
             )
             mainPageButton dispatch
-        ]))
+          ])
 
     let skiaCanvasSampleActual model dispatch = 
-          View.ScrollingContentPage("SkiaCanvas", [ 
+          View.ScrollingContentPage("SkiaCanvas", 
+           [ 
             View.SKCanvasView(enableTouchEvents = true, 
                 paintSurface = (fun args -> 
                     let info = args.Info
@@ -1145,19 +1168,19 @@ module App =
                 ))
 
             mainPageButton dispatch
-          ])
+           ])
 
     let skiaCanvasSample model dispatch = 
         match Device.RuntimePlatform with
         | Device.Android  | Device.macOS   | Device.iOS  | Device.Tizen | Device.UWP   | Device.WPF -> 
           skiaCanvasSampleActual model dispatch 
         | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
+            View.ContentPage( 
+                View.StackLayout [
                     mainPageButton dispatch
                     View.Label(text="Your Platform does not support SkiaSharp")
                     View.Label(text="For GTK status see https://github.com/mono/SkiaSharp/issues/379")
-                ]))
+                  ])
                     
 
     let mapSamples model dispatch = 
@@ -1177,15 +1200,16 @@ module App =
                               View.Pin(london, label="London", pinType = PinType.Place) ] ,
                      requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0)))
 
-        View.ScrollingContentPage("Map Samples", [ 
-            View.Label "Note, may require setup to access maps, see "
-            View.Label "fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-maps.html"
-            View.Label ""
-            View.Label "Android - put your Google Maps API Key in AllControls\Droid\Properties\AndroidManifest.xml"
+        View.ScrollingContentPage("Map Samples", 
+          [ 
+            yield View.Label "Note, may require setup to access maps, see "
+            yield View.Label "fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-maps.html"
+            yield View.Label ""
+            yield View.Label "Android - put your Google Maps API Key in AllControls\Droid\Properties\AndroidManifest.xml"
             for map in [ sample1; sample2; sample3] do
-                map
-                mainPageButton dispatch
-        ])
+                yield map
+                yield mainPageButton dispatch
+          ])
 
 
     let oxyPlotSamplesActual model dispatch = 
@@ -1209,22 +1233,22 @@ module App =
 
         View.ScrollingContentPage("Plot Samples", 
             [ for m in plotModels do
-                mainPageButton dispatch
-                View.PlotView(m,
-                    horizontalOptions=LayoutOptions.FillAndExpand, 
-                    verticalOptions=LayoutOptions.FillAndExpand) ])
+                yield mainPageButton dispatch
+                yield View.PlotView(m,
+                        horizontalOptions=LayoutOptions.FillAndExpand, 
+                        verticalOptions=LayoutOptions.FillAndExpand) ])
 
     let oxyPlotSamples model dispatch = 
         match Device.RuntimePlatform with
         | Device.Android  | Device.iOS  -> 
             oxyPlotSamplesActual model dispatch 
         | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
+            View.ContentPage( 
+                View.StackLayout [
                     mainPageButton dispatch
                     View.Label(text="OxyPlot for XamarinForms 1.0.0 does not support your platform")
                     View.Label(text="For status see https://github.com/oxyplot/oxyplot-xamarin")
-                ]))
+                  ])
        
     // let videoSamples model dispatch = 
     //     View.ScrollingContentPage("VideoManager Sample", [ 
@@ -1235,30 +1259,31 @@ module App =
     //             height = 500.,
     //             width = 200.) ])
 
-    let chachedImageSamplesActual model dispatch =
-        View.ScrollingContentPage("CachedImage Sample", [ 
-            View.Label "Note, when last checked this did not work on Android"
-            View.Label "However maybe the sample is not configured correctly"
-            mainPageButton dispatch
-            View.CachedImage(
-                source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
-                //loadingPlaceholder = Path "path/to/loading-placeholder.png",
-                //errorPlaceholder = Path "path/to/error-placeholder.png",
-                height = 600.,
-                width = 600.
-            ) ])
+    //let chachedImageSamplesActual model dispatch =
+    //    View.ScrollingContentPage("CachedImage Sample", 
+    //      [ 
+    //        View.Label "Note, when last checked this did not work on Android"
+    //        View.Label "However maybe the sample is not configured correctly"
+    //        mainPageButton dispatch
+    //        View.CachedImage(
+    //            source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
+    //            //loadingPlaceholder = Path "path/to/loading-placeholder.png",
+    //            //errorPlaceholder = Path "path/to/error-placeholder.png",
+    //            height = 600.,
+    //            width = 600. ) 
+    //      ])
 
-    let chachedImageSamples model dispatch =
-        match Device.RuntimePlatform with
-        | Device.Android  | Device.iOS  | Device.Tizen | Device.UWP | Device.macOS -> 
-            chachedImageSamplesActual model dispatch
-        | _ -> 
-            View.ContentPage(content = 
-                View.StackLayout( children = [
-                    mainPageButton dispatch
-                    View.Label(text="Theis version of FFImageLoading for XamarinForms does not support your platform")
-                    View.Label(text="For status see https://github.com/luberda-molinet/FFImageLoading")
-                ]))
+    //let chachedImageSamples model dispatch =
+        //match Device.RuntimePlatform with
+        //| Device.Android  | Device.iOS  | Device.Tizen | Device.UWP | Device.macOS -> 
+        //    chachedImageSamplesActual model dispatch
+        //| _ -> 
+            //View.ContentPage( 
+                //View.StackLayout [
+                  //  mainPageButton dispatch
+                  //  View.Label(text="Theis version of FFImageLoading for XamarinForms does not support your platform")
+                  //  View.Label(text="For status see https://github.com/luberda-molinet/FFImageLoading")
+                  //])
 
     let view (model: Model) dispatch =
 
@@ -1282,14 +1307,14 @@ module App =
         | SkiaCanvas -> skiaCanvasSample model dispatch
         | MapSamples -> mapSamples model dispatch
         //| VideoSamples -> videoSamples model dispatch
-        | CachedImageSamples -> chachedImageSamples model dispatch
+        //| CachedImageSamples -> chachedImageSamples model dispatch
         | OxyPlotSamples -> oxyPlotSamples model dispatch
 
     
 type App () as app = 
     inherit Application ()
     do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
-
+    
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace

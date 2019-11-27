@@ -122,6 +122,7 @@
     <Reference Include="OxyPlot.Xamarin.Forms">
       <HintPath>..\..\..\..\packages\macosapp\OxyPlot.Xamarin.Forms\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\OxyPlot.Xamarin.Forms.dll</HintPath>
     </Reference>
+        <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.FFImageLoading\lib\Xamarin.Mac20\FFImageLoading.dll</HintPath>
     </Reference>
@@ -134,6 +135,7 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.FFImageLoading.Forms\lib\Xamarin.Mac20\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
+    -->
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
