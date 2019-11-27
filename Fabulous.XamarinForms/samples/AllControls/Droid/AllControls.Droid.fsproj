@@ -46,6 +46,7 @@
     <GenerateTailCalls>true</GenerateTailCalls>
     <PlatformTarget>
     </PlatformTarget>
+<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
