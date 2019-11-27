@@ -1139,6 +1139,8 @@ NUGET
     OxyPlot.Xamarin.Forms (1.0)
       OxyPlot.Core (>= 1.0)
       Xamarin.Forms (>= 2.3.3.180)
+    OxyPlot.Xamarin.iOS (1.0)
+      OxyPlot.Core (>= 1.0)
     Plugin.MediaManager (0.8.18)
     Plugin.MediaManager.Forms (0.8.18)
     SkiaSharp (1.68.1)

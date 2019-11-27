@@ -82,6 +82,7 @@ group iosapp
   nuget Plugin.MediaManager 0.8.18
   nuget Plugin.MediaManager.Forms 0.8.18
   nuget OxyPlot.Xamarin.Forms 1.0.0
+  nuget OxyPlot.Xamarin.iOS 1.0.0
   nuget Xamarin.FFImageLoading.Forms 2.4.11.982
 
 group macosapp
