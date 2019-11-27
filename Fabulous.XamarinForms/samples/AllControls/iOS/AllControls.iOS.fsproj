@@ -141,7 +141,7 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
-    <!--
+   <!--
     <Reference Include="Plugin.MediaManager">
       <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>
     </Reference>
