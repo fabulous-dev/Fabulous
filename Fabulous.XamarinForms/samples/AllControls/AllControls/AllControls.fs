@@ -396,7 +396,7 @@ module App =
                                     View.Button(text = "Map Samples", command = (fun () -> dispatch (SetRootPageKind MapSamples)))
                                     View.Button(text = "OxyPlot Samples", command = (fun () -> dispatch (SetRootPageKind OxyPlotSamples)))
                                     //View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
-                                    View.Button(text = "CachedImage Samples", command = (fun () -> dispatch (SetRootPageKind CachedImageSamples)))
+                                    //View.Button(text = "CachedImage Samples", command = (fun () -> dispatch (SetRootPageKind CachedImageSamples)))
                             ])),
                     useSafeArea=true,
                     padding = Thickness (10.0, 20.0, 10.0, 5.0)
