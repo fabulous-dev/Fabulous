@@ -25,6 +25,7 @@
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="FSharp.Data" />
+        <PackageReference Include="SkiaSharp.Views" />
         <PackageReference Include="SkiaSharp.Views.Forms" />
         <PackageReference Include="SkiaSharp.Views.Forms.WPF" />
         <PackageReference Include="SkiaSharp.Views.WPF" />

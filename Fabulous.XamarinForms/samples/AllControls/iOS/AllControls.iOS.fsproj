@@ -10,6 +10,7 @@
     <RootNamespace>iOS</RootNamespace>
     <AssemblyName>iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -124,6 +125,9 @@
     </Reference>
     <Reference Include="SkiaSharp">
       <HintPath>..\..\..\..\packages\iosapp\SkiaSharp\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.iOS">
+      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views\lib\Xamarin.iOS\SkiaSharp.Views.iOS.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
       <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views.Forms\lib\Xamarin.iOS\SkiaSharp.Views.Forms.dll</HintPath>

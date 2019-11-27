@@ -99,6 +99,9 @@
     <Reference Include="SkiaSharp">
       <HintPath>..\..\..\..\packages\gtkapp\SkiaSharp\lib\net45\SkiaSharp.dll</HintPath>
     </Reference>
+    <Reference Include="SkiaSharp.Views.Desktop">
+      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp.Views\lib\net45\SkiaSharp.Views.Desktop.dll</HintPath>
+    </Reference>
     <Reference Include="SkiaSharp.Views.Gtk3">
       <HintPath>..\..\..\..\packages\gtkapp\SkiaSharp.Views.Desktop.Common\lib\net45\SkiaSharp.Views.Desktop.Common.dll</HintPath>
     </Reference>
