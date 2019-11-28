@@ -1183,7 +1183,7 @@ module App =
                   ])
                     
 
-    let mapSamples model dispatch = 
+    let mapSamplesActual model dispatch = 
         let sample1 = View.Map(hasZoomEnabled = true, hasScrollEnabled = true)
 
         let sample2 = 
@@ -1212,6 +1212,18 @@ module App =
           ])
 
 
+    let mapSamples model dispatch = 
+        match Device.RuntimePlatform with
+        | Device.GTK  -> 
+            View.ContentPage( 
+                View.StackLayout [
+                    mainPageButton dispatch
+                    View.Label(text="When last tested Xamarin.Forms.Maps on GTK does not work correctly")
+                    View.Label(text="Please uncomment the code in AllControls.fs and try again")
+                  ])
+        | _ -> 
+            mapSamplesActual model dispatch
+       
     let oxyPlotSamplesActual model dispatch = 
         let plotModelCos =
             let model = PlotModel(Title = "Example 1")
