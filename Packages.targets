@@ -18,6 +18,7 @@
         <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.0.0" />
         <PackageReference Update="SkiaSharp" Version="1.68.1" />
         <PackageReference Update="SkiaSharp.Views" Version="1.68.1" />
+        <PackageReference Update="SkiaSharp.Views.Gtk2" Version="1.68.1" />
         <PackageReference Update="SkiaSharp.Views.Desktop.Common" Version="1.68.1" />
         <PackageReference Update="SkiaSharp.Views.Forms" Version="1.68.1" />
         <PackageReference Update="Plugin.MediaManager" Version="0.8.18" />
