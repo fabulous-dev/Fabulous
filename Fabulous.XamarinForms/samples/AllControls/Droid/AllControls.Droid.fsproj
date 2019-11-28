@@ -335,6 +335,7 @@
     <Reference Include="OxyPlot.Xamarin.Android">
       <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Xamarin.Android\lib\MonoAndroid10\OxyPlot.Xamarin.Android.dll</HintPath>
     </Reference>
+ <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
     </Reference>
@@ -344,6 +345,7 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading.Forms\lib\MonoAndroid10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
+  -->
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{AEBBB2CB-3D81-4DB0-8A64-70D80EDCBD38}</Project>
       <Name>AllControls</Name>

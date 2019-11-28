@@ -140,6 +140,7 @@
     <Reference Include="OxyPlot.GtkSharp3 ">
       <HintPath>..\..\..\..\packages\gtkapp\OxyPlot.GtkSharp3\lib\net45\OxyPlot.GtkSharp3.dll</HintPath>
     </Reference>
+<!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.FFImageLoading\lib\netstandard1.0\FFImageLoading.dll</HintPath>
     </Reference>
@@ -149,6 +150,7 @@
     <Reference Include="FFImageLoading.Forms">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.FFImageLoading.Forms\lib\netstandard1.0\FFImageLoading.Forms.dll</HintPath>
     </Reference>
+-->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />

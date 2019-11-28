@@ -25,7 +25,7 @@ type MainActivity() =
         Xamarin.Forms.Forms.Init (this, bundle)
         Xamarin.FormsMaps.Init(this, bundle) 
         OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init()
-        FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer=Nullable true)
+        //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer=Nullable true)
 
         let app = new AllControls.App()
         this.LoadApplication(app)
