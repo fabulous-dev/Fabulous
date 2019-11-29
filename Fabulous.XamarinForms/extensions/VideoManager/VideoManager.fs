@@ -67,6 +67,7 @@ module VideoManagerExtension =
             // The element
             ViewElement.Create(create, update, attribs)
 
+
 #if DEBUG
     let sample1 =
         View.VideoView(
@@ -75,4 +76,3 @@ module VideoManagerExtension =
             height = 500.,
             width = 200.)
 #endif
-
