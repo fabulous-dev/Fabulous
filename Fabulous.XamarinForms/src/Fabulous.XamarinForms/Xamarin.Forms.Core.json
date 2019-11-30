@@ -195,7 +195,7 @@
         }
       ],
       "events": [
-        { 
+        {
           "source": "Tapped"
         }
       ]
@@ -1387,7 +1387,7 @@
           "source": "Source"
         }
       ],
-      "events":[
+      "events": [
         {
           "source": "Clicked"
         },
@@ -1687,9 +1687,7 @@
           "source": "IsSwipeEnabled"
         },
         {
-          "source": "ItemsLayout",
-          "inputType": "Xamarin.Forms.LinearItemsLayout",
-          "defaultValue": "LinearItemsLayout.CarouselDefault"
+          "source": "ItemsLayout"
         },
         {
           "source": "NumberOfSideItems"
@@ -2476,7 +2474,7 @@
     },
     {
       "type": "Xamarin.Forms.TableView",
-      "properties":[
+      "properties": [
         {
           "source": "HasUnevenRows"
         },
@@ -2613,6 +2611,7 @@
     },
     {
       "type": "Xamarin.Forms.LinearItemsLayout",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "ItemSpacing"
@@ -2621,6 +2620,12 @@
       "primaryConstructorMembers": [
         "ItemSpacing"
       ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.VerticalLinearItemsLayout"
+    },
+    {
+      "type": "Fabulous.XamarinForms.HorizontalLinearItemsLayout"
     },
     {
       "type": "Xamarin.Forms.SearchHandler",
