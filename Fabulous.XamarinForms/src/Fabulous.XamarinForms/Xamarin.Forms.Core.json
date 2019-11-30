@@ -2136,6 +2136,27 @@
       "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
+          "source": "ColumnDefinitions",
+          "shortName": "coldefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "defaultValue": "Xamarin.Forms.ColumnDefinitionCollection()",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
+        },
+        {
+          "source": "ColumnSpacing"
+        },
+        {
+          "source": "RowDefinitions",
+          "shortName": "rowdefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "defaultValue": "Xamarin.Forms.RowDefinitionCollection()",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
+        },
+        {
+          "source": "RowSpacing"
+        },
+        {
+          "_comment": "This fake property is here to let the generator call updateAttachedProperties. It is placed after rowdefs/coldefs because they need to be updated beforehand, otherwise we get an invalid layout",
           "source": null,
           "name": "Children",
           "defaultValue": "[]",
@@ -2158,24 +2179,6 @@
               }
             ]
           }
-        },
-        {
-          "source": "ColumnDefinitions",
-          "shortName": "coldefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
-        },
-        {
-          "source": "ColumnSpacing"
-        },
-        {
-          "source": "RowDefinitions",
-          "shortName": "rowdefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
-        },
-        {
-          "source": "RowSpacing"
         }
       ],
       "primaryConstructorMembers": [
