@@ -1,3 +1,9 @@
+#### 0.51.0
+
+* [Fabulous.XamarinForms] Added a `scrollTo` property to ListView, ListViewGrouped, Carousel and CollectionView (https://github.com/fsprojects/Fabulous/pull/616)
+* [Fabulous.XamarinForms] Fixed 2 issues with Grid ColumnDefinitions/RowDefinitions (https://github.com/fsprojects/Fabulous/pull/627)
+* [Fabulous.XamarinForms] Fixed an issue with cell recycling in ListView/ListViewGrouped (https://github.com/fsprojects/Fabulous/pull/617)
+
 #### 0.50.3
 
 * [Fabulous.XamarinForms] Fixed an issue where the application could crash when LiveUpdate tries to refresh the app with an invalid view (https://github.com/fsprojects/Fabulous/pull/594)
