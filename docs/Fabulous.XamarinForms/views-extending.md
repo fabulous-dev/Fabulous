@@ -57,9 +57,12 @@ module MyViewExtensions =
             let attribCount = 0
             let attribCount = match prop1 with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match prop2 with Some _ -> attribCount + 1 | None -> attribCount
+            
+            // Unbox the ViewRef
+            let viewRef = match ref with None -> None | Some (ref: ViewRef<ABC>) -> Some ref.Unbox
 
             // Populate the attributes of the base element
-            let attribs = ViewBuilders.BuildBASE(attribCount, ... inherited attributes ... )
+            let attribs = ViewBuilders.BuildBASE(attribCount, ... inherited attributes (with ?ref=viewRef) ... )
 
             // Add our own attributes.
             match prop1 with None -> () | Some v -> attribs.Add (Prop1AttribKey, v)

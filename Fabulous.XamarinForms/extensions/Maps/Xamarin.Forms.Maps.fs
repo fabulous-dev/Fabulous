@@ -41,6 +41,9 @@ module MapsExtension =
             let attribCount = match mapType with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match hasZoomEnabled with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match requestedRegion with Some _ -> attribCount + 1 | None -> attribCount
+            
+            // Unbox the ViewRef
+            let viewRef = match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Maps.Map>) -> Some ref.Unbox
 
             // Count and populate the inherited attributes
             let attribs = 
@@ -56,7 +59,7 @@ module MapsExtension =
                                        ?shellTabBarDisabledColor=shellTabBarDisabledColor, ?shellTabBarForegroundColor=shellTabBarForegroundColor,
                                        ?shellTabBarIsVisible=shellTabBarIsVisible, ?shellTabBarTitleColor=shellTabBarTitleColor, ?shellTabBarUnselectedColor=shellTabBarUnselectedColor,
                                        ?shellTitleColor=shellTitleColor, ?shellTitleView=shellTitleView, ?shellUnselectedColor=shellUnselectedColor, ?automationId=automationId,
-                                       ?classId=classId, ?effects=effects, ?menu=menu, ?ref=ref, ?styleId=styleId, ?tag=tag, ?focused=focused, ?unfocused=unfocused, ?created=created)
+                                       ?classId=classId, ?effects=effects, ?menu=menu, ?ref=viewRef, ?styleId=styleId, ?tag=tag, ?focused=focused, ?unfocused=unfocused, ?created=created)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match pins with None -> () | Some v -> attribs.Add(MapPinsAttribKey, v) 

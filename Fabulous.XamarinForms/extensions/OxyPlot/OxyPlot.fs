@@ -32,6 +32,9 @@ module OxyPlotExtension =
             // Count the number of additional attributes
             let attribCount = 1
             let attribCount = match controller with Some _ -> attribCount + 1 | None -> attribCount 
+            
+            // Unbox the ViewRef
+            let viewRef = match ref with None -> None | Some (ref: ViewRef<PlotView>) -> Some ref.Unbox
 
             // Populate the attributes of the base element
             let attribs =
@@ -47,7 +50,7 @@ module OxyPlotExtension =
                                        ?shellTabBarDisabledColor=shellTabBarDisabledColor, ?shellTabBarForegroundColor=shellTabBarForegroundColor,
                                        ?shellTabBarIsVisible=shellTabBarIsVisible, ?shellTabBarTitleColor=shellTabBarTitleColor, ?shellTabBarUnselectedColor=shellTabBarUnselectedColor,
                                        ?shellTitleColor=shellTitleColor, ?shellTitleView=shellTitleView, ?shellUnselectedColor=shellUnselectedColor, ?automationId=automationId,
-                                       ?classId=classId, ?effects=effects, ?menu=menu, ?ref=ref, ?styleId=styleId, ?tag=tag, ?focused=focused, ?unfocused=unfocused, ?created=created)
+                                       ?classId=classId, ?effects=effects, ?menu=menu, ?ref=viewRef, ?styleId=styleId, ?tag=tag, ?focused=focused, ?unfocused=unfocused, ?created=created)
 
             // Add our own attributes.
             attribs.Add(ModelAttribKey, model) 
