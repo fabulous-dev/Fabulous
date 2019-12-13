@@ -376,7 +376,7 @@ module ViewUpdaters =
         let control = target :?> Xamarin.Forms.Slider
         let defaultValue = (0.0, 1.0)
         let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
-            if newMinimum > prevMaximum then
+            if newMinimum >= prevMaximum then
                 control.Maximum <- newMaximum
                 control.Minimum <- newMinimum
             else
