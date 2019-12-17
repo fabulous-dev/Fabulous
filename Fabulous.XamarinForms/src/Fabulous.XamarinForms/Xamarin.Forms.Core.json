@@ -195,7 +195,7 @@
         }
       ],
       "events": [
-        { 
+        {
           "source": "Tapped"
         }
       ]
@@ -1387,7 +1387,7 @@
           "source": "Source"
         }
       ],
-      "events":[
+      "events": [
         {
           "source": "Clicked"
         },
@@ -2498,7 +2498,7 @@
     },
     {
       "type": "Xamarin.Forms.TableView",
-      "properties":[
+      "properties": [
         {
           "source": "HasUnevenRows"
         },
@@ -2635,6 +2635,7 @@
     },
     {
       "type": "Xamarin.Forms.LinearItemsLayout",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "ItemSpacing"
@@ -2643,6 +2644,12 @@
       "primaryConstructorMembers": [
         "ItemSpacing"
       ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.VerticalLinearItemsLayout"
+    },
+    {
+      "type": "Fabulous.XamarinForms.HorizontalLinearItemsLayout"
     },
     {
       "type": "Xamarin.Forms.SearchHandler",

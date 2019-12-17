@@ -189,6 +189,13 @@ type CustomTimePicker() =
         if propertyName = "Time" then
             timeChanged.Trigger(this, this.Time)
 
+/// Itemslayout for CarouselView
+type VerticalLinearItemsLayout() = 
+    inherit LinearItemsLayout(ItemsLayoutOrientation.Vertical)
+
+type HorizontalLinearItemsLayout() = 
+    inherit LinearItemsLayout(ItemsLayoutOrientation.Horizontal)
+
 /////////////////
 /// Pages
 /////////////////
