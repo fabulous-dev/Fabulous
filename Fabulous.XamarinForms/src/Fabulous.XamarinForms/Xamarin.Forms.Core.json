@@ -1353,6 +1353,9 @@
         },
         {
           "source": "Source"
+        },
+        {
+          "source": "IsAnimationPlaying"
         }
       ],
       "primaryConstructorMembers": [
@@ -1417,6 +1420,21 @@
         },
         {
           "source": "MaxLength"
+        },
+        {
+          "source": "CharacterSpacing"
+        },
+        {
+          "source": "Placeholder"
+        },
+        {
+          "source": "PlaceholderColor"
+        },
+        {
+          "source": "Text"
+        },
+        {
+          "source": "TextColor"
         }
       ]
     },
@@ -1425,9 +1443,6 @@
       "properties": [
         {
           "source": "AutoSize"
-        },
-        {
-          "source": "CharacterSpacing"
         },
         {
           "source": "FontAttributes"
@@ -1443,30 +1458,12 @@
         {
           "source": "IsTextPredictionEnabled"
         },
-        {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
-        }
       ],
       "events": [
         {
           "source": "Completed",
           "inputType": "string -> unit",
           "convertInputToModel": "ViewConverters.makeEditorCompletedEventHandler"
-        },
-        {
-          "source": "TextChanged",
-          "relatedProperties": [
-            "Text"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -1476,9 +1473,6 @@
     {
       "type": "Xamarin.Forms.Entry",
       "properties": [
-        {
-          "source": "CharacterSpacing"
-        },
         {
           "source": "ClearButtonVisibility"
         },
@@ -1507,12 +1501,6 @@
           "source": "IsTextPredictionEnabled"
         },
         {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
           "source": "ReturnCommand"
         },
         {
@@ -1523,12 +1511,6 @@
           "updateCode": "ViewUpdaters.updateEntrySelectionLength"
         },
         {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
           "source": "VerticalTextAlignment"
         }
       ],
@@ -1537,12 +1519,6 @@
           "source": "Completed",
           "inputType": "string -> unit",
           "convertInputToModel": "ViewConverters.makeEntryCompletedEventHandler"
-        },
-        {
-          "source": "TextChanged",
-          "relatedProperties": [
-            "Text"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -1695,9 +1671,6 @@
         },
         {
           "source": "ItemsLayout"
-        },
-        {
-          "source": "NumberOfSideItems"
         },
         {
           "source": "PeekAreaInsets"
