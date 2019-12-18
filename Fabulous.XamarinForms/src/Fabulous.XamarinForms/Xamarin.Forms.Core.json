@@ -1121,6 +1121,9 @@
           "source": "FlyoutIsPresented"
         },
         {
+          "source": "FlyoutVerticalScrollMode"
+        },
+        {
           "source": null,
           "name": "Items",
           "defaultValue": "null",
@@ -1436,6 +1439,14 @@
         {
           "source": "TextColor"
         }
+      ],
+      "events": [
+        {
+          "source": "TextChanged",
+          "relatedProperties": [
+            "Text"
+          ]
+        }
       ]
     },
     {
@@ -1457,7 +1468,7 @@
         },
         {
           "source": "IsTextPredictionEnabled"
-        },
+        }
       ],
       "events": [
         {
@@ -1532,9 +1543,6 @@
           "source": "CancelButtonColor"
         },
         {
-          "source": "CharacterSpacing"
-        },
-        {
           "source": "FontAttributes"
         },
         {
@@ -1549,12 +1557,6 @@
           "source": "HorizontalTextAlignment"
         },
         {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
           "source": "SearchCommand",
           "inputType": "string -> unit",
           "modelType": "string -> unit",
@@ -1567,12 +1569,6 @@
           "modelType": "bool",
           "defaultValue": "true",
           "updateCode": "ViewUpdaters.updateCommand prevSearchCommandOpt currSearchCommandOpt (fun (_target: Xamarin.Forms.SearchBar) -> _target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
-        },
-        {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
         },
         {
           "source": "VerticalTextAlignment"
@@ -1600,9 +1596,6 @@
         },
         {
           "source": "HorizontalScrollBarVisibility"
-        },
-        {
-          "source": "ItemSizingStrategy"
         },
         {
           "source": "ItemsUpdatingScrollMode"
@@ -1649,6 +1642,9 @@
         },
         {
           "source": "ItemsLayout"
+        },
+        {
+          "source": "ItemSizingStrategy"
         }
       ]
     },
@@ -2794,6 +2790,122 @@
       "baseGenericConstraint": "Xamarin.Forms.Cell",
       "primaryConstructorMembers": [
         "Items"
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.IndicatorView",
+      "name": "Indicator",
+      "properties": [
+        {
+          "source": "Count"
+        },
+        {
+          "source": "HideSingle"
+        },
+        {
+          "source": "IndicatorLayout"
+        },
+        {
+          "source": "IndicatorSize"
+        },
+        {
+          "source": "IndicatorTemplate"
+        },
+        {
+          "source": "IndicatorShape"
+        },
+        {
+          "source": "ItemsSource"
+        },
+        {
+          "source": "MaximumVisible"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "SelectedIndicatorColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItem",
+      "name": "SwipeItem",
+      "properties": [
+        {
+          "source": "BackgroundColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Invoked"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItemView",
+      "name": "SwipeItemView",
+      "properties": [
+        {
+          "source": "Command"
+        }
+      ],
+      "events": [
+        {
+          "source": "Invoked"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItems",
+      "name": "SwipeItemView",
+      "properties": [
+        {
+          "source": "Item"
+        },
+        {
+          "source": "Mode"
+        },
+        {
+          "source": "SwipeBehaviorOnInvoked"
+        }
+      ],
+      "events": [
+        {
+          "source": "CollectionChanged"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeView",
+      "name": "SwipeView",
+      "properties": [
+        {
+          "source": "BottomItems"
+        },
+        {
+          "source": "LeftItems"
+        },
+        {
+          "source": "RightItems"
+        },
+        {
+          "source": "TopItems"
+        }
+      ],
+      "events": [
+        {
+          "source": "CloseRequested"
+        },
+        {
+          "source": "SwipeChanging"
+        },
+        {
+          "source": "SwipeEnded"
+        },
+        {
+          "source": "SwipeStarted"
+        }
       ]
     }
   ]
