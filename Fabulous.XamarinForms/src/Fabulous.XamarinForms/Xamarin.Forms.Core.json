@@ -2858,7 +2858,7 @@
     },
     {
       "type": "Xamarin.Forms.SwipeItems",
-      "name": "SwipeItemView",
+      "name": "SwipeItems",
       "properties": [
         {
           "source": "Item"
@@ -2872,7 +2872,10 @@
       ],
       "events": [
         {
-          "source": "CollectionChanged"
+          "source": "CollectionChanged",
+          "inputType": "obj -> unit",
+          "modelType": "System.Collections.Specialized.NotifyCollectionChangedEventHandler",
+          "convertInputToModel": "ViewConverters.makeSwipeItemsChangedEventHandler"
         }
       ]
     },
@@ -2895,16 +2898,28 @@
       ],
       "events": [
         {
-          "source": "CloseRequested"
+          "source": "CloseRequested",
+          "inputType": "obj -> unit",
+          "modelType": "System.EventHandler",
+          "convertInputToModel": "ViewConverters.makeSwipeViewCloseRequested"
         },
         {
-          "source": "SwipeChanging"
+          "source": "SwipeChanging",
+          "inputType": "obj -> unit",
+          "modelType": "System.EventHandler<Xamarin.Forms.SwipeChangingEventArgs>",
+          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeChanging"
         },
         {
-          "source": "SwipeEnded"
+          "source": "SwipeEnded",
+          "inputType": "obj -> unit",
+          "modelType": "System.EventHandler<Xamarin.Forms.SwipeEndedEventArgs>",
+          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeEnded"
         },
         {
-          "source": "SwipeStarted"
+          "source": "SwipeStarted",
+          "inputType": "obj -> unit",
+          "modelType": "System.EventHandler<Xamarin.Forms.SwipeStartedEventArgs>",
+          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeStarted"
         }
       ]
     }
