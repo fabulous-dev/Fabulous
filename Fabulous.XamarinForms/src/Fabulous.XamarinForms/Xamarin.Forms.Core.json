@@ -624,6 +624,13 @@
           "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellUnselectedColor"
+        },
+        {
+          "source": null,
+          "name": "ShellNavBarHasShadow",
+          "defaultValue": "true",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateShellNavBarHasShadow"
         }
       ]
     },
@@ -1572,14 +1579,6 @@
         },
         {
           "source": "VerticalTextAlignment"
-        }
-      ],
-      "events": [
-        {
-          "source": "TextChanged",
-          "relatedProperties": [
-            "Text"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -2794,7 +2793,8 @@
     },
     {
       "type": "Xamarin.Forms.IndicatorView",
-      "name": "Indicator",
+      "name": "XFIndicatorView",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "Count"
@@ -2815,9 +2815,6 @@
           "source": "IndicatorShape"
         },
         {
-          "source": "ItemsSource"
-        },
-        {
           "source": "MaximumVisible"
         },
         {
@@ -2829,8 +2826,14 @@
       ]
     },
     {
+      "type": "Fabulous.XamarinForms.CustomIndicatorView",
+      "name": "IndicatorView",
+      "primaryConstructorMembers": [
+        "ItemsSource"
+      ]
+    },
+    {
       "type": "Xamarin.Forms.SwipeItem",
-      "name": "SwipeItem",
       "properties": [
         {
           "source": "BackgroundColor"
@@ -2844,7 +2847,6 @@
     },
     {
       "type": "Xamarin.Forms.SwipeItemView",
-      "name": "SwipeItemView",
       "properties": [
         {
           "source": "Command"
@@ -2858,7 +2860,6 @@
     },
     {
       "type": "Xamarin.Forms.SwipeItems",
-      "name": "SwipeItems",
       "properties": [
         {
           "source": "Item"
@@ -2881,7 +2882,6 @@
     },
     {
       "type": "Xamarin.Forms.SwipeView",
-      "name": "SwipeView",
       "properties": [
         {
           "source": "BottomItems"
@@ -2898,28 +2898,16 @@
       ],
       "events": [
         {
-          "source": "CloseRequested",
-          "inputType": "obj -> unit",
-          "modelType": "System.EventHandler",
-          "convertInputToModel": "ViewConverters.makeSwipeViewCloseRequested"
+          "source": "CloseRequested"
         },
         {
-          "source": "SwipeChanging",
-          "inputType": "obj -> unit",
-          "modelType": "System.EventHandler<Xamarin.Forms.SwipeChangingEventArgs>",
-          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeChanging"
+          "source": "SwipeChanging"
         },
         {
-          "source": "SwipeEnded",
-          "inputType": "obj -> unit",
-          "modelType": "System.EventHandler<Xamarin.Forms.SwipeEndedEventArgs>",
-          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeEnded"
+          "source": "SwipeEnded"
         },
         {
-          "source": "SwipeStarted",
-          "inputType": "obj -> unit",
-          "modelType": "System.EventHandler<Xamarin.Forms.SwipeStartedEventArgs>",
-          "convertInputToModel": "ViewConverters.makeSwipeViewSwipeStarted"
+          "source": "SwipeStarted"
         }
       ]
     }

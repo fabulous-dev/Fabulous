@@ -20,7 +20,8 @@ type MainActivity() =
 
     override this.OnCreate (bundle: Bundle) =
         base.OnCreate (bundle)
-        global.Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"|])
+        global.Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"; 
+                                                "IndicatorView_Experimental"; "SwipeView_Experimental"|])
         
         Xamarin.Forms.Forms.Init (this, bundle)
         Xamarin.FormsMaps.Init(this, bundle) 

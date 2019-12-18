@@ -167,29 +167,9 @@ module ViewConverters =
     let makeCustomTimePickerTimeChangedEventHandler f =
         System.EventHandler<System.TimeSpan>(fun sender args ->
             f args    
-        )
+        )    
 
     let makeSwipeItemsChangedEventHandler f =
         System.Collections.Specialized.NotifyCollectionChangedEventHandler(fun sender args ->
             f args
-        )
-
-    let makeSwipeViewCloseRequested f =
-        System.EventHandler(fun sender args ->
-            f args    
-        )
-
-    let makeSwipeViewSwipeChanging f =
-        System.EventHandler<Xamarin.Forms.SwipeChangingEventArgs>(fun sender args ->
-            f args    
-        )
-
-    let makeSwipeViewSwipeEnded f =
-        System.EventHandler<Xamarin.Forms.SwipeEndedEventArgs>(fun sender args ->
-            f args    
-        )
-
-    let makeSwipeViewSwipeStarted f =
-        System.EventHandler<Xamarin.Forms.SwipeStartedEventArgs>(fun sender args ->
-            f args    
         )

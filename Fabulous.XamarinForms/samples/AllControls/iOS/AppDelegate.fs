@@ -13,7 +13,8 @@ type AppDelegate () =
     let mutable _app: AllControls.App option = None
 
     override this.FinishedLaunching (uiApp, options) =
-        Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"|]);
+        Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"; 
+                                        "IndicatorView_Experimental"; "SwipeView_Experimental"|]);
         Forms.Init()
         Xamarin.FormsMaps.Init() 
         OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init()

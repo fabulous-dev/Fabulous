@@ -675,6 +675,13 @@ module ViewUpdaters =
             let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
+
+    let updateShellNavBarHasShadow prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetNavBarHasShadow(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetNavBarHasShadow(target, true)
         
     let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         let setUseSafeArea newValue =
