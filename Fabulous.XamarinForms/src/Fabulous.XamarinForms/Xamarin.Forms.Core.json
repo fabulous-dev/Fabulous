@@ -2793,8 +2793,6 @@
     },
     {
       "type": "Xamarin.Forms.IndicatorView",
-      "name": "XFIndicatorView",
-      "canBeInstantiated": false,
       "properties": [
         {
           "source": "Count"
@@ -2822,14 +2820,14 @@
         },
         {
           "source": "SelectedIndicatorColor"
+        },
+        {
+          "source": null,
+          "name": "ItemsSourceBy",
+          "defaultValue": "null",
+          "inputType": "ViewRef<Fabulous.XamarinForms.CustomCarouselView>",
+          "updateCode": "ViewUpdaters.updateIndicatorViewRef"
         }
-      ]
-    },
-    {
-      "type": "Fabulous.XamarinForms.CustomIndicatorView",
-      "name": "IndicatorView",
-      "primaryConstructorMembers": [
-        "ItemsSource"
       ]
     },
     {

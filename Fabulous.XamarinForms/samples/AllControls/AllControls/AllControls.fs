@@ -34,6 +34,7 @@ type RootPageKind =
     | SkiaCanvas
     | MapSamples
     | OxyPlotSamples
+    | IndicatorViewSample
     //| VideoSamples
     //| CachedImageSamples
 
@@ -950,10 +951,12 @@ module App =
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
+            let carouselRef = ViewRef<CustomCarouselView>()
             View.ContentPage(
                 View.StackLayout 
                   [
                     mainPageButton dispatch
+
                     View.CarouselView(items = 
                       [
                         View.Label(text="Person1") 
@@ -969,7 +972,8 @@ module App =
                         View.Label(text="Person12")
                         View.Label(text="Person13")
                         View.Label(text="Person14")
-                      ], margin= Thickness 10.)
+                      ], margin= Thickness 10., ref=carouselRef)
+                    View.IndicatorView(itemsSourceBy=carouselRef)
                   ]
             )
 
@@ -1261,7 +1265,7 @@ module App =
                     View.Label(text="OxyPlot for XamarinForms 1.0.0 does not support your platform")
                     View.Label(text="For status see https://github.com/oxyplot/oxyplot-xamarin")
                   ])
-       
+                 
     // let videoSamples model dispatch = 
     //     View.ScrollingContentPage("VideoManager Sample", [ 
     //         mainPageButton dispatch

@@ -731,3 +731,13 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> Element.SetMenu(target, null)
+
+    let updateIndicatorViewRef (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> 
+            match currValue.TryValue with
+            | Some v -> IndicatorView.SetItemsSourceBy(target, v)
+            | None -> ()
+        | ValueSome _, ValueNone -> IndicatorView.SetItemsSourceBy(target, null)
