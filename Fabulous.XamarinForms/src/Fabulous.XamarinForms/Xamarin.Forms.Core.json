@@ -2867,6 +2867,15 @@
         },
         {
           "source": "SwipeBehaviorOnInvoked"
+        },
+        {
+          "source": null,
+          "name": "SItems",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "convertInputToModel": "Array.ofList",
+          "updateCode": "ViewUpdaters.updateSwipeItems"
         }
       ],
       "events": [

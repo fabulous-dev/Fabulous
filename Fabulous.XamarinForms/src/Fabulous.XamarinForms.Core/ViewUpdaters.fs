@@ -741,3 +741,9 @@ module ViewUpdaters =
             | Some v -> IndicatorView.SetItemsSourceBy(target, v)
             | None -> ()
         | ValueSome _, ValueNone -> IndicatorView.SetItemsSourceBy(target, null)
+
+    let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ISwipeItem
+
+        updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
