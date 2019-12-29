@@ -199,6 +199,11 @@ type VerticalLinearItemsLayout() =
 type HorizontalLinearItemsLayout() = 
     inherit LinearItemsLayout(ItemsLayoutOrientation.Horizontal)
 
+type CarouselVerticalItemsLayout() =
+    inherit LinearItemsLayout(ItemsLayoutOrientation.Vertical, 
+        SnapPointsType = SnapPointsType.MandatorySingle, 
+        SnapPointsAlignment = SnapPointsAlignment.Center)
+
 /////////////////
 /// Pages
 /////////////////

@@ -2620,6 +2620,9 @@
       "type": "Fabulous.XamarinForms.HorizontalLinearItemsLayout"
     },
     {
+      "type": "Fabulous.XamarinForms.CarouselVerticalItemsLayout"
+    },
+    {
       "type": "Xamarin.Forms.SearchHandler",
       "canBeInstantiated": false,
       "name": "XFSearchHandler",
