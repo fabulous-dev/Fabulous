@@ -681,7 +681,7 @@ module ViewUpdaters =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetNavBarHasShadow(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetNavBarHasShadow(target, true)
+        | ValueSome _, ValueNone -> Shell.SetNavBarHasShadow(target, ViewHelpers.updateShellNavBarHasShadowHelper)
         
     let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         let setUseSafeArea newValue =
@@ -732,14 +732,14 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> Element.SetMenu(target, null)
 
-    let updateIndicatorViewRef (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
+    let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> 
             match currValue.TryValue with
             | Some v -> IndicatorView.SetItemsSourceBy(target, v)
-            | None -> ()
+            | None -> IndicatorView.SetItemsSourceBy(target, null)
         | ValueSome _, ValueNone -> IndicatorView.SetItemsSourceBy(target, null)
 
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =

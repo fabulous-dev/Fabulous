@@ -168,3 +168,9 @@ module ViewHelpers =
                 let res = ViewElement(externalObj.GetType(), create, update, attribs)
                 externalsTable.Add(externalObj, res)
                 res
+
+    // Helper for checking Platform - especially ShellHasNavBarShadow
+    let updateShellNavBarHasShadowHelper = 
+            match Device.RuntimePlatform with
+            | Device.Android -> true
+            | _ -> false

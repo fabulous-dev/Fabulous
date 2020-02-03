@@ -628,7 +628,7 @@
         {
           "source": null,
           "name": "ShellNavBarHasShadow",
-          "defaultValue": "true",
+          "defaultValue": "ViewHelpers.updateShellNavBarHasShadowHelper",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellNavBarHasShadow"
         }
@@ -2829,7 +2829,7 @@
           "name": "ItemsSourceBy",
           "defaultValue": "null",
           "inputType": "ViewRef<Fabulous.XamarinForms.CustomCarouselView>",
-          "updateCode": "ViewUpdaters.updateIndicatorViewRef"
+          "updateCode": "ViewUpdaters.updateIndicatorViewItemsSourceBy"
         }
       ]
     },
