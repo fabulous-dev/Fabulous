@@ -681,7 +681,12 @@ module ViewUpdaters =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetNavBarHasShadow(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetNavBarHasShadow(target, ViewHelpers.updateShellNavBarHasShadowHelper)
+        | ValueSome _, ValueNone -> 
+            let hasShadow = 
+                match Device.RuntimePlatform with
+                | Device.Android -> true
+                | _ -> false
+            Shell.SetNavBarHasShadow(target, hasShadow)
         
     let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         let setUseSafeArea newValue =

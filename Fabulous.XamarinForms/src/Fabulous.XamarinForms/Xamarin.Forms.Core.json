@@ -628,7 +628,6 @@
         {
           "source": null,
           "name": "ShellNavBarHasShadow",
-          "defaultValue": "ViewHelpers.updateShellNavBarHasShadowHelper",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellNavBarHasShadow"
         }
