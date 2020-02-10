@@ -675,6 +675,18 @@ module ViewUpdaters =
             let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
+
+    let updateShellNavBarHasShadow prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetNavBarHasShadow(target, currValue)
+        | ValueSome _, ValueNone -> 
+            let hasShadow = 
+                match Device.RuntimePlatform with
+                | Device.Android -> true
+                | _ -> false
+            Shell.SetNavBarHasShadow(target, hasShadow)
         
     let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         let setUseSafeArea newValue =
@@ -724,3 +736,19 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> Element.SetMenu(target, null)
+
+    let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> 
+            match currValue.TryValue with
+            | Some v -> IndicatorView.SetItemsSourceBy(target, v)
+            | None -> IndicatorView.SetItemsSourceBy(target, null)
+        | ValueSome _, ValueNone -> IndicatorView.SetItemsSourceBy(target, null)
+
+    let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ISwipeItem
+
+        updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild

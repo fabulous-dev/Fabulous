@@ -34,6 +34,7 @@ type RootPageKind =
     | SkiaCanvas
     | MapSamples
     | OxyPlotSamples
+    | SwipeSample
     //| VideoSamples
     //| CachedImageSamples
 
@@ -395,6 +396,7 @@ module App =
                                     View.Button(text = "Skia Canvas", command = (fun () -> dispatch (SetRootPageKind SkiaCanvas)))
                                     View.Button(text = "Map Samples", command = (fun () -> dispatch (SetRootPageKind MapSamples)))
                                     View.Button(text = "OxyPlot Samples", command = (fun () -> dispatch (SetRootPageKind OxyPlotSamples)))
+                                    View.Button(text = "SwipeView Samples", command = (fun () -> dispatch (SetRootPageKind SwipeSample)))
                                     //View.Button(text = "VideoManager Samples", command = (fun () -> dispatch (SetRootPageKind VideoSamples)))
                                     //View.Button(text = "CachedImage Samples", command = (fun () -> dispatch (SetRootPageKind CachedImageSamples)))
                             ])),
@@ -950,10 +952,12 @@ module App =
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
+            let carouselRef = ViewRef<CustomCarouselView>()
             View.ContentPage(
                 View.StackLayout 
                   [
                     mainPageButton dispatch
+
                     View.CarouselView(items = 
                       [
                         View.Label(text="Person1") 
@@ -969,7 +973,8 @@ module App =
                         View.Label(text="Person12")
                         View.Label(text="Person13")
                         View.Label(text="Person14")
-                      ], margin= Thickness 10.)
+                      ], margin= Thickness 10., ref=carouselRef)
+                    View.IndicatorView(itemsSourceBy=carouselRef)
                   ]
             )
 
@@ -1261,7 +1266,34 @@ module App =
                     View.Label(text="OxyPlot for XamarinForms 1.0.0 does not support your platform")
                     View.Label(text="For status see https://github.com/oxyplot/oxyplot-xamarin")
                   ])
-       
+
+    let swipeViewSample model dispatch =
+        View.ContentPage(
+            View.SwipeView(
+                leftItems = View.SwipeItems(
+                    sItems = [
+                        View.SwipeItem(text="Left 1", backgroundColor=Color.LightPink)
+                        View.SwipeItem(text="Left 2", backgroundColor=Color.LightGreen)
+                    ]
+                ),
+                rightItems = View.SwipeItems(
+                    sItems = [
+                        View.SwipeItem(text="Right 1", backgroundColor=Color.LightPink)
+                        View.SwipeItem(text="Right 2", backgroundColor=Color.LightGreen)
+                    ]
+                ),
+                content = View.Grid(
+                    height=60.0,
+                    width=300.0,
+                    backgroundColor=Color.LightGray,
+
+                    children = [
+                        View.BoxView(Color.Blue)
+                    ]
+                )
+            )
+        )
+                 
     // let videoSamples model dispatch = 
     //     View.ScrollingContentPage("VideoManager Sample", [ 
     //         mainPageButton dispatch
@@ -1321,6 +1353,7 @@ module App =
         //| VideoSamples -> videoSamples model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
         | OxyPlotSamples -> oxyPlotSamples model dispatch
+        | SwipeSample -> swipeViewSample model dispatch
 
     
 type App () as app = 

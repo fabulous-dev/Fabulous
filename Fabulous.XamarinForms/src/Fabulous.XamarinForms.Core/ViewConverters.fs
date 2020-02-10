@@ -167,4 +167,9 @@ module ViewConverters =
     let makeCustomTimePickerTimeChangedEventHandler f =
         System.EventHandler<System.TimeSpan>(fun sender args ->
             f args    
+        )    
+
+    let makeSwipeItemsChangedEventHandler f =
+        System.Collections.Specialized.NotifyCollectionChangedEventHandler(fun sender args ->
+            f args
         )
