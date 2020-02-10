@@ -155,7 +155,21 @@ The LiveUpdate mechanism is very experimental.
 
 **ERROR SENDING TO WEBHOOK: "System.Net.WebException: No connection could be made because the target machine actively refused it."**
 
-If the LiveUpdate console displays this error, it is because Visual Studio needs elevated permissions to execute "EnableLiveUpdate()".  The solution is to launch Visual Studio using the "Run as Administrator" option.
+If the LiveUpdate console displays this error there are multiple possilbe causes:
+- Visual Studio needs elevated permissions to execute "EnableLiveUpdate()".
+    - **Solution**: launch Visual Studio using the "Run as Administrator" option
+- Connection to wrong webhook ip.
+    - **Solution**: check the output window in Visual Studio and explicitly specify the webhook url: ![output-window](images/live-update/output-window-webhooks.png)
+- Local firewall on Mac blocks connection.
+    - **Solution**: add a firewall exception for tcp port 9867 
+- Firewall blocks traffic (if Windows PC and Mac/iPhone are on different networks).
+    - **Solution**: add a firewall exception for tcp port 9867
+
+**Quacked: "couldn't quack! the evaluation of the declarations in the code package failed: System.IO.FileNotFoundException: Could not load the file 'netstandard'..."**
+
+If the console displays this error then *check your iOS Build settings* and set the option *Linker Behaviour* to `Don't Link`:    
+
+![ios-linker-options](images/live-update/ios-build-link-behaviour.png)
 
 ### Design
 
