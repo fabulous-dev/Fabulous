@@ -5,7 +5,7 @@ Fabulous CodeGen
 
 [![Fabulous.CodeGen NuGet version](https://badge.fury.io/nu/Fabulous.CodeGen.svg)](https://badge.fury.io/nu/Fabulous.CodeGen) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This library automates the creation of Fabulous bindings for existing UI frameworks through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
+This library automates the creation of UI frameworks bindings for Fabulous through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
 
 It can be easily included in a build process, or run manually through a command line.
 
