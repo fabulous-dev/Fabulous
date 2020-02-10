@@ -30,7 +30,7 @@ This library aims to provide all the core abstractions and tools for writing you
 
 ## Fabulous.CodeGen
 
-This library automates the creation of UI frameworks bindings for Fabulous through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
+This library automates the creation of bindings of existing UI frameworks for Fabulous through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
 
 It can be easily included in a build process, or run via a command line tool.
 
