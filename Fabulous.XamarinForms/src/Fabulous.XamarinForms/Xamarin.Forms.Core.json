@@ -2804,16 +2804,13 @@
           "source": "HideSingle"
         },
         {
-          "source": "IndicatorLayout"
-        },
-        {
           "source": "IndicatorSize"
         },
         {
           "source": "IndicatorTemplate"
         },
         {
-          "source": "IndicatorShape"
+          "source": "IndicatorsShape"
         },
         {
           "source": "MaximumVisible"
@@ -2862,9 +2859,6 @@
     {
       "type": "Xamarin.Forms.SwipeItems",
       "properties": [
-        {
-          "source": "Item"
-        },
         {
           "source": "Mode"
         },
