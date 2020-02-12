@@ -13,11 +13,12 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 * [Release Notes](RELEASE_NOTES.md)
 
-This repository contains 3 different libraries:
+This repository contains 4 different libraries:
 
 Package | NuGet
 ---|---
 Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
+Fabulous.CodeGen | [![Fabulous.CodeGen NuGet version](https://badge.fury.io/nu/Fabulous.CodeGen.svg)](https://badge.fury.io/nu/Fabulous.CodeGen)  
 Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
 Fabulous.StaticView.XamarinForms | [![Fabulous.StaticView.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms)
 
@@ -26,6 +27,14 @@ Fabulous.StaticView.XamarinForms | [![Fabulous.StaticView.XamarinForms NuGet ver
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
 [Learn more about Fabulous](FABULOUS.md)
+
+## Fabulous.CodeGen
+
+This library automates the creation of bindings of existing UI frameworks for Fabulous through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
+
+It can be easily included in a build process, or run via a command line tool.
+
+[Learn more about Fabulous.CodeGen](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.CodeGen)
 
 ## Fabulous for Xamarin.Forms
 
@@ -67,8 +76,8 @@ If you wish to see more support for Fabulous.StaticView, please consider contrib
 
 ## Contributing
 
-Please contribute to this library through issue reports, pull requests, code reviews and discussion.
+Please contribute to this repository through issue reports, pull requests, code reviews and discussion.
 
 Credits
 -----
-This library is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
+This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
