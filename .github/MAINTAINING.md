@@ -1,97 +1,6 @@
-# Contributing
+# Maintaining
 
-Contributing is easy:
-
-1. [Fork](https://help.github.com/articles/fork-a-repo/) the repository
-2. Create a new branch for the feature/fix and give it an appropriate name, e.g. `my_fabulous_fix`
-3. Do your best work
-4. Build/Test as per the below
-5. Create a pull request back to `Fabulous/master`
-
-# Dev Notes
-
-## Dev Notes - Prerequisites
-
-- Visual Studio 2017 / Visual Studio for Mac 7 or newer
-- Xamarin SDK (Visual Studio Workload: Mobile Development with .NET)
-- .NET Core SDK 2.2.100 or newer (or Visual Studio Workload: .NET Desktop Development -> .NET Core 2.2 development tools)
-
-For more information, please refer to the Xamarin.Forms requirements.
-https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
-
-.NET Core SDK 2.2.100 or newer is required for building .NET Core 2.2 projects. (e.g. Fabulous.XamarinForms generator)
-
-## Dev Notes - Building
-
-Fabulous is built with FAKE 5.
-
-Fabulous can be built with a single command.  
-It will take care of every steps: install FAKE, clean, restore, build and pack.
-
-On OSX:
-
-```
-./build.sh
-```
-
-On Windows:
-
-```
-.\build
-```
-
-It is recommended to run this command at least once before working on Fabulous, as some of the code will be generated.
-At minimum, you need to run `.\build RunGeneratorForFabulousXamarinForms` to ensure that you have all the dependencies before opening Visual Studio.
-
-## Dev Notes - Running the generator
-
-The Generator is built and run as part of the default build command
-If you only want to build the tools and run the generator, use the following commands.
-
-**Please run the generator if there are build errors related to "Missing Xamarin.Forms.Core.fs".**
-
-On OSX:
-
-```
-./build.sh RunGeneratorForFabulousXamarinForms
-```
-
-On Windows:
-
-```
-.\build RunGeneratorForFabulousXamarinForms
-```
-
-## Dev Notes - Testing
-
-On OSX:
-
-```
-./build.sh Test
-```
-
-On Windows:
-
-```
-.\build Test
-```
-
-## Dev Notes - Testing LiveUpdate
-
-Use the CounterApp to test.  To run the equivalent of the `fabulous` CLI tool use this:
-
-    cd Fabulous.XamarinForms\samples\CounterApp\CounterApp
-    adb -d forward  tcp:9867 tcp:9867
-    dotnet run --project ..\..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
-
-If you want to update your (global!) install of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
-
-    dotnet pack src\Fabulous.Cli
-    dotnet tool uninstall --global fabulous-cli  
-    dotnet tool install --global --add-source C:\GitHub\dsyme\Fabulous\src\Fabulous.Cli\bin\Debug\ fabulous-cli
-    fabulous --watch --send
-
-## Dev Notes - Releasing
+## Releasing
 
 Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md).  
 FAKE will use that version when building, and these release notes will be attributed to the NuGet packages description as well as the GitHub Release that will be created later.
@@ -116,7 +25,7 @@ Include in the PR message all the pull requests numbers that will be part of the
 
 After merging in master with GitHub, the automated build pipeline will create a new GitHub Release for the specified version (and release notes) and publish all packages to NuGet automatically.
 
-## Dev Notes - Configuring GitHub and NuGet on Azure DevOps
+## Configuring GitHub and NuGet on Azure DevOps
 
 To enable the automatic creation of a GitHub Release and automatic publication on NuGet, 2 variables need to be defined in the build pipeline settings on Azure DevOps.
 
@@ -127,7 +36,7 @@ Set the following variables:
 - `github_token`: Your GitHub Personal Access Token with `repo` and `admin:org` scopes ([Creating a GitHub Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line))
 - `nuget_apikey`: Your NuGet API Key with push rights for all Fabulous packages
 
-## Dev Notes - Checking App Size
+## Checking App Size
 
 It is worth occasionally checking that unused code is trimmed from the Android and iOS app packagings by the Mono linker.
 There is [one known issue with this](https://github.com/fsprojects/Fabulous/issues/94).
@@ -154,7 +63,7 @@ Smallest app size is produced by
 
 Also check the app actually runs with these settings.
 
-## Dev Notes - Continuous Integration builds
+## Continuous Integration builds
 
 This repository uses several Azure DevOps pipelines to ensure the code always builds correctly and prepare NuGet packages.
 
