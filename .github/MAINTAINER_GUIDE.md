@@ -88,7 +88,7 @@ Areas indicate if the issue is on a specific part of the library. If it's the li
 
 ## Releasing
 
-Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md).  
+Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](../RELEASE_NOTES.md).  
 FAKE will use that version when building, and these release notes will be attributed to the NuGet packages description as well as the GitHub Release that will be created later.
 
 Once done, open a terminal to let FAKE update the package version where needed:
