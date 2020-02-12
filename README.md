@@ -9,7 +9,7 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 * [Documentation](https://fsprojects.github.io/Fabulous/)
 
-* [Contributor guide](DEVGUIDE.md)
+* [Contributor guide](.github/CONTRIBUTING.md)
 
 * [Release Notes](RELEASE_NOTES.md)
 
@@ -68,6 +68,8 @@ If you wish to see more support for Fabulous.StaticView, please consider contrib
 ## Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
+
+See [the contributor guide](.github/CONTRIBUTING.md) and the [getting started guide](.github/GETTING_STARTED.md) to learn more.
 
 Credits
 -----

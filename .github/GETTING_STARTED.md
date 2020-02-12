@@ -45,7 +45,7 @@ A `sln` file is available at the root of the repository.
 
 ### The special case of Fabulous.XamarinForms
 
-To start, it has a few other folders other in addition to `samples`, `src`, and `tests`.
+To start, it has a few other folders in addition to `samples`, `src`, and `tests`.
 
 | Name  | Description                                  |
 --------|----------------------------------------------|
@@ -53,9 +53,13 @@ To start, it has a few other folders other in addition to `samples`, `src`, and 
 | templates | The files used to create the `dotnet` templates (e.g. `fabulous-xf-app`) |
 | tools | The tools used to create Fabulous.XamarinForms. Most notably the bindings generator. |
 
-Then, unlike the other libraries, Fabulous.XamarinForms compiles 2 projects into a single NuGet package: Fabulous.XamarinForms and Fabulous.XamarinForms.Core.  
-The Core project is where you can work (addition, deletion, etc.). The other project is only there to bundle the Core files along with the generated XF bindings (produced by Fabulous.XamarinForms.Generator) in a NuGet package.
 
+Then, since Xamarin.Forms has tens of controls with each tens of properties/events, with a new release each month or so, it is really difficult to follow and write the appropriate XF bindings manually to make it compatible with Fabulous.  
+To help with that, a tool called Fabulous.XamarinForms.Generator (relying on Fabulous.CodeGen) is used to automate the generation of those bindings at build time, via a JSON file (which can be found in the Fabulous.XamarinForms project).
+
+To support this automated code generation, unlike the other libraries, Fabulous.XamarinForms compiles 2 projects into a single NuGet package: Fabulous.XamarinForms and Fabulous.XamarinForms.Core.
+
+The Core project is where you can make changes (addition, deletion, etc.). The other project is only there to bundle the Core files along with the generated XF bindings in a NuGet package.
 
 ## Building
 
@@ -68,12 +72,12 @@ It will take care of every steps: install FAKE, clean, restore, build and pack.
 | Windows | `.\build` |
 
 It is recommended to run this command at least once before working on Fabulous, as some of the code will be generated.
-At minimum, you need to run `.\build RunGeneratorForFabulousXamarinForms` to ensure that you have all the dependencies before opening your IDE.
+At minimum, you need to run Fabulous.XamarinForms.Generator to ensure that you have all the dependencies before opening your IDE.
 
-## Running Fabulous.XamarinForms.Generator
+### Running Fabulous.XamarinForms.Generator
 
 The generator is built and run as part of the default build command.  
-If you only want to build the tools and run the generator, use the following commands:
+If you only want to build and run the generator, use the following command:
 
 | Platform | Command |
 |----------|---------|
@@ -85,7 +89,7 @@ If you only want to build the tools and run the generator, use the following com
 ## Testing
 
 The default build command includes the unit tests but ignore the samples as well as the templates.  
-This is because it takes a substantial time to complete compared to only building the projects and their unit tests (3min vs 30min).
+This is because it takes a substantial time to complete compared to only building the projects and running their unit tests (3min vs 30min).
 
 If you want to do a "full build", run the following command:
 
@@ -109,3 +113,7 @@ If you want to update your (global!) install of the `fabulous-cli` tool, first b
     dotnet tool install --global --add-source C:\GitHub\dsyme\Fabulous\src\Fabulous.Cli\bin\Debug\ fabulous-cli
     fabulous --watch --send
 
+## Other readings
+
+- [Contributor guide](CONTRIBUTING.md)
+- [Maintainer guide](MAINTAINER_GUIDE.md)
