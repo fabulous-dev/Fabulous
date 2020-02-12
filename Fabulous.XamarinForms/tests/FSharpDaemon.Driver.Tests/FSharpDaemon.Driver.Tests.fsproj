@@ -35,6 +35,8 @@
     <PackageReference Include="System.Reflection.Emit.Lightweight" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
+
+  <!-- Fix these packages to a specific version, independently of Packages.target, to match the versions used by PortaCode tests -->
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.5.2" />
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
