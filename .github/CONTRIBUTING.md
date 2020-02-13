@@ -37,7 +37,7 @@ We might also run a more comprehensive build (Windows, macOS, and Linux) if requ
 
 ## Review Process
 
-All pull requests need to be reviewed and tested by at least one maintainer. We do our best to review pull requests in a timely manner, but please be patient, we do that on our spare time. :)
+All pull requests need to be reviewed and tested by at least one maintainer. We do our best to review pull requests in a timely manner, but please be patient, we do that in our spare time. :)
 
 If there are any changes requested, the contributor should make them at their earliest convenience or let the reviewers know that they are unable to make further contributions. If the pull request requires only minor changes, then someone else may pick it up and finish it. We will do our best to make sure that all credit is retained for contributors.
 

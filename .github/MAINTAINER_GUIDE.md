@@ -147,7 +147,7 @@ Also check the app actually runs with these settings.
 
 This repository uses several Azure DevOps pipelines to ensure the code always builds correctly and prepare NuGet packages.
 
-Every pull request is automatically valided with a partial build on a Windows agent (compile) and a full build on a macOS agent (compile and test)  
+Every pull request is automatically validated with a partial build on a Windows agent (compile) and a full build on a macOS agent (compile and test)  
 If needed, collaborators and owners of this repository can run a full build on Windows, macOS and Linux by commenting `/azp run full build` in a pull request.
 
 All commits in master (like merged PRs) are built with a full build (Windows, macOS and Linux)

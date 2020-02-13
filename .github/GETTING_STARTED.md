@@ -21,7 +21,7 @@ https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
 
 ## Understanding the structure
 
-There is 4 distinct libraries in this repository:
+There are 4 distinct libraries in this repository:
 - Fabulous
 - Fabulous.CodeGen
 - Fabulous.XamarinForms
@@ -54,7 +54,7 @@ To start, it has a few other folders in addition to `samples`, `src`, and `tests
 | tools | The tools used to create Fabulous.XamarinForms. Most notably the bindings generator. |
 
 
-Then, since Xamarin.Forms has tens of controls with each tens of properties/events, with a new release each month or so, it is really difficult to follow and write the appropriate XF bindings manually to make it compatible with Fabulous.  
+Then, since Xamarin.Forms has dozens of controls, each with dozens of properties/events, with a new release each month or so, it is really difficult to follow and write the appropriate XF bindings manually to make it compatible with Fabulous.  
 To help with that, a tool called Fabulous.XamarinForms.Generator (relying on Fabulous.CodeGen) is used to automate the generation of those bindings at build time, via a JSON file (which can be found in the Fabulous.XamarinForms project).
 
 To support this automated code generation, unlike the other libraries, Fabulous.XamarinForms compiles 2 projects into a single NuGet package: Fabulous.XamarinForms and Fabulous.XamarinForms.Core.
@@ -63,7 +63,7 @@ The Core project is where you can make changes (addition, deletion, etc.). The o
 
 ## Building
 
-Fabulous can built with a single command, making use of FAKE 5.  
+Fabulous can be built with a single command, making use of FAKE 5.  
 It will take care of every steps: install FAKE, clean, restore, build and pack.
 
 | Platform | Command |
