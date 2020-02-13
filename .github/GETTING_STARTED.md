@@ -27,7 +27,7 @@ There are 4 distinct libraries in this repository:
 - Fabulous.XamarinForms
 - Fabulous.StaticView.XamarinForms
 
-They are separated into different folders, except Fabulous which is at the root of the repository since it's its repository.  
+They are separated into different folders, except Fabulous which is at the root of the repository.
 
 Each library follows the same base structure:
 
