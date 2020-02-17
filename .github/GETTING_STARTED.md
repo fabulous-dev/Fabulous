@@ -106,7 +106,7 @@ Use the CounterApp to test.  To run the equivalent of the `fabulous` CLI tool us
     adb -d forward  tcp:9867 tcp:9867
     dotnet run --project ..\..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
 
-If you want to update your (global!) install of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
+If you want to update your (global!) installation of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
 
     dotnet pack src\Fabulous.Cli
     dotnet tool uninstall --global fabulous-cli  
