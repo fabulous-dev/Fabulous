@@ -33,7 +33,7 @@ Each library follows the same base structure:
 
 | Name  | Description                                  |
 --------|----------------------------------------------|
-| samples | (If applicable) The sample projects showcasing how the library usage |
+| samples | (If applicable) The sample projects showcasing the library usage |
 | src   | The source code, split into 1 or more projects |
 | tests | The unit & integration test projects |
 
