@@ -86,7 +86,35 @@ Areas indicate if the issue is on a specific part of the library. If it's the li
 | p/webassembly | WebAssembly |
 | p/wpf | WPF |
 
+## Merging
+
+When merging pull requests, we need to make sure the commits end up in the appropriate branch, depending on the release plans for those PRs.
+
+Let's take for example a currently released version (still being maintained) `v1.0.0` and a next planned version `v2.0.0`.
+
+| Branch name | Also known as | Description |
+|-------------|----------|-------------|
+| `v1`       | `vCurrent` | Latest released version, currently supported. We can add bug fixes, backwards compatible features, docs update but no breaking changes (and release a `v1.1.0` from it for example). |
+| `v2`       | `vNext` | Next version to release. We can add new features we are sure to release next time. |
+| `master`       | N/A | Nightly branch with all bug fixes and features not set to a particular version, published to MyGet on each commit. |
+
+*N.B. The branch names are `v1`/`v2` not `vCurrent`/`vNext`, that way when a `v3` comes we don't have to rename everything.*
+
+To make sure commits are correctly retrieved across branches (e.g. a bug fix should be in all branches), we follow some rules:
+
+- After a PR is merged in `vCurrent`, we merge `vCurrent` in `vNext`.
+- After a PR is merged in `vNext` (applies to the merge of `vCurrent` too), we merge `vNext` in `master`.
+- Any PR merged in `master` stays in `master`
+
+That way, we have the correct commits in all the appropriate branches.  
+Those merges should be done regularly.
+
 ## Releasing
+
+We follow the [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html) specifications when creating a new version number.  
+`vNext` versions should use the appropriate qualifier. E.g. `v2.0.0-alpha1` or `v2.0.0-beta2`.
+
+`vCurrent` and `vNext` will automatically be released on NuGet when creating a git tag on one of their commits with the command line `git tag -a X.Y.Z`.
 
 Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](../RELEASE_NOTES.md).  
 FAKE will use that version when building, and these release notes will be attributed to the NuGet packages description as well as the GitHub Release that will be created later.
