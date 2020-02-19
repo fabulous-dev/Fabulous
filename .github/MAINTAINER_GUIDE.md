@@ -37,8 +37,8 @@ Area and platform labels are optionals, and can be used if applicable.
 
 | Name | Description |
 |------|-------------|
-| duplicate | The issue is a duplicate of another |
-| good first issue | A good issue for newcomers |
+| duplicate | This issue or pull request already exists |
+| good first issue | Good for newcomers |
 | help wanted | The issue is up-for-grabs |
 | wont fix | The issue won't be fixed |
 
@@ -46,20 +46,21 @@ Area and platform labels are optionals, and can be used if applicable.
 
 | Name | Description |
 |------|-------------|
+| t/bug | Something isn't working as expected |
 | t/discussion | A subject is being debated |
-| t/enhancement | This is a new feature |
-| t/bug | Something doesn't work as expected |
+| t/enhancement | New feature or request |
 | t/housekeeping | This is a repository maintenance task |
 
 #### States
 
 | Name | Description |
 |------|-------------|
-| s/unverified | The issue has not been verified yet |
+| s/external | The issue is related to an external bug / missing feature |
 | s/needs infos | The issue needs to be completed |
 | s/needs repro | The issue needs a reproduction |
-| s/external | The issue is related to an external bug / missing feature |
-| s/waiting for external | The issue is blocked until an external factor completes |
+| s/ready | This issue is ready to be implemented |
+| s/unverified | The issue has not been verified yet |
+| s/waiting for external | This issue is currently blocked until an external factor is resolved |
 
 #### Areas
 
@@ -67,12 +68,12 @@ Areas indicate if the issue is on a specific part of the library. If it's the li
 
 | Name | Description |
 |------|-------------|
+| a/docs | The issue is regarding the documentation |
 | a/liveupdate | The issue is regarding LiveUpdate |
 | a/samples | The issue is regarding the samples |
-| a/tests | The issue is regarding the unit tests |
-| a/docs | The issue is regarding the documentation |
-| a/tools | The issue is regarding the tools |
 | a/templates | The issue is regarding the templates |
+| a/tests | The issue is regarding the unit tests |
+| a/tools | The issue is regarding the tools |
 
 #### Platforms (specific to Fabulous.XamarinForms / Fabulous.StaticView.XamarinForms)
 
