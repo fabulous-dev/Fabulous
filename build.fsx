@@ -307,9 +307,9 @@ Target.create "TestTemplatesNuGet" (fun _ ->
 
 Target.create "CreateGitHubRelease" (fun _ ->
     let token =
-        match Environment.environVarOrDefault "github_token" "" with
+        match Environment.environVarOrDefault "GITHUB_TOKEN" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the github_token environment variable to a github personal access token with repo access."
+        | _ -> failwith "Please set the GITHUB_TOKEN environment variable to a github personal access token with repo access."
 
     GitHub.createClientWithToken token
     |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
@@ -320,9 +320,9 @@ Target.create "CreateGitHubRelease" (fun _ ->
 
 Target.create "PublishNuGetPackages" (fun _ ->
     let nugetApiKey =
-        match Environment.environVarOrDefault "nuget_apikey" "" with
+        match Environment.environVarOrDefault "NUGET_TOKEN" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
+        | _ -> failwith "Please set the NUGET_TOKEN environment variable to a NuGet API key with write access to the Fabulous packages."
 
     for nupkg in !! (buildDir + "/*.nupkg") do
         let fileName = Path.GetFileNameWithoutExtension(nupkg)

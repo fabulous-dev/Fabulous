@@ -13,6 +13,9 @@ jobs:
       version: 3.1.101
   - script: choco install gtksharp
   - script: .\build.cmd Release
+    env:
+      GITHUB_TOKEN: $(github_token)
+      NUGET_APIKEY: $(nuget_apikey)
   - task: CopyFiles@2
     inputs:
       contents: build_output\*.nupkg
