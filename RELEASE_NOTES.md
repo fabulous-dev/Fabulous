@@ -1,3 +1,9 @@
+#### 0.52.0
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.4 (https://github.com/fsprojects/Fabulous/pull/644)
+* [Fabulous.XamarinForms] Fixed an issue with Minimum/Maximum in Slider/Stepper (https://github.com/fsprojects/Fabulous/pull/640 & https://github.com/fsprojects/Fabulous/pull/643)
+* [Fabulous.XamarinForms] [Extensions] Changed the `ref` parameter to be a typed ViewRef in extensions (https://github.com/fsprojects/Fabulous/pull/636)
+
 #### 0.51.0
 
 * [Fabulous.XamarinForms] Added a `scrollTo` property to ListView, ListViewGrouped, Carousel and CollectionView (https://github.com/fsprojects/Fabulous/pull/616)
