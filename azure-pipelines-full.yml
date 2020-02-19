@@ -1,5 +1,6 @@
 trigger:
 - master
+- v*
 
 jobs:
 - job: Linux
@@ -62,15 +63,7 @@ jobs:
     inputs:
       version: 3.1.101
   - script: choco install gtksharp
-
-  # Run Build with Test target when not merging a release branch into master
   - script: .\build.cmd Test
-    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) 
-
-  # Run Build with Release target when merging a release branch into master
-  - script: .\build.cmd Release
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
-
   - task: CopyFiles@2
     inputs:
       contents: build_output\*.nupkg
