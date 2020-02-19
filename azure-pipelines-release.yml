@@ -1,6 +1,8 @@
 trigger:
 - refs/tags/*
 
+pr: none
+
 jobs:
 - job: Windows
   pool:
