@@ -313,7 +313,7 @@ Target.create "CreateGitHubRelease" (fun _ ->
 
     GitHub.createClientWithToken token
     |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
-    |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
+    // |> GitHub.uploadFiles !!(buildDir + "/*.nupkg") // Randomly failing to upload for some reasons...
     |> GitHub.publishDraft
     |> Async.RunSynchronously
 )
