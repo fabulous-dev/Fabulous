@@ -320,9 +320,9 @@ Target.create "CreateGitHubRelease" (fun _ ->
 
 Target.create "PublishNuGetPackages" (fun _ ->
     let nugetApiKey =
-        match Environment.environVarOrDefault "NUGET_TOKEN" "" with
+        match Environment.environVarOrDefault "NUGET_APIKEY" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the NUGET_TOKEN environment variable to a NuGet API key with write access to the Fabulous packages."
+        | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
     for nupkg in !! (buildDir + "/*.nupkg") do
         let fileName = Path.GetFileNameWithoutExtension(nupkg)
