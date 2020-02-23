@@ -38,7 +38,7 @@ module Samples =
         { Title = title
           Init = ViewOnlySample.init
           Update = ViewOnlySample.update
-          View = fun _ _ -> view()
+          View = fun _ _ -> dependsOn () (fun _ _ -> view())
           MapToCmd = ViewOnlySample.mapToCmd } |> boxSampleDefinition
         
     let ignoreExternalMsg (update: 'Msg -> 'Model -> 'Model * 'CmdMsg list) : 'Msg -> 'Model -> 'Model * 'CmdMsg list * 'ExternalMsg option =
@@ -54,6 +54,7 @@ module Samples =
                         { Title = "Controls"
                           Nodes =
                               [ Sample (createViewOnlyDefinition "Effects" Controls.Effects.view)
+                                Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
                                 Sample (createViewOnlyDefinition "SwipeView" Controls.SwipeView.view)
                                 Sample
                                     ({ Title = "RefreshView"
@@ -72,4 +73,5 @@ module Samples =
                                        View = Extensions.SkiaSharp.view
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
-                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view) ] } ] }
+                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
+                                Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] } ] }

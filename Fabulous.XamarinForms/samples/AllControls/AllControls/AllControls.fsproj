@@ -11,10 +11,12 @@
       <Compile Include="Extensions\SkiaSharp.fs" />
       <Compile Include="Extensions\OxyPlot.fs" />
       <Compile Include="Extensions\Maps.fs" />
+      <Compile Include="Extensions\VideoManager.fs" />
       <Folder Include="Layouts" />
       <Compile Include="Controls\Effects.fs" />
       <Compile Include="Controls\RefreshView.fs" />
       <Compile Include="Controls\SwipeView.fs" />
+      <Compile Include="Controls\CollectionView.fs" />
       <Folder Include="Pages" />
       <None Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
@@ -31,7 +33,7 @@
       <ProjectReference Include="..\..\..\extensions\Maps\Fabulous.XamarinForms.Maps.fsproj" />
       <ProjectReference Include="..\..\..\extensions\OxyPlot\Fabulous.XamarinForms.OxyPlot.fsproj" />
       <ProjectReference Include="..\..\..\extensions\SkiaSharp\Fabulous.XamarinForms.SkiaSharp.fsproj" />
-<!--      <ProjectReference Include="..\..\..\extensions\VideoManager\Fabulous.XamarinForms.VideoManager.fsproj" /> -->
+      <ProjectReference Include="..\..\..\extensions\VideoManager\Fabulous.XamarinForms.VideoManager.fsproj" />
       <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />

@@ -141,14 +141,12 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
-   <!--
     <Reference Include="Plugin.MediaManager">
-      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager\lib\xamarinios10\MediaManager.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Forms">
-      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager.Forms\lib\net45\MediaManager.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager.Forms\lib\xamarinios10\MediaManager.Forms.dll</HintPath>
     </Reference>
--->
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\..\packages\iosapp\OxyPlot.Core\lib\netstandard1.0\OxyPlot.dll</HintPath>
     </Reference>

@@ -916,39 +916,6 @@ module App =
                      popped=(fun args -> dispatch PagePopped) , 
                      poppedToRoot=(fun args -> dispatch GoHomePage)  ))
 
-    let viewEffectsSample dispatch =
-        match Device.RuntimePlatform with
-        | Device.iOS | Device.Android -> 
-            View.ScrollingContentPage("Effects", 
-              [
-                View.Label("Effects samples available on iOS and Android only")
-                mainPageButton dispatch
-                View.Label("Focus effect (no properties)", fontSize=FontSize 5., margin=Thickness (0., 30., 0., 0.))
-                View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
-                View.Entry()
-                View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
-                View.Entry(effects = 
-                  [
-                    View.Effect("FabulousXamarinForms.FocusEffect")
-                  ])
-            
-                View.Label("Shadow effect (with properties)", fontSize=FontSize 15., margin=Thickness (0., 30., 0., 0.))
-                View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
-                View.Label("This is a label without shadows")
-                View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))
-                View.Label("This is a label with shadows", effects = 
-                  [
-                    View.ShadowEffect(color=Color.Red, radius=15., distanceX=10., distanceY=10.)
-                  ])
-              ])
-        | _ -> 
-            View.ContentPage(
-                View.StackLayout( 
-                  [
-                    mainPageButton dispatch
-                    View.Label(text="Effects samples available on iOS and Android only")
-                  ]))
-
     let carouselViewSample model dispatch =
         match Device.RuntimePlatform with
         | Device.iOS | Device.Android -> 
@@ -1105,50 +1072,6 @@ module App =
                     View.Label(text="Your Platform does not support Shell")
                   ])
 
-    let collectionViewSample model dispatch =
-        match Device.RuntimePlatform with
-        | Device.iOS | Device.Android -> 
-            View.ContentPage(
-              View.StackLayout [
-                    mainPageButton dispatch
-                    // use Collectionview instead of listview 
-                    View.CollectionView [
-                        View.Label(text="Person 1") 
-                        View.Label(text="Person2")
-                        View.Label(text="Person3")
-                        View.Label(text="Person4")
-                        View.Label(text="Person5")
-                        View.Label(text="Person6")
-                        View.Label(text="Person7")
-                        View.Label(text="Person8")
-                        View.Label(text="Person9")
-                        View.Label(text="Person11")
-                        View.Label(text="Person12")
-                        View.Label(text="Person13")
-                        View.Label(text="Person14")
-                     ] 
-                ] )
-
-        | _ ->
-            View.ContentPage(
-              View.StackLayout [
-                  mainPageButton dispatch
-                  View.Label(text="Your Platform does not support CollectionView")
-                ])
-
-    
-
-    
-                 
-    // let videoSamples model dispatch = 
-    //     View.ScrollingContentPage("VideoManager Sample", [ 
-    //         mainPageButton dispatch
-    //         View.VideoView(
-    //             source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    //             showControls = false,
-    //             height = 500.,
-    //             width = 200.) ])
-
     //let chachedImageSamplesActual model dispatch =
     //    View.ScrollingContentPage("CachedImage Sample", 
     //      [ 
@@ -1190,9 +1113,7 @@ module App =
         | WebCall -> webCallSample model dispatch
         | ScrollView -> scrollViewSample model dispatch
         | ShellView -> shellViewSample model dispatch
-        | CollectionView -> collectionViewSample model dispatch
         | CarouselView -> carouselViewSample model dispatch
-        | Effects -> viewEffectsSample dispatch
         //| VideoSamples -> videoSamples model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
 
