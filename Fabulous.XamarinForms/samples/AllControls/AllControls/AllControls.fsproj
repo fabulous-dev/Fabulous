@@ -12,6 +12,7 @@
       <Compile Include="Extensions\OxyPlot.fs" />
       <Compile Include="Extensions\Maps.fs" />
       <Folder Include="Layouts" />
+      <Compile Include="Controls\Effects.fs" />
       <Compile Include="Controls\RefreshView.fs" />
       <Compile Include="Controls\SwipeView.fs" />
       <Folder Include="Pages" />

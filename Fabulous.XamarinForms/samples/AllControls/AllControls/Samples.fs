@@ -53,7 +53,8 @@ module Samples =
                   [ SampleChooser
                         { Title = "Controls"
                           Nodes =
-                              [ Sample (createViewOnlyDefinition "SwipeView" Controls.SwipeView.view)
+                              [ Sample (createViewOnlyDefinition "Effects" Controls.Effects.view)
+                                Sample (createViewOnlyDefinition "SwipeView" Controls.SwipeView.view)
                                 Sample
                                     ({ Title = "RefreshView"
                                        Init = Controls.RefreshView.init

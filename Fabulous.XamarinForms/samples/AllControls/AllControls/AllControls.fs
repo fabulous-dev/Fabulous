@@ -1193,7 +1193,6 @@ module App =
         | CollectionView -> collectionViewSample model dispatch
         | CarouselView -> carouselViewSample model dispatch
         | Effects -> viewEffectsSample dispatch
-        | RefreshView -> refreshViewSample model dispatch
         //| VideoSamples -> videoSamples model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
 
