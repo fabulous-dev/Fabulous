@@ -2,11 +2,12 @@ namespace AllControls.Extensions
 
 open AllControls.Helpers
 
-open Fabulous.XamarinForms
+open System
 open SkiaSharp
 open SkiaSharp.Views.Forms
-open System
 open Xamarin.Forms
+open Fabulous
+open Fabulous.XamarinForms
 
 module SkiaSharp =
     type Circle =
@@ -14,9 +15,10 @@ module SkiaSharp =
           Color: Color }
     
     type Msg =
-        | GoBack
         | SurfaceTouched of SKPoint
         | CircleRemoved of Circle
+        
+    type CmdMsg = Nothing
         
     type Model =
         { Circles: Circle list }
@@ -26,22 +28,21 @@ module SkiaSharp =
         { Center = point
           Color = Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255)) }
         
+    let mapToCmd (_: CmdMsg) : Cmd<Msg> =
+        Cmd.none
+        
     let init () =
         { Circles = [] }
         
-    let update msg model =
+    let update msg model : Model * CmdMsg list =
         match msg with
-        | GoBack ->
-            init(), [], None
         | SurfaceTouched point ->
-            { model with Circles = (createNewCircle point) :: model.Circles }, [], None
+            { model with Circles = (createNewCircle point) :: model.Circles }, []
         | CircleRemoved circle ->
-            { model with Circles = model.Circles |> List.except [circle] }, [], None
-    
-    let goBack dispatch () = dispatch GoBack
-    
-    let view model dispatch =
-        View.NonScrollingContentPage("SKCanvasView", (goBack dispatch),
+            { model with Circles = model.Circles |> List.except [circle] }, []
+        
+    let skiaSharpView model dispatch =
+        View.NonScrollingContentPage("Canvas samples",
             View.Grid(
                 rowdefs = [ Star; Star ],
                 children = [
@@ -65,8 +66,8 @@ module SkiaSharp =
                     View.ListView(
                         selectionMode = ListViewSelectionMode.None,
                         items = [
-                            for circle in (List.rev model.Circles) do
-                                yield View.TextCell(
+                            for circle in (List.rev model.Circles) ->
+                                View.TextCell(
                                     text = sprintf "Circle at %.0f / %.0f" circle.Center.X circle.Center.Y,
                                     textColor = circle.Color,
                                     command = fun() -> dispatch (CircleRemoved circle)
@@ -76,4 +77,15 @@ module SkiaSharp =
                 ]
             )
         )
+        
+    let view model dispatch = 
+        match Device.RuntimePlatform with
+        | Device.GTK -> 
+            View.ContentPage( 
+                View.StackLayout [
+                    View.Label(text="Your Platform does not support SkiaSharp")
+                    View.Label(text="For GTK status see https://github.com/mono/SkiaSharp/issues/379")
+                  ])
+        | _ -> 
+          skiaSharpView model dispatch 
 

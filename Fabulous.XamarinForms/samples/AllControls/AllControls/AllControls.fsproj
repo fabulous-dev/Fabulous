@@ -2,19 +2,23 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
     <ItemGroup>
       <Compile Include="Helpers.fs" />
+      <Compile Include="ViewOnlySample.fs" />
       <Compile Include="Effects\ShadowEffect.fs" />
       <Compile Include="Extensions\SkiaSharp.fs" />
+      <Compile Include="Extensions\OxyPlot.fs" />
+      <Compile Include="Extensions\Maps.fs" />
       <Folder Include="Layouts" />
       <Folder Include="Controls" />
       <Folder Include="Pages" />
       <None Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
       <EmbeddedResource Include="styles.css" />
-      <Compile Include="Home.fs" />
-      <Compile Include="Router.fs" />
+      <Compile Include="Samples.fs" />
+      <Compile Include="SampleChooser.fs" />
       <Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
