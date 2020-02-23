@@ -21,7 +21,7 @@ module RefreshView =
         match cmdMsg with
         | StartLongTask ->
             Cmd.ofAsyncMsg (async {
-                do! Async.Sleep 5000
+                do! Async.Sleep 3000
                 return RefreshDone
             })
     
