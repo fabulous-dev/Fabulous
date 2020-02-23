@@ -1136,48 +1136,9 @@ module App =
                   View.Label(text="Your Platform does not support CollectionView")
                 ])
 
-    let refreshViewSample model dispatch =
-        View.ContentPage(
-           View.StackLayout [
-            View.RefreshView(
-                View.ScrollView(
-                    View.BoxView(
-                        height = 150.,
-                        width = 150.,
-                        color = if model.RefreshViewIsRefreshing then Color.Red else Color.Blue
-                    )),
-                isRefreshing = model.RefreshViewIsRefreshing,
-                refreshing = (fun () -> dispatch RefreshViewRefreshing)
-            )
-            mainPageButton dispatch
-          ])
+    
 
-    let swipeViewSample model dispatch =
-        View.ContentPage(
-            View.SwipeView(
-                leftItems = View.SwipeItems(
-                    sItems = [
-                        View.SwipeItem(text="Left 1", backgroundColor=Color.LightPink)
-                        View.SwipeItem(text="Left 2", backgroundColor=Color.LightGreen)
-                    ]
-                ),
-                rightItems = View.SwipeItems(
-                    sItems = [
-                        View.SwipeItem(text="Right 1", backgroundColor=Color.LightPink)
-                        View.SwipeItem(text="Right 2", backgroundColor=Color.LightGreen)
-                    ]
-                ),
-                content = View.Grid(
-                    height=60.0,
-                    width=300.0,
-                    backgroundColor=Color.LightGray,
-
-                    children = [
-                        View.BoxView(Color.Blue)
-                    ]
-                )
-            )
-        )
+    
                  
     // let videoSamples model dispatch = 
     //     View.ScrollingContentPage("VideoManager Sample", [ 
@@ -1233,12 +1194,8 @@ module App =
         | CarouselView -> carouselViewSample model dispatch
         | Effects -> viewEffectsSample dispatch
         | RefreshView -> refreshViewSample model dispatch
-        | SkiaCanvas -> skiaCanvasSample model dispatch
-        | MapSamples -> mapSamples model dispatch
         //| VideoSamples -> videoSamples model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
-        | OxyPlotSamples -> oxyPlotSamples model dispatch
-        | SwipeSample -> swipeViewSample model dispatch
 
     
 type App () as app = 

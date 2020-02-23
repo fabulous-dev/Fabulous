@@ -51,6 +51,17 @@ module Samples =
             { Title = "AllControls samples"
               Nodes =
                   [ SampleChooser
+                        { Title = "Controls"
+                          Nodes =
+                              [ Sample (createViewOnlyDefinition "SwipeView" Controls.SwipeView.view)
+                                Sample
+                                    ({ Title = "RefreshView"
+                                       Init = Controls.RefreshView.init
+                                       Update = Controls.RefreshView.update |> ignoreExternalMsg
+                                       View = Controls.RefreshView.view
+                                       MapToCmd = Controls.RefreshView.mapToCmd } |> boxSampleDefinition) ] }
+                        
+                    SampleChooser
                         { Title = "Extensions"
                           Nodes = 
                               [ Sample
@@ -59,10 +70,5 @@ module Samples =
                                        Update = Extensions.SkiaSharp.update |> ignoreExternalMsg
                                        View = Extensions.SkiaSharp.view
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
-                                
-                                Sample
-                                    (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
-                                
-                                Sample
-                                    (createViewOnlyDefinition "Maps" Extensions.Maps.view) ] } ] }
-        
+                                Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
+                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view) ] } ] }

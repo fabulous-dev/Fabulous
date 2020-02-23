@@ -12,7 +12,8 @@
       <Compile Include="Extensions\OxyPlot.fs" />
       <Compile Include="Extensions\Maps.fs" />
       <Folder Include="Layouts" />
-      <Folder Include="Controls" />
+      <Compile Include="Controls\RefreshView.fs" />
+      <Compile Include="Controls\SwipeView.fs" />
       <Folder Include="Pages" />
       <None Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
