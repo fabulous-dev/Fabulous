@@ -44,6 +44,9 @@ module MapsExtension =
             
             // Unbox the ViewRef
             let viewRef = match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Maps.Map>) -> Some ref.Unbox
+            
+            // Unbox the created function
+            let created = (match created with None -> None | Some createdFunc -> Some (fun (target: obj) -> createdFunc (unbox<Map> target)))
 
             // Count and populate the inherited attributes
             let attribs = 

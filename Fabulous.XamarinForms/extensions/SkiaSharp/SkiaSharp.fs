@@ -15,7 +15,7 @@ module SkiaSharpExtension =
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
 
     type Fabulous.XamarinForms.View with
-        /// Describes a Map in the view
+        /// Describes a SKCanvasView in the view
         static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
                                    ?invalidate: bool,
                                    // inherited attributes common to all views
@@ -37,6 +37,9 @@ module SkiaSharpExtension =
             
             // Unbox the ViewRef
             let viewRef = match ref with None -> None | Some (ref: ViewRef<SKCanvas>) -> Some ref.Unbox
+            
+            // Unbox the created function
+            let created = (match created with None -> None | Some createdFunc -> Some (fun (target: obj) -> createdFunc (unbox<SKCanvasView> target)))
 
             // Populate the attributes of the base element
             let attribs = 
@@ -61,7 +64,7 @@ module SkiaSharpExtension =
             match touch with None -> () | Some v -> attribs.Add(TouchAttribKey, System.EventHandler<_>(fun _sender args -> v args))
 
             // The create method
-            let create () = new SkiaSharp.Views.Forms.SKCanvasView()
+            let create () = SkiaSharp.Views.Forms.SKCanvasView()
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: SKCanvasView) = 

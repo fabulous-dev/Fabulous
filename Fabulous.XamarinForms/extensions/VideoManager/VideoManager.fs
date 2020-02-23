@@ -35,6 +35,9 @@ module VideoManagerExtension =
             
             // Unbox the ViewRef
             let viewRef = match ref with None -> None | Some (ref: ViewRef<VideoView>) -> Some ref.Unbox
+            
+            // Unbox the created function
+            let created = (match created with None -> None | Some createdFunc -> Some (fun (target: obj) -> createdFunc (unbox<VideoView> target)))
 
             // Populate the attributes of the base element
             let attribs =

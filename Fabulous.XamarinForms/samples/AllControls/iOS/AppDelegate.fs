@@ -27,7 +27,7 @@ type AppDelegate () =
 
     override this.ReceiveMemoryWarning(uiApp) =
         match _app with
-        | Some app -> app.Program.Dispatch(AllControls.Msg.ReceivedLowMemoryWarning)
+        | Some app -> app.Program.Dispatch(AllControls.App.Msg.LowMemoryWarningReceived)
         | None -> ()
 
 module Main =

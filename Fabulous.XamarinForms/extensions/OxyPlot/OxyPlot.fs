@@ -35,6 +35,9 @@ module OxyPlotExtension =
             
             // Unbox the ViewRef
             let viewRef = match ref with None -> None | Some (ref: ViewRef<PlotView>) -> Some ref.Unbox
+            
+            // Unbox the created function
+            let created = (match created with None -> None | Some createdFunc -> Some (fun (target: obj) -> createdFunc (unbox<PlotView> target)))
 
             // Populate the attributes of the base element
             let attribs =

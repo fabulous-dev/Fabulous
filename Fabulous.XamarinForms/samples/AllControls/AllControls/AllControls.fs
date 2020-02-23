@@ -1152,28 +1152,7 @@ module App =
             mainPageButton dispatch
           ])
 
-    let skiaCanvasSampleActual model dispatch = 
-          View.ScrollingContentPage("SkiaCanvas", 
-           [ 
-            View.SKCanvasView(enableTouchEvents = true, 
-                paintSurface = (fun args -> 
-                    let info = args.Info
-                    let surface = args.Surface
-                    let canvas = surface.Canvas
 
-                    canvas.Clear() 
-                    use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
-                    canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
-                ),
-                horizontalOptions = LayoutOptions.FillAndExpand, 
-                verticalOptions = LayoutOptions.FillAndExpand, 
-                touch = (fun args -> 
-                    if args.InContact then
-                        dispatch (SKSurfaceTouched args.Location)
-                ))
-
-            mainPageButton dispatch
-           ])
 
     let skiaCanvasSample model dispatch = 
         match Device.RuntimePlatform with
