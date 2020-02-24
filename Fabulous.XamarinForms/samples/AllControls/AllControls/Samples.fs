@@ -54,7 +54,13 @@ module Samples =
                   [ SampleChooser
                         { Title = "Controls"
                           Nodes =
-                              [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
+                              [ Sample
+                                    ({ Title = "TabbedPage1"
+                                       Init = Controls.TabbedPage1.init
+                                       Update = Controls.TabbedPage1.update |> ignoreExternalMsg
+                                       View = Controls.TabbedPage1.view
+                                       MapToCmd = Controls.TabbedPage1.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
                                 Sample
                                     ({ Title = "ScrollView"
@@ -93,6 +99,18 @@ module Samples =
                                        View = UseCases.Animations.view
                                        MapToCmd = UseCases.Animations.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "Effects" UseCases.Effects.view)
+                                Sample
+                                    ({ Title = "Infinite-scroll List"
+                                       Init = UseCases.InfiniteScrollList.init
+                                       Update = UseCases.InfiniteScrollList.update |> ignoreExternalMsg
+                                       View = UseCases.InfiniteScrollList.view
+                                       MapToCmd = UseCases.InfiniteScrollList.mapToCmd } |> boxSampleDefinition)
+                                Sample
+                                    ({ Title = "Pop-ups"
+                                       Init = UseCases.PopUps.init
+                                       Update = UseCases.PopUps.update |> ignoreExternalMsg
+                                       View = UseCases.PopUps.view
+                                       MapToCmd = UseCases.PopUps.mapToCmd } |> boxSampleDefinition)
                                 Sample
                                     ({ Title = "WebCall"
                                        Init = UseCases.WebCall.init

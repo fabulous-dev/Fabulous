@@ -18,10 +18,13 @@
       <Compile Include="Controls\RefreshView.fs" />
       <Compile Include="Controls\ScrollView.fs" />
       <Compile Include="Controls\SwipeView.fs" />
+      <Compile Include="Controls\TabbedPage1.fs" />
       <Folder Include="Pages" />
       <Compile Include="UseCases\Animations.fs" />
       <Compile Include="UseCases\Effects.fs" />
       <Compile Include="UseCases\WebCall.fs" />
+      <Compile Include="UseCases\InfiniteScrollList.fs" />
+      <Compile Include="UseCases\PopUps.fs" />
       <None Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
       <EmbeddedResource Include="styles.css" />

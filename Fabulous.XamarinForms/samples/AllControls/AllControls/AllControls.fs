@@ -55,19 +55,16 @@ type Model =
     NumTaps : int 
     NumTaps2 : int 
     PickedColorIndex: int
-    GridSize: int
-    NewGridSize: double // used during pinch
-    GridPortal: int * int 
     // For MasterDetailPage demo
     IsMasterPresented: bool 
     DetailPage: string
     // For NavigationPage demo
     PageStack: string option list
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just an unbounded set of data whose growth is prompted by the need formore of it in the UI
-    InfiniteScrollMaxRequested: int
+    
     SearchTerm: string
     CarouselCurrentPageIndex: int
-    Tabbed1CurrentPageIndex: int
+    
     // For WebCall page demo
     // For ScrollView page demo
     // For RefreshView
@@ -79,10 +76,6 @@ type Msg =
     | Increment 
     | Decrement 
     | Reset
-    | IncrementForSlider
-    | DecrementForSlider
-    | ChangeMinimumMaximumForSlider1
-    | ChangeMinimumMaximumForSlider2
     | IncrementForActivityIndicator
     | DecrementForActivityIndicator
     | SliderValueChanged of int
@@ -99,8 +92,6 @@ type Msg =
     | ListViewGroupedSelectedItemChanged of (int * int) option
     | FrameTapped 
     | FrameTapped2 
-    | UpdateNewGridSize of double * GestureStatus
-    | UpdateGridPortal of int * int
     // For NavigationPage demo
     | GoHomePage
     | PopPage 
@@ -112,12 +103,10 @@ type Msg =
     | IsMasterPresentedChanged of bool
     | SetDetailPage of string
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
-    | SetInfiniteScrollMaxIndex of int
+    
     | ExecuteSearch of string
-    | ShowPopup
     | SKSurfaceTouched of SKPoint
     | SetCarouselCurrentPage of int
-    | SetTabbed1CurrentPage of int
     | ReceivedLowMemoryWarning
     // For WebCall page demo
     // For ScrollView page demo
@@ -172,19 +161,12 @@ module App =
     let init () = 
         { RootPageKind = Choice false
           Count = 0
-          CountForSlider = 0
-          StepForSlider = 3
-          MinimumForSlider = 0
-          MaximumForSlider = 10
           CountForActivityIndicator = 0
           PickedColorIndex = 0
           EditorText = "hic hac hoc"
           Placeholder = "cogito ergo sum"
           Password = "in omnibus errant"
           EntryText = "quod erat demonstrandum"
-          GridSize = 6
-          NewGridSize = 6.0
-          GridPortal=(0, 0)
           StartDate=System.DateTime.Today
           EndDate=System.DateTime.Today.AddDays(1.0)
           IsMasterPresented=false
@@ -192,10 +174,8 @@ module App =
           NumTaps2=0
           PageStack=[ Some "Home" ]
           DetailPage="A"
-          InfiniteScrollMaxRequested = 10 
           SearchTerm = "nothing!"
           CarouselCurrentPageIndex = 0
-          Tabbed1CurrentPageIndex = 0 
           RefreshViewIsRefreshing = false
           SKPoints = [] }, Cmd.none
 
@@ -209,14 +189,9 @@ module App =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }, Cmd.none
         | Decrement -> { model with Count = model.Count - 1}, Cmd.none
-        | IncrementForSlider -> { model with CountForSlider = model.CountForSlider + model.StepForSlider }, Cmd.none
-        | DecrementForSlider -> { model with CountForSlider = model.CountForSlider - model.StepForSlider }, Cmd.none
-        | ChangeMinimumMaximumForSlider1 -> { model with MinimumForSlider = 0; MaximumForSlider = 10 }, Cmd.none
-        | ChangeMinimumMaximumForSlider2 -> { model with MinimumForSlider = 15; MaximumForSlider = 20 }, Cmd.none
         | IncrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator + 1 }, Cmd.none
         | DecrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator - 1 }, Cmd.none
         | Reset -> init ()
-        | SliderValueChanged n -> { model with StepForSlider = n }, Cmd.none
         | TextChanged _ -> model, Cmd.none
         | EditorEditCompleted t -> { model with EditorText = t }, Cmd.none
         | EntryEditCompleted t -> { model with EntryText = t }, Cmd.none
@@ -230,13 +205,6 @@ module App =
         | PickerItemChanged i -> { model with PickedColorIndex = i }, Cmd.none
         | FrameTapped -> { model with NumTaps= model.NumTaps + 1 }, Cmd.none
         | FrameTapped2 -> { model with NumTaps2= model.NumTaps2 + 1 }, Cmd.none
-        | UpdateNewGridSize (n, status) -> 
-            match status with 
-            | GestureStatus.Running -> { model with NewGridSize = model.NewGridSize * n}, Cmd.none
-            | GestureStatus.Completed -> let sz = int (model.NewGridSize + 0.5) in { model with GridSize = sz; NewGridSize = float sz }, Cmd.none
-            | GestureStatus.Canceled -> { model with NewGridSize = double model.GridSize }, Cmd.none
-            | _ -> model, Cmd.none
-        | UpdateGridPortal (x, y) -> { model with GridPortal = (x, y) }, Cmd.none
         // For NavigationPage
         | GoHomePage -> { model with PageStack = [ Some "Home" ] }, Cmd.none
         | PagePopped -> 
@@ -253,18 +221,14 @@ module App =
         // For MasterDetail
         | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }, Cmd.none
         | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}, Cmd.none
-        | SetInfiniteScrollMaxIndex n -> if n >= max n model.InfiniteScrollMaxRequested then { model with InfiniteScrollMaxRequested = (n + 10)}, Cmd.none else model, Cmd.none
+        
         // For selection page
         | SetRootPageKind kind -> { model with RootPageKind = kind }, Cmd.none
         | ExecuteSearch search -> { model with SearchTerm = search }, Cmd.none
         // For pop-ups
-        | ShowPopup ->
-            Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
-            model, Cmd.none
+        
         | SetCarouselCurrentPage index ->
             { model with CarouselCurrentPageIndex = index }, Cmd.none
-        | SetTabbed1CurrentPage index ->
-            { model with Tabbed1CurrentPageIndex = index }, Cmd.none
         | ReceivedLowMemoryWarning ->
             Application.Current.MainPage.DisplayAlert("Low memory!", "Cleaning up data...", "OK") |> ignore
             { model with
@@ -305,7 +269,6 @@ module App =
                                     View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
                                     View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
                                     View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
-                                    View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                                     View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
                                     View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
                                     View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
@@ -474,103 +437,7 @@ module App =
                     ]))
         ])
 
-    let tabbedPageSamples1 model dispatch = 
-        View.TabbedPage(
-                useSafeArea=true,
-                currentPageChanged=(fun index ->
-                    match index with
-                    | None -> printfn "No tab selected"
-                    | Some ind ->
-                        printfn "Tab changed : %i" ind
-                        dispatch (SetTabbed1CurrentPage ind)
-                ),
-                currentPage=model.Tabbed1CurrentPageIndex,
-                children=
-            [
-            dependsOn (model.MinimumForSlider, model.MaximumForSlider, model.CountForSlider, model.StepForSlider) (fun model (minimum, maximum, count, step) -> 
-                View.ScrollingContentPage("Slider", 
-                    [ View.Label(text="Label:")
-                      View.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Label(text="Button:")
-                      View.Button(text="Increment", command=(fun () -> dispatch IncrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
-                 
-                      View.Label(text="Button:")
-                      View.Button(text="Decrement", command=(fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Label(text="Button:")
-                      View.Button(text="Set Minimum = 0 / Maximum = 10", command=(fun () -> dispatch ChangeMinimumMaximumForSlider1), horizontalOptions=LayoutOptions.CenterAndExpand)
-                      View.Button(text="Set Minimum = 15 / Maximum = 20", command=(fun () -> dispatch ChangeMinimumMaximumForSlider2), horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Label(text=sprintf "Slider: (Minimum %d, Maximum %d, Value %d)" minimum maximum step)
-                      View.Slider(minimumMaximum=(float minimum, float maximum), 
-                        value=double step, 
-                        valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
-                        horizontalOptions=LayoutOptions.Fill) 
-
-                      View.Button(text="Go to Image", 
-                        command=(fun () -> dispatch (SetTabbed1CurrentPage 4)), 
-                        horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                       
-                      mainPageButton dispatch
-                ]))
-
-            dependsOn () (fun model () -> 
-                View.NonScrollingContentPage("Grid", 
-                    [ View.Label(text=sprintf "Grid (6x6, *):")
-                      View.Grid(rowdefs= [for i in 1 .. 6 -> Star], coldefs=[for i in 1 .. 6 -> Star], 
-                        children = [ 
-                            for i in 1 .. 6 do 
-                                for j in 1 .. 6 -> 
-                                    let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
-                                    View.BoxView(color).Row(i-1).Column(j-1) ] )
-                      mainPageButton dispatch
-                    ]))
-
-            dependsOn (model.GridSize, model.NewGridSize) (fun model (gridSize, newGridSize) -> 
-                View.NonScrollingContentPage("Grid+Pinch", 
-                    [ View.Label(text=sprintf "Grid (nxn, pinch, size = %f):" newGridSize)
-                      // The Grid doesn't change during the pinch...
-                      dependsOn gridSize (fun _ _ -> 
-                        View.Grid(rowdefs= [for i in 1 .. gridSize -> Star], coldefs=[for i in 1 .. gridSize -> Star], 
-                            children = [ 
-                                for i in 1 .. gridSize do 
-                                    for j in 1 .. gridSize -> 
-                                        let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
-                                        View.BoxView(color).Row(i-1).Column(j-1) ]))
-                      mainPageButton dispatch
-                    ], 
-                    gestureRecognizers=[ View.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
-                                            dispatch (UpdateNewGridSize (pinchArgs.Scale, pinchArgs.Status)))) ] ))
-
-            dependsOn model.GridPortal (fun model gridPortal -> 
-                let dx, dy = gridPortal
-                View.NonScrollingContentPage("Grid+Pan", 
-                    children=
-                        [ View.Label(text= sprintf "Grid (nxn, auto, edit entries, 1-touch pan, (%d, %d):" dx dy)
-                          View.Grid(rowdefs= [for row in 1 .. 6 -> Star], coldefs=[for col in 1 .. 6 -> Star], 
-                            children = [ for row in 1 .. 6 do 
-                                            for col in 1 .. 6 ->
-                                                let item = View.Label(text=sprintf "(%d, %d)" (col+dx) (row+dy), backgroundColor=Color.White, textColor=Color.Black) 
-                                                item.Row(row-1).Column(col-1) ])
-                          mainPageButton dispatch
-                    ], 
-                    gestureRecognizers=[ View.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
-                                            if panArgs.StatusType = GestureStatus.Running then 
-                                                dispatch (UpdateGridPortal (dx - int (panArgs.TotalX/10.0), dy - int (panArgs.TotalY/10.0))))) ] ))
-
-            dependsOn () (fun model () -> 
-                View.NonScrollingContentPage("Image", 
-                    [ View.Label(text="Image (URL):")
-                      View.Image(source=Path "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
-                          horizontalOptions=LayoutOptions.FillAndExpand,
-                          verticalOptions=LayoutOptions.FillAndExpand)
-                      View.Label(text="Image (Embedded):", margin = Thickness (0., 20., 0., 0.))
-                      View.Image(source=Source (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly)), 
-                          horizontalOptions=LayoutOptions.FillAndExpand,
-                          verticalOptions=LayoutOptions.FillAndExpand) 
-                      mainPageButton dispatch ]))
-            ])
+    
 
     let tabbedPageSamples2 model dispatch =
         View.TabbedPage(useSafeArea=true, 
@@ -864,17 +731,7 @@ module App =
                           ).HasNavigationBar(true).HasBackButton(true) ], 
                    poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
 
-    let infiniteScrollListSample model dispatch =
-              dependsOn (model.InfiniteScrollMaxRequested ) (fun model max -> 
-               View.ScrollingContentPage("ListView (InfiniteScrollList)", 
-                [mainPageButton dispatch
-                 View.Label(text="InfiniteScrollList:")
-                 View.ListView(items = [ for i in 1 .. max do 
-                                           yield dependsOn i (fun _ i -> View.TextCell("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
-                               horizontalOptions=LayoutOptions.CenterAndExpand, 
-                               // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
-                               itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
-                 ] ))
+    
 
     
 
@@ -936,7 +793,6 @@ module App =
         | Tabbed3 -> tabbedPageSamples3 model dispatch
         | Navigation -> navigationPageSample model dispatch
         | MasterDetail -> masterDetailPageSample model dispatch
-        | InfiniteScrollList -> infiniteScrollListSample model dispatch
         | ShellView -> shellViewSample model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
 
