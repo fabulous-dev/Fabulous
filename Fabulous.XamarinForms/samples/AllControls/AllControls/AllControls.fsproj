@@ -18,8 +18,8 @@
       <Compile Include="Controls\RefreshView.fs" />
       <Compile Include="Controls\ScrollView.fs" />
       <Compile Include="Controls\SwipeView.fs" />
-      <Compile Include="Controls\TabbedPage1.fs" />
-      <Folder Include="Pages" />
+      <Compile Include="Pages\CarouselPage.fs" />
+      <Compile Include="Pages\TabbedPage1.fs" />
       <Compile Include="UseCases\Animations.fs" />
       <Compile Include="UseCases\Effects.fs" />
       <Compile Include="UseCases\WebCall.fs" />

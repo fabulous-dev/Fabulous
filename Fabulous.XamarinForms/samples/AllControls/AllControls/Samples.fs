@@ -54,13 +54,7 @@ module Samples =
                   [ SampleChooser
                         { Title = "Controls"
                           Nodes =
-                              [ Sample
-                                    ({ Title = "TabbedPage1"
-                                       Init = Controls.TabbedPage1.init
-                                       Update = Controls.TabbedPage1.update |> ignoreExternalMsg
-                                       View = Controls.TabbedPage1.view
-                                       MapToCmd = Controls.TabbedPage1.mapToCmd } |> boxSampleDefinition)
-                                Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
+                              [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
                                 Sample
                                     ({ Title = "ScrollView"
@@ -88,6 +82,22 @@ module Samples =
                                 Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
                                 Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
                                 Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] }
+                        
+                    SampleChooser
+                        { Title = "Pages"
+                          Nodes = 
+                              [ Sample
+                                    ({ Title = "CarouselPage"
+                                       Init = Pages.CarouselPage.init
+                                       Update = Pages.CarouselPage.update |> ignoreExternalMsg
+                                       View = Pages.CarouselPage.view
+                                       MapToCmd = Pages.CarouselPage.mapToCmd } |> boxSampleDefinition)
+                                Sample
+                                    ({ Title = "TabbedPage1"
+                                       Init = Pages.TabbedPage1.init
+                                       Update = Pages.TabbedPage1.update |> ignoreExternalMsg
+                                       View = Pages.TabbedPage1.view
+                                       MapToCmd = Pages.TabbedPage1.mapToCmd } |> boxSampleDefinition) ] }
                         
                     SampleChooser
                         { Title = "Use cases"

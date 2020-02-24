@@ -40,20 +40,10 @@ type RootPageKind =
 
 type Model = 
   { RootPageKind: RootPageKind
-    Count : int
     CountForSlider : int
-    CountForActivityIndicator : int
     StepForSlider : int 
     MinimumForSlider : int
     MaximumForSlider : int
-    StartDate : System.DateTime
-    EndDate : System.DateTime
-    EditorText : string
-    EntryText : string
-    Placeholder : string
-    Password : string
-    NumTaps : int 
-    NumTaps2 : int 
     PickedColorIndex: int
     // For MasterDetailPage demo
     IsMasterPresented: bool 
@@ -63,35 +53,14 @@ type Model =
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just an unbounded set of data whose growth is prompted by the need formore of it in the UI
     
     SearchTerm: string
-    CarouselCurrentPageIndex: int
-    
-    // For WebCall page demo
-    // For ScrollView page demo
-    // For RefreshView
-    RefreshViewIsRefreshing: bool
-    SKPoints: SKPoint list
     }
 
 type Msg = 
-    | Increment 
-    | Decrement 
-    | Reset
-    | IncrementForActivityIndicator
-    | DecrementForActivityIndicator
     | SliderValueChanged of int
-    | TextChanged of string * string
-    | EditorEditCompleted of string
-    | EntryEditCompleted of string
-    | PasswordEntryEditCompleted of string
-    | PlaceholderEntryEditCompleted of string
     | GridEditCompleted of int * int
-    | StartDateSelected of DateTime 
-    | EndDateSelected of DateTime 
     | PickerItemChanged of int
     | ListViewSelectedItemChanged of int option
     | ListViewGroupedSelectedItemChanged of (int * int) option
-    | FrameTapped 
-    | FrameTapped2 
     // For NavigationPage demo
     | GoHomePage
     | PopPage 
@@ -105,16 +74,6 @@ type Msg =
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
     
     | ExecuteSearch of string
-    | SKSurfaceTouched of SKPoint
-    | SetCarouselCurrentPage of int
-    | ReceivedLowMemoryWarning
-    // For WebCall page demo
-    // For ScrollView page demo
-    // For ShellView page demo
-    //| ShowShell
-    // For RefreshView
-    | RefreshViewRefreshing
-    | RefreshViewRefreshDone
 
 [<AutoOpen>]
 module MyExtension = 
@@ -160,22 +119,12 @@ module MyExtension =
 module App = 
     let init () = 
         { RootPageKind = Choice false
-          Count = 0
-          CountForActivityIndicator = 0
           PickedColorIndex = 0
-          EditorText = "hic hac hoc"
-          Placeholder = "cogito ergo sum"
-          Password = "in omnibus errant"
-          EntryText = "quod erat demonstrandum"
-          StartDate=System.DateTime.Today
-          EndDate=System.DateTime.Today.AddDays(1.0)
           IsMasterPresented=false
-          NumTaps=0
-          NumTaps2=0
           PageStack=[ Some "Home" ]
           DetailPage="A"
           SearchTerm = "nothing!"
-          CarouselCurrentPageIndex = 0
+          
           RefreshViewIsRefreshing = false
           SKPoints = [] }, Cmd.none
 
@@ -187,24 +136,10 @@ module App =
     
     let update msg model =
         match msg with
-        | Increment -> { model with Count = model.Count + 1 }, Cmd.none
-        | Decrement -> { model with Count = model.Count - 1}, Cmd.none
-        | IncrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator + 1 }, Cmd.none
-        | DecrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator - 1 }, Cmd.none
-        | Reset -> init ()
-        | TextChanged _ -> model, Cmd.none
-        | EditorEditCompleted t -> { model with EditorText = t }, Cmd.none
-        | EntryEditCompleted t -> { model with EntryText = t }, Cmd.none
-        | PasswordEntryEditCompleted t -> { model with Password = t }, Cmd.none
-        | PlaceholderEntryEditCompleted t -> { model with Placeholder = t }, Cmd.none
-        | StartDateSelected d -> { model with StartDate = d; EndDate = d + (model.EndDate - model.StartDate) }, Cmd.none
-        | EndDateSelected d -> { model with EndDate = d }, Cmd.none
         | GridEditCompleted _ -> model, Cmd.none
         | ListViewSelectedItemChanged _ -> model, Cmd.none
         | ListViewGroupedSelectedItemChanged _ -> model, Cmd.none
         | PickerItemChanged i -> { model with PickedColorIndex = i }, Cmd.none
-        | FrameTapped -> { model with NumTaps= model.NumTaps + 1 }, Cmd.none
-        | FrameTapped2 -> { model with NumTaps2= model.NumTaps2 + 1 }, Cmd.none
         // For NavigationPage
         | GoHomePage -> { model with PageStack = [ Some "Home" ] }, Cmd.none
         | PagePopped -> 
@@ -227,8 +162,7 @@ module App =
         | ExecuteSearch search -> { model with SearchTerm = search }, Cmd.none
         // For pop-ups
         
-        | SetCarouselCurrentPage index ->
-            { model with CarouselCurrentPageIndex = index }, Cmd.none
+        
         | ReceivedLowMemoryWarning ->
             Application.Current.MainPage.DisplayAlert("Low memory!", "Cleaning up data...", "OK") |> ignore
             { model with
@@ -243,16 +177,6 @@ module App =
         | RefreshViewRefreshDone ->
             { model with RefreshViewIsRefreshing = false }, Cmd.none
         | SKSurfaceTouched point -> { model with SKPoints = point :: model.SKPoints }, Cmd.none
-
-    let pickerItems = 
-        [ ("Aqua", Color.Aqua); ("Black", Color.Black);
-           ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
-           ("Gray", Color.Gray); ("Green", Color.Green);
-           ("Lime", Color.Lime); ("Maroon", Color.Maroon);
-           ("Navy", Color.Navy); ("Olive", Color.Olive);
-           ("Purple", Color.Purple); ("Red", Color.Red);
-           ("Silver", Color.Silver); ("Teal", Color.Teal);
-           ("White", Color.White); ("Yellow", Color.Yellow ) ]
 
     let frontPage model showAbout dispatch =
         View.NavigationPage(pages=
@@ -314,128 +238,7 @@ module App =
                     command=(fun () -> dispatch (SetRootPageKind (Choice false))), 
                     horizontalOptions=LayoutOptions.CenterAndExpand)
 
-    let carouselPageSample model dispatch =
-        View.CarouselPage(
-            useSafeArea=true,
-            currentPageChanged=(fun index -> 
-                match index with
-                | None -> printfn "No page selected"
-                | Some ind ->
-                    printfn "Page changed : %i" ind
-                    dispatch (SetCarouselCurrentPage ind)
-            ),
-            currentPage=model.CarouselCurrentPageIndex,
-            children=
-              [ dependsOn model.Count (fun model count -> 
-                  View.ScrollingContentPage("Button", 
-                    [ View.Label(text="Label:")
-                      View.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
-                 
-                      View.Label(text="Button:")
-                      View.Button(text="Increment", command=(fun () -> dispatch Increment), horizontalOptions=LayoutOptions.CenterAndExpand)
-                 
-                      View.Label(text="Button:")
-                      View.Button(text="Decrement", command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Button(text="Go to grid", cornerRadius=5, command=(fun () -> dispatch (SetCarouselCurrentPage 6)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                         
-                      mainPageButton dispatch
-                    ]))
-
-                dependsOn model.CountForActivityIndicator (fun model count -> 
-                  View.ScrollingContentPage("ActivityIndicator", 
-                   [View.Label(text="Label:")
-                    View.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
- 
-                    View.Label(text="ActivityIndicator (when count > 0):")
-                    View.ActivityIndicator(isRunning=(count > 0), horizontalOptions=LayoutOptions.CenterAndExpand)
-                  
-                    View.Label(text="Button:")
-                    View.Button(text="Increment", command=(fun () -> dispatch IncrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                    View.Label(text="Button:")
-                    View.Button(text="Decrement", command=(fun () -> dispatch DecrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
-                    mainPageButton dispatch
-                   ]))
-
-                dependsOn (model.StartDate, model.EndDate) (fun model (startDate, endDate) -> 
-                  View.ScrollingContentPage("DatePicker", 
-                    [ View.Label(text="DatePicker (start):")
-                      View.DatePicker(minimumDate= System.DateTime.Today, maximumDate=DateTime.Today + TimeSpan.FromDays(365.0), 
-                            date=startDate, 
-                            dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)), 
-                            horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Label(text="DatePicker (end):")
-                      View.DatePicker(minimumDate= startDate, maximumDate=startDate + TimeSpan.FromDays(365.0), 
-                            date=endDate, 
-                            dateSelected=(fun args -> dispatch (EndDateSelected args.NewDate)), 
-                            horizontalOptions=LayoutOptions.CenterAndExpand)
-                      mainPageButton dispatch
-                    ]))
-
-                dependsOn model.EditorText (fun model editorText -> 
-                  View.ScrollingContentPage("Editor", 
-                    [ View.Label(text="Editor:")
-                      View.Editor(text= editorText, horizontalOptions=LayoutOptions.FillAndExpand, 
-                        textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-                        completed=(fun text -> dispatch (EditorEditCompleted text)))
-                      mainPageButton dispatch
-                    ]))
-
-                dependsOn (model.EntryText, model.Password, model.Placeholder) (fun model (entryText, password, placeholder) -> 
-                  View.ScrollingContentPage("Entry", 
-                    [ View.Label(text="Entry:")
-                      View.Entry(text= entryText, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-                            completed=(fun text -> dispatch (EntryEditCompleted text)))
-
-                      View.Label(text="Entry (password):")
-                      View.Entry(text= password, isPassword=true, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-                            completed=(fun text -> dispatch (PasswordEntryEditCompleted text)))
-
-                      View.Label(text="Entry (placeholder):")
-                      View.Entry(placeholder= placeholder, horizontalOptions=LayoutOptions.CenterAndExpand, 
-                            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-                            completed=(fun text -> dispatch (PlaceholderEntryEditCompleted text)))
-
-                      mainPageButton dispatch
-                    ]) )
-
-                dependsOn (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
-                  View.ScrollingContentPage("Frame", 
-                    [ View.Label(text="Frame (hasShadow=true):")
-                      View.Frame(hasShadow=true, backgroundColor=Color.AliceBlue, horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                      View.Label(text="Frame (tap once gesture):")
-                      View.Frame(hasShadow=true, 
-                            backgroundColor=snd (pickerItems.[numTaps % pickerItems.Length]), 
-                            horizontalOptions=LayoutOptions.CenterAndExpand, 
-                            gestureRecognizers=[ View.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] )
-
-                      View.Label(text="Frame (tap twice gesture):")
-                      View.Frame(hasShadow=true, 
-                            backgroundColor=snd (pickerItems.[numTaps2 % pickerItems.Length]), 
-                            horizontalOptions=LayoutOptions.CenterAndExpand, 
-                            gestureRecognizers=[ View.TapGestureRecognizer(numberOfTapsRequired=2, command=(fun () -> dispatch FrameTapped2)) ] )
-                 
-                      mainPageButton dispatch
-                    ]))
-
-                dependsOn () (fun model () -> 
-                  View.NonScrollingContentPage("Grid", 
-                    [ View.Label(text=sprintf "Grid (6x6, auto):")
-                      View.Grid(rowdefs= [for i in 1 .. 6 -> Auto], 
-                            coldefs=[for i in 1 .. 6 -> Auto], 
-                            children = 
-                                [ for i in 1 .. 6 do 
-                                    for j in 1 .. 6 -> 
-                                        let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
-                                        View.BoxView(color).Row(i-1).Column(j-1) ] )
-                      mainPageButton dispatch
-                    ]))
-        ])
+    
 
     
 
@@ -788,7 +591,6 @@ module App =
         match model.RootPageKind with 
         | Choice showAbout ->  frontPage model showAbout dispatch
         | Carousel -> carouselPageSample model dispatch
-        | Tabbed1 -> tabbedPageSamples1 model dispatch
         | Tabbed2 -> tabbedPageSamples2 model dispatch
         | Tabbed3 -> tabbedPageSamples3 model dispatch
         | Navigation -> navigationPageSample model dispatch
