@@ -159,7 +159,6 @@
     <Reference Include="OxyPlot.Xamarin.Forms.Platform.iOS">
       <HintPath>..\..\..\..\packages\iosapp\OxyPlot.Xamarin.Forms\lib\Xamarin.iOS10\OxyPlot.Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
-    <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.FFImageLoading\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
     </Reference>
@@ -172,7 +171,6 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.FFImageLoading.Forms\lib\Xamarin.iOS10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
-    -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">

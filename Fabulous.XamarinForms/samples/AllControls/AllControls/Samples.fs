@@ -73,14 +73,15 @@ module Samples =
                     SampleChooser
                         { Title = "Extensions"
                           Nodes = 
-                              [ Sample
+                              [ Sample (createViewOnlyDefinition "FFImageLoading" Extensions.FFImageLoading.view)
+                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
+                                Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
+                                Sample
                                     ({ Title = "SkiaSharp"
                                        Init = Extensions.SkiaSharp.init
                                        Update = Extensions.SkiaSharp.update |> ignoreExternalMsg
                                        View = Extensions.SkiaSharp.view
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
-                                Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
-                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
                                 Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] }
                         
                     SampleChooser
@@ -93,11 +94,31 @@ module Samples =
                                        View = Pages.CarouselPage.view
                                        MapToCmd = Pages.CarouselPage.mapToCmd } |> boxSampleDefinition)
                                 Sample
+                                    ({ Title = "NavigationPage"
+                                       Init = Pages.NavigationPage.init
+                                       Update = Pages.NavigationPage.update |> ignoreExternalMsg
+                                       View = Pages.NavigationPage.view
+                                       MapToCmd = Pages.NavigationPage.mapToCmd } |> boxSampleDefinition)
+                                Sample
+                                    ({ Title = "MasterDetailPage"
+                                       Init = Pages.MasterDetailPage.init
+                                       Update = Pages.MasterDetailPage.update |> ignoreExternalMsg
+                                       View = Pages.MasterDetailPage.view
+                                       MapToCmd = Pages.MasterDetailPage.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "Shell" Pages.Shell.view) 
+                                Sample
                                     ({ Title = "TabbedPage1"
                                        Init = Pages.TabbedPage1.init
                                        Update = Pages.TabbedPage1.update |> ignoreExternalMsg
                                        View = Pages.TabbedPage1.view
-                                       MapToCmd = Pages.TabbedPage1.mapToCmd } |> boxSampleDefinition) ] }
+                                       MapToCmd = Pages.TabbedPage1.mapToCmd } |> boxSampleDefinition)
+                                Sample
+                                    ({ Title = "TabbedPage2"
+                                       Init = Pages.TabbedPage2.init
+                                       Update = Pages.TabbedPage2.update |> ignoreExternalMsg
+                                       View = Pages.TabbedPage2.view
+                                       MapToCmd = Pages.TabbedPage2.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "TabbedPage3" Pages.TabbedPage3.view)] }
                         
                     SampleChooser
                         { Title = "Use cases"
@@ -108,6 +129,7 @@ module Samples =
                                        Update = UseCases.Animations.update |> ignoreExternalMsg
                                        View = UseCases.Animations.view
                                        MapToCmd = UseCases.Animations.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "CSS Styling" UseCases.CssStyling.view)
                                 Sample (createViewOnlyDefinition "Effects" UseCases.Effects.view)
                                 Sample
                                     ({ Title = "Infinite-scroll List"

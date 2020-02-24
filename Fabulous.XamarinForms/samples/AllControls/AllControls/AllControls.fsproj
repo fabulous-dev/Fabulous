@@ -7,24 +7,31 @@
     <ItemGroup>
       <Compile Include="Helpers.fs" />
       <Compile Include="ViewOnlySample.fs" />
-      <Compile Include="Effects\ShadowEffect.fs" />
+      <Compile Include="ShadowEffect.fs" />
+      <Compile Include="TestLabel.fs" />
       <Compile Include="Extensions\SkiaSharp.fs" />
       <Compile Include="Extensions\OxyPlot.fs" />
       <Compile Include="Extensions\Maps.fs" />
       <Compile Include="Extensions\VideoManager.fs" />
-      <Folder Include="Layouts" />
+      <Compile Include="Extensions\FFImageLoading.fs" />
       <Compile Include="Controls\CarouselView.fs" />
       <Compile Include="Controls\CollectionView.fs" />
       <Compile Include="Controls\RefreshView.fs" />
       <Compile Include="Controls\ScrollView.fs" />
       <Compile Include="Controls\SwipeView.fs" />
       <Compile Include="Pages\CarouselPage.fs" />
+      <Compile Include="Pages\NavigationPage.fs" />
+      <Compile Include="Pages\MasterDetailPage.fs" />
+      <Compile Include="Pages\Shell.fs" />
       <Compile Include="Pages\TabbedPage1.fs" />
+      <Compile Include="Pages\TabbedPage2.fs" />
+      <Compile Include="Pages\TabbedPage3.fs" />
       <Compile Include="UseCases\Animations.fs" />
+      <Compile Include="UseCases\CssStyling.fs" />
       <Compile Include="UseCases\Effects.fs" />
-      <Compile Include="UseCases\WebCall.fs" />
       <Compile Include="UseCases\InfiniteScrollList.fs" />
       <Compile Include="UseCases\PopUps.fs" />
+      <Compile Include="UseCases\WebCall.fs" />
       <None Include="AllControls.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
       <EmbeddedResource Include="styles.css" />
@@ -36,7 +43,7 @@
       <PackageReference Include="FSharp.Data" />
     </ItemGroup>
     <ItemGroup>
-<!--      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" /> -->
+      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" /> 
       <ProjectReference Include="..\..\..\extensions\Maps\Fabulous.XamarinForms.Maps.fsproj" />
       <ProjectReference Include="..\..\..\extensions\OxyPlot\Fabulous.XamarinForms.OxyPlot.fsproj" />
       <ProjectReference Include="..\..\..\extensions\SkiaSharp\Fabulous.XamarinForms.SkiaSharp.fsproj" />
