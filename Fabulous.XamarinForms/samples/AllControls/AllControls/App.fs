@@ -1,8 +1,10 @@
 namespace AllControls
 
+open AllControls.SampleDefinition
+open AllControls.Samples
+
 open Fabulous
 open Fabulous.XamarinForms
-open Samples
 open Xamarin.Forms
 
 module SampleHelpers =
@@ -87,7 +89,7 @@ module App =
     
 type App () as app = 
     inherit Application ()
-    //do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromResource("styles.css", System.Reflection.Assembly.GetExecutingAssembly()))
+    do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
     
     let runner = 
         Program.mkProgram App.init App.update App.view

@@ -1,7 +1,7 @@
 namespace AllControls
 
-open Helpers
-open Samples
+open AllControls.Helpers
+open AllControls.SampleDefinition
 
 open Fabulous
 open Fabulous.XamarinForms

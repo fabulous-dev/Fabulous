@@ -1,6 +1,6 @@
-namespace AllControls.UseCases
+namespace AllControls.Samples.UseCases
 
-open AllControls.TestLabel
+open AllControls.Samples.TestLabel
 
 open Fabulous
 open Fabulous.XamarinForms

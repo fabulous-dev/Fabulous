@@ -9,10 +9,7 @@ module Helpers =
         let rand = System.Random()
         Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255))
     
-    type Fabulous.XamarinForms.View with 
-        static member ScrollingContentPage(title, children) =
-            View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=Thickness 20.0, children=children) ), useSafeArea=true)
-            
+    type Fabulous.XamarinForms.View with            
         static member ScrollingContentPage(title, (content: ViewElement)) =
             View.ContentPage(
                 title = title,
@@ -30,6 +27,3 @@ module Helpers =
                 padding = Thickness 20.0,
                 content = content
             )
-
-        static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            View.ContentPage(title=title, content=View.StackLayout(padding=Thickness 20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)

@@ -1,7 +1,7 @@
-namespace AllControls.UseCases
+namespace AllControls.Samples.UseCases
 
 open AllControls.Helpers
-open AllControls.Effects
+open AllControls.Samples.Effects
 
 open Fabulous.XamarinForms
 open Xamarin.Forms

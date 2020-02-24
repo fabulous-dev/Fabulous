@@ -1,4 +1,4 @@
-namespace AllControls.Controls
+namespace AllControls.Samples.Controls
 
 open AllControls.Helpers
 

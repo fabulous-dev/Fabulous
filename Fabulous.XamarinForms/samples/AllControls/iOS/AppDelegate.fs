@@ -18,7 +18,7 @@ type AppDelegate () =
         Forms.Init()
         Xamarin.FormsMaps.Init() 
         OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init()
-        //FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
+        FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
         let app = new AllControls.App()
         this.LoadApplication (app)
         _app <- Some app

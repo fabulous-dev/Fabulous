@@ -1,4 +1,4 @@
-namespace AllControls
+namespace AllControls.Samples
 
 open Fabulous
 open Fabulous.XamarinForms

@@ -1,4 +1,4 @@
-namespace AllControls.Effects
+namespace AllControls.Samples.Effects
 
 open Xamarin.Forms
 

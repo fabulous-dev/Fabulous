@@ -1,8 +1,7 @@
-namespace AllControls.Extensions
+namespace AllControls.Samples.Extensions
 
 open AllControls.Helpers
 
-open System
 open SkiaSharp
 open SkiaSharp.Views.Forms
 open Xamarin.Forms
