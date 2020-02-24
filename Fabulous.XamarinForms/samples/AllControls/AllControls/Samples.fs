@@ -13,6 +13,7 @@ module Samples =
     type SampleChooser =
         { Title: string
           Nodes: Node list }
+          
     and Node =
         | Sample of SampleDefinition
         | SampleChooser of SampleChooser
@@ -53,8 +54,14 @@ module Samples =
                   [ SampleChooser
                         { Title = "Controls"
                           Nodes =
-                              [ Sample (createViewOnlyDefinition "Effects" Controls.Effects.view)
+                              [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
+                                Sample
+                                    ({ Title = "ScrollView"
+                                       Init = Controls.ScrollView.init
+                                       Update = Controls.ScrollView.update |> ignoreExternalMsg
+                                       View = Controls.ScrollView.view
+                                       MapToCmd = Controls.ScrollView.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "SwipeView" Controls.SwipeView.view)
                                 Sample
                                     ({ Title = "RefreshView"
@@ -74,4 +81,21 @@ module Samples =
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
                                 Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
-                                Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] } ] }
+                                Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] }
+                        
+                    SampleChooser
+                        { Title = "Use cases"
+                          Nodes =
+                              [ Sample
+                                    ({ Title = "Animations"
+                                       Init = UseCases.Animations.init
+                                       Update = UseCases.Animations.update |> ignoreExternalMsg
+                                       View = UseCases.Animations.view
+                                       MapToCmd = UseCases.Animations.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "Effects" UseCases.Effects.view)
+                                Sample
+                                    ({ Title = "WebCall"
+                                       Init = UseCases.WebCall.init
+                                       Update = UseCases.WebCall.update |> ignoreExternalMsg
+                                       View = UseCases.WebCall.view
+                                       MapToCmd = UseCases.WebCall.mapToCmd } |> boxSampleDefinition) ] } ] }

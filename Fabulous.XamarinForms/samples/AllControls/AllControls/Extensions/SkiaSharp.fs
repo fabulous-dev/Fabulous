@@ -24,9 +24,8 @@ module SkiaSharp =
         { Circles: Circle list }
         
     let createNewCircle point =
-        let rand = Random()
         { Center = point
-          Color = Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255)) }
+          Color = randomColor() }
         
     let mapToCmd (_: CmdMsg) : Cmd<Msg> =
         Cmd.none

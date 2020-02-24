@@ -1,4 +1,4 @@
-namespace AllControls.Controls
+namespace AllControls.UseCases
 
 open AllControls.Helpers
 open AllControls.Effects

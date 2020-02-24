@@ -5,6 +5,10 @@ open Fabulous
 open Fabulous.XamarinForms
 
 module Helpers =
+    let randomColor() =
+        let rand = System.Random()
+        Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255))
+    
     type Fabulous.XamarinForms.View with 
         static member ScrollingContentPage(title, children) =
             View.ContentPage(title=title, content=View.ScrollView(View.StackLayout(padding=Thickness 20.0, children=children) ), useSafeArea=true)

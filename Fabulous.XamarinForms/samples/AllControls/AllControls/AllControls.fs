@@ -69,14 +69,7 @@ type Model =
     CarouselCurrentPageIndex: int
     Tabbed1CurrentPageIndex: int
     // For WebCall page demo
-    IsRunning: bool
-    ReceivedData: bool
-    WebCallData: string option
     // For ScrollView page demo
-    ScrollPosition: float * float
-    AnimatedScroll: AnimationKind
-    IsScrollingWithFabulous: bool
-    IsScrolling: bool
     // For RefreshView
     RefreshViewIsRefreshing: bool
     SKPoints: SKPoint list
@@ -122,21 +115,12 @@ type Msg =
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
     | ShowPopup
-    | AnimationPoked
-    | AnimationPoked2
-    | AnimationPoked3
     | SKSurfaceTouched of SKPoint
     | SetCarouselCurrentPage of int
     | SetTabbed1CurrentPage of int
     | ReceivedLowMemoryWarning
     // For WebCall page demo
-    | ReceivedDataSuccess of string option
-    | ReceivedDataFailure of string option
-    | ReceiveData
     // For ScrollView page demo
-    | ScrollFabulous of float * float * AnimationKind
-    | ScrollXamarinForms of float * float * AnimationKind
-    | Scrolled of float * float
     // For ShellView page demo
     //| ShowShell
     // For RefreshView
@@ -212,43 +196,8 @@ module App =
           SearchTerm = "nothing!"
           CarouselCurrentPageIndex = 0
           Tabbed1CurrentPageIndex = 0 
-          IsRunning = false
-          ReceivedData = false
-          WebCallData = None
-          ScrollPosition = 0.0, 0.0
-          AnimatedScroll = Animated
-          IsScrollingWithFabulous = false
-          IsScrolling = false
           RefreshViewIsRefreshing = false
           SKPoints = [] }, Cmd.none
-
-    let getWebData =
-        async {
-            do! Async.SwitchToThreadPool()
-            let! response = 
-                Http.AsyncRequest(url="https://api.myjson.com/bins/1ecasc", httpMethod="GET", silentHttpErrors=true)
-            let r = 
-                match response.StatusCode with
-                | 200 -> Msg.ReceivedDataSuccess (Some (response.Body |> string))
-                | _ -> Msg.ReceivedDataFailure (Some "Failed to get data")
-            return r
-        } |> Cmd.ofAsyncMsg
-
-    let animatedLabelRef = ViewRef<Label>()
-    let scrollViewRef = ViewRef<ScrollView>()
-
-    let scrollWithXFAsync (x: float, y: float, animated: AnimationKind) =
-        async {
-            match scrollViewRef.TryValue with
-            | None -> return None
-            | Some scrollView ->
-                let animationEnabled =
-                    match animated with
-                    | Animated -> true
-                    | NotAnimated -> false
-                do! scrollView.ScrollToAsync(x, y, animationEnabled) |> Async.AwaitTask |> Async.Ignore
-                return Some (Scrolled (x, y))
-        } |> Cmd.ofAsyncMsgOption
 
     let refreshAsync () =
         (async {
@@ -312,23 +261,6 @@ module App =
         | ShowPopup ->
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model, Cmd.none
-        | AnimationPoked -> 
-            match animatedLabelRef.TryValue with
-            | Some _ ->
-                animatedLabelRef.Value.Rotation <- 0.0
-                animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
-            | None -> ()
-            model, Cmd.none
-        | AnimationPoked2 -> 
-            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
-            animatedLabelRef.Value.Rotation <- 0.0
-            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
-            model, Cmd.none
-        | AnimationPoked3 -> 
-            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
-            animatedLabelRef.Value.Rotation <- 0.0
-            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
-            model, Cmd.none
         | SetCarouselCurrentPage index ->
             { model with CarouselCurrentPageIndex = index }, Cmd.none
         | SetTabbed1CurrentPage index ->
@@ -341,18 +273,6 @@ module App =
                 Placeholder = ""
                 Password = ""
                 SearchTerm = "" }, Cmd.none
-        | ReceiveData ->
-            {model with IsRunning=true}, getWebData
-        | ReceivedDataFailure value ->
-            {model with ReceivedData=false; IsRunning=false; WebCallData = value}, Cmd.none
-        | ReceivedDataSuccess value ->
-            {model with ReceivedData=true; IsRunning=false; WebCallData = value}, Cmd.none
-        | ScrollFabulous (x, y, animated) ->
-            { model with IsScrolling = true; IsScrollingWithFabulous = true; ScrollPosition = (x, y); AnimatedScroll = animated }, Cmd.none
-        | ScrollXamarinForms (x, y, animated) ->
-            { model with IsScrolling = true; IsScrollingWithFabulous = false; ScrollPosition = (x, y); AnimatedScroll = animated }, scrollWithXFAsync (x, y, animated)
-        | Scrolled (x, y) ->
-            { model with ScrollPosition = (x, y); IsScrolling = false; IsScrollingWithFabulous = false }, Cmd.none
         // For RefreshView
         | RefreshViewRefreshing ->
             { model with RefreshViewIsRefreshing = true }, refreshAsync ()
@@ -916,41 +836,7 @@ module App =
                      popped=(fun args -> dispatch PagePopped) , 
                      poppedToRoot=(fun args -> dispatch GoHomePage)  ))
 
-    let carouselViewSample model dispatch =
-        match Device.RuntimePlatform with
-        | Device.iOS | Device.Android -> 
-            let carouselRef = ViewRef<CustomCarouselView>()
-            View.ContentPage(
-                View.StackLayout 
-                  [
-                    mainPageButton dispatch
-
-                    View.CarouselView(items = 
-                      [
-                        View.Label(text="Person1") 
-                        View.Label(text="Person2")
-                        View.Label(text="Person3")
-                        View.Label(text="Person4")
-                        View.Label(text="Person5")
-                        View.Label(text="Person6")
-                        View.Label(text="Person7")
-                        View.Label(text="Person8")
-                        View.Label(text="Person9")
-                        View.Label(text="Person11")
-                        View.Label(text="Person12")
-                        View.Label(text="Person13")
-                        View.Label(text="Person14")
-                      ], margin= Thickness 10., ref=carouselRef)
-                    View.IndicatorView(itemsSourceBy=carouselRef)
-                  ]
-            )
-
-        | _ -> 
-            View.ContentPage(
-                View.StackLayout [
-                    mainPageButton dispatch
-                    View.Label(text="Your Platform does not support CarouselView")
-                  ])
+    
 
     let masterDetailPageSample model dispatch =
          // MasterDetail where the Master acts as a hamburger-style menu
@@ -990,65 +876,7 @@ module App =
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
                  ] ))
 
-    let animationSamples model dispatch =
-        View.ScrollingContentPage("Animations", 
-          [ 
-            View.Label(text="Rotate", created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) 
-            View.Label(text="Hello!", ref=animatedLabelRef) 
-            View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked))
-            View.Button(text="Poke2", command=(fun () -> dispatch AnimationPoked2))
-            View.Button(text="Poke3", command=(fun () -> dispatch AnimationPoked3))
-            View.Button(text="Main page",
-               cornerRadius=5,
-               command=(fun () -> dispatch (SetRootPageKind (Choice false))),
-               horizontalOptions=LayoutOptions.CenterAndExpand,
-               verticalOptions=LayoutOptions.End)
-          ])
-
-    let webCallSample model dispatch =
-        let data = match model.WebCallData with
-                    | Some v -> v
-                    | None -> ""
-
-        View.ContentPage(
-            View.StackLayout(
-                children = [
-                    View.Button(text="Get Data", command=(fun () -> dispatch ReceiveData))
-                    View.ActivityIndicator(isRunning=model.IsRunning)
-                    View.Label(text=data)
-                    mainPageButton dispatch
-                ]
-        ))
-
-    let scrollViewSample model dispatch =
-        let scrollToValue (x, y) animated =
-            (x, y, animated)
-
-        View.ContentPage(
-            View.StackLayout(
-                children = [
-                    mainPageButton dispatch
-                    View.Label(text = (sprintf "Is scrolling: %b" model.IsScrolling))
-                    View.Button(text = "Scroll to top", command=(fun() -> dispatch (ScrollFabulous (0.0, 0.0, Animated))))
-                    View.ScrollView(
-                        ref = scrollViewRef,
-                        ?scrollTo= (if model.IsScrollingWithFabulous then Some (scrollToValue model.ScrollPosition model.AnimatedScroll) else None),
-                        scrolled=(fun args -> dispatch (Scrolled (args.ScrollX, args.ScrollY))),
-                        content = View.StackLayout(
-                            children = [
-                                yield View.Button(text="Scroll animated with Fabulous", command=(fun() -> dispatch (ScrollFabulous (0.0, 750.0, Animated))))
-                                yield View.Button(text="Scroll not animated with Fabulous", command=(fun() -> dispatch (ScrollFabulous (0.0, 750.0, NotAnimated))))
-                                yield View.Button(text="Scroll animated with Xamarin.Forms", command=(fun() -> dispatch (ScrollXamarinForms (0.0, 750.0, Animated))))
-                                yield View.Button(text="Scroll not animated with Xamarin.Forms", command=(fun() -> dispatch (ScrollXamarinForms (0.0, 750.0, NotAnimated))))
-
-                                for i = 0 to 75 do
-                                    yield View.Label(text=(sprintf "Item %i" i))
-                            ]
-                        )
-                    )
-                ]
-            ) 
-        )
+    
 
     let shellViewSample model dispatch =
             
@@ -1109,12 +937,7 @@ module App =
         | Navigation -> navigationPageSample model dispatch
         | MasterDetail -> masterDetailPageSample model dispatch
         | InfiniteScrollList -> infiniteScrollListSample model dispatch
-        | Animations ->  animationSamples model dispatch
-        | WebCall -> webCallSample model dispatch
-        | ScrollView -> scrollViewSample model dispatch
         | ShellView -> shellViewSample model dispatch
-        | CarouselView -> carouselViewSample model dispatch
-        //| VideoSamples -> videoSamples model dispatch
         //| CachedImageSamples -> chachedImageSamples model dispatch
 
     
