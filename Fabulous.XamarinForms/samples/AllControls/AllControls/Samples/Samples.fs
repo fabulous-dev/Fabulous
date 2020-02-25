@@ -10,7 +10,7 @@ module Samples =
         { Title = title
           Init = ViewOnlySample.init
           Update = ViewOnlySample.update
-          View = fun _ _ -> dependsOn () (fun _ _ -> view())
+          View = fun _ _ -> view()
           MapToCmd = ViewOnlySample.mapToCmd } |> boxSampleDefinition
         
     let ignoreExternalMsg (update: 'Msg -> 'Model -> 'Model * 'CmdMsg list) : 'Msg -> 'Model -> 'Model * 'CmdMsg list * 'ExternalMsg option =

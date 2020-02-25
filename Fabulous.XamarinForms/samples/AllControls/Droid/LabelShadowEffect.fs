@@ -2,7 +2,7 @@ namespace AllControls.Droid
 
 open System
 open System.Linq
-open AllControls.Effects
+open AllControls.Samples.Effects
 open Xamarin.Forms
 open Xamarin.Forms.Platform.Android
 
