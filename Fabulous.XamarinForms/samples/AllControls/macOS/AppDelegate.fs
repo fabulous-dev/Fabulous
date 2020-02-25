@@ -20,8 +20,8 @@ type AppDelegate() =
     override this.DidFinishLaunching(notification: NSNotification) =
         Forms.Init()
         Xamarin.FormsMaps.Init() 
-        //OxyPlot.Xamarin.Forms.Platform. .Android.PlotViewRenderer.Init()
-        //FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
+        //OxyPlot.Xamarin.Forms.Platform.macOS.PlotViewRenderer.Init()
+        FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
         this.LoadApplication(new AllControls.App())
 
         base.DidFinishLaunching(notification)
