@@ -64,6 +64,12 @@ group androidapp
   nuget SkiaSharp.Views.Forms 1.68.1
   nuget Plugin.MediaManager 0.8.18
   nuget Plugin.MediaManager.Forms 0.8.18
+  nuget Xam.Plugins.Android.ExoPlayer 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.Core 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.Dash 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.Hls 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.SmoothStreaming 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.UI 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
   nuget OxyPlot.Xamarin.Forms 1.0.0
   nuget Xamarin.FFImageLoading.Forms 2.4.11.982
 
