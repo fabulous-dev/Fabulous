@@ -11,9 +11,10 @@ module VideoManager =
             content = View.StackLayout([
                 View.VideoView(
                     source = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                    showControls = false,
+                    showControls = true,
                     height = 500.,
-                    width = 200.)
+                    width = 200.
+                )
             ])
         )
 
