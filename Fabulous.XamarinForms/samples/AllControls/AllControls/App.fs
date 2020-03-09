@@ -25,10 +25,13 @@ module App =
         | NavigationPopped
         | LowMemoryWarningReceived
     
+    /// For each sample, we store its definition along its current state
     type SampleState =
         { Definition: SampleDefinition
           Model: obj }
     
+    /// All samples are stored as a reversed list
+    /// The first item will be the sample currently showing on the screen
     type Model =
         { SampleStates: SampleState list }
             

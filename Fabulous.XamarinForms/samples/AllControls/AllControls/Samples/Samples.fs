@@ -6,6 +6,7 @@ open AllControls.SampleDefinition
 open Fabulous
     
 module Samples =
+    /// Create a Sample definition with just a view function
     let createViewOnlyDefinition title (view: unit -> ViewElement) =
         { Title = title
           Init = ViewOnlySample.init
@@ -13,11 +14,15 @@ module Samples =
           View = fun _ _ -> view()
           MapToCmd = ViewOnlySample.mapToCmd } |> boxSampleDefinition
         
+    /// Convert an update function that doesn't use ExternalMsg to one that uses it, so it can be used in the definition
     let ignoreExternalMsg (update: 'Msg -> 'Model -> 'Model * 'CmdMsg list) : 'Msg -> 'Model -> 'Model * 'CmdMsg list * 'ExternalMsg option =
         fun msg model ->
             let newModel, cmdMsgs = update msg model
             newModel, cmdMsgs, None
-            
+          
+    /// All the samples to show in the application
+    /// Use 'SampleChooser' to indicate an intermediate page where you can choose from several other choosers or samples
+    /// Use 'Sample' with '|> boxSampleDefinition' to indicate a sample page
     let root =
         SampleChooser
             { Title = "AllControls samples"
