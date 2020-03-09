@@ -100,6 +100,9 @@ module FFImageLoadingExtension =
             
             // Unbox the ViewRef
             let viewRef = match ref with None -> None | Some (ref: ViewRef<CachedImage>) -> Some ref.Unbox
+            
+            // Unbox the created function
+            let created = (match created with None -> None | Some createdFunc -> Some (fun (target: obj) -> createdFunc (unbox<CachedImage> target)))
     
             // Populate the attributes of the base element
             let attribs =

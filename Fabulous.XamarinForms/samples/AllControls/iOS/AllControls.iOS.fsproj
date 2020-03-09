@@ -141,14 +141,12 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
-   <!--
     <Reference Include="Plugin.MediaManager">
-      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager\lib\xamarinios10\MediaManager.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Forms">
-      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager.Forms\lib\net45\MediaManager.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\Plugin.MediaManager.Forms\lib\xamarinios10\MediaManager.Forms.dll</HintPath>
     </Reference>
--->
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\..\packages\iosapp\OxyPlot.Core\lib\netstandard1.0\OxyPlot.dll</HintPath>
     </Reference>
@@ -161,7 +159,6 @@
     <Reference Include="OxyPlot.Xamarin.Forms.Platform.iOS">
       <HintPath>..\..\..\..\packages\iosapp\OxyPlot.Xamarin.Forms\lib\Xamarin.iOS10\OxyPlot.Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
-    <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.FFImageLoading\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
     </Reference>
@@ -174,7 +171,9 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.FFImageLoading.Forms\lib\Xamarin.iOS10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
-    -->
+    <Reference Include="WebP.Touch">
+      <HintPath>..\..\..\..\packages\iosapp\WebP.Touch\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">

@@ -108,21 +108,18 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
-    <!--
     <Reference Include="Plugin.MediaManager">
-      <HintPath>..\..\..\..\packages\macosapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Plugin.MediaManager\lib\xamarinmac20\MediaManager.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Forms">
-      <HintPath>..\..\..\..\packages\macosapp\Plugin.MediaManager.Forms\lib\net45\MediaManager.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Plugin.MediaManager.Forms\lib\xamarinmac20\MediaManager.Forms.dll</HintPath>
     </Reference>
--->
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\..\packages\macosapp\OxyPlot.Core\lib\netstandard1.0\OxyPlot.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot.Xamarin.Forms">
       <HintPath>..\..\..\..\packages\macosapp\OxyPlot.Xamarin.Forms\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\OxyPlot.Xamarin.Forms.dll</HintPath>
     </Reference>
-        <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.FFImageLoading\lib\Xamarin.Mac20\FFImageLoading.dll</HintPath>
     </Reference>
@@ -135,7 +132,9 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.FFImageLoading.Forms\lib\Xamarin.Mac20\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
-    -->
+    <Reference Include="WebP.Touch">
+      <HintPath>..\..\..\..\packages\macosapp\WebP.Touch\lib\Xamarin.Mac20\WebP.Mac.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />

@@ -32,6 +32,9 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
+    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
+    <AndroidDexTool>d8</AndroidDexTool>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,7 +49,9 @@
     <GenerateTailCalls>true</GenerateTailCalls>
     <PlatformTarget>
     </PlatformTarget>
-<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <AndroidDexTool>d8</AndroidDexTool>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
@@ -62,7 +67,7 @@
     <Compile Include="RegisterEffects.fs" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets')" />
   <!-- Disabled because of an issue when using neither packages.config nor PackageReference (https://github.com/xamarin/AndroidSupportComponents/issues/176) -->
   <!-- <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" /> -->
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets')" />
@@ -294,7 +299,6 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.PancakeView\lib\monoandroid90\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
-    <!--
     <Reference Include="Plugin.MediaManager">
       <HintPath>..\..\..\..\packages\androidapp\Plugin.MediaManager\lib\monoandroid90\MediaManager.dll</HintPath>
     </Reference>
@@ -322,7 +326,6 @@
     <Reference Include="ExoPlayer.UI">
       <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.UI\lib\monoandroid90\ExoPlayer.UI.dll</HintPath>
     </Reference>
--->
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Core\lib\netstandard1.0\OxyPlot.dll</HintPath>
     </Reference>
@@ -335,7 +338,6 @@
     <Reference Include="OxyPlot.Xamarin.Android">
       <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Xamarin.Android\lib\MonoAndroid10\OxyPlot.Xamarin.Android.dll</HintPath>
     </Reference>
- <!--
     <Reference Include="FFImageLoading">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
     </Reference>
@@ -345,7 +347,6 @@
     <Reference Include="FFImageLoading.Forms.Platform">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading.Forms\lib\MonoAndroid10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
-  -->
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{AEBBB2CB-3D81-4DB0-8A64-70D80EDCBD38}</Project>
       <Name>AllControls</Name>
