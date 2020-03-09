@@ -15,7 +15,9 @@
     <Compile Include="..\Fabulous.XamarinForms.Core\ViewUpdaters.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\ViewExtensions.fs" />
     <Compile Include="Xamarin.Forms.Core.fs" />
+    <Compile Include="Fabulous.XamarinForms.fs" />
     <None Include="Xamarin.Forms.Core.json" />
+    <None Include="Fabulous.XamarinForms.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" />

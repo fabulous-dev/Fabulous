@@ -1,8 +1,13 @@
 {
   "profiles": {
-    "Fabulous.XamarinForms.Generator": {
+    "Fabulous.XamarinForms.Generator (Xamarin.Forms)": {
       "commandName": "Project",
       "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    },
+    "Fabulous.XamarinForms.Generator (Fabulous.XamarinForms)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fs -d",
       "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     }
   }

@@ -113,14 +113,14 @@ module Reader =
           Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty tdef }
         
     let readAssemblies
-        (loadAllAssembliesByReflection: seq<string> -> Assembly array)
-        (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
-        (isTypeResolvable: string -> bool)
-        (convertTypeName: string -> string)
-        (tryGetStringRepresentationOfDefaultValue: obj -> string option)
-        (propertyBaseType: string)
-        (baseTypeName: string)
-        assemblies : WorkflowResult<AssemblyType array> =
+            (loadAllAssembliesByReflection: seq<string> -> Assembly array)
+            (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
+            (isTypeResolvable: string -> bool)
+            (convertTypeName: string -> string)
+            (tryGetStringRepresentationOfDefaultValue: obj -> string option)
+            (propertyBaseType: string)
+            (baseTypeName: string)
+            assemblies : WorkflowResult<AssemblyType array> =
         
         let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
         let assemblies = loadAllAssembliesByReflection assemblies

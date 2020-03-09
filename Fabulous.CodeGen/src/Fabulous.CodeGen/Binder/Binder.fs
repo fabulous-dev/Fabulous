@@ -254,10 +254,11 @@ module Binder =
             (fun p -> bindProperty logger containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
     
     /// Bind an existing type
-    let bindType logger (assemblyType: AssemblyType) (bindingsType: Type) =
+    let bindType logger (assemblyType: AssemblyType) shouldGenerateBindingForType (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.FullName bindingsType.Name
         { Id = assemblyType.FullName
           FullName = assemblyType.FullName
+          ShouldGenerateBinding = shouldGenerateBindingForType
           GenericConstraint = bindingsType.GenericConstraint
           CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
           TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.FullName
@@ -275,24 +276,34 @@ module Binder =
           PrimaryConstructorMembers = bindingsType.PrimaryConstructorMembers }
     
     /// Try to bind a type
-    let tryBindType logger (assemblyTypes: AssemblyType array) (bindingsType: Type) =
+    let tryBindType logger (assemblyTypes: AssemblyType array) shouldGenerateBindingForType (bindingsType: Type) =
         BinderHelpers.tryBind
             assemblyTypes
             bindingsType.Type
             (fun t -> t.FullName)
             (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
-            (fun t -> bindType logger t bindingsType)
+            (fun t -> bindType logger t shouldGenerateBindingForType bindingsType)
     
-    /// Create a bound model using the types extracted from the assemblies and the bindings provided by the caller
-    let bind (assemblyTypes: AssemblyType array) (bindings: Bindings) : WorkflowResult<BoundModel> =
+    /// Create a bound model using the types extracted from the assemblies and the mapping provided by the caller
+    let bind (assemblyTypes: AssemblyType array) (mapping: Mapping, baseMappings: Mapping array option) : WorkflowResult<BoundModel> =
         let logger = BinderHelpers.createLogger ()
         
+        let boundTypes =
+            [ for typ in mapping.Types do
+                  yield tryBindType logger assemblyTypes true typ
+                    
+              match baseMappings with
+              | None -> ()
+              | Some bs ->
+                  for mapping in bs do
+                      for typ in mapping.Types do
+                          yield tryBindType logger assemblyTypes false typ ]
+            |> Array.ofList
+        
         let data =
-            { Assemblies = bindings.Assemblies
-              OutputNamespace = bindings.OutputNamespace
-              Types =
-                  bindings.Types
-                  |> Array.choose (tryBindType logger assemblyTypes) }
+            { Assemblies = mapping.Assemblies
+              OutputNamespace = mapping.OutputNamespace
+              Types = boundTypes |> Array.choose id }
         
         match logger.getErrors () with
         | [] -> WorkflowResult.okWarnings data (logger.getMessages ()) (logger.getWarnings ())

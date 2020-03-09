@@ -124,9 +124,12 @@ module Models =
         /// The properties/events to place first in the constructor so it can be used without name
         member val PrimaryConstructorMembers: string array option = None with get, set
     
-    type Bindings() =
+    type Mapping() =
         /// Assemblies to read (can be relative paths to dlls)
         member val Assemblies: string array = [||] with get, set
+        
+        /// Mapping files to read and use as a base (can be relative paths to jsons)
+        member val BaseMappingFiles: string array option = None with get, set
         
         /// The namespace under which all the generated code will be put
         member val OutputNamespace: string = "" with get, set
