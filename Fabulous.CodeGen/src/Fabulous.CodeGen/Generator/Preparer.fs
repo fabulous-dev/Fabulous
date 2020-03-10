@@ -180,6 +180,7 @@ module Preparer =
         let typesToGenerate = boundModel.Types |> Array.filter (fun t -> t.ShouldGenerateBinding)
         
         { Namespace = boundModel.OutputNamespace
+          AdditionalNamespaces = boundModel.AdditionalNamespaces
           Attributes = extractAttributes typesToGenerate
           Builders = typesToGenerate |> Array.map toBuilderData
           Viewers = typesToGenerate |> Array.map toViewerData

@@ -300,9 +300,15 @@ module Binder =
                           yield tryBindType logger assemblyTypes false typ ]
             |> Array.ofList
         
+        let additionalNamespaces =
+            match baseMappings with
+            | None -> [||]
+            | Some bs -> bs |> Array.map (fun b -> b.OutputNamespace) 
+        
         let data =
             { Assemblies = mapping.Assemblies
               OutputNamespace = mapping.OutputNamespace
+              AdditionalNamespaces = additionalNamespaces
               Types = boundTypes |> Array.choose id }
         
         match logger.getErrors () with

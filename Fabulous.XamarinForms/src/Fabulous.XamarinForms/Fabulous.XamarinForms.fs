@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2020 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms.TestNamespace
 
 #nowarn "59" // cast always holds

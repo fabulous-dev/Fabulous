@@ -108,6 +108,7 @@ module Models =
         
     type GeneratorData =
         { Namespace: string
+          AdditionalNamespaces: string array
           Attributes: AttributeData array
           Builders: BuilderData array
           Viewers: ViewerData array

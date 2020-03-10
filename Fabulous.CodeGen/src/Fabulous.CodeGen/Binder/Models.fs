@@ -98,4 +98,5 @@ module Models =
     type BoundModel =
         { Assemblies: string array
           OutputNamespace: string
+          AdditionalNamespaces: string array
           Types: BoundType array }

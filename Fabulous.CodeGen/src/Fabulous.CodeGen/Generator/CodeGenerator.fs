@@ -8,8 +8,8 @@ open Fabulous.CodeGen.Generator.Models
 open System.IO
 
 module CodeGenerator =
-    let generateNamespace (namespaceOfGeneratedCode: string) (w: StringWriter) = 
-        w.printfn "// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license."
+    let generateNamespace (namespaceOfGeneratedCode: string) (additionalNamespaces: string array) (w: StringWriter) = 
+        w.printfn "// Copyright 2018-2020 Fabulous contributors. See LICENSE.md for license."
         w.printfn "namespace %s" namespaceOfGeneratedCode
         w.printfn ""
         w.printfn "#nowarn \"59\" // cast always holds"
@@ -17,6 +17,10 @@ module CodeGenerator =
         w.printfn "#nowarn \"67\" // cast always holds"
         w.printfn ""
         w.printfn "open Fabulous"
+        
+        for additionalNamespace in additionalNamespaces do
+            w.printfn "open %s" additionalNamespace
+        
         w.printfn ""
         w
 
@@ -369,7 +373,7 @@ module CodeGenerator =
         use writer = new StringWriter()
         
         writer
-        |> generateNamespace data.Namespace
+        |> generateNamespace data.Namespace data.AdditionalNamespaces
         |> generateAttributes data.Attributes
         |> generateBuilders data.Builders
         |> generateViewers data.Viewers
