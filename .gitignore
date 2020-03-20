@@ -25,3 +25,9 @@ Fabulous\.XamarinForms/samples/**/*\.designer\.cs
 2-bound-model.json
 3-optimized-bound-model.json
 4-expanded-bound-model.json
+
+Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.fs
+
+Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.fs
+
+Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.fs

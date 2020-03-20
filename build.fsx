@@ -185,10 +185,10 @@ Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
     let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
-    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+    let mappingFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
     let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
-    DotNet.exec id generatorPath (sprintf "-m %s -o %s" bindingsFilePath outputFilePath)
+    DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFilePath outputFilePath)
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -204,6 +204,22 @@ Target.create "BuildFabulousXamarinForms" (fun _ ->
 Target.create "RunFabulousXamarinFormsTests" (fun _ ->
     !! "Fabulous.XamarinForms/tests/**/*.fsproj"
     |> dotnetTest "Fabulous.XamarinForms/TestResults"
+)
+
+Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
+    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
+    let extensions =
+        [ {| MappingFilePath = "Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.fs" |}
+          {| MappingFilePath = "Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.fs" |}
+          {| MappingFilePath = "Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.fs" |} ]
+
+    for extension in extensions do
+        DotNet.exec id generatorPath (sprintf "-m %s -o %s" extension.MappingFilePath extension.OutputFilePath)
+        |> (fun x ->
+            match x.OK with
+            | true -> ()
+            | false -> failwith "The generator stopped due to an exception"
+        )
 )
 
 Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
@@ -388,6 +404,7 @@ open Fake.Core.TargetOperators
     ==> "Fabulous.XamarinForms"
 
 "Fabulous.XamarinForms"
+    ==> "RunGeneratorForFabulousXamarinFormsExtensions"
     ==> "BuildFabulousXamarinFormsExtensions"
     ==> "Fabulous.XamarinForms.Extensions"
     ==> "Build"

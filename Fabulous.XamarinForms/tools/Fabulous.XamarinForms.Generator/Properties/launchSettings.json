@@ -1,13 +1,28 @@
 {
   "profiles": {
-    "Fabulous.XamarinForms.Generator (Xamarin.Forms)": {
+    "Generator (Xamarin.Forms)": {
       "commandName": "Project",
       "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs -d",
       "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     },
-    "Fabulous.XamarinForms.Generator (Fabulous.XamarinForms)": {
+    "Generator (Fabulous.XamarinForms)": {
       "commandName": "Project",
       "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    },
+    "Generator (OxyPlot)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.json -o Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    },
+    "Generator (SkiaSharp)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.json -o Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    },
+    "Generator (VideoManager)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.json -o Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.fs -d",
       "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     }
   }
