@@ -8,15 +8,6 @@ open System.Collections.Generic
 open System.Collections.ObjectModel
 open System.ComponentModel
 
-type TestButton() as this =
-    inherit Xamarin.Forms.Button()
-    
-    static let TotoProperty = BindableProperty.Create ("Toto", typeof<string>, typeof<TestButton>)
-    
-    member x.Toto
-        with get() = this.GetValue(TotoProperty) :?> string
-        and set(value: string) = this.SetValue(TotoProperty, value)
-
 /////////////////
 /// DataTemplate
 /////////////////

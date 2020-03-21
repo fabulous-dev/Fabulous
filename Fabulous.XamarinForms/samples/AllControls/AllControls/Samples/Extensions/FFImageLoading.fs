@@ -3,6 +3,7 @@ namespace AllControls.Samples.Extensions
 open AllControls.Helpers
 
 open Fabulous.XamarinForms
+open Fabulous.XamarinForms.FFImageLoading
 open Xamarin.Forms
 
 module FFImageLoading =

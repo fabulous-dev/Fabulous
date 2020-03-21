@@ -13,6 +13,11 @@ type Logger =
       getMessages: unit -> string list
       getWarnings: unit -> string list
       getErrors: unit -> string list }
+    
+type CheckableField =
+    { Name: string
+      Value: string option
+      IsRequired: bool }
         
 module BinderHelpers =
     let createLogger () =
@@ -59,24 +64,23 @@ module BinderHelpers =
         | Some elmV, Some cdV -> Some (elmV, cdV)
         | None, None -> None
        
-    let createBinding logger containerTypeName memberKind memberNameOpt func values =
+    let createBinding logger containerTypeName memberKind memberNameOpt func (fields: CheckableField list) =
         // Trace invalid values
-        let invalidValues =
-            values
-            |> List.filter (snd >> Option.isNone)
+        let invalidFields =
+            fields |> List.filter (fun f -> f.IsRequired && f.Value.IsNone)
             
-        match invalidValues with
+        match invalidFields with
         | [] ->
-            values
-            |> List.map (snd >> Option.get)
-            |> func
-            |> Some
+            let stringValues =
+                fields |> List.map (fun f -> Text.getValueOrDefault f.Value "")
+                
+            Some (func stringValues)
 
         | _ ->
             let memberName = Text.getValueOrDefault memberNameOpt ""
 
-            for (fieldName, _) in invalidValues do
-                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" fieldName memberKind memberName containerTypeName)
+            for field in invalidFields do
+                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" field.Name memberKind memberName containerTypeName)
             None
         
 module Binder =
@@ -97,9 +101,9 @@ module Binder =
     /// Try to create a bound attached property from the bindings data only 
     let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
         [
-            "Name", bindingsAttachedProperty.Name
-            "DefaultValue", bindingsAttachedProperty.DefaultValue
-            "InputType", bindingsAttachedProperty.InputType
+            { Name = "Name"; Value = bindingsAttachedProperty.Name; IsRequired = true }
+            { Name = "DefaultValue"; Value = bindingsAttachedProperty.DefaultValue; IsRequired = bindingsAttachedProperty.UpdateCode.IsNone }
+            { Name = "InputType"; Value = bindingsAttachedProperty.InputType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "attached property" bindingsAttachedProperty.Name
                (fun values ->
@@ -176,9 +180,9 @@ module Binder =
     /// Try to create a bound event binding from the bindings data only 
     let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
         [
-            "Name", bindingsTypeEvent.Name
-            "InputType", bindingsTypeEvent.InputType
-            "ModelType", bindingsTypeEvent.ModelType
+            { Name = "Name"; Value = bindingsTypeEvent.Name; IsRequired = true }
+            { Name = "InputType"; Value = bindingsTypeEvent.InputType; IsRequired = true }
+            { Name = "ModelType"; Value = bindingsTypeEvent.ModelType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "event" bindingsTypeEvent.Name
             (fun values ->
@@ -201,9 +205,9 @@ module Binder =
     /// Try to create a bound property from the bindings data only 
     let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         [
-            "Name", bindingsTypeProperty.Name
-            "DefaultValue", bindingsTypeProperty.DefaultValue
-            "InputType", bindingsTypeProperty.InputType
+            { Name = "Name"; Value = bindingsTypeProperty.Name; IsRequired = true }
+            { Name = "DefaultValue"; Value = bindingsTypeProperty.DefaultValue; IsRequired = bindingsTypeProperty.UpdateCode.IsNone }
+            { Name = "InputType"; Value = bindingsTypeProperty.InputType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name
             (fun values ->

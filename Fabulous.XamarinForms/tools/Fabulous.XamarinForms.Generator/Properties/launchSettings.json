@@ -5,9 +5,14 @@
       "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs -d",
       "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     },
-    "Generator (Fabulous.XamarinForms)": {
+    "Generator (FFImageLoading)": {
       "commandName": "Project",
-      "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fs -d",
+      "commandLineArgs": "-m Fabulous.XamarinForms/extensions/FFImageLoading/Xamarin.FFImageLoading.Forms.json -o Fabulous.XamarinForms/extensions/FFImageLoading/Xamarin.FFImageLoading.Forms.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    },
+    "Generator (Maps)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.json -o Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs -d",
       "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
     },
     "Generator (OxyPlot)": {

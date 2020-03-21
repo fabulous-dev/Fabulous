@@ -41,8 +41,9 @@ module Reader =
             | None -> None
             | Some data ->
                 let attachedPropertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
-                let defaultValue = 
-                    tryGetStringRepresentationOfDefaultValue data.DefaultValue
+                let defaultValue =
+                    data.DefaultValue
+                    |> Option.bind tryGetStringRepresentationOfDefaultValue 
                     |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" attachedPropertyType)
 
                 Some
@@ -69,12 +70,16 @@ module Reader =
                 | None -> None
                 | Some data ->
                     let propertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
-
+                    let defaultValue =
+                        match data.DefaultValue with
+                        | None -> ""
+                        | Some defaultValue -> getDefaultValueAsString propertyType defaultValue
+                        
                     Some
                         ({ Name = data.Name
                            Type = propertyType
                            CollectionElementType = Resolver.getElementTypeForType ``type``
-                           DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : AssemblyTypeProperty)
+                           DefaultValue = defaultValue } : AssemblyTypeProperty)
             )
             |> Array.choose id
 

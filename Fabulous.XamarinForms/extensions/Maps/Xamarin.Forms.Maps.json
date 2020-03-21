@@ -1,0 +1,124 @@
+{
+  "assemblies": [
+    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
+    
+    "packages/neutral/Xamarin.Forms.Maps/lib/netstandard2.0/Xamarin.Forms.Maps.dll"
+  ],
+  "baseMappingFiles": [
+    "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms.Maps",
+  "types": [
+    {
+      "type": "Xamarin.Forms.Maps.Map",
+      "properties": [
+        {
+          "source": "HasScrollEnabled"
+        },
+        {
+          "source": "HasZoomEnabled"
+        },
+        {
+          "source": "IsShowingUser"
+        },
+        {
+          "source": "MapType"
+        },
+        {
+          "source": "MoveToLastRegionOnLayoutChange"
+        },
+        {
+          "source": "Pins",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.Maps.Pin"
+          }
+        },
+        {
+          "source": "MapElements",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "Xamarin.Forms.Maps.MapElement"
+          }
+        },
+        {
+          "source": null,
+          "name": "RequestedRegion",
+          "inputType": "Xamarin.Forms.Maps.MapSpan",
+          "updateCode": "ViewUpdaters.updateMapRequestedRegion"
+        }
+      ],
+      "events": [
+        {
+          "source": "MapClicked"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Maps.MapElement",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "StrokeColor"
+        },
+        {
+          "source": "StrokeWidth"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Maps.Polygon",
+      "properties": [
+        {
+          "source": "FillColor"
+        },
+        {
+          "source": "Geopath",
+          "inputType": "Xamarin.Forms.Maps.Position list",
+          "updateCode": "ViewUpdaters.updatePolygonGeopath"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Maps.Polyline",
+      "properties": [
+        {
+          "source": "Geopath",
+          "inputType": "Xamarin.Forms.Maps.Position list",
+          "updateCode": "ViewUpdaters.updatePolylineGeopath"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Maps.Pin",
+      "properties": [
+        {
+          "source": "Address"
+        },
+        {
+          "source": "Label"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "Type",
+          "uniqueName": "PinType",
+          "shortName": "pinType"
+        }
+      ],
+      "events": [
+        {
+          "source": "Clicked"
+        },
+        {
+          "source": "MarkerClicked"
+        },
+        {
+          "source": "InfoWindowClicked"
+        }
+      ]
+    }
+  ]
+}

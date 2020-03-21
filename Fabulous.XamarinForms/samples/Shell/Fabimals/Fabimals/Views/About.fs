@@ -68,7 +68,7 @@ module About =
                                             View.Span " "
                                             View.Span(
                                                 text="1.0",
-                                                foregroundColor=AboutStyles.lightTextColor
+                                                textColor=AboutStyles.lightTextColor
                                             )
                                         ])
                                     )

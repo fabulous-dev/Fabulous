@@ -1,0 +1,108 @@
+{
+  "assemblies": [
+    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
+    
+    "packages/neutral/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.dll",
+    "packages/neutral/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.Platform.dll",
+    "packages/neutral/Xamarin.FFImageLoading.Forms/lib/netstandard1.0/FFImageLoading.Forms.dll"
+  ],
+  "baseMappingFiles": [
+    "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms.FFImageLoading",
+  "types": [
+    {
+      "type": "FFImageLoading.Forms.CachedImage",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "IsOpaque"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "RetryCount"
+        },
+        {
+          "source": "RetryDelay"
+        },
+        {
+          "source": "LoadingDelay"
+        },
+        {
+          "source": "DownsampleWidth"
+        },
+        {
+          "source": "DownsampleHeight"
+        },
+        {
+          "source": "DownsampleToViewSize"
+        },
+        {
+          "source": "DownsampleUseDipUnits"
+        },
+        {
+          "source": "CacheDuration"
+        },
+        {
+          "source": "LoadingPriority"
+        },
+        {
+          "source": "BitmapOptimizations"
+        },
+        {
+          "source": "FadeAnimationForCachedImages"
+        },
+        {
+          "source": "FadeAnimationEnabled"
+        },
+        {
+          "source": "FadeAnimationDuration"
+        },
+        {
+          "source": "LoadingPlaceholder"
+        },
+        {
+          "source": "ErrorPlaceholder"
+        },
+        {
+          "source": "TransformPlaceholders"
+        },
+        {
+          "source": "Transformations",
+          "defaultValue": "System.Collections.Generic.List<FFImageLoading.Work.ITransformation>()"
+        },
+        {
+          "source": "InvalidateLayoutAfterLoaded"
+        },
+        {
+          "source": "CacheType"
+        }
+      ],
+      "events": [
+        {
+          "source": "Success"
+        },
+        {
+          "source": "Error"
+        },
+        {
+          "source": "Finish"
+        },
+        {
+          "source": "DownloadStarted"
+        },
+        {
+          "source": "DownloadProgress"
+        },
+        {
+          "source": "FileWriteFinished"
+        }
+      ]
+    }
+  ]
+}

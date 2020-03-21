@@ -208,13 +208,11 @@ Target.create "RunFabulousXamarinFormsTests" (fun _ ->
 
 Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
     let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
-    let extensions =
-        [ {| MappingFilePath = "Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.fs" |}
-          {| MappingFilePath = "Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.fs" |}
-          {| MappingFilePath = "Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.json"; OutputFilePath = "Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.fs" |} ]
 
-    for extension in extensions do
-        DotNet.exec id generatorPath (sprintf "-m %s -o %s" extension.MappingFilePath extension.OutputFilePath)
+    for mappingFile in !!"Fabulous.XamarinForms/extensions/**/*.json" do
+        let outputFile = mappingFile.Replace(".json", ".fs")
+
+        DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFile outputFile)
         |> (fun x ->
             match x.OK with
             | true -> ()

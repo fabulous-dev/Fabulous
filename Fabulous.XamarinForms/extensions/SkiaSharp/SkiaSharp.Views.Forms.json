@@ -25,7 +25,6 @@
           "source": null,
           "name": "Invalidate",
           "inputType": "bool",
-          "defaultValue": "false",
           "updateCode": "ViewUpdaters.updateSKCanvasViewInvalidate"
         }
       ],

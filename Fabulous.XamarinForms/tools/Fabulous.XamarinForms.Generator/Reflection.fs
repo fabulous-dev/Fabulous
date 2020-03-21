@@ -41,7 +41,7 @@ module Reflection =
                         Some
                             { Name = propertyName
                               Type = property.ReturnType |> toCleanTypeName
-                              DefaultValue = property.DefaultValue }
+                              DefaultValue = None } // DefaultValue here is not relevant since we will call ClearValue instead to reset the property
                             
     let tryGetProperty (assemblies: System.Reflection.Assembly array) (typeName, propertyName) =
         assemblies
