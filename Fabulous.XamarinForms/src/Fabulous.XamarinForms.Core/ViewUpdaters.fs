@@ -164,7 +164,8 @@ module ViewUpdaters =
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
-        let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
+        let updateTarget enableJumpList =
+            target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
 
         match (prevOpt, currOpt) with
         | ValueNone, ValueSome curr -> updateTarget curr
@@ -371,50 +372,54 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> target.CurrentPage <- Unchecked.defaultof<'a>
         | _, ValueSome curr -> target.CurrentPage <- target.Children.[curr]
 
-    /// Update the Minium and Maximum values of a slider, given previous and current values
-    let updateSliderMinimumMaximum prevValueOpt valueOpt (target: obj) =
-        let control = target :?> Xamarin.Forms.Slider
-        let defaultValue = (0.0, 1.0)
+    /// Update the Minimum and Maximum values of a slider, given previous and current values
+    let updateSliderMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Slider) =
         let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
             if newMinimum >= prevMaximum then
-                control.Maximum <- newMaximum
-                control.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+                target.Minimum <- newMinimum
             else
-                control.Minimum <- newMinimum
-                control.Maximum <- newMaximum
+                target.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+                
+        let clearValues () =
+            target.ClearValue Slider.MaximumProperty
+            target.ClearValue Slider.MinimumProperty
 
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
         | ValueSome prev, ValueSome curr -> updateFunc prev curr
-        | ValueSome prev, ValueNone -> updateFunc prev defaultValue
-        | ValueNone, ValueSome curr -> updateFunc defaultValue curr
+        | ValueSome _, ValueNone -> clearValues ()
+        | ValueNone, ValueSome curr -> updateFunc (0.0, 1.0) curr
 
     /// Update the Minimum and Maximum values of a stepper, given previous and current values
-    let updateStepperMinimumMaximum prevValueOpt valueOpt (target: obj) =
-        let control = target :?> Xamarin.Forms.Stepper
-        let defaultValue = (0.0, 1.0)
+    let updateStepperMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Stepper) =
         let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
             if newMinimum >= prevMaximum then
-                control.Maximum <- newMaximum
-                control.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+                target.Minimum <- newMinimum
             else
-                control.Minimum <- newMinimum
-                control.Maximum <- newMaximum
+                target.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+                
+        let clearValues () =
+            target.ClearValue Stepper.MaximumProperty
+            target.ClearValue Stepper.MinimumProperty
 
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
         | ValueSome prev, ValueSome curr -> updateFunc prev curr
-        | ValueSome prev, ValueNone -> updateFunc prev defaultValue
-        | ValueNone, ValueSome curr -> updateFunc defaultValue curr
+        | ValueSome _, ValueNone -> clearValues ()
+        | ValueNone, ValueSome curr -> updateFunc (0.0, 1.0) curr
 
     /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
     let updateMenuItemAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
-        | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
+        | _, ValueNone -> target.ClearValue Xamarin.Forms.MenuItem.AcceleratorProperty
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, Xamarin.Forms.Accelerator.FromString newVal)
 
     /// Update the items of a Shell, given previous and current view elements
@@ -550,119 +555,119 @@ module ViewUpdaters =
             let searchHandler = Shell.GetSearchHandler(target)
             currValue.UpdateIncremental(prevValue, searchHandler)
         | ValueNone, ValueSome currValue -> Shell.SetSearchHandler(target, currValue.Create() :?> Xamarin.Forms.SearchHandler)
-        | ValueSome _, ValueNone -> Shell.SetSearchHandler(target, null)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.SearchHandlerProperty
 
     let updateShellBackgroundColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetBackgroundColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetBackgroundColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.BackgroundColorProperty
 
     let updateShellForegroundColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetForegroundColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetForegroundColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.ForegroundColorProperty
 
     let updateShellTitleColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTitleColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTitleColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TitleColorProperty
 
     let updateShellDisabledColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetDisabledColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetDisabledColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.DisabledColorProperty
 
     let updateShellUnselectedColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetUnselectedColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetUnselectedColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.UnselectedColorProperty
 
     let updateShellTabBarBackgroundColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarBackgroundColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarBackgroundColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarBackgroundColorProperty
 
     let updateShellTabBarForegroundColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarForegroundColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarForegroundColor(target, Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarForegroundColorProperty
 
     let updateShellBackButtonBehavior prevValueOpt (currValueOpt: ViewElement voption) target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetBackButtonBehavior(target, currValue.Create() :?> BackButtonBehavior)
-        | ValueSome _, ValueNone -> Shell.SetBackButtonBehavior(target, null)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.BackButtonBehaviorProperty
 
     let updateShellTitleView prevValueOpt (currValueOpt: ViewElement voption) target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTitleView(target, currValue.Create() :?> View)
-        | ValueSome _, ValueNone -> Shell.SetTitleView(target, null)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TitleViewProperty
 
     let updateShellFlyoutBehavior prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetFlyoutBehavior(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetFlyoutBehavior(target, FlyoutBehavior.Flyout)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.FlyoutBehaviorProperty
 
     let updateShellTabBarIsVisible prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarIsVisible(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarIsVisibleProperty
 
     let updateShellNavBarIsVisible prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetNavBarIsVisible(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetNavBarIsVisible(target, true)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.NavBarIsVisibleProperty
 
     let updateShellTabBarDisabledColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarDisabledColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarDisabledColor(target, Xamarin.Forms.Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarDisabledColorProperty
 
     let updateShellTabBarTitleColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarTitleColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarTitleColor(target, Xamarin.Forms.Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarTitleColorProperty
 
     let updateShellTabBarUnselectedColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarUnselectedColor(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarUnselectedColor(target, Xamarin.Forms.Color.Default)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.TabBarUnselectedColorProperty
 
     let updateNavigationPageHasNavigationBar prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> NavigationPage.SetHasNavigationBar(target, currValue)
-        | ValueSome _, ValueNone -> NavigationPage.SetHasNavigationBar(target, true)
+        | ValueSome _, ValueNone -> target.ClearValue NavigationPage.HasNavigationBarProperty
 
     let updateShellContentContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
         match prevValueOpt, currValueOpt with
@@ -674,45 +679,36 @@ module ViewUpdaters =
             target.ContentTemplate <- DirectViewElementDataTemplate(currValue)
             let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
-        | ValueSome _, ValueNone -> target.ContentTemplate <- null
+        | ValueSome _, ValueNone -> target.ClearValue ShellContent.ContentTemplateProperty
 
     let updateShellNavBarHasShadow prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetNavBarHasShadow(target, currValue)
-        | ValueSome _, ValueNone -> 
-            let hasShadow = 
-                match Device.RuntimePlatform with
-                | Device.Android -> true
-                | _ -> false
-            Shell.SetNavBarHasShadow(target, hasShadow)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.NavBarHasShadowProperty
         
     let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
-        let setUseSafeArea newValue =
-                Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(
-                    (target : Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(),
-                    newValue
-                ) |> ignore
-        
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
-        | _, ValueSome currValue -> setUseSafeArea currValue
-        | ValueSome _, ValueNone -> setUseSafeArea false
+        | _, ValueSome currValue -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(target, currValue)
+        | ValueSome _, ValueNone -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(target, false)
 
     let triggerWebViewReload _ curr (target: Xamarin.Forms.WebView) =
         if curr = ValueSome true then target.Reload()
     
-    let updateEntryCursorPosition _ curr (target: Xamarin.Forms.Entry) =
-        match curr with
-        | ValueNone -> ()
-        | ValueSome value -> target.CursorPosition <- value
+    let updateEntryCursorPosition prev curr (target: Xamarin.Forms.Entry) =
+        match prev, curr with
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome value -> target.CursorPosition <- value
+        | ValueSome _, ValueNone -> target.ClearValue Entry.CursorPositionProperty
     
-    let updateEntrySelectionLength _ curr (target: Xamarin.Forms.Entry) =
-        match curr with
-        | ValueNone -> ()
-        | ValueSome value -> target.SelectionLength <- value
+    let updateEntrySelectionLength prev curr (target: Xamarin.Forms.Entry) =
+        match prev, curr with
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome value -> target.SelectionLength <- value
+        | ValueSome _, ValueNone -> target.ClearValue Entry.SelectionLengthProperty
         
     let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) _ =
         updateCollectionGeneric prevCollOpt currCollOpt target (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
@@ -735,7 +731,7 @@ module ViewUpdaters =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
-        | ValueSome _, ValueNone -> Element.SetMenu(target, null)
+        | ValueSome _, ValueNone -> target.ClearValue Element.MenuProperty
 
     let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
         match prevValueOpt, currValueOpt with
@@ -744,8 +740,8 @@ module ViewUpdaters =
         | _, ValueSome currValue -> 
             match currValue.TryValue with
             | Some v -> IndicatorView.SetItemsSourceBy(target, v)
-            | None -> IndicatorView.SetItemsSourceBy(target, null)
-        | ValueSome _, ValueNone -> IndicatorView.SetItemsSourceBy(target, null)
+            | None -> target.ClearValue IndicatorView.ItemsSourceByProperty
+        | ValueSome _, ValueNone -> target.ClearValue IndicatorView.ItemsSourceByProperty
 
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
         let create (desc: ViewElement) =
