@@ -30,9 +30,10 @@
       <Compile Include="Samples\UseCases\Animations.fs" />
       <Compile Include="Samples\UseCases\CssStyling.fs" />
       <Compile Include="Samples\UseCases\Effects.fs" />
-      <Compile Include="Samples\UseCases\InfiniteScrollList.fs" />
       <Compile Include="Samples\UseCases\PopUps.fs" />
       <Compile Include="Samples\UseCases\WebCall.fs" />
+      <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollList.fs" />
+      <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollCollection.fs" />
       <Compile Include="Samples\Samples.fs" />
       <Compile Include="App.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />

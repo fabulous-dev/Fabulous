@@ -30,7 +30,7 @@ module InfiniteScrollList =
     
     let view model dispatch =
         dependsOn (model.InfiniteScrollMaxRequested) (fun model max -> 
-            View.ScrollingContentPage(
+            View.ContentPage(
                 title = "ListView (InfiniteScrollList)",
                 content = View.StackLayout([
                     View.Label(text="InfiniteScrollList:")

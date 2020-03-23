@@ -105,14 +105,23 @@ module Samples =
                                        Update = UseCases.Animations.update |> ignoreExternalMsg
                                        View = UseCases.Animations.view
                                        MapToCmd = UseCases.Animations.mapToCmd } |> boxSampleDefinition)
+                                SampleChooser
+                                    { Title = "Collections and Lists"
+                                      Nodes =
+                                          [ Sample
+                                                ({ Title = "Infinite-scroll Collection"
+                                                   Init = UseCases.InfiniteScrollCollection.init
+                                                   Update = UseCases.InfiniteScrollCollection.update |> ignoreExternalMsg
+                                                   View = UseCases.InfiniteScrollCollection.view
+                                                   MapToCmd = UseCases.InfiniteScrollCollection.mapToCmd } |> boxSampleDefinition)
+                                            Sample
+                                                ({ Title = "Infinite-scroll List"
+                                                   Init = UseCases.InfiniteScrollList.init
+                                                   Update = UseCases.InfiniteScrollList.update |> ignoreExternalMsg
+                                                   View = UseCases.InfiniteScrollList.view
+                                                   MapToCmd = UseCases.InfiniteScrollList.mapToCmd } |> boxSampleDefinition) ] }
                                 Sample (createViewOnlyDefinition "CSS Styling" UseCases.CssStyling.view)
                                 Sample (createViewOnlyDefinition "Effects" UseCases.Effects.view)
-                                Sample
-                                    ({ Title = "Infinite-scroll List"
-                                       Init = UseCases.InfiniteScrollList.init
-                                       Update = UseCases.InfiniteScrollList.update |> ignoreExternalMsg
-                                       View = UseCases.InfiniteScrollList.view
-                                       MapToCmd = UseCases.InfiniteScrollList.mapToCmd } |> boxSampleDefinition)
                                 Sample
                                     ({ Title = "Pop-ups"
                                        Init = UseCases.PopUps.init

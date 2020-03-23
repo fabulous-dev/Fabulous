@@ -1587,6 +1587,9 @@
       ],
       "events": [
         {
+          "source": "RemainingItemsThresholdReached"
+        },
+        {
           "source": "Scrolled"
         }
       ]
