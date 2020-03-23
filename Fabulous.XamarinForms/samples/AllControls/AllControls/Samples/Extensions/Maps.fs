@@ -2,9 +2,10 @@ namespace AllControls.Samples.Extensions
 
 open AllControls.Helpers
 
-open Fabulous.XamarinForms
 open Xamarin.Forms
 open Xamarin.Forms.Maps
+open Fabulous.XamarinForms
+open Fabulous.XamarinForms.Maps
 
 module Maps =    
     let mapView () = 
@@ -26,8 +27,8 @@ module Maps =
                 hasZoomEnabled = true,
                 hasScrollEnabled = true, 
                 pins = [
-                    View.Pin(paris, label = "Paris", pinType = PinType.Place)
-                    View.Pin(london, label = "London", pinType = PinType.Place)
+                    View.Pin(position = paris, label = "Paris", pinType = PinType.Place)
+                    View.Pin(position = london, label = "London", pinType = PinType.Place)
                 ] ,
                 requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0))
             )

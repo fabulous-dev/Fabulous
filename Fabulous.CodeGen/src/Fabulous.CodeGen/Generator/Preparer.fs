@@ -9,16 +9,18 @@ module Preparer =
     let extractAttributes (boundTypes: BoundType array) : AttributeData array =
         (seq {
             for boundType in boundTypes do
-               for e in boundType.Events do
-                   yield { UniqueName = e.UniqueName; Name = e.Name }
-               for p in boundType.Properties do
-                   yield { UniqueName = p.UniqueName; Name = p.Name }
+                for e in boundType.Events do
+                    if e.IsInherited = false then
+                        yield { UniqueName = e.UniqueName; Name = e.Name }
+                for p in boundType.Properties do
+                    if p.IsInherited = false then
+                        yield { UniqueName = p.UniqueName; Name = p.Name }
                    
-                   match p.CollectionData with
-                   | None -> ()
-                   | Some cd ->
-                       for ap in cd.AttachedProperties do
-                           yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
+                        match p.CollectionData with
+                        | None -> ()
+                        | Some cd ->
+                            for ap in cd.AttachedProperties do
+                                yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
         |> Seq.distinctBy (fun a -> a.UniqueName)
         |> Seq.toArray
 
@@ -155,25 +157,33 @@ module Preparer =
               InputType = m.InputType
               ConvertInputToModel = m.ConvertInputToModel }
             
-        [| for typ in types do
-               for e in typ.Events do
-                   yield toViewExtensionsMember e
-               for p in typ.Properties do
-                   yield toViewExtensionsMember p
+        [|
+            for typ in types do
+                for e in typ.Events do
+                    if e.IsInherited = false then
+                        yield toViewExtensionsMember e
+                        
+                for p in typ.Properties do
+                    if p.IsInherited = false then
+                        yield toViewExtensionsMember p
                    
-                   match p.CollectionData with
-                   | None -> ()
-                   | Some cd ->
-                       for a in cd.AttachedProperties do
-                           yield toViewExtensionsMember a |]
+                        match p.CollectionData with
+                        | None -> ()
+                        | Some cd ->
+                            for a in cd.AttachedProperties do
+                                yield toViewExtensionsMember a
+        |]
         |> Array.groupBy (fun y -> y.UniqueName)
         |> Array.map (fun (_, members) -> members |> Array.head)
     
     let prepareData (boundModel: BoundModel) =
+        let typesToGenerate = boundModel.Types |> Array.filter (fun t -> t.ShouldGenerateBinding)
+        
         { Namespace = boundModel.OutputNamespace
-          Attributes = extractAttributes boundModel.Types
-          Builders = boundModel.Types |> Array.map toBuilderData
-          Viewers = boundModel.Types |> Array.map toViewerData
-          Constructors = boundModel.Types |> Array.filter (fun t -> t.CanBeInstantiated) |> Array.map toConstructorData
-          ViewExtensions = boundModel.Types |> getViewExtensionsData }
+          AdditionalNamespaces = boundModel.AdditionalNamespaces
+          Attributes = extractAttributes typesToGenerate
+          Builders = typesToGenerate |> Array.map toBuilderData
+          Viewers = typesToGenerate |> Array.map toViewerData
+          Constructors = typesToGenerate |> Array.filter (fun t -> t.CanBeInstantiated) |> Array.map toConstructorData
+          ViewExtensions = typesToGenerate |> getViewExtensionsData }
 

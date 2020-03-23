@@ -8,15 +8,20 @@ open Fabulous.CodeGen.Generator.Models
 open System.IO
 
 module CodeGenerator =
-    let generateNamespace (namespaceOfGeneratedCode: string) (w: StringWriter) = 
-        w.printfn "// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license."
+    let generateNamespace (namespaceOfGeneratedCode: string) (additionalNamespaces: string array) (w: StringWriter) = 
+        w.printfn "// Copyright 2018-2020 Fabulous contributors. See LICENSE.md for license."
         w.printfn "namespace %s" namespaceOfGeneratedCode
         w.printfn ""
         w.printfn "#nowarn \"59\" // cast always holds"
         w.printfn "#nowarn \"66\" // cast always holds"
         w.printfn "#nowarn \"67\" // cast always holds"
+        w.printfn "#nowarn \"760\""
         w.printfn ""
         w.printfn "open Fabulous"
+        
+        for additionalNamespace in additionalNamespaces do
+            w.printfn "open %s" additionalNamespace
+        
         w.printfn ""
         w
 
@@ -54,7 +59,7 @@ module CodeGenerator =
 
         match data.BaseName with 
         | None ->
-            w.printfn "        let attribBuilder = new AttributesBuilder(attribCount)"
+            w.printfn "        let attribBuilder = AttributesBuilder(attribCount)"
         | Some nameOfBaseCreator ->
             let baseMemberNewLine = "\n                                              " + String.replicate nameOfBaseCreator.Length " " + " "
             let baseMembers =
@@ -78,9 +83,9 @@ module CodeGenerator =
             w.printfn "    static member Create%s () : %s =" data.Name data.FullName
             
             if data.TypeToInstantiate = data.FullName then
-                w.printfn "        new %s()" data.TypeToInstantiate
+                w.printfn "        %s()" data.TypeToInstantiate
             else
-                w.printfn "        upcast (new %s())" data.TypeToInstantiate
+                w.printfn "        upcast (%s())" data.TypeToInstantiate
             
             w.printfn ""
             w
@@ -207,7 +212,10 @@ module CodeGenerator =
                             w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
                             w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
                             w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
-                            w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  p.Name p.DefaultValue
+                            if p.DefaultValue = "" then
+                                w.printfn "        | ValueSome _, ValueNone -> target.ClearValue %s.%sProperty" data.FullName p.Name
+                            else
+                                w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
                             w.printfn "        | ValueNone, ValueNone -> ()"
             
             // Subscribe event handlers
@@ -369,7 +377,7 @@ module CodeGenerator =
         use writer = new StringWriter()
         
         writer
-        |> generateNamespace data.Namespace
+        |> generateNamespace data.Namespace data.AdditionalNamespaces
         |> generateAttributes data.Attributes
         |> generateBuilders data.Builders
         |> generateViewers data.Viewers

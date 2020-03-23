@@ -2,12 +2,13 @@ namespace AllControls.Samples.Extensions
 
 open AllControls.Helpers
 
-open Fabulous.XamarinForms
 open Xamarin.Forms
 open OxyPlot
 open OxyPlot.Axes
 open OxyPlot.Series
 open System
+open Fabulous.XamarinForms
+open Fabulous.XamarinForms.OxyPlot
 
 module OxyPlot =
     let plotModelCos =

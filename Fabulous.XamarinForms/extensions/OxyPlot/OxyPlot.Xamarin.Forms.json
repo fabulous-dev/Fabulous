@@ -1,0 +1,26 @@
+{
+  "assemblies": [
+    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
+    
+    "packages/neutral/OxyPlot.Core/lib/netstandard1.0/OxyPlot.dll",
+    "packages/neutral/OxyPlot.Xamarin.Forms/lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10/OxyPlot.Xamarin.Forms.dll"
+  ],
+  "baseMappingFiles": [
+    "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms.OxyPlot",
+  "types": [
+    {
+      "type": "OxyPlot.Xamarin.Forms.PlotView",
+      "properties": [
+        {
+          "source": "Model"
+        },
+        {
+          "source": "Controller"
+        }
+      ]
+    }
+  ]
+}

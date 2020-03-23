@@ -11,13 +11,13 @@ module SwipeView =
             title = "SwipeView sample",
             content = View.SwipeView(
                 leftItems = View.SwipeItems(
-                    sItems = [
+                    items = [
                         View.SwipeItem(text="Left 1", backgroundColor=Color.LightPink)
                         View.SwipeItem(text="Left 2", backgroundColor=Color.LightGreen)
                     ]
                 ),
                 rightItems = View.SwipeItems(
-                    sItems = [
+                    items = [
                         View.SwipeItem(text="Right 1", backgroundColor=Color.LightPink)
                         View.SwipeItem(text="Right 2", backgroundColor=Color.LightGreen)
                     ]
@@ -26,7 +26,6 @@ module SwipeView =
                     height=60.0,
                     width=300.0,
                     backgroundColor=Color.LightGray,
-
                     children = [
                         View.BoxView(Color.Blue)
                     ]

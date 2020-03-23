@@ -6,7 +6,7 @@ open System.Globalization
 
 module Converters =
     /// Converts the type name to another type name (e.g. System.Boolean => bool)
-    let convertTypeName typeName =
+    let rec convertTypeName typeName =
         match typeName with
         | "System.Boolean" -> "bool"
         | "System.SByte" -> "sbyte"
@@ -25,7 +25,12 @@ module Converters =
         | "System.Object" -> "obj"
         | "System.Collections.Generic.IList<System.Object>" -> "obj list"
         | "System.Collections.IList" -> "obj list"
-        | _ -> typeName
+        | _ ->
+            if typeName.StartsWith("System.Nullable<") then
+                let childType = typeName.Replace("System.Nullable<", "").Replace(">", "")
+                "System.Nullable<" + (convertTypeName childType) + ">"
+            else
+                typeName.Replace("/", ".")
         
     let inline numberWithDecimalsToString literal (v: 'T when 'T :> IConvertible) =
         let str = v.ToString(CultureInfo.InvariantCulture)

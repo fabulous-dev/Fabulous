@@ -41,8 +41,9 @@ module Reader =
             | None -> None
             | Some data ->
                 let attachedPropertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
-                let defaultValue = 
-                    tryGetStringRepresentationOfDefaultValue data.DefaultValue
+                let defaultValue =
+                    data.DefaultValue
+                    |> Option.bind tryGetStringRepresentationOfDefaultValue 
                     |> Option.defaultValue (sprintf "Unchecked.defaultof<%s>" attachedPropertyType)
 
                 Some
@@ -69,12 +70,16 @@ module Reader =
                 | None -> None
                 | Some data ->
                     let propertyType = data.Type |> Text.removeDotNetGenericNotation |> convertTypeName
-
+                    let defaultValue =
+                        match data.DefaultValue with
+                        | None -> ""
+                        | Some defaultValue -> getDefaultValueAsString propertyType defaultValue
+                        
                     Some
                         ({ Name = data.Name
                            Type = propertyType
                            CollectionElementType = Resolver.getElementTypeForType ``type``
-                           DefaultValue = getDefaultValueAsString propertyType data.DefaultValue } : AssemblyTypeProperty)
+                           DefaultValue = defaultValue } : AssemblyTypeProperty)
             )
             |> Array.choose id
 
@@ -113,14 +118,14 @@ module Reader =
           Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty tdef }
         
     let readAssemblies
-        (loadAllAssembliesByReflection: seq<string> -> Assembly array)
-        (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
-        (isTypeResolvable: string -> bool)
-        (convertTypeName: string -> string)
-        (tryGetStringRepresentationOfDefaultValue: obj -> string option)
-        (propertyBaseType: string)
-        (baseTypeName: string)
-        assemblies : WorkflowResult<AssemblyType array> =
+            (loadAllAssembliesByReflection: seq<string> -> Assembly array)
+            (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
+            (isTypeResolvable: string -> bool)
+            (convertTypeName: string -> string)
+            (tryGetStringRepresentationOfDefaultValue: obj -> string option)
+            (propertyBaseType: string)
+            (baseTypeName: string)
+            assemblies : WorkflowResult<AssemblyType array> =
         
         let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
         let assemblies = loadAllAssembliesByReflection assemblies

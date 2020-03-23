@@ -71,5 +71,5 @@ module Models =
           Type: string
           
           /// The default value of the attached property
-          DefaultValue: obj }
+          DefaultValue: obj option }
 

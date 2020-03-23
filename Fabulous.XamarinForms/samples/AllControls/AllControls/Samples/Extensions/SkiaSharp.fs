@@ -7,6 +7,7 @@ open SkiaSharp.Views.Forms
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
+open Fabulous.XamarinForms.SkiaSharp
 
 module SkiaSharp =
     type Circle =

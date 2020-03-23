@@ -95,7 +95,7 @@ module TabbedPage2 =
                                         )
                                         View.Span(
                                             text = "Code",
-                                            foregroundColor = Color.Blue
+                                            textColor = Color.Blue
                                         )
                                     ])
                                 )

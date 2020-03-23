@@ -185,10 +185,10 @@ Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
     let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
-    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+    let mappingFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
     let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
-    DotNet.exec id generatorPath (sprintf "-m %s -o %s" bindingsFilePath outputFilePath)
+    DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFilePath outputFilePath)
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -204,6 +204,20 @@ Target.create "BuildFabulousXamarinForms" (fun _ ->
 Target.create "RunFabulousXamarinFormsTests" (fun _ ->
     !! "Fabulous.XamarinForms/tests/**/*.fsproj"
     |> dotnetTest "Fabulous.XamarinForms/TestResults"
+)
+
+Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
+    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
+
+    for mappingFile in !!"Fabulous.XamarinForms/extensions/**/*.json" do
+        let outputFile = mappingFile.Replace(".json", ".fs")
+
+        DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFile outputFile)
+        |> (fun x ->
+            match x.OK with
+            | true -> ()
+            | false -> failwith "The generator stopped due to an exception"
+        )
 )
 
 Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
@@ -388,6 +402,7 @@ open Fake.Core.TargetOperators
     ==> "Fabulous.XamarinForms"
 
 "Fabulous.XamarinForms"
+    ==> "RunGeneratorForFabulousXamarinFormsExtensions"
     ==> "BuildFabulousXamarinFormsExtensions"
     ==> "Fabulous.XamarinForms.Extensions"
     ==> "Build"
