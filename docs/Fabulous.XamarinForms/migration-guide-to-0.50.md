@@ -20,9 +20,7 @@ __Changes to properties__
 - [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclass-renamed-to-styleclasses-and-input-changed-from-obj-to-string-list)
 - [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-and-listviewgrouped-now-require-items-and-group-headers-to-be-cells-adds-support-for-textcell--imagecell--switchcell--entrycell--viewcell)
 - [TableView now require TableRoot and TableSections](#tableview-now-require-tableroot-and-tablesections)
-- [GridColumn / GridRow renamed to Column / Row](#gridcolumn--gridrow-renamed-to-column--row)
-- [GridColumnSpan / GridRowSpan renamed to ColumnSpan / RowSpan](#gridcolumnspan--gridrowspan-renamed-to-columnspan--rowspan)
-- [Image Discriminated Union now conflicts with Xamarin.Forms.Image](#image--discriminated--unio--now--conflicts--with--xamarin.forms.image)
+- [Attached properties dropped the class name prefix](#attached-properties-dropped-the-class-name-prefix)
 
 
 __Changes to events__
@@ -312,12 +310,9 @@ View.TableView(
 )
 ```
 
-### GridColumn / GridRow renamed to Column / Row
+### Attached properties dropped the class name prefix
 
-We simplified the View API a bit by renaming `GridColumn` and `GridRow` to respectively `Column` and `Row`.
-
-The `Grid` part was only meaningful for Xamarin.Forms to differentiate the actual height/width from the requested column/row.  
-In Fabulous.XamarinForms, this differentiation wasn't useful since you only provide a representation of the view you want.
+We simplified the View API a bit by renaming all attached properties from ClassName+PropertyName (e.g. `GridRow`) to only the attached property name (e.g. `Row`).
 
 _Old:_
 ```fsharp
@@ -328,40 +323,6 @@ _New:_
 ```fsharp
 View.Label().Column(1)
 ```
-
-
-### GridColumnSpan / GridRowSpan renamed to ColumnSpan / RowSpan
-
-We simplified the View API a bit by renaming `GridColumnSpan` and `GridRowSpan` to respectively `ColumnSpan` and `RowSpan`.
-
-The `Grid` part was only meaningful for Xamarin.Forms to differentiate the actual height/width from the requested columnSpan/rowSpan.
-
-In Fabulous.XamarinForms, this differentiation wasn't useful since you only provide a representation of the view you want.
-
-_Old:_
-```fsharp
-View.Label().GridColumnSpan(2)
-```
-
-_New:_
-```fsharp
-View.Label().ColumnSpan(2)
-```
-
-### Image Discriminated Union now conflicts with Xamarin.Forms.Image
-
-We introduced a namespace conflict with the creation of the Image Discriminated Union.  You will need to fully-qualify Image between Xamarin.Forms.Image and Fabulous.XamarinForms.Image
-
-_Old:_
-```fsharp
-let myFunction dispatch (image: Image) = ...
-```
-
-_New:_
-```fsharp
-let myFunction dispatch (image: Xamarin.Forms.Image) = ...
-```
-
 
 ### Events no longer triggered by changes in incremental updates
 
