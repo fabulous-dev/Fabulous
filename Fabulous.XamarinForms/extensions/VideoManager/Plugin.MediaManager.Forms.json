@@ -1,10 +1,10 @@
 {
   "assemblies": [
-    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
     
-    "packages/neutral/Plugin.MediaManager/lib/netstandard2.0/MediaManager.dll",
-    "packages/neutral/Plugin.MediaManager.Forms/lib/netstandard2.0/MediaManager.Forms.dll"
+    "packages/generator/Plugin.MediaManager/lib/netstandard2.0/MediaManager.dll",
+    "packages/generator/Plugin.MediaManager.Forms/lib/netstandard2.0/MediaManager.Forms.dll"
   ],
   "baseMappingFiles": [
     "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"

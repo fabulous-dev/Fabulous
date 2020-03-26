@@ -1,11 +1,11 @@
 {
   "assemblies": [
-    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
     
-    "packages/neutral/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.dll",
-    "packages/neutral/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.Platform.dll",
-    "packages/neutral/Xamarin.FFImageLoading.Forms/lib/netstandard1.0/FFImageLoading.Forms.dll"
+    "packages/generator/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.dll",
+    "packages/generator/Xamarin.FFImageLoading/lib/netstandard1.0/FFImageLoading.Platform.dll",
+    "packages/generator/Xamarin.FFImageLoading.Forms/lib/netstandard1.0/FFImageLoading.Forms.dll"
   ],
   "baseMappingFiles": [
     "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
