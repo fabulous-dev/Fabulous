@@ -1,6 +1,8 @@
 <Project>
     <!-- External dependencies, will be marked as requirements (equal or higher) in the NuGet packages. Should target lowest possible major versions -->
     <ItemGroup>
+        <!-- Fabulous.LiveUpdate -->
+        <PackageReference Update="Newtonsoft.Json" Version="12.0.1" />
         <!-- Fabulous.XamarinForms -->
         <PackageReference Update="Xamarin.Forms" Version="4.4.0.991265" />
         <!-- Fabulous.XamarinForms Extensions -->
@@ -17,10 +19,9 @@
         <!-- Shared dependencies -->
         <PackageReference Update="FSharp.Core" Version="4.7.1" PrivateAssets="All" />
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0" PrivateAssets="All" />
-        <PackageReference Update="Newtonsoft.Json" Version="12.0.3" />
         <!-- Fabulous.Cli -->
-        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" /> <!-- Locked to 0.9.0 because of FSharp.Compiler.PortaCode -->
-        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" /> <!-- Locked to 25.0.1 because of FSharp.Compiler.PortaCode -->
+        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" /> <!-- Locked to 0.9.0 for FSharp.Compiler.PortaCode -->
+        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" /> <!-- Locked to 25.0.1 for FSharp.Compiler.PortaCode -->
         <!-- Fabulous.CodeGen -->
         <PackageReference Update="CommandLineParser.FSharp" Version="2.7.82" />
         <PackageReference Update="Microsoft.FSharpLu.Json" Version="0.11.6" />

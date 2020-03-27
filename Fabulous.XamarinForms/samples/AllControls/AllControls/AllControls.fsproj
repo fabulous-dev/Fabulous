@@ -40,6 +40,7 @@
       <EmbeddedResource Include="styles.css" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="FSharp.Core" />
       <PackageReference Include="FSharp.Data" />
     </ItemGroup>
     <ItemGroup>

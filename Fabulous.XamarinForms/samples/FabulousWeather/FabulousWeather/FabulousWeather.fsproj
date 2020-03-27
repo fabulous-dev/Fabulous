@@ -8,6 +8,7 @@
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="FSharp.Data" />
     <PackageReference Include="Xamarin.Forms.PancakeView" />
   </ItemGroup>
