@@ -12,6 +12,7 @@
     <Compile Include="LiveUpdate.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Xamarin.Forms" />
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,6 @@
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\tests\PortaCodeTests.fs" />
     <Compile Include="..\..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
     <Compile Include="Tests.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dotnet.ProjInfo" />
@@ -38,6 +37,7 @@
 
   <!-- Fix these packages to a specific version, independently of Packages.target, to match the versions used by PortaCode tests -->
   <ItemGroup>
+    <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
     <PackageReference Update="FSharp.Core" Version="4.5.2" />
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>

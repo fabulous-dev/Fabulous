@@ -1,11 +1,10 @@
 {
   "assemblies": [
-    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
     
-    "packages/neutral/SkiaSharp/lib/netstandard1.3/SkiaSharp.dll",
-    "packages/neutral/SkiaSharp.Views/lib/MonoAndroid/SkiaSharp.Views.Android.dll",
-    "packages/neutral/SkiaSharp.Views.Forms/ref/netstandard1.3/SkiaSharp.Views.Forms.dll"
+    "packages/generator/SkiaSharp/lib/netstandard1.3/SkiaSharp.dll",
+    "packages/generator/SkiaSharp.Views.Forms/ref/netstandard1.3/SkiaSharp.Views.Forms.dll"
   ],
   "baseMappingFiles": [
     "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
