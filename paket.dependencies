@@ -1,4 +1,4 @@
-version 5.242.2
+version 5.243.0
 
 # dependencies used for retrieving FAKE and its modules
 group fakebuild
