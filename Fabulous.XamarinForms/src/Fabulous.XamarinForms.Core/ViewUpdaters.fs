@@ -733,16 +733,6 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> target.ClearValue Element.MenuProperty
 
-    let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
-        match prevValueOpt, currValueOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | ValueNone, ValueNone -> ()
-        | _, ValueSome currValue -> 
-            match currValue.TryValue with
-            | Some v -> IndicatorView.SetItemsSourceBy(target, v)
-            | None -> target.ClearValue IndicatorView.ItemsSourceByProperty
-        | ValueSome _, ValueNone -> target.ClearValue IndicatorView.ItemsSourceByProperty
-
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ISwipeItem

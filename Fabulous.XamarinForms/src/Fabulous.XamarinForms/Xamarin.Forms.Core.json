@@ -2766,12 +2766,6 @@
         },
         {
           "source": "SelectedIndicatorColor"
-        },
-        {
-          "source": null,
-          "name": "ItemsSourceBy",
-          "inputType": "ViewRef<Fabulous.XamarinForms.CustomCarouselView>",
-          "updateCode": "ViewUpdaters.updateIndicatorViewItemsSourceBy"
         }
       ]
     },
