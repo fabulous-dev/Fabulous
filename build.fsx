@@ -1,4 +1,14 @@
-#r "paket: groupref fakebuild //"
+#r "paket:
+  nuget Fake.Api.GitHub
+  nuget Fake.Core.ReleaseNotes
+  nuget Fake.Core.Target
+  nuget Fake.Core.Xml
+  nuget Fake.DotNet.Cli
+  nuget Fake.DotNet.MSBuild
+  nuget Fake.Dotnet.NuGet
+  nuget Fake.DotNet.Paket
+  nuget Fake.IO.FileSystem
+  nuget Newtonsoft.Json //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Api
@@ -370,7 +380,7 @@ Target.create "Release" ignore
 open Fake.Core.TargetOperators
 
 "Clean"
-    ==> "Restore"
+    //==> "Restore"
     ==> "FormatBindings"
     ==> "UpdateVersion"
     ==> "BuildTools"
