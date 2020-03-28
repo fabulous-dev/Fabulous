@@ -3,7 +3,7 @@
 GROUP androidapp
 RESTRICTION: == monoandroid10.0
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7.1)
     FSharp.Data (3.3.3)
       FSharp.Core (>= 4.3.4)
@@ -19,12 +19,11 @@ NUGET
       OxyPlot.Xamarin.Android (>= 1.0)
       Xamarin.Forms (>= 2.3.3.180)
     Plugin.MediaManager (0.9.7)
-      Xam.Plugins.Android.ExoPlayer (>= 2.9.8)
-      Xam.Plugins.Android.ExoPlayer.MediaSession (>= 2.9.8)
     Plugin.MediaManager.Forms (0.9.7)
       Plugin.MediaManager (>= 0.9.7)
       Xamarin.Forms (>= 4.5.0.356)
     SkiaSharp (1.68.1.1)
+      System.IO.UnmanagedMemoryStream (>= 4.3)
       System.Memory (>= 4.5.3)
     SkiaSharp.Views (1.68.1.1)
       SkiaSharp (>= 1.68.1.1)
@@ -33,30 +32,11 @@ NUGET
       SkiaSharp.Views (>= 1.68.1.1)
       Xamarin.Forms (>= 4.0.0.540366)
     System.Buffers (4.5.1)
+    System.IO.UnmanagedMemoryStream (4.3)
     System.Memory (4.5.4)
       System.Buffers (>= 4.5.1)
       System.Runtime.CompilerServices.Unsafe (>= 4.5.3)
     System.Runtime.CompilerServices.Unsafe (4.7.1)
-    Xam.Plugins.Android.ExoPlayer (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Dash (>= 2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Hls (>= 2.11.4)
-      Xam.Plugins.Android.ExoPlayer.SmoothStreaming (>= 2.11.4)
-      Xam.Plugins.Android.ExoPlayer.UI (>= 2.11.4)
-    Xam.Plugins.Android.ExoPlayer.Core (2.11.4)
-      Xamarin.AndroidX.Annotation (>= 1.1)
-    Xam.Plugins.Android.ExoPlayer.Dash (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-    Xam.Plugins.Android.ExoPlayer.Hls (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-    Xam.Plugins.Android.ExoPlayer.MediaSession (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-      Xamarin.AndroidX.Media (>= 1.1)
-    Xam.Plugins.Android.ExoPlayer.SmoothStreaming (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-    Xam.Plugins.Android.ExoPlayer.UI (2.11.4)
-      Xam.Plugins.Android.ExoPlayer.Core (>= 2.11.4)
-      Xamarin.AndroidX.Media (>= 1.1)
     Xamarin.Android.Arch.Core.Common (1.1.1.3)
       Xamarin.Android.Support.Annotations (28.0.0.3)
     Xamarin.Android.Arch.Core.Runtime (1.1.1.3)
@@ -79,6 +59,9 @@ NUGET
     Xamarin.Android.Arch.Lifecycle.ViewModel (1.1.1.3)
       Xamarin.Android.Support.Annotations (28.0.0.3)
     Xamarin.Android.FSharp.ResourceProvider (1.0.0.28)
+    Xamarin.Android.Support.Animated.Vector.Drawable (28.0.0.3)
+      Xamarin.Android.Support.Core.UI (28.0.0.3)
+      Xamarin.Android.Support.Vector.Drawable (28.0.0.3)
     Xamarin.Android.Support.Annotations (28.0.0.3)
     Xamarin.Android.Support.AsyncLayoutInflater (28.0.0.3)
       Xamarin.Android.Support.Annotations (28.0.0.3)
@@ -161,6 +144,18 @@ NUGET
       Xamarin.Android.Support.Core.Utils (28.0.0.3)
       Xamarin.Android.Support.Fragment (28.0.0.3)
       Xamarin.Android.Support.Media.Compat (28.0.0.3)
+    Xamarin.Android.Support.v7.AppCompat (28.0.0.3)
+      Xamarin.Android.Support.Animated.Vector.Drawable (28.0.0.3)
+      Xamarin.Android.Support.Annotations (28.0.0.3)
+      Xamarin.Android.Support.Collections (28.0.0.3)
+      Xamarin.Android.Support.Compat (28.0.0.3)
+      Xamarin.Android.Support.Core.Utils (28.0.0.3)
+      Xamarin.Android.Support.CursorAdapter (28.0.0.3)
+      Xamarin.Android.Support.Fragment (28.0.0.3)
+      Xamarin.Android.Support.Vector.Drawable (28.0.0.3)
+    Xamarin.Android.Support.Vector.Drawable (28.0.0.3)
+      Xamarin.Android.Support.Annotations (28.0.0.3)
+      Xamarin.Android.Support.Compat (28.0.0.3)
     Xamarin.Android.Support.VersionedParcelable (28.0.0.3)
       Xamarin.Android.Support.Annotations (28.0.0.3)
       Xamarin.Android.Support.Collections (28.0.0.3)
@@ -353,12 +348,7 @@ NUGET
       Xamarin.AndroidX.Lifecycle.LiveData (>= 2.1)
       Xamarin.Google.Android.Material (>= 1.0)
     Xamarin.Forms.Maps (4.5.0.495)
-      Xamarin.Android.Support.v4 (>= 28.0.0.3)
-      Xamarin.AndroidX.AppCompat (>= 1.1)
-      Xamarin.AndroidX.Legacy.Support.Core.UI (>= 1.0)
-      Xamarin.AndroidX.Legacy.Support.V4 (>= 1.0)
-      Xamarin.AndroidX.Lifecycle.LiveData (>= 2.1)
-      Xamarin.AndroidX.Migration (>= 1.0)
+      Xamarin.Android.Support.v7.AppCompat (>= 28.0.0.3)
       Xamarin.Forms (>= 4.5.0.495)
       Xamarin.GooglePlayServices.Maps (>= 71.1610)
     Xamarin.Forms.PancakeView (1.3.7)
@@ -393,7 +383,7 @@ GROUP fakebuild
 STORAGE: NONE
 RESTRICTION: == netstandard2.0
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     BlackFox.VsWhere (1.0)
       FSharp.Core (>= 4.2.3)
     dotnet-fake (5.18.3) - clitool: true
@@ -459,7 +449,7 @@ NUGET
       Fake.Core.String (>= 5.19.1)
       Fake.Core.Trace (>= 5.19.1)
       Fake.DotNet.MSBuild (>= 5.19.1)
-      Fake.Dotnet.NuGet (>= 5.19.1)
+      Fake.DotNet.NuGet (>= 5.19.1)
       Fake.IO.FileSystem (>= 5.19.1)
       FSharp.Core (>= 4.7)
       Mono.Posix.NETStandard (>= 1.0)
@@ -473,7 +463,7 @@ NUGET
       Fake.IO.FileSystem (>= 5.19.1)
       FSharp.Core (>= 4.7)
       MSBuild.StructuredLogger (>= 2.0.152)
-    Fake.Dotnet.NuGet (5.19.1)
+    Fake.DotNet.NuGet (5.19.1)
       Fake.Core.Environment (>= 5.19.1)
       Fake.Core.Process (>= 5.19.1)
       Fake.Core.SemVer (>= 5.19.1)
@@ -1102,7 +1092,7 @@ NUGET
 GROUP generator
 RESTRICTION: == netstandard2.0
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     Microsoft.NETCore.Platforms (3.1)
     Microsoft.NETCore.Targets (3.1)
     NETStandard.Library (2.0.3)
@@ -1209,7 +1199,7 @@ NUGET
 GROUP gtkapp
 RESTRICTION: == net471
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7.1)
     FSharp.Data (3.3.3)
       FSharp.Core (>= 4.0.0.1)
@@ -1260,7 +1250,7 @@ NUGET
 GROUP iosapp
 RESTRICTION: == xamarinios
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7.1)
     FSharp.Data (3.3.3)
       FSharp.Core (>= 4.3.4)
@@ -1302,7 +1292,7 @@ NUGET
 GROUP macosapp
 RESTRICTION: == xamarinmac
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7.1)
     FSharp.Data (3.3.3)
       FSharp.Core (>= 4.3.4)
@@ -1354,7 +1344,7 @@ GITHUB
 GROUP wpfapp
 RESTRICTION: == net472
 NUGET
-  remote: https://api.nuget.org/v3/index.json
+  remote: https://www.nuget.org/api/v2
     FSharp.Core (4.7.1)
     FSharp.Data (3.3.3)
       FSharp.Core (>= 4.0.0.1)
