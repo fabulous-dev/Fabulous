@@ -1637,6 +1637,9 @@
         },
         {
           "source": "Position"
+        },
+        {
+          "source": "IndicatorView"
         }
       ],
       "events": [
@@ -2376,6 +2379,9 @@
         },
         {
           "source": "Value"
+        },
+        {
+          "source": "StepperPosition"
         }
       ],
       "events": [
@@ -2848,6 +2854,76 @@
         },
         {
           "source": "SwipeStarted"
+        }
+      ]
+    },
+    {
+      "types": "Xamarin.Forms.MediaElement",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "AutoPlay"
+        },
+        {
+          "source": "BufferingProgress"
+        },
+        {
+          "source": "CurrentState"
+        },
+        {
+          "source": "Duration"
+        },
+        {
+          "source": "IsLooping"
+        },
+        {
+          "source": "KeepScreenOn"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "ShowsPlaybackControls"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "VideoHeight"
+        },
+        {
+          "source": "VideoWidth"
+        },
+        {
+          "source": "Volume"
+        }
+      ],
+      "events": [
+        {
+          "source": "MediaEnded"
+        },
+        {
+          "source": "MediaFailed"
+        },
+        {
+          "source": "MediaOpened"
+        },
+        {
+          "source": "PositionRequested"
+        },
+        {
+          "source": "SeekCompleted"
+        },
+        {
+          "source": "SeekRequested"
+        },
+        {
+          "source": "StateRequested"
+        },
+        {
+          "source": "VolumeRequested"
         }
       ]
     }
