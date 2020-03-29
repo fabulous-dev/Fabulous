@@ -538,62 +538,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.MediaElement",
-      "properties": [
-        {
-          "source": "Aspect"
-        },
-        {
-          "source": "AutoPlay"
-        },
-        {
-          "source": "IsLooping"
-        },
-        {
-          "source": "KeepScreenOn"
-        },
-        {
-          "source": "Position"
-        },
-        {
-          "source": "ShowsPlaybackControls"
-        },
-        {
-          "source": "Source",
-          "inputType": "ViewElement"
-        },
-        {
-          "source": "Volume"
-        }
-      ],
-      "events": [
-        {
-          "source": "MediaEnded"
-        },
-        {
-          "source": "MediaFailed"
-        },
-        {
-          "source": "MediaOpened"
-        },
-        {
-          "source": "PositionRequested"
-        },
-        {
-          "source": "SeekCompleted"
-        },
-        {
-          "source": "SeekRequested"
-        },
-        {
-          "source": "StateRequested"
-        },
-        {
-          "source": "VolumeRequested"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.NavigableElement",
       "canBeInstantiated": false,
       "properties": [
@@ -646,7 +590,7 @@
         {
           "source": null,
           "name": "ShellPresentationMode",
-          "inputType": "bool",
+          "inputType": "Xamarin.Forms.PresentationMode",
           "updateCode": "ViewUpdaters.updateShellPresentationMode"
         },
         {
@@ -2491,7 +2435,8 @@
           "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
         },
         {
-          "source": "StepperPosition"
+          "source": "StepperPosition",
+          "updateCode": "ViewUpdaters.updateStepperPosition"
         },
         {
           "source": "Value"
@@ -2967,6 +2912,62 @@
         },
         {
           "source": "SwipeStarted"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MediaElement",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "AutoPlay"
+        },
+        {
+          "source": "IsLooping"
+        },
+        {
+          "source": "KeepScreenOn"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "ShowsPlaybackControls"
+        },
+        {
+          "source": "Source",
+          "inputType": "ViewElement"
+        },
+        {
+          "source": "Volume"
+        }
+      ],
+      "events": [
+        {
+          "source": "MediaEnded"
+        },
+        {
+          "source": "MediaFailed"
+        },
+        {
+          "source": "MediaOpened"
+        },
+        {
+          "source": "PositionRequested"
+        },
+        {
+          "source": "SeekCompleted"
+        },
+        {
+          "source": "SeekRequested"
+        },
+        {
+          "source": "StateRequested"
+        },
+        {
+          "source": "VolumeRequested"
         }
       ]
     }
