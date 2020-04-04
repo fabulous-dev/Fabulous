@@ -217,7 +217,7 @@
       <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Essentials">
-      <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\monoandroid90\Xamarin.Essentials.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\MonoAndroid10.0\Xamarin.Essentials.dll</HintPath>
     </Reference>
     <Reference Include="Fabulous">
       <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
