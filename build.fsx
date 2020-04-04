@@ -380,7 +380,7 @@ Target.create "Release" ignore
 open Fake.Core.TargetOperators
 
 "Clean"
-    //==> "Restore"
+    ==> "Restore"
     ==> "FormatBindings"
     ==> "UpdateVersion"
     ==> "BuildTools"
