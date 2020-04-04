@@ -1,12 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.52.0</Version>
+    <Version>0.53.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.52.0</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Added support for Xamarin.Forms 4.4 (https://github.com/fsprojects/Fabulous/pull/644)
-[Fabulous.XamarinForms] Fixed an issue with Minimum/Maximum in Slider/Stepper (https://github.com/fsprojects/Fabulous/pull/640 &amp; https://github.com/fsprojects/Fabulous/pull/643)
-[Fabulous.XamarinForms] [Extensions] Changed the `ref` parameter to be a typed ViewRef in extensions (https://github.com/fsprojects/Fabulous/pull/636)</PackageReleaseNotes>
+    <PackageVersion>0.53.0-pre2</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] [Templates] Migrated template to Android 10</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

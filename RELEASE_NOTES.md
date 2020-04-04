@@ -1,3 +1,7 @@
+#### 0.53.0-pre3
+
+* [Fabulous.XamarinForms] [Templates] Migrated template to Android 10
+
 #### 0.52.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.4 (https://github.com/fsprojects/Fabulous/pull/644)

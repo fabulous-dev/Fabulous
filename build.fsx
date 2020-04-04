@@ -426,12 +426,12 @@ open Fake.Core.TargetOperators
     ==> "PackFabulousXamarinFormsExtensions"
     ==> "Pack"
 
-"Build"
-    ==> "BuildFabulousXamarinFormsSamples"
-    ==> "RunFabulousXamarinFormsSamplesTests"
-    ==> "BuildFabulousStaticViewSamples"
-    ==> "TestSamples"
-    ==> "Test"
+// "Build"
+//     ==> "BuildFabulousXamarinFormsSamples"
+//     ==> "RunFabulousXamarinFormsSamplesTests"
+//     ==> "BuildFabulousStaticViewSamples"
+//     ==> "TestSamples"
+//     ==> "Test"
 
 "Pack"
     ==> "TestTemplatesNuGet"
