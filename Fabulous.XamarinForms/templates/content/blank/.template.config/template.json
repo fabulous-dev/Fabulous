@@ -120,31 +120,19 @@
       "type": "parameter",
       "datatype": "string",
       "replaces": "AndroidSDKVersion",
-      "defaultValue": "v9.0"
+      "defaultValue": "v10.0"
     },
     "TargetAndroidAPI": {
       "type": "parameter",
       "datatype": "string",
       "replaces": "TargetAndroidAPI",
-      "defaultValue": "28"
+      "defaultValue": "29"
     },
     "MinAndroidAPI": {
       "type": "parameter",
       "datatype": "int",
       "replaces": "MinAndroidAPI",
       "defaultValue": "21"
-    },
-    "XamarinAndroidSdkVersion": {
-      "type": "parameter",
-      "datatype": "string",
-      "replaces": "XamarinAndroidSdkVersion",
-      "defaultValue": "28.0.0.3"
-    },
-    "XamarinAndroidArchVersion": {
-      "type": "parameter",
-      "datatype": "string",
-      "replaces": "XamarinAndroidArchVersion",
-      "defaultValue": "1.1.1.3"
     },
     "XamarinEssentialsSdk": {
       "type": "parameter",
@@ -156,7 +144,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "4.4.0.991864"
+      "defaultValue": "4.5.0.530"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
