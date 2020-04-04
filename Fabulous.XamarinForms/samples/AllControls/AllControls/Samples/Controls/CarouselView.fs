@@ -7,14 +7,13 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 module CarouselView =
-    let carouselRef = ViewRef<CustomCarouselView>()
+    let indicatorRef = ViewRef<IndicatorView>()
         
     let carouselViewView () =
         View.NonScrollingContentPage(
             title = "CarouselView & IndicatorView sample",
             content = View.StackLayout([
                 View.CarouselView(
-                    ref = carouselRef,
                     margin = Thickness 10.,
                     verticalOptions = LayoutOptions.FillAndExpand,
                     items = [
@@ -31,7 +30,7 @@ module CarouselView =
                             )
                     ]
                 )
-                View.IndicatorView(itemsSourceBy = carouselRef)
+                View.IndicatorView(ref=indicatorRef)
             ])
         )
     

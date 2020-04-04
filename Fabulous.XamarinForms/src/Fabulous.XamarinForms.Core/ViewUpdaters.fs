@@ -747,11 +747,18 @@ module ViewUpdaters =
         | _, ValueSome currValue -> 
             match currValue.TryValue with
             | Some v -> target.IndicatorView <- v
-            | None -> target.ClearValue CarouselView.IndicatorViewProperty
-        | ValueSome _, ValueNone -> target.ClearValue CarouselView.IndicatorViewProperty
+            | None -> target.IndicatorView <- null
+        | ValueSome _, ValueNone -> target.IndicatorView <- null
 
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ISwipeItem
 
         updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let updateStepperPosition prevStepperPositionOpt currStepperPositionOpt (target: Xamarin.Forms.Stepper) =
+        match prevStepperPositionOpt, currStepperPositionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.StepperPosition <-  currValue
+        | ValueSome _, ValueNone -> target.StepperPosition <- 0
+        | ValueNone, ValueNone -> ()

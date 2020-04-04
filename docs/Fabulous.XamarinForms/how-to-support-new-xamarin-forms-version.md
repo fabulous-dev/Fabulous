@@ -1,5 +1,5 @@
 1. In `Packages.targets`
-    - update Xamarin.Forms, Xamarin.Forms.Maps to new latest lowest major version (for example, Xamarin.Forms 4.5.0 the lowest major version is `4.5.0.356`)
+    - update Xamarin.Forms, Xamarin.Forms.Maps to new latest lowest major version (for example, Xamarin.Forms 4.5.0 the lowest major version is `4.5.0.495`)
     - update Xamarin.Forms.Platform.WPF, Xamarin.Forms.Maps.WPF to the latest version (e.g. `4.5.0.495` as of March 27th 2020)
 2. In `paket.dependencies`
     - update all Xamarin.Forms and related packages to new major version (e.g. `<= 4.6.0`)

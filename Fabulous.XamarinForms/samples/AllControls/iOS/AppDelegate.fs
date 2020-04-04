@@ -14,7 +14,7 @@ type AppDelegate () =
 
     override this.FinishedLaunching (uiApp, options) =
         Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"; 
-                                        "IndicatorView_Experimental"; "SwipeView_Experimental"|]);
+                                        "IndicatorView_Experimental"; "SwipeView_Experimental"; "MediaElement_Experimental"|]);
         Forms.Init()
         Xamarin.FormsMaps.Init() 
         OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init()
