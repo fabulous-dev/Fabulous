@@ -2895,7 +2895,9 @@
         },
         {
           "source": "Source",
-          "inputType": "ViewElement"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Media",
+          "updateCode": "ViewUpdaters.updateMediaSource",
+          //"convertInputToModel": "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource"
         },
         {
           "source": "Volume"

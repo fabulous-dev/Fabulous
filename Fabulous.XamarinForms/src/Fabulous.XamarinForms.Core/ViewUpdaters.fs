@@ -762,3 +762,10 @@ module ViewUpdaters =
         | _, ValueSome currValue -> target.StepperPosition <-  currValue
         | ValueSome _, ValueNone -> target.StepperPosition <- 0
         | ValueNone, ValueNone -> ()
+
+    let updateMediaSource prevMediaSource currMediaSource (target: Xamarin.Forms.MediaElement) =
+        match prevMediaSource, currMediaSource with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Source <- ViewConverters.convertFabulousMediaToXamarinFormsMediaSource currValue
+        | ValueSome _, ValueNone -> target.ClearValue Xamarin.Forms.MediaElement.SourceProperty
+        | ValueNone, ValueNone -> ()

@@ -32,6 +32,7 @@ module Samples =
                           Nodes =
                               [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
+                                Sample (createViewOnlyDefinition "MediaView" Controls.MediaView.view)
                                 Sample
                                     ({ Title = "ScrollView"
                                        Init = Controls.ScrollView.init
