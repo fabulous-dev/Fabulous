@@ -1,8 +1,12 @@
-﻿namespace Droid
-open System.Reflection
-open System.Runtime.CompilerServices
+﻿namespace Calculator.Android
 
-[<assembly: AssemblyTitle("Droid")>]
+open System.Reflection
+
+// the name of the type here needs to match the name inside the ResourceDesigner attribute
+type Resources = Calculator.Android.Resource
+
+[<assembly:Android.Runtime.ResourceDesigner("Calculator.Android.Resource", IsApplication = true)>]
+[<assembly: AssemblyTitle("Calculator.Android")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

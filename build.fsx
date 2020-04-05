@@ -326,7 +326,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         for p in ["Any CPU"; "iPhoneSimulator"] do
             let sln = sprintf "%s/%s.sln" testAppName testAppName
             let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)] |> addJDK
-            MSBuild.run id "" "Clean,Build" properties [sln] |> Trace.logItems ("Build-Output: ")
+            MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
 Target.create "CreateGitHubRelease" (fun _ ->
@@ -426,12 +426,12 @@ open Fake.Core.TargetOperators
     ==> "PackFabulousXamarinFormsExtensions"
     ==> "Pack"
 
-// "Build"
-//     ==> "BuildFabulousXamarinFormsSamples"
-//     ==> "RunFabulousXamarinFormsSamplesTests"
-//     ==> "BuildFabulousStaticViewSamples"
-//     ==> "TestSamples"
-//     ==> "Test"
+"Build"
+    ==> "BuildFabulousXamarinFormsSamples"
+    ==> "RunFabulousXamarinFormsSamplesTests"
+    ==> "BuildFabulousStaticViewSamples"
+    ==> "TestSamples"
+    ==> "Test"
 
 "Pack"
     ==> "TestTemplatesNuGet"
