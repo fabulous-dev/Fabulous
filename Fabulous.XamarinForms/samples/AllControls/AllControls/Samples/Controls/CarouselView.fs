@@ -14,6 +14,7 @@ module CarouselView =
             title = "CarouselView & IndicatorView sample",
             content = View.StackLayout([
                 View.CarouselView(
+                    indicatorView=indicatorRef,
                     margin = Thickness 10.,
                     verticalOptions = LayoutOptions.FillAndExpand,
                     items = [

@@ -19,6 +19,7 @@ type AppDelegate() =
 
     override this.DidFinishLaunching(notification: NSNotification) =
         Forms.Init()
+        Forms.SetFlags([|"MediaElement_Experimental"|])
         Xamarin.FormsMaps.Init() 
         //OxyPlot.Xamarin.Forms.Platform.macOS.PlotViewRenderer.Init()
         FFImageLoading.Forms.Platform.CachedImageRenderer.Init()

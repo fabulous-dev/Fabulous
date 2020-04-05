@@ -43,6 +43,7 @@ namespace AllControls.UWP
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 var assembliesToInclude = new [] { typeof(Xamarin.Forms.Maps.UWP.MapRenderer).Assembly };
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude);
+                Forms.SetFlags(new string[] { "MediaElement_Experimental" });
 
                 Xamarin.FormsMaps.Init("ENTER-YOUR-KEY-HERE");
 
