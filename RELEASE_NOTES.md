@@ -1,4 +1,4 @@
-#### 0.53.0-pre3
+#### 0.53.0-pre5
 
 * [Fabulous.XamarinForms] [Templates] Migrated template to Android 10
 

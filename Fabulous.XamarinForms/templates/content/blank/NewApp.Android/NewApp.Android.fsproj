@@ -19,6 +19,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <RestorePackages>true</RestorePackages>
     <!--#if (MinAndroidAPI >= 21)
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <#endif-->
@@ -236,7 +237,6 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\.nuget\NuGet.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\packages\Xamarin.AndroidX.MultiDex.2.0.1\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\packages\Xamarin.AndroidX.MultiDex.2.0.1\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.targets')" />
@@ -281,4 +281,5 @@
   <Import Project="..\packages\Xamarin.AndroidX.Transition.1.2.0\build\monoandroid90\Xamarin.AndroidX.Transition.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Transition.1.2.0\build\monoandroid90\Xamarin.AndroidX.Transition.targets')" />
   <Import Project="..\packages\Xamarin.Google.Android.Material.1.0.0\build\monoandroid90\Xamarin.Google.Android.Material.targets" Condition="Exists('..\packages\Xamarin.Google.Android.Material.1.0.0\build\monoandroid90\Xamarin.Google.Android.Material.targets')" />
   <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
+  <Import Project="..\.nuget\NuGet.targets" />
 </Project>
