@@ -44,6 +44,14 @@ module ViewConverters =
         | Path path -> ImageSource.op_Implicit path
         | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
         | Source imageSource -> imageSource
+        | Stream streamSource -> ImageSource.FromStream(fun () -> streamSource)
+        | ImageFile file -> ImageSource.FromFile(file)
+        | ImageUri uri -> ImageSource.FromUri(System.Uri(uri))
+
+    let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media) =
+        match v with
+        | File file -> MediaSource.FromFile(file)
+        | Uri uri -> MediaSource.FromUri(System.Uri(uri))
                 
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =

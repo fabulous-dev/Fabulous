@@ -11,6 +11,13 @@ module InputTypes =
         | Bytes of byte[]
         /// An already defined ImageSource
         | Source of Xamarin.Forms.ImageSource
+        | Stream of System.IO.Stream
+        | ImageUri of string
+        | ImageFile of string
+
+    type Media =
+        | File of string
+        | Uri of string
     
     /// Represents a dimension for either the row or column definition of a Grid    
     type Dimension =

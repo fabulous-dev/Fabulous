@@ -1676,11 +1676,6 @@
           "source": "CurrentItem"
         },
         {
-          "source": "IndicatorView",
-          "inputType": "ViewRef<Xamarin.Forms.IndicatorView>",
-          "updateCode": "ViewUpdaters.updateCarouselViewIndicatorView"
-        },
-        {
           "source": "IsBounceEnabled"
         },
         {
@@ -1697,6 +1692,12 @@
         },
         {
           "source": "Position"
+        },
+        {
+          "source": null,
+          "name": "indicatorView",
+          "inputType": "ViewRef<Xamarin.Forms.IndicatorView>",
+          "updateCode": "ViewUpdaters.updateCarouselViewIndicatorView"
         }
       ],
       "events": [
