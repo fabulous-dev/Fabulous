@@ -1,13 +1,12 @@
-﻿namespace TicTacToe.Droid
+﻿namespace TicTacToe.Android
 
 open System.Reflection
-open System.Runtime.CompilerServices
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
-type Resources = TicTacToe.Droid.Resource
-[<assembly: Android.Runtime.ResourceDesigner("TicTacToe.Droid.Resources", IsApplication=true)>]
+type Resources = TicTacToe.Android.Resource
 
-[<assembly: AssemblyTitle("TicTacToe.Droid")>]
+[<assembly:Android.Runtime.ResourceDesigner("TicTacToe.Android.Resource", IsApplication = true)>]
+[<assembly: AssemblyTitle("TicTacToe.Android")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

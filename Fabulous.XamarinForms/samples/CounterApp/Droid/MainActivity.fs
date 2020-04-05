@@ -1,7 +1,5 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Droid
-
-open System
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+namespace CounterApp.Android
 
 open Android.App
 open Android.Content
@@ -12,13 +10,22 @@ open Android.Widget
 open Android.OS
 open Xamarin.Forms.Platform.Android
 
-[<Activity (Label = "CounterApp.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "CounterApp", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
-    inherit FormsApplicationActivity()
-    override this.OnCreate (bundle: Bundle) =
-        base.OnCreate (bundle)
+    inherit FormsAppCompatActivity()
 
-        Xamarin.Forms.Forms.Init (this, bundle)
+    override this.OnCreate(bundle: Bundle) =
+        FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
+        
+        base.OnCreate(bundle)
 
-        this.LoadApplication (new CounterApp.CounterApp ())
+        Xamarin.Essentials.Platform.Init(this, bundle)
+        Xamarin.Forms.Forms.Init(this, bundle)
 
+        this.LoadApplication (CounterApp.CounterApp ())
+
+    override this.OnRequestPermissionsResult(requestCode: int, permissions: string[], [<GeneratedEnum>] grantResults: Android.Content.PM.Permission[]) =
+        Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        base.OnRequestPermissionsResult(requestCode, permissions, grantResults)
