@@ -474,14 +474,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.FileImageSource",
-      "properties": [
-        {
-          "source": "File"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.FontImageSource",
       "properties": [
         {
@@ -499,42 +491,6 @@
       ],
       "primaryConstructorMembers": [
         "Glyph"
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.StreamImageSource",
-      "properties": [
-        {
-          "source": "Stream"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.UriImageSource",
-      "properties": [
-        {
-          "source": "Uri",
-          "inputType": "string",
-          "convertInputToModel": "System.Uri"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.FileMediaSource",
-      "properties": [
-        {
-          "source": "File"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.UriMediaSource",
-      "properties": [
-        {
-          "source": "Uri",
-          "inputType": "string",
-          "convertInputToModel": "System.Uri"
-        }
       ]
     },
     {
