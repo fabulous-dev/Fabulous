@@ -9,7 +9,7 @@ This library allows you to use the ultra-simple Model-View-Update architecture t
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
 
-Note that this page offers an overview of Fabulous. For detailed guides to different parts of the library, please visit the respective pages via the links below:
+Note that this is just a "Getting Started" page for Fabulous. For detailed guides to different parts of the library, please visit the respective pages via the links below:
 
 {% include_relative contents.md %}
 
