@@ -4,7 +4,11 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="WeatherSamples\current-weather.json" />
+    <None Include="WeatherSamples\hourly-forecast.json" />
     <Compile Include="PancakeViewExtensions.fs" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="WeatherApi.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,8 @@ type AppDelegate () =
     inherit FormsApplicationDelegate ()
 
     override this.FinishedLaunching (app, options) =
+        UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.LightContent, true)
+        Forms.SetFlags("IndicatorView_Experimental")
         Forms.Init()
         this.LoadApplication (new FabulousWeather.App())
         base.FinishedLaunching(app, options)

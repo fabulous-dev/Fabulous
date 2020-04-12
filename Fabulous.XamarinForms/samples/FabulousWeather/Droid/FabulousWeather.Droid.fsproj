@@ -146,7 +146,9 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\spaceneedle.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\seattle.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\new_york.png" />
+    <AndroidResource Include="Resources\drawable-nodpi\paris.png" />
     <None Include="Properties\AndroidManifest.xml" />
     <Compile Include="Properties\AssemblyInfo.fs" />
     <Compile Include="MainActivity.fs" />
