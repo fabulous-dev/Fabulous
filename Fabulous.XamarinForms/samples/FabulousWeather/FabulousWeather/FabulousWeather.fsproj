@@ -9,6 +9,8 @@
     <Compile Include="PancakeViewExtensions.fs" />
     <Compile Include="Helpers.fs" />
     <Compile Include="WeatherApi.fs" />
+    <Compile Include="Styles.fs" />
+    <Compile Include="CityView.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>

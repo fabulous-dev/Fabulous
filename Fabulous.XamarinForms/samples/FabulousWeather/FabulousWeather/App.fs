@@ -7,64 +7,19 @@ open Fabulous.XamarinForms.LiveUpdate
 open WeatherApi
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 open Xamarin.Forms
-
-module AppStyles =
-    let coldStartColor = Color.FromHex("#BDE3FA")
-    let coldEndColor = Color.FromHex("#A5C9FD")
-    let WarmStartColor = Color.FromHex("#F6CC66")
-    let WarmEndColor  = Color.FromHex("#FCA184")
-    let NightStartColor = Color.FromHex("#172941")
-    let NightEndColor = Color.FromHex("#3C6683")
-    let MainTextColor = Color.White
-    let itemStartColor = Color.FromHex("#98FFFFFF")
-    let itemEndColor = Color.FromHex("#60FFFFFF")
-    
-    let getStartGradientColor temp =
-        if temp > 288<kelvin> then 
-            WarmStartColor
-        else if temp < 199<kelvin> then 
-            NightStartColor
-        else
-            coldStartColor
-
-    let getEndGradientColor temp =
-        if temp > 288<kelvin> then 
-            WarmEndColor
-        else if temp < 199<kelvin> then 
-            NightEndColor
-        else
-            coldEndColor
-
-    let createLabel value =
-        View.Label(
-            text = value,
-            fontSize = FontSize 100.,
-            horizontalOptions = LayoutOptions.Center,
-            textColor = MainTextColor
-        )
+open CityView
 
 module App =
-    type WeatherData =
-        { Date: DateTime
-          Temperature: int<kelvin>
-          WeatherKind: WeatherKind
-          HourlyForecast: HourlyForecastValue list }
-        
-    type CityData = 
-        { Name: string
-          Data: WeatherData option
-          IsRefreshing: bool }
-        
     type Model =
-        { CurrentCityName: string
-          Cities: CityData list }
+        { CurrentCityIndex: int
+          Cities: CityData array }
         
     type Msg =
-        | CurrentCityChanged of cityName: string
-        | RequestRefresh of cityName: string
-        | WeatherRefreshed of cityName: string * WeatherData
+        | CurrentCityChanged of cityIndex: int
+        | RequestRefresh of cityIndex: int
+        | WeatherRefreshed of cityIndex: int * WeatherData
 
-    let getWeatherForCityAsync cityName =
+    let getWeatherForCityAsync index cityName =
         async {
             let! currentWeather = WeatherApi.getCurrentWeatherForCityAsync cityName
             let! hourlyForecast = WeatherApi.getHourlyForecastForCityAsync cityName
@@ -75,173 +30,117 @@ module App =
                   WeatherKind = currentWeather.WeatherKind
                   HourlyForecast = hourlyForecast.Values }
                 
-            return WeatherRefreshed (cityName, model)
+            return WeatherRefreshed (index, model)
         } |> Cmd.ofAsyncMsg
                 
     let initModel =
-        { CurrentCityName = "Seattle"
+        { CurrentCityIndex = 0
           Cities =
-            [ { Name = "Seattle"
-                Data = None
-                IsRefreshing = true }
-              { Name = "New York"
-                Data = None
-                IsRefreshing = true }
-              { Name = "Paris"
-                Data = None
-                IsRefreshing = true } ] }
+            [| { Name = "Seattle"
+                 Data = None
+                 IsRefreshing = true }
+               { Name = "New York"
+                 Data = None
+                 IsRefreshing = true }
+               { Name = "Paris"
+                 Data = None
+                 IsRefreshing = true } |] }
         
-    let initial() =
+    let init() =
         let cmd = Cmd.batch [
-            for city in initModel.Cities ->
-                getWeatherForCityAsync city.Name
+            for i in 0 .. initModel.Cities.Length - 1 ->
+                getWeatherForCityAsync i initModel.Cities.[i].Name
         ]
         
         initModel, cmd
 
     let update msg model =
         match msg with
-        | CurrentCityChanged cityName ->
-            { model with CurrentCityName = cityName }, Cmd.none
+        | CurrentCityChanged index ->
+            { model with CurrentCityIndex = index }, Cmd.none
             
-        | RequestRefresh cityName ->
+        | RequestRefresh index ->
             let updatedCities =
                 model.Cities
-                |> List.map (fun c -> if c.Name = cityName then { c with IsRefreshing = true } else c)
-            
-            let cmd = getWeatherForCityAsync cityName
+                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = true } else c)
+
+            let cmd = getWeatherForCityAsync index model.Cities.[index].Name
             
             { model with Cities = updatedCities }, cmd
             
-        | WeatherRefreshed (cityName, data) ->
+        | WeatherRefreshed (index, data) ->
             let updatedCities =
                 model.Cities
-                |> List.map (fun c -> if c.Name = cityName then { c with IsRefreshing = false; Data = Some data } else c)
+                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = false; Data = Some data } else c)
             
             { model with Cities = updatedCities }, Cmd.none
 
-    let loadingView (cityName: string) =
-        dependsOn cityName (fun _ cityName ->
-            View.StackLayout([
-                View.Label(
-                    text = cityName.ToUpper(),
-                    fontSize = Named NamedSize.Title,
-                    horizontalOptions = LayoutOptions.Center,
-                    padding = Thickness(0., 20., 0., 0.),
-                    textColor = AppStyles.MainTextColor
-                )
-                View.ActivityIndicator(
-                    horizontalOptions = LayoutOptions.Center,
-                    verticalOptions = LayoutOptions.CenterAndExpand,
-                    isRunning = true
-                )
-            ])
-        )
-        
-    let loadedView (cityName: string, isRefreshing: bool, data: WeatherData) dispatch =
-        dependsOn (cityName, isRefreshing, data) (fun _ (cityName, isRefreshing, data) ->
-            // Event handlers
-            let onRefreshing () = dispatch (RequestRefresh cityName)
+    // View using a Grid with Previous/Next button to switch between cities (for when CarouselView is not available)
+    let previousNextView model dispatch =
+        // Event handlers
+        let onPreviousButtonClicked () =
+            let previousIndex = Math.Max(0, model.CurrentCityIndex - 1)
+            dispatch (CurrentCityChanged previousIndex)
+
+        let onNextButtonClicked () =
+            let nextIndex = Math.Min(model.CurrentCityIndex + 1, model.Cities.Length - 1)
+            dispatch (CurrentCityChanged nextIndex)
+
+        // UI
+        View.Grid([
+            yield cityView model.CurrentCityIndex model.Cities.[model.CurrentCityIndex] (RequestRefresh >> dispatch)
             
-            // UI
-            View.RefreshView(
-                isRefreshing = isRefreshing,
-                refreshing = onRefreshing,
-                content =
-                    View.ScrollView(
-                        View.Grid(
-                            padding = Thickness(20., 0.),
-                            rowdefs = [ Auto; Star; Auto; Auto; Auto; Absolute 135. ],
-                            children = [
-                                View.Label(
-                                    text = cityName.ToUpper(),
-                                    fontSize = FontSize 30.,
-                                    horizontalOptions = LayoutOptions.Center,
-                                    padding = Thickness(0., 20., 0., 0.),
-                                    textColor = AppStyles.MainTextColor
-                                )
-                                
-                                View.Image(
-                                    source = Path (sprintf "%s.png" (cityName.Replace(" ", "_").ToLower())),
-                                    opacity = 0.8, 
-                                    verticalOptions = LayoutOptions.FillAndExpand
-                                ).Row(1)
-                                
-                                View.Label(
-                                    text = (Helpers.kelvinToRoundedFahrenheit data.Temperature).ToString() + "°",
-                                    margin = Thickness(30., 0., 0., 0.),
-                                    horizontalTextAlignment = TextAlignment.Center,
-                                    textColor = AppStyles.MainTextColor,
-                                    fontSize = FontSize 100.
-                                ).Row(2)
-                                
-                                View.Label(
-                                    text = data.WeatherKind.ToString().ToUpper(),
-                                    fontSize = FontSize 25.,
-                                    horizontalOptions = LayoutOptions.Center,
-                                    margin = Thickness(0., 10., 0., 0.),
-                                    textColor = AppStyles.MainTextColor
-                                ).Row(3)
-                                
-                                View.Label(
-                                    text = data.Date.ToString("dddd, MMMM dd, yyyy, h:mm tt").ToUpper(),
-                                    fontSize = FontSize 15.,
-                                    horizontalOptions = LayoutOptions.Center,
-                                    textColor = AppStyles.MainTextColor
-                                ).Row(4)
-                                
-                                View.StackLayout(
-                                    orientation = StackOrientation.Horizontal,
-                                    horizontalOptions = LayoutOptions.Center,
-                                    margin = Thickness(0., 30., 0., 0.),
-                                    children = [
-                                        for forecast in data.HourlyForecast ->
-                                            View.PancakeView(
-                                                width = 50.,
-                                                height = 130.,
-                                                padding = Thickness(10.),
-                                                backgroundGradientStartColor = Color.FromHex("#22EDEDED"),
-                                                backgroundGradientEndColor = Color.FromHex("#44EDEDED"),
-                                                backgroundGradientAngle = 315,
-                                                cornerRadius = CornerRadius(10.),
-                                                content =
-                                                    View.StackLayout(
-                                                        spacing = 0.,
-                                                        children = [
-                                                            View.Label(
-                                                                text = forecast.Date.ToString("h tt").ToLower(),
-                                                                textColor = Color.White,
-                                                                horizontalTextAlignment = TextAlignment.Center
-                                                            )
-                                                            View.Image(
-                                                                horizontalOptions = LayoutOptions.Center,
-                                                                verticalOptions = LayoutOptions.CenterAndExpand,
-                                                                source = Path (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
-                                                                aspect = Aspect.AspectFit
-                                                            )
-                                                            View.Label(
-                                                                text = (Helpers.kelvinToRoundedFahrenheit forecast.Temperature).ToString() + "°",
-                                                                textColor = Color.White,
-                                                                horizontalTextAlignment = TextAlignment.Center
-                                                            )
-                                                        ]
-                                                    )
-                                            )
-                                    ]
-                                ).Row(5)
-                            ]
-                        )
-                    )
-            )
-        ) 
+            if model.CurrentCityIndex > 0 then
+                yield View.Button(
+                    text = "Previous",
+                    command = onPreviousButtonClicked,
+                    horizontalOptions = LayoutOptions.Start,
+                    verticalOptions = LayoutOptions.Start,
+                    textColor = Styles.MainTextColor
+                )
+
+            if model.CurrentCityIndex < model.Cities.Length - 1 then
+                yield View.Button(
+                    text = "Next",
+                    command = onNextButtonClicked,
+                    horizontalOptions = LayoutOptions.End,
+                    verticalOptions = LayoutOptions.Start,
+                    textColor = Styles.MainTextColor
+                )
+        ])
         
+        
+    // View using CarouselView (available on Android and iOS only)
     let carouselViewRef = ViewRef<CustomCarouselView>()
+    let carouselView model dispatch =
+        // Event handlers
+        let onCarouselViewCurrentItemChanged (args: CurrentItemChangedEventArgs) =
+            let viewElementHolder = args.CurrentItem :?> ViewElementHolder
+            let cityIndex = viewElementHolder.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> int
+            dispatch (CurrentCityChanged cityIndex)
+            
+        // UI
+        View.Grid([
+            View.CarouselView(
+                ref = carouselViewRef,
+                currentItemChanged = onCarouselViewCurrentItemChanged,
+                verticalOptions = LayoutOptions.FillAndExpand,
+                items = [
+                    for i in 0 .. model.Cities.Length - 1 ->
+                        cityView i model.Cities.[i] (RequestRefresh >> dispatch)
+                ]
+            )
+            View.IndicatorView(
+                itemsSourceBy = carouselViewRef,
+                verticalOptions = LayoutOptions.End,
+                margin = Thickness(0., 0., 0., 20.)
+            )
+        ])
     
+    // Root view
     let view (model: Model) dispatch =
         let temperatureOfCurrentCity =
-            model.Cities
-            |> List.tryFind (fun c -> c.Name = model.CurrentCityName)
-            |> Option.bind (fun c -> c.Data)
+            model.Cities.[model.CurrentCityIndex].Data
             |> Option.map (fun d -> d.Temperature)
             |> Option.defaultValue 0<kelvin>
             
@@ -249,55 +148,23 @@ module App =
         let onPageCreated (page: ContentPage) =
             Page.SetUseSafeArea(page, false)
         
-        let onCarouselViewCurrentItemChanged (args: CurrentItemChangedEventArgs) =
-            let viewElementHolder = args.CurrentItem :?> ViewElementHolder
-            let cityName = viewElementHolder.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> string
-            dispatch (CurrentCityChanged cityName)
-        
         // UI
         View.ContentPage(
             created = onPageCreated,
             content =
                  View.PancakeView(
-                     backgroundGradientStartColor = AppStyles.getStartGradientColor temperatureOfCurrentCity, 
-                     backgroundGradientEndColor = AppStyles.getEndGradientColor temperatureOfCurrentCity,
+                     backgroundGradientStartColor = Styles.getStartGradientColor temperatureOfCurrentCity, 
+                     backgroundGradientEndColor = Styles.getEndGradientColor temperatureOfCurrentCity,
                      content =
-                         View.Grid([
-                             View.CarouselView(
-                                 ref = carouselViewRef,
-                                 currentItemChanged = onCarouselViewCurrentItemChanged,
-                                 verticalOptions = LayoutOptions.FillAndExpand,
-                                 items = [
-                                     for city in model.Cities ->
-                                         View.ContentView(
-                                            tag = city.Name,
-                                            padding = (
-                                                if Device.RuntimePlatform = Device.Android then
-                                                    Thickness(0., 24., 0., 30.)
-                                                else
-                                                    Thickness(0., 44., 0., 40.)
-                                            ),
-                                            content =
-                                                match city.Data with
-                                                | Some data ->
-                                                    loadedView (city.Name, city.IsRefreshing, data) dispatch
-                                                | _  ->
-                                                    loadingView city.Name
-                                        )
-                                 ]
-                             )
-                             View.IndicatorView(
-                                  itemsSourceBy = carouselViewRef,
-                                  verticalOptions = LayoutOptions.End,
-                                  margin = Thickness(0., 0., 0., 20.)
-                             )
-                         ])
+                         match Device.RuntimePlatform with
+                         | Device.Android | Device.iOS -> carouselView model dispatch
+                         | Device.UWP -> previousNextView model dispatch
+                         | platform -> failwithf "Platform '%s' not supported" platform
                  )
-                
         )
 
     let program = 
-        Program.mkProgram initial update view
+        Program.mkProgram init update view
         |> Program.withConsoleTrace
 
 type App () as app = 
