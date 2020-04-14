@@ -146,7 +146,7 @@ module CityView =
 
     let cityView index city requestRefresh =
         View.ContentView(
-            tag = city.Name,
+            tag = index,
             padding = (
                 if Device.RuntimePlatform = Device.Android then
                     Thickness(0., 24., 0., 30.)

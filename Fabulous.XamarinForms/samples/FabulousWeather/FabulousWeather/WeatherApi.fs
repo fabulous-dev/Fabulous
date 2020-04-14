@@ -80,7 +80,7 @@ module WeatherApi =
             { Values =
                 hourlyForecast.List
                 |> Array.toList
-                |> List.filter (fun v -> (Helpers.unixTimestampToDateTime v.Dt).Date = DateTime.Now.Date)
+                |> List.take 5
                 |> List.map (fun v ->
                     { Date = v.Dt |> Helpers.unixTimestampToDateTime
                       Temperature = (int v.Main.Temp) * 1<kelvin>
