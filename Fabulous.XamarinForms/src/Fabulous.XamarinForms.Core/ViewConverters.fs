@@ -181,6 +181,12 @@ module ViewConverters =
             f args
         )
         
+    let makeSearchHandlerItemSelectedEventHandler f =
+        System.EventHandler<obj>(fun sender args ->
+            let viewElement = match args :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            f viewElement
+        )
+        
     let makeCarouselViewCurrentItemChangedEventHandler f =
         System.EventHandler<Xamarin.Forms.CurrentItemChangedEventArgs>(fun sender args ->
             let previousViewElement = match args.PreviousItem :?> ViewElementHolder with null -> None | item -> Some item.ViewElement

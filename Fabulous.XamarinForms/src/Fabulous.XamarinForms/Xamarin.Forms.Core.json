@@ -650,11 +650,6 @@
           "updateCode": "ViewUpdaters.updateShellContentMenuItems"
         }
       ],
-      "events": [
-        {
-          "source": "IsPageVisibleChanged"
-        }
-      ],
       "primaryConstructorMembers": [
         "ContentTemplate"
       ]
@@ -2687,7 +2682,9 @@
       "name": "SearchHandler",
       "events": [
         {
-          "source": "ItemSelected"
+          "source": "ItemSelected",
+          "inputType": "ViewElement option -> unit",
+          "convertInputToModel": "ViewConverters.makeSearchHandlerItemSelectedEventHandler"
         },
         {
           "source": "QueryChanged"

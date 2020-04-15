@@ -135,7 +135,7 @@ module App =
                     children=[
                         View.Image(
                             aspect=Aspect.AspectFill,
-                            source=Image.Path "xamarinstore.jpg",
+                            source=ImagePath "xamarinstore.jpg",
                             opacity=0.6
                         )
                         View.Label(
@@ -152,24 +152,24 @@ module App =
                 View.FlyoutItem(
                     title="Animals",
                     route="animals",
-                    icon=Image.Path "cat.png",
+                    icon=ImagePath "cat.png",
                     flyoutDisplayOptions=FlyoutDisplayOptions.AsMultipleItems,
                     items=[
                         View.Tab(
                             title="Domestic",
                             route="domestic",
-                            icon=Image.Path "paw.png",
+                            icon=ImagePath "paw.png",
                             items=[
                                 View.ShellContent(
                                     title="Cats",
                                     route="cats",
-                                    icon=Image.Path "cat.png",
+                                    icon=ImagePath "cat.png",
                                     content=Cats.view model.CatsPageModel (CatsPageMsg >> dispatch)
                                 )
                                 View.ShellContent(
                                     title="Dogs",
                                     route="dogs",
-                                    icon=Image.Path "dog.png",
+                                    icon=ImagePath "dog.png",
                                     content=Dogs.view model.DogsPageModel (DogsPageMsg >> dispatch)
                                 )
                             ]
@@ -177,19 +177,19 @@ module App =
                         View.ShellContent(
                             title="Monkeys",
                             route="monkeys",
-                            icon=Image.Path "monkey.png",
+                            icon=ImagePath "monkey.png",
                             content=Monkeys.view model.MonkeysPageModel (MonkeysPageMsg >> dispatch)
                         ) |> AppStyles.applyMonkeysItemStyle
                         View.ShellContent(
                             title="Elephants",
                             route="elephants",
-                            icon=Image.Path "elephant.png",
+                            icon=ImagePath "elephant.png",
                             content=Elephants.view model.ElephantsPageModel (ElephantsPageMsg >> dispatch)
                         ) |> AppStyles.applyElephantsItemStyle
                         View.ShellContent(
                             title="Bears",
                             route="bears",
-                            icon=Image.Path "bear.png",
+                            icon=ImagePath "bear.png",
                             content=Bears.view model.BearsPageModel (BearsPageMsg >> dispatch)
                         ) |> AppStyles.applyBearsItemStyle
                     ]
@@ -198,13 +198,13 @@ module App =
                 View.ShellContent(
                     title="About",
                     route="about",
-                    icon=Image.Path "info.png",
+                    icon=ImagePath "info.png",
                     content=About.view (AboutPageMsg >> dispatch)
                 ) |> AppStyles.applyAboutItemStyle
 
                 View.MenuItem(
                     text="Random",
-                    icon=Image.Path "random.png",
+                    icon=ImagePath "random.png",
                     command=(fun () ->
                         let random = Random()
                         let categories = [ Cats.data; Dogs.data; Monkeys.data; Elephants.data; Bears.data ]
@@ -215,7 +215,7 @@ module App =
                 )
                 View.MenuItem(
                     text="Help",
-                    icon=Image.Path "help.png",
+                    icon=ImagePath "help.png",
                     command=(fun () -> dispatch ShowHelp)
                 )
             ]

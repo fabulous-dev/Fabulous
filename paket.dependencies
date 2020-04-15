@@ -2,7 +2,7 @@ version 5.243.0
 
 # dependencies used for retrieving FAKE and its modules
 group fakebuild
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   framework: netstandard2.0
   storage: none
 
@@ -21,7 +21,7 @@ group fakebuild
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
   framework: netstandard2.0
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
@@ -33,7 +33,7 @@ group neutral
 # should be pinned to a specific version, matching the one in Packages.targets
 group generator
   framework: netstandard2.0
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget Xamarin.Forms 4.5.0.356
   nuget Xamarin.Forms.Maps 4.5.0.356
   nuget Xamarin.Forms.PancakeView 1.3.6
@@ -45,7 +45,7 @@ group generator
 # Dependencies used when compiling and running Android samples.
 group androidapp
   framework: monoandroid9.0
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget FSharp.Core
   nuget Xamarin.Forms <= 4.6.0
   nuget Xamarin.Forms.Maps <= 4.6.0
@@ -71,7 +71,7 @@ group androidapp
 # latest Xamarin.Forms though we pin them for now.
 group iosapp
   framework: xamarinios10
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget FSharp.Core
   nuget Xamarin.Forms <= 4.6.0
   nuget Xamarin.Forms.Maps <= 4.6.0
@@ -86,7 +86,7 @@ group iosapp
 
 group macosapp
   framework: xamarinmac20
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget FSharp.Core
   nuget Xamarin.Forms <= 4.6.0
   nuget Xamarin.Forms.Maps <= 4.6.0
@@ -101,7 +101,7 @@ group macosapp
 
 group wpfapp
   framework: net472
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget FSharp.Core
   nuget Xamarin.Forms <= 4.6.0
   nuget Xamarin.Forms.Platform.WPF <= 4.6.0
@@ -118,7 +118,7 @@ group wpfapp
 
 group gtkapp
   framework: net471
-  source https://api.nuget.org/v3/index.json
+  source https://www.nuget.org/api/v2
   nuget FSharp.Core
   nuget Xamarin.Forms <= 4.6.0
   nuget Xamarin.Forms.Platform.GTK <= 4.6.0
