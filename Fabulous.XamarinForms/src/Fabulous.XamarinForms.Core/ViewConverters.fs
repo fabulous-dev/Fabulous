@@ -173,3 +173,10 @@ module ViewConverters =
         System.Collections.Specialized.NotifyCollectionChangedEventHandler(fun sender args ->
             f args
         )
+        
+    let makeCarouselViewCurrentItemChangedEventHandler f =
+        System.EventHandler<Xamarin.Forms.CurrentItemChangedEventArgs>(fun sender args ->
+            let previousViewElement = match args.PreviousItem :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            let currentViewElement = match args.CurrentItem :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            f (previousViewElement, currentViewElement)
+        )

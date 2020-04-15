@@ -92,20 +92,18 @@ module App =
             
             if model.CurrentCityIndex > 0 then
                 yield View.Button(
-                    text = "Previous",
+                    text = sprintf "< %s" model.Cities.[model.CurrentCityIndex - 1].Name,
                     command = onPreviousButtonClicked,
                     horizontalOptions = LayoutOptions.Start,
-                    verticalOptions = LayoutOptions.Start,
-                    textColor = Styles.MainTextColor
+                    verticalOptions = LayoutOptions.Start
                 )
 
             if model.CurrentCityIndex < model.Cities.Length - 1 then
                 yield View.Button(
-                    text = "Next",
+                    text = sprintf "%s >" model.Cities.[model.CurrentCityIndex + 1].Name,
                     command = onNextButtonClicked,
                     horizontalOptions = LayoutOptions.End,
-                    verticalOptions = LayoutOptions.Start,
-                    textColor = Styles.MainTextColor
+                    verticalOptions = LayoutOptions.Start
                 )
         ])
         
@@ -114,10 +112,12 @@ module App =
     let carouselViewRef = ViewRef<CustomCarouselView>()
     let carouselView model dispatch =
         // Event handlers
-        let onCarouselViewCurrentItemChanged (args: CurrentItemChangedEventArgs) =
-            let viewElementHolder = args.CurrentItem :?> ViewElementHolder
-            let cityIndex = viewElementHolder.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> int
-            dispatch (CurrentCityChanged cityIndex)
+        let onCarouselViewCurrentItemChanged (_, currentItemOpt: ViewElement option) =
+            match currentItemOpt with
+            | None -> ()
+            | Some item ->
+                let cityIndex = item.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> int
+                dispatch (CurrentCityChanged cityIndex)
             
         // UI
         View.Grid([
@@ -158,8 +158,7 @@ module App =
                      content =
                          match Device.RuntimePlatform with
                          | Device.Android | Device.iOS -> carouselView model dispatch
-                         | Device.UWP -> previousNextView model dispatch
-                         | platform -> failwithf "Platform '%s' not supported" platform
+                         | _ -> previousNextView model dispatch
                  )
         )
 
@@ -170,6 +169,8 @@ module App =
 type App () as app = 
     inherit Application ()
 
+    do Styles.registerGlobalResources app
+    
     let runner = App.program |> XamarinFormsProgram.run app
 
 #if DEBUG

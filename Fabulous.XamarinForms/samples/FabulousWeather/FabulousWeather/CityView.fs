@@ -18,6 +18,7 @@ module CityView =
           Data: WeatherData option
           IsRefreshing: bool }
 
+    // View to display when loading the weather data of the city
     let loadingView (cityName: string) =
         dependsOn cityName (fun _ cityName ->
             View.StackLayout([
@@ -25,17 +26,17 @@ module CityView =
                     text = cityName.ToUpper(),
                     fontSize = Named NamedSize.Title,
                     horizontalOptions = LayoutOptions.Center,
-                    padding = Thickness(0., 20., 0., 0.),
-                    textColor = Styles.MainTextColor
+                    padding = Thickness(0., 20., 0., 0.)
                 )
                 View.ActivityIndicator(
+                    isRunning = true,
                     horizontalOptions = LayoutOptions.Center,
-                    verticalOptions = LayoutOptions.CenterAndExpand,
-                    isRunning = true
+                    verticalOptions = LayoutOptions.CenterAndExpand
                 )
             ])
         )
     
+    // View to display once we have data
     let loadedView (cityIndex: int, cityName: string, isRefreshing: bool, data: WeatherData) requestRefresh =
         dependsOn (cityName, isRefreshing, data) (fun _ (cityName, isRefreshing, data) ->
 
@@ -65,10 +66,9 @@ module CityView =
                     children = [
                         View.Label(
                             text = cityName.ToUpper(),
-                            fontSize = FontSize 30.,
+                            fontSize = Styles.CityNameFontSize,
                             horizontalOptions = LayoutOptions.Center,
-                            padding = Thickness(0., 20., 0., 0.),
-                            textColor = Styles.MainTextColor
+                            padding = Thickness(0., 20., 0., 0.)
                         )
                             
                         View.Image(
@@ -82,23 +82,20 @@ module CityView =
                             text = (Helpers.kelvinToRoundedFahrenheit data.Temperature).ToString() + "°",
                             margin = Thickness(30., 0., 0., 0.),
                             horizontalTextAlignment = TextAlignment.Center,
-                            textColor = Styles.MainTextColor,
-                            fontSize = FontSize 100.
+                            fontSize = Styles.CurrentTemperatureFontSize
                         ).Row(2)
                             
                         View.Label(
                             text = data.WeatherKind.ToString().ToUpper(),
-                            fontSize = FontSize 25.,
+                            fontSize = Styles.CurrentWeatherKindFontSize,
                             horizontalOptions = LayoutOptions.Center,
-                            margin = Thickness(0., 10., 0., 0.),
-                            textColor = Styles.MainTextColor
+                            margin = Thickness(0., 10., 0., 0.)
                         ).Row(3)
                             
                         View.Label(
                             text = data.Date.ToString("dddd, MMMM dd, yyyy, h:mm tt").ToUpper(),
-                            fontSize = FontSize 15.,
-                            horizontalOptions = LayoutOptions.Center,
-                            textColor = Styles.MainTextColor
+                            fontSize = Styles.CurrentDateFontSize,
+                            horizontalOptions = LayoutOptions.Center
                         ).Row(4)
                             
                         View.StackLayout(
@@ -111,8 +108,8 @@ module CityView =
                                         width = 50.,
                                         height = 130.,
                                         padding = Thickness(10.),
-                                        backgroundGradientStartColor = Color.FromHex("#22EDEDED"),
-                                        backgroundGradientEndColor = Color.FromHex("#44EDEDED"),
+                                        backgroundGradientStartColor = Styles.HourlyForecastStartColor,
+                                        backgroundGradientEndColor = Styles.HourlyForecastEndColor,
                                         backgroundGradientAngle = 315,
                                         cornerRadius = CornerRadius(10.),
                                         content =
@@ -121,18 +118,16 @@ module CityView =
                                                 children = [
                                                     View.Label(
                                                         text = forecast.Date.ToString("h tt").ToLower(),
-                                                        textColor = Color.White,
                                                         horizontalTextAlignment = TextAlignment.Center
                                                     )
                                                     View.Image(
-                                                        horizontalOptions = LayoutOptions.Center,
-                                                        verticalOptions = LayoutOptions.CenterAndExpand,
                                                         source = Path (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
-                                                        aspect = Aspect.AspectFit
+                                                        aspect = Aspect.AspectFit,
+                                                        horizontalOptions = LayoutOptions.Center,
+                                                        verticalOptions = LayoutOptions.CenterAndExpand
                                                     )
                                                     View.Label(
                                                         text = (Helpers.kelvinToRoundedFahrenheit forecast.Temperature).ToString() + "°",
-                                                        textColor = Color.White,
                                                         horizontalTextAlignment = TextAlignment.Center
                                                     )
                                                 ]

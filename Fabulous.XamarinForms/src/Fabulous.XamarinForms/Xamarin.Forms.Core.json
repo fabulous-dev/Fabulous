@@ -1642,6 +1642,8 @@
       "events": [
         {
           "source": "CurrentItemChanged",
+          "inputType": "ViewElement option * ViewElement option -> unit",
+          "convertInputToModel": "ViewConverters.makeCarouselViewCurrentItemChangedEventHandler",
           "relatedProperties": [
             "CurrentItem"
           ]
