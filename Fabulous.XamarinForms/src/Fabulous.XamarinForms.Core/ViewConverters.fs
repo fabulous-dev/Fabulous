@@ -41,16 +41,16 @@ module ViewConverters =
     /// Converts a string, byte array or ImageSource to a Xamarin.Forms ImageSource
     let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image) =
         match v with
-        | Path path -> ImageSource.op_Implicit path
-        | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
-        | Stream stream -> ImageSource.FromStream(fun () -> stream)
-        | Font fontImageSource -> fontImageSource :> ImageSource
-        | Source imageSource -> imageSource
+        | ImagePath path -> ImageSource.op_Implicit path
+        | ImageBytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
+        | ImageStream stream -> ImageSource.FromStream(fun () -> stream)
+        | ImageFont fontImageSource -> fontImageSource :> ImageSource
+        | ImageSrc imageSource -> imageSource
 
     let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media) =
         match v with
         | MediaPath path -> MediaSource.op_Implicit path
-        | MediaSource mediaSource -> mediaSource
+        | MediaSrc mediaSource -> mediaSource
                 
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
