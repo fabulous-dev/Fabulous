@@ -94,7 +94,9 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
-    <BundleResource Include="Resources\spaceneedle.png" />
+    <BundleResource Include="Resources\seattle.png" />
+    <BundleResource Include="Resources\paris.png" />
+    <BundleResource Include="Resources\new_york.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
   <ItemGroup>

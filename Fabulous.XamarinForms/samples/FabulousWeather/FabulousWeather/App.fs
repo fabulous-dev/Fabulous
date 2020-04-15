@@ -4,199 +4,173 @@ open System
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
+open WeatherApi
+open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 open Xamarin.Forms
-
-module AppStyles =
-    let coldStartColor = Color.FromHex("#BDE3FA")
-    let coldEndColor = Color.FromHex("#A5C9FD")
-    let WarmStartColor = Color.FromHex("#F6CC66")
-    let WarmEndColor  = Color.FromHex("#FCA184")
-    let NightStartColor = Color.FromHex("#172941")
-    let NightEndColor = Color.FromHex("#3C6683")
-    let MainTextColor = Color.White
-    let itemStartColor = Color.FromHex("#98FFFFFF")
-    let itemEndColor = Color.FromHex("#60FFFFFF")
-    
-    let getStartGradientColor temp =
-        if temp > 60 then 
-            WarmStartColor
-        else if temp = -100 then 
-            NightStartColor
-        else
-            coldStartColor
-
-    let getEndGradientColor temp =
-        if temp > 60 then 
-            WarmEndColor
-        else if temp = -100 then 
-            NightEndColor
-        else
-            coldEndColor
-
-    let createLabel value =
-        View.Label(
-            text = value,
-            fontSize = FontSize 100.,
-            horizontalOptions = LayoutOptions.Center,
-            textColor = MainTextColor
-        )
+open CityView
 
 module App =
-    type DataItem = 
-        { Name: string
-          Value: decimal }
-        
-    type WeatherData =
-        { CityName: string
-          CityLogo: string
-          Date: DateTime
-          Temp: int
-          Items: DataItem list
-          Weather: string }
-        
-    type Model = 
-        { Data: WeatherData option
-          IsRefreshing: bool }
+    type Model =
+        { CurrentCityIndex: int
+          Cities: CityData array }
         
     type Msg =
-        | RequestRefresh
-        | WeatherRefreshed of WeatherData
-        
-    // Get an API key from https://openweathermap.org/appid and replace the value here
-    let apiKey = "API KEY HERE"
+        | CurrentCityChanged of cityIndex: int
+        | RequestRefresh of cityIndex: int
+        | WeatherRefreshed of cityIndex: int * WeatherData
 
-    let kelvinToFahrenheit K = 9.0m / 5.0m * (K - 273.0m) + 32.0m
-
-    type jsonProvider = FSharp.Data.JsonProvider<"https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22">
-
-    let getOpenWeatherData apiKey =
+    let getWeatherForCityAsync index cityName =
         async {
-            let url = sprintf "http://api.openweathermap.org/data/2.5/weather?q=seattle&APPID=%s" apiKey
-            let! result = jsonProvider.AsyncLoad(url)
+            let! currentWeather = WeatherApi.getCurrentWeatherForCityAsync cityName
+            let! hourlyForecast = WeatherApi.getHourlyForecastForCityAsync cityName
+            
             let model = 
-                { CityName = result.Name
-                  CityLogo = "spaceneedle.png"
-                  Date = DateTime.Now
-                  Temp = result.Main.Temp |> kelvinToFahrenheit |> Math.Round |> int
-                  Weather = result.Weather.[0].Main
-                  Items =
-                    [ { Name = "Pressure";   Value = result.Main.Pressure |> decimal }
-                      { Name = "Humidity";   Value = result.Main.Humidity |> decimal }
-                      { Name = "Wind Speed"; Value = result.Wind.Speed }
-                      { Name = "Min Temp";   Value = result.Main.TempMin |> kelvinToFahrenheit }
-                      { Name = "Max Temp";   Value = result.Main.TempMax |> kelvinToFahrenheit } ] } 
-            return WeatherRefreshed model
+                { Date = currentWeather.Date
+                  Temperature = currentWeather.Temperature
+                  WeatherKind = currentWeather.WeatherKind
+                  HourlyForecast = hourlyForecast.Values }
+                
+            return WeatherRefreshed (index, model)
         } |> Cmd.ofAsyncMsg
                 
     let initModel =
-        { Data = None
-          IsRefreshing = true }
+        { CurrentCityIndex = 0
+          Cities =
+            [| { Name = "Seattle"
+                 Data = None
+                 IsRefreshing = true }
+               { Name = "New York"
+                 Data = None
+                 IsRefreshing = true }
+               { Name = "Paris"
+                 Data = None
+                 IsRefreshing = true } |] }
         
-    let initial() = initModel, getOpenWeatherData apiKey
+    let init() =
+        let cmd = Cmd.batch [
+            for i in 0 .. initModel.Cities.Length - 1 ->
+                getWeatherForCityAsync i initModel.Cities.[i].Name
+        ]
+        
+        initModel, cmd
 
     let update msg model =
         match msg with
-        | RequestRefresh -> { model with IsRefreshing = true }, getOpenWeatherData apiKey
-        | WeatherRefreshed data -> { model with IsRefreshing = false; Data = Some data }, Cmd.none
+        | CurrentCityChanged index ->
+            { model with CurrentCityIndex = index }, Cmd.none
+            
+        | RequestRefresh index ->
+            let updatedCities =
+                model.Cities
+                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = true } else c)
 
-    let view (model: Model) dispatch =
+            let cmd = getWeatherForCityAsync index model.Cities.[index].Name
+            
+            { model with Cities = updatedCities }, cmd
+            
+        | WeatherRefreshed (index, data) ->
+            let updatedCities =
+                model.Cities
+                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = false; Data = Some data } else c)
+            
+            { model with Cities = updatedCities }, Cmd.none
+
+    // View using a Grid with Previous/Next button to switch between cities (for when CarouselView is not available)
+    let previousNextView model dispatch =
+        // Event handlers
+        let onPreviousButtonClicked () =
+            let previousIndex = Math.Max(0, model.CurrentCityIndex - 1)
+            dispatch (CurrentCityChanged previousIndex)
+
+        let onNextButtonClicked () =
+            let nextIndex = Math.Min(model.CurrentCityIndex + 1, model.Cities.Length - 1)
+            dispatch (CurrentCityChanged nextIndex)
+
+        // UI
+        View.Grid([
+            yield cityView model.CurrentCityIndex model.Cities.[model.CurrentCityIndex] (RequestRefresh >> dispatch)
+            
+            if model.CurrentCityIndex > 0 then
+                yield View.Button(
+                    text = sprintf "< %s" model.Cities.[model.CurrentCityIndex - 1].Name,
+                    command = onPreviousButtonClicked,
+                    horizontalOptions = LayoutOptions.Start,
+                    verticalOptions = LayoutOptions.Start
+                )
+
+            if model.CurrentCityIndex < model.Cities.Length - 1 then
+                yield View.Button(
+                    text = sprintf "%s >" model.Cities.[model.CurrentCityIndex + 1].Name,
+                    command = onNextButtonClicked,
+                    horizontalOptions = LayoutOptions.End,
+                    verticalOptions = LayoutOptions.Start
+                )
+        ])
         
-        let itemsView (items: DataItem list) =
-            [ for r in items -> 
-                View.PancakeView(
-                    content = View.Label(
-                        text = sprintf "%s%s%O" r.Name System.Environment.NewLine r.Value,
-                        textColor = AppStyles.MainTextColor
-                    ),
-                    cornerRadius = CornerRadius(20.,20.,20.,0.),
-                    backgroundGradientStartColor = AppStyles.itemStartColor,
-                    backgroundGradientEndColor = AppStyles.itemEndColor,
-                    padding = Thickness(8.),
-                    backgroundGradientAngle = 315
-                ) ]
-
-        let grid (data: WeatherData) =
-            View.Grid(
-                rowdefs = [ Auto; Star; Auto; Auto; Auto; Auto ],
-                rowSpacing = 0.,
-                padding = (if Device.RuntimePlatform = Device.Android then Thickness(0.0,24.0,0.0,0.0) else Thickness(0.,44.,0.,0.)),
-                gestureRecognizers = [
-                    View.TapGestureRecognizer(fun ()-> dispatch RequestRefresh)
-                ],
-                children = [
-                    View.Label(
-                        text = data.CityName,
-                        horizontalOptions = LayoutOptions.Center,
-                        fontSize = Named NamedSize.Large,
-                        textColor = AppStyles.MainTextColor
-                    )
-                    View.Image(
-                        source = Path data.CityLogo,
-                        margin = Thickness(0.,0.,0.,-80.),
-                        opacity = 0.8, 
-                        verticalOptions = LayoutOptions.FillAndExpand
-                    ).Row(1)
-                    View.Label(
-                        text = sprintf "%i°" data.Temp,
-                        fontSize = FontSize 100.,
-                        horizontalOptions = LayoutOptions.Center,
-                        textColor = AppStyles.MainTextColor
-                    ).Row(2)
-                    View.Label(
-                        horizontalOptions = LayoutOptions.Center,
-                        text = data.Weather.ToUpper(),
-                        fontSize = Named NamedSize.Large,
-                        textColor = AppStyles.MainTextColor
-                    ).Row(3)
-                    View.Label(
-                        horizontalOptions = LayoutOptions.Center,
-                        text = data.Date.ToString("D"),
-                        fontSize = Named NamedSize.Small,
-                        textColor = AppStyles.MainTextColor
-                    ).Row(4)
-                    View.ScrollView(
-                        orientation = ScrollOrientation.Horizontal,
-                        padding = Thickness(20., 0., 20., 10.),
-                        margin = Thickness(0., 10., 0., 0.),
-                        content = View.StackLayout(
-                            orientation = StackOrientation.Horizontal,
-                            children = itemsView data.Items
-                        )
-                    ).Row(5)
+        
+    // View using CarouselView (available on Android and iOS only)
+    let carouselViewRef = ViewRef<CustomCarouselView>()
+    let carouselView model dispatch =
+        // Event handlers
+        let onCarouselViewCurrentItemChanged (_, currentItemOpt: ViewElement option) =
+            match currentItemOpt with
+            | None -> ()
+            | Some item ->
+                let cityIndex = item.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> int
+                dispatch (CurrentCityChanged cityIndex)
+            
+        // UI
+        View.Grid([
+            View.CarouselView(
+                ref = carouselViewRef,
+                currentItemChanged = onCarouselViewCurrentItemChanged,
+                verticalOptions = LayoutOptions.FillAndExpand,
+                items = [
+                    for i in 0 .. model.Cities.Length - 1 ->
+                        cityView i model.Cities.[i] (RequestRefresh >> dispatch)
                 ]
             )
-
-        let pancakeBackgroundPadding =
-            match Device.RuntimePlatform with
-            | Device.iOS -> new Thickness(0., 40., 0., 20.)
-            | _ -> new Thickness(0.)
+            View.IndicatorView(
+                itemsSourceBy = carouselViewRef,
+                verticalOptions = LayoutOptions.End,
+                margin = Thickness(0., 0., 0., 20.)
+            )
+        ])
+    
+    // Root view
+    let view (model: Model) dispatch =
+        let temperatureOfCurrentCity =
+            model.Cities.[model.CurrentCityIndex].Data
+            |> Option.map (fun d -> d.Temperature)
+            |> Option.defaultValue 0<kelvin>
+            
+        // Event handlers
+        let onPageCreated (page: ContentPage) =
+            Page.SetUseSafeArea(page, false)
         
+        // UI
         View.ContentPage(
-            created = (fun self -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, false)),
+            created = onPageCreated,
             content =
-                match model.Data with
-                | None ->
-                    View.ActivityIndicator(isRunning = true)
-                | Some data ->
-                    View.PancakeView(
-                        padding = pancakeBackgroundPadding,
-                        backgroundGradientStartColor = AppStyles.getStartGradientColor data.Temp, 
-                        backgroundGradientEndColor = AppStyles.getEndGradientColor data.Temp,
-                        content =
-                            if model.IsRefreshing then
-                                View.ActivityIndicator(isRunning = true)
-                            else
-                                grid data
-                    )
+                 View.PancakeView(
+                     backgroundGradientStartColor = Styles.getStartGradientColor temperatureOfCurrentCity, 
+                     backgroundGradientEndColor = Styles.getEndGradientColor temperatureOfCurrentCity,
+                     content =
+                         match Device.RuntimePlatform with
+                         | Device.Android | Device.iOS -> carouselView model dispatch
+                         | _ -> previousNextView model dispatch
+                 )
         )
 
     let program = 
-        Program.mkProgram initial update view
+        Program.mkProgram init update view
         |> Program.withConsoleTrace
 
 type App () as app = 
     inherit Application ()
 
+    do Styles.registerGlobalResources app
+    
     let runner = App.program |> XamarinFormsProgram.run app
 
 #if DEBUG

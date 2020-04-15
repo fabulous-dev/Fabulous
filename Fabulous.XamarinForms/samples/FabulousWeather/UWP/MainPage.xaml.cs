@@ -1,7 +1,4 @@
-﻿using Windows.Foundation;
-using Windows.UI.ViewManagement;
-
-namespace FabulousWeather.UWP
+﻿namespace FabulousWeather.UWP
 {
     public sealed partial class MainPage
     {
