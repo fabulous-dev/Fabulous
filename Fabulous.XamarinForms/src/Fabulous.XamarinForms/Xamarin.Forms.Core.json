@@ -474,26 +474,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.FontImageSource",
-      "properties": [
-        {
-          "source": "Color"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "Glyph"
-        },
-        {
-          "source": "Size"
-        }
-      ],
-      "primaryConstructorMembers": [
-        "Glyph"
-      ]
-    },
-    {
       "type": "Xamarin.Forms.NavigableElement",
       "canBeInstantiated": false,
       "properties": [
@@ -542,6 +522,12 @@
           "name": "ShellNavBarIsVisible",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellNavBarIsVisible"
+        },
+        {
+          "source": null,
+          "name": "ShellPresentationMode",
+          "inputType": "Xamarin.Forms.PresentationMode",
+          "updateCode": "ViewUpdaters.updateShellPresentationMode"
         },
         {
           "source": null,
@@ -662,6 +648,11 @@
           "name": "MenuItems",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateShellContentMenuItems"
+        }
+      ],
+      "events": [
+        {
+          "source": "IsPageVisibleChanged"
         }
       ],
       "primaryConstructorMembers": [
@@ -1621,6 +1612,12 @@
           "source": "CurrentItem"
         },
         {
+          "source": null,
+          "name": "IndicatorView",
+          "inputType": "ViewRef<Xamarin.Forms.IndicatorView>",
+          "updateCode": "ViewUpdaters.updateCarouselViewIndicatorView"
+        },
+        {
           "source": "IsBounceEnabled"
         },
         {
@@ -2377,6 +2374,10 @@
           "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
         },
         {
+          "source": "StepperPosition",
+          "updateCode": "ViewUpdaters.updateStepperPosition"
+        },
+        {
           "source": "Value"
         }
       ],
@@ -2768,12 +2769,6 @@
         },
         {
           "source": "SelectedIndicatorColor"
-        },
-        {
-          "source": null,
-          "name": "ItemsSourceBy",
-          "inputType": "ViewRef<Fabulous.XamarinForms.CustomCarouselView>",
-          "updateCode": "ViewUpdaters.updateIndicatorViewItemsSourceBy"
         }
       ]
     },
@@ -2856,6 +2851,61 @@
         },
         {
           "source": "SwipeStarted"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MediaElement",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "AutoPlay"
+        },
+        {
+          "source": "IsLooping"
+        },
+        {
+          "source": "KeepScreenOn"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "ShowsPlaybackControls"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "Volume"
+        }
+      ],
+      "events": [
+        {
+          "source": "MediaEnded"
+        },
+        {
+          "source": "MediaFailed"
+        },
+        {
+          "source": "MediaOpened"
+        },
+        {
+          "source": "PositionRequested"
+        },
+        {
+          "source": "SeekCompleted"
+        },
+        {
+          "source": "SeekRequested"
+        },
+        {
+          "source": "StateRequested"
+        },
+        {
+          "source": "VolumeRequested"
         }
       ]
     }

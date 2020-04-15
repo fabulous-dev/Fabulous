@@ -5,12 +5,23 @@ namespace Fabulous.XamarinForms
 module InputTypes =
     /// Represents an image source
     type Image =
-        /// A path to the image
+        /// A path to the image file (local or network file)
         | Path of string
         /// A byte array representing the image
         | Bytes of byte[]
+        /// A data stream representing the image
+        | Stream of System.IO.Stream
+        /// A Font image
+        | Font of Xamarin.Forms.FontImageSource
         /// An already defined ImageSource
         | Source of Xamarin.Forms.ImageSource
+
+    /// Represents a media source
+    type Media =
+        /// A path to the media file (local or network file)
+        | MediaPath of string
+        /// An already defined MediaSource
+        | MediaSource of Xamarin.Forms.MediaSource
     
     /// Represents a dimension for either the row or column definition of a Grid    
     type Dimension =

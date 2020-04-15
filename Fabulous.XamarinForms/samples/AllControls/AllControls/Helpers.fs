@@ -20,10 +20,11 @@ module Helpers =
                 )
             )
             
-        static member NonScrollingContentPage(title, (content: ViewElement)) =
+        static member NonScrollingContentPage(title, (content: ViewElement), ?backgroundColor) =
             View.ContentPage(
                 title = title,
                 useSafeArea = true,
                 padding = Thickness 20.0,
-                content = content
+                content = content,
+                ?backgroundColor = backgroundColor
             )

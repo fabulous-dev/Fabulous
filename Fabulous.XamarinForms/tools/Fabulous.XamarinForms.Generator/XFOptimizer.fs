@@ -56,11 +56,28 @@ module XFOptimizer =
         
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
     
+    /// Optimize MediaSource properties by asking for InputTypes.Media instead of MediaSource  
+    module OptimizeMediaSource =
+        let private canBeOptimized (boundProperty: BoundProperty) =
+            boundProperty.InputType = boundProperty.ModelType
+            && boundProperty.ConvertModelToValue = ""
+            && boundProperty.UpdateCode = ""
+            && boundProperty.ModelType = "Xamarin.Forms.MediaSource"
+        
+        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+            { boundProperty with
+                InputType = "Fabulous.XamarinForms.InputTypes.Media"
+                ModelType = "Fabulous.XamarinForms.InputTypes.Media"
+                ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource" }
+        
+        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+    
     let optimize =
         let xfOptimize boundModel =
             boundModel
             |> OptimizeCommands.apply
             |> OptimizeImageSource.apply
+            |> OptimizeMediaSource.apply
         
         Optimizer.optimize
         >> WorkflowResult.map xfOptimize

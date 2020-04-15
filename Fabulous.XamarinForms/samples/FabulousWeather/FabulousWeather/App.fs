@@ -109,7 +109,7 @@ module App =
         
         
     // View using CarouselView (available on Android and iOS only)
-    let carouselViewRef = ViewRef<CustomCarouselView>()
+    let indicatorRef = ViewRef<IndicatorView>()
     let carouselView model dispatch =
         // Event handlers
         let onCarouselViewCurrentItemChanged (_, currentItemOpt: ViewElement option) =
@@ -122,7 +122,7 @@ module App =
         // UI
         View.Grid([
             View.CarouselView(
-                ref = carouselViewRef,
+                indicatorView = indicatorRef,
                 currentItemChanged = onCarouselViewCurrentItemChanged,
                 verticalOptions = LayoutOptions.FillAndExpand,
                 items = [
@@ -131,7 +131,7 @@ module App =
                 ]
             )
             View.IndicatorView(
-                itemsSourceBy = carouselViewRef,
+                ref = indicatorRef,
                 verticalOptions = LayoutOptions.End,
                 margin = Thickness(0., 0., 0., 20.)
             )

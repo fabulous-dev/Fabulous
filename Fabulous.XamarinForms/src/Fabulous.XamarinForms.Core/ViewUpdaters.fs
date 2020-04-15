@@ -641,6 +641,13 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Shell.SetNavBarIsVisible(target, currValue)
         | ValueSome _, ValueNone -> target.ClearValue Shell.NavBarIsVisibleProperty
 
+    let updateShellPresentationMode prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetPresentationMode(target, currValue)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.PresentationModeProperty
+
     let updateShellTabBarDisabledColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -733,18 +740,25 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> target.ClearValue Element.MenuProperty
 
-    let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
+    let updateCarouselViewIndicatorView (prevValueOpt: ViewRef<IndicatorView> voption) (currValueOpt: ViewRef<IndicatorView> voption) (target: Xamarin.Forms.CarouselView) =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> 
             match currValue.TryValue with
-            | Some v -> IndicatorView.SetItemsSourceBy(target, v)
-            | None -> target.ClearValue IndicatorView.ItemsSourceByProperty
-        | ValueSome _, ValueNone -> target.ClearValue IndicatorView.ItemsSourceByProperty
+            | Some v -> target.IndicatorView <- v
+            | None -> target.IndicatorView <- null
+        | ValueSome _, ValueNone -> target.IndicatorView <- null
 
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ISwipeItem
 
         updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let updateStepperPosition prevStepperPositionOpt currStepperPositionOpt (target: Xamarin.Forms.Stepper) =
+        match prevStepperPositionOpt, currStepperPositionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.StepperPosition <-  currValue
+        | ValueSome _, ValueNone -> target.StepperPosition <- 0
+        | ValueNone, ValueNone -> ()

@@ -41,6 +41,9 @@ namespace AllControls.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+
+                Xamarin.Forms.Forms.SetFlags("MediaElement_Experimental");
+                
                 var assembliesToInclude = new [] { typeof(Xamarin.Forms.Maps.UWP.MapRenderer).Assembly };
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude);
 

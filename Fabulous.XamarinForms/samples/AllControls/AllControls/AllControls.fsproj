@@ -17,6 +17,7 @@
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
       <Compile Include="Samples\Controls\CarouselView.fs" />
       <Compile Include="Samples\Controls\CollectionView.fs" />
+      <Compile Include="Samples\Controls\MediaElement.fs" />
       <Compile Include="Samples\Controls\RefreshView.fs" />
       <Compile Include="Samples\Controls\ScrollView.fs" />
       <Compile Include="Samples\Controls\SwipeView.fs" />
