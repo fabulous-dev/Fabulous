@@ -32,25 +32,25 @@ module WeatherApi =
         | Clouds
         | Unknown of string
 
-    /// Parse the strings of the API to ensure having a valid value
-    static member Parse str =
-        match str with
-        | "Thunderstorm" -> Thunderstorm
-        | "Drizzle" -> Drizzle
-        | "Rain" -> Rain
-        | "Snow" -> Snow
-        | "Mist" -> Mist
-        | "Smoke" -> Smoke
-        | "Haze" -> Haze
-        | "Dust" -> Dust
-        | "Fog" -> Fog
-        | "Sand" -> Sand
-        | "Ash" -> Ash
-        | "Squall" -> Squall
-        | "Tornado" -> Tornado
-        | "Clear" -> Clear
-        | "Clouds" -> Clouds
-        | kind -> Unknown kind 
+        /// Parse the strings of the API to ensure having a valid value
+        static member Parse str =
+            match str with
+            | "Thunderstorm" -> Thunderstorm
+            | "Drizzle" -> Drizzle
+            | "Rain" -> Rain
+            | "Snow" -> Snow
+            | "Mist" -> Mist
+            | "Smoke" -> Smoke
+            | "Haze" -> Haze
+            | "Dust" -> Dust
+            | "Fog" -> Fog
+            | "Sand" -> Sand
+            | "Ash" -> Ash
+            | "Squall" -> Squall
+            | "Tornado" -> Tornado
+            | "Clear" -> Clear
+            | "Clouds" -> Clouds
+            | kind -> Unknown kind 
     
     type CurrentWeather =
         { Date: DateTime
