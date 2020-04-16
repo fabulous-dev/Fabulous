@@ -14,9 +14,6 @@ module CarouselView =
             title = "CarouselView & IndicatorView sample",
             backgroundColor = Color.Black,
             content = View.StackLayout([
-            
-                // There is one limitation with IndicatorView in Fabulous.XamarinForms
-                // The IndicatorView needs to be put before the CarouselView to bind them together, otherwise it won't work
                 View.IndicatorView(
                     ref = indicatorRef,
                     margin = Thickness(0., 10., 0., 0.)
