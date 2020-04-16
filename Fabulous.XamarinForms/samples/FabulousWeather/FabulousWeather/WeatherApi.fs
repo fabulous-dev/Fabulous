@@ -31,8 +31,8 @@ module WeatherApi =
         | Clear
         | Clouds
         | Unknown of string
-    with
-        // Parse the strings of the API to ensure having a valid value
+
+        /// Parse the strings of the API to ensure having a valid value
         static member Parse str =
             match str with
             | "Thunderstorm" -> Thunderstorm
