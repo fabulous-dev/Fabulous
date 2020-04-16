@@ -52,7 +52,7 @@ module ViewConvertersTests =
         |> should be instanceOfType<FileMediaSource>
         
     [<Test>]
-    let ``Given a network path, convertFabulousImageToXamarinFormsImageSource should return a UriImageSource``() =
+    let ``Given a network path, convertFabulousMediaToXamarinFormsMediaSource should return a UriMediaSource``() =
         MediaPath "http://localhost/path/to/video.mp4"
         |> ViewConverters.convertFabulousMediaToXamarinFormsMediaSource
         |> should be instanceOfType<UriMediaSource>
