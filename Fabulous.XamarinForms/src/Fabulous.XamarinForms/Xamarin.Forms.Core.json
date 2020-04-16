@@ -2753,7 +2753,9 @@
           "source": "IndicatorSize"
         },
         {
-          "source": "IndicatorTemplate"
+          "source": "IndicatorTemplate",
+          "inputType": "ViewElement",
+          "updateCode": "ViewUpdaters.updateIndicatorViewIndicatorProperty"
         },
         {
           "source": "IndicatorsShape"

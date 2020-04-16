@@ -189,9 +189,6 @@ type CustomTimePicker() =
         if propertyName = "Time" then
             timeChanged.Trigger(this, this.Time)
 
-type CustomIndicatorView() = 
-    inherit IndicatorView(IndicatorTemplate = ViewElementDataTemplateSelector())
-
 /// Itemslayout for CarouselView
 type VerticalLinearItemsLayout() = 
     inherit LinearItemsLayout(ItemsLayoutOrientation.Vertical)
