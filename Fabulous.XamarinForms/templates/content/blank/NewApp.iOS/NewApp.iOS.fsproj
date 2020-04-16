@@ -144,7 +144,6 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
   <Import Project="..\.nuget\NuGet.targets" />
   <ItemGroup>
     <Reference Include="System" />
@@ -158,9 +157,6 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform.iOS">
-      <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
@@ -191,6 +187,7 @@
     <#endif-->
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')"/>
+  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>

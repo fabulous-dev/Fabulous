@@ -111,9 +111,6 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Platform.iOS">
-      <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>

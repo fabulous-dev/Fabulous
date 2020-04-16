@@ -65,6 +65,7 @@ group androidapp
   nuget Xam.Plugins.Android.ExoPlayer.Dash 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
   nuget Xam.Plugins.Android.ExoPlayer.Hls 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
   nuget Xam.Plugins.Android.ExoPlayer.SmoothStreaming 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
+  nuget Xam.Plugins.Android.ExoPlayer.MediaSession 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
   nuget Xam.Plugins.Android.ExoPlayer.UI 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
