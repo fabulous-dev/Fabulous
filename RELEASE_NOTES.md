@@ -1,3 +1,12 @@
+#### 0.53.0
+
+BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.53.html)
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.5 (https://github.com/fsprojects/Fabulous/pull/709)
+* [Fabulous.XamarinForms] Added missing RemainingItemsThreshold to ItemsView and derivative controls (https://github.com/fsprojects/Fabulous/pull/694)
+* [Fabulous.CodeGen] Supports reference to existing mapping files, enabling 3rd party libs binding generation (https://github.com/fsprojects/Fabulous/pull/690)
+* [Fabulous.XamarinForms] [Generator] Now able to generate bindings for 3rd party libs (https://github.com/fsprojects/Fabulous/pull/690)
+
 #### 0.52.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.4 (https://github.com/fsprojects/Fabulous/pull/644)
