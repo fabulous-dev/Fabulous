@@ -78,6 +78,6 @@ View.Image(
 )
 
 View.MediaElement(
-    Source = MediaSrc (getImageSource())
+    Source = MediaSrc (getMediaSource())
 )
 ```
