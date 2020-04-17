@@ -15,10 +15,12 @@ module SearchHandlers =
             placeholder="Enter search term",
             showsResults=true,
             queryChanged=(fun (_, newValue) -> dispatch (QueryChanged newValue)),
-            itemSelected=(fun item ->
-                let data = item :?> ViewElementHolder
-                let animal = data.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
-                dispatch (AnimalSelected animal)),
+            itemSelected=(fun itemOpt ->
+                match itemOpt with
+                | None -> ()
+                | Some item ->
+                    let animal = item.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+                    dispatch (AnimalSelected animal)),
             items=[
                 for animal in animals do
                     yield View.Grid(
@@ -27,7 +29,7 @@ module SearchHandlers =
                         coldefs=[ Stars 0.15; Stars 0.85],
                         children=[
                             View.Image(
-                                source=Image.Path animal.ImageUrl,
+                                source=ImagePath animal.ImageUrl,
                                 aspect=Aspect.AspectFill,
                                 height=40.,
                                 width=40.

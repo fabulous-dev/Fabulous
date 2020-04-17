@@ -1,6 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
+open System
 open Fabulous
 open System.Collections.ObjectModel
 open System.Collections.Generic
@@ -13,6 +14,20 @@ module ViewUpdaters =
     /// Update a control given the previous and new view elements
     let inline updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
+        
+    // Update a DataTemplate property taking a direct ViewElement
+    let private updateDirectViewElementDataTemplate setValue clearValue getTarget prevValueOpt currValueOpt =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | ValueNone, ValueSome currValue ->
+            setValue (DirectViewElementDataTemplate(currValue))
+        | ValueSome prevValue, ValueSome currValue ->
+            setValue (DirectViewElementDataTemplate(currValue))
+            let target = getTarget ()
+            if target <> null then currValue.UpdateIncremental(prevValue, target)            
+        | ValueSome _, ValueNone ->
+            clearValue ()
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -641,6 +656,13 @@ module ViewUpdaters =
         | _, ValueSome currValue -> Shell.SetNavBarIsVisible(target, currValue)
         | ValueSome _, ValueNone -> target.ClearValue Shell.NavBarIsVisibleProperty
 
+    let updateShellPresentationMode prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetPresentationMode(target, currValue)
+        | ValueSome _, ValueNone -> target.ClearValue Shell.PresentationModeProperty
+
     let updateShellTabBarDisabledColor prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -668,18 +690,14 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> NavigationPage.SetHasNavigationBar(target, currValue)
         | ValueSome _, ValueNone -> target.ClearValue NavigationPage.HasNavigationBarProperty
-
-    let updateShellContentContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
-        match prevValueOpt, currValueOpt with
-        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
-        | ValueNone, ValueNone -> ()
-        | ValueNone, ValueSome currValue ->
-            target.ContentTemplate <- DirectViewElementDataTemplate(currValue)
-        | ValueSome prevValue, ValueSome currValue ->
-            target.ContentTemplate <- DirectViewElementDataTemplate(currValue)
-            let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
-            if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
-        | ValueSome _, ValueNone -> target.ClearValue ShellContent.ContentTemplateProperty
+        
+    let updateShellContentContentTemplate prevValueOpt currValueOpt (target : Xamarin.Forms.ShellContent) =
+        updateDirectViewElementDataTemplate
+            (fun v -> target.ContentTemplate <- v)
+            (fun () -> target.ClearValue ShellContent.ContentTemplateProperty)
+            (fun () -> (target :> Xamarin.Forms.IShellContentController).Page)
+            prevValueOpt
+            currValueOpt
 
     let updateShellNavBarHasShadow prevValueOpt currValueOpt target =
         match prevValueOpt, currValueOpt with
@@ -732,19 +750,87 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Element.SetMenu(target, currValue.Create() :?> Menu)
         | ValueSome _, ValueNone -> target.ClearValue Element.MenuProperty
-
-    let updateIndicatorViewItemsSourceBy (prevValueOpt: ViewRef<CustomCarouselView> voption) (currValueOpt: ViewRef<CustomCarouselView> voption) (target: Xamarin.Forms.IndicatorView) =
+        
+    // The CarouselView/IndicatorView combo in Xamarin.Forms is special.
+    // A CarouselView can be linked to an IndicatorView, we're using a ViewRef<IndicatorView> to handle that.
+    //
+    // But since the IndicatorView can be placed anywhere in the UI tree relatively to the CarouselView, and that ViewRef is late-bound (only resolved when actually instantiating the IndicatorView control),
+    // there's no guarantee that when calling updateCarouselViewIndicatorView, the ViewRef will be bound.
+    //
+    // It means we need to create the link between the actual CarouselView and IndicatorView instances once ViewRef is bound.
+    // For that, we have a ViewRef.ValueChanged event we can listen to.
+    //
+    // But we need to store the handlers somewhere. Not on the ViewElements (they're supposed to be immutable and user-driven), not on the controls instances (we can't store arbitrary values on those).
+    // This means, we need to store them here, globally.
+    //
+    // To avoid cluttering memory with dead handlers, we try to remove them whenever possible (the link is no longer wanted, the CarouselView instance is no longer accessible)
+    // But we aren't notified when a CarouselView instance is disposed, and so we can't clean up the associated handler in that case...    
+    let private carouselViewHandlers = Dictionary<int, Handler<Xamarin.Forms.IndicatorView>>()
+    
+    let private linkIndicatorViewToCarouselView (target: Xamarin.Forms.CarouselView) indicatorView =
+        target.IndicatorView <- indicatorView
+    
+    let private tryLinkIndicatorViewToCarouselView (target: Xamarin.Forms.CarouselView) (indicatorViewRef: ViewRef<IndicatorView>) =
+        match indicatorViewRef.TryValue with
+        | None -> linkIndicatorViewToCarouselView target null
+        | Some v -> linkIndicatorViewToCarouselView target v
+        
+    let private removeCarouselViewHandler (target: Xamarin.Forms.CarouselView) =
+        let key = target.GetHashCode()
+        carouselViewHandlers.Remove(key) |> ignore
+        
+    let updateCarouselViewIndicatorView (prevValueOpt: ViewRef<IndicatorView> voption) (currValueOpt: ViewRef<IndicatorView> voption) (target: Xamarin.Forms.CarouselView) =
+        let getHandler() =
+            match carouselViewHandlers.TryGetValue(target.GetHashCode()) with
+            | true, handler -> handler
+            | false, _ ->
+                let key = target.GetHashCode()
+                let weakRef = WeakReference<Xamarin.Forms.CarouselView>(target)
+                let handler = Handler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
+                    match weakRef.TryGetTarget() with
+                    | false, _ -> carouselViewHandlers.Remove(key) |> ignore
+                    | true, target -> linkIndicatorViewToCarouselView target indicatorView
+                )
+                carouselViewHandlers.Add(key, handler)
+                handler
+        
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
-        | _, ValueSome currValue -> 
-            match currValue.TryValue with
-            | Some v -> IndicatorView.SetItemsSourceBy(target, v)
-            | None -> target.ClearValue IndicatorView.ItemsSourceByProperty
-        | ValueSome _, ValueNone -> target.ClearValue IndicatorView.ItemsSourceByProperty
+        | ValueSome prevValue, ValueNone ->
+            let handler = getHandler()
+            prevValue.ValueChanged.RemoveHandler(handler)
+            removeCarouselViewHandler target
+            linkIndicatorViewToCarouselView target null
+        | ValueNone, ValueSome currValue ->
+            let handler = getHandler()
+            currValue.ValueChanged.AddHandler(handler)
+            tryLinkIndicatorViewToCarouselView target currValue
+        | ValueSome prevValue, ValueSome currValue ->
+            let handler = getHandler()
+            prevValue.ValueChanged.RemoveHandler(handler)
+            currValue.ValueChanged.AddHandler(handler)
+            tryLinkIndicatorViewToCarouselView target currValue            
 
     let updateSwipeItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SwipeItems) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ISwipeItem
 
         updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    // This function could be automatically generated by CodeGen, but the BindingProperty field StepperPositionProperty is currently marked private, preventing that.
+    // See https://github.com/xamarin/Xamarin.Forms/issues/10148
+    let updateStepperPosition prevStepperPositionOpt currStepperPositionOpt (target: Xamarin.Forms.Stepper) =
+        match prevStepperPositionOpt, currStepperPositionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.StepperPosition <-  currValue
+        | ValueSome _, ValueNone -> target.StepperPosition <- 0
+        | ValueNone, ValueNone -> ()
+        
+    let updateIndicatorViewIndicatorProperty prevValueOpt currValueOpt (target: Xamarin.Forms.IndicatorView) =
+        updateDirectViewElementDataTemplate
+            (fun v -> target.IndicatorTemplate <- v)
+            (fun () -> target.ClearValue IndicatorView.IndicatorTemplateProperty)
+            (fun () -> target)
+            prevValueOpt
+            currValueOpt

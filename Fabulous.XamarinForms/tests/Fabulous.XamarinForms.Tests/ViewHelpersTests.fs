@@ -1,7 +1,6 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Core.Tests
 
-open System
 open NUnit.Framework
 open FsUnit
 open Fabulous.XamarinForms

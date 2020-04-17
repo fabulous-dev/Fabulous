@@ -317,7 +317,7 @@
     <Reference Include="ExoPlayer.Hls">
       <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.Hls\lib\monoandroid90\ExoPlayer.Hls.dll</HintPath>
     </Reference>
-    <Reference Include="ExoPlayer.MediaSession">
+    <Reference Include="ExoPlayer.Ext.MediaSession">
       <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.MediaSession\lib\monoandroid90\ExoPlayer.Ext.MediaSession.dll</HintPath>
     </Reference>
     <Reference Include="ExoPlayer.SmoothStreaming">

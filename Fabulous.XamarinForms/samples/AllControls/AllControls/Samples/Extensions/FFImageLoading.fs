@@ -14,7 +14,7 @@ module FFImageLoading =
                 View.Label "Note, when last checked this did not work on Android"
                 View.Label "However maybe the sample is not configured correctly"
                 View.CachedImage(
-                    source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
+                    source = ImagePath "http://loremflickr.com/600/600/nature?filename=simple.jpg",
                     //loadingPlaceholder = Path "path/to/loading-placeholder.png",
                     //errorPlaceholder = Path "path/to/error-placeholder.png",
                     height = 600.,

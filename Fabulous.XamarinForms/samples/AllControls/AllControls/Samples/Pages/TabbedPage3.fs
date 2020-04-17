@@ -46,7 +46,7 @@ module TabbedPage3 =
                                             View.Image(
                                                 height = 240.0, 
                                                 width = 160.0, 
-                                                source = Path "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                source = ImagePath "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
                                             ).Order(-1)
                                              .AlignSelf(FlexAlignSelf.Center)
                                             
@@ -96,7 +96,7 @@ module TabbedPage3 =
                                             View.Image(
                                                 height = 213.0, 
                                                 width = 320.0, 
-                                                source = Path "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                source = ImagePath "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
                                             ).Order(-1)
                                              .AlignSelf(FlexAlignSelf.Center)
                                              

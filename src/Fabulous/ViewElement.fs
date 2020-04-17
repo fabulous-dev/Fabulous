@@ -64,9 +64,14 @@ type AttributesBuilder (attribCount: int) =
 
 type ViewRef() = 
     let handle = System.WeakReference<obj>(null)
+    
+    let valueChanged = Event<obj>()
+    
+    member __.ValueChanged = valueChanged.Publish
 
     member __.Set(target: obj) : unit = 
         handle.SetTarget(target)
+        valueChanged.Trigger(target) 
 
     member __.TryValue = 
         match handle.TryGetTarget() with 
@@ -76,8 +81,18 @@ type ViewRef() =
 
 type ViewRef<'T when 'T : not struct>() = 
     let handle = ViewRef()
+    
+    let valueChanged = Event<'T>()
+    
+    do handle.ValueChanged.Add(fun value ->
+        valueChanged.Trigger(unbox value)
+    )
+    
+    member __.ValueChanged = valueChanged.Publish
 
-    member __.Set(target: 'T) : unit =  handle.Set(box target)
+    member __.Set(target: 'T) : unit =
+        handle.Set(box target)
+        
     member __.Value : 'T = 
         match handle.TryValue with 
         | Some res -> unbox res

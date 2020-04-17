@@ -72,7 +72,7 @@ module CityView =
                         )
                             
                         View.Image(
-                            source = Path (sprintf "%s.png" (cityName.Replace(" ", "_").ToLower())),
+                            source = ImagePath (sprintf "%s.png" (cityName.Replace(" ", "_").ToLower())),
                             aspect = Aspect.AspectFit,
                             opacity = 0.8, 
                             verticalOptions = LayoutOptions.FillAndExpand
@@ -121,7 +121,7 @@ module CityView =
                                                         horizontalTextAlignment = TextAlignment.Center
                                                     )
                                                     View.Image(
-                                                        source = Path (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
+                                                        source = ImagePath (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
                                                         aspect = Aspect.AspectFit,
                                                         horizontalOptions = LayoutOptions.Center,
                                                         verticalOptions = LayoutOptions.CenterAndExpand
