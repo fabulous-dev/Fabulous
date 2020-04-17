@@ -9,7 +9,11 @@ module XFOptimizer =
     /// Optimize command properties by asking for an F# function for the input type instead of ICommand
     module OptimizeCommands =
         let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.ModelType = "System.Windows.Input.ICommand"
+            boundProperty.InputType = "System.Windows.Input.ICommand"
+            && boundProperty.ConvertInputToModel = ""
+            && boundProperty.ConvertModelToValue = ""
+            && boundProperty.UpdateCode = ""
+            && boundProperty.ModelType = boundProperty.InputType
         
         let optimizeBoundProperty (boundType: BoundType) (boundProperty: BoundProperty) =
             [|
@@ -43,10 +47,11 @@ module XFOptimizer =
     /// Optimize ImageSource properties by asking for InputTypes.Image instead of ImageSource  
     module OptimizeImageSource =
         let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = boundProperty.ModelType
+            boundProperty.InputType = "Xamarin.Forms.ImageSource"
+            && boundProperty.ConvertInputToModel = ""
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = "Xamarin.Forms.ImageSource"
+            && boundProperty.ModelType = boundProperty.InputType
         
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
@@ -59,10 +64,11 @@ module XFOptimizer =
     /// Optimize MediaSource properties by asking for InputTypes.Media instead of MediaSource  
     module OptimizeMediaSource =
         let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = boundProperty.ModelType
+            boundProperty.InputType = "Xamarin.Forms.MediaSource"
+            && boundProperty.ConvertInputToModel = ""
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = "Xamarin.Forms.MediaSource"
+            && boundProperty.ModelType = boundProperty.InputType
         
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
