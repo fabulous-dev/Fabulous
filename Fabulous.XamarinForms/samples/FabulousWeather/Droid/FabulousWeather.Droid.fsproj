@@ -141,14 +141,13 @@
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\seattle.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\new_york.png" />
-    <AndroidResource Include="Resources\drawable-nodpi\paris.png" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable\paris.png" />
+    <AndroidResource Include="Resources\drawable\new_york.png" />
+    <AndroidResource Include="Resources\drawable\seattle.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <None Include="Properties\AndroidManifest.xml" />
     <Compile Include="Properties\AssemblyInfo.fs" />
     <Compile Include="MainActivity.fs" />

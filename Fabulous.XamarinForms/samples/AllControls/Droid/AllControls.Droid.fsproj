@@ -56,12 +56,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
-    <Compile Include="MainActivity.fs" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <Compile Include="MainActivity.fs" />
     <Compile Include="FocusEffect.fs" />
     <Compile Include="LabelShadowEffect.fs" />
     <Compile Include="RegisterEffects.fs" />

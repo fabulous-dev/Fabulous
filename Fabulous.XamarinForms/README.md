@@ -1,5 +1,4 @@
-Fabulous for Xamarin.Forms
-=======
+# <img src="logo/logo-title.png" height="120px" alt="Fabulous for Xamarin.Forms" />
 
 *Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI*
 
