@@ -46,17 +46,6 @@
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="Assets\AboutAssets.txt" />
-    <None Include="Resources\AboutResources.txt" />
-    <Compile Include="Properties\AssemblyInfo.fs" />
-    <None Include="Properties\AndroidManifest.xml" />
-    <AndroidResource Include="Resources\drawable\icon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
-    <Compile Include="MainActivity.fs" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <!-- Disabled because of an issue when using neither packages.config nor PackageReference (https://github.com/xamarin/AndroidSupportComponents/issues/176) -->
   <!-- <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" /> -->
@@ -100,22 +89,6 @@
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets')" />
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
-      <Project>{cf47f218-12c5-4026-b1f1-bd534d0a3fa6}</Project>
-      <Name>Fabulous.LiveUpdate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
-      <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
-      <Name>Fabulous</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj">
-      <Project>{74083fca-7678-4c90-a257-59e2eebf415d}</Project>
-      <Name>Fabulous.XamarinForms.LiveUpdate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
-      <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
-      <Name>Fabulous.XamarinForms</Name>
-    </ProjectReference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
@@ -266,6 +239,33 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Resources\AboutResources.txt" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <Compile Include="Properties\AssemblyInfo.fs" />
+    <None Include="Properties\AndroidManifest.xml" />
+    <Compile Include="MainActivity.fs" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
+      <Project>{cf47f218-12c5-4026-b1f1-bd534d0a3fa6}</Project>
+      <Name>Fabulous.LiveUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+      <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
+      <Name>Fabulous</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj">
+      <Project>{74083fca-7678-4c90-a257-59e2eebf415d}</Project>
+      <Name>Fabulous.XamarinForms.LiveUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+      <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
+      <Name>Fabulous.XamarinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Calculator\Calculator.fsproj">
       <Project>{F75B6CFC-73D7-4A30-9BC9-CA24E808449D}</Project>
       <Name>Calculator</Name>
