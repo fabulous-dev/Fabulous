@@ -98,7 +98,7 @@
     <AndroidResource Include="Resources\drawable\monkey.png" />
     <AndroidResource Include="Resources\drawable\paw.png" />
     <AndroidResource Include="Resources\drawable\random.png" />
-    <AndroidResource Include="Resources\drawable\xamarin_logo.png" />
+    <AndroidResource Include="Resources\drawable\logo_fabulous.png" />
     <AndroidResource Include="Resources\drawable\xamarinstore.jpg" />
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
