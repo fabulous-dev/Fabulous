@@ -1,4 +1,4 @@
-Fabulous StaticView
+<img src="logo/logo-title.png" height="120px" alt="Fabulous.StaticView" />
 =======
 
 *Write cross-platform apps with Xamarin.Forms, using MVU architecture and static XAML UI*
