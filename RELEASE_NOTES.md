@@ -1,3 +1,7 @@
+#### 0.53.1
+
+* [All] Added a new Fabulous icons to the repository and the samples (https://github.com/fsprojects/Fabulous/pull/714)
+
 #### 0.53.0
 
 BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.53.html)
