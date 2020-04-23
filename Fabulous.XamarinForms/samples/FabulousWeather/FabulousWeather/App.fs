@@ -174,5 +174,5 @@ type App () as app =
     let runner = App.program |> XamarinFormsProgram.run app
 
 #if DEBUG
-    do runner.EnableLiveUpdate ()
+    //do runner.EnableLiveUpdate ()
 #endif
