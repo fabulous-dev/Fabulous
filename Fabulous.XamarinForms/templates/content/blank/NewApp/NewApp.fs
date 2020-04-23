@@ -58,7 +58,7 @@ module App =
             ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
-    let program = Program.mkProgram init update view
+    let program = XamarinFormsProgram.mkProgram init update view
 
 type App () as app = 
     inherit Application ()
