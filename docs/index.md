@@ -6,12 +6,6 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 * [Documentation of Fabulous](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
 
-Tools
------
-
-* [Documentation of Fabulous StaticView](https://fsprojects.github.io/Fabulous/Fabulous.StaticView/)
-* [Documentation of Fabulous.CodeGen](https://fsprojects.github.io/Fabulous/Fabulous.CodeGen/)
-
 Contributing
 ------
 
