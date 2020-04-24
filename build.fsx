@@ -338,8 +338,8 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    for nupkg in !! (buildDir + "/*.nupkg") do
-        let fileName = Path.GetFileNameWithoutExtension(nupkg)
+    let pushFile path =
+        let fileName = Path.GetFileNameWithoutExtension(path)
         let projectName = fileName.Remove(fileName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
@@ -352,6 +352,14 @@ Target.create "PublishNuGetPackages" (fun _ ->
                      WorkingDir = buildDir
                      OutputPath = buildDir }
         )
+
+    // Push packages
+    for nupkg in !! (buildDir + "/*.nupkg") do
+        pushFile nupkg
+    
+    // Push symbols
+    for snupkg in !! (buildDir + "/*.snupkg") do
+        pushFile snupkg
 )
 
 Target.create "Prepare" ignore
