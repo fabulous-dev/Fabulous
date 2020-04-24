@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous CodeGen
 =======
 
 CodeGen - Bindings file format
