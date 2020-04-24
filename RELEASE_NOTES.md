@@ -1,3 +1,7 @@
+#### 0.53.2
+
+* [Fabulous.XamarinForms] Use `XamarinFormsProgram.mkProgram` and similar to correctly support LiveUpdate (https://github.com/fsprojects/Fabulous/pull/716)
+
 #### 0.53.1
 
 * [All] Added a new Fabulous icons to the repository and the samples (https://github.com/fsprojects/Fabulous/pull/714)

@@ -235,7 +235,7 @@ type FabimalsApp () as app =
 #if DEBUG
     // Run LiveUpdate using: 
     //    
-    do runner.EnableLiveUpdate ()
+    //do runner.EnableLiveUpdate ()
 #endif
 
 
