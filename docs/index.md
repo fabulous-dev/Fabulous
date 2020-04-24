@@ -4,14 +4,18 @@
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-* [Documentation of Fabulous](https://fsprojects.github.io/Fabulous/Fabulous/)
-* [Documentation of Fabulous.CodeGen](https://fsprojects.github.io/Fabulous/Fabulous.CodeGen/)
-* [Documentation of Fabulous for Xamarin.Forms](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
+* [Documentation of Fabulous](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
+
+Tools
+-----
+
 * [Documentation of Fabulous StaticView](https://fsprojects.github.io/Fabulous/Fabulous.StaticView/)
+* [Documentation of Fabulous.CodeGen](https://fsprojects.github.io/Fabulous/Fabulous.CodeGen/)
 
 Contributing
 ------
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
+* [Github Repo](https://github.com/fsprojects/Fabulous)
 * [Submit a fix to this guide](https://github.com/fsprojects/Fabulous/tree/master/docs)
