@@ -1,4 +1,4 @@
-{% include_relative _header.md %}
+# <img src="../assets/logo-title-fabulous-xamarinforms.png" height="120px" alt="Fabulous for Xamarin.Forms" />
 
 *F# Functional App Development, using declarative dynamic UI*
 
