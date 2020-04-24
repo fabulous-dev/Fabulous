@@ -18,6 +18,13 @@
         },
         {
           "source": null,
+          "Name": "Key",
+          "canBeUpdated": false,
+          "inputType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "source": null,
           "name": "Tag",
           "canBeUpdated": false,
           "defaultValue": "null",

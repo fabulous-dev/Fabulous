@@ -108,6 +108,7 @@ type ViewRef<'T when 'T : not struct>() =
 /// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
+    let mutable key = ""
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
@@ -116,6 +117,11 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
+   
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _KeyAttribKey : AttributeKey<string> = AttributeKey<_>("Key")
+    
+    
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
@@ -130,6 +136,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
+    
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
@@ -146,6 +153,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
         | Some kvp -> unbox<'T>(kvp.Value)
         | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
+        
+    
 
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target
@@ -155,6 +164,14 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
+    
+    member  x.Key v  =
+        key<-v
+        x
+    member  x.KeyValue  = key
+        
+       
+        
 
     /// Create the UI element from the view description
     member x.Create() : obj =
@@ -164,6 +181,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         match x.TryGetAttributeKeyed(ViewElement._CreatedAttribKey) with
         | ValueSome f -> f target
         | ValueNone -> ()
+        
         match x.TryGetAttributeKeyed(ViewElement._RefAttribKey) with
         | ValueSome f -> f.Set (box target)
         | ValueNone -> ()

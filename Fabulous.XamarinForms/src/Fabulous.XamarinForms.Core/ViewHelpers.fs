@@ -12,6 +12,17 @@ module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
+    let getIndexesByEqualKeys (prevColl:ViewElement seq) (newColl:ViewElement seq) =
+        let prevKeysByIndex  = prevColl|>Seq.mapi(fun i x-> x.KeyValue,i)  |> Map.ofSeq
+        let newKeysByIndex = newColl|>Seq.mapi(fun i x-> x.KeyValue,i) 
+        
+        seq{
+              for (key,index) in newKeysByIndex do
+                  let oldIndex = prevKeysByIndex|>Map.tryFind key
+                  if(oldIndex.IsSome) then
+                      yield (index,oldIndex.Value)
+           } |> Map.ofSeq
+            
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
@@ -23,6 +34,9 @@ module ViewHelpers =
                 true
         else
             false
+            
+    
+        
 
     /// Checks whether an underlying NavigationPage control can be reused given the previous and new view elements
     //
