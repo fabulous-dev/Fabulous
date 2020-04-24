@@ -1,5 +1,4 @@
-Fabulous for Xamarin.Forms - Guide
-=======
+{% include_relative _header.md %}
 
 {% include_relative contents.md %}
 

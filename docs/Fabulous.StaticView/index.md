@@ -1,5 +1,6 @@
-Fabulous StaticView
-=======
+# <img src="../assets/logo-title-fabulous-staticview.png" height="120px" alt="Fabulous" />
+
+*Write cross-platform apps with Xamarin.Forms, using MVU architecture and static XAML UI*
 
 In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).
 
