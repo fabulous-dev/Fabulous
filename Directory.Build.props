@@ -1,17 +1,29 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.50.2</Version>
+    <Version>0.53.2</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.50.2</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Fixed an issue where attached properties could be not applied correctly (https://github.com/fsprojects/Fabulous/pull/592)</PackageReleaseNotes>
+    <PackageVersion>0.53.2</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Use `XamarinFormsProgram.mkProgram` and similar to correctly support LiveUpdate (https://github.com/fsprojects/Fabulous/pull/716)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
     <PackageTags>F#;Elmish;Elm;$(PackageTags)</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageIcon>nuget-icon.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\logo\nuget-icon.png">
+      <Pack>True</Pack>
+      <PackagePath>
+      </PackagePath>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
   <PropertyGroup>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
@@ -21,7 +33,7 @@
     <!-- Support for arbitrary value in AssemblyInformationalVersionAttribute https://github.com/Microsoft/visualfsharp/issues/4822 -->
     <NoWarn>FS2003</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.2'">
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.2' OR $(TargetFramework) == 'netcoreapp3.1'">
     <OtherFlags>/warnon:1182</OtherFlags>
   </PropertyGroup>
   <PropertyGroup Condition="($(IsPackable) == '' OR $(IsPackable) == 'true') AND $(Configuration) == 'Release'">

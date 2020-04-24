@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -76,21 +76,18 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Platform.macOS">
-      <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.macOS.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\macosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\macosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
-  <Import Project="..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png" />
@@ -132,7 +129,7 @@
       <Name>Fabulous.XamarinForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Project>{391D3679-0EF6-44BB-978A-82F7EECF1A66}</Project>
       <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>

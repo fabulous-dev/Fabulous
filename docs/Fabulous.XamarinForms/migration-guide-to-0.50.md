@@ -1,5 +1,4 @@
-Fabulous for Xamarin.Forms - Guide
-=======
+{% include_relative _header.md %}
 
 {% include_relative contents.md %}
 
@@ -20,6 +19,8 @@ __Changes to properties__
 - [StyleClass renamed to StyleClasses and input changed from `obj` to `string list`](#styleclass-renamed-to-styleclasses-and-input-changed-from-obj-to-string-list)
 - [ListView and ListViewGrouped now require items (and group headers) to be Cells, adds support for TextCell / ImageCell / SwitchCell / EntryCell / ViewCell](#listview-and-listviewgrouped-now-require-items-and-group-headers-to-be-cells-adds-support-for-textcell--imagecell--switchcell--entrycell--viewcell)
 - [TableView now require TableRoot and TableSections](#tableview-now-require-tableroot-and-tablesections)
+- [Attached properties dropped the class name prefix](#attached-properties-dropped-the-class-name-prefix)
+
 
 __Changes to events__
 - [Events no longer triggered by changes in incremental updates](#events-no-longer-triggered-by-changes-in-incremental-updates)
@@ -306,6 +307,20 @@ View.TableView(
         ]
     )
 )
+```
+
+### Attached properties dropped the class name prefix
+
+We simplified the View API a bit by renaming all attached properties from ClassName+PropertyName (e.g. `GridRow`) to only the attached property name (e.g. `Row`).
+
+_Old:_
+```fsharp
+View.Label().GridColumn(1)
+```
+
+_New:_
+```fsharp
+View.Label().Column(1)
 ```
 
 ### Events no longer triggered by changes in incremental updates

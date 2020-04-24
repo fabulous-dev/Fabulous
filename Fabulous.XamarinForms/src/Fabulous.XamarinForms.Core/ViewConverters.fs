@@ -41,9 +41,16 @@ module ViewConverters =
     /// Converts a string, byte array or ImageSource to a Xamarin.Forms ImageSource
     let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image) =
         match v with
-        | Path path -> ImageSource.op_Implicit path
-        | Bytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
-        | Source imageSource -> imageSource
+        | ImagePath path -> ImageSource.op_Implicit path
+        | ImageBytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
+        | ImageStream stream -> ImageSource.FromStream(fun () -> stream)
+        | ImageFont fontImageSource -> fontImageSource :> ImageSource
+        | ImageSrc imageSource -> imageSource
+
+    let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media) =
+        match v with
+        | MediaPath path -> MediaSource.op_Implicit path
+        | MediaSrc mediaSource -> mediaSource
                 
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
@@ -167,4 +174,22 @@ module ViewConverters =
     let makeCustomTimePickerTimeChangedEventHandler f =
         System.EventHandler<System.TimeSpan>(fun sender args ->
             f args    
+        )    
+
+    let makeSwipeItemsChangedEventHandler f =
+        System.Collections.Specialized.NotifyCollectionChangedEventHandler(fun sender args ->
+            f args
+        )
+        
+    let makeSearchHandlerItemSelectedEventHandler f =
+        System.EventHandler<obj>(fun sender args ->
+            let viewElement = match args :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            f viewElement
+        )
+        
+    let makeCarouselViewCurrentItemChangedEventHandler f =
+        System.EventHandler<Xamarin.Forms.CurrentItemChangedEventArgs>(fun sender args ->
+            let previousViewElement = match args.PreviousItem :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            let currentViewElement = match args.CurrentItem :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
+            f (previousViewElement, currentViewElement)
         )

@@ -1,5 +1,4 @@
-Fabulous for Xamarin.Forms - Guide
-=======
+{% include_relative _header.md %}
 
 {% include_relative contents-views.md %}
 
@@ -13,8 +12,9 @@ The following additional view elements are available as pre-built nuget librarie
 
 * [FFImageLoading](views-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
 * [Maps](views-maps.md) for platform maps
-* [SkiaSharp](views-skiasharp.md) for 2D graphics
-* [OxyPlot](views-oxyplot.md) for charting (in preparation)
+* [SkiaSharp](views-skiasharp.md) for drawing 2D graphics
+* [OxyPlot](views-oxyplot.md) for charting
+* [VideoManager](views-videomanager.md) for playing audio and video
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
@@ -56,9 +56,12 @@ module MyViewExtensions =
             let attribCount = 0
             let attribCount = match prop1 with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match prop2 with Some _ -> attribCount + 1 | None -> attribCount
+            
+            // Unbox the ViewRef
+            let viewRef = match ref with None -> None | Some (ref: ViewRef<ABC>) -> Some ref.Unbox
 
             // Populate the attributes of the base element
-            let attribs = ViewBuilders.BuildBASE(attribCount, ... inherited attributes ... )
+            let attribs = ViewBuilders.BuildBASE(attribCount, ... inherited attributes (with ?ref=viewRef) ... )
 
             // Add our own attributes.
             match prop1 with None -> () | Some v -> attribs.Add (Prop1AttribKey, v)

@@ -1,33 +1,49 @@
 <Project>
+    <!-- External dependencies, will be marked as requirements (equal or higher) in the NuGet packages. Should target lowest possible major versions -->
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="4.6.2" />
-        <PackageReference Update="FSharp.Data" Version="3.0.0" />
-        <PackageReference Update="Xamarin.Forms" Version="4.3.0.908675" />
-        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.3.0.908675" />
-        <PackageReference Update="Xamarin.Forms.Maps" Version="4.3.0.908675" />
-        <PackageReference Update="Xamarin.Essentials" Version="1.3.1" />
-        <PackageReference Update="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" />
-        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
+        <!-- Fabulous.CodeGen -->
+        <PackageReference Update="Microsoft.FSharpLu.Json" Version="0.11.6" />
+        <PackageReference Update="Mono.Cecil" Version="0.11.2" />
+        <!-- Fabulous.LiveUpdate -->
+        <PackageReference Update="Newtonsoft.Json" Version="12.0.1" />
+        <!-- Fabulous.XamarinForms -->
+        <PackageReference Update="Xamarin.Forms" Version="4.5.0.356" />
+        <!-- Fabulous.XamarinForms Extensions -->
+        <PackageReference Update="Xamarin.Forms.Maps" Version="4.5.0.356" />
         <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.0.0" />
-        <PackageReference Update="SkiaSharp" Version="1.60.3" />
-        <PackageReference Update="SkiaSharp.Views.Forms" Version="1.60.3" />
-        <PackageReference Update="Plugin.MediaManager" Version="0.6.2" />
-        <PackageReference Update="Plugin.MediaManager.Forms" Version="0.6.2" />
+        <PackageReference Update="SkiaSharp.Views.Forms" Version="1.68.1" />
+        <PackageReference Update="Xamarin.Forms.PancakeView" Version="1.3.6" />
+        <PackageReference Update="Plugin.MediaManager.Forms" Version="0.9.6" />
         <PackageReference Update="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
-        <PackageReference Update="Mono.Cecil" Version="0.10.0" />
-        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-        <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
-        <PackageReference Update="Microsoft.CSharp" Version="4.5.0" />
-        <PackageReference Update="NETStandard.Library" Version="2.0.3" />
-        <PackageReference Update="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
-        <PackageReference Update="System.Reflection.Emit.Lightweight" Version="4.3.0" />
-        <PackageReference Update="FsUnit" Version="3.4.0" />
-        <PackageReference Update="NUnit3TestAdapter" Version="3.11.2" />
-        <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9" />
-        <PackageReference Update="Microsoft.FSharpLu.Json" Version="0.11.2" />
-        <PackageReference Update="CommandLineParser.FSharp" Version="2.5.0" />
     </ItemGroup>
+
+    <!-- Internal dependencies, can be updated without impacting users -->
+    <ItemGroup>
+        <!-- Shared dependencies -->
+        <PackageReference Update="FSharp.Core" Version="4.7.1" PrivateAssets="All" />
+        <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0" PrivateAssets="All" />
+        <!-- Fabulous.Cli -->
+        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" /> <!-- Locked to 0.9.0 for FSharp.Compiler.PortaCode -->
+        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" /> <!-- Locked to 25.0.1 for FSharp.Compiler.PortaCode -->
+        <!-- Fabulous.XamarinForms.Generator -->
+        <PackageReference Update="CommandLineParser.FSharp" Version="2.7.82" />
+        <!-- Unit tests -->
+        <PackageReference Update="FsUnit" Version="3.8.0" />
+        <PackageReference Update="Microsoft.CSharp" Version="4.5.0" />
+        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Update="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Update="System.Reflection.Emit.ILGeneration" Version="4.7.0" />
+        <PackageReference Update="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+        <PackageReference Update="NETStandard.Library" Version="2.0.3" />
+        <!-- Samples -->
+        <PackageReference Update="FSharp.Data" Version="3.3.3" />
+        <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
+        <PackageReference Update="SkiaSharp.Views.Forms.WPF" Version="1.68.1.1" />
+        <PackageReference Update="Xamarin.Essentials" Version="1.5.1" />
+        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.5.0.617" />
+        <PackageReference Update="Xamarin.Forms.Maps.WPF" Version="4.5.0.617" />
+    </ItemGroup>
+
     <PropertyGroup>
         <RestoreSources>
             $(RestoreSources);

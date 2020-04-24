@@ -13,6 +13,11 @@ type Logger =
       getMessages: unit -> string list
       getWarnings: unit -> string list
       getErrors: unit -> string list }
+    
+type CheckableField =
+    { Name: string
+      Value: string option
+      IsRequired: bool }
         
 module BinderHelpers =
     let createLogger () =
@@ -59,24 +64,23 @@ module BinderHelpers =
         | Some elmV, Some cdV -> Some (elmV, cdV)
         | None, None -> None
        
-    let createBinding logger containerTypeName memberKind memberNameOpt func values =
+    let createBinding logger containerTypeName memberKind memberNameOpt func (fields: CheckableField list) =
         // Trace invalid values
-        let invalidValues =
-            values
-            |> List.filter (snd >> Option.isNone)
+        let invalidFields =
+            fields |> List.filter (fun f -> f.IsRequired && f.Value.IsNone)
             
-        match invalidValues with
+        match invalidFields with
         | [] ->
-            values
-            |> List.map (snd >> Option.get)
-            |> func
-            |> Some
+            let stringValues =
+                fields |> List.map (fun f -> Text.getValueOrDefault f.Value "")
+                
+            Some (func stringValues)
 
         | _ ->
             let memberName = Text.getValueOrDefault memberNameOpt ""
 
-            for (fieldName, _) in invalidValues do
-                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" fieldName memberKind memberName containerTypeName)
+            for field in invalidFields do
+                logger.traceError (sprintf "Missing value for field %s of %s %s on type %s" field.Name memberKind memberName containerTypeName)
             None
         
 module Binder =
@@ -97,9 +101,9 @@ module Binder =
     /// Try to create a bound attached property from the bindings data only 
     let tryCreateAttachedProperty logger containerTypeName (bindingsAttachedProperty: AttachedProperty) =
         [
-            "Name", bindingsAttachedProperty.Name
-            "DefaultValue", bindingsAttachedProperty.DefaultValue
-            "InputType", bindingsAttachedProperty.InputType
+            { Name = "Name"; Value = bindingsAttachedProperty.Name; IsRequired = true }
+            { Name = "DefaultValue"; Value = bindingsAttachedProperty.DefaultValue; IsRequired = bindingsAttachedProperty.UpdateCode.IsNone }
+            { Name = "InputType"; Value = bindingsAttachedProperty.InputType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "attached property" bindingsAttachedProperty.Name
                (fun values ->
@@ -176,9 +180,9 @@ module Binder =
     /// Try to create a bound event binding from the bindings data only 
     let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
         [
-            "Name", bindingsTypeEvent.Name
-            "InputType", bindingsTypeEvent.InputType
-            "ModelType", bindingsTypeEvent.ModelType
+            { Name = "Name"; Value = bindingsTypeEvent.Name; IsRequired = true }
+            { Name = "InputType"; Value = bindingsTypeEvent.InputType; IsRequired = true }
+            { Name = "ModelType"; Value = bindingsTypeEvent.ModelType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "event" bindingsTypeEvent.Name
             (fun values ->
@@ -201,9 +205,9 @@ module Binder =
     /// Try to create a bound property from the bindings data only 
     let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         [
-            "Name", bindingsTypeProperty.Name
-            "DefaultValue", bindingsTypeProperty.DefaultValue
-            "InputType", bindingsTypeProperty.InputType
+            { Name = "Name"; Value = bindingsTypeProperty.Name; IsRequired = true }
+            { Name = "DefaultValue"; Value = bindingsTypeProperty.DefaultValue; IsRequired = bindingsTypeProperty.UpdateCode.IsNone }
+            { Name = "InputType"; Value = bindingsTypeProperty.InputType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name
             (fun values ->
@@ -254,13 +258,14 @@ module Binder =
             (fun p -> bindProperty logger containerType p assemblyTypeAttachedProperties bindingsTypeProperty)
     
     /// Bind an existing type
-    let bindType logger (assemblyType: AssemblyType) (bindingsType: Type) =
-        let typeName = BinderHelpers.getTypeName assemblyType.Name bindingsType.Name
-        { Id = assemblyType.Name
-          Type = assemblyType.Name
+    let bindType logger (assemblyType: AssemblyType) shouldGenerateBindingForType (bindingsType: Type) =
+        let typeName = BinderHelpers.getTypeName assemblyType.FullName bindingsType.Name
+        { Id = assemblyType.FullName
+          FullName = assemblyType.FullName
+          ShouldGenerateBinding = shouldGenerateBindingForType
           GenericConstraint = bindingsType.GenericConstraint
           CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
-          TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.Name
+          TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.FullName
           BaseTypeName = None
           BaseGenericConstraint = bindingsType.BaseGenericConstraint
           Name = typeName
@@ -275,24 +280,40 @@ module Binder =
           PrimaryConstructorMembers = bindingsType.PrimaryConstructorMembers }
     
     /// Try to bind a type
-    let tryBindType logger (assemblyTypes: AssemblyType array) (bindingsType: Type) =
+    let tryBindType logger (assemblyTypes: AssemblyType array) shouldGenerateBindingForType (bindingsType: Type) =
         BinderHelpers.tryBind
             assemblyTypes
             bindingsType.Type
-            (fun t -> t.Name)
+            (fun t -> t.FullName)
             (fun source -> logger.traceWarning (sprintf "Type '%s' not found" source))
-            (fun t -> bindType logger t bindingsType)
+            (fun t -> bindType logger t shouldGenerateBindingForType bindingsType)
     
-    /// Create a bound model using the types extracted from the assemblies and the bindings provided by the caller
-    let bind (assemblyTypes: AssemblyType array) (bindings: Bindings) : WorkflowResult<BoundModel> =
+    /// Create a bound model using the types extracted from the assemblies and the mapping provided by the caller
+    let bind (assemblyTypes: AssemblyType array) (mapping: Mapping, baseMappings: Mapping array option) : WorkflowResult<BoundModel> =
         let logger = BinderHelpers.createLogger ()
         
+        let boundTypes =
+            [ for typ in mapping.Types do
+                  yield tryBindType logger assemblyTypes true typ
+                    
+              match baseMappings with
+              | None -> ()
+              | Some bs ->
+                  for mapping in bs do
+                      for typ in mapping.Types do
+                          yield tryBindType logger assemblyTypes false typ ]
+            |> Array.ofList
+        
+        let additionalNamespaces =
+            match baseMappings with
+            | None -> [||]
+            | Some bs -> bs |> Array.map (fun b -> b.OutputNamespace) 
+        
         let data =
-            { Assemblies = bindings.Assemblies
-              OutputNamespace = bindings.OutputNamespace
-              Types =
-                  bindings.Types
-                  |> Array.choose (tryBindType logger assemblyTypes) }
+            { Assemblies = mapping.Assemblies
+              OutputNamespace = mapping.OutputNamespace
+              AdditionalNamespaces = additionalNamespaces
+              Types = boundTypes |> Array.choose id }
         
         match logger.getErrors () with
         | [] -> WorkflowResult.okWarnings data (logger.getMessages ()) (logger.getWarnings ())

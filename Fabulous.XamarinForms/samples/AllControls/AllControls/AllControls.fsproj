@@ -1,18 +1,55 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Include="Effects\ShadowEffect.fs" />
-      <Compile Include="AllControls.fs" />
+      <Compile Include="Helpers.fs" />
+      <Compile Include="SampleDefinition.fs" />
+      <Compile Include="ViewOnlySample.fs" />
+      <Compile Include="SampleChooser.fs" />
+      <Compile Include="Samples\ShadowEffect.fs" />
+      <Compile Include="Samples\TestLabel.fs" />
+      <Compile Include="Samples\Extensions\SkiaSharp.fs" />
+      <Compile Include="Samples\Extensions\OxyPlot.fs" />
+      <Compile Include="Samples\Extensions\Maps.fs" />
+      <Compile Include="Samples\Extensions\VideoManager.fs" />
+      <Compile Include="Samples\Extensions\FFImageLoading.fs" />
+      <Compile Include="Samples\Controls\CarouselView.fs" />
+      <Compile Include="Samples\Controls\CollectionView.fs" />
+      <Compile Include="Samples\Controls\MediaElement.fs" />
+      <Compile Include="Samples\Controls\RefreshView.fs" />
+      <Compile Include="Samples\Controls\ScrollView.fs" />
+      <Compile Include="Samples\Controls\SwipeView.fs" />
+      <Compile Include="Samples\Pages\CarouselPage.fs" />
+      <Compile Include="Samples\Pages\NavigationPage.fs" />
+      <Compile Include="Samples\Pages\MasterDetailPage.fs" />
+      <Compile Include="Samples\Pages\Shell.fs" />
+      <Compile Include="Samples\Pages\TabbedPage1.fs" />
+      <Compile Include="Samples\Pages\TabbedPage2.fs" />
+      <Compile Include="Samples\Pages\TabbedPage3.fs" />
+      <Compile Include="Samples\UseCases\Animations.fs" />
+      <Compile Include="Samples\UseCases\CssStyling.fs" />
+      <Compile Include="Samples\UseCases\Effects.fs" />
+      <Compile Include="Samples\UseCases\PopUps.fs" />
+      <Compile Include="Samples\UseCases\WebCall.fs" />
+      <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollList.fs" />
+      <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollCollection.fs" />
+      <Compile Include="Samples\Samples.fs" />
+      <Compile Include="App.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
       <EmbeddedResource Include="styles.css" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="FSharp.Core" />
       <PackageReference Include="FSharp.Data" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" /> 
+      <ProjectReference Include="..\..\..\extensions\Maps\Fabulous.XamarinForms.Maps.fsproj" />
+      <ProjectReference Include="..\..\..\extensions\OxyPlot\Fabulous.XamarinForms.OxyPlot.fsproj" />
+      <ProjectReference Include="..\..\..\extensions\SkiaSharp\Fabulous.XamarinForms.SkiaSharp.fsproj" />
+      <ProjectReference Include="..\..\..\extensions\VideoManager\Fabulous.XamarinForms.VideoManager.fsproj" />
       <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />

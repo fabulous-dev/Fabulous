@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Library</OutputType>
     <IsPackable>false</IsPackable>
     <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
@@ -10,8 +10,6 @@
     <Compile Include="HelpersTests.fs" />
     <Compile Include="ResultTests.fs" />
     <Compile Include="AssemblyReaderTests\ConvertersTests.fs" />
-    <Compile Include="BinderTests.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />

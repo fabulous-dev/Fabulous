@@ -32,6 +32,9 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
+    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
+    <AndroidDexTool>d8</AndroidDexTool>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,22 +49,25 @@
     <GenerateTailCalls>true</GenerateTailCalls>
     <PlatformTarget>
     </PlatformTarget>
+    <AndroidDexTool>d8</AndroidDexTool>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
-    <Compile Include="MainActivity.fs" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <Compile Include="MainActivity.fs" />
     <Compile Include="FocusEffect.fs" />
     <Compile Include="LabelShadowEffect.fs" />
     <Compile Include="RegisterEffects.fs" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets')" />
   <!-- Disabled because of an issue when using neither packages.config nor PackageReference (https://github.com/xamarin/AndroidSupportComponents/issues/176) -->
   <!-- <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" /> -->
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets')" />
@@ -120,7 +126,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="Java.Interop" />
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
@@ -263,8 +269,86 @@
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\androidapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp\lib\MonoAndroid\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Android">
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views\lib\MonoAndroid\SkiaSharp.Views.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Forms">
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views.Forms\lib\MonoAndroid\SkiaSharp.Views.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Maps">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.Maps\lib\MonoAndroid90\Xamarin.Forms.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Maps.Android">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.Maps\lib\MonoAndroid90\Xamarin.Forms.Maps.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Base">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.GooglePlayServices.Base\lib\monoandroid90\Xamarin.GooglePlayServices.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Basement">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.GooglePlayServices.Basement\lib\monoandroid90\Xamarin.GooglePlayServices.Basement.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Maps">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.GooglePlayServices.Maps\lib\monoandroid90\Xamarin.GooglePlayServices.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Tasks">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.GooglePlayServices.Tasks\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.PancakeView">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.PancakeView\lib\monoandroid90\Xamarin.Forms.PancakeView.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.MediaManager">
+      <HintPath>..\..\..\..\packages\androidapp\Plugin.MediaManager\lib\monoandroid90\MediaManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.MediaManager.Forms">
+      <HintPath>..\..\..\..\packages\androidapp\Plugin.MediaManager.Forms\lib\monoandroid90\MediaManager.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer\lib\monoandroid90\ExoPlayer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.Core">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.Core\lib\monoandroid90\ExoPlayer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.Dash">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.Dash\lib\monoandroid90\ExoPlayer.Dash.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.Hls">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.Hls\lib\monoandroid90\ExoPlayer.Hls.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.Ext.MediaSession">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.MediaSession\lib\monoandroid90\ExoPlayer.Ext.MediaSession.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.SmoothStreaming">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.SmoothStreaming\lib\monoandroid90\ExoPlayer.SmoothStreaming.dll</HintPath>
+    </Reference>
+    <Reference Include="ExoPlayer.UI">
+      <HintPath>..\..\..\..\packages\androidapp\Xam.Plugins.Android.ExoPlayer.UI\lib\monoandroid90\ExoPlayer.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Core\lib\netstandard1.0\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Forms">
+      <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Xamarin.Forms\lib\MonoAndroid10\OxyPlot.Xamarin.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Forms.Platform.Android">
+      <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Xamarin.Forms\lib\MonoAndroid10\OxyPlot.Xamarin.Forms.Platform.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Android">
+      <HintPath>..\..\..\..\packages\androidapp\OxyPlot.Xamarin.Android\lib\MonoAndroid10\OxyPlot.Xamarin.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading.Forms\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Platform">
+      <HintPath>..\..\..\..\packages\androidapp\Xamarin.FFImageLoading.Forms\lib\MonoAndroid10\FFImageLoading.Forms.Platform.dll</HintPath>
+    </Reference>
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
-      <Project>{13f140d6-2d21-41be-ac90-4b14d8c16a47}</Project>
+      <Project>{AEBBB2CB-3D81-4DB0-8A64-70D80EDCBD38}</Project>
       <Name>AllControls</Name>
       <Private>True</Private>
     </ProjectReference>

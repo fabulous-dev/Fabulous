@@ -185,10 +185,10 @@ Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
     let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
-    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+    let mappingFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
     let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
-    DotNet.exec id generatorPath (sprintf "-m %s -o %s" bindingsFilePath outputFilePath)
+    DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFilePath outputFilePath)
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -204,6 +204,20 @@ Target.create "BuildFabulousXamarinForms" (fun _ ->
 Target.create "RunFabulousXamarinFormsTests" (fun _ ->
     !! "Fabulous.XamarinForms/tests/**/*.fsproj"
     |> dotnetTest "Fabulous.XamarinForms/TestResults"
+)
+
+Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
+    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
+
+    for mappingFile in !!"Fabulous.XamarinForms/extensions/**/*.json" do
+        let outputFile = mappingFile.Replace(".json", ".fs")
+
+        DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFile outputFile)
+        |> (fun x ->
+            match x.OK with
+            | true -> ()
+            | false -> failwith "The generator stopped due to an exception"
+        )
 )
 
 Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
@@ -307,25 +321,25 @@ Target.create "TestTemplatesNuGet" (fun _ ->
 
 Target.create "CreateGitHubRelease" (fun _ ->
     let token =
-        match Environment.environVarOrDefault "github_token" "" with
+        match Environment.environVarOrDefault "GITHUB_TOKEN" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the github_token environment variable to a github personal access token with repo access."
+        | _ -> failwith "Please set the GITHUB_TOKEN environment variable to a github personal access token with repo access."
 
     GitHub.createClientWithToken token
     |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
-    |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
+    // |> GitHub.uploadFiles !!(buildDir + "/*.nupkg") // Randomly failing to upload for some reasons...
     |> GitHub.publishDraft
     |> Async.RunSynchronously
 )
 
 Target.create "PublishNuGetPackages" (fun _ ->
     let nugetApiKey =
-        match Environment.environVarOrDefault "nuget_apikey" "" with
+        match Environment.environVarOrDefault "NUGET_APIKEY" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
+        | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    for nupkg in !! (buildDir + "/*.nupkg") do
-        let fileName = Path.GetFileNameWithoutExtension(nupkg)
+    let pushFile path =
+        let fileName = Path.GetFileNameWithoutExtension(path)
         let projectName = fileName.Remove(fileName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
@@ -338,6 +352,14 @@ Target.create "PublishNuGetPackages" (fun _ ->
                      WorkingDir = buildDir
                      OutputPath = buildDir }
         )
+
+    // Push packages
+    for nupkg in !! (buildDir + "/*.nupkg") do
+        pushFile nupkg
+    
+    // Push symbols
+    for snupkg in !! (buildDir + "/*.snupkg") do
+        pushFile snupkg
 )
 
 Target.create "Prepare" ignore
@@ -388,6 +410,7 @@ open Fake.Core.TargetOperators
     ==> "Fabulous.XamarinForms"
 
 "Fabulous.XamarinForms"
+    ==> "RunGeneratorForFabulousXamarinFormsExtensions"
     ==> "BuildFabulousXamarinFormsExtensions"
     ==> "Fabulous.XamarinForms.Extensions"
     ==> "Build"

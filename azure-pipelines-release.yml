@@ -1,0 +1,33 @@
+trigger:
+- refs/tags/*
+
+pr: none
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      version: 3.1.101
+  - script: choco install gtksharp
+  - script: .\build.cmd Release
+    env:
+      GITHUB_TOKEN: $(github_token)
+      NUGET_APIKEY: $(nuget_apikey)
+  - task: CopyFiles@2
+    inputs:
+      contents: build_output\*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Windows
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/TestResults/**/*.trx'
+      testRunTitle: '$(Agent.JobName)'
+

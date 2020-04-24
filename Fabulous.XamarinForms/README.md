@@ -1,5 +1,4 @@
-Fabulous for Xamarin.Forms
-=======
+# <img src="logo/logo-title.png" height="120px" alt="Fabulous for Xamarin.Forms" />
 
 *Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI*
 
@@ -40,9 +39,6 @@ For more information, please take a look at the documentation.
 * [Release Notes](../RELEASE_NOTES.md)
 
 ## Roadmap
-
-* Programming model
-  * Prevent events to raise when change is programmatic (e.g. TextChanged)
 
 * Live Update
   * Use actual newly compiled DLLs on Android instead of F# interperter

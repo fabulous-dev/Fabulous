@@ -9,7 +9,11 @@ module XFOptimizer =
     /// Optimize command properties by asking for an F# function for the input type instead of ICommand
     module OptimizeCommands =
         let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.ModelType = "System.Windows.Input.ICommand"
+            boundProperty.InputType = "System.Windows.Input.ICommand"
+            && boundProperty.ConvertInputToModel = ""
+            && boundProperty.ConvertModelToValue = ""
+            && boundProperty.UpdateCode = ""
+            && boundProperty.ModelType = boundProperty.InputType
         
         let optimizeBoundProperty (boundType: BoundType) (boundProperty: BoundProperty) =
             [|
@@ -33,7 +37,7 @@ module XFOptimizer =
                   ModelType = "bool"
                   ConvertInputToModel = ""
                   ConvertModelToValue = ""
-                  UpdateCode = sprintf "ViewUpdaters.updateCommand prev%sOpt curr%sOpt (fun _target -> ()) (fun (target: %s) cmd -> target.%s <- cmd)" boundProperty.UniqueName boundProperty.UniqueName boundType.Type boundProperty.Name
+                  UpdateCode = sprintf "ViewUpdaters.updateCommand prev%sOpt curr%sOpt (fun _target -> ()) (fun (target: %s) cmd -> target.%s <- cmd)" boundProperty.UniqueName boundProperty.UniqueName boundType.FullName boundProperty.Name
                   CollectionData = None
                   IsInherited = false }
             |]
@@ -43,10 +47,11 @@ module XFOptimizer =
     /// Optimize ImageSource properties by asking for InputTypes.Image instead of ImageSource  
     module OptimizeImageSource =
         let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = boundProperty.ModelType
+            boundProperty.InputType = "Xamarin.Forms.ImageSource"
+            && boundProperty.ConvertInputToModel = ""
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = "Xamarin.Forms.ImageSource"
+            && boundProperty.ModelType = boundProperty.InputType
         
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
@@ -56,11 +61,29 @@ module XFOptimizer =
         
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
     
+    /// Optimize MediaSource properties by asking for InputTypes.Media instead of MediaSource  
+    module OptimizeMediaSource =
+        let private canBeOptimized (boundProperty: BoundProperty) =
+            boundProperty.InputType = "Xamarin.Forms.MediaSource"
+            && boundProperty.ConvertInputToModel = ""
+            && boundProperty.ConvertModelToValue = ""
+            && boundProperty.UpdateCode = ""
+            && boundProperty.ModelType = boundProperty.InputType
+        
+        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+            { boundProperty with
+                InputType = "Fabulous.XamarinForms.InputTypes.Media"
+                ModelType = "Fabulous.XamarinForms.InputTypes.Media"
+                ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource" }
+        
+        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+    
     let optimize =
         let xfOptimize boundModel =
             boundModel
             |> OptimizeCommands.apply
             |> OptimizeImageSource.apply
+            |> OptimizeMediaSource.apply
         
         Optimizer.optimize
         >> WorkflowResult.map xfOptimize

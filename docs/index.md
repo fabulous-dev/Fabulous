@@ -1,11 +1,11 @@
-Fabulous
-=======
+# <img src="assets/logo-title-fabulous.png" height="120px" alt="Fabulous" />
 
 *F# Functional App Development, using declarative dynamic UI*
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 * [Documentation of Fabulous](https://fsprojects.github.io/Fabulous/Fabulous/)
+* [Documentation of Fabulous.CodeGen](https://fsprojects.github.io/Fabulous/Fabulous.CodeGen/)
 * [Documentation of Fabulous for Xamarin.Forms](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
 * [Documentation of Fabulous StaticView](https://fsprojects.github.io/Fabulous/Fabulous.StaticView/)
 

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
@@ -17,6 +17,9 @@
     <Compile Include="XFConverters.fs" />
     <Compile Include="XFOptimizer.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Fabulous.CodeGen\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />

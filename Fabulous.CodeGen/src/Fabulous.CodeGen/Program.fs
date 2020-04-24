@@ -31,9 +31,9 @@ type GeneratorConfiguration =
       generate: GeneratorData -> string }
     
 type WorkflowConfiguration =
-    { loadBindings: string -> WorkflowResult<Bindings>
+    { loadMappings: string -> WorkflowResult<Mapping * Mapping array option>
       readAssemblies: Configuration -> ReadAssembliesConfiguration -> string array -> WorkflowResult<AssemblyType array>
-      bind: AssemblyType array -> Bindings -> WorkflowResult<BoundModel>
+      bind: AssemblyType array -> (Mapping * Mapping array option) -> WorkflowResult<BoundModel>
       optimize: BoundModel -> WorkflowResult<BoundModel>
       expand: AssemblyType array -> BoundModel -> WorkflowResult<BoundModel>
       generateCode: GeneratorConfiguration -> BoundModel -> WorkflowResult<string> }
@@ -46,10 +46,30 @@ type Program =
       GeneratorConfiguration: GeneratorConfiguration }
     
 module private Functions =
-    let readBindingsFile path =
-        let bindings =
-            path |> File.ReadAllText |> Json.deserialize<Bindings>
-        WorkflowResult.ok bindings
+    let readMappingFile path =
+        let _knownPaths = System.Collections.Generic.List<string>()
+        
+        let rec read path =
+            if _knownPaths.Contains(path) then
+                None
+            else
+                _knownPaths.Add(path)
+                
+                let mainMapping = path |> File.ReadAllText |> Json.deserialize<Mapping>
+                let baseMappings =
+                     mainMapping.BaseMappingFiles
+                     |> Option.map (fun paths ->
+                         paths
+                         |> Array.map read
+                         |> Array.choose (Option.map (fun (m, b) -> match b with None -> [|m|] | Some bs -> Array.append [|m|] bs))
+                         |> Array.collect id
+                     )
+                
+                Some (mainMapping, baseMappings)
+        
+        match read path with
+        | None -> WorkflowResult.error ["Invalid mapping file path"]
+        | Some res -> WorkflowResult.ok res
     
     let readAssemblies configuration readAssembliesConfiguration assemblies =
         Reader.readAssemblies
@@ -68,16 +88,16 @@ module private Functions =
             configuration.generate
             bindings
     
-    let runProgram program bindingsFile outputFile =        
-        let readAssemblies (bindings: Bindings) =
-            program.Workflow.readAssemblies program.Configuration program.ReadAssembliesConfiguration bindings.Assemblies
+    let runProgram program mappingFile outputFile =        
+        let readAssemblies (mapping: Mapping, baseMappings) =
+            program.Workflow.readAssemblies program.Configuration program.ReadAssembliesConfiguration mapping.Assemblies
             |> WorkflowResult.debug program.Debug "1-assembly-types.json"
-            |> WorkflowResult.map (fun x -> (x, bindings))
+            |> WorkflowResult.map (fun x -> (x, (mapping, baseMappings)))
             
-        let bind (readerData, bindings) =
-            program.Workflow.bind readerData bindings
+        let bind (assemblyTypes, mapping) =
+            program.Workflow.bind assemblyTypes mapping
             |> WorkflowResult.debug program.Debug "2-bound-model.json"
-            |> WorkflowResult.map (fun x -> (x, readerData))
+            |> WorkflowResult.map (fun x -> (x, assemblyTypes))
             
         let optimize (boundModel, readerData) =
             program.Workflow.optimize boundModel
@@ -94,7 +114,7 @@ module private Functions =
         let write outputFile generatedCode =
             File.WriteAllText(outputFile, generatedCode)
         
-        program.Workflow.loadBindings bindingsFile
+        program.Workflow.loadMappings mappingFile
         |> WorkflowResult.bind readAssemblies
         |> WorkflowResult.bind bind
         |> WorkflowResult.bind optimize
@@ -108,7 +128,7 @@ module Program =
         { Debug = false
           Configuration = configuration
           Workflow =
-              { loadBindings = Functions.readBindingsFile
+              { loadMappings = Functions.readMappingFile
                 readAssemblies = Functions.readAssemblies
                 bind = Binder.bind
                 optimize = Optimizer.optimize

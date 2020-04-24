@@ -1,0 +1,47 @@
+{
+  "assemblies": [
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
+    
+    "packages/generator/Plugin.MediaManager/lib/netstandard2.0/MediaManager.dll",
+    "packages/generator/Plugin.MediaManager.Forms/lib/netstandard2.0/MediaManager.Forms.dll"
+  ],
+  "baseMappingFiles": [
+    "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms.VideoManager",
+  "types": [
+    {
+      "type": "MediaManager.Forms.VideoView",
+      "properties": [
+        {
+          "source": "AutoPlay"
+        },
+        {
+          "source": "Repeat"
+        },
+        {
+          "source": "ShowControls"
+        },
+        {
+          "source": "Shuffle"
+        },
+        {
+          "source": "Speed"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "VideoAspect"
+        },
+        {
+          "source": "VideoPlaceholder"
+        },
+        {
+          "source": "Volume"
+        }
+      ]
+    }
+  ]
+}

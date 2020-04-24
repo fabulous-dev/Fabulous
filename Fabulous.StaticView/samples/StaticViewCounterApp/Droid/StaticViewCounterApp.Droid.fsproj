@@ -111,7 +111,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="Java.Interop" />
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
@@ -252,7 +252,7 @@
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
-      <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
+      <Project>{7EAD7307-E81F-4B5D-A212-4B274B43406C}</Project>
       <Name>StaticViewCounterApp</Name>
     </ProjectReference>
   </ItemGroup>

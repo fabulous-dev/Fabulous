@@ -1,0 +1,40 @@
+{
+  "assemblies": [
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll",
+    
+    "packages/generator/SkiaSharp/lib/netstandard1.3/SkiaSharp.dll",
+    "packages/generator/SkiaSharp.Views.Forms/ref/netstandard1.3/SkiaSharp.Views.Forms.dll"
+  ],
+  "baseMappingFiles": [
+    "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms.SkiaSharp",
+  "types": [
+    {
+      "type": "SkiaSharp.Views.Forms.SKCanvasView",
+      "properties": [
+        {
+          "source": "IgnorePixelScaling"
+        },
+        {
+          "source": "EnableTouchEvents"
+        },
+        {
+          "source": null,
+          "name": "Invalidate",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateSKCanvasViewInvalidate"
+        }
+      ],
+      "events": [
+        {
+          "source": "PaintSurface"
+        },
+        {
+          "source": "Touch"
+        }
+      ]
+    }
+  ]
+}

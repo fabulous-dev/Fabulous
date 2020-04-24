@@ -30,7 +30,7 @@ module Expander =
             |> Array.exists (fun e -> e.ShortName = boundProperty.ShortName)
             |> not
         
-        let readerDataType = assemblyTypes |> Array.find (fun t -> t.Name = boundType.Id)
+        let readerDataType = assemblyTypes |> Array.find (fun t -> t.FullName = boundType.Id)
         let hierarchy = readerDataType.InheritanceHierarchy
         let allBaseEvents = hierarchy |> getMembers boundTypes (fun t -> t.Events |> Array.filter hasNotOverridenEvent) (fun e -> { e with IsInherited = true })
         let allBaseProperties = hierarchy |> getMembers boundTypes (fun t -> t.Properties |> Array.filter hasNotOverridenProperty) (fun p -> { p with IsInherited = true })

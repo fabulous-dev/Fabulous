@@ -155,7 +155,7 @@ module App =
                 | Device.macOS -> "Nought"
                 | _ -> "Nought.png"
             | Empty -> ""
-        Path path
+        ImagePath path
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
     let uiText (row,col) = sprintf "%d%d" row col

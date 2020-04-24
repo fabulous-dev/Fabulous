@@ -75,7 +75,7 @@ module Optimizer =
             { boundType with Properties = properties }
         
         let apply (boundModel: BoundModel) =
-            let knownTypes = boundModel.Types |> Array.map (fun t -> t.Type)
+            let knownTypes = boundModel.Types |> Array.map (fun t -> t.FullName)
             typeOptimizer (fun _ -> true) (fun typ -> [| optimizeBoundType knownTypes typ |]) boundModel
             
     /// Optimizes storing list of data for efficiency
@@ -109,7 +109,7 @@ module Optimizer =
     module OptimizeGenerics =
         let private optimizeBoundType (boundType: BoundType) =
            { boundType with
-                Type = boundType.Type.Replace("`1", "<'T>")
+                FullName = boundType.FullName.Replace("`1", "<'T>")
                 TypeToInstantiate = boundType.TypeToInstantiate.Replace("`1", "<'T>") }
         
         let apply = typeOptimizer (fun _ -> true) (fun typ -> [| optimizeBoundType typ |])
@@ -128,6 +128,20 @@ module Optimizer =
                       | _ -> boundEvent.ConvertInputToModel }
             
         let apply = eventOptimizer (fun _ evt -> canBeOptimized evt) (fun _ evt -> [| optimizeBoundEvent evt |])
+        
+    /// Converts Nullables to Options
+    module OptimizeNullable =
+        let private canBeOptimized (boundProperty: BoundProperty) =
+            boundProperty.InputType.StartsWith("System.Nullable<") && boundProperty.ConvertInputToModel = ""
+        
+        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+            { boundProperty with
+                InputType = boundProperty.InputType.Replace("System.Nullable<",  "").Replace(">", " option")
+                ConvertInputToModel = "Option.toNullable"
+                DefaultValue = if boundProperty.DefaultValue = "null" then "System.Nullable()" else boundProperty.DefaultValue }
+        
+        let apply = propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+        
             
     /// Uses the member's name (property/event/attached property) as the unique name where possible
     /// If there's a name collision between two members with the same name but different model types, keep using the complete unique name
@@ -209,5 +223,6 @@ module Optimizer =
         |> OptimizeLists.apply
         |> OptimizeGenerics.apply
         |> OptimizeEvents.apply
+        |> OptimizeNullable.apply
         |> OptimizeAttributeKeys.apply
         |> WorkflowResult.ok

@@ -23,20 +23,25 @@ module Reflection =
                               .Replace("]", ">")
             |> Text.removeDotNetGenericNotation
         
-        nullable {
-            let! ``type`` = assembly.GetType(typeName)
-            match ``type``.ContainsGenericParameters with
-            | true -> return None // Generic types are not supported
-            | false ->
-                let! propertyInfo = ``type``.GetField(propertyName + "Property")
-                let! property = propertyInfo.GetValue(null) :?> Xamarin.Forms.BindableProperty
-                return
-                    Some
-                        { Name = propertyName
-                          Type = property.ReturnType |> toCleanTypeName
-                          DefaultValue = property.DefaultValue }
-        }
-                        
+        let typ = assembly.GetType(typeName)
+        if typ = null then
+            None
+        else
+            if typ.ContainsGenericParameters then
+                None // Generic types are not supported
+            else
+                let propertyInfo = typ.GetField(propertyName + "Property", Reflection.BindingFlags.Public ||| Reflection.BindingFlags.NonPublic ||| Reflection.BindingFlags.Static)
+                if propertyInfo = null then
+                    None
+                else
+                    let property = propertyInfo.GetValue(null) :?> Xamarin.Forms.BindableProperty
+                    if property = null then
+                        None
+                    else
+                        Some
+                            { Name = propertyName
+                              Type = property.ReturnType |> toCleanTypeName
+                              DefaultValue = None } // DefaultValue here is not relevant since we will call ClearValue instead to reset the property
                             
     let tryGetProperty (assemblies: System.Reflection.Assembly array) (typeName, propertyName) =
         assemblies

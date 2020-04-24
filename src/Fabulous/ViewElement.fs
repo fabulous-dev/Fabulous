@@ -37,6 +37,75 @@ type AttributeKey<'T> internal (keyv: int) =
 
 
 /// A description of a visual element
+type AttributesBuilder (attribCount: int) = 
+
+    let mutable count = 0
+    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)    
+
+    /// Get the attributes of the visual element
+    [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
+    member __.Attributes = 
+        if isNull attribs then [| |] 
+        else attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
+
+    /// Get the attributes of the visual element
+    member __.Close() : _[] = 
+        let res = attribs 
+        attribs <- null
+        res
+
+    /// Produce a new visual element with an adjusted attribute
+    member __.Add(key: AttributeKey<'T>, value: 'T) = 
+        if isNull attribs then failwithf "The attribute builder has already been closed"
+        if count >= attribs.Length then failwithf "The attribute builder was not large enough for the added attributes, it was given size %d. Did you get the attribute count right?" attribs.Length
+        attribs.[count] <- KeyValuePair(key.KeyValue, box value)
+        count <- count + 1
+
+
+type ViewRef() = 
+    let handle = System.WeakReference<obj>(null)
+    
+    let valueChanged = Event<obj>()
+    
+    member __.ValueChanged = valueChanged.Publish
+
+    member __.Set(target: obj) : unit = 
+        handle.SetTarget(target)
+        valueChanged.Trigger(target) 
+
+    member __.TryValue = 
+        match handle.TryGetTarget() with 
+        | true, null -> None
+        | true, res -> Some res 
+        | _ -> None
+
+type ViewRef<'T when 'T : not struct>() = 
+    let handle = ViewRef()
+    
+    let valueChanged = Event<'T>()
+    
+    do handle.ValueChanged.Add(fun value ->
+        valueChanged.Trigger(unbox value)
+    )
+    
+    member __.ValueChanged = valueChanged.Publish
+
+    member __.Set(target: 'T) : unit =
+        handle.Set(box target)
+        
+    member __.Value : 'T = 
+        match handle.TryValue with 
+        | Some res -> unbox res
+        | None -> failwith "view reference target has been collected or was not set"
+
+    member __.Unbox = handle
+
+    member __.TryValue : 'T option = 
+        match handle.TryValue with 
+        | Some res -> Some (unbox res)
+        | _ -> None
+
+/// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
@@ -118,60 +187,6 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
             duplicateViewElement (n + 1) n // duplicate and add new attribute
 
     override x.ToString() = sprintf "%s(...)@%d" x.TargetType.Name (x.GetHashCode())
-
-/// A description of a visual element
-and AttributesBuilder (attribCount: int) = 
-
-    let mutable count = 0
-    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)    
-
-    /// Get the attributes of the visual element
-    [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
-    member __.Attributes = 
-        if isNull attribs then [| |] 
-        else attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
-
-    /// Get the attributes of the visual element
-    member __.Close() : _[] = 
-        let res = attribs 
-        attribs <- null
-        res
-
-    /// Produce a new visual element with an adjusted attribute
-    member __.Add(key: AttributeKey<'T>, value: 'T) = 
-        if isNull attribs then failwithf "The attribute builder has already been closed"
-        if count >= attribs.Length then failwithf "The attribute builder was not large enough for the added attributes, it was given size %d. Did you get the attribute count right?" attribs.Length
-        attribs.[count] <- KeyValuePair(key.KeyValue, box value)
-        count <- count + 1
-
-
-and ViewRef() = 
-    let handle = System.WeakReference<obj>(null)
-
-    member __.Set(target: obj) : unit = 
-        handle.SetTarget(target)
-
-    member __.TryValue = 
-        match handle.TryGetTarget() with 
-        | true, null -> None
-        | true, res -> Some res 
-        | _ -> None
-
-and ViewRef<'T when 'T : not struct>() = 
-    let handle = ViewRef()
-
-    member __.Set(target: 'T) : unit =  handle.Set(box target)
-    member __.Value : 'T = 
-        match handle.TryValue with 
-        | Some res -> unbox res
-        | None -> failwith "view reference target has been collected or was not set"
-
-    member __.Unbox = handle
-
-    member __.TryValue : 'T option = 
-        match handle.TryValue with 
-        | Some res -> Some (unbox res)
-        | _ -> None
 
 
 

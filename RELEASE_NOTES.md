@@ -1,3 +1,32 @@
+#### 0.53.2
+
+* [Fabulous.XamarinForms] Use `XamarinFormsProgram.mkProgram` and similar to correctly support LiveUpdate (https://github.com/fsprojects/Fabulous/pull/716)
+
+#### 0.53.1
+
+* [All] Added a new Fabulous icons to the repository and the samples (https://github.com/fsprojects/Fabulous/pull/714)
+
+#### 0.53.0
+
+BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.53.html)
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.5 (https://github.com/fsprojects/Fabulous/pull/709)
+* [Fabulous.XamarinForms] Added missing RemainingItemsThreshold to ItemsView and derivative controls (https://github.com/fsprojects/Fabulous/pull/694)
+* [Fabulous.CodeGen] Supports reference to existing mapping files, enabling 3rd party libs binding generation (https://github.com/fsprojects/Fabulous/pull/690)
+* [Fabulous.XamarinForms] [Generator] Now able to generate bindings for 3rd party libs (https://github.com/fsprojects/Fabulous/pull/690)
+
+#### 0.52.0
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.4 (https://github.com/fsprojects/Fabulous/pull/644)
+* [Fabulous.XamarinForms] Fixed an issue with Minimum/Maximum in Slider/Stepper (https://github.com/fsprojects/Fabulous/pull/640 & https://github.com/fsprojects/Fabulous/pull/643)
+* [Fabulous.XamarinForms] [Extensions] Changed the `ref` parameter to be a typed ViewRef in extensions (https://github.com/fsprojects/Fabulous/pull/636)
+
+#### 0.51.0
+
+* [Fabulous.XamarinForms] Added a `scrollTo` property to ListView, ListViewGrouped, Carousel and CollectionView (https://github.com/fsprojects/Fabulous/pull/616)
+* [Fabulous.XamarinForms] Fixed 2 issues with Grid ColumnDefinitions/RowDefinitions (https://github.com/fsprojects/Fabulous/pull/627)
+* [Fabulous.XamarinForms] Fixed an issue with cell recycling in ListView/ListViewGrouped (https://github.com/fsprojects/Fabulous/pull/617)
+
 #### 0.50.3
 
 * [Fabulous.XamarinForms] Fixed an issue where the application could crash when LiveUpdate tries to refresh the app with an invalid view (https://github.com/fsprojects/Fabulous/pull/594)

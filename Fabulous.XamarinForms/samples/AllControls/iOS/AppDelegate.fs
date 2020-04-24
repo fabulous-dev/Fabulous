@@ -13,8 +13,12 @@ type AppDelegate () =
     let mutable _app: AllControls.App option = None
 
     override this.FinishedLaunching (uiApp, options) =
-        Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"|]);
+        Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental"; 
+                                        "IndicatorView_Experimental"; "SwipeView_Experimental"; "MediaElement_Experimental"|]);
         Forms.Init()
+        Xamarin.FormsMaps.Init() 
+        OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init()
+        FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
         let app = new AllControls.App()
         this.LoadApplication (app)
         _app <- Some app
@@ -23,7 +27,7 @@ type AppDelegate () =
 
     override this.ReceiveMemoryWarning(uiApp) =
         match _app with
-        | Some app -> app.Program.Dispatch(AllControls.Msg.ReceivedLowMemoryWarning)
+        | Some app -> app.Program.Dispatch(AllControls.App.Msg.LowMemoryWarningReceived)
         | None -> ()
 
 module Main =

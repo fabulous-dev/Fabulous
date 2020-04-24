@@ -1,5 +1,6 @@
-F# Functional App Development, using Xamarin.Forms
-========
+{% include_relative _header.md %}
+
+*Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI*
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
@@ -8,6 +9,8 @@ Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more using Xamarin.Forms. It is built on Fabulous.
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
+
+Note that this is just a "Getting Started" page for Fabulous. For detailed guides to different parts of the library, please visit the respective pages via the links below:
 
 {% include_relative contents.md %}
 

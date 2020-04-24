@@ -8,7 +8,7 @@ open Android.Content.PM
 open Android.OS
 open Xamarin.Forms.Platform.Android
 
-[<Activity (Label = "Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "Calculator", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =

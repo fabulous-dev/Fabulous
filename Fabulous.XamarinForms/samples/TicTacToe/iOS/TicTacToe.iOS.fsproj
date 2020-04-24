@@ -96,6 +96,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -154,13 +156,13 @@
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Project>{391D3679-0EF6-44BB-978A-82F7EECF1A66}</Project>
       <Name>TicTacToe</Name>
       <Private>True</Private>
     </ProjectReference>

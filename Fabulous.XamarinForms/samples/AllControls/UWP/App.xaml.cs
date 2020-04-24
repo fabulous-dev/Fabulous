@@ -41,7 +41,16 @@ namespace AllControls.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-                Xamarin.Forms.Forms.Init(e);
+
+                Xamarin.Forms.Forms.SetFlags("MediaElement_Experimental");
+                
+                var assembliesToInclude = new [] { typeof(Xamarin.Forms.Maps.UWP.MapRenderer).Assembly };
+                Xamarin.Forms.Forms.Init(e, assembliesToInclude);
+
+                Xamarin.FormsMaps.Init("ENTER-YOUR-KEY-HERE");
+
+                //OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init()
+                //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer=Nullable true)
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

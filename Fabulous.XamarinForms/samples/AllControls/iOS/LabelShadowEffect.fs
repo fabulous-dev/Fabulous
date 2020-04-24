@@ -2,9 +2,8 @@ namespace AllControls.iOS
 
 open System
 open System.Linq
-open AllControls.Effects
+open AllControls.Samples.Effects
 open CoreGraphics
-open Xamarin.Forms
 open Xamarin.Forms.Platform.iOS
 
 type LabelShadowEffect() =

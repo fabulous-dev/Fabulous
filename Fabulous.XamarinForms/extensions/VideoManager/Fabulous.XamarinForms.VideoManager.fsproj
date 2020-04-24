@@ -10,7 +10,8 @@
     <PackageTags>VideoManager;Audio;Video;Player</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="VideoManager.fs" />
+    <Compile Include="Plugin.MediaManager.Forms.fs" />
+    <None Include="Plugin.MediaManager.Forms.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />

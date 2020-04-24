@@ -9,7 +9,9 @@
     <PackageTags>SkiaSharp;Drawing;2D</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="SkiaSharp.fs" />
+    <Compile Include="ViewUpdaters.fs" />
+    <Compile Include="SkiaSharp.Views.Forms.fs" />
+    <None Include="SkiaSharp.Views.Forms.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />

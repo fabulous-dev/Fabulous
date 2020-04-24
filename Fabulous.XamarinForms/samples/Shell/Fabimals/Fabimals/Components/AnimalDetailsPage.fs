@@ -38,7 +38,7 @@ module AnimalDetails =
                             horizontalOptions=LayoutOptions.Center
                         )
                         View.Image(
-                            source=Image.Path animal.ImageUrl,
+                            source=ImagePath animal.ImageUrl,
                             width=200.,
                             height=200.,
                             horizontalOptions=LayoutOptions.CenterAndExpand

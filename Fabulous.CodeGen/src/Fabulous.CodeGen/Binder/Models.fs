@@ -36,7 +36,6 @@ module Models =
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
             
-
     type BoundAttachedProperty =
         { Name: string
           UniqueName: string
@@ -84,7 +83,8 @@ module Models =
     
     type BoundType =
         { Id: string
-          Type: string
+          FullName: string
+          ShouldGenerateBinding: bool
           GenericConstraint: string option
           CanBeInstantiated: bool
           TypeToInstantiate: string
@@ -98,4 +98,5 @@ module Models =
     type BoundModel =
         { Assemblies: string array
           OutputNamespace: string
+          AdditionalNamespaces: string array
           Types: BoundType array }

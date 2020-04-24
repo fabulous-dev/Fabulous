@@ -46,7 +46,7 @@ module About =
                                 horizontalOptions=LayoutOptions.Fill,
                                 padding=Thickness (0., 40.),
                                 content=View.Image(
-                                    source=Image.Path "xamarin_logo.png",
+                                    source=ImagePath "logo_fabulous.png",
                                     horizontalOptions=LayoutOptions.Center,
                                     verticalOptions=LayoutOptions.Center,
                                     height=64.
@@ -68,7 +68,7 @@ module About =
                                             View.Span " "
                                             View.Span(
                                                 text="1.0",
-                                                foregroundColor=AboutStyles.lightTextColor
+                                                textColor=AboutStyles.lightTextColor
                                             )
                                         ])
                                     )

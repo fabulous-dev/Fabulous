@@ -137,7 +137,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Java.Interop" />
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
@@ -278,7 +278,7 @@
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Project>{391D3679-0EF6-44BB-978A-82F7EECF1A66}</Project>
       <Name>TicTacToe</Name>
       <Private>True</Private>
     </ProjectReference>

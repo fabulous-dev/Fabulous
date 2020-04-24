@@ -1,6 +1,6 @@
 {
   "assemblies": [
-    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll"
   ],
   "outputNamespace": "Fabulous.XamarinForms",
@@ -90,7 +90,6 @@
           "source": null,
           "name": "Menu",
           "inputType": "Xamarin.Forms.Menu",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateElementMenu"
         },
         {
@@ -112,7 +111,6 @@
           "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateMenuChildren",
           "collection": {
             "elementType": "Xamarin.Forms.Menu"
@@ -136,7 +134,6 @@
           "source": null,
           "name": "Accelerator",
           "inputType": "string",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateMenuItemAccelerator"
         },
         {
@@ -195,7 +192,7 @@
         }
       ],
       "events": [
-        { 
+        {
           "source": "Tapped"
         }
       ]
@@ -382,9 +379,6 @@
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
-          "source": "ForegroundColor"
-        },
-        {
           "source": "LineHeight"
         },
         {
@@ -480,26 +474,6 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.FontImageSource",
-      "properties": [
-        {
-          "source": "Color"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "Glyph"
-        },
-        {
-          "source": "Size"
-        }
-      ],
-      "primaryConstructorMembers": [
-        "Glyph"
-      ]
-    },
-    {
       "type": "Xamarin.Forms.NavigableElement",
       "canBeInstantiated": false,
       "properties": [
@@ -516,114 +490,110 @@
         {
           "source": null,
           "name": "ShellBackButtonBehavior",
-          "defaultValue": "null",
           "inputType": "Xamarin.Forms.BackButtonBehavior",
           "updateCode": "ViewUpdaters.updateShellBackButtonBehavior"
         },
         {
           "source": null,
           "name": "ShellBackgroundColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellBackgroundColor"
         },
         {
           "source": null,
           "name": "ShellDisabledColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellDisabledColor"
         },
         {
           "source": null,
           "name": "ShellForegroundColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellForegroundColor"
         },
         {
           "source": null,
           "name": "ShellFlyoutBehavior",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.FlyoutBehavior",
           "updateCode": "ViewUpdaters.updateShellFlyoutBehavior"
         },
         {
           "source": null,
           "name": "ShellNavBarIsVisible",
-          "defaultValue": "true",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellNavBarIsVisible"
         },
         {
           "source": null,
+          "name": "ShellPresentationMode",
+          "inputType": "Xamarin.Forms.PresentationMode",
+          "updateCode": "ViewUpdaters.updateShellPresentationMode"
+        },
+        {
+          "source": null,
           "name": "ShellSearchHandler",
-          "defaultValue": "null",
           "inputType": "Xamarin.Forms.SearchHandler",
           "updateCode": "ViewUpdaters.updatePageShellSearchHandler"
         },
         {
           "source": null,
           "name": "ShellTabBarBackgroundColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarBackgroundColor"
         },
         {
           "source": null,
           "name": "ShellTabBarDisabledColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarDisabledColor"
         },
         {
           "source": null,
           "name": "ShellTabBarForegroundColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarForegroundColor"
         },
         {
           "source": null,
           "name": "ShellTabBarIsVisible",
-          "defaultValue": "true",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updateShellTabBarIsVisible"
         },
         {
           "source": null,
           "name": "ShellTabBarTitleColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarTitleColor"
         },
         {
           "source": null,
           "name": "ShellTabBarUnselectedColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTabBarUnselectedColor"
         },
         {
           "source": null,
           "name": "ShellTitleColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellTitleColor"
         },
         {
           "source": null,
           "name": "ShellTitleView",
-          "defaultValue": "null",
           "inputType": "Xamarin.Forms.View",
           "updateCode": "ViewUpdaters.updateShellTitleView"
         },
         {
           "source": null,
           "name": "ShellUnselectedColor",
-          "defaultValue": "Xamarin.Forms.Color.Default",
           "inputType": "Xamarin.Forms.Color",
           "updateCode": "ViewUpdaters.updateShellUnselectedColor"
+        },
+        {
+          "source": null,
+          "name": "ShellNavBarHasShadow",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateShellNavBarHasShadow"
         }
       ]
     },
@@ -676,7 +646,6 @@
         },
         {
           "name": "MenuItems",
-          "defaultValue": "null",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateShellContentMenuItems"
         }
@@ -797,7 +766,6 @@
           "source": null,
           "name": "Resources",
           "inputType": "(string * obj) list",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateResources"
         },
         {
@@ -822,14 +790,12 @@
           "source": null,
           "name": "Styles",
           "inputType": "Xamarin.Forms.Style list",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateStyles"
         },
         {
           "source": null,
           "name": "StyleSheets",
           "inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateStyleSheets"
         },
         {
@@ -883,7 +849,6 @@
           "source": null,
           "name": "ToolbarItems",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updatePageToolbarItems",
           "collection": {
             "elementType": "Xamarin.Forms.ToolbarItem"
@@ -892,7 +857,6 @@
         {
           "source": null,
           "name": "UseSafeArea",
-          "defaultValue": "false",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.updatePageUseSafeArea"
         },
@@ -900,7 +864,6 @@
           "source": null,
           "name": "HasNavigationBar",
           "inputType": "bool",
-          "defaultValue": "true",
           "updateCode": "ViewUpdaters.updateNavigationPageHasNavigationBar"
         }
       ],
@@ -981,7 +944,6 @@
         {
           "source": null,
           "name": "CurrentPage",
-          "defaultValue": "0",
           "inputType": "int",
           "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<Xamarin.Forms.ContentPage>"
         }
@@ -1015,7 +977,6 @@
         {
           "source": null,
           "name": "CurrentPage",
-          "defaultValue": "0",
           "inputType": "int",
           "updateCode": "ViewUpdaters.updateMultiPageOfTCurrentPage<Xamarin.Forms.Page>"
         },
@@ -1055,7 +1016,6 @@
           "source": null,
           "name": "Pages",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateNavigationPages",
           "collection": {
             "elementType": "Xamarin.Forms.Page",
@@ -1121,9 +1081,11 @@
           "source": "FlyoutIsPresented"
         },
         {
+          "source": "FlyoutVerticalScrollMode"
+        },
+        {
           "source": null,
           "name": "Items",
-          "defaultValue": "null",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateShellItems",
           "collection": {
@@ -1133,7 +1095,6 @@
         {
           "source": null,
           "name": "GoToAsync",
-          "defaultValue": "null",
           "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.XamarinForms.InputTypes.AnimationKind",
           "updateCode": "ViewUpdaters.triggerShellGoToAsync"
         }
@@ -1353,6 +1314,9 @@
         },
         {
           "source": "Source"
+        },
+        {
+          "source": "IsAnimationPlaying"
         }
       ],
       "primaryConstructorMembers": [
@@ -1387,7 +1351,7 @@
           "source": "Source"
         }
       ],
-      "events":[
+      "events": [
         {
           "source": "Clicked"
         },
@@ -1417,31 +1381,9 @@
         },
         {
           "source": "MaxLength"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Editor",
-      "properties": [
-        {
-          "source": "AutoSize"
         },
         {
           "source": "CharacterSpacing"
-        },
-        {
-          "source": "FontAttributes"
-        },
-        {
-          "source": "FontFamily"
-        },
-        {
-          "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
-          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
-        },
-        {
-          "source": "IsTextPredictionEnabled"
         },
         {
           "source": "Placeholder"
@@ -1458,15 +1400,39 @@
       ],
       "events": [
         {
-          "source": "Completed",
-          "inputType": "string -> unit",
-          "convertInputToModel": "ViewConverters.makeEditorCompletedEventHandler"
-        },
-        {
           "source": "TextChanged",
           "relatedProperties": [
             "Text"
           ]
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Editor",
+      "properties": [
+        {
+          "source": "AutoSize"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
+        },
+        {
+          "source": "IsTextPredictionEnabled"
+        }
+      ],
+      "events": [
+        {
+          "source": "Completed",
+          "inputType": "string -> unit",
+          "convertInputToModel": "ViewConverters.makeEditorCompletedEventHandler"
         }
       ],
       "primaryConstructorMembers": [
@@ -1476,9 +1442,6 @@
     {
       "type": "Xamarin.Forms.Entry",
       "properties": [
-        {
-          "source": "CharacterSpacing"
-        },
         {
           "source": "ClearButtonVisibility"
         },
@@ -1507,12 +1470,6 @@
           "source": "IsTextPredictionEnabled"
         },
         {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
           "source": "ReturnCommand"
         },
         {
@@ -1523,12 +1480,6 @@
           "updateCode": "ViewUpdaters.updateEntrySelectionLength"
         },
         {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
           "source": "VerticalTextAlignment"
         }
       ],
@@ -1537,12 +1488,6 @@
           "source": "Completed",
           "inputType": "string -> unit",
           "convertInputToModel": "ViewConverters.makeEntryCompletedEventHandler"
-        },
-        {
-          "source": "TextChanged",
-          "relatedProperties": [
-            "Text"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -1554,9 +1499,6 @@
       "properties": [
         {
           "source": "CancelButtonColor"
-        },
-        {
-          "source": "CharacterSpacing"
         },
         {
           "source": "FontAttributes"
@@ -1573,12 +1515,6 @@
           "source": "HorizontalTextAlignment"
         },
         {
-          "source": "Placeholder"
-        },
-        {
-          "source": "PlaceholderColor"
-        },
-        {
           "source": "SearchCommand",
           "inputType": "string -> unit",
           "modelType": "string -> unit",
@@ -1589,25 +1525,10 @@
           "name": "SearchCommandCanExecute",
           "inputType": "bool",
           "modelType": "bool",
-          "defaultValue": "true",
           "updateCode": "ViewUpdaters.updateCommand prevSearchCommandOpt currSearchCommandOpt (fun (_target: Xamarin.Forms.SearchBar) -> _target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
         },
         {
-          "source": "Text"
-        },
-        {
-          "source": "TextColor"
-        },
-        {
           "source": "VerticalTextAlignment"
-        }
-      ],
-      "events": [
-        {
-          "source": "TextChanged",
-          "relatedProperties": [
-            "Text"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -1619,13 +1540,11 @@
       "canBeInstantiated": false,
       "properties": [
         {
-          "source": "EmptyView"
+          "source": "EmptyView",
+          "inputType": "ViewElement"
         },
         {
           "source": "HorizontalScrollBarVisibility"
-        },
-        {
-          "source": "ItemSizingStrategy"
         },
         {
           "source": "ItemsUpdatingScrollMode"
@@ -1634,7 +1553,6 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateItemsViewItems"
         },
         {
@@ -1644,10 +1562,19 @@
           "source": "RemainingItemsThresholdReachedCommand"
         },
         {
+          "source": null,
+          "name": "ScrollTo",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToItem",
+          "updateCode": "ViewUpdaters.triggerItemsViewScrollTo"
+        },
+        {
           "source": "VerticalScrollBarVisibility"
         }
       ],
       "events": [
+        {
+          "source": "RemainingItemsThresholdReached"
+        },
         {
           "source": "Scrolled"
         }
@@ -1665,6 +1592,9 @@
         },
         {
           "source": "ItemsLayout"
+        },
+        {
+          "source": "ItemSizingStrategy"
         }
       ]
     },
@@ -1675,6 +1605,12 @@
       "properties": [
         {
           "source": "CurrentItem"
+        },
+        {
+          "source": null,
+          "name": "IndicatorView",
+          "inputType": "ViewRef<Xamarin.Forms.IndicatorView>",
+          "updateCode": "ViewUpdaters.updateCarouselViewIndicatorView"
         },
         {
           "source": "IsBounceEnabled"
@@ -1689,9 +1625,6 @@
           "source": "ItemsLayout"
         },
         {
-          "source": "NumberOfSideItems"
-        },
-        {
           "source": "PeekAreaInsets"
         },
         {
@@ -1701,6 +1634,8 @@
       "events": [
         {
           "source": "CurrentItemChanged",
+          "inputType": "ViewElement option * ViewElement option -> unit",
+          "convertInputToModel": "ViewConverters.makeCarouselViewCurrentItemChangedEventHandler",
           "relatedProperties": [
             "CurrentItem"
           ]
@@ -1783,7 +1718,6 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateItemsViewOfTItems<'T>"
         }
       ]
@@ -1827,6 +1761,12 @@
         },
         {
           "source": "RowHeight"
+        },
+        {
+          "source": null,
+          "name": "ScrollTo",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToItem",
+          "updateCode": "ViewUpdaters.triggerListViewScrollTo"
         },
         {
           "source": "SelectedItem",
@@ -1896,9 +1836,14 @@
           "shortName": "items",
           "inputType": "(string * ViewElement * ViewElement list) list",
           "modelType": "(string * ViewElement * ViewElement[])[]",
-          "defaultValue": "[]",
           "convertInputToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
           "updateCode": "ViewUpdaters.updateListViewGroupedItems"
+        },
+        {
+          "source": null,
+          "name": "ScrollTo",
+          "inputType": "Fabulous.XamarinForms.InputTypes.ScrollToGroupedItem",
+          "updateCode": "ViewUpdaters.triggerListViewGroupedScrollTo"
         },
         {
           "source": null,
@@ -1912,7 +1857,6 @@
           "source": null,
           "name": "ShowJumpList",
           "inputType": "bool",
-          "defaultValue": "false",
           "updateCode": "ViewUpdaters.updateListViewGroupedShowJumpList"
         }
       ],
@@ -1922,7 +1866,6 @@
           "name": "ItemSelected",
           "inputType": "(int * int) option -> unit",
           "modelType": "System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>",
-          "defaultValue": "null",
           "convertInputToModel": "ViewConverters.makeListViewGroupedItemSelectedEventHandler",
           "relatedProperties": [
             "SelectedItem"
@@ -1933,7 +1876,6 @@
           "name": "ItemTapped",
           "inputType": "(int * int) -> unit",
           "modelType": "System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>",
-          "defaultValue": "null",
           "convertInputToModel": "ViewConverters.makeListViewGroupedItemTappedEventHandler"
         }
       ],
@@ -2034,7 +1976,6 @@
           "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
-          "defaultValue": "[]",
           "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
@@ -2066,7 +2007,6 @@
         {
           "source": null,
           "name": "Children",
-          "defaultValue": "[]",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
@@ -2114,9 +2054,29 @@
       "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
+          "source": "ColumnDefinitions",
+          "shortName": "coldefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "defaultValue": "Xamarin.Forms.ColumnDefinitionCollection()",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
+        },
+        {
+          "source": "ColumnSpacing"
+        },
+        {
+          "source": "RowDefinitions",
+          "shortName": "rowdefs",
+          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
+          "defaultValue": "Xamarin.Forms.RowDefinitionCollection()",
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
+        },
+        {
+          "source": "RowSpacing"
+        },
+        {
+          "_comment": "This fake property is here to let the generator call updateAttachedProperties. It is placed after rowdefs/coldefs because they need to be updated beforehand, otherwise we get an invalid layout",
           "source": null,
           "name": "Children",
-          "defaultValue": "[]",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
@@ -2136,24 +2096,6 @@
               }
             ]
           }
-        },
-        {
-          "source": "ColumnDefinitions",
-          "shortName": "coldefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
-        },
-        {
-          "source": "ColumnSpacing"
-        },
-        {
-          "source": "RowDefinitions",
-          "shortName": "rowdefs",
-          "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
-        },
-        {
-          "source": "RowSpacing"
         }
       ],
       "primaryConstructorMembers": [
@@ -2167,7 +2109,6 @@
         {
           "source": null,
           "name": "Children",
-          "defaultValue": "[]",
           "inputType": "ViewElement list",
           "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
@@ -2229,7 +2170,6 @@
         {
           "source": null,
           "name": "ScrollTo",
-          "defaultValue": "null",
           "inputType": "double * double * AnimationKind",
           "updateCode": "ViewUpdaters.triggerScrollToAsync"
         },
@@ -2381,7 +2321,6 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "null",
           "inputType": "float * float",
           "updateCode": "ViewUpdaters.updateSliderMinimumMaximum"
         },
@@ -2426,9 +2365,12 @@
         {
           "source": null,
           "name": "MinimumMaximum",
-          "defaultValue": "null",
           "inputType": "float * float",
           "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
+        },
+        {
+          "source": "StepperPosition",
+          "updateCode": "ViewUpdaters.updateStepperPosition"
         },
         {
           "source": "Value"
@@ -2473,7 +2415,7 @@
     },
     {
       "type": "Xamarin.Forms.TableView",
-      "properties":[
+      "properties": [
         {
           "source": "HasUnevenRows"
         },
@@ -2550,7 +2492,6 @@
         {
           "source": null,
           "name": "Reload",
-          "defaultValue": "false",
           "inputType": "bool",
           "updateCode": "ViewUpdaters.triggerWebViewReload"
         }
@@ -2610,6 +2551,7 @@
     },
     {
       "type": "Xamarin.Forms.LinearItemsLayout",
+      "canBeInstantiated": false,
       "properties": [
         {
           "source": "ItemSpacing"
@@ -2618,6 +2560,15 @@
       "primaryConstructorMembers": [
         "ItemSpacing"
       ]
+    },
+    {
+      "type": "Fabulous.XamarinForms.VerticalLinearItemsLayout"
+    },
+    {
+      "type": "Fabulous.XamarinForms.HorizontalLinearItemsLayout"
+    },
+    {
+      "type": "Fabulous.XamarinForms.CarouselVerticalItemsLayout"
     },
     {
       "type": "Xamarin.Forms.SearchHandler",
@@ -2681,7 +2632,6 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "defaultValue": "null",
           "updateCode": "ViewUpdaters.updateSearchHandlerItems"
         },
         {
@@ -2732,7 +2682,9 @@
       "name": "SearchHandler",
       "events": [
         {
-          "source": "ItemSelected"
+          "source": "ItemSelected",
+          "inputType": "ViewElement option -> unit",
+          "convertInputToModel": "ViewConverters.makeSearchHandlerItemSelectedEventHandler"
         },
         {
           "source": "QueryChanged"
@@ -2767,9 +2719,6 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "modelType": "ViewElement array",
-          "defaultValue": "[]",
-          "convertInputToModel": "Array.ofList",
           "updateCode": "ViewUpdaters.updateTableSectionBaseOfTItems<'T>",
           "collection": {
             "elementType": "'T"
@@ -2789,6 +2738,174 @@
       "baseGenericConstraint": "Xamarin.Forms.Cell",
       "primaryConstructorMembers": [
         "Items"
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.IndicatorView",
+      "properties": [
+        {
+          "source": "Count"
+        },
+        {
+          "source": "HideSingle"
+        },
+        {
+          "source": "IndicatorSize"
+        },
+        {
+          "source": "IndicatorTemplate",
+          "inputType": "ViewElement",
+          "updateCode": "ViewUpdaters.updateIndicatorViewIndicatorProperty"
+        },
+        {
+          "source": "IndicatorsShape"
+        },
+        {
+          "source": "MaximumVisible"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "SelectedIndicatorColor"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItem",
+      "properties": [
+        {
+          "source": "BackgroundColor"
+        }
+      ],
+      "events": [
+        {
+          "source": "Invoked"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItemView",
+      "properties": [
+        {
+          "source": "Command"
+        }
+      ],
+      "events": [
+        {
+          "source": "Invoked"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeItems",
+      "properties": [
+        {
+          "source": "Mode"
+        },
+        {
+          "source": "SwipeBehaviorOnInvoked"
+        },
+        {
+          "source": null,
+          "name": "Items",
+          "inputType": "ViewElement list",
+          "updateCode": "ViewUpdaters.updateSwipeItems"
+        }
+      ],
+      "events": [
+        {
+          "source": "CollectionChanged",
+          "inputType": "obj -> unit",
+          "modelType": "System.Collections.Specialized.NotifyCollectionChangedEventHandler",
+          "convertInputToModel": "ViewConverters.makeSwipeItemsChangedEventHandler"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SwipeView",
+      "properties": [
+        {
+          "source": "BottomItems"
+        },
+        {
+          "source": "LeftItems"
+        },
+        {
+          "source": "RightItems"
+        },
+        {
+          "source": "TopItems"
+        }
+      ],
+      "events": [
+        {
+          "source": "CloseRequested"
+        },
+        {
+          "source": "SwipeChanging"
+        },
+        {
+          "source": "SwipeEnded"
+        },
+        {
+          "source": "SwipeStarted"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.MediaElement",
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "AutoPlay"
+        },
+        {
+          "source": "IsLooping"
+        },
+        {
+          "source": "KeepScreenOn"
+        },
+        {
+          "source": "Position"
+        },
+        {
+          "source": "ShowsPlaybackControls"
+        },
+        {
+          "source": "Source"
+        },
+        {
+          "source": "Volume"
+        }
+      ],
+      "events": [
+        {
+          "source": "MediaEnded"
+        },
+        {
+          "source": "MediaFailed"
+        },
+        {
+          "source": "MediaOpened"
+        },
+        {
+          "source": "PositionRequested"
+        },
+        {
+          "source": "SeekCompleted"
+        },
+        {
+          "source": "SeekRequested"
+        },
+        {
+          "source": "StateRequested"
+        },
+        {
+          "source": "VolumeRequested"
+        }
       ]
     }
   ]
