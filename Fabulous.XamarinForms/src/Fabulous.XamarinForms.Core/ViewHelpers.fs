@@ -1,6 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
+open System.Collections.Generic
 open Fabulous
 open Xamarin.Forms
 open System
@@ -13,15 +14,25 @@ module ViewHelpers =
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
     let getIndexesByEqualKeys (prevColl:ViewElement seq) (newColl:ViewElement seq) =
-        let prevKeysByIndex  = prevColl|>Seq.mapi(fun i x-> x.KeyValue,i)  |> Map.ofSeq
-        let newKeysByIndex = newColl|>Seq.mapi(fun i x-> x.KeyValue,i) 
+        let prevIndexes= Dictionary<string,int>()
+        let mutable index=0
+        for prev in prevColl do
+            if(not <| String.IsNullOrWhiteSpace prev.KeyValue) then
+                prevIndexes.Add(prev.KeyValue,index)
+            index<-index+1
+        index<-0
         
-        seq{
-              for (key,index) in newKeysByIndex do
-                  let oldIndex = prevKeysByIndex|>Map.tryFind key
-                  if(oldIndex.IsSome) then
-                      yield (index,oldIndex.Value)
-           } |> Map.ofSeq
+        let res = Dictionary<int,int>()
+        for newElement in newColl do 
+                  let key = newElement.KeyValue
+                  match prevIndexes.TryGetValue key with
+                  | (true,v) -> res.Add (index,v)
+                  | _ -> ()
+        fun idx ->
+            match res.TryGetValue idx with
+            | true,v -> Some v
+            | _ -> None
+          
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =

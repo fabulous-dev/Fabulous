@@ -38,7 +38,7 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (indexMap:'T seq->'T seq -> Map<int,int>)
+           (indexMap:'T seq->'T seq -> (int->int option))
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
         match prevCollOpt, collOpt with 
@@ -67,7 +67,7 @@ module ViewUpdaters =
                 for i in 0 .. coll.Length-1 do
                     let newChild = coll.[i]
                     let prevChildOpt =
-                        match indexes|> Map.tryFind i with
+                        match indexes i with
                         | None->
                             match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
                         | Some idx ->
@@ -160,7 +160,7 @@ module ViewUpdaters =
             let itemsSource = target.ItemsSource :?> System.Collections.Generic.IList<ViewElementHolder>
             itemsSource.[idx] :> obj
         
-        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ _ -> Map.empty) (fun _ _ _ -> ())
+        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ _ ->(fun _ -> None)) (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
@@ -188,7 +188,7 @@ module ViewUpdaters =
                 target.ItemsSource <- oc
                 oc
                 
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _ _ -> Map.empty) updateViewElementHolderGroup
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _ _ ->(fun _ -> None)) updateViewElementHolderGroup
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
