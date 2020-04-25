@@ -108,7 +108,7 @@ type ViewRef<'T when 'T : not struct>() =
 /// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
-    let mutable key = ""
+    let mutable key = Guid.NewGuid().ToString("N")
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
@@ -165,10 +165,11 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
     
-    member  x.Key v  =
-        key<-v
-        x
-    member  x.KeyValue  = key
+    member x.KeyValue
+            with get() = key
+            and set v = key<-v
+    member x.Key _ =x
+            
         
        
         
@@ -180,6 +181,10 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         x.Update(target)
         match x.TryGetAttributeKeyed(ViewElement._CreatedAttribKey) with
         | ValueSome f -> f target
+        | ValueNone -> ()
+        
+        match x.TryGetAttributeKeyed(ViewElement._KeyAttribKey) with
+        | ValueSome f -> key<-f
         | ValueNone -> ()
         
         match x.TryGetAttributeKeyed(ViewElement._RefAttribKey) with

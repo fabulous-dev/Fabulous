@@ -13,25 +13,7 @@ module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
-    let getIndexesByEqualKeys (prevColl:ViewElement seq) (newColl:ViewElement seq) =
-        let prevIndexes= Dictionary<string,int>()
-        let mutable index=0
-        for prev in prevColl do
-            if(not <| String.IsNullOrWhiteSpace prev.KeyValue) then
-                prevIndexes.Add(prev.KeyValue,index)
-            index<-index+1
-        index<-0
-        
-        let res = Dictionary<int,int>()
-        for newElement in newColl do 
-                  let key = newElement.KeyValue
-                  match prevIndexes.TryGetValue key with
-                  | (true,v) -> res.Add (index,v)
-                  | _ -> ()
-        fun idx ->
-            match res.TryGetValue idx with
-            | true,v -> Some v
-            | _ -> None
+    let getKey (el:ViewElement) = el.KeyValue
           
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
