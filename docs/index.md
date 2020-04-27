@@ -4,7 +4,7 @@
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-* [Documentation of Fabulous](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
+* [Documentation of Fabulous for Xamarin.Forms](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/)
 
 Contributing
 ------
