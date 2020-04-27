@@ -38,14 +38,16 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (getKey:'T->string)
+           (getKey:'T->string option)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
         match prevCollOpt, collOpt with 
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> targetColl.Clear()
         | _, ValueSome coll ->
-            
+            if (coll = null || coll.Length = 0) then
+                targetColl.Clear()
+            else
 
                 let prevColl =
                     match prevCollOpt with
@@ -62,31 +64,50 @@ module ViewUpdaters =
                 let targetControls = Dictionary<string,'TargetT>()
                 for i in 0..prevColl.Length-1 do
                         let key = getKey prevColl.[i]
-                        targetControls.[key]<-targetColl.[i]
+                        key|> Option.iter (fun key -> targetControls.[key]<-targetColl.[i])
+                        
                          
                 while (targetColl.Count > coll.Length) do
                   targetColl.RemoveAt (targetColl.Count - 1)
                // targetColl.Clear()                    
+                
+                let contains key =
+                    key
+                    |> Option.map(fun key -> targetControls.ContainsKey key)
+                    |> Option.defaultValue false
                     
+                let add targetChild i =
+                     if i >= n
+                     then
+                       targetColl.Insert(i, targetChild)
+                     else
+                      targetColl.[i] <- targetChild
+      
                 // Adjust the existing targetColl and create the new targetColl
                 for i in 0 .. coll.Length-1 do
                     let newChild = coll.[i]
                     let key = getKey newChild
                     let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                    let prevChildOpt, targetChild = 
+                    let prevChildOpt, targetChild =
+                        
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
-                            let mustCreate = ((not <| targetControls.ContainsKey(key)) || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                            if mustCreate then
-                                let targetChild = create newChild
-                                if i >= n then
-                                    targetColl.Insert(i, targetChild)
-                                else
-                                    targetColl.[i] <- targetChild
-                                ValueNone, targetChild
-                            else
-                                let targetChild = targetControls.[key]
-                                update prevChildOpt.Value newChild targetChild
-                                prevChildOpt, targetChild
+                                if (contains key)
+                                then
+                                    let targetChild = targetControls.[key.Value] // We should be safe here                                        
+                                    add targetChild i 
+                                    if(prevChildOpt.IsSome) then 
+                                     update prevChildOpt.Value newChild targetChild
+                                    prevChildOpt, targetChild
+                                else 
+                                    let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
+                                    if mustCreate then
+                                        let targetChild = create newChild
+                                        add targetChild i 
+                                        ValueNone, targetChild
+                                    else
+                                        let targetChild = targetColl.[i]
+                                        update prevChildOpt.Value newChild targetChild
+                                        prevChildOpt, targetChild
                         else
                             prevChildOpt, targetColl.[i]
                     attach prevChildOpt newChild targetChild
@@ -160,7 +181,7 @@ module ViewUpdaters =
             let itemsSource = target.ItemsSource :?> System.Collections.Generic.IList<ViewElementHolder>
             itemsSource.[idx] :> obj
         
-        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ ->"") (fun _ _ _ -> ())
+        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ ->None) (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
@@ -188,7 +209,7 @@ module ViewUpdaters =
                 target.ItemsSource <- oc
                 oc
                 
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _->"") updateViewElementHolderGroup
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _-> None) updateViewElementHolderGroup
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =

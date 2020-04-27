@@ -13,7 +13,7 @@ module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
-    let getKey (el:ViewElement) = el.KeyValue
+    let getKey (el:ViewElement) = el.TryGetKey()
           
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
