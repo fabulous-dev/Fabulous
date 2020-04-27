@@ -153,10 +153,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         | Some kvp -> unbox<'T>(kvp.Value)
         | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
         
-    member x.TryGetKey() =
-        match x.TryGetAttributeKeyed(ViewElement._KeyAttribKey) with
-        | ValueSome key -> Some key
-        | ValueNone -> None
+    member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement._KeyAttribKey) 
+
         
     
 

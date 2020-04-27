@@ -298,7 +298,7 @@ module CodeGenerator =
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
             for m in typ.Members do
                 match m.Name with
-                | "Created" | "Ref" -> ()
+                | "Created" | "Ref" |"Key" ->  ()     
                 | _ ->
                     w.printfn "    /// Get the value of the %s member" m.Name
                     w.printfn "    member this.%s = element.GetAttributeKeyed(ViewAttributes.%sAttribKey)" m.Name m.UniqueName
@@ -318,7 +318,7 @@ module CodeGenerator =
                     let commaSpace = if i = 0 then "" else "," + memberNewLine
                     match m.Name with
                     | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
-                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
+                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName //here we do not need separate branch for key property, since it uses default logic
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForConstruct =
@@ -346,7 +346,7 @@ module CodeGenerator =
 
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" -> ()
+            | "Created" | "Ref" | "Key"-> ()
             | _ ->
                 w.printfn ""
                 w.printfn "        /// Adjusts the %s property in the visual element" m.UniqueName
@@ -362,14 +362,14 @@ module CodeGenerator =
         w.printfn "        member inline x.With(%s) =" members
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" -> ()
+            | "Created" | "Ref" | "Key" -> ()
             | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
         w.printfn "            x"
         w.printfn ""
 
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" -> ()
+            | "Created" | "Ref" | "Key" -> ()
             | _ ->
                 w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName

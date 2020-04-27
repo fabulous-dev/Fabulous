@@ -38,7 +38,7 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (getKey:'T->string option)
+           (getKey:'T->string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
         match prevCollOpt, collOpt with 
@@ -64,17 +64,20 @@ module ViewUpdaters =
                 let targetControls = Dictionary<string,'TargetT>()
                 for i in 0..prevColl.Length-1 do
                         let key = getKey prevColl.[i]
-                        key|> Option.iter (fun key -> targetControls.[key]<-targetColl.[i])
+                        match key with
+                        | ValueSome key ->  targetControls.[key]<-targetColl.[i]
+                        | ValueNone -> ()
                         
                          
                 while (targetColl.Count > coll.Length) do
                   targetColl.RemoveAt (targetColl.Count - 1)
                // targetColl.Clear()                    
                 
-                let contains key =
-                    key
-                    |> Option.map(fun key -> targetControls.ContainsKey key)
-                    |> Option.defaultValue false
+                let contains (key:string voption) =
+                    match key with
+                    | ValueSome key -> targetControls.ContainsKey key
+                    | ValueNone -> false
+
                     
                 let add targetChild i =
                      if i >= n
@@ -181,7 +184,7 @@ module ViewUpdaters =
             let itemsSource = target.ItemsSource :?> System.Collections.Generic.IList<ViewElementHolder>
             itemsSource.[idx] :> obj
         
-        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ ->None) (fun _ _ _ -> ())
+        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ ->ValueNone) (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
@@ -209,7 +212,7 @@ module ViewUpdaters =
                 target.ItemsSource <- oc
                 oc
                 
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _-> None) updateViewElementHolderGroup
+        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _-> ValueNone) updateViewElementHolderGroup
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
