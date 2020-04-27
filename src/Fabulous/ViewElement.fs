@@ -168,12 +168,6 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
-    
-    member x.Key _ =x
-            
-        
-       
-        
 
     /// Create the UI element from the view description
     member x.Create() : obj =
