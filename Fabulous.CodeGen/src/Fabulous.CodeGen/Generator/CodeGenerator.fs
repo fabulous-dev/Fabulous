@@ -244,6 +244,7 @@ module CodeGenerator =
                     match m.Name with
                     | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name data.FullName
                     | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name data.FullName
+                    | "key" ->     sprintf "%s?%s: %s" commaSpace m.Name m.InputType 
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForBuild =
@@ -252,6 +253,7 @@ module CodeGenerator =
                     match m.Name with
                     | "created" -> sprintf ",%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" space m.Name m.Name data.FullName
                     | "ref" ->     sprintf ",%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" space m.Name m.Name data.FullName
+                    | "key" ->     sprintf ",%s?%s=(match %s with None -> None | Some (key: %s) -> Some %s)" space m.Name m.Name m.InputType m.Name
                     | _ ->         sprintf ",%s?%s=%s" space m.Name m.Name)
                 |> Array.fold (+) ""
 
