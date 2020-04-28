@@ -4,6 +4,7 @@ namespace Fabulous.XamarinForms
 open Xamarin.Forms
 open System
 open System.Collections
+open System.Collections.Generic
 open System.IO
 open System.Collections.ObjectModel
 
@@ -185,6 +186,24 @@ module ViewConverters =
         System.EventHandler<obj>(fun sender args ->
             let viewElement = match args :?> ViewElementHolder with null -> None | item -> Some item.ViewElement
             f viewElement
+        )
+        
+    let makeSelectableItemsViewSelectionChangedEventHandler f =
+        System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun sender args ->
+            let convert (selection: IReadOnlyList<obj>) =
+                if selection = null then
+                    None
+                else
+                    selection
+                    |> Seq.map (fun i -> i :?> ViewElementHolder)
+                    |> Seq.filter (fun i -> i <> null)
+                    |> Seq.map (fun i -> i.ViewElement)
+                    |> Seq.toList
+                    |> Some
+            
+            let previousViewElements = convert args.PreviousSelection
+            let currentViewElements = convert args.CurrentSelection
+            f (previousViewElements, currentViewElements)
         )
         
     let makeCarouselViewCurrentItemChangedEventHandler f =

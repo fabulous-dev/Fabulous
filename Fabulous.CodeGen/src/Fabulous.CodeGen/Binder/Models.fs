@@ -8,17 +8,20 @@ module Models =
         abstract InputType: string
         abstract ConvertInputToModel: string
         abstract IsInherited: bool
+        abstract CustomAttributeKey: string option
         
     type IBoundMember =
         abstract UniqueName: string
         abstract InputType: string
         abstract ConvertInputToModel: string
+        abstract CustomAttributeKey: string option
     
     type BoundEvent =
         { Name: string
           ShortName: string
           UniqueName: string
           CanBeUpdated: bool
+          CustomAttributeKey: string option
           EventArgsType: string
           InputType: string
           ModelType: string
@@ -31,16 +34,19 @@ module Models =
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
             member this.IsInherited = this.IsInherited
+            member this.CustomAttributeKey = this.CustomAttributeKey
         interface IBoundMember with
             member this.UniqueName = this.UniqueName
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
+            member this.CustomAttributeKey = this.CustomAttributeKey
             
     type BoundAttachedProperty =
         { Name: string
           UniqueName: string
           DefaultValue: string
           CanBeUpdated: bool
+          CustomAttributeKey: string option
           OriginalType: string
           InputType: string
           ModelType: string
@@ -51,6 +57,7 @@ module Models =
             member this.UniqueName = this.UniqueName
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
+            member this.CustomAttributeKey = this.CustomAttributeKey
     
     type BoundPropertyCollectionData =
         { ElementType: string
@@ -61,6 +68,7 @@ module Models =
           ShortName: string
           UniqueName: string
           CanBeUpdated: bool
+          CustomAttributeKey: string option
           DefaultValue: string
           OriginalType: string
           InputType: string
@@ -76,10 +84,12 @@ module Models =
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
             member this.IsInherited = this.IsInherited
+            member this.CustomAttributeKey = this.CustomAttributeKey
         interface IBoundMember with
             member this.UniqueName = this.UniqueName
             member this.InputType = this.InputType
             member this.ConvertInputToModel = this.ConvertInputToModel
+            member this.CustomAttributeKey = this.CustomAttributeKey
     
     type BoundType =
         { Id: string
