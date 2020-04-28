@@ -285,7 +285,7 @@ module ViewHelpersTests =
                 
         do updateCollectionGeneric (ValueSome previous) (ValueSome current)  initial mockCreate mockAttach mockCanReuse mockGetKey mockUpdate 
 
-        createCount|>should equal 2 //TODO: Really here should be 3 creations
+        createCount|>should equal 2 
 
     [<Test>]
     let ``Removing  control from the end looks ok `` () =
