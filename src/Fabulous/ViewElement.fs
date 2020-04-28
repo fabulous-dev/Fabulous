@@ -146,10 +146,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         | Some kvp -> unbox<'T>(kvp.Value)
         | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
         
-    member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement._KeyAttribKey) 
-
-        
-    
+    /// Try get the key attribute value
+    member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
 
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target

@@ -31,8 +31,6 @@ module UpdateCollectionGenericTests =
             
         let mockAttach previousViewElement currentViewElement _ =
             operations.Add(Attach (previousViewElement, currentViewElement))
-            
-        let mockCanReuse = ViewHelpers.canReuseView
            
         let targetCollection = System.Collections.Generic.List<obj>() :> IList<obj>
         for prevElement in previousCollection do
@@ -44,7 +42,8 @@ module UpdateCollectionGenericTests =
                targetCollection
                mockCreate
                mockAttach
-               mockCanReuse
+               ViewHelpers.canReuseView
+               ViewHelpers.getKey
                mockUpdate
                 
         if previousCollection.Length > targetCollection.Count then
