@@ -6,21 +6,32 @@ open Fabulous.XamarinForms
 open NUnit.Framework
 open FsUnit
 
+// 1 & 1' means its the same ViewElement (same property values), except it's not the same .NET reference
+// X & Y means its 2 different ViewElement types that can't be reused between themselves (e.g. Label vs Button)  
 module UpdateCollectionGenericTests =
-    type Result =
-        { CreateCount: int
-          UpdateCount: int
-          AttachCount: int
-          TargetCollectionCount: int }
+    let (-->) previous current = previous, current
+    let (?->) previous current = (ValueSome previous), current
     
-    let internal testUpdateCollectionGeneric previousCollection newCollection =
-        let mutable createCount = 0
-        let mutable updateCount = 0
-        let mutable attachCount = 0
+    type Operation =
+        | Create of ViewElement
+        | Update of previous: ViewElement * current: ViewElement
+        | Remove of ViewElement
+        | Attach of previous: ViewElement voption * current: ViewElement
+    
+    let private testUpdateCollectionGeneric previousCollection newCollection =
+        let operations = List<Operation>()
         
-        let mockCreate viewElement = createCount <- createCount + 1; viewElement.ToString() :> obj
-        let mockUpdate _ _  _ = updateCount <- updateCount + 1
-        let mockAttach  _ _ _ = attachCount <- attachCount + 1
+        let mockCreate viewElement =
+            operations.Add(Create viewElement); viewElement.ToString() :> obj
+            
+        let mockUpdate previousViewElement currentViewElement target =
+            // When updating, the target control should always be in sync with the previous ViewElement
+            target |> should equal (previousViewElement.ToString() :> obj)
+            operations.Add(Update (previousViewElement, currentViewElement))
+            
+        let mockAttach previousViewElement currentViewElement _ =
+            operations.Add(Attach (previousViewElement, currentViewElement))
+            
         let mockCanReuse = ViewHelpers.canReuseView
            
         let targetCollection = System.Collections.Generic.List<obj>() :> IList<obj>
@@ -34,27 +45,13 @@ module UpdateCollectionGenericTests =
                mockCreate
                mockAttach
                mockCanReuse
-               mockUpdate 
+               mockUpdate
+                
+        if previousCollection.Length > targetCollection.Count then
+            for i = targetCollection.Count to previousCollection.Length - 1 do
+                operations.Add(Remove previousCollection.[i])
 
-        { CreateCount = createCount
-          UpdateCount = updateCount
-          AttachCount = attachCount
-          TargetCollectionCount = targetCollection.Count }
-        
-    // Use cases without key.
-    // 1 & 1" means its the same ViewElement (same property values), except it's not the same .NET reference
-    // L1 & B1 means its 2 different ViewElement types that can't be reused between themselves (e.g. Label vs Button)    
-    
-    // Empty -> Empty = Nothing
-    // Empty -> 1 = Create (1)
-    // 1 -> 1 = Nothing
-    // 1 -> 1" = Update (1 -> 1")
-    // 1 -> 2 = Update (1 -> 2)
-    // 1 -> Empty = Remove (1)
-    // 1 -> 1"-2 = Update (1 -> 1") + Create (2)
-    // 1-2 -> 3-1"-2" = Update (1 -> 3) + Create (1" | 2")
-    // 1-2-3-4 -> 1"-3"-4" = Update (1 -> 1" | 2 -> 3" | 3 -> 4") + Remove (4)
-    // L1 -> B1 = Replace (L1 -> B1)
+        operations |> Seq.toList  
     
     [<Test>]
     let ``Given previous state = Empty / current state = Empty, updateCollectionGeneric should do nothing``() =
@@ -62,11 +59,7 @@ module UpdateCollectionGenericTests =
         let current = []
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 0
-              AttachCount = 0
-              TargetCollectionCount = 0 }
+        |> should equivalent []
     
     [<Test>]
     let ``Given previous state = Empty / current state = 1, updateCollectionGeneric should Create[1]``() =
@@ -74,11 +67,9 @@ module UpdateCollectionGenericTests =
         let current = [ View.Label() ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 1
-              UpdateCount = 0
-              AttachCount = 1
-              TargetCollectionCount = 1 }
+        |> should equivalent
+            [ Create current.[0]
+              Attach (ValueNone --> current.[0]) ]
     
     [<Test>]
     let ``Given previous state = 1 / current state = 1, updateCollectionGeneric should do nothing``() =
@@ -88,23 +79,21 @@ module UpdateCollectionGenericTests =
         let current = [ label ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 0
-              AttachCount = 1 // TODO: It should be 0 instead of 1. This is an issue in the algorithm. It shouldn't run attach if the reference is the same. Need to be fixed.
-              TargetCollectionCount = 1 }
+        |> should equivalent
+            [
+                // TODO: This should be empty. It is an issue in the algorithm. We shouldn't run attach if the reference is the same. Needs to be fixed.
+                Attach (previous.[0] ?-> current.[0])
+            ]
     
     [<Test>]
-    let ``Given previous state = 1 / current state = 1", updateCollectionGeneric should Update[1 -> 1"]``() =
+    let ``Given previous state = 1 / current state = 1', updateCollectionGeneric should Update[1 -> 1']``() =
         let previous = [ View.Label() ]
         let current = [ View.Label() ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 1
-              AttachCount = 1
-              TargetCollectionCount = 1 }
+        |> should equivalent
+            [ Update (previous.[0] --> current.[0])
+              Attach (previous.[0] ?-> current.[0]) ]
     
     [<Test>]
     let ``Given previous state = 1 / current state = 2, updateCollectionGeneric should Update[1 -> 2]``() =
@@ -112,11 +101,9 @@ module UpdateCollectionGenericTests =
         let current = [ View.Label(text = "B") ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 1
-              AttachCount = 1
-              TargetCollectionCount = 1 }
+        |> should equivalent
+            [ Update (previous.[0] --> current.[0])
+              Attach (previous.[0] ?-> current.[0]) ]
     
     [<Test>]
     let ``Given previous state = 1 / current state = Empty, updateCollectionGeneric should Remove[1]``() =
@@ -124,14 +111,11 @@ module UpdateCollectionGenericTests =
         let current = []
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 0
-              AttachCount = 0
-              TargetCollectionCount = 0 }
+        |> should equivalent
+            [ Remove previous.[0] ]
     
     [<Test>]
-    let ``Given previous state = 1 / current state = 1"-2, updateCollectionGeneric should Update[1 -> 1"] + Create[2]``() =
+    let ``Given previous state = 1 / current state = 1'-2, updateCollectionGeneric should Update[1 -> 1'] + Create[2]``() =
         let previous =
             [ View.Label(text = "A") ]
         let current =
@@ -139,14 +123,14 @@ module UpdateCollectionGenericTests =
               View.Label(text = "B") ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 1
-              UpdateCount = 1
-              AttachCount = 2
-              TargetCollectionCount = 2 }
+        |> should equivalent
+            [ Update (previous.[0] --> current.[0])
+              Attach (previous.[0] ?-> current.[0])
+              Create current.[1]
+              Attach (ValueNone --> current.[1]) ]
     
     [<Test>]
-    let ``Given previous state = 1-2 / current state = 3-1"-2", updateCollectionGeneric should Update[1 -> 3 | 2 -> 1"] + Create[2"]``() =        
+    let ``Given previous state = 1-2 / current state = 3-1'-2', updateCollectionGeneric should Update[1 -> 3 | 2 -> 1'] + Create[2']``() =        
         let previous =
             [ View.Label(text = "A")
               View.Label(text = "B") ]
@@ -156,14 +140,16 @@ module UpdateCollectionGenericTests =
               View.Label(text = "B") ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 1
-              UpdateCount = 2
-              AttachCount = 3
-              TargetCollectionCount = 3 }
+        |> should equivalent
+            [ Update (previous.[0] --> current.[0])
+              Attach (previous.[0] ?-> current.[0])
+              Update (previous.[1] --> current.[1])
+              Attach (previous.[1] ?-> current.[1])
+              Create current.[2]
+              Attach (ValueNone --> current.[2]) ]
     
     [<Test>]
-    let ``Given previous state = 1-2-3-4 / current state = 1"-3"-4", updateCollectionGeneric should Update[1 -> 1" | 2 -> 3" | 3 -> 4"] + Remove[4]``() =        
+    let ``Given previous state = 1-2-3-4 / current state = 1'-3'-4', updateCollectionGeneric should Update[1 -> 1' | 2 -> 3' | 3 -> 4'] + Remove[4]``() =        
         let previous =
             [ View.Label(text = "A")
               View.Label(text = "B")
@@ -175,25 +161,23 @@ module UpdateCollectionGenericTests =
               View.Label(text = "D") ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 0
-              UpdateCount = 3
-              AttachCount = 3
-              TargetCollectionCount = 3 }
+        |> should equivalent
+            [ Update (previous.[0] --> current.[0])
+              Attach (previous.[0] ?-> current.[0])
+              Update (previous.[1] --> current.[1])
+              Attach (previous.[1] ?-> current.[1])
+              Update (previous.[2] --> current.[2])
+              Attach (previous.[2] ?-> current.[2])
+              Remove previous.[3] ]
     
     [<Test>]
-    let ``Given previous state = L1 / current state = B1, updateCollectionGeneric should Replace[L1 -> B1]``() =        
+    let ``Given previous state = X / current state = Y, updateCollectionGeneric should replace X with Create[Y]``() =        
         let previous =
             [ View.Label() ]
         let current =
             [ View.Button() ]
         
         testUpdateCollectionGeneric previous current
-        |> should equal
-            { CreateCount = 1
-              UpdateCount = 0
-              AttachCount = 1
-              TargetCollectionCount = 1 }
-            
-        
-
+        |> should equivalent
+            [ Create current.[0]
+              Attach (ValueNone --> current.[0]) ]
