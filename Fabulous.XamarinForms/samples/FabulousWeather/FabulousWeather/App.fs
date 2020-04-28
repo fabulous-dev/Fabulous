@@ -116,7 +116,7 @@ module App =
             match currentItemOpt with
             | None -> ()
             | Some item ->
-                let cityIndex = item.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> int
+                let cityIndex = item.TryGetTag<int>() |> Option.defaultValue 0
                 dispatch (CurrentCityChanged cityIndex)
             
         // UI

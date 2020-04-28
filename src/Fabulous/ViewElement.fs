@@ -114,11 +114,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     static member Create (create: (unit -> 'T), update: (ViewElement voption -> ViewElement -> 'T -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(typeof<'T>, (create >> box), (fun prev curr target -> update prev curr (unbox target)), attribsBuilder.Close())
 
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
-
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
+    static member val CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
+    static member val RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -161,10 +158,10 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         Debug.WriteLine (sprintf "Create %O" x.TargetType)
         let target = create()
         x.Update(target)
-        match x.TryGetAttributeKeyed(ViewElement._CreatedAttribKey) with
+        match x.TryGetAttributeKeyed(ViewElement.CreatedAttribKey) with
         | ValueSome f -> f target
         | ValueNone -> ()
-        match x.TryGetAttributeKeyed(ViewElement._RefAttribKey) with
+        match x.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
         | ValueSome f -> f.Set (box target)
         | ValueNone -> ()
         target

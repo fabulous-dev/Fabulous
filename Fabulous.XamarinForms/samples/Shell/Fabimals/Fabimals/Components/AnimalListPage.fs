@@ -36,12 +36,11 @@ module AnimalList =
         | SelectAnimal animal ->
             model, [], [(NavigateToDetails animal)]
 
-    let navigateToAfterSelectionChanged dispatch (args: SelectionChangedEventArgs) =
-        match args.CurrentSelection |> Seq.tryHead with
+    let navigateToAfterSelectionChanged dispatch (_, (currentItems: ViewElement list option)) =
+        match currentItems |> Option.bind (List.tryHead) with
         | None -> ()
         | Some item ->
-            let data = item :?> ViewElementHolder
-            let animal = data.ViewElement.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+            let animal = item.TryGetTag<Animal>().Value
             dispatch (SelectAnimal animal)
 
     let view model dispatch =

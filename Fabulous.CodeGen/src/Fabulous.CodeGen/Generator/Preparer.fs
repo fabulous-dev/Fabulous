@@ -10,17 +10,19 @@ module Preparer =
         (seq {
             for boundType in boundTypes do
                 for e in boundType.Events do
-                    if e.IsInherited = false then
+                    if e.IsInherited = false && e.CustomAttributeKey.IsNone then
                         yield { UniqueName = e.UniqueName; Name = e.Name }
                 for p in boundType.Properties do
                     if p.IsInherited = false then
-                        yield { UniqueName = p.UniqueName; Name = p.Name }
+                        if p.CustomAttributeKey.IsNone then
+                            yield { UniqueName = p.UniqueName; Name = p.Name }
                    
                         match p.CollectionData with
                         | None -> ()
                         | Some cd ->
                             for ap in cd.AttachedProperties do
-                                yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
+                                if ap.CustomAttributeKey.IsNone then
+                                    yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
         |> Seq.distinctBy (fun a -> a.UniqueName)
         |> Seq.toArray
 
@@ -28,6 +30,7 @@ module Preparer =
         let toBuildMember (m: IBoundConstructorMember) : BuildMember =
             { Name = m.ShortName
               UniqueName = m.UniqueName
+              CustomAttributeKey = m.CustomAttributeKey
               InputType = m.InputType
               ConvertInputToModel = m.ConvertInputToModel
               IsInherited = m.IsInherited }
@@ -49,8 +52,8 @@ module Preparer =
         let immediateEvents = boundType.Events |> Array.filter (fun e -> not e.IsInherited && e.CanBeUpdated)
         let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CanBeUpdated)
         
-        let eventMembers = immediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; ModelType = e.ModelType })
-        let propertyMembers = immediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; ModelType = p.ModelType })
+        let eventMembers = immediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; CustomAttributeKey = e.CustomAttributeKey; ModelType = e.ModelType })
+        let propertyMembers = immediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; CustomAttributeKey = p.CustomAttributeKey; ModelType = p.ModelType })
         let immediateMembers = Array.concat [ eventMembers; propertyMembers ]
         
         let updateEvents = immediateEvents |> Array.map (fun e ->
@@ -83,6 +86,7 @@ module Preparer =
                                 |> Array.map (fun ap ->
                                     { Name = ap.Name
                                       UniqueName = ap.UniqueName
+                                      CustomAttributeKey = ap.CustomAttributeKey
                                       DefaultValue = ap.DefaultValue
                                       OriginalType = ap.OriginalType
                                       ModelType = ap.ModelType
@@ -112,8 +116,8 @@ module Preparer =
           Construct = if boundType.CanBeInstantiated then Some (toConstructData boundType) else None }
 
     let toViewerData (boundType: BoundType) : ViewerData =
-        let properties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited) |> Array.map (fun p -> { Name = p.Name; UniqueName = p.UniqueName })
-        let events = boundType.Events |> Array.filter (fun e -> not e.IsInherited) |> Array.map (fun e -> { Name = e.Name; UniqueName = e.UniqueName })
+        let properties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited) |> Array.map (fun p -> { Name = p.Name; UniqueName = p.UniqueName; CustomAttributeKey = p.CustomAttributeKey })
+        let events = boundType.Events |> Array.filter (fun e -> not e.IsInherited) |> Array.map (fun e -> { Name = e.Name; UniqueName = e.UniqueName; CustomAttributeKey = e.CustomAttributeKey })
         let members = Array.concat [ properties; events ]
             
         { Name = boundType.Name
@@ -154,6 +158,7 @@ module Preparer =
         let toViewExtensionsMember (m: IBoundMember) =
             { LowerUniqueName = Text.toLowerPascalCase m.UniqueName
               UniqueName = m.UniqueName
+              CustomAttributeKey = m.CustomAttributeKey
               InputType = m.InputType
               ConvertInputToModel = m.ConvertInputToModel }
             
