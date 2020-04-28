@@ -11,15 +11,17 @@
       "properties": [
         {
           "source": null,
-          "Name": "Ref",
+          "name": "Ref",
           "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.RefAttribKey",
           "defaultValue": "null",
           "inputType": "ViewRef"
         },
         {
           "source": null,
-          "Name": "Key",
+          "name": "Key",
           "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.KeyAttribKey",
           "inputType": "string",
           "defaultValue": "null"
         },
@@ -27,6 +29,7 @@
           "source": null,
           "name": "Tag",
           "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.XamarinForms.ViewExtensions.TagAttribKey",
           "defaultValue": "null",
           "inputType": "obj"
         }
@@ -36,6 +39,7 @@
           "source": null,
           "name": "Created",
           "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.CreatedAttribKey",
           "inputType": "obj -> unit",
           "modelType": "obj -> unit"
         }
@@ -1686,6 +1690,8 @@
       "events": [
         {
           "source": "SelectionChanged",
+          "inputType": "ViewElement list option * ViewElement list option -> unit",
+          "convertInputToModel": "ViewConverters.makeSelectableItemsViewSelectionChangedEventHandler",
           "relatedProperties": [
             "SelectedItem",
             "SelectedItems"

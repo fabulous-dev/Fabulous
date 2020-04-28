@@ -19,7 +19,7 @@ module SearchHandlers =
                 match itemOpt with
                 | None -> ()
                 | Some item ->
-                    let animal = item.GetAttributeKeyed(ViewAttributes.TagAttribKey) :?> Animal
+                    let animal = item.TryGetTag<Animal>().Value
                     dispatch (AnimalSelected animal)),
             items=[
                 for animal in animals do

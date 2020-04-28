@@ -31,6 +31,7 @@ module XFOptimizer =
                   ShortName = sprintf "%sCanExecute" boundProperty.ShortName
                   UniqueName = sprintf "%sCanExecute" boundProperty.UniqueName
                   CanBeUpdated = true
+                  CustomAttributeKey = None
                   DefaultValue = "true"
                   OriginalType = "bool"
                   InputType = "bool"

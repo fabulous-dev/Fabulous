@@ -8,6 +8,14 @@ open Fabulous.CodeGen.Generator.Models
 open System.IO
 
 module CodeGenerator =
+    let getAttributeKeyName uniqueName =
+        sprintf "%sAttribKey" uniqueName
+    
+    let getAttributeKey customAttributeKey uniqueName =
+        match customAttributeKey with
+        | None -> sprintf "ViewAttributes.%s" (getAttributeKeyName uniqueName)
+        | Some attributeKey -> attributeKey
+    
     let generateNamespace (namespaceOfGeneratedCode: string) (additionalNamespaces: string array) (w: StringWriter) = 
         w.printfn "// Copyright 2018-2020 Fabulous contributors. See LICENSE.md for license."
         w.printfn "namespace %s" namespaceOfGeneratedCode
@@ -33,7 +41,7 @@ module CodeGenerator =
                 | "Created" -> "(obj -> unit)"
                 | _ -> "_"
                 
-            w.printfn "    let %sAttribKey : AttributeKey<%s> = AttributeKey<%s>(\"%s\")" m.UniqueName typeName typeName m.UniqueName
+            w.printfn "    let %s : AttributeKey<%s> = AttributeKey<%s>(\"%s\")" (getAttributeKeyName m.UniqueName) typeName typeName m.UniqueName
         w.printfn ""
         w
 
@@ -70,7 +78,8 @@ module CodeGenerator =
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(attribCount%s)" nameOfBaseCreator baseMembers
 
         for m in immediateMembers do
-            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(ViewAttributes.%sAttribKey, %s(v)) " m.Name m.UniqueName m.ConvertInputToModel 
+            let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName                
+            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(%s, %s(v)) " m.Name attributeKey m.ConvertInputToModel 
 
         w.printfn "        attribBuilder"
         w.printfn ""
@@ -97,9 +106,10 @@ module CodeGenerator =
                 w.printfn "                // Adjust the attached properties"
                 for ap in collectionData.AttachedProperties do
                     let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
+                    let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
                     
-                    w.printfn "                let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.UniqueName ap.ModelType ap.UniqueName
-                    w.printfn "                let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(ViewAttributes.%sAttribKey)" ap.UniqueName ap.ModelType ap.UniqueName
+                    w.printfn "                let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
+                    w.printfn "                let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
                     
                     if ap.ModelType = "ViewElement" && not hasApply then
                         w.printfn "                match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
@@ -140,14 +150,16 @@ module CodeGenerator =
                 w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName
             w.printfn "        for kvp in curr.AttributesKeyed do"
             for m in data.ImmediateMembers do
-                w.printfn "            if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
+                let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
+                w.printfn "            if kvp.Key = %s.KeyValue then " attributeKey
                 w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
             w.printfn "        match prevOpt with"
             w.printfn "        | ValueNone -> ()"
             w.printfn "        | ValueSome prev ->"
             w.printfn "            for kvp in prev.AttributesKeyed do"
             for m in data.ImmediateMembers do
-                w.printfn "                if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
+                let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
+                w.printfn "                if kvp.Key = %s.KeyValue then " attributeKey
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
             
             // Unsubscribe previous event handlers
@@ -300,8 +312,9 @@ module CodeGenerator =
                 match m.Name with
                 | "Created" | "Ref" |"Key" ->  ()     
                 | _ ->
+                    let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                     w.printfn "    /// Get the value of the %s member" m.Name
-                    w.printfn "    member this.%s = element.GetAttributeKeyed(ViewAttributes.%sAttribKey)" m.Name m.UniqueName
+                    w.printfn "    member this.%s = element.GetAttributeKeyed(%s)" m.Name attributeKey
             w.printfn ""
         w
 
@@ -348,9 +361,10 @@ module CodeGenerator =
             match m.UniqueName with
             | "Created" | "Ref" | "Key"-> ()
             | _ ->
+                let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                 w.printfn ""
                 w.printfn "        /// Adjusts the %s property in the visual element" m.UniqueName
-                w.printfn "        member x.%s(value: %s) = x.WithAttribute(ViewAttributes.%sAttribKey, %s(value))" m.UniqueName m.InputType m.UniqueName m.ConvertInputToModel
+                w.printfn "        member x.%s(value: %s) = x.WithAttribute(%s, %s(value))" m.UniqueName m.InputType attributeKey m.ConvertInputToModel
 
         let members =
             data

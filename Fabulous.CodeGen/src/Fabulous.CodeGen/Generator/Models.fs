@@ -17,6 +17,7 @@ module Models =
     type BuildMember =
         { Name: string
           UniqueName: string
+          CustomAttributeKey: string option
           InputType: string
           ConvertInputToModel: string
           IsInherited: bool }
@@ -33,6 +34,7 @@ module Models =
 
     type UpdateMember =
         { UniqueName: string
+          CustomAttributeKey: string option
           ModelType: string }
     
     type UpdateEvent =
@@ -43,6 +45,7 @@ module Models =
     type UpdateAttachedProperty =
         { Name: string
           UniqueName: string
+          CustomAttributeKey: string option
           DefaultValue: string
           OriginalType: string
           ModelType: string
@@ -84,6 +87,7 @@ module Models =
 
     type ViewerMember =
         { Name: string
+          CustomAttributeKey: string option
           UniqueName: string }
 
     type ViewerData =
@@ -103,6 +107,7 @@ module Models =
     type ViewExtensionsData =
         { LowerUniqueName: string
           UniqueName: string
+          CustomAttributeKey: string option
           InputType: string
           ConvertInputToModel: string }
         

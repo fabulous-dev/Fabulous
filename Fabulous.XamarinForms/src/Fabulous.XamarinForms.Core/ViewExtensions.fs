@@ -8,8 +8,17 @@ open System.Collections.Generic
 
 [<AutoOpen>]
 module ViewExtensions =
+    /// Allows to store any arbitrary value (useful for collection controls returning the ViewElement instead of the selected index)
+    let TagAttribKey : AttributeKey<obj> = AttributeKey<_>("Tag")
+    
     // The public API for extensions to define their incremental update logic
     type ViewElement with
+        
+        /// Try getting the value stored as a Tag
+        member x.TryGetTag<'T>() =
+            match x.TryGetAttributeKeyed(TagAttribKey) with
+            | ValueNone -> None
+            | ValueSome tag -> Some (tag :?> 'T)
 
         /// Update an event handler on a target control, given a previous and current view element description
         member inline source.UpdateEvent(prevOpt: ViewElement voption, attribKey: AttributeKey<'T>, targetEvent: IEvent<'T,'Args>) = 
