@@ -14,13 +14,11 @@ module ViewHelpers =
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
     
     let getKey (el:ViewElement) = el.TryGetKey()
-    
-    let sameType (prevChild: ViewElement) (newChild: ViewElement) =
-        prevChild.TargetType = newChild.TargetType
+          
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
-        if sameType prevChild newChild && canReuseAutomationId prevChild newChild then
+        if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
             elif newChild.TargetType.IsAssignableFrom(typeof<CustomEffect>) then
@@ -31,7 +29,6 @@ module ViewHelpers =
             false
             
     
-
         
 
     /// Checks whether an underlying NavigationPage control can be reused given the previous and new view elements

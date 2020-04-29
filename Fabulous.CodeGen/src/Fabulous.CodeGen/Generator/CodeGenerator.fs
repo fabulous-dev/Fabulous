@@ -195,7 +195,6 @@ module CodeGenerator =
                         w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionData.ElementType
                         generateAttachedProperties collectionData
                         w.printfn "            ViewHelpers.canReuseView"
-                        w.printfn "            ViewHelpers.sameType"
                         w.printfn "            ViewHelpers.getKey"
                         w.printfn "            ViewUpdaters.updateChild"
                         
