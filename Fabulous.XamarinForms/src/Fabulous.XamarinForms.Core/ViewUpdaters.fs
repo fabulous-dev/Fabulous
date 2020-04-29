@@ -28,6 +28,72 @@ module ViewUpdaters =
             if target <> null then currValue.UpdateIncremental(prevValue, target)            
         | ValueSome _, ValueNone ->
             clearValue ()
+           
+    /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
+    /// a reduced number of clear/move/create/update/remove operations
+    ///
+    /// The algorithm will try in priority to update elements sharing the same instance (usually achieved with dependsOn)
+    /// or sharing the same key. All other elements will try to reuse existing previous elements where possible.
+    /// If no reuse is possible, the element will create a new control.
+    let updateCollectionGenericInternal
+            (prevCollOpt: 'T[] voption)
+            (collOpt: 'T[] voption)
+            (getKey: 'T -> string voption)
+            (canReuse: 'T -> 'T -> bool)
+            (move: int -> 'T -> unit)
+            (create: int -> 'T -> unit)
+            (update: int -> 'T -> 'T -> unit)
+            (remove: int -> unit)
+            (clear: unit -> unit) =
+        
+        match prevCollOpt, collOpt with 
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
+        | _, ValueNone -> clear ()
+        | _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
+        | _, ValueSome coll ->
+            
+            let prevColl =
+                match prevCollOpt with
+                | ValueSome x -> x
+                | _ -> [||]
+
+            // Count the existing targetColl
+            let n = prevColl.Length
+            
+            let availableKeyedElements = Dictionary<string,'T>()
+            for i in 0..n-1 do
+                let key = getKey prevColl.[i]
+                match key with
+                | ValueSome key ->  availableKeyedElements.[key] <- prevColl.[i]
+                | ValueNone -> ()
+
+            // Remove the excess targetColl
+            if prevColl.Length > coll.Length then
+                for i = coll.Length to prevColl.Length - 1 do
+                    remove i
+            
+            let contains (key:string voption) =
+                match key with
+                | ValueSome key -> availableKeyedElements.ContainsKey key
+                | ValueNone -> false
+  
+            // Adjust the existing targetColl and create the new targetColl
+            for i in 0 .. coll.Length-1 do
+                let newChild = coll.[i]
+                let key = getKey newChild
+                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
+                if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
+                    if (contains key)
+                    then
+                        let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
+                        update i previousKeyedElement newChild
+                    else 
+                        let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
+                        if mustCreate then
+                            create i newChild
+                        else
+                            update i prevChildOpt.Value newChild
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -38,82 +104,45 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (getKey:'T->string voption)
+           (getKey:'T -> string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
-        match prevCollOpt, collOpt with 
-        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | _, ValueNone -> targetColl.Clear()
-        | _, ValueSome coll ->
-            if (coll = null || coll.Length = 0) then
-                targetColl.Clear()
-            else
-
-                let prevColl =
-                    match prevCollOpt with
-                    | ValueSome x -> x
-                    | _ -> [||]
-    
-                // Remove the excess targetColl
-
-
-                // Count the existing targetColl
-                // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
-                let _ = targetColl.Count
-                let n = targetColl.Count
-                let targetControls = Dictionary<string,'TargetT>()
-                for i in 0..prevColl.Length-1 do
-                        let key = getKey prevColl.[i]
-                        match key with
-                        | ValueSome key ->  targetControls.[key]<-targetColl.[i]
-                        | ValueNone -> ()
-                        
-                         
-                while (targetColl.Count > coll.Length) do
-                  targetColl.RemoveAt (targetColl.Count - 1)
-               // targetColl.Clear()                    
-                
-                let contains (key:string voption) =
-                    match key with
-                    | ValueSome key -> targetControls.ContainsKey key
-                    | ValueNone -> false
-
-                    
-                let add targetChild i =
-                     if i >= n
-                     then
-                       targetColl.Insert(i, targetChild)
-                     else
-                      targetColl.[i] <- targetChild
-      
-                // Adjust the existing targetColl and create the new targetColl
-                for i in 0 .. coll.Length-1 do
-                    let newChild = coll.[i]
-                    let key = getKey newChild
-                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                    let prevChildOpt, targetChild =
-                        
-                        if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
-                                if (contains key)
-                                then
-                                    let targetChild = targetControls.[key.Value] // We should be safe here                                        
-                                    add targetChild i 
-                                    if(prevChildOpt.IsSome) then 
-                                     update prevChildOpt.Value newChild targetChild
-                                    prevChildOpt, targetChild
-                                else 
-                                    let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                                    if mustCreate then
-                                        let targetChild = create newChild
-                                        add targetChild i 
-                                        ValueNone, targetChild
-                                    else
-                                        let targetChild = targetColl.[i]
-                                        update prevChildOpt.Value newChild targetChild
-                                        prevChildOpt, targetChild
-                        else
-                            prevChildOpt, targetColl.[i]
-                    attach prevChildOpt newChild targetChild
+            
+        let previousTargetColl = List(targetColl)
+            
+        let move i child =
+            let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)
+            let targetChild = previousTargetColl.[previousIndex]
+            targetColl.[i] <- targetChild
+            
+        let create i newChild =
+            let targetChild = create newChild
+            targetColl.[i] <- targetChild
+            attach ValueNone newChild targetChild
+            
+        let update i prevChild newChild =
+            let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = prevChild)
+            let targetChild = previousTargetColl.[previousIndex]
+            update prevChild newChild targetChild
+            targetColl.[i] <- targetChild
+            attach (ValueSome prevChild) newChild targetChild
+            
+        let remove i =
+            targetColl.RemoveAt(i)
+            
+        let clear () =
+            targetColl.Clear()
+        
+        updateCollectionGenericInternal
+            prevCollOpt
+            collOpt
+            getKey
+            canReuse
+            move
+            create
+            update
+            remove
+            clear
                     
     /// Update the attached properties for each item in an already updated collection
     let updateAttachedPropertiesForCollection
