@@ -94,7 +94,7 @@ module ViewUpdaters =
                      | None ->
                         create i newChild
                 else
-                    match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
+                    match (prevColl|>Seq.tryFind(fun c-> canReuse c newChild)) with // if we do not have key, we should search an entire pool for element
                      | Some el ->
                          update i el newChild
                          rest.Remove el|>ignore
