@@ -62,51 +62,48 @@ module ViewUpdaters =
             let n = prevColl.Length
             
             let availableKeyedElements = Dictionary<string,'T>()
+            let rest= ResizeArray<'T>()
             for i in 0..n-1 do
                 let key = getKey prevColl.[i]
                 match key with
                 | ValueSome key ->  availableKeyedElements.[key] <- prevColl.[i]
-                | ValueNone -> ()
+                | ValueNone -> rest.Add prevColl.[i]
             
             let contains (key:string voption) =
                 match key with
                 | ValueSome key -> availableKeyedElements.ContainsKey key
                 | ValueNone -> false
   
-            let indexesToRemove = HashSet<int>([0..prevColl.Length-1] )// At begin, we have all indexes to remove
             // Adjust the existing targetColl and create the new targetColl
             for i in 0 .. coll.Length-1 do
                 let newChild = coll.[i]
                 let key = getKey newChild
-                if (contains key)
+                if (prevColl|>Seq.exists (identical newChild)) then
+                    move i newChild
+                    rest.Remove newChild |> ignore
+                elif (key.IsSome)
                 then
-                 let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
-                 let index = prevColl|>Array.findIndex (fun c-> c = previousKeyedElement)
-                 indexesToRemove.Remove index |> ignore   
-                 if(i<>index && previousKeyedElement=newChild) then
-                    move i previousKeyedElement
-                 else
-                    update i previousKeyedElement newChild
-                 
+                  if(contains (key)) then 
+                     let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
+                     update i previousKeyedElement newChild
+                  else
+                     match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
+                     | Some el ->
+                         update i el newChild
+                         rest.Remove el|>ignore
+                     | None ->
+                        create i newChild
                 else
-                 let prevChildOpt =  match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                 if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
-                   let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                   if mustCreate then
-                     match prevChildOpt with
-                     | ValueNone ->
-                         ()
-                     | ValueSome prevChild ->
-                         let index = prevColl|>Array.findIndex (fun c-> c = prevChild)
-                         if(index=i) then
-                            indexesToRemove.Remove i |> ignore
-                         create i newChild
-                   else
-                     indexesToRemove.Remove i |> ignore
-                     update i prevChildOpt.Value newChild
-                     
-                for i in  indexesToRemove do
-                    remove i
+                    match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
+                     | Some el ->
+                         update i el newChild
+                         rest.Remove el|>ignore
+                     | None ->
+                       create i newChild
+            for el in rest do
+                let index= prevColl|>Array.findIndex (fun c-> c=el)
+                remove index
+                
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -128,8 +125,9 @@ module ViewUpdaters =
             
         let move i child =
             let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)
-            let targetChild = previousTargetColl.[previousIndex]
-            targetColl.[i] <- targetChild
+            if(previousIndex<>i) then 
+                let targetChild = previousTargetColl.[previousIndex]
+                targetColl.[i] <- targetChild
             
         let create i newChild =
             let targetChild = create newChild
@@ -144,7 +142,9 @@ module ViewUpdaters =
             attach (ValueSome prevChild) newChild targetChild
             
         let remove i =
-            targetColl.RemoveAt(i)
+            
+            let el = previousTargetColl.[i]
+            targetColl.Remove el |> ignore
             
         let clear () =
             targetColl.Clear()

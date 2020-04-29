@@ -23,7 +23,8 @@ module UpdateCollectionGenericTests =
         
         let mockMove i child =
             let prevIndex = previousCollection.Value |> List.findIndex (fun c -> c = child)
-            operations.Add(i, Move (prevIndex, child))
+            if(i<>prevIndex) then 
+             operations.Add(i, Move (prevIndex, child))
         
         let mockCreate i viewElement =
             operations.Add(i, Create viewElement);
@@ -93,7 +94,8 @@ module UpdateCollectionGenericTests =
         let previous = [ label ]
         let current = [ label ]
         
-        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res
         |> should equal [||]
     
     /// Keeping the same state (not same instance) should update the existing control nonetheless
