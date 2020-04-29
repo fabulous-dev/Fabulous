@@ -45,6 +45,7 @@ module UpdateCollectionGenericTests =
                (newCollection |> ValueOption.map List.toArray)
                ViewHelpers.getKey
                ViewHelpers.canReuseView
+               ViewHelpers.sameType
                mockMove
                mockCreate
                mockUpdate
