@@ -306,8 +306,10 @@ module UpdateCollectionGenericTests =
               View.Label(key = "KeyB")
               View.Label(key = "KeyC") ]
         let current =
-            [ View.Label(key = "KeyA")
-              View.Label(key = "KeyC") ]
+            [ 
+              View.Label(key = "KeyC")
+              View.Label(key = "KeyA")
+            ]
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal

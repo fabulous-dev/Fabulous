@@ -63,44 +63,82 @@ module ViewUpdaters =
             
             let availableKeyedElements = Dictionary<string,'T>()
             let rest= ResizeArray<'T>()
+            let newKeys = HashSet<string>()
+            
+            for i in 0 .. coll.Length-1 do
+                 let newChild = coll.[i]
+                 let key = getKey newChild
+                 match key with
+                 | ValueSome key -> newKeys.Add key |> ignore
+                 | ValueNone _ -> ()
+                 
             for i in 0..n-1 do
                 let key = getKey prevColl.[i]
                 match key with
-                | ValueSome key ->  availableKeyedElements.[key] <- prevColl.[i]
+                | ValueSome key ->
+                    availableKeyedElements.[key] <- prevColl.[i]
                 | ValueNone -> rest.Add prevColl.[i]
             
             let contains (key:string voption) =
                 match key with
                 | ValueSome key -> availableKeyedElements.ContainsKey key
                 | ValueNone -> false
+                
+            let newKeyContains el =
+                match getKey el with
+                | ValueSome key -> newKeys.Contains key
+                | ValueNone -> false
   
             // Adjust the existing targetColl and create the new targetColl
             for i in 0 .. coll.Length-1 do
                 let newChild = coll.[i]
                 let key = getKey newChild
+                let elems =
+                        seq{
+                            yield! rest
+                            yield! availableKeyedElements.Values
+                           }
                 if (prevColl|>Seq.exists (identical newChild)) then
                     move i newChild
-                    rest.Remove newChild |> ignore
+                    match getKey newChild with
+                     | ValueSome key -> availableKeyedElements.Remove key |> ignore
+                     |_ ->rest.Remove newChild |> ignore
+                     
                 elif (key.IsSome)
                 then
                   if(contains (key)) then 
                      let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
-                     update i previousKeyedElement newChild
+                     if(canReuse previousKeyedElement newChild) then
+                      update i previousKeyedElement newChild
+                      availableKeyedElements.Remove key.Value |> ignore
                   else
-                     match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
+                     match (elems|>Seq.tryFind(fun c-> canReuse c newChild)) with
                      | Some el ->
                          update i el newChild
-                         rest.Remove el|>ignore
+                         match getKey el with
+                         | ValueSome key -> availableKeyedElements.Remove key |> ignore
+                         |_ ->rest.Remove el |> ignore
                      | None ->
                         create i newChild
                 else
-                    match (prevColl|>Seq.tryFind(fun c-> canReuse c newChild)) with // if we do not have key, we should search an entire pool for element
+                   
+                    match (elems|>Seq.tryFind(fun c-> canReuse c newChild && (not <| newKeyContains c))) with
                      | Some el ->
                          update i el newChild
-                         rest.Remove el|>ignore
+                         match getKey el with
+                         | ValueSome key -> availableKeyedElements.Remove key |> ignore
+                         |_ ->rest.Remove el |> ignore
+                         
                      | None ->
-                       create i newChild
-            for el in rest do
+                         create i newChild
+
+            let elems =
+                        seq{
+                            yield! rest
+                            yield! availableKeyedElements.Values
+                           }
+                        
+            for el in elems do
                 let index= prevColl|>Array.findIndex (fun c-> c=el)
                 remove index
                 
@@ -119,10 +157,7 @@ module ViewUpdaters =
         =
                
         let previousTargetColl = List(targetColl)
-        
-     
-            
-            
+      
         let move i child =
             let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)
             if(previousIndex<>i) then 
