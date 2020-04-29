@@ -67,33 +67,46 @@ module ViewUpdaters =
                 match key with
                 | ValueSome key ->  availableKeyedElements.[key] <- prevColl.[i]
                 | ValueNone -> ()
-
-            // Remove the excess targetColl
-            if prevColl.Length > coll.Length then
-                for i = coll.Length to prevColl.Length - 1 do
-                    remove i
             
             let contains (key:string voption) =
                 match key with
                 | ValueSome key -> availableKeyedElements.ContainsKey key
                 | ValueNone -> false
   
+            let indexesToRemove = HashSet<int>([0..prevColl.Length-1] )// At begin, we have all indexes to remove
             // Adjust the existing targetColl and create the new targetColl
             for i in 0 .. coll.Length-1 do
                 let newChild = coll.[i]
                 let key = getKey newChild
-                let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
-                    if (contains key)
-                    then
-                        let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
-                        update i previousKeyedElement newChild
-                    else 
-                        let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                        if mustCreate then
-                            create i newChild
-                        else
-                            update i prevChildOpt.Value newChild
+                if (contains key)
+                then
+                 let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
+                 let index = prevColl|>Array.findIndex (fun c-> c = previousKeyedElement)
+                 indexesToRemove.Remove index |> ignore   
+                 if(i<>index && previousKeyedElement=newChild) then
+                    move i previousKeyedElement
+                 else
+                    update i previousKeyedElement newChild
+                 
+                else
+                 let prevChildOpt =  match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
+                 if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
+                   let mustCreate = ((i>=n)|| match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
+                   if mustCreate then
+                     match prevChildOpt with
+                     | ValueNone ->
+                         ()
+                     | ValueSome prevChild ->
+                         let index = prevColl|>Array.findIndex (fun c-> c = prevChild)
+                         if(index=i) then
+                            indexesToRemove.Remove i |> ignore
+                         create i newChild
+                   else
+                     indexesToRemove.Remove i |> ignore
+                     update i prevChildOpt.Value newChild
+                     
+                for i in  indexesToRemove do
+                    remove i
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -107,8 +120,11 @@ module ViewUpdaters =
            (getKey:'T -> string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
-            
+               
         let previousTargetColl = List(targetColl)
+        
+     
+            
             
         let move i child =
             let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)

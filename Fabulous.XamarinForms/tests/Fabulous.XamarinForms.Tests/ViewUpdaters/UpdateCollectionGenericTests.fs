@@ -347,8 +347,8 @@ module UpdateCollectionGenericTests =
               View.Label(key = "KeyD")
               View.Label(key = "KeyC") ]
         
-        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        |> should equal
+        let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res |> should equal
             [| Update (1, previous.[1], current.[0])
                Move (0, current.[1])
                Update (3, previous.[3], current.[2])
@@ -422,8 +422,8 @@ module UpdateCollectionGenericTests =
         let current =
             [ View.Label(key = "KeyB") ]
         
-        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        |> should equal
+        let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res|> should equal
             [| Update (1, previous.[1], current.[0])
                Remove previous.[0] |]
     
