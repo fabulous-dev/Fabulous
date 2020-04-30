@@ -217,7 +217,7 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-               Remove previous.[0] |]
+            |]
 
     // Only keyed
     // Empty -> 1k = Create[1k]
@@ -375,7 +375,8 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-               Remove previous.[0] |]
+              /// Remove previous.[0]
+            |]
     
     /// Replacing a keyed element with one of another type and another key, should create the new control
     /// in place of the old one
@@ -389,7 +390,8 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-               Remove previous.[0] |]
+              // Remove previous.[0]
+            |]
     
     // Mixed
     // 1k -> 2 = Update[1k -> 2]
