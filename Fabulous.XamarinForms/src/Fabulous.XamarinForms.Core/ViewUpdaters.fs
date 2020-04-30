@@ -43,7 +43,7 @@ module ViewUpdaters =
             (move: int -> 'T -> unit)
             (create: int -> 'T -> unit)
             (update: int -> 'T -> 'T -> unit)
-            (remove: int->'T seq -> unit)
+            (remove: 'T seq -> unit)
             (clear: unit -> unit) =
         
         match prevCollOpt, collOpt with 
@@ -96,9 +96,7 @@ module ViewUpdaters =
                 let key = getKey newChild
                 if (prevColl|>Array.exists (identical newChild)) then
                     move i newChild
-                    match getKey newChild with
-                     | ValueSome key -> availableKeyedElements.Remove key |> ignore
-                     |_ ->rest.Remove newChild |> ignore
+                    rest.Remove newChild |> ignore
                      
                 elif (key.IsSome)
                 then
@@ -107,8 +105,7 @@ module ViewUpdaters =
                      if(canReuse previousKeyedElement newChild) then
                       update i previousKeyedElement newChild
                       availableKeyedElements.Remove key.Value |> ignore
-                     else
-                       remove i 
+                     else 
                        create i newChild
                        
                   else
@@ -135,7 +132,7 @@ module ViewUpdaters =
           
                         
             if prevColl.Length > coll.Length then
-                remove (coll.Length - 1) rest
+                remove rest
                 
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
@@ -171,20 +168,10 @@ module ViewUpdaters =
             targetColl.[i] <- targetChild
             attach (ValueSome prevChild) newChild targetChild
             
-        let remove lastIndex (unused:'T seq)=
-            let prevColl =
-                match prevCollOpt with
-                | ValueSome x -> x
-                | _ -> [||]
-                
-            for el in unused do
-                let idx = prevColl|> Array.findIndex (fun c-> c=el)
-                let target = previousTargetColl.[idx]
-                targetColl.Remove target |> ignore
-                
-            if(targetColl.Count>lastIndex) then
-                    for i=lastIndex to targetColl.Count-1 do
-                        targetColl.RemoveAt i
+        let remove _ =
+            let count = match collOpt with ValueNone -> 0 | ValueSome coll -> coll.Length
+            while (targetColl.Count > count) do
+                targetColl.RemoveAt (count - 1)
                 
             
             
