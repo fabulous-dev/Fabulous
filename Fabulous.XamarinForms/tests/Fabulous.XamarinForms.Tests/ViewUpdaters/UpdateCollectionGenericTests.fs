@@ -206,7 +206,7 @@ module UpdateCollectionGenericTests =
     
     /// Replacing an element with an element of another type should create the new control in place of the old one
     [<Test>]
-    let ``Given previous state = Tx / current state = Ty, updateCollectionGeneric should replace Tx with Create[Ty]``() =        
+    let ``Given previous state = Tx / current state = Ty, updateCollectionGeneric should Create[Ty] + Remove[Tx]``() =        
         let previous =
             [ View.Label() ]
         let current =
@@ -214,7 +214,8 @@ module UpdateCollectionGenericTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0] |]
+            [| Create current.[0]
+               Remove previous.[0] |]
 
     // Only keyed
     // Empty -> 1k = Create[1k]
@@ -363,7 +364,7 @@ module UpdateCollectionGenericTests =
     /// Replacing an element with one from another type, even with the same key, should create the new control
     /// in place of the old one
     [<Test>]
-    let ``Given previous state = Txk / current state = Tyk (same key), updateCollectionGeneric should replace Txk with Create[Tyk]``() =        
+    let ``Given previous state = Txk / current state = Tyk (same key), updateCollectionGeneric should Create[Tyk] + Remove[Txk]``() =        
         let previous =
             [ View.Label(key = "KeyA") ]
         let current =
@@ -371,12 +372,13 @@ module UpdateCollectionGenericTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0] |]
+            [| Create current.[0]
+               Remove previous.[0] |]
     
     /// Replacing a keyed element with one of another type and another key, should create the new control
     /// in place of the old one
     [<Test>]
-    let ``Given previous state = Txk / current state = Tyk (different keys), updateCollectionGeneric should replace Txk with Create[Tyk]``() =        
+    let ``Given previous state = Txk / current state = Tyk (different keys), updateCollectionGeneric should Create[Tyk] + Remove[Txk]``() =        
         let previous =
             [ View.Label(key = "KeyA") ]
         let current =
@@ -384,7 +386,8 @@ module UpdateCollectionGenericTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0] |]
+            [| Create current.[0]
+               Remove previous.[0] |]
     
     // Mixed
     // 1k -> 2 = Update[1k -> 2]
