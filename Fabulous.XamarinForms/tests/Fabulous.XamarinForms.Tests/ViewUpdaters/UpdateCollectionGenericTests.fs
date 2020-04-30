@@ -33,9 +33,11 @@ module UpdateCollectionGenericTests =
             let prevIndex = previousCollection.Value |> List.findIndex (fun c -> c = previousChild)
             operations.Add(i, Update (prevIndex, previousChild, newChild))
             
-        let mockRemove i =
-            let offset = match newCollection with ValueNone -> 0 | ValueSome coll -> coll.Length
-            operations.Add(i + offset, Remove previousCollection.Value.[i])
+        let mockRemove i unused=
+            let mutable offset = 0
+            for el in unused do
+             operations.Add(i + offset, Remove el)
+             offset<-offset+1
             
         let mockClear () =
             operations.Add(0, Clear)

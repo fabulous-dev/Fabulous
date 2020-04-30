@@ -43,11 +43,12 @@ module ViewUpdaters =
             (move: int -> 'T -> unit)
             (create: int -> 'T -> unit)
             (update: int -> 'T -> 'T -> unit)
-            (remove: int -> unit)
+            (remove: int->'T seq -> unit)
             (clear: unit -> unit) =
         
         match prevCollOpt, collOpt with 
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | ValueNone ,ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
         | _, ValueNone -> clear ()
         | _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
@@ -75,9 +76,9 @@ module ViewUpdaters =
             for i in 0..n-1 do
                 let key = getKey prevColl.[i]
                 match key with
-                | ValueSome key ->
-                    availableKeyedElements.[key] <- prevColl.[i]
-                | ValueNone -> rest.Add prevColl.[i]
+                | ValueSome key  when newKeys.Contains key->
+                     availableKeyedElements.[key] <- prevColl.[i]
+                | _ -> rest.Add prevColl.[i]
             
             let contains (key:string voption) =
                 match key with
@@ -93,12 +94,7 @@ module ViewUpdaters =
             for i in 0 .. coll.Length-1 do
                 let newChild = coll.[i]
                 let key = getKey newChild
-                let elems =
-                        seq{
-                            yield! rest
-                            yield! availableKeyedElements.Values
-                           }
-                if (prevColl|>Seq.exists (identical newChild)) then
+                if (prevColl|>Array.exists (identical newChild)) then
                     move i newChild
                     match getKey newChild with
                      | ValueSome key -> availableKeyedElements.Remove key |> ignore
@@ -111,8 +107,12 @@ module ViewUpdaters =
                      if(canReuse previousKeyedElement newChild) then
                       update i previousKeyedElement newChild
                       availableKeyedElements.Remove key.Value |> ignore
+                     else
+                       remove i 
+                       create i newChild
+                       
                   else
-                     match (elems|>Seq.tryFind(fun c-> canReuse c newChild)) with
+                     match (rest |>Seq.tryFind(fun c-> canReuse c newChild)) with
                      | Some el ->
                          update i el newChild
                          match getKey el with
@@ -122,7 +122,7 @@ module ViewUpdaters =
                         create i newChild
                 else
                    
-                    match (elems|>Seq.tryFind(fun c-> canReuse c newChild && (not <| newKeyContains c))) with
+                    match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
                      | Some el ->
                          update i el newChild
                          match getKey el with
@@ -132,15 +132,10 @@ module ViewUpdaters =
                      | None ->
                          create i newChild
 
-            let elems =
-                        seq{
-                            yield! rest
-                            yield! availableKeyedElements.Values
-                           }
+          
                         
-            for el in elems do
-                let index= prevColl|>Array.findIndex (fun c-> c=el)
-                remove index
+            if prevColl.Length > coll.Length then
+                remove (coll.Length - 1) rest
                 
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
@@ -176,10 +171,22 @@ module ViewUpdaters =
             targetColl.[i] <- targetChild
             attach (ValueSome prevChild) newChild targetChild
             
-        let remove i =
+        let remove lastIndex (unused:'T seq)=
+            let prevColl =
+                match prevCollOpt with
+                | ValueSome x -> x
+                | _ -> [||]
+                
+            for el in unused do
+                let idx = prevColl|> Array.findIndex (fun c-> c=el)
+                let target = previousTargetColl.[idx]
+                targetColl.Remove target |> ignore
+                
+            if(targetColl.Count>lastIndex) then
+                    for i=lastIndex to targetColl.Count-1 do
+                        targetColl.RemoveAt i
+                
             
-            let el = previousTargetColl.[i]
-            targetColl.Remove el |> ignore
             
         let clear () =
             targetColl.Clear()
