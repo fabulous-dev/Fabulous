@@ -150,6 +150,13 @@
           "source": "IsDestructive"
         },
         {
+          "source": null,
+          "name": "StyleClass",
+          "shortName": "styleClasses",
+          "defaultValue": "null",
+          "inputType": "string list"
+        },
+        {
           "source": "Text"
         }
       ],
@@ -1014,6 +1021,9 @@
         },
         {
           "source": "BarTextColor"
+        },
+        {
+          "source": "IconColor"
         },
         {
           "source": null,
@@ -2492,6 +2502,9 @@
       "type": "Xamarin.Forms.WebView",
       "properties": [
         {
+          "source": "Cookies"
+        },
+        {
           "source": "Source"
         },
         {
@@ -2781,6 +2794,9 @@
       "properties": [
         {
           "source": "BackgroundColor"
+        },
+        {
+          "source": "IsVisible"
         }
       ],
       "events": [
@@ -2910,6 +2926,68 @@
         },
         {
           "source": "VolumeRequested"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Expander",
+      "properties": [
+        {
+          "source": "CollapseAnimationEasing"
+        },
+        {
+          "source": "CollapseAnimationLength"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Content"
+        },
+        {
+          "source": "ExpandAnimationEasing"
+        },
+        {
+          "source": "ExpandAnimationLength"
+        },
+        {
+          "source": "ForceUpdateSizeCommand"
+        },
+        {
+          "source": "Header"
+        },
+        {
+          "source": "IsExpanded"
+        },
+        {
+          "source": "Spacing"
+        },
+        {
+          "source": "State"
+        }
+      ],
+      "events": [
+        {
+          "source": "Tapped"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.RadioButton",
+      "properties": [
+        {
+          "source": "GroupName"
+        },
+        {
+          "source": "IsChecked"
+        }
+      ],
+      "events": [
+        {
+          "source": "CheckedChanged",
+          "relatedProperties": [
+            "Checked"
+          ]
         }
       ]
     }
