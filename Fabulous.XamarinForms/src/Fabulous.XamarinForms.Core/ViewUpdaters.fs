@@ -33,107 +33,83 @@ module ViewUpdaters =
     /// a reduced number of clear/move/create/update/remove operations
     ///
     /// The algorithm will try in priority to update elements sharing the same instance (usually achieved with dependsOn)
-    /// or sharing the same key. All other elements will try to reuse existing previous elements where possible.
+    /// or sharing the same key. All other elements will try to reuse previous elements where possible.
     /// If no reuse is possible, the element will create a new control.
     let updateCollectionGenericInternal
             (prevCollOpt: 'T[] voption)
             (collOpt: 'T[] voption)
-            (getKey: 'T -> string voption)
+            (keyOf: 'T -> string voption)
             (canReuse: 'T -> 'T -> bool)
             (move: int -> 'T -> unit)
             (create: int -> 'T -> unit)
             (update: int -> 'T -> 'T -> unit)
-            (remove: 'T seq -> unit)
+            (remove: 'T[] -> unit)
             (clear: unit -> unit) =
         
-        match prevCollOpt, collOpt with 
+        match prevCollOpt, collOpt with
+        | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | ValueNone ,ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
-        | _, ValueNone -> clear ()
-        | _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
+        | ValueSome _, ValueNone -> clear ()
+        | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
         | _, ValueSome coll ->
-            
             let prevColl =
                 match prevCollOpt with
                 | ValueSome x -> x
                 | _ -> [||]
-
-            // Count the existing targetColl
-            let n = prevColl.Length
             
-            let availableKeyedElements = Dictionary<string,'T>()
-            let rest= ResizeArray<'T>()
-            let newKeys = HashSet<string>()
-            
-            for i in 0 .. coll.Length-1 do
-                 let newChild = coll.[i]
-                 let key = getKey newChild
-                 match key with
-                 | ValueSome key -> newKeys.Add key |> ignore
-                 | ValueNone _ -> ()
-                 
-            for i in 0..n-1 do
-                let key = getKey prevColl.[i]
-                match key with
-                | ValueSome key  when newKeys.Contains key->
-                     availableKeyedElements.[key] <- prevColl.[i]
-                | _ -> rest.Add prevColl.[i]
-            
-            let contains (key:string voption) =
-                match key with
-                | ValueSome key -> availableKeyedElements.ContainsKey key
-                | ValueNone -> false
-                
-            let newKeyContains el =
-                match getKey el with
-                | ValueSome key -> newKeys.Contains key
-                | ValueNone -> false
-  
-            // Adjust the existing targetColl and create the new targetColl
-            for i in 0 .. coll.Length-1 do
-                let newChild = coll.[i]
-                let key = getKey newChild
-                if (prevColl|>Array.exists (identical newChild)) then
-                    move i newChild
-                    rest.Remove newChild |> ignore
-                     
-                elif (key.IsSome)
-                then
-                  if(contains (key)) then 
-                     let previousKeyedElement = availableKeyedElements.[key.Value] // We should be safe here
-                     if(canReuse previousKeyedElement newChild) then
-                      update i previousKeyedElement newChild
-                      availableKeyedElements.Remove key.Value |> ignore
-                     else 
-                       create i newChild
-                       
-                  else
-                     match (rest |>Seq.tryFind(fun c-> canReuse c newChild)) with
-                     | Some el ->
-                         update i el newChild
-                         match getKey el with
-                         | ValueSome key -> availableKeyedElements.Remove key |> ignore
-                         |_ ->rest.Remove el |> ignore
-                     | None ->
-                        create i newChild
+            // Separate the previous elements into 3 lists
+            // The ones whose instances have been reused (dependsOn)
+            // The ones whose keys have been reused
+            // The rest which can be reused by any other element
+            let identicalElements = HashSet<'T>()
+            let keyedElements = Dictionary<string,'T>()
+            let reusableElements = ResizeArray<'T>()
+            for prevChild in prevColl do
+                if coll |> Array.exists (identical prevChild) then
+                    identicalElements.Add(prevChild) |> ignore
                 else
-                   
-                    match (rest|>Seq.tryFind(fun c-> canReuse c newChild)) with
-                     | Some el ->
-                         update i el newChild
-                         match getKey el with
-                         | ValueSome key -> availableKeyedElements.Remove key |> ignore
-                         |_ ->rest.Remove el |> ignore
-                         
-                     | None ->
-                         create i newChild
-
-          
-                        
-            if prevColl.Length > coll.Length then
-                remove rest
+                    match keyOf prevChild with
+                    | ValueSome key when coll |> Array.exists (fun newChild -> keyOf newChild = ValueSome key && canReuse prevChild newChild) ->
+                        keyedElements.Add(key, prevChild)
+                    | _ ->
+                        reusableElements.Add(prevChild)
+            
+            // Reuse the first element from reusableElements that returns true to canReuse
+            // Otherwise create a new element
+            let reuseOrCreate i newChild =
+                match reusableElements |> Seq.tryFind(fun c -> canReuse c newChild) with
+                | Some reusableChild ->
+                    update i reusableChild newChild
+                    reusableElements.Remove reusableChild |> ignore
+                | None ->
+                    create i newChild
+            
+            for i in 0 .. coll.Length - 1 do
+                let newChild = coll.[i]
                 
+                // Check if the same instance was reused (dependsOn), if so just move the element to the correct index
+                if identicalElements.Contains(newChild) then
+                    move i newChild
+                else
+                    match keyOf newChild with
+                    | ValueSome key ->
+                        // If the key existed previously, reuse the previous element
+                        if keyedElements.ContainsKey(key) then 
+                            let prevChild = keyedElements.[key]
+                            update i prevChild newChild
+                        
+                        // Otherwise reuse an old element if possible or create a new one
+                        else
+                            reuseOrCreate i newChild
+                    
+                    | ValueNone ->
+                        // Reuse an old element if possible, otherwise create a new one
+                        reuseOrCreate i newChild
+            
+            // If we still have old elements that were not reused, delete them
+            if reusableElements.Count > 0 then
+                remove (Array.ofSeq reusableElements)
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -144,36 +120,43 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (getKey:'T -> string voption)
+           (keyOf:'T -> string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
                
         let previousTargetColl = List(targetColl)
+        
+        let setAtIndex i child =
+            if targetColl.Count < i + 1 then
+                targetColl.Add(child)
+            else
+                targetColl.[i] <- child
       
         let move i child =
             let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)
-            if(previousIndex<>i) then 
+            if previousIndex <> i then
                 let targetChild = previousTargetColl.[previousIndex]
-                targetColl.[i] <- targetChild
+                setAtIndex i targetChild
             
         let create i newChild =
             let targetChild = create newChild
-            targetColl.[i] <- targetChild
+            setAtIndex i targetChild
             attach ValueNone newChild targetChild
             
         let update i prevChild newChild =
             let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = prevChild)
             let targetChild = previousTargetColl.[previousIndex]
+            
+            if previousIndex <> i then
+                setAtIndex i targetChild
+                
             update prevChild newChild targetChild
-            targetColl.[i] <- targetChild
             attach (ValueSome prevChild) newChild targetChild
             
         let remove _ =
             let count = match collOpt with ValueNone -> 0 | ValueSome coll -> coll.Length
             while (targetColl.Count > count) do
                 targetColl.RemoveAt (count - 1)
-                
-            
             
         let clear () =
             targetColl.Clear()
@@ -181,7 +164,7 @@ module ViewUpdaters =
         updateCollectionGenericInternal
             prevCollOpt
             collOpt
-            getKey
+            keyOf
             canReuse
             move
             create
@@ -258,7 +241,7 @@ module ViewUpdaters =
             let itemsSource = target.ItemsSource :?> System.Collections.Generic.IList<ViewElementHolder>
             itemsSource.[idx] :> obj
         
-        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ ->ValueNone) (fun _ _ _ -> ())
+        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ -> ValueNone) (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 

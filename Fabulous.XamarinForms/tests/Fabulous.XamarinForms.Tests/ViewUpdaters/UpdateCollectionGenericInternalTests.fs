@@ -9,7 +9,7 @@ open FsUnit
 // 1 & 1' means its the same ViewElement (same property values), except it's not the same .NET reference
 // Tx & Ty means its 2 different ViewElement types that can't be reused between themselves (e.g. Label vs Button)
 // 1k/Txk means its a ViewElement with a key value 
-module UpdateCollectionGenericTests =    
+module UpdateCollectionGenericInternalTests =    
     type Operation =
         | Move of prevIndex: int * child: ViewElement
         | Create of newChild: ViewElement
@@ -27,20 +27,17 @@ module UpdateCollectionGenericTests =
              operations.Add(i, Move (prevIndex, child))
         
         let mockCreate i viewElement =
-            operations.Add(i, Create viewElement);
+            operations.Add(i, Create viewElement)
             
         let mockUpdate i previousChild newChild =
             let prevIndex = previousCollection.Value |> List.findIndex (fun c -> c = previousChild)
             operations.Add(i, Update (prevIndex, previousChild, newChild))
             
-        let mockRemove unused=
+        let mockRemove (unused: ViewElement array) =
              let offset = match newCollection with ValueNone -> 0 | ValueSome coll -> coll.Length
-             let mutable index = 0
-             for el in unused do 
-                operations.Add(offset + index, Remove el)
-                index<-index + 1
+             for index = 0 to unused.Length - 1 do
+                operations.Add(offset + index, Remove unused.[index])
            
-            
         let mockClear () =
             operations.Add(0, Clear)
        
@@ -59,6 +56,12 @@ module UpdateCollectionGenericTests =
         |> Seq.sortBy fst
         |> Seq.map snd
         |> Seq.toArray
+    
+    /// Going from an undefined state to another undefined state should do nothing
+    [<Test>]
+    let ``Given previous state = None / current state = None, updateCollectionGeneric should do nothing``() =        
+        testUpdateCollectionGeneric ValueNone ValueNone
+        |> should equal [| |]
     
     /// Not defining a previously existing list clears all previous controls
     [<Test>]
@@ -98,8 +101,7 @@ module UpdateCollectionGenericTests =
         let previous = [ label ]
         let current = [ label ]
         
-        let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        res
+        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal [||]
     
     /// Keeping the same state (not same instance) should update the existing control nonetheless
@@ -217,20 +219,7 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-            |]
-
-    // Only keyed
-    // Empty -> 1k = Create[1k]
-    // 1k -> Empty = Remove[1k]
-    // 1k -> 1k = Nothing
-    // 1k -> 1k' = Update[1k -> 1k']
-    // 1k -> 2k = Update[1k -> 2k]
-    // 1k-2k-3k -> 1k'-3k' = Update[1k -> 1k' | 3k -> 3k'] + Remove[2k]
-    // 1k-2k-3k -> 3k'-1k' = Update[3k -> 3k' | 1k -> 1k'] + Remove[2k]
-    // 1k-2k-3k -> 3k'-4k-1k' = Update[3k -> 3k' | 2k -> 4k | 1k -> 1k']
-    // 1k-2k-3k-4k -> 2k'-1k-4k'-3k' = Update[2k -> 2k' | 4k -> 4k' | 3k -> 3k'] --- 1k is the same instance
-    // Txk -> Tyk (same key) = Create[Tyk]
-    // Txk -> Tyk (different key) = Create[Tyk]
+               Remove previous.[0] |]
         
     /// Adding a keyed element to an empty list should create the associated control
     [<Test>]
@@ -311,10 +300,8 @@ module UpdateCollectionGenericTests =
               View.Label(key = "KeyB")
               View.Label(key = "KeyC") ]
         let current =
-            [ 
-              View.Label(key = "KeyC")
-              View.Label(key = "KeyA")
-            ]
+            [ View.Label(key = "KeyC")
+              View.Label(key = "KeyA") ]
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
@@ -375,8 +362,7 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-              /// Remove previous.[0]
-            |]
+               Remove previous.[0] |]
     
     /// Replacing a keyed element with one of another type and another key, should create the new control
     /// in place of the old one
@@ -390,14 +376,7 @@ module UpdateCollectionGenericTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Create current.[0]
-              // Remove previous.[0]
-            |]
-    
-    // Mixed
-    // 1k -> 2 = Update[1k -> 2]
-    // 1k-2 -> 1k'-3 = Update[1k -> 1k' | 2 -> 3]
-    // 1-2k -> 2k' = Remove[1] + Update[2k -> 2k']
-    // 1-2k-3-4-5 -> 4-2k'-5' = Update[2k -> 2k' | 1 -> 5'] + Remove[3 | 5] --- 4 is the same instance so it can be reused like a keyed element
+               Remove previous.[0] |]
     
     /// Replacing a keyed element with a non-keyed one should reuse the discarded element
     [<Test>]
@@ -435,8 +414,8 @@ module UpdateCollectionGenericTests =
         let current =
             [ View.Label(key = "KeyB") ]
         
-        let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        res|> should equal
+        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        |> should equal
             [| Update (1, previous.[1], current.[0])
                Remove previous.[0] |]
     
@@ -462,3 +441,80 @@ module UpdateCollectionGenericTests =
                Update (1, previous.[1], current.[2])
                Remove previous.[2]
                Remove previous.[4] |]
+            
+    open Xamarin.Forms
+           
+    [<Test>]
+    let ``Test CounterApp``() =
+        let previous =
+            [
+              View.Label(automationId="CountLabel", text="0", horizontalOptions=LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
+              View.Button(automationId="IncrementButton", text="Increment", command= (fun () -> ()))
+              View.Button(automationId="DecrementButton", text="Decrement", command= (fun () -> ())) 
+              View.StackLayout(padding = Thickness 20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center, children = [ ])
+              View.Slider(automationId="StepSlider", minimumMaximum=(0.0, 10.0), value=1., valueChanged=(fun args -> ()))
+              View.Label(automationId="StepSizeLabel", text="Step size: 1", horizontalOptions=LayoutOptions.Center)
+              View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=(fun () -> ()), commandCanExecute = false)
+            ]
+        let current =
+            [
+              View.Label(automationId="CountLabel", text="1", horizontalOptions=LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
+              View.Button(automationId="IncrementButton", text="Increment", command= (fun () -> ()))
+              View.Button(automationId="DecrementButton", text="Decrement", command= (fun () -> ())) 
+              View.StackLayout(padding = Thickness 20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center, children = [ ])
+              View.Slider(automationId="StepSlider", minimumMaximum=(0.0, 10.0), value=1., valueChanged=(fun args -> ()))
+              View.Label(automationId="StepSizeLabel", text="Step size: 1", horizontalOptions=LayoutOptions.Center)
+              View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=(fun () -> ()), commandCanExecute = true)
+            ]
+        
+        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        |> should equal
+            [| Update (0, previous.[0], current.[0])
+               Update (1, previous.[1], current.[1])
+               Update (2, previous.[2], current.[2])
+               Update (3, previous.[3], current.[3])
+               Update (4, previous.[4], current.[4])
+               Update (5, previous.[5], current.[5])
+               Update (6, previous.[6], current.[6]) |]
+            
+    [<Test>]
+    let ``Test TicTacToe``() =
+        let previous =
+            [ View.BoxView(Color.Black).Row(1).ColumnSpan(5)
+              View.BoxView(Color.Black).Row(3).ColumnSpan(5)
+              View.BoxView(Color.Black).Column(1).RowSpan(5)
+              View.BoxView(Color.Black).Column(3).RowSpan(5)
+              View.Button(
+                command=(fun () -> ()),
+                backgroundColor=Color.LightBlue
+              ).Row(0).Column(0)
+              View.Button(
+                command=(fun () -> ()),
+                backgroundColor=Color.LightBlue
+              ).Row(0).Column(1) ]
+            
+        let current =
+            [ View.BoxView(Color.Black).Row(1).ColumnSpan(5)
+              View.BoxView(Color.Black).Row(3).ColumnSpan(5)
+              View.BoxView(Color.Black).Column(1).RowSpan(5)
+              View.BoxView(Color.Black).Column(3).RowSpan(5)
+              View.Image(
+                source=ImagePath "X",
+                margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
+                verticalOptions=LayoutOptions.Center
+              ).Row(0).Column(0)
+              View.Button(
+                command=(fun () -> ()),
+                backgroundColor=Color.LightBlue
+              ).Row(0).Column(1) ]
+        
+        let res = testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res
+        |> should equal
+            [| Update (0, previous.[0], current.[0])
+               Update (1, previous.[1], current.[1])
+               Update (2, previous.[2], current.[2])
+               Update (3, previous.[3], current.[3])
+               Create current.[4]
+               Update (4, previous.[4], current.[5])
+               Remove previous.[5] |]
