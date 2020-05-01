@@ -5,6 +5,7 @@ open System
 open Fabulous
 open System.Collections.ObjectModel
 open System.Collections.Generic
+open System.Diagnostics
 open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
 open System.Windows.Input
@@ -40,11 +41,11 @@ module ViewUpdaters =
             (collOpt: 'T[] voption)
             (keyOf: 'T -> string voption)
             (canReuse: 'T -> 'T -> bool)
-            (move: int -> 'T -> unit)
+            (clear: unit -> unit)
             (create: int -> 'T -> unit)
             (update: int -> 'T -> 'T -> unit)
-            (remove: 'T[] -> unit)
-            (clear: unit -> unit) =
+            (move: int -> int -> unit)
+            (remove: int -> unit) =
         
         match prevCollOpt, collOpt with
         | ValueNone, ValueNone -> ()
@@ -53,51 +54,82 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> clear ()
         | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
         | _, ValueSome coll ->
-            let prevColl =
-                match prevCollOpt with
-                | ValueSome x -> x
-                | _ -> [||]
+            let currentState = match prevCollOpt with ValueSome x -> List(x) | _ -> List()
+                
+            let create newIndex newChild =
+                currentState.Insert(newIndex, newChild)
+                create newIndex newChild
+                
+            let move prevIndex newIndex =
+                let child = currentState.[prevIndex]
+                currentState.RemoveAt(prevIndex)
+                currentState.Insert(newIndex, child)
+                move prevIndex newIndex
+                
+            let remove index =
+                currentState.RemoveAt(index)
+                remove index
             
             // Separate the previous elements into 3 lists
             // The ones whose instances have been reused (dependsOn)
             // The ones whose keys have been reused
             // The rest which can be reused by any other element
             let identicalElements = HashSet<'T>()
-            let keyedElements = Dictionary<string,'T>()
+            let keyedElements = Dictionary<string, 'T>()
             let reusableElements = ResizeArray<'T>()
-            for prevChild in prevColl do
-                if coll |> Array.exists (identical prevChild) then
-                    identicalElements.Add(prevChild) |> ignore
-                else
-                    match keyOf prevChild with
-                    | ValueSome key when coll |> Array.exists (fun newChild -> keyOf newChild = ValueSome key && canReuse prevChild newChild) ->
-                        keyedElements.Add(key, prevChild)
-                    | _ ->
-                        reusableElements.Add(prevChild)
+            if prevCollOpt.IsSome then
+                for prevChild in prevCollOpt.Value do
+                    if coll |> Array.exists (identical prevChild) then
+                        identicalElements.Add(prevChild) |> ignore
+                    else
+                        let canReuseChildOf key =
+                            coll
+                            |> Array.exists (fun newChild ->
+                                keyOf newChild = ValueSome key
+                                && canReuse prevChild newChild
+                            )
+                        
+                        match keyOf prevChild with
+                        | ValueSome key when canReuseChildOf key ->
+                            keyedElements.Add(key, prevChild)
+                        | _ ->
+                            reusableElements.Add(prevChild)
             
             // Reuse the first element from reusableElements that returns true to canReuse
             // Otherwise create a new element
-            let reuseOrCreate i newChild =
+            let reuseOrCreate newIndex newChild =
                 match reusableElements |> Seq.tryFind(fun c -> canReuse c newChild) with
-                | Some reusableChild ->
-                    update i reusableChild newChild
-                    reusableElements.Remove reusableChild |> ignore
+                | Some prevChild ->
+                    reusableElements.Remove prevChild |> ignore
+                    
+                    let prevIndex = currentState.IndexOf(prevChild)
+                    update prevIndex prevChild newChild
+                            
+                    if prevIndex <> newIndex then
+                        move prevIndex newIndex
+                        
                 | None ->
-                    create i newChild
+                    create newIndex newChild
             
             for i in 0 .. coll.Length - 1 do
                 let newChild = coll.[i]
                 
                 // Check if the same instance was reused (dependsOn), if so just move the element to the correct index
                 if identicalElements.Contains(newChild) then
-                    move i newChild
+                    let prevIndex = currentState.IndexOf(newChild)
+                    if prevIndex <> i then
+                        move prevIndex i
                 else
                     match keyOf newChild with
                     | ValueSome key ->
                         // If the key existed previously, reuse the previous element
                         if keyedElements.ContainsKey(key) then 
                             let prevChild = keyedElements.[key]
-                            update i prevChild newChild
+                            let prevIndex = currentState.IndexOf(prevChild)
+                            update prevIndex prevChild newChild
+                            
+                            if prevIndex <> i then
+                                move prevIndex i
                         
                         // Otherwise reuse an old element if possible or create a new one
                         else
@@ -109,7 +141,9 @@ module ViewUpdaters =
             
             // If we still have old elements that were not reused, delete them
             if reusableElements.Count > 0 then
-                remove (Array.ofSeq reusableElements)
+                for remainingElement in reusableElements do
+                    let prevIndex = currentState.IndexOf(remainingElement)
+                    remove prevIndex
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -123,54 +157,32 @@ module ViewUpdaters =
            (keyOf:'T -> string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
-               
-        let previousTargetColl = List(targetColl)
         
-        let setAtIndex i child =
-            if targetColl.Count < i + 1 then
-                targetColl.Add(child)
-            else
-                targetColl.[i] <- child
-      
-        let move i child =
-            let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = child)
-            if previousIndex <> i then
-                let targetChild = previousTargetColl.[previousIndex]
-                setAtIndex i targetChild
+        let create index child =
+            let targetChild = create child
+            attach ValueNone child targetChild
+            targetColl.Insert(index, targetChild)
             
-        let create i newChild =
-            let targetChild = create newChild
-            setAtIndex i targetChild
-            attach ValueNone newChild targetChild
-            
-        let update i prevChild newChild =
-            let previousIndex = prevCollOpt.Value |> Array.findIndex (fun c -> c = prevChild)
-            let targetChild = previousTargetColl.[previousIndex]
-            
-            if previousIndex <> i then
-                setAtIndex i targetChild
-                
+        let update index prevChild newChild =
+            let targetChild = targetColl.[index]
             update prevChild newChild targetChild
             attach (ValueSome prevChild) newChild targetChild
             
-        let remove _ =
-            let count = match collOpt with ValueNone -> 0 | ValueSome coll -> coll.Length
-            while (targetColl.Count > count) do
-                targetColl.RemoveAt (count - 1)
-            
-        let clear () =
-            targetColl.Clear()
+        let move prevIndex newIndex =
+            let targetChild = targetColl.[prevIndex]
+            targetColl.RemoveAt(prevIndex)
+            targetColl.Insert(newIndex, targetChild)
         
         updateCollectionGenericInternal
             prevCollOpt
             collOpt
             keyOf
             canReuse
-            move
+            (fun () -> targetColl.Clear())
             create
             update
-            remove
-            clear
+            move
+            (fun index -> targetColl.RemoveAt(index))
                     
     /// Update the attached properties for each item in an already updated collection
     let updateAttachedPropertiesForCollection

@@ -11,50 +11,43 @@ open FsUnit
 // 1k/Txk means its a ViewElement with a key value 
 module UpdateCollectionGenericInternalTests =    
     type Operation =
-        | Move of prevIndex: int * child: ViewElement
-        | Create of newChild: ViewElement
-        | Update of prevIndex: int * prevChild: ViewElement * newChild: ViewElement
-        | Remove of prevChild: ViewElement
         | Clear
+        | Create of index: int * newChild: ViewElement
+        | Update of index: int * prevChild: ViewElement * newChild: ViewElement
+        | Move of prevIndex: int * newIndex: int
+        | Remove of index: int
     
     /// Call updateCollectionGenericInternal and accumulate all requested operations based on their index of effect
     let private testUpdateCollectionGeneric (previousCollection: ViewElement list voption) (newCollection: ViewElement list voption) =
-        let operations = List<int * Operation>()
+        let operations = List<Operation>()
         
-        let mockMove i child =
-            let prevIndex = previousCollection.Value |> List.findIndex (fun c -> c = child)
-            if(i<>prevIndex) then 
-             operations.Add(i, Move (prevIndex, child))
-        
-        let mockCreate i viewElement =
-            operations.Add(i, Create viewElement)
-            
-        let mockUpdate i previousChild newChild =
-            let prevIndex = previousCollection.Value |> List.findIndex (fun c -> c = previousChild)
-            operations.Add(i, Update (prevIndex, previousChild, newChild))
-            
-        let mockRemove (unused: ViewElement array) =
-             let offset = match newCollection with ValueNone -> 0 | ValueSome coll -> coll.Length
-             for index = 0 to unused.Length - 1 do
-                operations.Add(offset + index, Remove unused.[index])
-           
         let mockClear () =
-            operations.Add(0, Clear)
+            operations.Add(Clear)
+        
+        let mockCreate index child =
+            operations.Add(Create (index, child))
+            
+        let mockUpdate index previousChild newChild =
+            operations.Add(Update (index, previousChild, newChild))
+            
+        let mockMove prevIndex newIndex =
+            operations.Add(Move (prevIndex, newIndex))
+            
+        let mockRemove index =
+            operations.Add(Remove index)
        
         do updateCollectionGenericInternal
                (previousCollection |> ValueOption.map List.toArray)
                (newCollection |> ValueOption.map List.toArray)
                ViewHelpers.getKey
                ViewHelpers.canReuseView
-               mockMove
+               mockClear
                mockCreate
                mockUpdate
+               mockMove
                mockRemove
-               mockClear
 
         operations
-        |> Seq.sortBy fst
-        |> Seq.map snd
         |> Seq.toArray
     
     /// Going from an undefined state to another undefined state should do nothing
@@ -91,7 +84,7 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create (current.[0]) |]
+            [| Create (0, current.[0]) |]
     
     /// Keeping the exact same state (same instance) should do nothing
     [<Test>]
@@ -148,11 +141,11 @@ module UpdateCollectionGenericInternalTests =
         let current =
             [ View.Label(text = "A") ]
         
-        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        |> should equal
+        let res = testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res|> should equal
             [| Update (0, previous.[0], current.[0])
-               Remove previous.[1]
-               Remove previous.[2] |]
+               Remove 1
+               Remove 1 |]
     
     /// Keeping elements at the start (not same instance) and adding elements at the end should update the existing
     /// controls and add the others at the end
@@ -167,7 +160,7 @@ module UpdateCollectionGenericInternalTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [ Update (0, previous.[0], current.[0])
-              Create current.[1] ]
+              Create (1, current.[1]) ]
     
     /// Adding a new element at the start and keeping the existing elements after (not same instances) should reuse
     /// the existing controls based on their position and create the missing ones
@@ -185,7 +178,7 @@ module UpdateCollectionGenericInternalTests =
         |> should equal
             [| Update (0, previous.[0], current.[0])
                Update (1, previous.[1], current.[1])
-               Create current.[2] |]
+               Create (2, current.[2]) |]
     
     /// Removing elements in the middle of others (not the same instances) should reuse the existing controls based
     /// on their position and remove the superfluous ones 
@@ -206,7 +199,7 @@ module UpdateCollectionGenericInternalTests =
             [| Update (0, previous.[0], current.[0])
                Update (1, previous.[1], current.[1])
                Update (2, previous.[2], current.[2])
-               Remove previous.[3] |]
+               Remove 3 |]
     
     /// Replacing an element with an element of another type should create the new control in place of the old one
     [<Test>]
@@ -218,8 +211,8 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0]
-               Remove previous.[0] |]
+            [| Create (0, current.[0])
+               Remove 1 |]
         
     /// Adding a keyed element to an empty list should create the associated control
     [<Test>]
@@ -229,7 +222,7 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0] |]
+            [| Create (0, current.[0]) |]
         
     /// Emptying a list containing keyed elements should clear the list
     [<Test>]
@@ -290,7 +283,8 @@ module UpdateCollectionGenericInternalTests =
         |> should equal
             [| Update (0, previous.[0], current.[0])
                Update (2, previous.[2], current.[1])
-               Remove previous.[1] |]
+               Move (2, 1)
+               Remove 2 |]
         
     /// Reordering keyed elements should reuse the correct controls
     [<Test>]
@@ -306,8 +300,9 @@ module UpdateCollectionGenericInternalTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Update (2, previous.[2], current.[0])
-               Update (0, previous.[0], current.[1])
-               Remove previous.[1] |]
+               Move (2, 0)
+               Update (1, previous.[0], current.[1])
+               Remove 2 |]
        
     /// New keyed elements should reuse discarded elements even though the keys are not matching,
     /// independently of their position 
@@ -322,11 +317,13 @@ module UpdateCollectionGenericInternalTests =
               View.Label(key = "KeyD")
               View.Label(key = "KeyA") ]
         
-        testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
-        |> should equal
+        let res = testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
+        res |> should equal
             [| Update (2, previous.[2], current.[0])
-               Update (1, previous.[1], current.[1])
-               Update (0, previous.[0], current.[2]) |]
+               Move (2, 0)
+               Update (2, previous.[1], current.[1])
+               Move (2, 1)
+               Update (2, previous.[0], current.[2]) |]
             
     /// Complex use cases with reordering and remove/add of keyed elements should reuse controls efficiently
     [<Test>]
@@ -346,9 +343,10 @@ module UpdateCollectionGenericInternalTests =
         let res= testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         res |> should equal
             [| Update (1, previous.[1], current.[0])
-               Move (0, current.[1])
+               Move (1, 0)                                     
                Update (3, previous.[3], current.[2])
-               Update (2, previous.[2], current.[3]) |]
+               Move (3, 2)
+               Update (3, previous.[2], current.[3]) |]
     
     /// Replacing an element with one from another type, even with the same key, should create the new control
     /// in place of the old one
@@ -361,8 +359,8 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0]
-               Remove previous.[0] |]
+            [| Create (0, current.[0])
+               Remove 1 |]
     
     /// Replacing a keyed element with one of another type and another key, should create the new control
     /// in place of the old one
@@ -375,8 +373,8 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Create current.[0]
-               Remove previous.[0] |]
+            [| Create (0, current.[0])
+               Remove 1 |]
     
     /// Replacing a keyed element with a non-keyed one should reuse the discarded element
     [<Test>]
@@ -417,7 +415,8 @@ module UpdateCollectionGenericInternalTests =
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
             [| Update (1, previous.[1], current.[0])
-               Remove previous.[0] |]
+               Move (1, 0)                                         
+               Remove 1 |]
     
     /// Complex use cases with reordering and remove/add of mixed elements should reuse controls efficiently
     [<Test>]
@@ -436,11 +435,11 @@ module UpdateCollectionGenericInternalTests =
         
         testUpdateCollectionGeneric (ValueSome previous) (ValueSome current)
         |> should equal
-            [| Move (3, current.[0])
-               Update (0, previous.[0], current.[1])
-               Update (1, previous.[1], current.[2])
-               Remove previous.[2]
-               Remove previous.[4] |]
+            [| Move (3, 0)
+               Update (1, previous.[0], current.[1])
+               Update (2, previous.[1], current.[2])
+               Remove 3
+               Remove 3 |]
             
     open Xamarin.Forms
            
@@ -515,6 +514,6 @@ module UpdateCollectionGenericInternalTests =
                Update (1, previous.[1], current.[1])
                Update (2, previous.[2], current.[2])
                Update (3, previous.[3], current.[3])
-               Create current.[4]
-               Update (4, previous.[4], current.[5])
-               Remove previous.[5] |]
+               Create (4, current.[4])
+               Update (5, previous.[4], current.[5])
+               Remove 6 |]
