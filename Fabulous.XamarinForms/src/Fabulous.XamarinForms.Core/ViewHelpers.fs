@@ -138,7 +138,7 @@ module ViewHelpers =
                 item
 
             // The update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
+            let update _ (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
                 let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
                 let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
                 let realSource = contents state

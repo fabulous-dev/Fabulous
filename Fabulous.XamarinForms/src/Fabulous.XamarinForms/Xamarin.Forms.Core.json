@@ -1986,10 +1986,11 @@
       "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
+          "_comment": "Fake property for adding attached properties to Layout<T>.Children",
           "source": null,
           "name": "Children",
+          "canBeUpdated": false,
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -2018,10 +2019,11 @@
           "source": "AlignItems"
         },
         {
+          "_comment": "Fake property for adding attached properties to Layout<T>.Children",
           "source": null,
           "name": "Children",
+          "canBeUpdated": false,
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -2087,11 +2089,11 @@
           "source": "RowSpacing"
         },
         {
-          "_comment": "This fake property is here to let the generator call updateAttachedProperties. It is placed after rowdefs/coldefs because they need to be updated beforehand, otherwise we get an invalid layout",
+          "_comment": "Fake property for adding attached properties to Layout<T>.Children",
           "source": null,
           "name": "Children",
+          "canBeUpdated": false,
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [
@@ -2120,10 +2122,11 @@
       "baseGenericConstraint": "Xamarin.Forms.View",
       "properties": [
         {
+          "_comment": "Fake property for adding attached properties to Layout<T>.Children",
           "source": null,
           "name": "Children",
+          "canBeUpdated": false,
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateAttachedPropertiesForLayoutOfT",
           "collection": {
             "elementType": "Xamarin.Forms.View",
             "attachedProperties": [

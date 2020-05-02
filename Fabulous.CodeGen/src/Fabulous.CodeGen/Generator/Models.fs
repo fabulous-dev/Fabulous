@@ -42,6 +42,17 @@ module Models =
           UniqueName: string
           RelatedProperties: string array }
         
+    type UpdateProperty =
+        { Name: string
+          UniqueName: string
+          CustomAttributeKey: string option
+          DefaultValue: string
+          OriginalType: string
+          ModelType: string
+          ConvertModelToValue: string
+          UpdateCode: string
+          CollectionDataElementType: string option }
+        
     type UpdateAttachedProperty =
         { Name: string
           UniqueName: string
@@ -52,19 +63,10 @@ module Models =
           ConvertModelToValue: string
           UpdateCode: string }
         
-    type UpdatePropertyCollectionData =
-        { ElementType: string
+    type UpdatePropertyWithAttachedProperties =
+        { UniqueName: string
+          CustomAttributeKey: string option
           AttachedProperties: UpdateAttachedProperty array }
-        
-    type UpdateProperty =
-        { Name: string
-          UniqueName: string
-          DefaultValue: string
-          OriginalType: string
-          ModelType: string
-          ConvertModelToValue: string
-          UpdateCode: string
-          CollectionData: UpdatePropertyCollectionData option } 
 
     type UpdateData =
         { Name: string
@@ -72,7 +74,8 @@ module Models =
           BaseName: string option
           ImmediateMembers : UpdateMember array
           Events: UpdateEvent array
-          Properties: UpdateProperty array }
+          Properties: UpdateProperty array
+          PropertiesWithAttachedProperties: UpdatePropertyWithAttachedProperties array }
 
     type ConstructData =
         { Name: string

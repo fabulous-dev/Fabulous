@@ -111,8 +111,16 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
-    static member Create (create: (unit -> 'T), update: (ViewElement voption -> ViewElement -> 'T -> unit), attribsBuilder: AttributesBuilder) =
-        ViewElement(typeof<'T>, (create >> box), (fun prev curr target -> update prev curr (unbox target)), attribsBuilder.Close())
+    static member Create
+            (create: (unit -> 'T),
+             update: (Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit> -> ViewElement voption -> ViewElement -> 'T -> unit),
+             attribsBuilder: AttributesBuilder) =
+        
+        ViewElement(
+            typeof<'T>, (create >> box),
+            (fun prev curr target -> update (Dictionary()) prev curr (unbox target)),
+            attribsBuilder.Close()
+        )
 
     static member val CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
     static member val RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
