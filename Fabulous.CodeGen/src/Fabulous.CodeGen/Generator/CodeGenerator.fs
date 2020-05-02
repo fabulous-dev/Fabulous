@@ -198,10 +198,10 @@ module CodeGenerator =
                     match p.CollectionDataElementType with 
                     | Some collectionDataElementType when not hasApply ->
                         w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                        w.printfn "            (fun (x:ViewElement) -> x.Create() :?> %s)" collectionDataElementType
+                        w.printfn "            (fun (x: ViewElement) -> x.Create() :?> %s)" collectionDataElementType
                         w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
                         w.printfn "            ViewHelpers.canReuseView"
-                        w.printfn "            ViewHelpers.getKey"
+                        w.printfn "            ViewHelpers.tryGetKey"
                         w.printfn "            ViewUpdaters.updateChild"
                         
                     | Some _ when hasApply ->
@@ -314,7 +314,7 @@ module CodeGenerator =
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
             for m in typ.Members do
                 match m.Name with
-                | "Created" | "Ref" ->  ()     
+                | "Created" | "Ref" -> ()
                 | _ ->
                     let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                     w.printfn "    /// Get the value of the %s member" m.Name
@@ -335,7 +335,7 @@ module CodeGenerator =
                     let commaSpace = if i = 0 then "" else "," + memberNewLine
                     match m.Name with
                     | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name d.FullName
-                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName //here we do not need separate branch for key property, since it uses default logic
+                    | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name d.FullName
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForConstruct =

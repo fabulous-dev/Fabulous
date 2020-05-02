@@ -1,7 +1,6 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
-open System.Collections.Generic
 open Fabulous
 open Xamarin.Forms
 open System
@@ -12,9 +11,6 @@ open System.Threading
 module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
-    
-    let getKey (el:ViewElement) = el.TryGetKey()
-          
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
@@ -27,9 +23,6 @@ module ViewHelpers =
                 true
         else
             false
-            
-    
-        
 
     /// Checks whether an underlying NavigationPage control can be reused given the previous and new view elements
     //
@@ -112,6 +105,9 @@ module ViewHelpers =
         match tryFindViewElement automationId element with
         | None -> failwithf "No element with automation id '%s' found" automationId
         | Some viewElement -> viewElement
+
+    /// Try to retrieve the value of the "Key" property
+    let tryGetKey (x: ViewElement) = x.TryGetKey()
 
     let ContentsAttribKey = AttributeKey<(obj -> ViewElement)> "Stateful_Contents"
 

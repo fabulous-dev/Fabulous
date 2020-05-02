@@ -39,7 +39,7 @@ module UpdateCollectionGenericInternalTests =
         do updateCollectionGenericInternal
                (previousCollection |> ValueOption.map List.toArray)
                (newCollection |> ValueOption.map List.toArray)
-               ViewHelpers.getKey
+               ViewHelpers.tryGetKey
                ViewHelpers.canReuseView
                mockClear
                mockCreate
