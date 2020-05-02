@@ -262,7 +262,6 @@ module CodeGenerator =
                     match m.Name with
                     | "created" -> sprintf "%s?%s: (%s -> unit)" commaSpace m.Name data.FullName
                     | "ref" ->     sprintf "%s?%s: ViewRef<%s>" commaSpace m.Name data.FullName
-                    | "key" ->     sprintf "%s?%s: %s" commaSpace m.Name m.InputType 
                     | _ ->         sprintf "%s?%s: %s" commaSpace m.Name m.InputType)
                 |> Array.fold (+) ""
             let membersForBuild =
@@ -271,7 +270,6 @@ module CodeGenerator =
                     match m.Name with
                     | "created" -> sprintf ",%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" space m.Name m.Name data.FullName
                     | "ref" ->     sprintf ",%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" space m.Name m.Name data.FullName
-                    | "key" ->     sprintf ",%s?%s=(match %s with None -> None | Some (key: %s) -> Some %s)" space m.Name m.Name m.InputType m.Name
                     | _ ->         sprintf ",%s?%s=%s" space m.Name m.Name)
                 |> Array.fold (+) ""
 
@@ -316,7 +314,7 @@ module CodeGenerator =
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
             for m in typ.Members do
                 match m.Name with
-                | "Created" | "Ref" |"Key" ->  ()     
+                | "Created" | "Ref" ->  ()     
                 | _ ->
                     let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                     w.printfn "    /// Get the value of the %s member" m.Name
@@ -365,7 +363,7 @@ module CodeGenerator =
 
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" | "Key"-> ()
+            | "Created" | "Ref" -> ()
             | _ ->
                 let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                 w.printfn ""
@@ -382,14 +380,14 @@ module CodeGenerator =
         w.printfn "        member inline x.With(%s) =" members
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" | "Key" -> ()
+            | "Created" | "Ref" -> ()
             | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
         w.printfn "            x"
         w.printfn ""
 
         for m in data do
             match m.UniqueName with
-            | "Created" | "Ref" | "Key" -> ()
+            | "Created" | "Ref" -> ()
             | _ ->
                 w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
