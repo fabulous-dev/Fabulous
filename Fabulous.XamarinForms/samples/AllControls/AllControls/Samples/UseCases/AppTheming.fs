@@ -40,7 +40,6 @@ module AppTheming =
         | _ -> 
             View.ContentPage(
                 View.StackLayout [
-                    View.Label(text = "Your Platform does not support RadioButton")
+                    View.Label(text = "Your Platform does not support AppTheming")
                 ]
             )
-
