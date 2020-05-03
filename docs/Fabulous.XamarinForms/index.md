@@ -136,7 +136,7 @@ The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Fabul
 
 The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms/samples/AllControls/AllControls/Samples) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
 The sample [Calculator](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/Calculator/Calculator/Calculator.fs) ([original external sample](https://github.com/nosami/Elmish.Calculator/)) is a small calculator app.
 
