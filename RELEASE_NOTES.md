@@ -1,3 +1,10 @@
+#### 0.54.0
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.6 (https://github.com/fsprojects/Fabulous/pull/726)
+* [Fabulous.XamarinForms] Fixed warnings about missing icons when building iOS projects (https://github.com/fsprojects/Fabulous/pull/730)
+* [Fabulous.CodeGen] Added support for custom AttributeKey (https://github.com/fsprojects/Fabulous/pull/724)
+* [All] Added the new icons to NuGet packages, also symbols pushed as `snupkg` files (https://github.com/fsprojects/Fabulous/pull/718)
+
 #### 0.53.2
 
 * [Fabulous.XamarinForms] Use `XamarinFormsProgram.mkProgram` and similar to correctly support LiveUpdate (https://github.com/fsprojects/Fabulous/pull/716)

@@ -1,10 +1,13 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.53.2</Version>
+    <Version>0.54.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.53.2</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Use `XamarinFormsProgram.mkProgram` and similar to correctly support LiveUpdate (https://github.com/fsprojects/Fabulous/pull/716)</PackageReleaseNotes>
+    <PackageVersion>0.54.0</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Added support for Xamarin.Forms 4.6 (https://github.com/fsprojects/Fabulous/pull/726)
+[Fabulous.XamarinForms] Fixed warnings about missing icons when building iOS projects (https://github.com/fsprojects/Fabulous/pull/730)
+[Fabulous.CodeGen] Added support for custom AttributeKey (https://github.com/fsprojects/Fabulous/pull/724)
+[All] Added the new icons to NuGet packages, also symbols pushed as `snupkg` files (https://github.com/fsprojects/Fabulous/pull/718)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
