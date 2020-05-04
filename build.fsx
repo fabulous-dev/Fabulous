@@ -338,8 +338,8 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    DotNet.exec id (sprintf "nuget" "push %s/*.nupkg -k %s --skip-duplicate" buildDir fileName nugetApiKey) |> ignore
-    DotNet.exec id (sprintf "nuget" "push %s/*.snupkg -k %s --skip-duplicate" buildDir fileName nugetApiKey) |> ignore
+    DotNet.exec id "nuget" (sprintf "push %s/*.nupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
+    DotNet.exec id "nuget" (sprintf "push %s/*.snupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
 )
 
 Target.create "Prepare" ignore
