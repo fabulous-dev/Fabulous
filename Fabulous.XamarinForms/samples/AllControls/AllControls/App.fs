@@ -3,6 +3,7 @@ namespace AllControls
 open AllControls.SampleDefinition
 open AllControls.Samples
 
+open System
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -24,6 +25,7 @@ module App =
         | NavigateToRequested of Node
         | NavigationPopped
         | LowMemoryWarningReceived
+        | AppThemeChanged of OSAppTheme
     
     /// For each sample, we store its definition along its current state
     type SampleState =
@@ -72,14 +74,24 @@ module App =
             let sampleState =
                 { Definition = definition
                   Model = definition.Init() }
-            { model with SampleStates = sampleState :: model.SampleStates }, []
+            { model with SampleStates = sampleState :: model.SampleStates }, Cmd.none
                 
         | NavigationPopped ->
-            { model with SampleStates = model.SampleStates.Tail }, []
+            { model with SampleStates = model.SampleStates.Tail }, Cmd.none
             
         | LowMemoryWarningReceived ->
             displayMemoryWarningMessage()
-            model, []
+            model, Cmd.none
+            
+        | AppThemeChanged appTheme ->
+            match model.SampleStates with
+            | [] -> model, []
+            | sampleState::_ ->
+                match sampleState.Model with
+                | :? Samples.UseCases.AppTheming.Model ->
+                    let appThemeMsg = AllControls.Samples.UseCases.AppTheming.Msg.SetRequestedAppTheme appTheme
+                    model, Cmd.ofMsg (SampleMsg appThemeMsg)
+                | _ -> model, Cmd.none
             
     let view model dispatch =
         View.NavigationPage(
@@ -100,17 +112,16 @@ type App () as app =
         "AppTheme_Experimental"; "RadioButton_Experimental"; "Expander_Experimental"
     ])
     
-    let requestedThemeChangedSubscription _ =
-        Cmd.ofSub (fun dispatch ->
-            Application.Current.RequestedThemeChanged.Add(fun args ->
-                dispatch (App.SampleMsg (AllControls.Samples.UseCases.AppTheming.Msg.SetRequestedAppTheme args.RequestedTheme))
-            )
-        )
-    
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
-        |> Program.withSubscription requestedThemeChangedSubscription
         |> XamarinFormsProgram.run app
+        
+    let onRequestedThemeChanged = EventHandler<AppThemeChangedEventArgs>(fun _ args ->
+        runner.Dispatch (App.Msg.AppThemeChanged args.RequestedTheme)
+    )
 
     member __.Program = runner
+        
+    override this.OnStart() =
+        Application.Current.RequestedThemeChanged.AddHandler(onRequestedThemeChanged)

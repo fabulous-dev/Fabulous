@@ -34,7 +34,7 @@ module AppTheming =
     
     let view model _ =
         match Device.RuntimePlatform with
-        | Device.iOS | Device.Android ->
+        | Device.iOS | Device.Android | Device.UWP ->
             appThemeView model
 
         | _ -> 
