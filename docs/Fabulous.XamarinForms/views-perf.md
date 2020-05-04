@@ -60,16 +60,28 @@ The perf of incremental update to these is progressively less important as you g
 For all of the above, the typical, naive implementation of the `view` function returns a new list
 instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
 (e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
-1. trims of excess elements from TARGET down to size LIM = min(NEW.Count, PREV.Count)
-2. incrementally updates existing elements 0..MIN-1 in TARGET (skips this if PREV.[i] is reference-equal to NEW.[i])
-3. creates elements LIM..NEW.Count-1
+1. Each view may have a 'key' property, which affects whether the view should reuse a control with same key from previous iteration.
+    Imagine we have a dynamic UI,where we would like to keep some control reference either in case when view changes its position in layout.(for example, a map control inside CollectionView)
+    So, a 'key' property of ViewElement was introduced to support this scenario. Putting 'key' property means that on view update underlying XF controls will be reused if able to do so.
+    Such behaviour helps remove some errors tied with controls recreating too much, or scenarios, there control creation should likely happen one time.
+
+2. All previous view elements are splitted in two pools: 'key' pool, there are only elements that have key and also new elements contains that key,
+  and 'rest', which contains all other elements.
+3. Incremental update of existing elements has changed too:
+   we go through a new collection and apply following rules: 
+   
+    - if element contains key, we try to find key in 'key' pool and update control position if key found without recreating the control. 
+    After that, we delete key from 'key' pool.  if we have two elements with same key,we will get an exception.
+     However, this happens only if view element types are same.
+     If element with key not found, we create new control.
+    - if element does not contains key, we find first suitable element from 'rest' pool, and doing update on it. After that, we remove the element from 'rest pool'.
+    - if we did not find suitable element, we create new.
+4. As final phase, we delete all controls belongs to elements in 'rest' and 'key' pools, which were not involved in update process.
 
 This means
 1. Incremental update costs minimally one transition of the whole list.
-2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
-3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
-
-Basically, incremental update is faster if items are being added/removed at the end, rather than the beginning of the list. 
+2. Incremental update recycles visual elements as much as possible if you use 'key' attribute.
+   Otherwise, there is no guarantee that you get same visual element next time.
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
