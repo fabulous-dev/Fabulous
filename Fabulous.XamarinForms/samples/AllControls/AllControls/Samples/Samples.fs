@@ -19,6 +19,15 @@ module Samples =
         fun msg model ->
             let newModel, cmdMsgs = update msg model
             newModel, cmdMsgs, None
+        
+    /// Convert an update function that doesn't use Msg & ExternalMsg to one that uses them, so it can be used in the definition
+    let ignoreMsgAndExternalMsg (update: 'Msg -> 'Model -> 'Model) : 'Msg -> 'Model -> 'Model * 'CmdMsg list * 'ExternalMsg option =
+        fun msg model ->
+            let newModel = update msg model
+            newModel, [], None
+         
+    /// Ignore the mapToCmd function for samples not needing it
+    let ignoreMapToCmd _ = []
           
     /// All the samples to show in the application
     /// Use 'SampleChooser' to indicate an intermediate page where you can choose from several other choosers or samples
@@ -32,7 +41,19 @@ module Samples =
                           Nodes =
                               [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
+                                Sample
+                                    ({ Title = "Expander"
+                                       Init = Controls.Expander.init
+                                       Update = Controls.Expander.update |> ignoreMsgAndExternalMsg
+                                       View = Controls.Expander.view
+                                       MapToCmd = ignoreMapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "MediaElement" Controls.MediaElement.view)
+                                Sample
+                                    ({ Title = "RadioButton"
+                                       Init = Controls.RadioButton.init
+                                       Update = Controls.RadioButton.update |> ignoreMsgAndExternalMsg
+                                       View = Controls.RadioButton.view
+                                       MapToCmd = ignoreMapToCmd } |> boxSampleDefinition)
                                 Sample
                                     ({ Title = "ScrollView"
                                        Init = Controls.ScrollView.init
@@ -106,6 +127,12 @@ module Samples =
                                        Update = UseCases.Animations.update |> ignoreExternalMsg
                                        View = UseCases.Animations.view
                                        MapToCmd = UseCases.Animations.mapToCmd } |> boxSampleDefinition)
+                                Sample
+                                    ({ Title = "AppTheming"
+                                       Init = UseCases.AppTheming.init
+                                       Update = UseCases.AppTheming.update |> ignoreMsgAndExternalMsg
+                                       View = UseCases.AppTheming.view
+                                       MapToCmd = ignoreMapToCmd } |> boxSampleDefinition)
                                 SampleChooser
                                     { Title = "Collections and Lists"
                                       Nodes =

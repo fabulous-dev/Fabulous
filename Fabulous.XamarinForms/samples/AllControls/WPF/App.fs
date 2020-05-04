@@ -15,8 +15,6 @@ module Main =
 
         let app = new System.Windows.Application()
         
-        Xamarin.Forms.Forms.SetFlags([|"MediaElement_Experimental"|])
-        
         let assembliesToInclude = [| typeof<Xamarin.Forms.Maps.WPF.MapRenderer>.Assembly |]
         Xamarin.Forms.Forms.Init(assembliesToInclude);
         Xamarin.FormsMaps.Init("ENTER-YOUR-KEY-HERE");

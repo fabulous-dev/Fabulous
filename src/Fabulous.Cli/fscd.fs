@@ -22,9 +22,11 @@ module MockForms =
     type MockPlatformServices() = 
         interface IPlatformServices with 
             member __. GetMD5Hash(input) = raise (NotImplementedException())
+            member __.GetNamedColor(name) = Unchecked.defaultof<_> 
             member __.GetNamedSize(size, targetElement, useOldSizes) = 10.0
             member __.OpenUriAction(uri) = raise (NotImplementedException())
             member __.IsInvokeRequired = false
+            member __.get_RequestedTheme() = Unchecked.defaultof<_> 
             member __.get_RuntimePlatform() = Unchecked.defaultof<_> 
             member __.BeginInvokeOnMainThread(action: Action) = action.Invoke()
             member __.CreateTicker() = raise (NotImplementedException())
