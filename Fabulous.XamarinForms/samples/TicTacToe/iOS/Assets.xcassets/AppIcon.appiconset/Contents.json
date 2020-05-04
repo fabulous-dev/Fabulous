@@ -31,13 +31,13 @@
       "idiom": "iphone"
     },
     {
-      "filename": "icon@2x.png",
+      "filename": "icon-60x60@2x.png",
       "size": "60x60",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
-      "filename": "icon@3x.png",
+      "filename": "icon-60x60@3x.png",
       "size": "60x60",
       "scale": "3x",
       "idiom": "iphone"
@@ -73,21 +73,25 @@
       "idiom": "ipad"
     },
     {
+      "filename": "icon-83.5x83.5@2x.png",
       "size": "83.5x83.5",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "icon-76x76@1x.png",
       "size": "76x76",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "icon-76x76@2x.png",
       "size": "76x76",
       "scale": "2x",
       "idiom": "ipad"
     },
     {
+      "filename": "ios-marketing.png",
       "size": "1024x1024",
       "scale": "1x",
       "idiom": "ios-marketing"

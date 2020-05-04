@@ -15,7 +15,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageIcon>nuget-icon.png</PackageIcon>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="$(IsPackable) == '' OR $(IsPackable) == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\logo\nuget-icon.png">
       <Pack>True</Pack>
       <PackagePath>
