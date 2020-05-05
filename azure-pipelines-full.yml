@@ -18,9 +18,9 @@ jobs:
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
-      contents:
-        - ./build_output/*.nupkg
-        - ./build_output/*.snupkg
+      contents: |
+        ./build_output/*.nupkg
+        ./build_output/*.snupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
