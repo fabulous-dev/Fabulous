@@ -47,70 +47,53 @@ You can also use
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
-### View keys 101 
-  1. What is view key? 
-      View key is a little helper property like in this sample: 
-      
-     ```fsharp
-         // Previous View
-         View.Grid([
-                 View.Label(key = "header", text = "Old Header")
-                 View.Label(key = "body", text = "Old Body")
-             ])
-         
-         // New View
-         View.Grid([
-             View.Label(key = "header", text = "New Header") // Will reuse previous header
-             View.Button(key = "body", text = "New body") // Won't be able to reuse previous body since Label != Button
-         ])
-     ```
-         
-  As we can see here, we have added a 'key' parameter to each Label.
-  Key should be unique across view elements in same collection, i.e.
-  Children of StackLayout and so on.
-  
-  2.What is a purpose of key? 
-   Purpose of key is following: 
-  * make determination of proper view element to replace easier(just by key,yes)
-  * most important,to keep a reference to previous XF control(so we would not create it, but reuse existing).
- 
-  
-  
-  3.When might the view not be performant?
-  Anything changing the ordering of controls from one update to the other: reordering, adding/removing elements at the start, etc.
-  
-  4.Why is it a bad thing?
-  Fabulous will try to reuse existing controls as much as possible, in order by default. Changing the ordering might force Fabulous to recreate the controls which might impact the app.
-  
-  5.How can I prevent that?
-  Try as much as possible to not change the ordering.
-    If you really must, Fabulous will try to use those intents to match controls having the same intent between updates, reusing controls more effectively.
-   
-  In the majority of scenarios, Fabulous will be efficient without doing anything specific.
-  In some advanced scenarios, like the one below, key will let you help Fabulous be even more efficient:
-  
-  For example:
-  
-  ```fsharp
-  View.StackLayout([
-      if model.ShowFirstVideo then
-          yield View.MediaElement(source = MediaPath "path/to/video.mp4")
-  
-      yield View.MediaElement(key = "other-video", source = MediaPath "path/to/other-video.mp4")
-      yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
-  ])
-  ```
-  In this case, when ShowFirstVideo = false, the StackLayout will have 2 children, the 1st and 2nd video players.
-  When ShowFirstVideo = true, there will be only 1 child left, the 2nd video player.
-  
-  Due to how Fabulous reuses views between updates, when switching from ShowFirstVideo true to false, Fabulous will remove the 2nd video player and reuse the 1st video player (the source will be the 2nd path), which might lose the current state of the 2nd player if it was playing.
-  That's because Fabulous has no way of knowing the real intent behind your code.
-  
-  You can help it by specifying the key property which will let Fabulous know that the 2nd video player should still be there after the update.
-  Fabulous will only remove the 1st video player and keep the 2nd video player.
-  
-  
-  
+### Optimizing view performance in advanced scenarios: the `key` property
+
+Each time the `view` function is called, Fabulous will try to update the UI the most efficiently possible by reusing existing controls as much as possible (for exact details, see [Views: Differential Update of Lists of Things](#views-differential-update-of-lists-of-things)).  
+This is fine in the majority of scenarios, but some times Fabulous might reuse controls that don't really match the expectations we can have from the code.  
+
+This is especially true if the ordering of the elements are changed, or an element has been added/removed before other elements.  
+This can result in unnecessary creation of controls (lower performance) or losing state of a control (like a video playing).
+
+This is because Fabulous doesn't know about the intent of your code, and will try to reuse controls from first to last in the list.
+
+Say we have the following code:
+
+```fsharp
+View.StackLayout([
+    if model.ShowFirstVideo then
+        yield View.MediaElement(source = MediaPath "path/to/video.mp4")
+
+    yield View.MediaElement(source = MediaPath "path/to/other-video.mp4")
+    yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
+])
+```
+
+In this case, when `ShowFirstVideo` = `true`, the StackLayout will have 3 children, the 1st and 2nd video players + the button.  
+When `ShowFirstVideo` = `false`, there will be only 2 child left, the 2nd video player and the button.
+
+Due to how Fabulous reuses controls between updates, when switching `ShowFirstVideo` from `false` to `true`, Fabulous will remove the 2nd video player and reuse/update the 1st video player, which will lose the state of the 2nd video if it was playing.  
+That's because Fabulous has no way of knowing the real intent behind your code. For it, all MediaElements are interchangeable.
+
+To prevent that, the first thing you can do is to change ordering as little as possible.  
+If you really must change ordering, you can help Fabulous by providing a `key` value to let Fabulous know that a specific element should reuse the same control as previously.
+
+In our example, this would be:
+
+```fsharp
+View.StackLayout([
+    if model.ShowFirstVideo then
+        yield View.MediaElement(source = MediaPath "path/to/video.mp4")
+
+    yield View.MediaElement(key = "second-player", source = MediaPath "path/to/other-video.mp4")
+    yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
+])
+```
+
+Now, Fabulous will be aware that `second-player` should remain the same between updates and that the first MediaElement should be added/removed given the value of `ShowFirstVideo`.
+
+`key` must be unique among its sibling inside a collection (e.g. `items`, `children`).  
+Using the same key at different places is ok.
    
 ### Views: Differential Update of Lists of Things
 
@@ -124,7 +107,7 @@ The perf of incremental update to these is progressively less important as you g
 
 For all of the above, the typical, naive implementation of the `view` function returns a new list
 instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
-(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
+(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.
 
 Fabulous first prioritizes the reuse of the same ViewElement instances, when using dependsOn for instance.
 ```fsharp
@@ -133,7 +116,7 @@ View.Grid([
 ])
 ```
 
-Only then it will try to reuse ViewElements sharing the same key, if canReuseView returns true.
+Then, it will try to reuse ViewElements sharing the same key, if `canReuseView` returns `true`.
 
 ```fsharp
 // Previous View
@@ -150,17 +133,19 @@ View.Grid([
 ])
 ```
 
-If still no reusable controls found, it will try to reuse one of the remaining previous elements to find the first one for which canReuseView returns true.
+If there's no matching instance or key, it will try to reuse one of the remaining previous elements to find the first one for which `canReuseView` returns `true`.  
 If it finds one, it reuses it, if not it creates a new control.
 
 In the end, controls that weren't reused are destroyed.
+
 This means
 1. Incremental update costs minimally one transition of the whole list.
-2. Incremental update recycles visual elements as much as possible if you use 'key' attribute.
-   Otherwise, there is no guarantee that you get same visual element next time.
+2. Incremental update recycles controls as much as possible if you use the same instance or `key` property.  
+   Otherwise, there is no guarantee that you get same control next time.
 
 NOTE: The list diffing will limit mutations to only Move, Remove, and Insert, even when more straightforward operations could be done.
 This is to support the limitations imposed by how Xamarin.Forms reacts to changes in `System.Collections.ObjectModel.ObservableCollection<'T>`.
+
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
 
