@@ -73,11 +73,43 @@ You can also use
    Purpose of key is following: 
   * make determination of proper view element to replace easier(just by key,yes)
   * most important,to keep a reference to previous XF control(so we would not create it, but reuse existing).
+ 
   
-  In many scenarios this is essential thing, for example, you draw a control
-  that streams video, and its position changed due some conditions.Without 'key' set,
-  we get continuous recreating of control with a bunch of issues like video interrupt.
-  With key, we continue reuse  same control on each view cycle.
+  
+  3.When might the view not be performant?
+  Anything changing the ordering of controls from one update to the other: reordering, adding/removing elements at the start, etc.
+  
+  4.Why is it a bad thing?
+  Fabulous will try to reuse existing controls as much as possible, in order by default. Changing the ordering might force Fabulous to recreate the controls which might impact the app.
+  
+  5.How can I prevent that?
+  Try as much as possible to not change the ordering.
+    If you really must, Fabulous will try to use those intents to match controls having the same intent between updates, reusing controls more effectively.
+   
+  In the majority of scenarios, Fabulous will be efficient without doing anything specific.
+  In some advanced scenarios, like the one below, key will let you help Fabulous be even more efficient:
+  
+  For example:
+  
+  ```fsharp
+  View.StackLayout([
+      if model.ShowFirstVideo then
+          yield View.MediaElement(source = MediaPath "path/to/video.mp4")
+  
+      yield View.MediaElement(key = "other-video", source = MediaPath "path/to/other-video.mp4")
+      yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
+  ])
+  ```
+  In this case, when ShowFirstVideo = false, the StackLayout will have 2 children, the 1st and 2nd video players.
+  When ShowFirstVideo = true, there will be only 1 child left, the 2nd video player.
+  
+  Due to how Fabulous reuses views between updates, when switching from ShowFirstVideo true to false, Fabulous will remove the 2nd video player and reuse the 1st video player (the source will be the 2nd path), which might lose the current state of the 2nd player if it was playing.
+  That's because Fabulous has no way of knowing the real intent behind your code.
+  
+  You can help it by specifying the key property which will let Fabulous know that the 2nd video player should still be there after the update.
+  Fabulous will only remove the 1st video player and keep the 2nd video player.
+  
+  
   
    
 ### Views: Differential Update of Lists of Things
