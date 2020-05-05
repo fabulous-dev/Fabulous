@@ -2,6 +2,7 @@
     <PropertyGroup>
       <TargetFramework>netstandard2.0</TargetFramework>
       <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+      <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
       <Compile Include="Helpers.fs" />
@@ -10,17 +11,19 @@
       <Compile Include="SampleChooser.fs" />
       <Compile Include="Samples\ShadowEffect.fs" />
       <Compile Include="Samples\TestLabel.fs" />
+      <Compile Include="Samples\Controls\CarouselView.fs" />
+      <Compile Include="Samples\Controls\CollectionView.fs" />
+      <Compile Include="Samples\Controls\Expander.fs" />
+      <Compile Include="Samples\Controls\MediaElement.fs" />
+      <Compile Include="Samples\Controls\RefreshView.fs" />
+      <Compile Include="Samples\Controls\RadioButton.fs" />
+      <Compile Include="Samples\Controls\ScrollView.fs" />
+      <Compile Include="Samples\Controls\SwipeView.fs" />
       <Compile Include="Samples\Extensions\SkiaSharp.fs" />
       <Compile Include="Samples\Extensions\OxyPlot.fs" />
       <Compile Include="Samples\Extensions\Maps.fs" />
       <Compile Include="Samples\Extensions\VideoManager.fs" />
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
-      <Compile Include="Samples\Controls\CarouselView.fs" />
-      <Compile Include="Samples\Controls\CollectionView.fs" />
-      <Compile Include="Samples\Controls\MediaElement.fs" />
-      <Compile Include="Samples\Controls\RefreshView.fs" />
-      <Compile Include="Samples\Controls\ScrollView.fs" />
-      <Compile Include="Samples\Controls\SwipeView.fs" />
       <Compile Include="Samples\Pages\CarouselPage.fs" />
       <Compile Include="Samples\Pages\NavigationPage.fs" />
       <Compile Include="Samples\Pages\MasterDetailPage.fs" />
@@ -29,6 +32,7 @@
       <Compile Include="Samples\Pages\TabbedPage2.fs" />
       <Compile Include="Samples\Pages\TabbedPage3.fs" />
       <Compile Include="Samples\UseCases\Animations.fs" />
+      <Compile Include="Samples\UseCases\AppTheming.fs" />
       <Compile Include="Samples\UseCases\CssStyling.fs" />
       <Compile Include="Samples\UseCases\Effects.fs" />
       <Compile Include="Samples\UseCases\PopUps.fs" />
@@ -38,6 +42,8 @@
       <Compile Include="Samples\Samples.fs" />
       <Compile Include="App.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
+      <EmbeddedResource Include="collapse.png" />
+      <EmbeddedResource Include="expand.png" />
       <EmbeddedResource Include="styles.css" />
     </ItemGroup>
     <ItemGroup>

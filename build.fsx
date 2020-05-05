@@ -338,28 +338,8 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    let pushFile path =
-        let fileName = Path.GetFileNameWithoutExtension(path)
-        let projectName = fileName.Remove(fileName.LastIndexOf('.'))
-        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
-        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
-
-        NuGet.NuGetPublish (fun p ->
-            { p with AccessKey = nugetApiKey
-                     PublishUrl = "https://www.nuget.org"
-                     Project = projectName
-                     Version = release.NugetVersion
-                     WorkingDir = buildDir
-                     OutputPath = buildDir }
-        )
-
-    // Push packages
-    for nupkg in !! (buildDir + "/*.nupkg") do
-        pushFile nupkg
-    
-    // Push symbols
-    for snupkg in !! (buildDir + "/*.snupkg") do
-        pushFile snupkg
+    DotNet.exec id "nuget" (sprintf "push %s/*.nupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
+    DotNet.exec id "nuget" (sprintf "push %s/*.snupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
 )
 
 Target.create "Prepare" ignore

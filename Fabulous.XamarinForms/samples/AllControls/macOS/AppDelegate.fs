@@ -18,7 +18,6 @@ type AppDelegate() =
     override __.MainWindow = window
 
     override this.DidFinishLaunching(notification: NSNotification) =
-        Forms.SetFlags([|"MediaElement_Experimental"|])
         Forms.Init()
         Xamarin.FormsMaps.Init() 
         //OxyPlot.Xamarin.Forms.Platform.macOS.PlotViewRenderer.Init()
