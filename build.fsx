@@ -326,7 +326,7 @@ Target.create "CreateGitHubRelease" (fun _ ->
         | _ -> failwith "Please set the GITHUB_TOKEN environment variable to a github personal access token with repo access."
 
     GitHub.createClientWithToken token
-    |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
+    |> GitHub.draftNewRelease repositoryOwner repositoryName release.NugetVersion release.SemVer.PreRelease.IsSome (release.Notes |> List.map (sprintf "- %s"))
     // |> GitHub.uploadFiles !!(buildDir + "/*.nupkg") // Randomly failing to upload for some reasons...
     |> GitHub.publishDraft
     |> Async.RunSynchronously
@@ -338,8 +338,8 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    DotNet.exec id "nuget" (sprintf "push %s/*.nupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
-    DotNet.exec id "nuget" (sprintf "push %s/*.snupkg -k %s --skip-duplicate" buildDir nugetApiKey) |> ignore
+    DotNet.exec id "nuget" (sprintf "push %s/*.nupkg -k %s --skip-duplicate -s https://api.nuget.org/v3/index.json" buildDir nugetApiKey) |> ignore
+    DotNet.exec id "nuget" (sprintf "push %s/*.snupkg -k %s --skip-duplicate -s https://api.nuget.org/v3/index.json" buildDir nugetApiKey) |> ignore
 )
 
 Target.create "Prepare" ignore
