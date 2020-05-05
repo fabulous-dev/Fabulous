@@ -47,6 +47,39 @@ You can also use
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
+### View keys 101 
+  1. What is view key? 
+      View key is a little helper property like in this sample: 
+      
+     ```fsharp
+         // Previous View
+         View.Grid([
+                 View.Label(key = "header", text = "Old Header")
+                 View.Label(key = "body", text = "Old Body")
+             ])
+         
+         // New View
+         View.Grid([
+             View.Label(key = "header", text = "New Header") // Will reuse previous header
+             View.Button(key = "body", text = "New body") // Won't be able to reuse previous body since Label != Button
+         ])
+     ```
+         
+  As we can see here, we have added a 'key' parameter to each Label.
+  Key should be unique across view elements in same collection, i.e.
+  Children of StackLayout and so on.
+  
+  2.What is a purpose of key? 
+   Purpose of key is following: 
+  * make determination of proper view element to replace easier(just by key,yes)
+  * most important,to keep a reference to previous XF control(so we would not create it, but reuse existing).
+  
+  In many scenarios this is essential thing, for example, you draw a control
+  that streams video, and its position changed due some conditions.Without 'key' set,
+  we get continuous recreating of control with a bunch of issues like video interrupt.
+  With key, we continue reuse  same control on each view cycle.
+  
+   
 ### Views: Differential Update of Lists of Things
 
 There are a few different kinds of list in view descriptions:
@@ -60,29 +93,42 @@ The perf of incremental update to these is progressively less important as you g
 For all of the above, the typical, naive implementation of the `view` function returns a new list
 instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
 (e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
-1. Each view may have a 'key' property, which affects whether the view should reuse a control with same key from previous iteration.
-    Imagine we have a dynamic UI,where we would like to keep some control reference either in case when view changes its position in layout.(for example, a map control inside CollectionView)
-    So, a 'key' property of ViewElement was introduced to support this scenario. Putting 'key' property means that on view update underlying XF controls will be reused if able to do so.
-    Such behaviour helps remove some errors tied with controls recreating too much, or scenarios, there control creation should likely happen one time.
 
-2. All previous view elements are splitted in two pools: 'key' pool, there are only elements that have key and also new elements contains that key,
-  and 'rest', which contains all other elements.
-3. Incremental update of existing elements has changed too:
-   we go through a new collection and apply following rules: 
-   
-    - if element contains key, we try to find key in 'key' pool and update control position if key found without recreating the control. 
-    After that, we delete key from 'key' pool.  if we have two elements with same key,we will get an exception.
-     However, this happens only if view element types are same.
-     If element with key not found, we create new control.
-    - if element does not contains key, we find first suitable element from 'rest' pool, and doing update on it. After that, we remove the element from 'rest pool'.
-    - if we did not find suitable element, we create new.
-4. As final phase, we delete all controls belongs to elements in 'rest' and 'key' pools, which were not involved in update process.
+Fabulous first prioritizes the reuse of the same ViewElement instances, when using dependsOn for instance.
+```fsharp
+View.Grid([
+    dependsOn () (fun _ _ -> View.Label(text = "Hello, World!"))
+])
+```
 
+Only then it will try to reuse ViewElements sharing the same key, if canReuseView returns true.
+
+```fsharp
+// Previous View
+View.Grid([
+    View.Label(key = "header", text = "Previous Header")
+    View.Label(key = "body", text = "Previous body")
+])
+
+
+// New View
+View.Grid([
+    View.Label(key = "header", text = "New Header") // Will reuse previous header
+    View.Button(key = "body", text = "New body") // Won't be able to reuse previous body since Label != Button
+])
+```
+
+If still no reusable controls found, it will try to reuse one of the remaining previous elements to find the first one for which canReuseView returns true.
+If it finds one, it reuses it, if not it creates a new control.
+
+In the end, controls that weren't reused are destroyed.
 This means
 1. Incremental update costs minimally one transition of the whole list.
 2. Incremental update recycles visual elements as much as possible if you use 'key' attribute.
    Otherwise, there is no guarantee that you get same visual element next time.
 
+NOTE: The list diffing will limit mutations to only Move, Remove, and Insert, even when more straightforward operations could be done.
+This is to support the limitations imposed by how Xamarin.Forms reacts to changes in `System.Collections.ObjectModel.ObservableCollection<'T>`.
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
 
