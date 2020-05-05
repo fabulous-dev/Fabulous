@@ -18,7 +18,9 @@ jobs:
       NUGET_APIKEY: $(nuget_apikey)
   - task: CopyFiles@2
     inputs:
-      contents: build_output\*.nupkg
+      contents: |
+        ./build_output/*.nupkg
+        ./build_output/*.snupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
