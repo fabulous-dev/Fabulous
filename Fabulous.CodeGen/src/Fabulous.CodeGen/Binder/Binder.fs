@@ -211,7 +211,11 @@ module Binder =
     let tryCreateProperty logger containerTypeName (assemblyTypeAttachedProperties: AssemblyTypeAttachedProperty array) (bindingsTypeProperty: Property) =
         [
             { Name = "Name"; Value = bindingsTypeProperty.Name; IsRequired = true }
-            { Name = "DefaultValue"; Value = bindingsTypeProperty.DefaultValue; IsRequired = bindingsTypeProperty.UpdateCode.IsNone }
+            
+            { Name = "DefaultValue"
+              Value = bindingsTypeProperty.DefaultValue
+              IsRequired = bindingsTypeProperty.UpdateCode.IsNone && bindingsTypeProperty.CanBeUpdated <> Some false }
+            
             { Name = "InputType"; Value = bindingsTypeProperty.InputType; IsRequired = true }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name

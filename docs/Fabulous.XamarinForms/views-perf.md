@@ -47,6 +47,54 @@ You can also use
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
+### Optimizing view performance in advanced scenarios: the `key` property
+
+Each time the `view` function is called, Fabulous will try to update the UI the most efficiently possible by reusing existing controls as much as possible (for exact details, see [Views: Differential Update of Lists of Things](#views-differential-update-of-lists-of-things)).  
+This is fine in the majority of scenarios, but some times Fabulous might reuse controls that don't really match the expectations we can have from the code.  
+
+This is especially true if the ordering of the elements are changed, or an element has been added/removed before other elements.  
+This can result in unnecessary creation of controls (lower performance) or losing state of a control (like a video playing).
+
+This is because Fabulous doesn't know about the intent of your code, and will try to reuse controls from first to last in the list.
+
+Say we have the following code:
+
+```fsharp
+View.StackLayout([
+    if model.ShowFirstVideo then
+        yield View.MediaElement(source = MediaPath "path/to/video.mp4")
+
+    yield View.MediaElement(source = MediaPath "path/to/other-video.mp4")
+    yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
+])
+```
+
+In this case, when `ShowFirstVideo` = `true`, the StackLayout will have 3 children, the 1st and 2nd video players + the button.  
+When `ShowFirstVideo` = `false`, there will be only 2 child left, the 2nd video player and the button.
+
+Due to how Fabulous reuses controls between updates, when switching `ShowFirstVideo` from `false` to `true`, Fabulous will remove the 2nd video player and reuse/update the 1st video player, which will lose the state of the 2nd video if it was playing.  
+That's because Fabulous has no way of knowing the real intent behind your code. For it, all MediaElements are interchangeable.
+
+To prevent that, the first thing you can do is to change ordering as little as possible.  
+If you really must change ordering, you can help Fabulous by providing a `key` value to let Fabulous know that a specific element should reuse the same control as previously.
+
+In our example, this would be:
+
+```fsharp
+View.StackLayout([
+    if model.ShowFirstVideo then
+        yield View.MediaElement(source = MediaPath "path/to/video.mp4")
+
+    yield View.MediaElement(key = "second-player", source = MediaPath "path/to/other-video.mp4")
+    yield View.Button(text = "Toggle first video", command = (fun () -> dispatch ToggleFirstVideo))
+])
+```
+
+Now, Fabulous will be aware that `second-player` should remain the same between updates and that the first MediaElement should be added/removed given the value of `ShowFirstVideo`.
+
+`key` must be unique among its sibling inside a collection (e.g. `items`, `children`).  
+Using the same key at different places is ok.
+   
 ### Views: Differential Update of Lists of Things
 
 There are a few different kinds of list in view descriptions:
@@ -59,17 +107,44 @@ The perf of incremental update to these is progressively less important as you g
 
 For all of the above, the typical, naive implementation of the `view` function returns a new list
 instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
-(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
-1. trims of excess elements from TARGET down to size LIM = min(NEW.Count, PREV.Count)
-2. incrementally updates existing elements 0..MIN-1 in TARGET (skips this if PREV.[i] is reference-equal to NEW.[i])
-3. creates elements LIM..NEW.Count-1
+(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.
+
+Fabulous first prioritizes the reuse of the same ViewElement instances, when using dependsOn for instance.
+```fsharp
+View.Grid([
+    dependsOn () (fun _ _ -> View.Label(text = "Hello, World!"))
+])
+```
+
+Then, it will try to reuse ViewElements sharing the same key, if `canReuseView` returns `true`.
+
+```fsharp
+// Previous View
+View.Grid([
+    View.Label(key = "header", text = "Previous Header")
+    View.Label(key = "body", text = "Previous body")
+])
+
+
+// New View
+View.Grid([
+    View.Label(key = "header", text = "New Header") // Will reuse previous header
+    View.Button(key = "body", text = "New body") // Won't be able to reuse previous body since Label != Button
+])
+```
+
+If there's no matching instance or key, it will try to reuse one of the remaining previous elements to find the first one for which `canReuseView` returns `true`.  
+If it finds one, it reuses it, if not it creates a new control.
+
+In the end, controls that weren't reused are destroyed.
 
 This means
 1. Incremental update costs minimally one transition of the whole list.
-2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
-3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
+2. Incremental update recycles controls as much as possible if you use the same instance or `key` property.  
+   Otherwise, there is no guarantee that you get same control next time.
 
-Basically, incremental update is faster if items are being added/removed at the end, rather than the beginning of the list. 
+NOTE: The list diffing will limit mutations to only Move, Remove, and Insert, even when more straightforward operations could be done.
+This is to support the limitations imposed by how Xamarin.Forms reacts to changes in `System.Collections.ObjectModel.ObservableCollection<'T>`.
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 

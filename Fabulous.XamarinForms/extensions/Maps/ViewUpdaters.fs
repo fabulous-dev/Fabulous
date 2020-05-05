@@ -14,6 +14,7 @@ module ViewUpdaters =
             id
             (fun _ _ _ -> ())
             (fun prev curr -> prev = curr)
+            (fun _ -> ValueNone)
             (fun _ _ _ -> ())
 
     let updatePolylineGeopath (prevCollOpt: Xamarin.Forms.Maps.Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polyline) _ =
@@ -21,4 +22,5 @@ module ViewUpdaters =
             id
             (fun _ _ _ -> ())
             (fun prev curr -> prev = curr)
+            (fun _ -> ValueNone)
             (fun _ _ _ -> ())

@@ -111,11 +111,20 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
-    static member Create (create: (unit -> 'T), update: (ViewElement voption -> ViewElement -> 'T -> unit), attribsBuilder: AttributesBuilder) =
-        ViewElement(typeof<'T>, (create >> box), (fun prev curr target -> update prev curr (unbox target)), attribsBuilder.Close())
+    static member Create
+            (create: (unit -> 'T),
+             update: (Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit> -> ViewElement voption -> ViewElement -> 'T -> unit),
+             attribsBuilder: AttributesBuilder) =
+        
+        ViewElement(
+            typeof<'T>, (create >> box),
+            (fun prev curr target -> update (Dictionary()) prev curr (unbox target)),
+            attribsBuilder.Close()
+        )
 
     static member val CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("Created")
     static member val RefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("Ref")
+    static member val KeyAttribKey : AttributeKey<string> = AttributeKey<_>("Key")
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -127,6 +136,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
+    
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
@@ -143,6 +153,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
         | Some kvp -> unbox<'T>(kvp.Value)
         | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
+        
+    /// Try get the key attribute value
+    member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
 
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target

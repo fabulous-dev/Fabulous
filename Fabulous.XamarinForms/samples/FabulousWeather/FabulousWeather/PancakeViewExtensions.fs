@@ -64,8 +64,8 @@ module PancakeViewExtensions =
             let create () = Xamarin.Forms.PancakeView.PancakeView()
 
             // The incremental update method
-            let update (prev: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.PancakeView.PancakeView) =
-                ViewBuilders.UpdateView(prev,source,target)
+            let update registry (prev: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.PancakeView.PancakeView) =
+                ViewBuilders.UpdateView(registry, prev,source,target)
                 source.UpdateElement(prev,target, pancakeContentAttribKey,(fun target -> target.Content), (fun target v -> target.Content <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientStartColorAttribKey, (fun target v -> target.BackgroundGradientStartColor <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientEndColorAttribKey, (fun target v -> target.BackgroundGradientEndColor <- v))

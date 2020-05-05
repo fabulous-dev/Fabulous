@@ -51,6 +51,7 @@ module Preparer =
     let toUpdateData (boundType: BoundType) =
         let immediateEvents = boundType.Events |> Array.filter (fun e -> not e.IsInherited && e.CanBeUpdated)
         let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CanBeUpdated)
+        let immediatePropertiesWithAttachedProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CollectionData.IsSome && p.CollectionData.Value.AttachedProperties.Length > 0)
         
         let eventMembers = immediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; CustomAttributeKey = e.CustomAttributeKey; ModelType = e.ModelType })
         let propertyMembers = immediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; CustomAttributeKey = p.CustomAttributeKey; ModelType = p.ModelType })
@@ -72,33 +73,41 @@ module Preparer =
             |> Array.map (fun p ->
                 { Name = p.Name
                   UniqueName = p.UniqueName
+                  CustomAttributeKey = p.CustomAttributeKey
                   DefaultValue = p.DefaultValue
                   OriginalType = p.OriginalType
                   ModelType = p.ModelType
                   ConvertModelToValue = p.ConvertModelToValue
                   UpdateCode = p.UpdateCode
-                  CollectionData =
-                      p.CollectionData
-                      |> Option.map (fun cd ->
-                          { ElementType = cd.ElementType
-                            AttachedProperties =
-                                cd.AttachedProperties
-                                |> Array.map (fun ap ->
-                                    { Name = ap.Name
-                                      UniqueName = ap.UniqueName
-                                      CustomAttributeKey = ap.CustomAttributeKey
-                                      DefaultValue = ap.DefaultValue
-                                      OriginalType = ap.OriginalType
-                                      ModelType = ap.ModelType
-                                      ConvertModelToValue = ap.ConvertModelToValue
-                                      UpdateCode = ap.UpdateCode }) }) })
+                  CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType) })
+            
+        let updatePropertiesWithAttachedProperties =
+            immediatePropertiesWithAttachedProperties
+            |> Array.map (fun p ->
+                { UniqueName = p.UniqueName
+                  CustomAttributeKey = p.CustomAttributeKey
+                  AttachedProperties =
+                     p.CollectionData
+                     |> Option.map (fun cd ->
+                           cd.AttachedProperties
+                           |> Array.map (fun ap ->
+                               { Name = ap.Name
+                                 UniqueName = ap.UniqueName
+                                 CustomAttributeKey = ap.CustomAttributeKey
+                                 DefaultValue = ap.DefaultValue
+                                 OriginalType = ap.OriginalType
+                                 ModelType = ap.ModelType
+                                 ConvertModelToValue = ap.ConvertModelToValue
+                                 UpdateCode = ap.UpdateCode }))
+                     |> Option.defaultValue [||] })
         
         { Name = boundType.Name
           FullName = boundType.FullName
           BaseName = boundType.BaseTypeName
           ImmediateMembers = immediateMembers
           Events = updateEvents
-          Properties = updateProperties }
+          Properties = updateProperties
+          PropertiesWithAttachedProperties = updatePropertiesWithAttachedProperties }
 
     let toConstructData (boundType: BoundType) : ConstructData =
         let properties = boundType.Properties |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType } : ConstructType)

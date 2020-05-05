@@ -11,7 +11,7 @@ open System.Threading
 module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
-    
+            
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
@@ -106,6 +106,9 @@ module ViewHelpers =
         | None -> failwithf "No element with automation id '%s' found" automationId
         | Some viewElement -> viewElement
 
+    /// Try to retrieve the value of the "Key" property
+    let tryGetKey (x: ViewElement) = x.TryGetKey()
+
     let ContentsAttribKey = AttributeKey<(obj -> ViewElement)> "Stateful_Contents"
 
     let localStateTable = System.Runtime.CompilerServices.ConditionalWeakTable<obj, obj option>()
@@ -131,7 +134,7 @@ module ViewHelpers =
                 item
 
             // The update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
+            let update _ (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
                 let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
                 let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
                 let realSource = contents state

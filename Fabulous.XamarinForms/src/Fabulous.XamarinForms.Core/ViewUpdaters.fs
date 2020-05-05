@@ -5,6 +5,7 @@ open System
 open Fabulous
 open System.Collections.ObjectModel
 open System.Collections.Generic
+open System.Diagnostics
 open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
 open System.Windows.Input
@@ -28,6 +29,121 @@ module ViewUpdaters =
             if target <> null then currValue.UpdateIncremental(prevValue, target)            
         | ValueSome _, ValueNone ->
             clearValue ()
+           
+    /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
+    /// a reduced number of clear/move/create/update/remove operations
+    ///
+    /// The algorithm will try in priority to update elements sharing the same instance (usually achieved with dependsOn)
+    /// or sharing the same key. All other elements will try to reuse previous elements where possible.
+    /// If no reuse is possible, the element will create a new control.
+    let updateCollectionGenericInternal
+            (prevCollOpt: 'T[] voption)
+            (collOpt: 'T[] voption)
+            (keyOf: 'T -> string voption)
+            (canReuse: 'T -> 'T -> bool)
+            (clear: unit -> unit)
+            (create: int -> 'T -> unit)
+            (update: int -> 'T -> 'T -> unit)
+            (move: int -> int -> unit)
+            (remove: int -> unit) =
+        
+        match prevCollOpt, collOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
+        | ValueSome _, ValueNone -> clear ()
+        | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> clear ()
+        | _, ValueSome coll ->
+            let currentState = match prevCollOpt with ValueSome x -> List(x) | _ -> List()
+                
+            let create newIndex newChild =
+                currentState.Insert(newIndex, newChild)
+                create newIndex newChild
+                
+            let move prevIndex newIndex =
+                let child = currentState.[prevIndex]
+                currentState.RemoveAt(prevIndex)
+                currentState.Insert(newIndex, child)
+                move prevIndex newIndex
+                
+            let remove index =
+                currentState.RemoveAt(index)
+                remove index
+            
+            // Separate the previous elements into 3 lists
+            // The ones whose instances have been reused (dependsOn)
+            // The ones whose keys have been reused
+            // The rest which can be reused by any other element
+            let identicalElements = HashSet<'T>()
+            let keyedElements = Dictionary<string, 'T>()
+            let reusableElements = ResizeArray<'T>()
+            if prevCollOpt.IsSome then
+                for prevChild in prevCollOpt.Value do
+                    if coll |> Array.exists (identical prevChild) then
+                        identicalElements.Add(prevChild) |> ignore
+                    else
+                        let canReuseChildOf key =
+                            coll
+                            |> Array.exists (fun newChild ->
+                                keyOf newChild = ValueSome key
+                                && canReuse prevChild newChild
+                            )
+                        
+                        match keyOf prevChild with
+                        | ValueSome key when canReuseChildOf key ->
+                            keyedElements.Add(key, prevChild)
+                        | _ ->
+                            reusableElements.Add(prevChild)
+            
+            // Reuse the first element from reusableElements that returns true to canReuse
+            // Otherwise create a new element
+            let reuseOrCreate newIndex newChild =
+                match reusableElements |> Seq.tryFind(fun c -> canReuse c newChild) with
+                | Some prevChild ->
+                    reusableElements.Remove prevChild |> ignore
+                    
+                    let prevIndex = currentState.IndexOf(prevChild)
+                    update prevIndex prevChild newChild
+                            
+                    if prevIndex <> newIndex then
+                        move prevIndex newIndex
+                        
+                | None ->
+                    create newIndex newChild
+            
+            for i in 0 .. coll.Length - 1 do
+                let newChild = coll.[i]
+                
+                // Check if the same instance was reused (dependsOn), if so just move the element to the correct index
+                if identicalElements.Contains(newChild) then
+                    let prevIndex = currentState.IndexOf(newChild)
+                    if prevIndex <> i then
+                        move prevIndex i
+                else
+                    match keyOf newChild with
+                    | ValueSome key ->
+                        // If the key existed previously, reuse the previous element
+                        if keyedElements.ContainsKey(key) then 
+                            let prevChild = keyedElements.[key]
+                            let prevIndex = currentState.IndexOf(prevChild)
+                            update prevIndex prevChild newChild
+                            
+                            if prevIndex <> i then
+                                move prevIndex i
+                        
+                        // Otherwise reuse an old element if possible or create a new one
+                        else
+                            reuseOrCreate i newChild
+                    
+                    | ValueNone ->
+                        // Reuse an old element if possible, otherwise create a new one
+                        reuseOrCreate i newChild
+            
+            // If we still have old elements that were not reused, delete them
+            if reusableElements.Count > 0 then
+                for remainingElement in reusableElements do
+                    let prevIndex = currentState.IndexOf(remainingElement)
+                    remove prevIndex
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -38,74 +154,35 @@ module ViewUpdaters =
            (create: 'T -> 'TargetT)
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
+           (keyOf:'T -> string voption)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
-        match prevCollOpt, collOpt with 
-        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | _, ValueNone -> targetColl.Clear()
-        | _, ValueSome coll ->
-            if (coll = null || coll.Length = 0) then
-                targetColl.Clear()
-            else
-                // Remove the excess targetColl
-                while (targetColl.Count > coll.Length) do
-                    targetColl.RemoveAt (targetColl.Count - 1)
-
-                // Count the existing targetColl
-                // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
-                let _ = targetColl.Count
-                let n = targetColl.Count
-
-                // Adjust the existing targetColl and create the new targetColl
-                for i in 0 .. coll.Length-1 do
-                    let newChild = coll.[i]
-                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
-                    let prevChildOpt, targetChild = 
-                        if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
-                            let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
-                            if mustCreate then
-                                let targetChild = create newChild
-                                if i >= n then
-                                    targetColl.Insert(i, targetChild)
-                                else
-                                    targetColl.[i] <- targetChild
-                                ValueNone, targetChild
-                            else
-                                let targetChild = targetColl.[i]
-                                update prevChildOpt.Value newChild targetChild
-                                prevChildOpt, targetChild
-                        else
-                            prevChildOpt, targetColl.[i]
-                    attach prevChildOpt newChild targetChild
-                    
-    /// Update the attached properties for each item in an already updated collection
-    let updateAttachedPropertiesForCollection
-           (prevCollOpt: 'T[] voption)
-           (collOpt: 'T[] voption)
-           (targetColl: IList<'TargetT>)
-           (attach: 'T voption -> 'T -> 'TargetT -> unit)
-           (canReuse : 'T -> 'T -> bool) =
-        match collOpt with
-        | ValueNone -> ()
-        | ValueSome coll when coll = null || coll.Length = 0 -> ()
-        | ValueSome coll ->
-            for i in 0 .. coll.Length-1 do
-                let targetChild = targetColl.[i]
-                let newChild = coll.[i]
-                let prevChildOpt =
-                    match prevCollOpt with
-                    | ValueSome coll when i < coll.Length ->
-                        let child = coll.[i]
-                        if not (identical child newChild) && canReuseView child newChild then
-                            ValueSome child
-                        else
-                            ValueNone
-                    | _ -> ValueNone
-                attach prevChildOpt newChild targetChild
-                
-    /// Update the attached properties for each item in Layout<T>.Children
-    let updateAttachedPropertiesForLayoutOfT prevCollOpt collOpt (target: Xamarin.Forms.Layout<'T>) attach =
-        updateAttachedPropertiesForCollection prevCollOpt collOpt target.Children attach canReuseView
+        
+        let create index child =
+            let targetChild = create child
+            attach ValueNone child targetChild
+            targetColl.Insert(index, targetChild)
+            
+        let update index prevChild newChild =
+            let targetChild = targetColl.[index]
+            update prevChild newChild targetChild
+            attach (ValueSome prevChild) newChild targetChild
+            
+        let move prevIndex newIndex =
+            let targetChild = targetColl.[prevIndex]
+            targetColl.RemoveAt(prevIndex)
+            targetColl.Insert(newIndex, targetChild)
+        
+        updateCollectionGenericInternal
+            prevCollOpt
+            collOpt
+            keyOf
+            canReuse
+            (fun () -> targetColl.Clear())
+            create
+            update
+            move
+            (fun index -> targetColl.RemoveAt(index))
                     
     /// Update the items in a ItemsView control, given previous and current view elements
     let updateItemsViewItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView) = 
@@ -116,7 +193,10 @@ module ViewUpdaters =
                 let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
+        updateCollectionGeneric
+            prevCollOpt collOpt targetColl
+            ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            (fun _ curr holder -> holder.ViewElement <- curr)
                     
     /// Update the items in a ItemsView<'T> control, given previous and current view elements
     let updateItemsViewOfTItems<'T when 'T :> Xamarin.Forms.BindableObject> (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ItemsView<'T>) = 
@@ -127,7 +207,10 @@ module ViewUpdaters =
                 let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
+        updateCollectionGeneric
+            prevCollOpt collOpt targetColl
+            ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            (fun _ curr holder -> holder.ViewElement <- curr)
                     
     /// Update the selected items in a SelectableItemsView control, given previous and current indexes
     let updateSelectableItemsViewSelectedItems (prevCollOptOpt: int array option voption) (collOptOpt: int array option voption) (target: Xamarin.Forms.SelectableItemsView) = 
@@ -147,7 +230,10 @@ module ViewUpdaters =
             let itemsSource = target.ItemsSource :?> System.Collections.Generic.IList<ViewElementHolder>
             itemsSource.[idx] :> obj
         
-        updateCollectionGeneric prevCollOpt collOpt targetColl findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ _ _ -> ())
+        updateCollectionGeneric
+            prevCollOpt collOpt targetColl
+            findItem (fun _ _ _ -> ()) (fun x y -> x = y) (fun _ -> ValueNone)
+            (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
     let updateSearchHandlerItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.SearchHandler) = 
@@ -158,12 +244,20 @@ module ViewUpdaters =
                 let oc = ObservableCollection<ViewElementHolder>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr holder -> holder.ViewElement <- curr)
+
+        updateCollectionGeneric
+            prevCollOpt collOpt targetColl
+            ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            (fun _ curr holder -> holder.ViewElement <- curr)
         
     let private updateViewElementHolderGroup (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ViewElementHolderGroup) =
         target.ShortName <- currShortName
         target.ViewElement <- currKey
-        updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView (fun _ curr target -> target.ViewElement <- curr) 
+
+        updateCollectionGeneric
+            (ValueSome prevColl) (ValueSome currColl) target
+            ViewElementHolder (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            (fun _ curr target -> target.ViewElement <- curr) 
 
     /// Update the items in a GroupedListView control, given previous and current view elements
     let updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: Xamarin.Forms.ListView) = 
@@ -175,7 +269,10 @@ module ViewUpdaters =
                 target.ItemsSource <- oc
                 oc
                 
-        updateCollectionGeneric prevCollOpt collOpt targetColl ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) updateViewElementHolderGroup
+        updateCollectionGeneric
+            prevCollOpt collOpt targetColl
+            ViewElementHolderGroup (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> ViewHelpers.canReuseView prevKey currKey) (fun _-> ValueNone)
+            updateViewElementHolderGroup
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
@@ -193,7 +290,10 @@ module ViewUpdaters =
         let create (desc: ViewElement) =
             desc.Create() :?> 'T
         
-        updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
+        updateCollectionGeneric
+            prevCollOpt collOpt target
+            create (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            updateChild
 
     /// Update the resources of a control, given previous and current view elements describing the resources
     let updateResources (prevCollOpt: (string * obj) array voption) (collOpt: (string * obj) array voption) (target: Xamarin.Forms.VisualElement) = 
@@ -458,14 +558,20 @@ module ViewUpdaters =
                 | _ -> target :> Element
             updateChild prevViewElement currViewElement realTarget
 
-        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
+        updateCollectionGeneric
+            prevCollOpt collOpt target.Items
+            create (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            update
         
     /// Update the menu items of a ShellContent, given previous and current view elements
     let updateShellContentMenuItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellContent) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.MenuItem
 
-        updateCollectionGeneric prevCollOpt collOpt target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric
+            prevCollOpt collOpt target.MenuItems
+            create (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            updateChild
 
     /// Update the items of a ShellItem, given previous and current view elements
     let updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) _ =
@@ -484,14 +590,19 @@ module ViewUpdaters =
                 | _ -> target :> BaseShellItem
             updateChild prevViewElement currViewElement realTarget
 
-        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
+        updateCollectionGeneric
+            prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            update
 
     /// Update the items of a ShellSection, given previous and current view elements
     let updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) _ =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellContent
 
-        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric
+            prevCollOpt collOpt target.Items
+            create (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            updateChild
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
@@ -729,20 +840,30 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> target.ClearValue Entry.SelectionLengthProperty
         
     let updateMenuChildren (prevCollOpt: ViewElement array voption) (currCollOpt: ViewElement array voption) (target: Xamarin.Forms.Menu) _ =
-        updateCollectionGeneric prevCollOpt currCollOpt target (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric
+            prevCollOpt currCollOpt target
+            (fun _ -> target) (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            updateChild
         
     let updateElementEffects (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Element) _ =
         let create (viewElement: ViewElement) =
             match viewElement.Create() with
             | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
             | effect -> effect :?> Xamarin.Forms.Effect
-        updateCollectionGeneric prevCollOpt collOpt target.Effects create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
+
+        updateCollectionGeneric
+            prevCollOpt collOpt target.Effects
+            create (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            updateChild
         
     let updatePageToolbarItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Page) _ =
         let create (viewElement: ViewElement) =
             viewElement.Create() :?> Xamarin.Forms.ToolbarItem
         
-        updateCollectionGeneric prevCollOpt collOpt target.ToolbarItems create (fun _ _ _ -> ()) ViewHelpers.canReuseView updateChild
+        updateCollectionGeneric
+            prevCollOpt collOpt target.ToolbarItems
+            create (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
+            updateChild
 
     let updateElementMenu prevValueOpt (currValueOpt: ViewElement voption) target =
         match prevValueOpt, currValueOpt with
@@ -816,7 +937,10 @@ module ViewUpdaters =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ISwipeItem
 
-        updateCollectionGeneric prevCollOpt collOpt target create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric
+            prevCollOpt collOpt target
+            create (fun _ _ _ -> ()) (fun _ _ -> true) ViewHelpers.tryGetKey
+            updateChild
 
     // This function could be automatically generated by CodeGen, but the BindingProperty field StepperPositionProperty is currently marked private, preventing that.
     // See https://github.com/xamarin/Xamarin.Forms/issues/10148
