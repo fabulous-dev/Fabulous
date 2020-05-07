@@ -30,6 +30,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" />
   </ItemGroup>
   <ItemGroup>
