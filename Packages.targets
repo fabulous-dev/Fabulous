@@ -40,8 +40,8 @@
         <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
         <PackageReference Update="SkiaSharp.Views.Forms.WPF" Version="1.68.1.1" />
         <PackageReference Update="Xamarin.Essentials" Version="1.5.1" />
-        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.6.0.726" />
-        <PackageReference Update="Xamarin.Forms.Maps.WPF" Version="4.6.0.726" />
+        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.6.0.772" />
+        <PackageReference Update="Xamarin.Forms.Maps.WPF" Version="4.6.0.772" />
     </ItemGroup>
 
     <PropertyGroup>
