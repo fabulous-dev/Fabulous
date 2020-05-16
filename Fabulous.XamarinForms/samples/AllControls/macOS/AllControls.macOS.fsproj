@@ -88,13 +88,13 @@
       <HintPath>..\..\..\..\packages\macosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp">
-      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp\lib\Xamarin.Mac20\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp\lib\xamarinmac2.0\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Mac">
-      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp.Views\lib\Xamarin.Mac20\SkiaSharp.Views.Mac.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp.Views\lib\xamarinmac2.0\SkiaSharp.Views.Mac.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
-      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp.Views.Forms\lib\Xamarin.Mac20\SkiaSharp.Views.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\SkiaSharp.Views.Forms\lib\xamarinmac2.0\SkiaSharp.Views.Forms.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms.Maps\lib\Xamarin.Mac\Xamarin.Forms.Maps.dll</HintPath>

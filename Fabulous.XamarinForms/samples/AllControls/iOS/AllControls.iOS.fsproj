@@ -106,13 +106,13 @@
       <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp">
-      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp\lib\xamarinios1.0\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.iOS">
-      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views\lib\Xamarin.iOS\SkiaSharp.Views.iOS.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views\lib\xamarinios1.0\SkiaSharp.Views.iOS.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
-      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views.Forms\lib\Xamarin.iOS\SkiaSharp.Views.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\iosapp\SkiaSharp.Views.Forms\lib\xamarinios1.0\SkiaSharp.Views.Forms.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\..\..\..\packages\iosapp\Xamarin.Forms.Maps\lib\Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
