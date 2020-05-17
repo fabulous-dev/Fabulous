@@ -339,7 +339,8 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | _ -> failwith "Please set the NUGET_APIKEY environment variable to a NuGet API key with write access to the Fabulous packages."
 
     // dotnet publishes both nupkg and snupkg by default
-    DotNet.exec id "nuget" (sprintf "push %s/*.nupkg -k %s --skip-duplicate -s https://api.nuget.org/v3/index.json" buildDir nugetApiKey) |> ignore
+    let path = System.IO.Path.Combine(buildDir, "*.nupkg")
+    DotNet.exec id "nuget" (sprintf "push %s -k %s --skip-duplicate -s https://api.nuget.org/v3/index.json" path nugetApiKey) |> ignore
 )
 
 Target.create "Prepare" ignore
