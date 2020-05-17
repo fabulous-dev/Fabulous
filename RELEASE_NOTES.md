@@ -7,6 +7,11 @@ More information here: https://fsprojects.github.io/Fabulous/Fabulous.XamarinFor
 * [Fabulous.XamarinForms] Added support for keyed nodes reuse (https://github.com/fsprojects/Fabulous/pull/721)
 * [Fabulous.CodeGen] Reworked the generation of attached properties updates (https://github.com/fsprojects/Fabulous/pull/721)
 
+#### 0.54.1
+
+* [Fabulous.XamarinForms] Fixed support for Xamarin.Forms 4.6.0.772 (https://github.com/fsprojects/Fabulous/pull/740)
+* [Fabulous.XamarinForms] Added missing NavigationPage.IconColor attached property (https://github.com/fsprojects/Fabulous/pull/740)
+
 #### 0.54.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.6 (https://github.com/fsprojects/Fabulous/pull/726)
