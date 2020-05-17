@@ -18,9 +18,7 @@ jobs:
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
-      contents: |
-        ./build_output/*.nupkg
-        ./build_output/*.snupkg
+      contents: ./build_output/?(*.nupkg|*.snupkg)
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
@@ -44,9 +42,7 @@ jobs:
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
-      contents: |
-        ./build_output/*.nupkg
-        ./build_output/*.snupkg
+      contents: ./build_output/?(*.nupkg|*.snupkg)
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
@@ -70,9 +66,7 @@ jobs:
   - script: .\build.cmd Test
   - task: CopyFiles@2
     inputs:
-      contents: |
-        ./build_output/*.nupkg
-        ./build_output/*.snupkg
+      contents: build_output\?(*.nupkg|*.snupkg)
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
