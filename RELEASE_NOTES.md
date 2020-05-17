@@ -1,3 +1,7 @@
+#### 0.55.0-preview2
+
+* Includes v0.54.1 changes
+
 #### 0.55.0-preview1
 
 Preview build: We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.  
