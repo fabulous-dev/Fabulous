@@ -1031,9 +1031,6 @@
           "source": "BarTextColor"
         },
         {
-          "source": "IconColor"
-        },
-        {
           "source": null,
           "name": "Pages",
           "inputType": "ViewElement list",
@@ -1046,6 +1043,9 @@
               },
               {
                 "source": "HasBackButton"
+              },
+              {
+                "source": "IconColor"
               },
               {
                 "source": "TitleIconImageSource",
@@ -2969,9 +2969,6 @@
         },
         {
           "source": "IsExpanded"
-        },
-        {
-          "source": "Spacing"
         },
         {
           "source": "State"

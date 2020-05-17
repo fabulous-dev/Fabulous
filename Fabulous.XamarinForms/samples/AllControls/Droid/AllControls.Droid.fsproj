@@ -270,13 +270,13 @@
       <HintPath>..\..\..\..\packages\androidapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp">
-      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp\lib\MonoAndroid\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp\lib\monoandroid1.0\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Android">
-      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views\lib\MonoAndroid\SkiaSharp.Views.Android.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views\lib\monoandroid1.0\SkiaSharp.Views.Android.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
-      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views.Forms\lib\MonoAndroid\SkiaSharp.Views.Forms.dll</HintPath>
+      <HintPath>..\..\..\..\packages\androidapp\SkiaSharp.Views.Forms\lib\monoandroid1.0\SkiaSharp.Views.Forms.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\..\..\..\packages\androidapp\Xamarin.Forms.Maps\lib\MonoAndroid90\Xamarin.Forms.Maps.dll</HintPath>
