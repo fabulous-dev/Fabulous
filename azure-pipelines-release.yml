@@ -30,4 +30,3 @@ jobs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/TestResults/**/*.trx'
       testRunTitle: '$(Agent.JobName)'
-
