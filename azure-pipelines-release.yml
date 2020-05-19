@@ -18,7 +18,7 @@ jobs:
       NUGET_APIKEY: $(nuget_apikey)
   - task: CopyFiles@2
     inputs:
-      contents: build_output\*.nupkg
+      contents: build_output\?(*.nupkg|*.snupkg)
       targetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
   - task: PublishBuildArtifacts@1
@@ -30,4 +30,3 @@ jobs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/TestResults/**/*.trx'
       testRunTitle: '$(Agent.JobName)'
-
