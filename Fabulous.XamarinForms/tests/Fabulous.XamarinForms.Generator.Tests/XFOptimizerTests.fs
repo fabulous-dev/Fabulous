@@ -42,6 +42,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel =
@@ -59,6 +60,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = "(fun _ _ _ -> ())"
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false }
                 
                    { Name = "NameCanExecute"
@@ -74,6 +76,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = "ViewUpdaters.updateCommand prevUniqueNameOpt currUniqueNameOpt (fun _target -> ()) (fun (target: FullName) cmd -> target.Name <- cmd)"
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
         
         boundModel |> OptimizeCommands.apply |> should equal expectedBoundModel
@@ -95,6 +98,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -118,6 +122,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = "ViewUpdaters.updateNameProperty"
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -141,6 +146,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -164,6 +170,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel =
@@ -181,6 +188,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
         
         boundModel |> OptimizeImageSource.apply |> should equal expectedBoundModel
@@ -202,6 +210,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -225,6 +234,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = "ViewUpdaters.updateNameProperty"
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -248,6 +258,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -271,6 +282,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel =
@@ -288,6 +300,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource"
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
         
         boundModel |> OptimizeMediaSource.apply |> should equal expectedBoundModel
@@ -309,6 +322,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -332,6 +346,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = "ViewUpdaters.updateNameProperty"
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
@@ -355,6 +370,7 @@ module XFOptimizerTests =
                      ConvertModelToValue = ""
                      UpdateCode = ""
                      CollectionData = None
+                     HasPriority = false
                      IsInherited = false } |]
                 
         let expectedBoundModel = boundModel
