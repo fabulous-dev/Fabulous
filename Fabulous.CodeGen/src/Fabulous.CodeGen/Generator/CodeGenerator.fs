@@ -100,6 +100,54 @@ module CodeGenerator =
             w
         
     let generateUpdateFunction (data: UpdateData) (w: StringWriter) =
+        let generateProperties (properties: UpdateProperty array) =
+            for p in properties do
+                let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
+                let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
+
+                // Check if the property is a collection
+                match p.CollectionDataElementType with 
+                | Some collectionDataElementType when not hasApply ->
+                    w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                    w.printfn "            (fun (x: ViewElement) -> x.Create() :?> %s)" collectionDataElementType
+                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+                    w.printfn "            ViewHelpers.canReuseView"
+                    w.printfn "            ViewHelpers.tryGetKey"
+                    w.printfn "            ViewUpdaters.updateChild"
+                    
+                | Some _ when hasApply ->
+                    w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
+                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+
+                | _ ->
+                    // If the type is ViewElement, then it's a type from the model
+                    // Issue recursive calls to "Create" and "UpdateIncremental"
+                    if p.ModelType = "ViewElement" && not hasApply then
+                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        // For structured objects, dependsOn on reference equality"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
+                        w.printfn "        | _, ValueSome newValue ->"
+                        w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
+                        w.printfn "        | ValueSome _, ValueNone ->"
+                        w.printfn "            target.%s <- null"  p.Name
+                        w.printfn "        | ValueNone, ValueNone -> ()"
+
+                    // Explicit update code
+                    elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
+                        w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
+
+                    else
+                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
+                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
+                        if p.DefaultValue = "" then
+                            w.printfn "        | ValueSome _, ValueNone -> target.ClearValue %s.%sProperty" data.FullName p.Name
+                        else
+                            w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
+                        w.printfn "        | ValueNone, ValueNone -> ()"
+        
         w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
         
         // Attached properties updaters
@@ -182,6 +230,11 @@ module CodeGenerator =
                     w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
                     w.printfn "            | ValueNone -> ()"
 
+            // Update priority properties
+            if data.PriorityProperties.Length > 0 then
+                w.printfn "        // Update priority properties"
+                generateProperties data.PriorityProperties
+
             // Update inherited members
             if data.BaseName.IsSome then
                 w.printfn "        // Update inherited members"
@@ -190,52 +243,7 @@ module CodeGenerator =
             // Update properties
             if data.Properties.Length > 0 then
                 w.printfn "        // Update properties"
-                for p in data.Properties do
-                    let hasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
-                    let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
-
-                    // Check if the property is a collection
-                    match p.CollectionDataElementType with 
-                    | Some collectionDataElementType when not hasApply ->
-                        w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                        w.printfn "            (fun (x: ViewElement) -> x.Create() :?> %s)" collectionDataElementType
-                        w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
-                        w.printfn "            ViewHelpers.canReuseView"
-                        w.printfn "            ViewHelpers.tryGetKey"
-                        w.printfn "            ViewUpdaters.updateChild"
-                        
-                    | Some _ when hasApply ->
-                        w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-                        w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
-
-                    | _ ->
-                        // If the type is ViewElement, then it's a type from the model
-                        // Issue recursive calls to "Create" and "UpdateIncremental"
-                        if p.ModelType = "ViewElement" && not hasApply then
-                            w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
-                            w.printfn "        // For structured objects, dependsOn on reference equality"
-                            w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                            w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
-                            w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
-                            w.printfn "        | _, ValueSome newValue ->"
-                            w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
-                            w.printfn "        | ValueSome _, ValueNone ->"
-                            w.printfn "            target.%s <- null"  p.Name
-                            w.printfn "        | ValueNone, ValueNone -> ()"
-
-                        // Explicit update code
-                        elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
-                            w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-
-                        else
-                            w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
-                            w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-                            w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
-                            if p.DefaultValue = "" then
-                                w.printfn "        | ValueSome _, ValueNone -> target.ClearValue %s.%sProperty" data.FullName p.Name
-                            else
-                                w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
-                            w.printfn "        | ValueNone, ValueNone -> ()"
+                generateProperties data.Properties
             
             // Subscribe event handlers
             if data.Events.Length > 0 then
