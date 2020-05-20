@@ -1,4 +1,4 @@
-namespace Fabulous.XamarinForms.Tests.ViewUpdaters
+namespace Fabulous.XamarinForms.Tests.ChildrenUpdaters
 
 open Fabulous
 open System.Collections.Generic
@@ -9,7 +9,7 @@ open FsUnit
 // 1 & 1' means its the same ViewElement (same property values), except it's not the same .NET reference
 // Tx & Ty means its 2 different ViewElement types that can't be reused between themselves (e.g. Label vs Button)
 // 1k/Txk means its a ViewElement with a key value 
-module UpdateCollectionGenericInternalTests =    
+module UpdateChildrenInternalTests =    
     type Operation =
         | Clear
         | Create of index: int * newChild: ViewElement
@@ -36,7 +36,7 @@ module UpdateCollectionGenericInternalTests =
         let mockRemove index =
             operations.Add(Remove index)
        
-        do updateCollectionGenericInternal
+        do ChildrenUpdaters.updateChildrenInternal
                (previousCollection |> ValueOption.map List.toArray)
                (newCollection |> ValueOption.map List.toArray)
                ViewHelpers.tryGetKey

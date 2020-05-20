@@ -82,9 +82,7 @@ module BindableHelpers =
                 newHolder.ViewElement.UpdateInherited(prevModelOpt, newHolder.ViewElement, bindableObject)
                 holderOpt <- ValueSome newHolder
                 prevModelOpt <- ValueSome newHolder.ViewElement
-            | _ ->
-                holderOpt <- ValueNone
-                prevModelOpt <- ValueNone
+            | _ -> ()
             
         onBindingContextChanged
         
