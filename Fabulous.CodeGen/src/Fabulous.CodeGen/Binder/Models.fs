@@ -77,6 +77,7 @@ module Models =
           ConvertModelToValue: string
           UpdateCode: string
           CollectionData: BoundPropertyCollectionData option
+          HasPriority: bool
           IsInherited: bool }
         interface IBoundConstructorMember with
             member this.ShortName = this.ShortName

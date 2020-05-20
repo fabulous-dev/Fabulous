@@ -70,6 +70,21 @@ module Preparer =
         
         let updateProperties =
             immediateProperties
+            |> Array.filter (fun p -> not p.HasPriority)
+            |> Array.map (fun p ->
+                { Name = p.Name
+                  UniqueName = p.UniqueName
+                  CustomAttributeKey = p.CustomAttributeKey
+                  DefaultValue = p.DefaultValue
+                  OriginalType = p.OriginalType
+                  ModelType = p.ModelType
+                  ConvertModelToValue = p.ConvertModelToValue
+                  UpdateCode = p.UpdateCode
+                  CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType) })
+            
+        let updatePriorityProperties =
+            immediateProperties
+            |> Array.filter (fun p -> p.HasPriority)
             |> Array.map (fun p ->
                 { Name = p.Name
                   UniqueName = p.UniqueName
@@ -107,6 +122,7 @@ module Preparer =
           ImmediateMembers = immediateMembers
           Events = updateEvents
           Properties = updateProperties
+          PriorityProperties = updatePriorityProperties
           PropertiesWithAttachedProperties = updatePropertiesWithAttachedProperties }
 
     let toConstructData (boundType: BoundType) : ConstructData =

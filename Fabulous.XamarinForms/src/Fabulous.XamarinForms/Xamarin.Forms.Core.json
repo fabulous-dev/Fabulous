@@ -2083,7 +2083,8 @@
           "shortName": "coldefs",
           "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
           "defaultValue": "Xamarin.Forms.ColumnDefinitionCollection()",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition",
+          "hasPriority": true
         },
         {
           "source": "ColumnSpacing"
@@ -2093,7 +2094,8 @@
           "shortName": "rowdefs",
           "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
           "defaultValue": "Xamarin.Forms.RowDefinitionCollection()",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition",
+          "hasPriority": true
         },
         {
           "source": "RowSpacing"
