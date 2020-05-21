@@ -58,8 +58,6 @@ module ViewExtensions =
             let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(attribKey)
             let collOpt = source.TryGetAttributeKeyed<_>(attribKey)
             
-            updateCollectionGeneric
+            ChildrenUpdaters.updateChildren
                 (ValueOption.map Seq.toArray prevCollOpt) (ValueOption.map Seq.toArray collOpt) targetCollection 
-                (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) ViewHelpers.canReuseView ViewHelpers.tryGetKey
-                updateChild
-
+                (fun x -> x.Create() :?> 'T) ChildrenUpdaters.updateChild (fun _ _ _ -> ())

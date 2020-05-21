@@ -108,12 +108,10 @@ module CodeGenerator =
                 // Check if the property is a collection
                 match p.CollectionDataElementType with 
                 | Some collectionDataElementType when not hasApply ->
-                    w.printfn "        ViewUpdaters.updateCollectionGeneric prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                    w.printfn "            (fun (x: ViewElement) -> x.Create() :?> %s)" collectionDataElementType
+                    w.printfn "        ChildrenUpdaters.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                    w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
+                    w.printfn "            ChildrenUpdaters.updateChild"
                     w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
-                    w.printfn "            ViewHelpers.canReuseView"
-                    w.printfn "            ViewHelpers.tryGetKey"
-                    w.printfn "            ViewUpdaters.updateChild"
                     
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
