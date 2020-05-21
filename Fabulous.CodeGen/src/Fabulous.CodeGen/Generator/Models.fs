@@ -75,6 +75,7 @@ module Models =
           ImmediateMembers : UpdateMember array
           Events: UpdateEvent array
           Properties: UpdateProperty array
+          PriorityProperties: UpdateProperty array
           PropertiesWithAttachedProperties: UpdatePropertyWithAttachedProperties array }
 
     type ConstructData =

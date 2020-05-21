@@ -9,7 +9,7 @@
   <ItemGroup>
     <Compile Include="ViewHelpersTests.fs" />
     <Compile Include="ViewConvertersTests.fs" />
-    <Compile Include="ViewUpdaters\UpdateCollectionGenericInternalTests.fs" />
+    <Compile Include="ChildrenUpdaters\UpdateChildrenInternalTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />

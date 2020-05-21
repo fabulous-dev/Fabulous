@@ -1,6 +1,7 @@
 namespace Fabulous.XamarinForms.Maps
 
 open Fabulous.XamarinForms
+open Xamarin.Forms.Maps
 
 module ViewUpdaters =
     let updateMapRequestedRegion (prevOpt: Xamarin.Forms.Maps.MapSpan voption) (currOpt: Xamarin.Forms.Maps.MapSpan voption) (target: Xamarin.Forms.Maps.Map) =
@@ -9,18 +10,18 @@ module ViewUpdaters =
         | ValueSome prev, ValueSome curr when prev <> curr -> target.MoveToRegion(curr)
         | _ -> ()
 
-    let updatePolygonGeopath (prevCollOpt: Xamarin.Forms.Maps.Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polygon) _ =
-        ViewUpdaters.updateCollectionGeneric prevCollOpt currCollOpt target.Geopath
+    let updatePolygonGeopath (prevCollOpt: Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polygon) _ =
+        ItemsUpdaters.updateItems prevCollOpt currCollOpt target.Geopath
+            (fun _ -> ValueNone)
+            (fun prev curr -> prev = curr)
             id
             (fun _ _ _ -> ())
-            (fun prev curr -> prev = curr)
-            (fun _ -> ValueNone)
             (fun _ _ _ -> ())
 
     let updatePolylineGeopath (prevCollOpt: Xamarin.Forms.Maps.Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polyline) _ =
-        ViewUpdaters.updateCollectionGeneric prevCollOpt currCollOpt target.Geopath
+        ItemsUpdaters.updateItems prevCollOpt currCollOpt target.Geopath
+            (fun _ -> ValueNone)
+            (fun prev curr -> prev = curr)
             id
             (fun _ _ _ -> ())
-            (fun prev curr -> prev = curr)
-            (fun _ -> ValueNone)
             (fun _ _ _ -> ())

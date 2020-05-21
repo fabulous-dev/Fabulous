@@ -76,6 +76,7 @@ module Models =
         member val DefaultValue = None with get, set
         member val ConvertModelToValue = None with get, set
         member val UpdateCode = None with get, set
+        member val HasPriority : bool option = None with get, set
         
         interface IConstructorMember with
             member x.ShortName = x.ShortName

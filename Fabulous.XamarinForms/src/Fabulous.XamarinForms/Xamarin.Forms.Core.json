@@ -92,7 +92,7 @@
         },
         {
           "source": "Effects",
-          "updateCode": "ViewUpdaters.updateElementEffects",
+          "updateCode": "ChildrenUpdaters.updateElementEffects",
           "collection": {
             "elementType": "Xamarin.Forms.Effect"
           }
@@ -122,7 +122,7 @@
           "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateMenuChildren",
+          "updateCode": "ChildrenUpdaters.updateMenuChildren",
           "collection": {
             "elementType": "Xamarin.Forms.Menu"
           }
@@ -665,7 +665,7 @@
         {
           "name": "MenuItems",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellContentMenuItems"
+          "updateCode": "ChildrenUpdaters.updateShellContentMenuItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -690,7 +690,7 @@
         {
           "source": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellItemItems"
+          "updateCode": "ChildrenUpdaters.updateShellItemItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -718,7 +718,7 @@
         {
           "source": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellSectionItems"
+          "updateCode": "ChildrenUpdaters.updateShellSectionItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -867,7 +867,7 @@
           "source": null,
           "name": "ToolbarItems",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updatePageToolbarItems",
+          "updateCode": "ChildrenUpdaters.updatePageToolbarItems",
           "collection": {
             "elementType": "Xamarin.Forms.ToolbarItem"
           }
@@ -1108,7 +1108,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateShellItems",
+          "updateCode": "ChildrenUpdaters.updateShellItems",
           "collection": {
             "elementType": "Xamarin.Forms.ShellItem"
           }
@@ -1574,7 +1574,7 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateItemsViewItems"
+          "updateCode": "ItemsUpdaters.updateItemsViewItems"
         },
         {
           "source": "RemainingItemsThreshold"
@@ -1691,7 +1691,7 @@
           "inputType": "int list option",
           "modelType": "int array option",
           "convertInputToModel": "(Option.map Array.ofList)",
-          "updateCode": "ViewUpdaters.updateSelectableItemsViewSelectedItems"
+          "updateCode": "ItemsUpdaters.updateSelectableItemsViewSelectedItems"
         },
         {
           "source": "SelectionMode"
@@ -1741,7 +1741,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateItemsViewOfTItems<'T>"
+          "updateCode": "ItemsUpdaters.updateItemsViewOfTItems<'T>"
         }
       ]
     },
@@ -1860,7 +1860,7 @@
           "inputType": "(string * ViewElement * ViewElement list) list",
           "modelType": "(string * ViewElement * ViewElement[])[]",
           "convertInputToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
-          "updateCode": "ViewUpdaters.updateListViewGroupedItems"
+          "updateCode": "ItemsUpdaters.updateListViewGroupedItems"
         },
         {
           "source": null,
@@ -2083,7 +2083,8 @@
           "shortName": "coldefs",
           "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
           "defaultValue": "Xamarin.Forms.ColumnDefinitionCollection()",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition"
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsColumnDefinition",
+          "hasPriority": true
         },
         {
           "source": "ColumnSpacing"
@@ -2093,7 +2094,8 @@
           "shortName": "rowdefs",
           "inputType": "Fabulous.XamarinForms.InputTypes.Dimension list",
           "defaultValue": "Xamarin.Forms.RowDefinitionCollection()",
-          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition"
+          "convertModelToValue": "ViewConverters.convertFabulousDimensionToXamarinFormsRowDefinition",
+          "hasPriority": true
         },
         {
           "source": "RowSpacing"
@@ -2661,7 +2663,7 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateSearchHandlerItems"
+          "updateCode": "ItemsUpdaters.updateSearchHandlerItems"
         },
         {
           "source": "Keyboard"
@@ -2748,7 +2750,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateTableSectionBaseOfTItems<'T>",
+          "updateCode": "ChildrenUpdaters.updateTableSectionBaseOfTItems<'T>",
           "collection": {
             "elementType": "'T"
           }
@@ -2842,7 +2844,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ViewUpdaters.updateSwipeItems"
+          "updateCode": "ChildrenUpdaters.updateSwipeItems"
         }
       ],
       "events": [
