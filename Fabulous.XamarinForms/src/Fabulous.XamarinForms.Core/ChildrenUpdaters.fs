@@ -4,6 +4,7 @@ open Fabulous
 open System.Collections.Generic
 open Xamarin.Forms
 
+/// This module contains the update logic for the controls with children
 module ChildrenUpdaters =    
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/move/create/update/remove operations

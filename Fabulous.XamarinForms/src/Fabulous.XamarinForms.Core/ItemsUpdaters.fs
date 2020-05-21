@@ -6,12 +6,13 @@ open System.Collections.Generic
 open System.Collections.ObjectModel
 open Xamarin.Forms
 
+/// This module contains the update logic for the controls with a virtualized ItemsSource
 module ItemsUpdaters =    
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/move/create/update/remove operations
     ///
     /// The algorithm will try in priority to update elements sharing the same instance (usually achieved with dependsOn)
-    /// or sharing the same key. All other elements will try to reuse previous elements where possible.
+    /// or sharing the same key. All other elements will be reused only if they are still at the same index.
     /// If no reuse is possible, the element will create a new control.
     let updateItemsInternal
             (prevCollOpt: 'T[] voption)
@@ -77,6 +78,7 @@ module ItemsUpdaters =
                     let prevChild = prevCollOpt.Value.[index]
                     let key = keyOf prevChild
                     
+                    // Reuse the previous element at the same index only if it was not reused elsewhere
                     if not (identicalElements.Contains(prevChild))
                        && (key.IsNone || not (keyedElements.ContainsKey(key.Value)))
                        && (canReuse prevChild newChild) then
@@ -147,7 +149,7 @@ module ItemsUpdaters =
             create update move
             (fun index -> targetColl.RemoveAt(index))
     
-    let inline updateViewElementHolderItems (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (targetColl: ObservableCollection<ViewElementHolder>) =
+    let inline updateViewElementHolderItems (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
         updateItems prevCollOpt collOpt targetColl
             ViewHelpers.tryGetKey ViewHelpers.canReuseView
             ViewElementHolder (fun _ curr holder -> holder.ViewElement <- curr)
@@ -168,9 +170,10 @@ module ItemsUpdaters =
         updateViewElementHolderItems prevCollOpt collOpt targetColl (fun _ _ _ -> ())
         
     /// Update the items in a SearchHandler control, given previous and current view elements
-    let inline updateSearchHandlerItems prevCollOpt collOpt (target: SearchHandler) = 
-        let targetColl = getCollection<ViewElementHolder> target.ItemsSource (fun oc -> target.ItemsSource <- oc)
-        updateViewElementHolderItems prevCollOpt collOpt targetColl (fun _ _ _ -> ())
+    let inline updateSearchHandlerItems _ collOpt (target: SearchHandler) = 
+        let targetColl = List<ViewElementHolder>()
+        updateViewElementHolderItems ValueNone collOpt targetColl (fun _ _ _ -> ())
+        target.ItemsSource <- targetColl
 
     /// Update the items in a GroupedListView control, given previous and current view elements
     let inline updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: ListView) =

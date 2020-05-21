@@ -82,7 +82,11 @@ module BindableHelpers =
                 newHolder.ViewElement.UpdateInherited(prevModelOpt, newHolder.ViewElement, bindableObject)
                 holderOpt <- ValueSome newHolder
                 prevModelOpt <- ValueSome newHolder.ViewElement
-            | _ -> ()
+            | _ ->
+                // Only remove the previous holder reference since we don't need it anymore
+                // prevModelOpt on the other hand needs to be kept, since Xamarin.Forms will first
+                // set BindingContext to null before setting a new item
+                holderOpt <- ValueNone
             
         onBindingContextChanged
         

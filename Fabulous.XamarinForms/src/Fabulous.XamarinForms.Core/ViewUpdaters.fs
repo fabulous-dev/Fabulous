@@ -9,7 +9,7 @@ open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
 open System.Windows.Input
 
-[<AutoOpen>]
+/// This module contains custom update logic for all kind of properties
 module ViewUpdaters =        
     // Update a DataTemplate property taking a direct ViewElement
     let private updateDirectViewElementDataTemplate setValue clearValue getTarget prevValueOpt currValueOpt =
