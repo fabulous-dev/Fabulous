@@ -1,3 +1,8 @@
+#### 0.55.0-preview3
+
+* [Fabulous.XamarinForms] Fixed an issue where ListView/CollectionView were not reusing rows correctly (https://github.com/fsprojects/Fabulous/pull/748)
+* [Fabulous.XamarinForms] Fixed a regression with Grid.RowDefs/Grid.ColDefs (https://github.com/fsprojects/Fabulous/pull/746)
+
 #### 0.55.0-preview2
 
 * Includes v0.54.1 changes
