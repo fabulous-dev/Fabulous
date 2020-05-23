@@ -100,7 +100,6 @@ Target.create "Clean" (fun _ ->
 )
 
 Target.create "Restore" (fun _ ->
-    Paket.restore id
     DotNet.restore id "Fabulous.sln"
 )
 
