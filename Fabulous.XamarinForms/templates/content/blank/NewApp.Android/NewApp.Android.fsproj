@@ -260,6 +260,7 @@
       <HintPath>..\packages\Xamarin.Google.Android.Material.XamarinGoogleAndroidMaterialVersion\lib\monoandroid90\Xamarin.Google.Android.Material.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\packages\Xamarin.AndroidX.MultiDex.XamarinAndroidXMultiDexVersion\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\packages\Xamarin.AndroidX.MultiDex.XamarinAndroidXMultiDexVersion\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -309,7 +310,6 @@
     <Error Condition="!Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.props'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets'))" />
   </Target>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\packages\Xamarin.AndroidX.Annotation.XamarinAndroidXAnnotationVersion\build\monoandroid90\Xamarin.AndroidX.Annotation.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.XamarinAndroidXAnnotationVersion\build\monoandroid90\Xamarin.AndroidX.Annotation.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Arch.Core.Common.XamarinAndroidXArchCoreCommonVersion\build\monoandroid90\Xamarin.AndroidX.Arch.Core.Common.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Arch.Core.Common.XamarinAndroidXArchCoreCommonVersion\build\monoandroid90\Xamarin.AndroidX.Arch.Core.Common.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Arch.Core.Runtime.XamarinAndroidXArchCoreRuntimeVersion\build\monoandroid90\Xamarin.AndroidX.Arch.Core.Runtime.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Arch.Core.Runtime.XamarinAndroidXArchCoreRuntimeVersion\build\monoandroid90\Xamarin.AndroidX.Arch.Core.Runtime.targets')" />
