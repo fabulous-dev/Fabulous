@@ -240,9 +240,9 @@
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\Fabulousv0_54_1Template\Fabulousv0_54_1Template.fsproj">
-      <Project>{2C65EDFC-6BF7-4087-AEC1-B4B0CE145CB7}</Project>
-      <Name>Fabulousv0_54_1Template</Name>
+    <ProjectReference Include="..\NewApp\NewApp.fsproj">
+      <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
+      <Name>NewApp</Name>
     </ProjectReference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\MonoAndroid10.0\Xamarin.Forms.Core.dll</HintPath>
