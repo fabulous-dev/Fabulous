@@ -120,7 +120,7 @@
       "type": "parameter",
       "datatype": "string",
       "replaces": "AndroidSDKVersion",
-      "defaultValue": "v9.0"
+      "defaultValue": "v10.0"
     },
     "TargetAndroidAPI": {
       "type": "parameter",
