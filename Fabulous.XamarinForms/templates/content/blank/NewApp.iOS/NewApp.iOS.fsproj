@@ -15,9 +15,7 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>NewApp.iOS</AssemblyName>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -111,7 +109,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
   </ItemGroup>
-  <Import Project="..\.nuget\NuGet.targets" />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
