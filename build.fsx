@@ -304,7 +304,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let nuget =
         if Environment.isWindows then ".\\nuget\\Nuget.exe"
         else "mono .nuget/NuGet.exe"
-    Shell.Exec(nuget, sprintf "restore %s -s https://api.nuget.org/v3/index.json -s %s" sln /) |> ignore
+    Shell.Exec(nuget, sprintf "restore %s -source https://api.nuget.org/v3/index.json -source %s" sln pkgs) |> ignore
     
     // Build for all combinations
     for c in ["Debug"; "Release"] do 
