@@ -303,7 +303,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let sln = sprintf "%s/%s.sln" testAppName testAppName
     let args = sprintf "restore %s -source https://api.nuget.org/v3/index.json -source %s" sln pkgs
     if Environment.isWindows then
-        Shell.Exec(".\\nuget\\NuGet.exe", args) |> ignore
+        Shell.Exec(".\\.nuget\\NuGet.exe", args) |> ignore
     else 
         Shell.Exec("mono", sprintf ".nuget/NuGet.exe %s" args) |> ignore
     
