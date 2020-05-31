@@ -80,6 +80,7 @@ module Samples =
                                        Update = Extensions.SkiaSharp.update |> ignoreExternalMsg
                                        View = Extensions.SkiaSharp.view
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "SkiaSharp Stateful" Extensions.SkiaSharpStateful.view)
                                 Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] }
                         
                     SampleChooser

@@ -24,6 +24,7 @@
       <Compile Include="Samples\Extensions\Maps.fs" />
       <Compile Include="Samples\Extensions\VideoManager.fs" />
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
+      <Compile Include="Samples\Extensions\SkiaSharpStateful.fs" />
       <Compile Include="Samples\Pages\CarouselPage.fs" />
       <Compile Include="Samples\Pages\NavigationPage.fs" />
       <Compile Include="Samples\Pages\MasterDetailPage.fs" />
@@ -45,13 +46,11 @@
       <EmbeddedResource Include="collapse.png" />
       <EmbeddedResource Include="expand.png" />
       <EmbeddedResource Include="styles.css" />
-    </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="FSharp.Core" />
-      <PackageReference Include="FSharp.Data" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" /> 
+      <PackageReference Include="FSharp.Core" Version="4.7.1">
+        <PrivateAssets>All</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="FSharp.Data" Version="3.3.3" />
+      <ProjectReference Include="..\..\..\extensions\FFImageLoading\Fabulous.XamarinForms.FFImageLoading.fsproj" />
       <ProjectReference Include="..\..\..\extensions\Maps\Fabulous.XamarinForms.Maps.fsproj" />
       <ProjectReference Include="..\..\..\extensions\OxyPlot\Fabulous.XamarinForms.OxyPlot.fsproj" />
       <ProjectReference Include="..\..\..\extensions\SkiaSharp\Fabulous.XamarinForms.SkiaSharp.fsproj" />
