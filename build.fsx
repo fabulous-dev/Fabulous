@@ -301,10 +301,11 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     // Restore NuGet packages
     let pkgs = Path.GetFullPath(buildDir)
     let sln = sprintf "%s/%s.sln" testAppName testAppName
-    let nuget =
-        if Environment.isWindows then ".\\nuget\\Nuget.exe"
-        else "mono .nuget/NuGet.exe"
-    Shell.Exec(nuget, sprintf "restore %s -source https://api.nuget.org/v3/index.json -source %s" sln pkgs) |> ignore
+    let args = sprintf "%s -source https://api.nuget.org/v3/index.json -source %s" sln pkgs
+    if Environment.isWindows then
+        Shell.Exec(".\\nuget\\NuGet.exe", args) |> ignore
+    else 
+        Shell.Exec("mono", sprintf ".nuget/NuGet.exe %s" args) |> ignore
     
     // Build for all combinations
     for c in ["Debug"; "Release"] do 
