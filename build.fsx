@@ -280,9 +280,6 @@ Target.create "BuildFabulousStaticViewSamples" (fun _ ->
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
-    let restorePackageDotnetCli appName projectName projectExtension pkgs =
-        DotNet.exec id "restore" (sprintf "%s/%s/%s.%s  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName projectExtension pkgs) |> ignore
-
     let ticks = let now = System.DateTime.Now in now.Ticks // Prevents warning FS0052
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
@@ -301,20 +298,19 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         
     DotNet.exec id "new fabulous-xf-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
 
-    // The shared project and WPF need to be restored manually as they're using the new SDK-style format
-    // When restoring, using the build_output as a package source to pick up the package we just compiled
+    // Restore NuGet packages
     let pkgs = Path.GetFullPath(buildDir)
-    restorePackageDotnetCli testAppName testAppName "fsproj" pkgs
-    
+    let sln = sprintf "%s/%s.sln" testAppName testAppName
+    let args = sprintf "restore %s -source https://api.nuget.org/v3/index.json -source %s" sln pkgs
     if Environment.isWindows then
-        restorePackageDotnetCli testAppName (testAppName + ".WPF") "fsproj" pkgs
-        restorePackageDotnetCli testAppName (testAppName + ".UWP") "csproj" pkgs
-
+        Shell.Exec(".\\.nuget\\NuGet.exe", args) |> ignore
+    else 
+        Shell.Exec("mono", sprintf ".nuget/NuGet.exe %s" args) |> ignore
+    
     // Build for all combinations
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
-            let sln = sprintf "%s/%s.sln" testAppName testAppName
-            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)] |> addJDK
+            let properties = [("Platform", p); ("Configuration", c)] |> addJDK
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
