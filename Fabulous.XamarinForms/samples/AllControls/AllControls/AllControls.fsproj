@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
       <TargetFramework>netstandard2.0</TargetFramework>
       <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
@@ -25,6 +25,7 @@
       <Compile Include="Samples\Extensions\VideoManager.fs" />
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
       <Compile Include="Samples\Extensions\SkiaSharpStateful.fs" />
+      <Compile Include="Samples\Extensions\SkiaSharpInternalModel.fs" />
       <Compile Include="Samples\Pages\CarouselPage.fs" />
       <Compile Include="Samples\Pages\NavigationPage.fs" />
       <Compile Include="Samples\Pages\MasterDetailPage.fs" />

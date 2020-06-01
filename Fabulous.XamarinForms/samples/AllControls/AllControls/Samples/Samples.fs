@@ -81,6 +81,7 @@ module Samples =
                                        View = Extensions.SkiaSharp.view
                                        MapToCmd = Extensions.SkiaSharp.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "SkiaSharp Stateful" Extensions.SkiaSharpStateful.view)
+                                Sample (createViewOnlyDefinition "SkiaSharp WithInternalModel" Extensions.SkiaSharpInternalModel.view)
                                 Sample (createViewOnlyDefinition "VideoManager" Extensions.VideoManager.view) ] }
                         
                     SampleChooser
