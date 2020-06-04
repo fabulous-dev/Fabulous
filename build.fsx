@@ -296,7 +296,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         elif Environment.isLinux then " --Android=false --iOS=false"
         else ""
         
-    DotNet.exec id "new fabulous-xf-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
+    DotNet.exec id "new fabulous-xf-app" (sprintf "-n %s -lang F# --allow-scripts yes --GTK%s" testAppName extraArgs) |> ignore
 
     // Restore NuGet packages
     let pkgs = Path.GetFullPath(buildDir)
