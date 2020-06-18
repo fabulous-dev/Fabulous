@@ -131,7 +131,10 @@ module ItemsUpdaters =
         let create index child =
             let targetChild = create child
             attach ValueNone child targetChild
-            targetColl.Insert(index, targetChild)
+            if targetColl.Count > index then
+                targetColl.[index] <- targetChild
+            else
+                targetColl.Insert(index, targetChild)
             
         let update index prevChild newChild =
             let targetChild = targetColl.[index]
