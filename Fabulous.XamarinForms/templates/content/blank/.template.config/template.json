@@ -47,6 +47,22 @@
   ],
   "defaultName": "App",
   "preferNameDirectory": "true",
+  "postActions": [
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "args": {
+        "executable": "dotnet",
+        "args": "tool restore"
+      },
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet tool restore' to install fabulous-cli"
+        }
+      ],
+      "continueOnError": false,
+      "description ": "Restore the fabulous-cli dotnet tool"
+    }
+  ],
   "guids": [
     "99E19497-29A6-4B77-B773-BEC55F9B55DC",
     "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42",
@@ -120,13 +136,13 @@
       "type": "parameter",
       "datatype": "string",
       "replaces": "AndroidSDKVersion",
-      "defaultValue": "v9.0"
+      "defaultValue": "v10.0"
     },
     "TargetAndroidAPI": {
       "type": "parameter",
       "datatype": "string",
       "replaces": "TargetAndroidAPI",
-      "defaultValue": "28"
+      "defaultValue": "29"
     },
     "MinAndroidAPI": {
       "type": "parameter",
@@ -134,17 +150,251 @@
       "replaces": "MinAndroidAPI",
       "defaultValue": "21"
     },
-    "XamarinAndroidSdkVersion": {
+    "XamarinAndroidXActivityVersion": {
       "type": "parameter",
       "datatype": "string",
-      "replaces": "XamarinAndroidSdkVersion",
-      "defaultValue": "28.0.0.3"
+      "replaces": "XamarinAndroidXActivityVersion",
+      "defaultValue": "1.0.0"
     },
-    "XamarinAndroidArchVersion": {
+    "XamarinAndroidXAnnotationVersion": {
       "type": "parameter",
       "datatype": "string",
-      "replaces": "XamarinAndroidArchVersion",
-      "defaultValue": "1.1.1.3"
+      "replaces": "XamarinAndroidXAnnotationVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXAppCompatVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXAppCompatVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXAppCompatResourcesVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXAppCompatResourcesVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXArchCoreCommonVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXArchCoreCommonVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXArchCoreRuntimeVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXArchCoreRuntimeVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXAsyncLayoutInflaterVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXAsyncLayoutInflaterVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXBrowserVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXBrowserVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXCardViewVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCardViewVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXCollectionVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCollectionVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXCoordinatorLayoutVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCoordinatorLayoutVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXCoreVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCoreVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXCursorAdapterVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCursorAdapterVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXCustomViewVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXCustomViewVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXDocumentFileVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXDocumentFileVersion",
+      "defaultValue": "1.0.1"
+    },
+    "XamarinAndroidXDrawerLayoutVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXDrawerLayoutVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXFragmentVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXFragmentVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXInterpolatorVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXInterpolatorVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXLegacySupportCoreUIVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLegacySupportCoreUIVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXLegacySupportCoreUtilsVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLegacySupportCoreUtilsVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXLegacySupportV4Version": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLegacySupportV4Version",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXLifecycleCommonVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLifecycleCommonVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXLifecycleLiveDataVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLifecycleLiveDataVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXLifecycleLiveDataCoreVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLifecycleLiveDataCoreVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXLifecycleRuntimeVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLifecycleRuntimeVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXLifecycleViewModelVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLifecycleViewModelVersion",
+      "defaultValue": "2.1.0"
+    },
+    "XamarinAndroidXLoaderVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLoaderVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXLocalBroadcastManagerVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXLocalBroadcastManagerVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXMediaVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXMediaVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXMultiDexVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXMultiDexVersion",
+      "defaultValue": "2.0.1"
+    },
+    "XamarinAndroidXPrintVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXPrintVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXRecyclerViewVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXRecyclerViewVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXSavedStateVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXSavedStateVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXSlidingPaneLayoutVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXSlidingPaneLayoutVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXSwipeRefreshLayoutVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXSwipeRefreshLayoutVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinAndroidXTransitionVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXTransitionVersion",
+      "defaultValue": "1.2.0"
+    },
+    "XamarinAndroidXVectorDrawableVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXVectorDrawableVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXVectorDrawableAnimatedVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXVectorDrawableAnimatedVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXVersionedParcelableVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXVersionedParcelableVersion",
+      "defaultValue": "1.1.0"
+    },
+    "XamarinAndroidXViewPagerVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXViewPagerVersion",
+      "defaultValue": "1.0.0"
+    },
+    "XamarinGoogleAndroidMaterialVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinGoogleAndroidMaterialVersion",
+      "defaultValue": "1.0.0"
     },
     "XamarinEssentialsSdk": {
       "type": "parameter",

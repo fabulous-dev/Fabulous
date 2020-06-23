@@ -1,4 +1,4 @@
-version 5.243.0
+version 5.245.1
 
 # dependencies used for retrieving FAKE and its modules
 group fakebuild
@@ -6,7 +6,6 @@ group fakebuild
   framework: netstandard2.0
   storage: none
 
-  clitool dotnet-fake
   nuget Fake.Api.GitHub
   nuget Fake.Core.ReleaseNotes
   nuget Fake.Core.Target
@@ -14,7 +13,6 @@ group fakebuild
   nuget Fake.DotNet.Cli
   nuget Fake.DotNet.MSBuild
   nuget Fake.Dotnet.NuGet
-  nuget Fake.DotNet.Paket
   nuget Fake.IO.FileSystem
   nuget Newtonsoft.Json
 
