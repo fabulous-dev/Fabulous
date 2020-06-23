@@ -1,3 +1,10 @@
+#### 0.55.0-preview4
+
+* [Fabulous.XamarinForms] Fixed an issue duplicating items in ListView/CollectionView (https://github.com/fsprojects/Fabulous/pull/765)
+* [Fabulous.XamarinForms] [Templates] Templates will now automatically attempt to install fabulous-cli locally to make LiveUpdate available (https://github.com/fsprojects/Fabulous/pull/756)
+* [Fabulous.XamarinForms] [Templates] Templates migrated to use AndroidX instead of Android Support libraries (https://github.com/fsprojects/Fabulous/pull/750)
+* [Fabulous.XamarinForms] [Templates] Templates now include a default .gitignore file (https://github.com/fsprojects/Fabulous/pull/757)
+
 #### 0.55.0-preview3
 
 * [Fabulous.XamarinForms] Fixed an issue where ListView/CollectionView were not reusing rows correctly (https://github.com/fsprojects/Fabulous/pull/748)
