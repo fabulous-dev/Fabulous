@@ -151,7 +151,7 @@ module CodeGenerator =
         // Attached properties updaters
         if data.PropertiesWithAttachedProperties.Length > 0 then
             for p in data.PropertiesWithAttachedProperties do
-                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) targetChild =" p.UniqueName
+                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) (targetChild: Xamarin.Forms.BindableObject) =" p.UniqueName
                 for ap in p.AttachedProperties do
                     let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
                     let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
@@ -177,8 +177,8 @@ module CodeGenerator =
                     else
                         w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
                         w.printfn "            | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                        w.printfn "            | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
-                        w.printfn "            | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
+                        w.printfn "            | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
+                        w.printfn "            | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
                         w.printfn "            | _ -> ()"
                         
                     w.printfn "            overrideFunc prevChildOpt newChild targetChild"
