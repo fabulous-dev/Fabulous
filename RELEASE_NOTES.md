@@ -1,3 +1,7 @@
+#### 0.54.2
+
+* [Fabulous.XamarinForms] Fixed an issue where attached properties were incorrectly unset (https://github.com/fsprojects/Fabulous/pull/767)
+
 #### 0.54.1
 
 * [Fabulous.XamarinForms] Fixed support for Xamarin.Forms 4.6.0.772 (https://github.com/fsprojects/Fabulous/pull/740)
