@@ -129,8 +129,8 @@ module CodeGenerator =
                     else
                         w.printfn "                match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
                         w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                        w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
-                        w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
+                        w.printfn "                | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
+                        w.printfn "                | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
                         w.printfn "                | _ -> ()"
                 
                 w.printfn "                )"
