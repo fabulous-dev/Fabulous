@@ -1,11 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.54.1</Version>
+    <Version>0.54.2</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.54.1</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Fixed support for Xamarin.Forms 4.6.0.772 (https://github.com/fsprojects/Fabulous/pull/740)
-[Fabulous.XamarinForms] Added missing NavigationPage.IconColor attached property (https://github.com/fsprojects/Fabulous/pull/740)</PackageReleaseNotes>
+    <PackageVersion>0.54.2</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Fixed an issue where attached properties were incorrectly unset (https://github.com/fsprojects/Fabulous/pull/767)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
