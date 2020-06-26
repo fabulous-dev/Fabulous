@@ -101,6 +101,7 @@ module Preparer =
             |> Array.map (fun p ->
                 { UniqueName = p.UniqueName
                   CustomAttributeKey = p.CustomAttributeKey
+                  CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType)
                   AttachedProperties =
                      p.CollectionData
                      |> Option.map (fun cd ->
