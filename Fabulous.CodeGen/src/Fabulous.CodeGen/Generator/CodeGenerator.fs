@@ -151,7 +151,8 @@ module CodeGenerator =
         // Attached properties updaters
         if data.PropertiesWithAttachedProperties.Length > 0 then
             for p in data.PropertiesWithAttachedProperties do
-                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) (targetChild: Xamarin.Forms.BindableObject) =" p.UniqueName
+                let targetChildType = p.CollectionDataElementType |> Option.defaultValue "obj"
+                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) (targetChild: %s) =" p.UniqueName targetChildType
                 for ap in p.AttachedProperties do
                     let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
                     let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
