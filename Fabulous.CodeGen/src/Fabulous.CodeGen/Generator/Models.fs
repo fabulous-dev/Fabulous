@@ -66,6 +66,7 @@ module Models =
     type UpdatePropertyWithAttachedProperties =
         { UniqueName: string
           CustomAttributeKey: string option
+          CollectionDataElementType: string option
           AttachedProperties: UpdateAttachedProperty array }
 
     type UpdateData =
