@@ -1,3 +1,7 @@
+#### 0.55.0-preview5
+
+* [Fabulous.XamarinForms] Fixed an issue where attached properties were incorrectly unset (https://github.com/fsprojects/Fabulous/pull/766)
+
 #### 0.55.0-preview4
 
 * [Fabulous.XamarinForms] Fixed an issue duplicating items in ListView/CollectionView (https://github.com/fsprojects/Fabulous/pull/765)
