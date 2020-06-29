@@ -57,24 +57,7 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
         host.SetRootView(rootView)
         newRootElement
 
-    // Start Elmish dispatch loop  
-    let rec processMsg msg = 
-        try
-            let (updatedModel,newCommands) = program.update msg lastModel
-            lastModel <- updatedModel
-            try 
-                updateView updatedModel 
-            with ex ->
-                program.onError ("Unable to update view:", ex)
-            for sub in newCommands do
-                try 
-                    sub dispatch
-                with ex ->
-                    program.onError ("Error executing commands:", ex)
-        with ex ->
-            program.onError ("Unable to process a message:", ex)
-
-    and updateView updatedModel = 
+    let updateView updatedModel =
         match lastViewDataOpt with
         | None -> 
             lastViewDataOpt <- Some viewInfo
@@ -94,12 +77,58 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
                 host.SetRootView(pageObj)
 
             lastViewDataOpt <- Some newPageElement
-                      
+            
+    let inbox=MailboxProcessor.Start(fun inbox ->
+         let timer = new System.Timers.Timer()
+         timer.AutoReset<-false
+         timer.Interval<-15.
+         timer.Elapsed.Subscribe|>(fun _->
+             do Debug.WriteLine "Updating on timer"
+             program.syncAction (fun()->updateView lastModel) ()) |> ignore
+         let rec loop (prevDate) =  
+            async{
+                let! msg = inbox.Receive()           
+                try
+                    let (updatedModel,newCommands) = program.update msg lastModel
+                    let date = DateTime.UtcNow
+                    let diff:TimeSpan = date - prevDate
+                    do Debug.WriteLine (sprintf "diff %A" diff)
+                    lastModel<- updatedModel
+                    try
+                        if(date-prevDate>=TimeSpan.FromMilliseconds(15.)) then
+                         do Debug.WriteLine "Updating on usual"
+                         let f= program.syncAction (fun()->updateView updatedModel)
+                         f()
+                         if(timer.Enabled) then timer.Enabled<-false
+                         return! loop (date)
+                        else
+                         if(not timer.Enabled) then
+                             timer.Enabled<-true
+                         return! loop (prevDate)          
+                    with ex ->
+                        program.onError ("Unable to update view:", ex)
+                    for sub in newCommands do
+                        try 
+                            sub dispatch
+                        with ex ->
+                            program.onError ("Error executing commands:", ex)
+                with ex ->
+                    program.onError ("Unable to process a message:", ex)
+                return! loop prevDate
+                    }
+            
+         loop(DateTime.MinValue)
+        )
+    // Start Elmish dispatch loop
+
+    let  processMsg = inbox.Post                      
     do 
         // Set up the global dispatch function
         ProgramDispatch<'msg>.SetDispatchThunk (processMsg |> program.syncDispatch)
 
-        reset <- (fun () -> updateView lastModel) |> program.syncAction
+        reset <- (fun () -> updateView lastModel
+                  
+                  ) |> program.syncAction
 
         Debug.WriteLine "updating the initial view"
 
