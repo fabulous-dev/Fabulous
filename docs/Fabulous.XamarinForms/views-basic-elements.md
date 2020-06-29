@@ -212,7 +212,7 @@ A simple `SearchBar` is as follows:
 View.SearchBar(
     placeholder = "Enter search term",
     searchCommand = (fun searchBarText -> dispatch  (ExecuteSearch searchBarText)),
-    canExecute=true)
+    searchCommandCanExecute=true)
 ```
 
 <img src="https://user-images.githubusercontent.com/52166903/60180196-5d63c480-9817-11e9-9c21-e8b19dee8474.png" width="400">
