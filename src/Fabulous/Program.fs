@@ -36,9 +36,10 @@ type Program<'arg, 'model, 'msg> =
       debug : bool
       onError : (string * exn) -> unit }
     
- type private Msg<'msg> =
+ type private UpdateMsg<'msg> =
      | Update of 'msg
-     | View
+  
+ type private ViewMsg = |Render
      
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
@@ -82,58 +83,60 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
                 host.SetRootView(pageObj)
 
             lastViewDataOpt <- Some newPageElement
-            
+    let viewInbox = MailboxProcessor.Start (fun inbox ->
+         let rec loop ()  = async{
+             match! inbox.Receive() with
+             | ViewMsg.Render ->
+                 Debug.WriteLine "View invoked"
+                 program.syncAction (fun()->updateView lastModel) ()
+                 return! loop ()
+         }
+         
+         loop ()        
+          )   
     let inbox=MailboxProcessor.Start(fun inbox ->
-         let timer = new System.Timers.Timer()
-         timer.AutoReset<-false
-         timer.Interval<-15.
-         timer.Elapsed.Subscribe|>(fun _->
-             do Debug.WriteLine "Updating on timer"
-             inbox.Post View)
-         let rec loop (prevDate) =  
-            async{
-                match! inbox.Receive()  with
-                | Update msg ->            
-                    try
-                        let (updatedModel,newCommands) = program.update msg lastModel
-                        let date = DateTime.UtcNow
-                        let diff:TimeSpan = date - prevDate
-                        do Debug.WriteLine (sprintf "diff %A" diff)
-                        lastModel<- updatedModel
-                        /// 1. If update period is more than 15 ms, we are fine, and can process as usual.
-                        /// 2. If update period is less than 15 ms, we should start timer for updates, and update on timer afterwards.
-                        try
-                            if(date-prevDate>=TimeSpan.FromMilliseconds(15.)) then // if we have update with interval > 15ms, then we do usual update cycle
-                             do Debug.WriteLine "Updating on usual"
-                             inbox.Post View
-                             if (timer.Enabled) then
-                                 timer.Enabled<-false
-                                 
-                             return! loop (date)
-                            else // if we have update with less than 15 ms period, we should enable timer once to "accumulate" updates before rendering.
-                             if(not timer.Enabled) then
-                                 timer.Enabled<-true
-                             return! loop (prevDate)          
-                        with ex ->
-                            program.onError ("Unable to update view:", ex)
-                        for sub in newCommands do
-                            try 
-                                sub dispatch
+         let rec loop (count:int option) =  
+            async{              
+                    match! inbox.Receive()  with 
+                    | Update msg ->
+                            try
+                               // We always do update of internal state after receiving update message
+                                let (updatedModel,newCommands) = program.update msg lastModel
+                                lastModel<- updatedModel
+                                for sub in newCommands do
+                                    try 
+                                        sub dispatch
+                                    with ex ->
+                                        program.onError ("Error executing commands:", ex)
                             with ex ->
-                                program.onError ("Error executing commands:", ex)
-                    with ex ->
-                        program.onError ("Unable to process a message:", ex)
-                    return! loop prevDate
-                    
-                | View ->
-                    Debug.WriteLine "View invoked"
-                    program.syncAction (fun()->updateView lastModel) ()
-                    return! loop prevDate
-                    
-                return! loop prevDate
-                    }
+                                program.onError ("Unable to process a message:", ex)
+                                
+                            let queueSize = inbox.CurrentQueueLength
+                            
+                            match count with
+                            | None when queueSize <= 0 ->
+                                viewInbox.Post (ViewMsg.Render)
+                                return! loop None
+                                  
+                            | None when queueSize > 0 ->
+                                return! loop (Some queueSize)
+                                
+                            | Some count when count > 0 ->
+                                return! loop (Some (count- 1))
+                            
+                            | Some count when count <= 0 ->
+                                viewInbox.Post (ViewMsg.Render)
+                                return! loop None
+                            
+                            | x ->
+                                Debug.WriteLine (sprintf "Unexpected match %A" x)
+                                return! loop None
+                            
+                                
+                                
+                }
             
-         loop(DateTime.MinValue)
+         loop None
         )
     // Start Elmish dispatch loop
 
