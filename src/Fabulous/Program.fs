@@ -82,24 +82,29 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
 
             lastViewDataOpt <- Some newPageElement
     let viewInbox = MailboxProcessor.Start (fun inbox ->
-         let rec loop (isRendering,state)  = async{
+         let rec loop (isRendering,state,hasChanges)  = async{
              match! inbox.Receive() with
              | ViewMsg.Render msg when (not isRendering)->
+                 /// Here we put an inbox into the "waiting" state and wait for render finishes
                  Debug.WriteLine "View invoked"
                  async{
                      inbox.Post (Blocked true)
                      program.syncAction (fun()->updateView msg) ()
                      inbox.Post (Blocked false)
                  } |> Async.Start
-                 return! loop (isRendering,state)
+                 return! loop (isRendering,state,false)
              | ViewMsg.Blocked flag ->
-                 return! loop (flag,state)
+                 /// When we finished render and have "dirty" changes ,we should invoke Render again to be sure to receive actual view
+                 if(not flag && hasChanges) then
+                     inbox.Post (Render state)
+                 return! loop (flag,state,hasChanges)
                  
-             | ViewMsg.Render msg ->
-                 return! loop (isRendering,msg)
+             | ViewMsg.Render msg when isRendering->
+                  /// Here we just accumulate changes, no actual rendering happens
+                 return! loop (isRendering,msg,true)
          }
          
-         loop (false,initialModel)      
+         loop (false,initialModel,false)      
           )   
         // Start Elmish dispatch loop  
     let processMsg msg = 
