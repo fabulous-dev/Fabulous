@@ -35,12 +35,10 @@ type Program<'arg, 'model, 'msg> =
       syncAction: (unit -> unit) -> (unit -> unit)
       debug : bool
       onError : (string * exn) -> unit }
-    
- type private UpdateMsg<'msg> =
-     | Update of 'msg
   
- type private ViewMsg = |Render
-     
+ type private ViewMsg<'msg> =
+     |Render of 'msg
+     |Blocked of bool
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
 type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'model, 'msg>, arg: 'arg) = 
@@ -84,70 +82,46 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
 
             lastViewDataOpt <- Some newPageElement
     let viewInbox = MailboxProcessor.Start (fun inbox ->
-         let rec loop ()  = async{
+         let rec loop (isRendering,state)  = async{
              match! inbox.Receive() with
-             | ViewMsg.Render ->
+             | ViewMsg.Render msg when (not isRendering)->
                  Debug.WriteLine "View invoked"
-                 program.syncAction (fun()->updateView lastModel) ()
-                 return! loop ()
+                 async{
+                     inbox.Post (Blocked true)
+                     program.syncAction (fun()->updateView msg) ()
+                     inbox.Post (Blocked false)
+                 } |> Async.Start
+                 return! loop (isRendering,state)
+             | ViewMsg.Blocked flag ->
+                 return! loop (flag,state)
+                 
+             | ViewMsg.Render msg ->
+                 return! loop (isRendering,msg)
          }
          
-         loop ()        
+         loop (false,initialModel)      
           )   
-    let inbox=MailboxProcessor.Start(fun inbox ->
-         let rec loop (count:int option) =  
-            async{              
-                    match! inbox.Receive()  with 
-                    | Update msg ->
-                            try
-                               // We always do update of internal state after receiving update message
-                                let (updatedModel,newCommands) = program.update msg lastModel
-                                lastModel<- updatedModel
-                                for sub in newCommands do
-                                    try 
-                                        sub dispatch
-                                    with ex ->
-                                        program.onError ("Error executing commands:", ex)
-                            with ex ->
-                                program.onError ("Unable to process a message:", ex)
-                                
-                            let queueSize = inbox.CurrentQueueLength
-                            
-                            match count with
-                            | None when queueSize <= 0 ->
-                                viewInbox.Post (ViewMsg.Render)
-                                return! loop None
-                                  
-                            | None when queueSize > 0 ->
-                                return! loop (Some queueSize)
-                                
-                            | Some count when count > 0 ->
-                                return! loop (Some (count- 1))
-                            
-                            | Some count when count <= 0 ->
-                                viewInbox.Post (ViewMsg.Render)
-                                return! loop None
-                            
-                            | x ->
-                                Debug.WriteLine (sprintf "Unexpected match %A" x)
-                                return! loop None
-                            
-                                
-                                
-                }
-            
-         loop None
-        )
-    // Start Elmish dispatch loop
-
-    let  processMsg = Update>>inbox.Post                      
+        // Start Elmish dispatch loop  
+    let processMsg msg = 
+        try
+            let (updatedModel,newCommands) = program.update msg lastModel
+            lastModel <- updatedModel
+            try 
+                 viewInbox.Post (ViewMsg.Render updatedModel)
+            with ex ->
+                program.onError ("Unable to update view:", ex)
+            for sub in newCommands do
+                try 
+                    sub dispatch
+                with ex ->
+                    program.onError ("Error executing commands:", ex)
+        with ex ->
+            program.onError ("Unable to process a message:", ex)                   
     do 
         // Set up the global dispatch function
         ProgramDispatch<'msg>.SetDispatchThunk (processMsg |> program.syncDispatch)
 
-        reset <- (fun () -> updateView lastModel
-                  
-                  ) |> program.syncAction
+        reset <- (fun () -> updateView lastModel  ) |> program.syncAction
 
         Debug.WriteLine "updating the initial view"
 
