@@ -97,7 +97,7 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
                      isRendering<-false
                      inbox.Post (Completed)
                  } |> Async.Start
-                 return! loop (state,false)
+                 return! loop (msg,false)
              | ViewMsg.Completed -> 
                  /// When we finished render and have "dirty" changes ,we should invoke Render again to be sure to receive actual view
                  if(hasChanges) then
