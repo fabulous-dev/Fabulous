@@ -38,7 +38,7 @@ type Program<'arg, 'model, 'msg> =
   
  type private ViewMsg<'msg> =
      |Render of 'msg
-     |Blocked of bool
+     |Completed
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
 type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'model, 'msg>, arg: 'arg) = 
@@ -82,29 +82,34 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
 
             lastViewDataOpt <- Some newPageElement
     let viewInbox = MailboxProcessor.Start (fun inbox ->
-         let rec loop (isRendering,state,hasChanges)  = async{
+         let mutable isRendering = false
+         // We use local mutable instead of loop state here because we need a kind of "kill switch" for all events coming after render starts.
+         //If we use message for setting isRendered, this can lead to race conditions and two render processes may start simultaneously.
+         //Mutable variable helps us reset the blocking state immediately, so the next event occured would invoke render if needed.
+         let rec loop (state,hasChanges)  = async{
              match! inbox.Receive() with
              | ViewMsg.Render msg when (not isRendering)->
+                 isRendering<-true
                  /// Here we put an inbox into the "waiting" state and wait for render finishes
                  Debug.WriteLine "View invoked"
                  async{
-                     inbox.Post (Blocked true)
                      program.syncAction (fun()->updateView msg) ()
-                     inbox.Post (Blocked false)
+                     isRendering<-false
+                     inbox.Post (Completed)
                  } |> Async.Start
-                 return! loop (isRendering,state,false)
-             | ViewMsg.Blocked flag ->
+                 return! loop (state,false)
+             | ViewMsg.Completed -> 
                  /// When we finished render and have "dirty" changes ,we should invoke Render again to be sure to receive actual view
-                 if(not flag && hasChanges) then
+                 if(hasChanges) then
                      inbox.Post (Render state)
-                 return! loop (flag,state,hasChanges)
+                 return! loop (state,hasChanges)
                  
              | ViewMsg.Render msg when isRendering->
                   /// Here we just accumulate changes, no actual rendering happens
-                 return! loop (isRendering,msg,true)
+                 return! loop (msg,true)
          }
          
-         loop (false,initialModel,false)      
+         loop (initialModel,false)      
           )   
         // Start Elmish dispatch loop  
     let processMsg msg = 
