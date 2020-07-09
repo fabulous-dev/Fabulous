@@ -2781,6 +2781,9 @@
           "source": "HideSingle"
         },
         {
+          "source": "IndicatorColor"
+        },
+        {
           "source": "IndicatorSize"
         },
         {
