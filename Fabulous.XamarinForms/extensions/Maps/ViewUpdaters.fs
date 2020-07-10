@@ -11,7 +11,7 @@ module ViewUpdaters =
         | _ -> ()
 
     let updatePolygonGeopath (prevCollOpt: Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polygon) _ =
-        ItemsUpdaters.updateItems prevCollOpt currCollOpt target.Geopath
+        Collections.updateItems prevCollOpt currCollOpt target.Geopath
             (fun _ -> ValueNone)
             (fun prev curr -> prev = curr)
             id
@@ -19,7 +19,7 @@ module ViewUpdaters =
             (fun _ _ _ -> ())
 
     let updatePolylineGeopath (prevCollOpt: Xamarin.Forms.Maps.Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polyline) _ =
-        ItemsUpdaters.updateItems prevCollOpt currCollOpt target.Geopath
+        Collections.updateItems prevCollOpt currCollOpt target.Geopath
             (fun _ -> ValueNone)
             (fun prev curr -> prev = curr)
             id
