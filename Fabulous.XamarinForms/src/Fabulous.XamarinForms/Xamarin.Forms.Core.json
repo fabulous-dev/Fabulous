@@ -1737,12 +1737,7 @@
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
       "canBeInstantiated": false,
       "properties": [
-        {
-          "source": null,
-          "name": "Items",
-          "inputType": "ViewElement list",
-          "updateCode": "Collections.updateItemsViewOfTItems<'T>"
-        }
+        
       ]
     },
     {
