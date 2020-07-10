@@ -1840,6 +1840,14 @@
     {
       "type": "Fabulous.XamarinForms.CustomListView",
       "name": "ListView",
+      "properties": [
+        {
+          "source": null,
+          "name": "Items",
+          "inputType": "ViewElement list",
+          "updateCode": "Collections.updateItemsViewOfTItems<'T>"
+        }
+      ],
       "primaryConstructorMembers": [
         "Items"
       ]
