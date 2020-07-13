@@ -248,7 +248,8 @@ module DiffTests =
         
         testUpdateChildren (ValueSome previous) (ValueSome current)
         |> should equal (DiffResult<ViewElement>.Operations [
-            Update (0, previous.[0], current.[0])
+            Insert (0, current.[0])
+            Delete 0
         ])
         
     /// Removing elements in the middle of others (not the same instances) should reuse the existing controls based
@@ -304,8 +305,9 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) (ValueSome current)
         |> should equal (DiffResult<ViewElement>.Operations [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
-            Update (1, previous.[1], current.[1])
+            Insert (1, current.[1])
             MoveAndUpdate (0, previous.[0], 2, current.[2])
+            Delete 1
         ])
             
     /// Complex use cases with reordering and remove/add of keyed elements should reuse controls efficiently
@@ -371,7 +373,8 @@ module DiffTests =
         
         testUpdateChildren (ValueSome previous) (ValueSome current)
         |> should equal (DiffResult<ViewElement>.Operations [
-            Update (0, previous.[0], current.[0])
+            Insert (0, current.[0])
+            Delete 0
         ])
     
     /// Replacing a non-keyed element with another when a keyed element is present should reuse the discarded element
@@ -543,4 +546,67 @@ module DiffTests =
             Update (7, previous.[7], current.[7])
             Update (8, previous.[8], current.[8])
             Delete 4
+        ])
+            
+    [<Test>]
+    let ``Test Random``() =
+        let previous =
+            [ View.Button(key = "Button0_0")
+              View.Button(key = "Button0_1")
+              View.Button(key = "Button0_2")
+              View.Button(key = "Button1_0")
+              View.Image(key = "Image1_1") ]
+            
+        let current =
+            [ View.Label(key = "Button0_0")
+              View.Button(key = "Button0_1")
+              View.Image(key = "Button0_2") ]
+        
+        testUpdateChildren (ValueSome previous) (ValueSome current)
+        |> should equal (DiffResult<ViewElement>.Operations [
+            Insert (0, current.[0])
+            Update (1, previous.[1], current.[1])
+            Insert (2, current.[2])
+            Delete 0
+            Delete 2
+            Delete 3
+            Delete 4
+        ])
+            
+    [<Test>]
+    let ``Test Random 2``() =
+        let previous =
+            [ View.Label(key = "0")
+              View.Label()
+              View.Button()
+              View.Button(key = "2")
+              View.Label()
+              View.Label(key = "3")
+              View.Label()
+              View.Button()
+              View.Button()
+              View.Button()
+              View.Button() ]
+            
+        let current =
+            [ View.Button(key = "0")
+              View.Label() ]
+        
+        testUpdateChildren (ValueSome previous) (ValueSome current)
+        |> should equal (DiffResult<ViewElement>.Operations [
+            MoveAndUpdate (2, previous.[2], 0, current.[0])
+            Update (1, previous.[1], current.[1])
+            
+            // Discarded elements = had a key that was not reused
+            Delete 0
+            Delete 3
+            Delete 5
+            
+            // Not reused elements
+            Delete 4
+            Delete 6
+            Delete 7
+            Delete 8
+            Delete 9
+            Delete 10
         ])

@@ -1845,7 +1845,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "Collections.updateItemsViewOfTItems<'T>"
+          "updateCode": "Collections.updateItemsViewOfTItems<Xamarin.Forms.Cell>"
         }
       ],
       "primaryConstructorMembers": [
