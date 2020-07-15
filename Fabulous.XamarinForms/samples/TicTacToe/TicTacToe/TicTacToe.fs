@@ -182,9 +182,10 @@ module App =
                         for ((row,col) as pos) in positions ->
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
+                                    View.Button(key = sprintf "Button%i_%i" row col, command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    View.Image(source=imageForPos model.Board.[pos],
+                                    View.Image(key = sprintf "Image%i_%i" row col,
+                                     source=imageForPos model.Board.[pos],
                                      margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
                                      verticalOptions=LayoutOptions.Center)
                             item.Row(row*2).Column(col*2) ],

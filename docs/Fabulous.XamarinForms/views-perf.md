@@ -109,14 +109,15 @@ For all of the above, the typical, naive implementation of the `view` function r
 instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
 (e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.
 
-Fabulous first prioritizes the reuse of the same ViewElement instances, when using dependsOn for instance.
+Fabulous prioritizes reuse in the following order:
+1. Same ViewElement instance (when using dependsOn)
 ```fsharp
 View.Grid([
     dependsOn () (fun _ _ -> View.Label(text = "Hello, World!"))
 ])
 ```
 
-Then, it will try to reuse ViewElements sharing the same key, if `canReuseView` returns `true`.
+2. Same key and control type (aka. `canReuseView` returns true)
 
 ```fsharp
 // Previous View
@@ -125,7 +126,6 @@ View.Grid([
     View.Label(key = "body", text = "Previous body")
 ])
 
-
 // New View
 View.Grid([
     View.Label(key = "header", text = "New Header") // Will reuse previous header
@@ -133,8 +133,11 @@ View.Grid([
 ])
 ```
 
-If there's no matching instance or key, it will try to reuse one of the remaining previous elements to find the first one for which `canReuseView` returns `true`.  
-If it finds one, it reuses it, if not it creates a new control.
+3. If none of the above, Fabulous will select the first element that returns `canReuseView = true` among the eligible remaining previous elements.
+
+4. If no previous element can be reused, a new one is created
+
+Note that old keyed elements that didn't had a matching key in the new list will be destroyed instead of being reused by new unkeyed elements to help developers avoid undesired animations, such as fade-in/fade-out on Button Text changes on iOS ([#308](https://github.com/fsprojects/Fabulous/issues/308)) or ripple effects on Android Button.
 
 In the end, controls that weren't reused are destroyed.
 
