@@ -92,7 +92,7 @@
         },
         {
           "source": "Effects",
-          "updateCode": "ChildrenUpdaters.updateElementEffects",
+          "updateCode": "Collections.updateElementEffects",
           "collection": {
             "elementType": "Xamarin.Forms.Effect"
           }
@@ -122,7 +122,7 @@
           "source": null,
           "name": "Children",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateMenuChildren",
+          "updateCode": "Collections.updateMenuChildren",
           "collection": {
             "elementType": "Xamarin.Forms.Menu"
           }
@@ -665,7 +665,7 @@
         {
           "name": "MenuItems",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateShellContentMenuItems"
+          "updateCode": "Collections.updateShellContentMenuItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -690,7 +690,7 @@
         {
           "source": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateShellItemItems"
+          "updateCode": "Collections.updateShellItemItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -718,7 +718,7 @@
         {
           "source": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateShellSectionItems"
+          "updateCode": "Collections.updateShellSectionItems"
         }
       ],
       "primaryConstructorMembers": [
@@ -867,7 +867,7 @@
           "source": null,
           "name": "ToolbarItems",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updatePageToolbarItems",
+          "updateCode": "Collections.updatePageToolbarItems",
           "collection": {
             "elementType": "Xamarin.Forms.ToolbarItem"
           }
@@ -1108,7 +1108,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateShellItems",
+          "updateCode": "Collections.updateShellItems",
           "collection": {
             "elementType": "Xamarin.Forms.ShellItem"
           }
@@ -1574,7 +1574,7 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "updateCode": "ItemsUpdaters.updateItemsViewItems"
+          "updateCode": "Collections.updateItemsViewItems"
         },
         {
           "source": "RemainingItemsThreshold"
@@ -1691,7 +1691,7 @@
           "inputType": "int list option",
           "modelType": "int array option",
           "convertInputToModel": "(Option.map Array.ofList)",
-          "updateCode": "ItemsUpdaters.updateSelectableItemsViewSelectedItems"
+          "updateCode": "Collections.updateSelectableItemsViewSelectedItems"
         },
         {
           "source": "SelectionMode"
@@ -1737,12 +1737,7 @@
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
       "canBeInstantiated": false,
       "properties": [
-        {
-          "source": null,
-          "name": "Items",
-          "inputType": "ViewElement list",
-          "updateCode": "ItemsUpdaters.updateItemsViewOfTItems<'T>"
-        }
+        
       ]
     },
     {
@@ -1845,6 +1840,14 @@
     {
       "type": "Fabulous.XamarinForms.CustomListView",
       "name": "ListView",
+      "properties": [
+        {
+          "source": null,
+          "name": "Items",
+          "inputType": "ViewElement list",
+          "updateCode": "Collections.updateItemsViewOfTItems<Xamarin.Forms.Cell>"
+        }
+      ],
       "primaryConstructorMembers": [
         "Items"
       ]
@@ -1860,7 +1863,7 @@
           "inputType": "(string * ViewElement * ViewElement list) list",
           "modelType": "(string * ViewElement * ViewElement[])[]",
           "convertInputToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
-          "updateCode": "ItemsUpdaters.updateListViewGroupedItems"
+          "updateCode": "Collections.updateListViewGroupedItems"
         },
         {
           "source": null,
@@ -2663,7 +2666,7 @@
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "ViewElement list",
-          "updateCode": "ItemsUpdaters.updateSearchHandlerItems"
+          "updateCode": "Collections.updateSearchHandlerItems"
         },
         {
           "source": "Keyboard"
@@ -2750,7 +2753,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateTableSectionBaseOfTItems<'T>",
+          "updateCode": "Collections.updateTableSectionBaseOfTItems<'T>",
           "collection": {
             "elementType": "'T"
           }
@@ -2847,7 +2850,7 @@
           "source": null,
           "name": "Items",
           "inputType": "ViewElement list",
-          "updateCode": "ChildrenUpdaters.updateSwipeItems"
+          "updateCode": "Collections.updateSwipeItems"
         }
       ],
       "events": [

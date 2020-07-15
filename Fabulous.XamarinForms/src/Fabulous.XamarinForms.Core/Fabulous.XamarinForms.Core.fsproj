@@ -11,8 +11,7 @@
     <Compile Include="Program.fs" />
     <Compile Include="ViewConverters.fs" />
     <Compile Include="ViewUpdaters.fs" />
-    <Compile Include="ChildrenUpdaters.fs" />
-    <Compile Include="ItemsUpdaters.fs" />
+    <Compile Include="Collections.fs" />
     <Compile Include="ViewExtensions.fs" />
   </ItemGroup>
   <ItemGroup>

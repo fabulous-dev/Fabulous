@@ -108,9 +108,9 @@ module CodeGenerator =
                 // Check if the property is a collection
                 match p.CollectionDataElementType with 
                 | Some collectionDataElementType when not hasApply ->
-                    w.printfn "        ChildrenUpdaters.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
+                    w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
-                    w.printfn "            ChildrenUpdaters.updateChild"
+                    w.printfn "            Collections.updateChild"
                     w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
                     
                 | Some _ when hasApply ->
