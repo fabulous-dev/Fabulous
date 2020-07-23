@@ -1,3 +1,11 @@
+#### 0.55.0
+
+We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.  
+By setting an optional `key` value on ViewElement, you can hint Fabulous which control it should reuse for better performance.
+More information here: https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-perf.html#optimizing-view-performance-in-advanced-scenarios-the-key-property
+
+* [Fabulous.XamarinForms] Added support for keyed nodes reuse (https://github.com/fsprojects/Fabulous/pull/721)
+
 #### 0.55.0-preview6
 
 * [Fabulous.XamarinForms] Changed diff algorithm for collections to fix OutOfRange exceptions (https://github.com/fsprojects/Fabulous/pull/775)
