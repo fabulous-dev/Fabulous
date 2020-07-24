@@ -751,6 +751,9 @@
           }
         },
         {
+          "source": "Clip"
+        },
+        {
           "source": "FlowDirection"
         },
         {
@@ -3004,6 +3007,393 @@
           "relatedProperties": [
             "Checked"
           ]
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PathSegment",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.ArcSegment",
+      "properties": [
+        {
+          "source": "IsLargeArc"
+        },
+        {
+          "source": "Point"
+        },
+        {
+          "source": "RotationAngle"
+        },
+        {
+          "source": "Size"
+        },
+        {
+          "source": "SweepDirection"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.BezierSegment",
+      "properties": [
+        {
+          "source": "Point1"
+        },
+        {
+          "source": "Point2"
+        },
+        {
+          "source": "Point3"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.LineSegment",
+      "properties": [
+        {
+          "source": "Point"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.QuadraticBezierSegment",
+      "properties": [
+        {
+          "source": "Point1"
+        },
+        {
+          "source": "Point2"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PolyBezierSegment",
+      "properties": [
+        {
+          "source": "Points"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PolyLineSegment",
+      "properties": [
+        {
+          "source": "Points"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PolyQuadraticBezierSegment",
+      "properties": [
+        {
+          "source": "Points"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PathFigure",
+      "properties": [
+        {
+          "source": "IsClosed"
+        },
+        {
+          "source": "IsFilled"
+        },
+        {
+          "source": "Segments"
+        },
+        {
+          "source": "StartPoint"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Geometry",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.EllipseGeometry",
+      "properties": [
+        {
+          "source": "Center"
+        },
+        {
+          "source": "RadiusX"
+        },
+        {
+          "source": "RadiusY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.LineGeometry",
+      "properties": [
+        {
+          "source": "EndPoint"
+        },
+        {
+          "source": "StartPoint"
+        }
+      ],
+      "primaryConstructorMembers": [
+        "StartPoint",
+        "EndPoint"
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.PathGeometry",
+      "properties": [
+        {
+          "source": "Figures"
+        },
+        {
+          "source": "FillRule"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.RectangleGeometry",
+      "properties": [
+        {
+          "source": "Rect"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.GeometryGroup",
+      "properties": [
+        {
+          "source": "Children"
+        },
+        {
+          "source": "FillRule"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Transform",
+      "properties": [
+        {
+          "source": "Value"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.CompositeTransform",
+      "properties": [
+        {
+          "source": "CenterX"
+        },
+        {
+          "source": "CenterY"
+        },
+        {
+          "source": "Rotation"
+        },
+        {
+          "source": "ScaleX"
+        },
+        {
+          "source": "ScaleY"
+        },
+        {
+          "source": "SkewX"
+        },
+        {
+          "source": "SkewY"
+        },
+        {
+          "source": "TranslateX"
+        },
+        {
+          "source": "TranslateY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.MatrixTransform",
+      "properties": [
+        {
+          "source": "Matrix"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.RotateTransform",
+      "properties": [
+        {
+          "source": "Angle"
+        },
+        {
+          "source": "CenterX"
+        },
+        {
+          "source": "CenterY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.ScaleTransform",
+      "properties": [
+        {
+          "source": "CenterX"
+        },
+        {
+          "source": "CenterY"
+        },
+        {
+          "source": "ScaleX"
+        },
+        {
+          "source": "ScaleY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.ScaleTransform",
+      "properties": [
+        {
+          "source": "CenterX"
+        },
+        {
+          "source": "CenterY"
+        },
+        {
+          "source": "ScaleX"
+        },
+        {
+          "source": "ScaleY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.SkewTransform",
+      "properties": [
+        {
+          "source": "AngleX"
+        },
+        {
+          "source": "AngleY"
+        },
+        {
+          "source": "CenterX"
+        },
+        {
+          "source": "CenterY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.TranslateTransform",
+      "properties": [
+        {
+          "source": "X"
+        },
+        {
+          "source": "Y"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.TransformGroup",
+      "properties": [
+        {
+          "source": "Children"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Shape",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "Aspect"
+        },
+        {
+          "source": "Fill"
+        },
+        {
+          "source": "Stroke"
+        },
+        {
+          "source": "StrokeDashArray"
+        },
+        {
+          "source": "StrokeDashOffset"
+        },
+        {
+          "source": "StrokeLineCap"
+        },
+        {
+          "source": "StrokeLineJoin"
+        },
+        {
+          "source": "StrokeThickness"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Ellipse"
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Line",
+      "properties": [
+        {
+          "source": "X1"
+        },
+        {
+          "source": "X2"
+        },
+        {
+          "source": "Y1"
+        },
+        {
+          "source": "Y2"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Path",
+      "properties": [
+        {
+          "source": "Data"
+        },
+        {
+          "source": "RenderTransform"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Polygon",
+      "properties": [
+        {
+          "source": "FillRule"
+        },
+        {
+          "source": "Points"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Polyline",
+      "properties": [
+        {
+          "source": "FillRule"
+        },
+        {
+          "source": "Points"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Shapes.Rectangle",
+      "properties": [
+        {
+          "source": "RadiusX"
+        },
+        {
+          "source": "RadiusY"
         }
       ]
     }
