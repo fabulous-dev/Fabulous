@@ -3164,7 +3164,8 @@
       "type": "Xamarin.Forms.Shapes.GeometryGroup",
       "properties": [
         {
-          "source": "Children"
+          "source": "Children",
+          "uniqueName": "GeometryGroupChildren"
         },
         {
           "source": "FillRule"
@@ -3284,7 +3285,8 @@
       "type": "Xamarin.Forms.Shapes.TransformGroup",
       "properties": [
         {
-          "source": "Children"
+          "source": "Children",
+          "uniqueName": "TransformGroupChildren"
         }
       ]
     },
