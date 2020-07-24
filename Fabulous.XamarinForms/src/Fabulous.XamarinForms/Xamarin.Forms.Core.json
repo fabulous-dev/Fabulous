@@ -3175,7 +3175,9 @@
       "type": "Xamarin.Forms.Shapes.Transform",
       "properties": [
         {
-          "source": "Value"
+          "_comment": "We're currently forced to set the default value even if it's a BindableProperty because the field is marked internal and we can't access it. It will be solved by https://github.com/xamarin/Xamarin.Forms/pull/11543.",
+          "source": "Value",
+          "defaultValue": "Xamarin.Forms.Shapes.Matrix()"
         }
       ]
     },
@@ -3230,23 +3232,6 @@
         },
         {
           "source": "CenterY"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Shapes.ScaleTransform",
-      "properties": [
-        {
-          "source": "CenterX"
-        },
-        {
-          "source": "CenterY"
-        },
-        {
-          "source": "ScaleX"
-        },
-        {
-          "source": "ScaleY"
         }
       ]
     },

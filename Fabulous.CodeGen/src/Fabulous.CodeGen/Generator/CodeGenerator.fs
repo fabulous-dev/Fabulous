@@ -361,7 +361,7 @@ module CodeGenerator =
         w
     
     let generateViewExtensions (data: ViewExtensionsData array) (w: StringWriter) : StringWriter =
-        let newLine = "\n                             "
+        let newLine = "\n                                       "
 
         w.printfn "[<AutoOpen>]"
         w.printfn "module ViewElementExtensions = "
@@ -384,12 +384,12 @@ module CodeGenerator =
             |> Array.fold (+) ""
 
         w.printfn ""
-        w.printfn "        member inline x.With(%s) =" members
+        w.printfn "        member inline viewElement.With(%s) =" members
         for m in data do
             match m.UniqueName with
             | "Created" | "Ref" -> ()
-            | _ -> w.printfn "            let x = match %s with None -> x | Some opt -> x.%s(opt)" m.LowerUniqueName m.UniqueName
-        w.printfn "            x"
+            | _ -> w.printfn "            let viewElement = match %s with None -> viewElement | Some opt -> viewElement.%s(opt)" m.LowerUniqueName m.UniqueName
+        w.printfn "            viewElement"
         w.printfn ""
 
         for m in data do
