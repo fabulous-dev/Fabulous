@@ -115,6 +115,9 @@
     <Reference Include="Xamarin.AndroidX.AppCompat.Resources">
       <HintPath>..\packages\Xamarin.AndroidX.AppCompat.Resources.XamarinAndroidXAppCompatResourcesVersion\lib\monoandroid90\Xamarin.AndroidX.AppCompat.Resources.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.AndroidX.AppCompat.AppCompatResources">
+      <HintPath>..\packages\Xamarin.AndroidX.AppCompat.AppCompatResources.XamarinAndroidXAppCompatAppCompatResourcesVersion\lib\monoandroid90\Xamarin.AndroidX.AppCompat.AppCompatResources.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.AndroidX.Arch.Core.Common">
       <HintPath>..\packages\Xamarin.AndroidX.Arch.Core.Common.XamarinAndroidXArchCoreCommonVersion\lib\monoandroid90\Xamarin.AndroidX.Arch.Core.Common.dll</HintPath>
     </Reference>
@@ -292,6 +295,7 @@
   <Import Project="..\packages\Xamarin.AndroidX.VectorDrawable.XamarinAndroidXVectorDrawableVersion\build\monoandroid90\Xamarin.AndroidX.VectorDrawable.targets" Condition="Exists('..\packages\Xamarin.AndroidX.VectorDrawable.XamarinAndroidXVectorDrawableVersion\build\monoandroid90\Xamarin.AndroidX.VectorDrawable.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.VectorDrawable.Animated.XamarinAndroidXVectorDrawableAnimatedVersion\build\monoandroid90\Xamarin.AndroidX.VectorDrawable.Animated.targets" Condition="Exists('..\packages\Xamarin.AndroidX.VectorDrawable.Animated.XamarinAndroidXVectorDrawableAnimatedVersion\build\monoandroid90\Xamarin.AndroidX.VectorDrawable.Animated.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.AppCompat.Resources.XamarinAndroidXAppCompatResourcesVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.Resources.targets" Condition="Exists('..\packages\Xamarin.AndroidX.AppCompat.Resources.XamarinAndroidXAppCompatResourcesVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.Resources.targets')" />
+  <Import Project="..\packages\Xamarin.AndroidX.AppCompat.AppCompatResources.XamarinAndroidXAppCompatAppCompatResourcesVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.AppCompatResources.targets" Condition="Exists('..\packages\Xamarin.AndroidX.AppCompat.AppCompatResources.XamarinAndroidXAppCompatAppCompatResourcesVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.AppCompatResources.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.ViewPager.XamarinAndroidXViewPagerVersion\build\monoandroid90\Xamarin.AndroidX.ViewPager.targets" Condition="Exists('..\packages\Xamarin.AndroidX.ViewPager.XamarinAndroidXViewPagerVersion\build\monoandroid90\Xamarin.AndroidX.ViewPager.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Fragment.XamarinAndroidXFragmentVersion\build\monoandroid90\Xamarin.AndroidX.Fragment.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Fragment.XamarinAndroidXFragmentVersion\build\monoandroid90\Xamarin.AndroidX.Fragment.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.AppCompat.XamarinAndroidXAppCompatVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.targets" Condition="Exists('..\packages\Xamarin.AndroidX.AppCompat.XamarinAndroidXAppCompatVersion\build\monoandroid90\Xamarin.AndroidX.AppCompat.targets')" />

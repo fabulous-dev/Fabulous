@@ -174,6 +174,12 @@
       "replaces": "XamarinAndroidXAppCompatResourcesVersion",
       "defaultValue": "1.1.0"
     },
+    "XamarinAndroidXAppCompatAppCompatResourcesVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidXAppCompatAppCompatResourcesVersion",
+      "defaultValue": "1.1.0.1"
+    },
     "XamarinAndroidXArchCoreCommonVersion": {
       "type": "parameter",
       "datatype": "string",
