@@ -406,7 +406,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "4.6.0.726"
+      "defaultValue": "4.7.0.1179"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
