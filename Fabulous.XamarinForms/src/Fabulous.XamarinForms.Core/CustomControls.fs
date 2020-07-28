@@ -59,6 +59,16 @@ type ViewElementHolderGroup(shortName: string, viewElement: ViewElement, items: 
     member __.Items = items
 
 module BindableHelpers =
+    let private setRef (viewElement: ViewElement) (target: obj) =
+        match viewElement.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
+        | ValueSome f -> f.Set (box target)
+        | ValueNone -> ()
+        
+    let private unsetRef (viewElement: ViewElement) =
+        match viewElement.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
+        | ValueSome f -> f.Unset ()
+        | ValueNone -> ()
+    
     let createOnBindingContextChanged (bindableObject: BindableObject) =
         let mutable holderOpt : IViewElementHolder voption = ValueNone
         let mutable prevModelOpt : ViewElement voption = ValueNone
@@ -67,6 +77,7 @@ module BindableHelpers =
             match args.PropertyName, holderOpt, prevModelOpt with
             | "ViewElement", ValueSome holder, ValueSome prevModel ->
                 holder.ViewElement.UpdateIncremental (prevModel, bindableObject)
+                setRef holder.ViewElement bindableObject
                 prevModelOpt <- ValueSome holder.ViewElement
             | _ -> ()
         )
@@ -74,12 +85,15 @@ module BindableHelpers =
         let onBindingContextChanged () =
             match holderOpt with
             | ValueNone -> ()
-            | ValueSome prevHolder -> prevHolder.PropertyChanged.RemoveHandler onDataPropertyChanged
+            | ValueSome prevHolder ->
+                prevHolder.PropertyChanged.RemoveHandler onDataPropertyChanged
+                unsetRef prevHolder.ViewElement
             
             match bindableObject.BindingContext with
             | :? IViewElementHolder as newHolder ->
                 newHolder.PropertyChanged.AddHandler onDataPropertyChanged
                 newHolder.ViewElement.UpdateInherited(prevModelOpt, newHolder.ViewElement, bindableObject)
+                setRef newHolder.ViewElement bindableObject
                 holderOpt <- ValueSome newHolder
                 prevModelOpt <- ValueSome newHolder.ViewElement
             | _ ->

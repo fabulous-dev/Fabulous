@@ -147,7 +147,13 @@ module Samples =
                                                    Init = UseCases.InfiniteScrollList.init
                                                    Update = UseCases.InfiniteScrollList.update |> ignoreExternalMsg
                                                    View = UseCases.InfiniteScrollList.view
-                                                   MapToCmd = UseCases.InfiniteScrollList.mapToCmd } |> boxSampleDefinition) ] }
+                                                   MapToCmd = UseCases.InfiniteScrollList.mapToCmd } |> boxSampleDefinition)
+                                            Sample
+                                                ({ Title = "Collection with ViewRefs"
+                                                   Init = UseCases.ViewRefsCollection.init
+                                                   Update = UseCases.ViewRefsCollection.update |> ignoreExternalMsg
+                                                   View = UseCases.ViewRefsCollection.view
+                                                   MapToCmd = UseCases.ViewRefsCollection.mapToCmd } |> boxSampleDefinition) ] }
                                 Sample (createViewOnlyDefinition "CSS Styling" UseCases.CssStyling.view)
                                 Sample (createViewOnlyDefinition "Effects" UseCases.Effects.view)
                                 Sample
