@@ -5,6 +5,7 @@ open System.Collections
 open System.Collections.Generic
 open System.Collections.ObjectModel
 open Xamarin.Forms
+open Xamarin.Forms.Shapes
 
 /// This module contains the update logic for the controls with children
 module Collections =
@@ -329,7 +330,66 @@ module Collections =
     /// Update the toolbar items of a Page, given previous and current view elements
     let inline updatePageToolbarItems prevCollOpt collOpt (target: Page) attach =
         updateChildren prevCollOpt collOpt target.ToolbarItems (fun c -> c.Create() :?> ToolbarItem) updateChild attach
-    
+        
+    /// Update the children of a TransformGroup, given previous and current view elements
+    let inline updateTransformGroupChildren prevCollOpt collOpt (target: TransformGroup) attach =
+        let targetColl =
+            match target.Children with
+            | null -> let oc = TransformCollection() in target.Children <- oc; oc
+            | oc -> oc
+        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Transform) updateChild attach
+        
+    /// Update the children of a GeometryGroup, given previous and current view elements
+    let inline updateGeometryGroupChildren prevCollOpt collOpt (target: GeometryGroup) attach =
+        let targetColl =
+            match target.Children with
+            | null -> let oc = GeometryCollection() in target.Children <- oc; oc
+            | oc -> oc
+        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Geometry) updateChild attach
+        
+    /// Update the figures of a PathGeometry, given previous and current view elements
+    let inline updatePathGeometryFigures prevCollOpt collOpt (target: PathGeometry) attach =
+        let targetColl =
+            match target.Figures with
+            | null -> let oc = PathFigureCollection() in target.Figures <- oc; oc
+            | oc -> oc
+        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathFigure) updateChild attach
+        
+    /// Update the segments of a PathFigure, given previous and current view elements
+    let inline updatePathFigureSegments prevCollOpt collOpt (target: PathFigure) attach =
+        let targetColl =
+            match target.Segments with
+            | null -> let oc = PathSegmentCollection() in target.Segments <- oc; oc
+            | oc -> oc
+        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathSegment) updateChild attach
+        
+    let inline updatePoints getPointsFn setPointsFn prevCollOpt collOpt =
+        let targetColl =
+            match getPointsFn() with
+            | null -> let oc = PointCollection() in setPointsFn oc; oc
+            | oc -> oc
+        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ())
+        
+    /// Update the points of a Polygon, given previous and current view elements
+    let inline updatePolygonPoints prevCollOpt collOpt (target: Polygon) =
+        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
+        
+    /// Update the points of a Polyline, given previous and current view elements
+    let inline updatePolylinePoints prevCollOpt collOpt (target: Polyline) =
+        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
+        
+    /// Update the points of a Polygon, given previous and current view elements
+    let inline updatePolyBezierSegmentPoints prevCollOpt collOpt (target: PolyBezierSegment) =
+        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
+        
+    /// Update the points of a Polyline, given previous and current view elements
+    let inline updatePolyLineSegmentPoints prevCollOpt collOpt (target: PolyLineSegment) =
+        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
+        
+    /// Update the points of a Polyline, given previous and current view elements
+    let inline updatePolyQuadraticBezierSegmentPoints prevCollOpt collOpt (target: PolyQuadraticBezierSegment) =
+        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
+        
     let inline updateViewElementHolderItems (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
         updateItems prevCollOpt collOpt targetColl
             ViewHelpers.tryGetKey ViewHelpers.canReuseView
