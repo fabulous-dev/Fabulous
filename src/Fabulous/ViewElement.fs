@@ -73,6 +73,10 @@ type ViewRef() =
         handle.SetTarget(target)
         valueChanged.Trigger(target) 
 
+    member __.Unset() : unit = 
+        handle.SetTarget(null)
+        valueChanged.Trigger(null) 
+
     member __.TryValue = 
         match handle.TryGetTarget() with 
         | true, null -> None

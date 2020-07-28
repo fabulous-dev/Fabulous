@@ -76,6 +76,7 @@ module BindableHelpers =
         let onDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
             match args.PropertyName, holderOpt, prevModelOpt with
             | "ViewElement", ValueSome holder, ValueSome prevModel ->
+                unsetRef prevModel
                 holder.ViewElement.UpdateIncremental (prevModel, bindableObject)
                 setRef holder.ViewElement bindableObject
                 prevModelOpt <- ValueSome holder.ViewElement
