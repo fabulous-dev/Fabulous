@@ -378,15 +378,15 @@ module Collections =
     let inline updatePolylinePoints prevCollOpt collOpt (target: Polyline) =
         updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
         
-    /// Update the points of a Polygon, given previous and current view elements
+    /// Update the points of a PolyBezierSegment, given previous and current view elements
     let inline updatePolyBezierSegmentPoints prevCollOpt collOpt (target: PolyBezierSegment) =
         updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
         
-    /// Update the points of a Polyline, given previous and current view elements
+    /// Update the points of a PolyLineSegment, given previous and current view elements
     let inline updatePolyLineSegmentPoints prevCollOpt collOpt (target: PolyLineSegment) =
         updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
         
-    /// Update the points of a Polyline, given previous and current view elements
+    /// Update the points of a PolyQuadraticBezierSegment, given previous and current view elements
     let inline updatePolyQuadraticBezierSegmentPoints prevCollOpt collOpt (target: PolyQuadraticBezierSegment) =
         updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
         
