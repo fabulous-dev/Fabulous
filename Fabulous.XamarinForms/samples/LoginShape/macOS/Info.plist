@@ -5,7 +5,7 @@
     <key>CFBundleName</key>
     <string>LoginShape</string>
     <key>CFBundleIdentifier</key>
-    <string>com.yourcompany.LoginShape</string>
+    <string>org.fabulous.LoginShape</string>
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
     <key>CFBundleVersion</key>

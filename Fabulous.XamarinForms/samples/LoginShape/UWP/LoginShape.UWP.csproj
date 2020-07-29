@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{E1BFF4A6-32A3-49D5-BF90-EE70A3613501}</ProjectGuid>
+    <ProjectGuid>{DE0EC9B1-B7F0-4B11-864D-5FE821A0E6A7}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LoginShape.UWP</RootNamespace>
@@ -149,8 +149,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="4.7.1" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LoginShape\LoginShape.fsproj">
@@ -162,11 +162,5 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\..\Packages.targets" />
 </Project>
