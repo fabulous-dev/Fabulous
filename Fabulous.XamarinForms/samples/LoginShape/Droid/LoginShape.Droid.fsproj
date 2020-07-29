@@ -133,9 +133,6 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\androidxapp\Xamarin.Forms\lib\MonoAndroid10.0\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.FSharp.ResourceProvider">
-      <HintPath>..\..\..\..\packages\androidxapp\Xamarin.Android.FSharp.ResourceProvider\lib\monoandroid81\Xamarin.Android.FSharp.ResourceProvider.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
       <HintPath>..\..\..\..\packages\androidxapp\Xamarin.Android.FSharp.ResourceProvider\lib\monoandroid81\Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
     </Reference>
