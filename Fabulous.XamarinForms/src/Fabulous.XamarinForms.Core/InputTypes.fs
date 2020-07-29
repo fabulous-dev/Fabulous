@@ -1,6 +1,8 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
+open Fabulous
+
 [<AutoOpen>]
 module InputTypes =
     /// Represents an image source
@@ -65,3 +67,7 @@ module InputTypes =
           Position: Xamarin.Forms.ScrollToPosition
           /// Determines whether the scroll will be animated or not
           Animate: AnimationKind }
+        
+    type StringOrViewElement =
+        | String of string
+        | Element of ViewElement

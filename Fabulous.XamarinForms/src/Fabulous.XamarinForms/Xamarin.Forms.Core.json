@@ -3368,7 +3368,9 @@
       "type": "Xamarin.Forms.Shapes.Path",
       "properties": [
         {
-          "source": "Data"
+          "source": "Data",
+          "inputType": "InputTypes.StringOrViewElement",
+          "updateCode": "ViewUpdaters.updatePathData"
         },
         {
           "source": "RenderTransform"
