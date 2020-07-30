@@ -390,6 +390,14 @@ module Collections =
     let inline updatePolyQuadraticBezierSegmentPoints prevCollOpt collOpt (target: PolyQuadraticBezierSegment) =
         updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
         
+    /// Update the stroke dash values of a Shape, given previous and current float list
+    let inline updateShapeStrokeDashArray prevCollOpt collOpt (target: Xamarin.Forms.Shapes.Shape) =
+        let targetColl =
+            match target.StrokeDashArray with
+            | null -> let oc = DoubleCollection() in target.StrokeDashArray <- oc; oc
+            | oc -> oc
+        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ())
+
     let inline updateViewElementHolderItems (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
         updateItems prevCollOpt collOpt targetColl
             ViewHelpers.tryGetKey ViewHelpers.canReuseView

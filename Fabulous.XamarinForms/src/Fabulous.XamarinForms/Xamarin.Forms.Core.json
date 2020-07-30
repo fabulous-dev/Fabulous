@@ -3328,7 +3328,9 @@
           "source": "Stroke"
         },
         {
-          "source": "StrokeDashArray"
+          "source": "StrokeDashArray",
+          "inputType": "float list",
+          "updateCode": "Collections.updateShapeStrokeDashArray"
         },
         {
           "source": "StrokeDashOffset"

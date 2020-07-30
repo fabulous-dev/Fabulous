@@ -69,5 +69,5 @@ module InputTypes =
           Animate: AnimationKind }
         
     type StringOrViewElement =
-        | String of string
-        | Element of ViewElement
+        | Str of string
+        | Elm of ViewElement
