@@ -39,6 +39,7 @@
       <Compile Include="Samples\UseCases\WebCall.fs" />
       <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollList.fs" />
       <Compile Include="Samples\UseCases\CollectionsAndLists\InfiniteScrollCollection.fs" />
+      <Compile Include="Samples\UseCases\CollectionsAndLists\ViewRefsCollection.fs" />
       <Compile Include="Samples\Samples.fs" />
       <Compile Include="App.fs" />
       <EmbeddedResource Include="Baboon_Serengeti.jpg" />
