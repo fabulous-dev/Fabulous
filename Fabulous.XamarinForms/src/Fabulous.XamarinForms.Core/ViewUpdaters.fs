@@ -597,3 +597,28 @@ module ViewUpdaters =
             (fun () -> target)
             prevValueOpt
             currValueOpt
+            
+    let createGeometryFromString str =
+        let pathGeometry = Xamarin.Forms.Shapes.PathGeometry()
+        Xamarin.Forms.Shapes.PathFigureCollectionConverter.ParseStringToPathFigureCollection(pathGeometry.Figures, str);
+        pathGeometry
+
+    let updatePathData prevValueOpt (currValueOpt: InputTypes.StringOrViewElement voption) (target: Xamarin.Forms.Shapes.Path) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueSome currValue ->
+            match currValue with
+            | Str str -> target.Data <- createGeometryFromString str
+            | Elm ve -> target.Data <- (ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
+                
+        | ValueSome prevValue, ValueSome currValue ->
+            match prevValue, currValue with
+            | Str prevStr, Str currStr when prevStr = currStr -> ()
+            | Elm prevVe, Elm currVe when identical prevVe currVe -> ()
+            | Elm prevVe, Elm currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
+            | _, Str currStr -> target.Data <- createGeometryFromString currStr
+            | _, Elm currVe -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
+                
+        | ValueSome _, ValueNone -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
+        | ValueNone, ValueNone -> ()
+        

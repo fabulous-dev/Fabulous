@@ -36,6 +36,7 @@ module MockForms =
             member __.GetUserStoreForApplication() = raise (NotImplementedException())
             member __.QuitApplication() = raise (NotImplementedException())
             member __.GetNativeSize(view, widthConstraint, heightConstraint) = raise (NotImplementedException())
+            member __.GetHash(input) = raise (NotImplementedException())
 
     type MockDeserializer() = 
         interface IDeserializer with

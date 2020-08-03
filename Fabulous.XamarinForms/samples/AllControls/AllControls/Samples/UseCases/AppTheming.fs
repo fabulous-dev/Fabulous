@@ -5,8 +5,15 @@ open Fabulous.XamarinForms
 open AllControls.Helpers
 
 module AppTheming =
-    let pageBackgroundColor = AppThemeColor(Default = Color.White, Dark = Color.DarkGray)
-    let pageForegroundColor = AppThemeColor(Default = Color.Black, Dark = Color.White)
+    let pageBackgroundColor() =
+        match Application.Current.RequestedTheme with
+        | OSAppTheme.Dark -> Color.DarkGray
+        | _ -> Color.White
+        
+    let pageForegroundColor() =
+        match Application.Current.RequestedTheme with
+        | OSAppTheme.Dark -> Color.White
+        | _ -> Color.Black
     
     type Msg =
         | SetRequestedAppTheme of OSAppTheme
@@ -25,9 +32,10 @@ module AppTheming =
     let appThemeView model =        
         View.NonScrollingContentPage(
             title = "AppTheme sample",
-            backgroundColor = pageBackgroundColor.Value,
+            backgroundColor = pageBackgroundColor(),
             content =
                 View.Label(
+                    textColor = pageForegroundColor(),
                     text = sprintf "Current App Theme is %A" model.CurrentAppTheme
                 )
         ) 

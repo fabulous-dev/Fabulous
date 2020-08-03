@@ -192,16 +192,16 @@ module Optimizer =
             let allKeys =
                 [ for t in boundModel.Types do
                       for p in t.Properties do
-                          yield (p.Name, p.ModelType)
+                          yield (p.UniqueName, p.ModelType)
                           
                           match p.CollectionData with
                           | None -> ()
                           | Some collection ->
                               for ap in collection.AttachedProperties do
-                                  yield (ap.Name, ap.ModelType)
+                                  yield (ap.UniqueName, ap.ModelType)
                                   
                       for e in t.Events do
-                          yield (e.Name, e.ModelType) ]
+                          yield (e.UniqueName, e.ModelType) ]
             
             let keysToUpdate =
                 allKeys
