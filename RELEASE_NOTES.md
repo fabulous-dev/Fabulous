@@ -1,3 +1,7 @@
+#### 0.56.0
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.7 (https://github.com/fsprojects/Fabulous/pull/777)
+
 #### 0.55.0
 
 We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.  
