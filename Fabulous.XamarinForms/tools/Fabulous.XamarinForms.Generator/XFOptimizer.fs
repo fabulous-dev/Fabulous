@@ -57,8 +57,8 @@ module XFOptimizer =
         
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
-                InputType = "Fabulous.XamarinForms.InputTypes.Image"
-                ModelType = "Fabulous.XamarinForms.InputTypes.Image"
+                InputType = "Fabulous.XamarinForms.InputTypes.Image.Value"
+                ModelType = "Fabulous.XamarinForms.InputTypes.Image.Value"
                 ConvertModelToValue = "ViewConverters.convertFabulousImageToXamarinFormsImageSource" }
         
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
@@ -74,8 +74,8 @@ module XFOptimizer =
         
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
-                InputType = "Fabulous.XamarinForms.InputTypes.Media"
-                ModelType = "Fabulous.XamarinForms.InputTypes.Media"
+                InputType = "Fabulous.XamarinForms.InputTypes.Media.Value"
+                ModelType = "Fabulous.XamarinForms.InputTypes.Media.Value"
                 ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource" }
         
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])

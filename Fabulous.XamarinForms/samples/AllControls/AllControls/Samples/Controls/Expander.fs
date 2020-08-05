@@ -20,7 +20,7 @@ module Expander =
         
     let expanderView model dispatch =
         let loadEmbeddedImage path =
-            ImageSrc (ImageSource.FromResource((sprintf "AllControls.%s" path), typeof<Msg>.Assembly))
+            Image.fromImageSource (ImageSource.FromResource((sprintf "AllControls.%s" path), typeof<Msg>.Assembly))
         
         View.NonScrollingContentPage(
             title = "Expander sample",
@@ -34,7 +34,7 @@ module Expander =
                                 View.Label(
                                     text = "Baboon",
                                     fontAttributes = FontAttributes.Bold,
-                                    fontSize = Named NamedSize.Medium
+                                    fontSize = FontSize.fromNamedSize NamedSize.Medium
                                 )
                                 View.Image(
                                     source = (if model.IsExpanded then loadEmbeddedImage "collapse.png" else loadEmbeddedImage "expand.png"),
@@ -48,7 +48,7 @@ module Expander =
                                 coldefs = [ Auto; Auto ],
                                 children = [
                                     View.Image(
-                                        source = ImagePath "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
+                                        source = Image.fromPath "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg",
                                         aspect = Aspect.AspectFill,
                                         height = 120.,
                                         width = 120.

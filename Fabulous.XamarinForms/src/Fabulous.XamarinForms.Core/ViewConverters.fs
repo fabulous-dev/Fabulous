@@ -40,18 +40,18 @@ module CollectionHelpers =
 [<AutoOpen>]
 module ViewConverters =        
     /// Converts a string, byte array or ImageSource to a Xamarin.Forms ImageSource
-    let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image) =
+    let convertFabulousImageToXamarinFormsImageSource (v: InputTypes.Image.Value) =
         match v with
-        | ImagePath path -> ImageSource.op_Implicit path
-        | ImageBytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
-        | ImageStream stream -> ImageSource.FromStream(fun () -> stream)
-        | ImageFont fontImageSource -> fontImageSource :> ImageSource
-        | ImageSrc imageSource -> imageSource
+        | Image.ImagePath path -> ImageSource.op_Implicit path
+        | Image.ImageBytes bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
+        | Image.ImageStream stream -> ImageSource.FromStream(fun () -> stream)
+        | Image.ImageFont fontImageSource -> fontImageSource :> ImageSource
+        | Image.ImageSource imageSource -> imageSource
 
-    let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media) =
+    let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media.Value) =
         match v with
-        | MediaPath path -> MediaSource.op_Implicit path
-        | MediaSrc mediaSource -> mediaSource
+        | Media.MediaPath path -> MediaSource.op_Implicit path
+        | Media.MediaSource mediaSource -> mediaSource
                 
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
@@ -81,10 +81,10 @@ module ViewConverters =
         columns |> Array.iter collection.Add
         collection
         
-    let convertFabulousFontSizeToXamarinFormsDouble (targetType: Type) (v: InputTypes.FontSize) =
+    let convertFabulousFontSizeToXamarinFormsDouble (targetType: Type) (v: InputTypes.FontSize.Value) =
         match v with
-        | Named namedSize -> Device.GetNamedSize(namedSize, targetType)
-        | FontSize value -> value
+        | FontSize.NamedSize namedSize -> Device.GetNamedSize(namedSize, targetType)
+        | FontSize.Size value -> value
             
     let inline convertItemsViewSelectedItemIndexToObj (target: ^T) (v: int option) =
         match v with

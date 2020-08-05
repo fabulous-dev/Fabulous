@@ -393,7 +393,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1238,7 +1238,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1299,7 +1299,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1445,7 +1445,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1481,7 +1481,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1532,7 +1532,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1926,7 +1926,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2297,7 +2297,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2489,7 +2489,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2656,7 +2656,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -3371,7 +3371,7 @@
       "properties": [
         {
           "source": "Data",
-          "inputType": "InputTypes.StringOrViewElement",
+          "inputType": "InputTypes.Content.Value",
           "updateCode": "ViewUpdaters.updatePathData"
         },
         {

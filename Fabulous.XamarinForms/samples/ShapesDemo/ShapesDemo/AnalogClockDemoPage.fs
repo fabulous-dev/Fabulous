@@ -51,7 +51,7 @@ module AnalogClockDemoPage =
                     View.Path(
                         strokeThickness = 3.,
                         strokeDashArray = [ 0.1; 3.04159 ],
-                        data = Elm (
+                        data = Content.fromElement (
                             View.EllipseGeometry(
                                 radiusX = 90.,
                                 radiusY = 90.
@@ -66,7 +66,7 @@ module AnalogClockDemoPage =
                     View.Path(
                         strokeThickness = 6.,
                         strokeDashArray = [ 0.1; 7.754 ],
-                        data = Elm (
+                        data = Content.fromElement (
                             View.EllipseGeometry(
                                 radiusX = 90.,
                                 radiusY = 90.
@@ -79,7 +79,7 @@ module AnalogClockDemoPage =
                     
                     // Hour hand pointing straight up
                     View.Path(
-                        data = Str "M 0 -60 C 0 -30, 20 -30, 5 -20 L 5 0 C 5 7.5, -5 7.5, -5 0 L -5 -20 C -20 -30, 0 -30, 0 -60",
+                        data = Content.fromString "M 0 -60 C 0 -30, 20 -30, 5 -20 L 5 0 C 5 7.5, -5 7.5, -5 0 L -5 -20 C -20 -30, 0 -30, 0 -60",
                         renderTransform = View.RotateTransform(
                             angle = model.HourHandAngle
                         ),
@@ -91,7 +91,7 @@ module AnalogClockDemoPage =
                     
                     // Minute hand pointing straight up
                     View.Path(
-                        data = Str "M 0 -80 C 0 -75, 0 -70, 2.5 -60 L 2.5 0 C 2.5 5, -2.5 5, -2.5 0 L -2.55 -60 C 0 -70, 0 -75, 0 -80",
+                        data = Content.fromString "M 0 -80 C 0 -75, 0 -70, 2.5 -60 L 2.5 0 C 2.5 5, -2.5 5, -2.5 0 L -2.55 -60 C 0 -70, 0 -75, 0 -80",
                         renderTransform = View.RotateTransform(
                             angle = model.MinuteHandAngle
                         ),
@@ -103,7 +103,7 @@ module AnalogClockDemoPage =
                     
                     // Second hand pointing straight up
                     View.Path(
-                        data = Str "M 0 10 L 0 -80",
+                        data = Content.fromString "M 0 10 L 0 -80",
                         renderTransform = View.RotateTransform(
                             angle = model.SecondHandAngle
                         ),

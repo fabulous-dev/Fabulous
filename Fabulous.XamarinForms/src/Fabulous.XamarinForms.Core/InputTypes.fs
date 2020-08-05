@@ -5,27 +5,8 @@ open Fabulous
 
 [<AutoOpen>]
 module InputTypes =
-    /// Represents an image source
-    type Image =
-        /// A path to the image file (local or network file)
-        | ImagePath of string
-        /// A byte array representing the image
-        | ImageBytes of byte[]
-        /// A data stream representing the image
-        | ImageStream of System.IO.Stream
-        /// A Font image
-        | ImageFont of Xamarin.Forms.FontImageSource
-        /// An already defined ImageSource
-        | ImageSrc of Xamarin.Forms.ImageSource
-
-    /// Represents a media source
-    type Media =
-        /// A path to the media file (local or network file)
-        | MediaPath of string
-        /// An already defined MediaSource
-        | MediaSrc of Xamarin.Forms.MediaSource
     
-    /// Represents a dimension for either the row or column definition of a Grid    
+    /// Represents a dimension for either the row or column definition of a Grid
     type Dimension =
         /// Use a size that fits the children of the row or column.
         | Auto
@@ -35,13 +16,6 @@ module InputTypes =
         | Stars of float
         /// Use the associated value as the number of device-specific units.
         | Absolute of float
-        
-    /// Represents a font size
-    type FontSize =
-        /// Use a named size
-        | Named of Xamarin.Forms.NamedSize
-        /// Use a value as the size
-        | FontSize of float
 
     /// Defines if the action should be animated or not
     type AnimationKind =
@@ -67,7 +41,56 @@ module InputTypes =
           Position: Xamarin.Forms.ScrollToPosition
           /// Determines whether the scroll will be animated or not
           Animate: AnimationKind }
+
+    /// Represents an image source
+    module Image =
+        type Value =
+            | ImagePath of string
+            | ImageBytes of byte[]
+            | ImageStream of System.IO.Stream
+            | ImageFont of Xamarin.Forms.FontImageSource
+            | ImageSource of Xamarin.Forms.ImageSource
+            
+        /// A path to the image file (local or network file)
+        let fromPath path = ImagePath path
+        /// A byte array representing the image
+        let fromBytes bytes = ImageBytes bytes
+        /// A data stream representing the image
+        let fromStream stream = ImageStream stream
+        /// A Font image
+        let fromFont fontImageSource = ImageFont fontImageSource
+        /// An already defined ImageSource
+        let fromImageSource imageSource = ImageSource imageSource
+
+    /// Represents a media source
+    module Media =
+        type Value =
+            | MediaPath of string
+            | MediaSource of Xamarin.Forms.MediaSource
+            
+        /// A path to the media file (local or network file)
+        let fromPath path = MediaPath path
+        /// An already defined MediaSource
+        let fromMediaSource src = MediaSource src
         
-    type StringOrViewElement =
-        | Str of string
-        | Elm of ViewElement
+    /// Represents a font size
+    module FontSize =
+        type Value =
+            | NamedSize of Xamarin.Forms.NamedSize
+            | Size of float
+            
+        /// Use a named size
+        let fromNamedSize namedSize = NamedSize namedSize
+        /// Use a value as the size
+        let fromValue value = Size value
+        
+    /// Represents a content that can be defined with several types
+    module Content =
+        type Value =
+            | String of string
+            | ViewElement of ViewElement
+            
+        /// A string used as content 
+        let fromString str = String str
+        /// An element used as content
+        let fromElement viewElement = ViewElement viewElement

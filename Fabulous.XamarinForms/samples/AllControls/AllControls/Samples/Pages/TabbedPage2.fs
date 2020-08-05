@@ -76,7 +76,7 @@ module TabbedPage2 =
                                         )
                                         View.Span(
                                             text = "Studio ",
-                                            fontSize = FontSize 10.
+                                            fontSize = FontSize.fromValue 10.
                                         )
                                     ])
                                 )
