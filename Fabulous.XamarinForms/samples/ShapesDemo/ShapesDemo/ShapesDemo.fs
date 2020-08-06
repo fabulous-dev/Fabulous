@@ -6,10 +6,13 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
-module App = 
+module App =
+    
+    type Model = { Test: string }
+    type Msg = Nope
 
     // Note, this declaration is needed if you enable LiveUpdate
-    let program = XamarinFormsProgram.mkProgram AnalogClockDemoPage.init AnalogClockDemoPage.update AnalogClockDemoPage.view
+    let program = XamarinFormsProgram.mkSimple (fun () -> { Test = "" }) (fun (msg: Msg) model -> model) (fun _ _ -> CatDemoPage.view())
 
 type App () as app = 
     inherit Application ()

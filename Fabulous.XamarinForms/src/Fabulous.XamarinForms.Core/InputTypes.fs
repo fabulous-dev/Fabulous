@@ -94,3 +94,19 @@ module InputTypes =
         let fromString str = String str
         /// An element used as content
         let fromElement viewElement = ViewElement viewElement
+        
+    module Points =
+        type Value =
+            | String of string
+            | PointsList of Xamarin.Forms.Point list
+            
+        let fromString str = String str
+        let fromList points = PointsList points
+        
+    module Figures =
+        type Value =
+            | String of string
+            | FiguresList of Fabulous.ViewElement list
+            
+        let fromString str = String str
+        let fromList lst = FiguresList lst

@@ -62,7 +62,7 @@ module BabyElephantPage =
                     View.Polygon(
                         fillRule = FillRule.EvenOdd,
                         fill = Color.FromHex("#FFD7BDB6"),
-                        points = Content.fromString points
+                        points = Points.fromString points
                     )
                     View.Path(
                         fill = Color.FromHex("#FFCBB1AA"),

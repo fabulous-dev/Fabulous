@@ -80,8 +80,10 @@ module AnalogClockDemoPage =
                     // Hour hand pointing straight up
                     View.Path(
                         data = Content.fromString "M 0 -60 C 0 -30, 20 -30, 5 -20 L 5 0 C 5 7.5, -5 7.5, -5 0 L -5 -20 C -20 -30, 0 -30, 0 -60",
-                        renderTransform = View.RotateTransform(
-                            angle = model.HourHandAngle
+                        renderTransform = Content.fromElement(
+                            View.RotateTransform(
+                                angle = model.HourHandAngle
+                            )
                         ),
                         stroke = Color.Black,
                         strokeThickness = 2.,
@@ -92,8 +94,10 @@ module AnalogClockDemoPage =
                     // Minute hand pointing straight up
                     View.Path(
                         data = Content.fromString "M 0 -80 C 0 -75, 0 -70, 2.5 -60 L 2.5 0 C 2.5 5, -2.5 5, -2.5 0 L -2.55 -60 C 0 -70, 0 -75, 0 -80",
-                        renderTransform = View.RotateTransform(
-                            angle = model.MinuteHandAngle
+                        renderTransform = Content.fromElement(
+                            View.RotateTransform(
+                                angle = model.MinuteHandAngle
+                            )
                         ),
                         stroke = Color.Black,
                         strokeThickness = 2.,
@@ -104,8 +108,10 @@ module AnalogClockDemoPage =
                     // Second hand pointing straight up
                     View.Path(
                         data = Content.fromString "M 0 10 L 0 -80",
-                        renderTransform = View.RotateTransform(
-                            angle = model.SecondHandAngle
+                        renderTransform = Content.fromElement(
+                            View.RotateTransform(
+                                angle = model.SecondHandAngle
+                            )
                         ),
                         stroke = Color.Black,
                         strokeThickness = 2.,

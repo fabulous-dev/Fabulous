@@ -3072,8 +3072,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyBezierSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyBezierSegmentPoints"
         }
       ]
     },
@@ -3082,8 +3082,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyLineSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyLineSegmentPoints"
         }
       ]
     },
@@ -3092,8 +3092,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyQuadraticBezierSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyQuadraticBezierSegmentPoints"
         }
       ]
     },
@@ -3375,7 +3375,9 @@
           "updateCode": "ViewUpdaters.updatePathData"
         },
         {
-          "source": "RenderTransform"
+          "source": "RenderTransform",
+          "inputType": "InputTypes.Content.Value",
+          "updateCode": "ViewUpdaters.updatePathRenderTransform"
         }
       ]
     },
@@ -3387,8 +3389,8 @@
         },
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolygonPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolygonPoints"
         }
       ]
     },
@@ -3400,8 +3402,8 @@
         },
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolylinePoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolylinePoints"
         }
       ]
     },

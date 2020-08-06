@@ -6,6 +6,7 @@ open Fabulous
 open System.Collections.ObjectModel
 open System.Collections.Generic
 open Xamarin.Forms
+open Xamarin.Forms.Shapes
 open Xamarin.Forms.StyleSheets
 open System.Windows.Input
 
@@ -597,18 +598,13 @@ module ViewUpdaters =
             (fun () -> target)
             prevValueOpt
             currValueOpt
-            
-    let createGeometryFromString str =
-        let pathGeometry = Xamarin.Forms.Shapes.PathGeometry()
-        Xamarin.Forms.Shapes.PathFigureCollectionConverter.ParseStringToPathFigureCollection(pathGeometry.Figures, str);
-        pathGeometry
 
     let updatePathData prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.Shapes.Path) =
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueSome currValue ->
             match currValue with
-            | Content.String str -> target.Data <- createGeometryFromString str
+            | Content.String str -> target.Data <- PathFigureCollectionConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry
             | Content.ViewElement ve -> target.Data <- (ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
                 
         | ValueSome prevValue, ValueSome currValue ->
@@ -616,9 +612,58 @@ module ViewUpdaters =
             | Content.String prevStr, Content.String currStr when prevStr = currStr -> ()
             | Content.ViewElement prevVe, Content.ViewElement currVe when identical prevVe currVe -> ()
             | Content.ViewElement prevVe, Content.ViewElement currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
-            | _, Content.String currStr -> target.Data <- createGeometryFromString currStr
+            | _, Content.String currStr -> target.Data <- PathFigureCollectionConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
             | _, Content.ViewElement currVe -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
                 
         | ValueSome _, ValueNone -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
         | ValueNone, ValueNone -> ()
+
+    let updatePathRenderTransform prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.Shapes.Path) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueSome currValue ->
+            match currValue with
+            | Content.String str -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Transform
+            | Content.ViewElement ve -> target.RenderTransform <- (ve.Create() :?> Xamarin.Forms.Shapes.Transform)
+                
+        | ValueSome prevValue, ValueSome currValue ->
+            match prevValue, currValue with
+            | Content.String prevStr, Content.String currStr when prevStr = currStr -> ()
+            | Content.ViewElement prevVe, Content.ViewElement currVe when identical prevVe currVe -> ()
+            | Content.ViewElement prevVe, Content.ViewElement currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.RenderTransform)
+            | _, Content.String currStr -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Transform
+            | _, Content.ViewElement currVe -> target.RenderTransform <- (currVe.Create() :?> Xamarin.Forms.Shapes.Transform)
+                
+        | ValueSome _, ValueNone -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
+        | ValueNone, ValueNone -> ()
         
+        
+    let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
+        match prevOpt, currOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        | ValueSome _, ValueNone -> target.ClearValue(bindableProperty)
+        | _, ValueSome curr ->
+                match curr with
+                | Points.String str -> target.SetValue(bindableProperty, PointCollectionConverter().ConvertFromInvariantString(str))
+                | Points.PointsList lst -> target.SetValue(bindableProperty, ObservableCollection(lst))
+        
+    /// Update the points of a Polygon, given previous and current view elements
+    let inline updatePolygonPoints prevOpt currOpt (target: Polygon) =
+        updatePoints target Polygon.PointsProperty prevOpt currOpt
+        
+    /// Update the points of a Polyline, given previous and current view elements
+    let inline updatePolylinePoints prevOpt currOpt (target: Polyline) =
+        updatePoints target Polyline.PointsProperty prevOpt currOpt
+        
+    /// Update the points of a PolyBezierSegment, given previous and current view elements
+    let inline updatePolyBezierSegmentPoints prevOpt currOpt (target: PolyBezierSegment) =
+        updatePoints target PolyBezierSegment.PointsProperty prevOpt currOpt
+        
+    /// Update the points of a PolyLineSegment, given previous and current view elements
+    let inline updatePolyLineSegmentPoints prevOpt currOpt (target: PolyLineSegment) =
+        updatePoints target PolyLineSegment.PointsProperty prevOpt currOpt
+        
+    /// Update the points of a PolyQuadraticBezierSegment, given previous and current view elements
+    let inline updatePolyQuadraticBezierSegmentPoints prevOpt currOpt (target: PolyQuadraticBezierSegment) =
+        updatePoints target PolyQuadraticBezierSegment.PointsProperty prevOpt currOpt
