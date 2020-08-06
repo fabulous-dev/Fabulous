@@ -14,6 +14,9 @@
     <Compile Include="FlowerDemoPage.fs" />
     <Compile Include="HelloDemoPage.fs" />
     <Compile Include="InvertedXamagonDemoPage.fs" />
+    <Compile Include="LineDemoPage.fs" />
+    <Compile Include="PathAspectDemoPage.fs" />
+    <Compile Include="PathDemoPage.fs" />
     <Compile Include="ShapesDemo.fs" />
     <None Include="Resources\DIN Condensed Bold.ttf" />
   </ItemGroup>
