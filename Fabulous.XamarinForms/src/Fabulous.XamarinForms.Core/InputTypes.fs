@@ -106,7 +106,7 @@ module InputTypes =
     module Figures =
         type Value =
             | String of string
-            | FiguresList of Fabulous.ViewElement list
+            | FiguresList of Fabulous.ViewElement array
             
         let fromString str = String str
-        let fromList lst = FiguresList lst
+        let fromList lst = FiguresList (Array.ofList lst)

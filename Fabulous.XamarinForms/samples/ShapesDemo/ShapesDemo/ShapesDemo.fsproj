@@ -8,6 +8,12 @@
     <Compile Include="AnalogClockDemoPage.fs" />
     <Compile Include="BabyElephantPage.fs" />
     <Compile Include="CatDemoPage.fs" />
+    <Compile Include="ClipDemoPage.fs" />
+    <Compile Include="ClipViewsDemoPage.fs" />
+    <Compile Include="EllipseDemoPage.fs" />
+    <Compile Include="FlowerDemoPage.fs" />
+    <Compile Include="HelloDemoPage.fs" />
+    <Compile Include="InvertedXamagonDemoPage.fs" />
     <Compile Include="ShapesDemo.fs" />
     <None Include="Resources\DIN Condensed Bold.ttf" />
   </ItemGroup>

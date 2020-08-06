@@ -3157,11 +3157,8 @@
       "properties": [
         {
           "source": "Figures",
-          "inputType": "ViewElement list",
-          "updateCode": "Collections.updatePathGeometryFigures",
-          "collection": {
-            "elementType": "Xamarin.Forms.Shapes.PathFigure"
-          }
+          "inputType": "InputTypes.Figures.Value",
+          "updateCode": "Collections.updatePathGeometryFigures"
         },
         {
           "source": "FillRule"

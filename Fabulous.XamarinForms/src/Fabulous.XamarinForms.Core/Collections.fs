@@ -347,14 +347,6 @@ module Collections =
             | oc -> oc
         updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Geometry) updateChild attach
         
-    /// Update the figures of a PathGeometry, given previous and current view elements
-    let inline updatePathGeometryFigures prevCollOpt collOpt (target: PathGeometry) attach =
-        let targetColl =
-            match target.Figures with
-            | null -> let oc = PathFigureCollection() in target.Figures <- oc; oc
-            | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathFigure) updateChild attach
-        
     /// Update the segments of a PathFigure, given previous and current view elements
     let inline updatePathFigureSegments prevCollOpt collOpt (target: PathFigure) attach =
         let targetColl =
@@ -422,3 +414,35 @@ module Collections =
             itemsSource.[idx] :> obj
         
         updateItems prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ -> ()) (fun _ _ _ -> ())
+        
+        
+    let inline updatePathGeometryFigures (prevOpt: InputTypes.Figures.Value voption) (currOpt: InputTypes.Figures.Value voption) (target: PathGeometry) =
+        match prevOpt, currOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        
+        | _, ValueNone ->
+            target.Figures <- PathFigureCollection()
+        
+        | ValueNone, ValueSome (Figures.String curr)
+        | ValueSome _, ValueSome (Figures.String curr) ->
+            target.Figures <- PathFigureCollectionConverter().ConvertFromInvariantString(curr) :?> PathFigureCollection
+        
+        | ValueNone, ValueSome (Figures.FiguresList curr) ->
+            let targetColl =
+                match target.Figures with
+                | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
+                | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
+            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+            
+        | ValueSome (Figures.FiguresList prev), ValueSome (Figures.FiguresList curr) ->
+            let targetColl =
+                match target.Figures with
+                | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
+                | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
+            updateChildren (ValueSome prev) (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+        
+        | ValueSome (Figures.String _), ValueSome (Figures.FiguresList curr) ->
+            let targetColl = PathFigureCollection()
+            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+            target.Figures <- targetColl

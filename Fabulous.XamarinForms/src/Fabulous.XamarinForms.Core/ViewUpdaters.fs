@@ -604,7 +604,7 @@ module ViewUpdaters =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueSome currValue ->
             match currValue with
-            | Content.String str -> target.Data <- PathFigureCollectionConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry
+            | Content.String str -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry
             | Content.ViewElement ve -> target.Data <- (ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
                 
         | ValueSome prevValue, ValueSome currValue ->
@@ -612,7 +612,7 @@ module ViewUpdaters =
             | Content.String prevStr, Content.String currStr when prevStr = currStr -> ()
             | Content.ViewElement prevVe, Content.ViewElement currVe when identical prevVe currVe -> ()
             | Content.ViewElement prevVe, Content.ViewElement currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
-            | _, Content.String currStr -> target.Data <- PathFigureCollectionConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
+            | _, Content.String currStr -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
             | _, Content.ViewElement currVe -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
                 
         | ValueSome _, ValueNone -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
