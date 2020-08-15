@@ -61,6 +61,15 @@ type Model =
 type Msg =
     | ...
     | ShowAbout of bool
+    
+let update msg model =
+    match msg with
+    | ...
+    | ShowAbout status ->       
+        if status then 
+            { model with ShowAbout = true }, Cmd.none    
+        else 
+            { model with ShowAbout = false }, Cmd.none   
 
 let view model dispatch =
     ...
@@ -72,14 +81,14 @@ let view model dispatch =
             content= View.StackLayout(
                 children = [
                     View.Label(text = "Fabulous!")
-                    View.Button(text = "Continue", command = (fun () -> dispatch (ShowAbout false) ))
+                    View.Button(text = "Continue", command = (fun args -> dispatch (ShowAbout false) ))
                 ]))
 
     View.NavigationPage(pages=
         [ yield rootPage dispatch
           if model.ShowAbout then
               yield modalPage dispatch
-        ])
+        ], popped = fun args -> dispatch (ShowAbout false))
 ```
 
 ### TabbedPage navigation
