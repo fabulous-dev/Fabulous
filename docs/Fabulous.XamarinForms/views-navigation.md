@@ -81,7 +81,7 @@ let view model dispatch =
             content= View.StackLayout(
                 children = [
                     View.Label(text = "Fabulous!")
-                    View.Button(text = "Continue", command = (fun args -> dispatch (ShowAbout false) ))
+                    View.Button(text = "Continue", command = (fun () -> dispatch (ShowAbout false) ))
                 ]))
 
     View.NavigationPage(pages=
