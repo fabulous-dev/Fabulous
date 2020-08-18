@@ -8,6 +8,7 @@
     <Compile Include="AnalogClockDemoPage.fs" />
     <Compile Include="BabyElephantPage.fs" />
     <Compile Include="CatDemoPage.fs" />
+    <Compile Include="ClipArtManDemoPage.fs" />
     <Compile Include="ClipDemoPage.fs" />
     <Compile Include="ClipViewsDemoPage.fs" />
     <Compile Include="EllipseDemoPage.fs" />
@@ -17,6 +18,7 @@
     <Compile Include="LineDemoPage.fs" />
     <Compile Include="PathAspectDemoPage.fs" />
     <Compile Include="PathDemoPage.fs" />
+    <Compile Include="PathGeometryDemoPage.fs" />
     <Compile Include="ShapesDemo.fs" />
     <None Include="Resources\DIN Condensed Bold.ttf" />
   </ItemGroup>
