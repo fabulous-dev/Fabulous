@@ -14,8 +14,8 @@ module PathGeometryDemoPage =
                     children = [
                         View.Label("EllipseGeometry")
                         View.Path(
-                            fill = Color.Blue,
-                            stroke = Color.Red,
+                            fill = View.SolidColorBrush(Color.Blue),
+                            stroke = View.SolidColorBrush(Color.Red),
                             data = Content.fromElement(
                                 View.EllipseGeometry(
                                     center = Point(50., 50.),
@@ -24,10 +24,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("LineGeometry")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.LineGeometry(
                                     startPoint = Point(10., 20.),
@@ -35,18 +35,18 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("RectangleGeometry")
                         View.Path(
-                            fill = Color.Blue,
-                            stroke = Color.Red,
+                            fill = View.SolidColorBrush(Color.Blue),
+                            stroke = View.SolidColorBrush(Color.Red),
                             data = Content.fromElement(
                                 View.RectangleGeometry(
-                                    rect = Xamarin.Forms.Rectangle(10., 10., 150., 100.)
+                                    rect = Rect(10., 10., 150., 100.)
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with an ArcSegment")
                         // This code is commented out in the original sample because of a crash
                         (*View.Path(
@@ -70,10 +70,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )*)
-                        
+
                         View.Label("PathGeometry with a BezierSegment")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.PathGeometry(
                                     figures = Figures.fromList [
@@ -91,10 +91,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with LineSegments")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             aspect = Stretch.Uniform,
                             horizontalOptions = LayoutOptions.Start,
                             data = Content.fromElement(
@@ -112,12 +112,12 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with LineSegments")
                         View.Path(
-                            stroke = Color.Maroon,
+                            stroke = View.SolidColorBrush(Color.Maroon),
                             strokeThickness = 3.,
-                            fill = Color.Aqua,
+                            fill = View.SolidColorBrush(Color.Aqua),
                             aspect = Stretch.Uniform,
                             horizontalOptions = LayoutOptions.Start,
                             data = Content.fromElement(
@@ -138,10 +138,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with a PolyBezierSegment")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.PathGeometry(
                                     figures = Figures.fromList [
@@ -155,10 +155,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with a PolyLineSegment")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.PathGeometry(
                                     figures = Figures.fromList [
@@ -172,10 +172,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with a PolyQuadraticBezierSegment")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.PathGeometry(
                                     figures = Figures.fromList [
@@ -189,10 +189,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("PathGeometry with a QuadraticBezierSegment")
                         View.Path(
-                            stroke = Color.Black,
+                            stroke = View.SolidColorBrush(Color.Black),
                             data = Content.fromElement(
                                 View.PathGeometry(
                                     figures = Figures.fromList [
@@ -206,10 +206,10 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("Multiple PathFigures")
                         View.Path(
-                            stroke = Color.Red,
+                            stroke = View.SolidColorBrush(Color.Red),
                             strokeThickness = 12.,
                             strokeLineJoin = PenLineJoin.Round,
                             translationY = 20.,
@@ -269,11 +269,11 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("GeometryGroup")
                         View.Path(
-                            stroke = Color.Black,
-                            fill = Color.FromHex("#CCCCFF"),
+                            stroke = View.SolidColorBrush(Color.Black),
+                            fill = View.SolidColorBrush(Color.FromHex("#CCCCFF")),
                             data = Content.fromElement(
                                 View.GeometryGroup(
                                     children = [
@@ -286,11 +286,11 @@ module PathGeometryDemoPage =
                                 )
                             )
                         )
-                        
+
                         View.Label("GeometryGroup")
                         View.Path(
-                            stroke = Color.Black,
-                            fill = Color.FromHex("#CCCCFF"),
+                            stroke = View.SolidColorBrush(Color.Black),
+                            fill = View.SolidColorBrush(Color.FromHex("#CCCCFF")),
                             translationY = -30.,
                             horizontalOptions = LayoutOptions.Start,
                             data = Content.fromElement(
@@ -350,15 +350,15 @@ module PathGeometryDemoPage =
                                             ]
                                         )
                                     ]
-                                )                                
+                                )
                             )
                         )
-                        
+
                         View.Label("GeometryGroup")
                         View.Path(
-                            stroke = Color.Green,
+                            stroke = View.SolidColorBrush(Color.Green),
                             strokeThickness = 2.,
-                            fill = Color.Orange,
+                            fill = View.SolidColorBrush(Color.Orange),
                             aspect = Stretch.Uniform,
                             horizontalOptions = LayoutOptions.Start,
                             data = Content.fromElement(

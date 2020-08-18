@@ -5,7 +5,7 @@ open Xamarin.Forms
 open Xamarin.Forms.Shapes
 
 module HelloDemoPage =
-    
+
     let view () =
         View.ContentPage(
             title = "Hello demo",
@@ -14,7 +14,7 @@ module HelloDemoPage =
                 verticalOptions = LayoutOptions.Center,
                 children = [
                     View.Path(
-                        stroke = Color.Red,
+                        stroke = View.SolidColorBrush(Color.Red),
                         strokeThickness = 12.,
                         strokeLineJoin = PenLineJoin.Round,
                         data = Content.fromString "M 0 0 L 0 100 M 0 50 L 50 50 M 50 0 L 50 100

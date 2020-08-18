@@ -4,7 +4,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 module EllipseDemoPage =
-    
+
     let view () =
         View.ContentPage(
             title = "Ellipse demos",
@@ -14,14 +14,14 @@ module EllipseDemoPage =
                     children = [
                         View.Label(text = "Filled ellipse")
                         View.Ellipse(
-                            fill = Color.Red,
+                            fill = View.SolidColorBrush(Color.Red),
                             width = 150.,
                             height = 50.,
                             horizontalOptions = LayoutOptions.Start
                         )
                         View.Label(text = "Circle")
                         View.Ellipse(
-                            stroke = Color.Red,
+                            stroke = View.SolidColorBrush(Color.Red),
                             strokeThickness = 4.,
                             width = 150.,
                             height = 150.,
@@ -29,7 +29,7 @@ module EllipseDemoPage =
                         )
                         View.Label(text = "Ellipse with stroke")
                         View.Ellipse(
-                            stroke = Color.Red,
+                            stroke = View.SolidColorBrush(Color.Red),
                             strokeThickness = 4.,
                             width = 150.,
                             height = 50.,
@@ -37,8 +37,8 @@ module EllipseDemoPage =
                         )
                         View.Label(text = "Filled ellipse with stroke")
                         View.Ellipse(
-                            fill = Color.DarkBlue,
-                            stroke = Color.Red,
+                            fill = View.SolidColorBrush(Color.DarkBlue),
+                            stroke = View.SolidColorBrush(Color.Red),
                             strokeThickness = 4.,
                             width = 150.,
                             height = 50.,
@@ -46,8 +46,8 @@ module EllipseDemoPage =
                         )
                         View.Label(text = "Filled ellipse with dashed stroke")
                         View.Ellipse(
-                            fill = Color.DarkBlue,
-                            stroke = Color.Red,
+                            fill = View.SolidColorBrush(Color.DarkBlue),
+                            stroke = View.SolidColorBrush(Color.Red),
                             strokeThickness = 4.,
                             strokeDashArray = [ 1.; 1. ],
                             strokeDashOffset = 6.,
