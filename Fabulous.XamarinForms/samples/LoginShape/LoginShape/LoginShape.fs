@@ -6,36 +6,36 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
-module App = 
+module App =
     let appColor appTheme dark light =
         match appTheme with
         | OSAppTheme.Dark -> Color.FromHex(dark)
         | _ -> Color.FromHex(light)
-        
+
     let labelTextColor appTheme =
         match appTheme with
         | OSAppTheme.Dark -> Color.FromHex("#eeeeee")
         | _ -> Color.FromHex("#222222")
-        
+
     let entryTextColor appTheme =
         match appTheme with
         | OSAppTheme.Dark -> Color.FromHex("#eeeeee")
         | _ -> Color.FromHex("#222222")
-        
+
     let entryBackgroundColor appTheme =
         match appTheme with
         | OSAppTheme.Dark -> Color.FromHex("#1d1d1d")
         | _ -> Color.FromHex("#F1F1F1")
-        
-    let pathFill appTheme =
+
+    let pathFillColor appTheme =
         match appTheme with
         | OSAppTheme.Dark -> Color.FromHex("#333333")
         | _ -> Color.FromHex("#FFFFFF")
-        
-    type Model = 
+
+    type Model =
         { CurrentAppTheme: OSAppTheme }
 
-    type Msg = 
+    type Msg =
         | SetRequestedAppTheme of OSAppTheme
 
     let init () = { CurrentAppTheme = Application.Current.RequestedTheme }
@@ -65,7 +65,7 @@ module App =
                                 radiusY = 75.
                             )
                         ).Column(1)
-                        
+
                         View.Grid(
                             rowdefs = [ Absolute 34.; Absolute 40.; Absolute 16.; Absolute 44.; Absolute 20.; Absolute 44.; Star ],
                             coldefs = [ Absolute 22.; Star; Star; Absolute 22. ],
@@ -73,10 +73,10 @@ module App =
                                 View.Path(
                                     horizontalOptions = LayoutOptions.Fill,
                                     verticalOptions = LayoutOptions.Fill,
-                                    fill = pathFill model.CurrentAppTheme,
+                                    fill = View.SolidColorBrush(pathFillColor model.CurrentAppTheme),
                                     data = Str "M251,0 C266.463973,-2.84068575e-15 279,12.536027 279,28 L279,276 C279,291.463973 266.463973,304 251,304 L214.607,304 L214.629319,304.009394 L202.570739,304.356889 C196.091582,304.5436 190.154631,308.020457 186.821897,313.579883 L186.821897,313.579883 L183.402481,319.283905 C177.100406,337.175023 160.04792,350 140,350 C119.890172,350 102.794306,337.095694 96.5412691,319.115947 L96.5273695,319.126964 L92.8752676,313.28194 C89.5084023,307.893423 83.6708508,304.544546 77.3197008,304.358047 L65.133,304 L28,304 C12.536027,304 1.8937905e-15,291.463973 0,276 L0,28 C-1.8937905e-15,12.536027 12.536027,2.84068575e-15 28,0 L251,0 Z"
                                 ).RowSpan(7).ColumnSpan(4)
-                                
+
                                 View.Label(
                                     horizontalTextAlignment = TextAlignment.Center,
                                     fontFamily = "DINBold",
@@ -84,7 +84,7 @@ module App =
                                     fontSize = FontSize 22.,
                                     textColor = labelTextColor model.CurrentAppTheme
                                 ).Row(1).Column(1)
-                                
+
                                 View.Label(
                                     fontFamily = "DINBold",
                                     horizontalTextAlignment = TextAlignment.Center,
@@ -93,7 +93,7 @@ module App =
                                     fontSize = FontSize 22.,
                                     textColor = labelTextColor model.CurrentAppTheme
                                 ).Row(1).Column(2)
-                                
+
                                 View.Label(
                                     text = "Username",
                                     fontSize = FontSize 16.,
@@ -113,13 +113,13 @@ module App =
                                     fontSize = FontSize 16.,
                                     textColor = labelTextColor model.CurrentAppTheme
                                 ).Row(4).Column(1).ColumnSpan(2)
-                                
+
                                 View.Entry(
                                     placeholder = "Enter password",
                                     textColor = entryTextColor model.CurrentAppTheme,
                                     backgroundColor = entryBackgroundColor model.CurrentAppTheme
                                 ).Row(5).Column(1).ColumnSpan(2)
-                                
+
                                 View.Grid(
                                     coldefs = [ Absolute 64. ],
                                     rowdefs = [ Absolute 64. ],
@@ -128,13 +128,13 @@ module App =
                                     margin = Thickness(0., 0., 0., 13.),
                                     children = [
                                         View.Ellipse(
-                                            fill = Color.FromHex("#222222"),
+                                            fill = View.SolidColorBrush(Color.FromHex("#222222")),
                                             width = 64.,
                                             height = 64.
                                         )
-                                        
+
                                         View.Path(
-                                            fill = Color.White,
+                                            fill = View.SolidColorBrush(Color.White),
                                             verticalOptions = LayoutOptions.Center,
                                             horizontalOptions = LayoutOptions.Center,
                                             rotation = 90.,
@@ -151,12 +151,12 @@ module App =
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkSimple init update view
 
-type App () as app = 
+type App () as app =
     inherit Application ()
-    
+
     do Device.SetFlags([| "Shapes_Experimental"; "AppTheme_Experimental" |]);
 
-    let runner = 
+    let runner =
         App.program
 #if DEBUG
         |> Program.withConsoleTrace
@@ -166,6 +166,6 @@ type App () as app =
     let onRequestedThemeChanged = EventHandler<AppThemeChangedEventArgs>(fun _ args ->
         runner.Dispatch (App.Msg.SetRequestedAppTheme args.RequestedTheme)
     )
-        
+
     override this.OnStart() =
         Application.Current.RequestedThemeChanged.AddHandler(onRequestedThemeChanged)

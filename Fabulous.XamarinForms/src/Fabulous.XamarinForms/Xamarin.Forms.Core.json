@@ -3499,6 +3499,10 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.Brush",
+      "canBeInstantiated": false
+    },
+    {
       "type": "Xamarin.Forms.GradientBrush",
       "properties": [
         {
