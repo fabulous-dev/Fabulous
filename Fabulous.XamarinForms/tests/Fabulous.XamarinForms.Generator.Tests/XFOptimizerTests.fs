@@ -24,7 +24,7 @@ module XFOptimizerTests =
                    Events = [||]
                    PrimaryConstructorMembers = None
                    Properties = properties } |] }
-        
+
     [<Test>]
     let ``Given a System.Windows.Input.ICommand property with no customization, OptimizeCommands should return 1 Execute property and 1 CanExecute property``() =
         let boundModel =
@@ -44,7 +44,7 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel =
             createBoundModelWithProperties
                 [| { Name = "Name"
@@ -62,7 +62,7 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false }
-                
+
                    { Name = "NameCanExecute"
                      ShortName = "ShortNameCanExecute"
                      UniqueName = "UniqueNameCanExecute"
@@ -78,9 +78,9 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-        
+
         boundModel |> OptimizeCommands.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a System.Windows.Input.ICommand property with custom convert input type to model type, OptimizeCommands should not optimize property``() =
         let boundModel =
@@ -100,11 +100,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeCommands.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a System.Windows.Input.ICommand property with custom update code, OptimizeCommands should not optimize property``() =
         let boundModel =
@@ -124,11 +124,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeCommands.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a non-command property, OptimizeCommands should not optimize property``() =
         let boundModel =
@@ -148,11 +148,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeCommands.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.ImageSource property with no customization, OptimizeImageSource should return a Fabulous.XamarinForms.InputTypes.Image property``() =
         let boundModel =
@@ -172,7 +172,7 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel =
             createBoundModelWithProperties
                 [| { Name = "Name"
@@ -182,17 +182,17 @@ module XFOptimizerTests =
                      CustomAttributeKey = None
                      DefaultValue = "DefaultValue"
                      OriginalType = "OriginalType"
-                     InputType = "Fabulous.XamarinForms.InputTypes.Image"
-                     ModelType = "Fabulous.XamarinForms.InputTypes.Image"
+                     InputType = "Fabulous.XamarinForms.InputTypes.Image.Value"
+                     ModelType = "Fabulous.XamarinForms.InputTypes.Image.Value"
                      ConvertInputToModel = ""
                      ConvertModelToValue = "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
                      UpdateCode = ""
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-        
+
         boundModel |> OptimizeImageSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.ImageSource property with custom convert input type to model type, OptimizeImageSource should not optimize property``() =
         let boundModel =
@@ -212,11 +212,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeImageSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.ImageSource property with custom update code, OptimizeImageSource should not optimize property``() =
         let boundModel =
@@ -236,11 +236,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeImageSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a non-image property, OptimizeImageSource should not optimize property``() =
         let boundModel =
@@ -260,11 +260,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeImageSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.MediaSource property with no customization, OptimizeMediaSource should return a Fabulous.XamarinForms.InputTypes.Media property``() =
         let boundModel =
@@ -284,7 +284,7 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel =
             createBoundModelWithProperties
                 [| { Name = "Name"
@@ -294,17 +294,17 @@ module XFOptimizerTests =
                      CustomAttributeKey = None
                      DefaultValue = "DefaultValue"
                      OriginalType = "OriginalType"
-                     InputType = "Fabulous.XamarinForms.InputTypes.Media"
-                     ModelType = "Fabulous.XamarinForms.InputTypes.Media"
+                     InputType = "Fabulous.XamarinForms.InputTypes.Media.Value"
+                     ModelType = "Fabulous.XamarinForms.InputTypes.Media.Value"
                      ConvertInputToModel = ""
                      ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource"
                      UpdateCode = ""
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-        
+
         boundModel |> OptimizeMediaSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.MediaSource property with custom convert input type to model type, OptimizeMediaSource should not optimize property``() =
         let boundModel =
@@ -324,11 +324,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeMediaSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a Xamarin.Forms.MediaSource property with custom update code, OptimizeMediaSource should not optimize property``() =
         let boundModel =
@@ -348,11 +348,11 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeMediaSource.apply |> should equal expectedBoundModel
-        
+
     [<Test>]
     let ``Given a non-media property, OptimizeMediaSource should not optimize property``() =
         let boundModel =
@@ -372,7 +372,7 @@ module XFOptimizerTests =
                      CollectionData = None
                      HasPriority = false
                      IsInherited = false } |]
-                
+
         let expectedBoundModel = boundModel
-        
+
         boundModel |> OptimizeMediaSource.apply |> should equal expectedBoundModel
