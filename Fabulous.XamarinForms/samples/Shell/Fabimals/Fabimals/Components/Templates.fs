@@ -16,7 +16,7 @@ module Templates =
                 rowdefs=[ Auto; Auto ],
                 children=[
                     View.Image(
-                        source=ImagePath animal.ImageUrl,
+                        source=Image.fromPath animal.ImageUrl,
                         aspect=Aspect.AspectFill,
                         height=40.,
                         width=40.

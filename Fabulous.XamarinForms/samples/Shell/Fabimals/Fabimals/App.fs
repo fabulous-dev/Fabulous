@@ -29,7 +29,7 @@ module AppStyles =
 
 
 module App =
-    type Model = 
+    type Model =
       { CatsPageModel: AnimalList.Model
         DogsPageModel: AnimalList.Model
         MonkeysPageModel: AnimalList.Model
@@ -51,13 +51,13 @@ module App =
         | GoToHelpWebsite
         | GoToAnimal of Animal
         | AboutPageCmdMsgs of About.CmdMsg list
-        
+
     let shellRef = ViewRef<Shell>()
 
     let goToHelpWebsite () =
         Fabimals.Helper.openUri("https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell")
         Cmd.none
-        
+
     let navigateToAnimal (animal: Animal) =
         match shellRef.TryValue with
         | None -> ()
@@ -69,7 +69,7 @@ module App =
                 // This is a bug in Xamarin.Forms (https://github.com/xamarin/Xamarin.Forms/issues/5713)
                 // The workaround is to wait for the fade out animation of SearchHandler to finish
                 if Device.RuntimePlatform = Device.iOS then
-                    do! Async.Sleep 1000 
+                    do! Async.Sleep 1000
 
                 shell.FlyoutIsPresented <- false
                 do! shell.GoToAsync route |> Async.AwaitTask
@@ -82,21 +82,21 @@ module App =
         | GoToHelpWebsite -> goToHelpWebsite()
         | GoToAnimal animal -> navigateToAnimal animal
         | AboutPageCmdMsgs cmdMsgs -> cmdMsgs |> List.map About.mapCommands |> Cmd.batch
-    
+
     let init () =
         Routing.RegisterRoute("Catdetails", typeof<CatRoutingPage>)
         Routing.RegisterRoute("Dogdetails", typeof<DogRoutingPage>)
         Routing.RegisterRoute("Monkeydetails", typeof<MonkeyRoutingPage>)
         Routing.RegisterRoute("Elephantdetails", typeof<ElephantRoutingPage>)
         Routing.RegisterRoute("Beardetails", typeof<BearRoutingPage>)
-        
+
         { CatsPageModel = Cats.init ()
           DogsPageModel = Dogs.init ()
           MonkeysPageModel = Monkeys.init ()
           ElephantsPageModel = Elephants.init ()
           BearsPageModel = Bears.init ()
           DetailsPageModel = None }, []
-        
+
     let updateAnimalListPage updateFn setFn msg model =
         let newModel, _, externalMsgs = updateFn msg model
         let cmdMsgs =
@@ -135,7 +135,7 @@ module App =
                     children=[
                         View.Image(
                             aspect=Aspect.AspectFill,
-                            source=ImagePath "xamarinstore.jpg",
+                            source=Image.fromPath "xamarinstore.jpg",
                             opacity=0.6
                         )
                         View.Label(
@@ -152,24 +152,24 @@ module App =
                 View.FlyoutItem(
                     title="Animals",
                     route="animals",
-                    icon=ImagePath "cat.png",
+                    icon=Image.fromPath "cat.png",
                     flyoutDisplayOptions=FlyoutDisplayOptions.AsMultipleItems,
                     items=[
                         View.Tab(
                             title="Domestic",
                             route="domestic",
-                            icon=ImagePath "paw.png",
+                            icon=Image.fromPath "paw.png",
                             items=[
                                 View.ShellContent(
                                     title="Cats",
                                     route="cats",
-                                    icon=ImagePath "cat.png",
+                                    icon=Image.fromPath "cat.png",
                                     content=Cats.view model.CatsPageModel (CatsPageMsg >> dispatch)
                                 )
                                 View.ShellContent(
                                     title="Dogs",
                                     route="dogs",
-                                    icon=ImagePath "dog.png",
+                                    icon=Image.fromPath "dog.png",
                                     content=Dogs.view model.DogsPageModel (DogsPageMsg >> dispatch)
                                 )
                             ]
@@ -177,19 +177,19 @@ module App =
                         View.ShellContent(
                             title="Monkeys",
                             route="monkeys",
-                            icon=ImagePath "monkey.png",
+                            icon=Image.fromPath "monkey.png",
                             content=Monkeys.view model.MonkeysPageModel (MonkeysPageMsg >> dispatch)
                         ) |> AppStyles.applyMonkeysItemStyle
                         View.ShellContent(
                             title="Elephants",
                             route="elephants",
-                            icon=ImagePath "elephant.png",
+                            icon=Image.fromPath "elephant.png",
                             content=Elephants.view model.ElephantsPageModel (ElephantsPageMsg >> dispatch)
                         ) |> AppStyles.applyElephantsItemStyle
                         View.ShellContent(
                             title="Bears",
                             route="bears",
-                            icon=ImagePath "bear.png",
+                            icon=Image.fromPath "bear.png",
                             content=Bears.view model.BearsPageModel (BearsPageMsg >> dispatch)
                         ) |> AppStyles.applyBearsItemStyle
                     ]
@@ -198,13 +198,13 @@ module App =
                 View.ShellContent(
                     title="About",
                     route="about",
-                    icon=ImagePath "info.png",
+                    icon=Image.fromPath "info.png",
                     content=About.view (AboutPageMsg >> dispatch)
                 ) |> AppStyles.applyAboutItemStyle
 
                 View.MenuItem(
                     text="Random",
-                    icon=ImagePath "random.png",
+                    icon=Image.fromPath "random.png",
                     command=(fun () ->
                         let random = Random()
                         let categories = [ Cats.data; Dogs.data; Monkeys.data; Elephants.data; Bears.data ]
@@ -215,16 +215,16 @@ module App =
                 )
                 View.MenuItem(
                     text="Help",
-                    icon=ImagePath "help.png",
+                    icon=Image.fromPath "help.png",
                     command=(fun () -> dispatch ShowHelp)
                 )
             ]
         )
 
-    let program = 
+    let program =
         Program.mkProgramWithCmdMsg init update view mapCmdMsgToCmd
 
-type FabimalsApp () as app = 
+type FabimalsApp () as app =
     inherit Application ()
 
     let runner =
@@ -233,26 +233,26 @@ type FabimalsApp () as app =
         |> XamarinFormsProgram.run app
 
 #if DEBUG
-    // Run LiveUpdate using: 
-    //    
+    // Run LiveUpdate using:
+    //
     //do runner.EnableLiveUpdate ()
 #endif
 
 
 #if SAVE_MODEL_WITH_JSON
     let modelId = "model"
-    override __.OnSleep() = 
+    override __.OnSleep() =
 
         let json = Newtonsoft.Json.JsonConvert.SerializeObject(runner.CurrentModel)
         Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
 
-    override __.OnResume() = 
+    override __.OnResume() =
         Debug.WriteLine "OnResume: checking for model in app.Properties"
-        try 
+        try
             match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) -> 
+            | true, (:? string as json) ->
 
                 Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
                 let model = Newtonsoft.Json.JsonConvert.DeserializeObject<App.Model>(json)
@@ -261,10 +261,10 @@ type FabimalsApp () as app =
                 runner.SetCurrentModel (model, Cmd.none)
 
             | _ -> ()
-        with ex -> 
+        with ex ->
             App.program.onError("Error while restoring model found in app.Properties", ex)
 
-    override this.OnStart() = 
+    override this.OnStart() =
         Debug.WriteLine "OnStart: using same logic as OnResume()"
         this.OnResume()
 

@@ -13,22 +13,22 @@ module Styles =
     let WarmEndColor  = Color.FromHex("#FCA184")
     let NightStartColor = Color.FromHex("#172941")
     let NightEndColor = Color.FromHex("#3C6683")
-    
-    let CityNameFontSize = FontSize 30.
-    let CurrentTemperatureFontSize = FontSize 100.
-    let CurrentWeatherKindFontSize = FontSize 25.
-    let CurrentDateFontSize = FontSize 15.
-    
+
+    let CityNameFontSize = FontSize.fromValue 30.
+    let CurrentTemperatureFontSize = FontSize.fromValue 100.
+    let CurrentWeatherKindFontSize = FontSize.fromValue 25.
+    let CurrentDateFontSize = FontSize.fromValue 15.
+
     let createStyleFor<'T when 'T :> BindableObject> setters =
         let style = Style(typeof<'T>)
         for (property, value) in setters do
             style.Setters.Add(Setter(Property = property, Value = value))
         style
-        
+
     let addStyles (styles: Style list) (app: Application) =
         for style in styles do
             app.Resources.Add(style)
-    
+
     let registerGlobalResources (app: Application) =
         app |> addStyles [
             createStyleFor<Label> [
@@ -38,19 +38,19 @@ module Styles =
                 Button.TextColorProperty, box AccentTextColor
             ]
         ]
-    
+
     let getStartGradientColor temp =
-        if temp > 288<kelvin> then 
+        if temp > 288<kelvin> then
             WarmStartColor
-        else if temp < 199<kelvin> then 
+        else if temp < 199<kelvin> then
             NightStartColor
         else
             ColdStartColor
 
     let getEndGradientColor temp =
-        if temp > 288<kelvin> then 
+        if temp > 288<kelvin> then
             WarmEndColor
-        else if temp < 199<kelvin> then 
+        else if temp < 199<kelvin> then
             NightEndColor
         else
             ColdEndColor

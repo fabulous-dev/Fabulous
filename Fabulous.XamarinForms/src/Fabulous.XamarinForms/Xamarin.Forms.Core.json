@@ -448,7 +448,7 @@
           "source": "DragStarting"
         },
         {
-          "source": "DragCompleted"
+          "source": "DropCompleted"
         }
       ]
     },
@@ -738,9 +738,6 @@
     {
       "type": "Xamarin.Forms.FlyoutItem",
       "properties": [
-        {
-          "source": "IsVisible"
-        }
       ],
       "primaryConstructorMembers": [
         "Items"
@@ -3418,7 +3415,7 @@
           "source": "StrokeLineJoin"
         },
         {
-          "source": "StrokeMiterLimitProperty"
+          "source": "StrokeMiterLimit"
         },
         {
           "source": "StrokeThickness"
