@@ -410,6 +410,9 @@
         },
         {
           "source": "TextDecorations"
+        },
+        {
+          "source": "TextTransform"
         }
       ],
       "primaryConstructorMembers": [
@@ -431,6 +434,38 @@
       ],
       "primaryConstructorMembers": [
         "Command"
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.DragGestureRecognizer",
+      "properties": [
+        {
+          "source": "CanDrag"
+        }
+      ],
+      "events": [
+        {
+          "source": "DragStarting"
+        },
+        {
+          "source": "DragCompleted"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.DropGestureRecognizer",
+      "properties": [
+        {
+          "source": "AllowDrop"
+        }
+      ],
+      "events": [
+        {
+          "source": "DragOver"
+        },
+        {
+          "source": "Drop"
+        }
       ]
     },
     {
@@ -632,6 +667,9 @@
           "source": "IsTabStop"
         },
         {
+          "source": "IsVisible"
+        },
+        {
           "source": null,
           "name": "Route",
           "inputType": "string",
@@ -699,6 +737,11 @@
     },
     {
       "type": "Xamarin.Forms.FlyoutItem",
+      "properties": [
+        {
+          "source": "IsVisible"
+        }
+      ],
       "primaryConstructorMembers": [
         "Items"
       ]
@@ -740,6 +783,9 @@
         },
         {
           "source": "AnchorY"
+        },
+        {
+          "source": "Background"
         },
         {
           "source": "BackgroundColor"
@@ -990,6 +1036,9 @@
       "baseGenericConstraint": "Xamarin.Forms.Page",
       "properties": [
         {
+          "source": "BarBackground"
+        },
+        {
           "source": "BarBackgroundColor"
         },
         {
@@ -1027,6 +1076,9 @@
     {
       "type": "Xamarin.Forms.NavigationPage",
       "properties": [
+        {
+          "source": "BarBackground"
+        },
         {
           "source": "BarBackgroundColor"
         },
@@ -1079,6 +1131,12 @@
     {
       "type": "Xamarin.Forms.Shell",
       "properties": [
+        {
+          "source": "FlyoutBackdrop"
+        },
+        {
+          "source": "FlyoutBackground"
+        },
         {
           "source": "FlyoutBackgroundColor"
         },
@@ -1246,6 +1304,9 @@
           "shortName": "image"
         },
         {
+          "source": "TextTransform"
+        },
+        {
           "source": "Padding"
         },
         {
@@ -1304,6 +1365,9 @@
         },
         {
           "source": "Format"
+        },
+        {
+          "source": "TextTransform"
         },
         {
           "source": "MaximumDate"
@@ -1420,6 +1484,9 @@
         },
         {
           "source": "TextColor"
+        },
+        {
+          "source": "TextTransform"
         }
       ],
       "events": [
@@ -1957,6 +2024,9 @@
           "source": "TextDecorations"
         },
         {
+          "source": "TextTransform"
+        },
+        {
           "source": "TextType"
         },
         {
@@ -2301,6 +2371,9 @@
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
+          "source": "HorizontalTextAlignment"
+        },
+        {
           "source": "ItemsSource",
           "shortName": "items",
           "inputType": "string list"
@@ -2312,10 +2385,16 @@
           "source": "TextColor"
         },
         {
+          "source": "TextTransform"
+        },
+        {
           "source": "Title"
         },
         {
           "source": "TitleColor"
+        },
+        {
+          "source": "VerticalTextAlignment"
         }
       ],
       "events": [
@@ -2401,10 +2480,6 @@
           "name": "MinimumMaximum",
           "inputType": "float * float",
           "updateCode": "ViewUpdaters.updateStepperMinimumMaximum"
-        },
-        {
-          "source": "StepperPosition",
-          "updateCode": "ViewUpdaters.updateStepperPosition"
         },
         {
           "source": "Value"
@@ -2497,6 +2572,9 @@
         },
         {
           "source": "TextColor"
+        },
+        {
+          "source": "TextTransform"
         },
         {
           "source": "Time"
@@ -2700,6 +2778,9 @@
         },
         {
           "source": "TextColor"
+        },
+        {
+          "source": "TextTransform"
         },
         {
           "source": "VerticalTextAlignment"
@@ -3196,9 +3277,7 @@
       "type": "Xamarin.Forms.Shapes.Transform",
       "properties": [
         {
-          "_comment": "We're currently forced to set the default value even if it's a BindableProperty because the field is marked internal and we can't access it. It will be solved by https://github.com/xamarin/Xamarin.Forms/pull/11543.",
-          "source": "Value",
-          "defaultValue": "Xamarin.Forms.Shapes.Matrix()"
+          "source": "Value"
         }
       ]
     },
@@ -3342,6 +3421,9 @@
           "source": "StrokeLineJoin"
         },
         {
+          "source": "StrokeMiterLimitProperty"
+        },
+        {
           "source": "StrokeThickness"
         }
       ]
@@ -3413,6 +3495,61 @@
         },
         {
           "source": "RadiusY"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.Brush",
+      "canBeInstantiated": false
+    },
+    {
+      "type": "Xamarin.Forms.GradientBrush",
+      "properties": [
+        {
+          "source": "GradientStops",
+          "inputType": "ViewElement list",
+          "updateCode": "Collections.updateGradientBrushGradientStops"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.GradientStop",
+      "properties": [
+        {
+          "source": "Color"
+        },
+        {
+          "source": "Offset"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.LinearGradientBrush",
+      "properties": [
+        {
+          "source": "StartPoint"
+        },
+        {
+          "source": "EndPoint"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.RadialGradientBrush",
+      "properties": [
+        {
+          "source": "Center"
+        },
+        {
+          "source": "Radius"
+        }
+      ]
+    },
+    {
+      "type": "Xamarin.Forms.SolidColorBrush",
+      "properties": [
+        {
+          "source": "Color"
         }
       ]
     }
