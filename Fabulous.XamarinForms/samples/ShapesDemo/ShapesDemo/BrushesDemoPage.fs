@@ -12,9 +12,9 @@ module BrushesDemoPage =
             startPoint = Point.Zero,
             endPoint = Point(1., 1.),
             gradientStops = [
-                View.GradientStop(Color.DarkBlue, offset = 0.1f)
-                View.GradientStop(Color.Red, offset = 0.6f)
-                View.GradientStop(Color.LightPink, offset = 1.0f)
+                View.GradientStop(Color.DarkBlue, offset = 0.1)
+                View.GradientStop(Color.Red, offset = 0.6)
+                View.GradientStop(Color.LightPink, offset = 1.0)
             ]
         )
 
@@ -23,9 +23,9 @@ module BrushesDemoPage =
             startPoint = Point.Zero,
             endPoint = Point(1., 1.),
             gradientStops = [
-                View.GradientStop(Color.DarkOrange, offset = 0.1f)
-                View.GradientStop(Color.Orange, offset = 0.6f)
-                View.GradientStop(Color.Red, offset = 1.0f)
+                View.GradientStop(Color.DarkOrange, offset = 0.1)
+                View.GradientStop(Color.Orange, offset = 0.6)
+                View.GradientStop(Color.Red, offset = 1.0)
             ]
         )
 
@@ -34,9 +34,9 @@ module BrushesDemoPage =
             center = Point(0.5, 0.5),
             radius = 0.75,
             gradientStops = [
-                View.GradientStop(Color.DarkBlue, offset = 0.1f)
-                View.GradientStop(Color.Red, offset = 0.6f)
-                View.GradientStop(Color.LightPink, offset = 1.0f)
+                View.GradientStop(Color.DarkBlue, offset = 0.1)
+                View.GradientStop(Color.Red, offset = 0.6)
+                View.GradientStop(Color.LightPink, offset = 1.0)
             ]
         )
 
