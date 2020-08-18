@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Include="AnalogClockDemoPage.fs" />
     <Compile Include="BabyElephantPage.fs" />
+    <Compile Include="BrushesDemoPage.fs" />
     <Compile Include="CatDemoPage.fs" />
     <Compile Include="ClipArtManDemoPage.fs" />
     <Compile Include="ClipDemoPage.fs" />
@@ -16,6 +17,7 @@
     <Compile Include="HelloDemoPage.fs" />
     <Compile Include="InvertedXamagonDemoPage.fs" />
     <Compile Include="LineDemoPage.fs" />
+    <Compile Include="MonekyFaceDemoPage.fs" />
     <Compile Include="PathAspectDemoPage.fs" />
     <Compile Include="PathDemoPage.fs" />
     <Compile Include="PathGeometryDemoPage.fs" />

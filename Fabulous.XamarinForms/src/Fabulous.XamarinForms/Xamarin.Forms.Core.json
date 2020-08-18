@@ -1807,7 +1807,7 @@
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
       "canBeInstantiated": false,
       "properties": [
-        
+
       ]
     },
     {
@@ -3518,7 +3518,9 @@
           "source": "Color"
         },
         {
-          "source": "Offset"
+          "source": "Offset",
+          "inputType": "float",
+          "convertInputToModel": "single"
         }
       ]
     },
