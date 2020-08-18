@@ -22,7 +22,7 @@ To use `Fabulous.XamarinForms.FFImageLoading`, you must:
 2. Add this line to your platform specific projects (AppDelegate.fs, MainActivity.fs, MainPage.xaml.cs, etc) before you use FFImageLoading:
 - If you’re using Android:
 ```fs
-FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: [true]/[false])
+FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer = Nullable [true]/[false])
 ```
 - If you’re using non-Android platforms:
 ```fs
@@ -33,7 +33,7 @@ FFImageLoading.Forms.Platform.CachedImageRenderer.Init()
 
 ```fsharp
 View.CachedImage(
-  source = Path "http://loremflickr.com/600/600/nature?filename=simple.jpg",
+  source = ImagePath "http://loremflickr.com/600/600/nature?filename=simple.jpg",
   height = 600.,
   width = 600.
 )

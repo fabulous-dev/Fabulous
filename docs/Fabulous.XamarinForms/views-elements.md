@@ -230,7 +230,7 @@ View.Shell(title = "TitleShell",
                    ])
            ])
 
-View.CarouselView(itemsSource = [
+View.CarouselView(items = [
             View.Label(text="Person1") 
             View.Label(text="Person2")
             View.Label(text="Person3")

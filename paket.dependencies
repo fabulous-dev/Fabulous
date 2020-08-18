@@ -32,8 +32,8 @@ group neutral
 group generator
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
-  nuget Xamarin.Forms 4.7.0.1080
-  nuget Xamarin.Forms.Maps 4.7.0.1080
+  nuget Xamarin.Forms 4.8.0.1269
+  nuget Xamarin.Forms.Maps 4.8.0.1269
   nuget Xamarin.Forms.PancakeView 1.3.6
   nuget SkiaSharp.Views.Forms 1.68.1
   nuget Plugin.MediaManager.Forms 0.9.6
@@ -45,8 +45,8 @@ group androidapp
   framework: monoandroid9.0
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
-  nuget Xamarin.Forms.Maps ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
+  nuget Xamarin.Forms.Maps ~> 4.8.0
   nuget Xamarin.Android.FSharp.ResourceProvider
   nuget Newtonsoft.Json
   nuget FSharp.Data
@@ -70,7 +70,7 @@ group androidxapp
   framework: monoandroid10.0
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
   nuget Newtonsoft.Json
   nuget Xamarin.Android.FSharp.ResourceProvider
   nuget Xamarin.Essentials
@@ -81,8 +81,8 @@ group iosapp
   framework: xamarinios10
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
-  nuget Xamarin.Forms.Maps ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
+  nuget Xamarin.Forms.Maps ~> 4.8.0
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
@@ -96,8 +96,8 @@ group macosapp
   framework: xamarinmac20
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
-  nuget Xamarin.Forms.Maps ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
+  nuget Xamarin.Forms.Maps ~> 4.8.0
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
@@ -111,10 +111,10 @@ group wpfapp
   framework: net472
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
-  nuget Xamarin.Forms.Platform.WPF ~> 4.7.0
-  nuget Xamarin.Forms.Maps ~> 4.7.0
-  nuget Xamarin.Forms.Maps.WPF ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
+  nuget Xamarin.Forms.Platform.WPF ~> 4.8.0
+  nuget Xamarin.Forms.Maps ~> 4.8.0
+  nuget Xamarin.Forms.Maps.WPF ~> 4.8.0
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
@@ -128,10 +128,10 @@ group gtkapp
   framework: net471
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.7.0
-  nuget Xamarin.Forms.Platform.GTK ~> 4.7.0
-  nuget Xamarin.Forms.Maps ~> 4.7.0
-  nuget Xamarin.Forms.Maps.GTK ~> 4.7.0
+  nuget Xamarin.Forms ~> 4.8.0
+  nuget Xamarin.Forms.Platform.GTK ~> 4.8.0
+  nuget Xamarin.Forms.Maps ~> 4.8.0
+  nuget Xamarin.Forms.Maps.GTK ~> 4.8.0
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
