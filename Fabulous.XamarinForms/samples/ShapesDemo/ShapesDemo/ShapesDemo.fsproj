@@ -26,6 +26,7 @@
     <Compile Include="PolygonDemoPage.fs" />
     <Compile Include="PolylineDemoPage.fs" />
     <Compile Include="RectangleDemoPage.fs" />
+    <Compile Include="SpiralDemoPage.fs" />
     <Compile Include="ShapesDemo.fs" />
     <None Include="Resources\DIN Condensed Bold.ttf" />
   </ItemGroup>

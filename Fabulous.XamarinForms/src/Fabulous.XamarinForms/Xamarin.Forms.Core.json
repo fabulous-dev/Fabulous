@@ -884,6 +884,11 @@
           "source": "Focused"
         },
         {
+          "source": "SizeChanged",
+          "inputType": "float * float -> unit",
+          "convertInputToModel": "ViewConverters.makeVisualElementSizeChangedEventHandler"
+        },
+        {
           "source": "Unfocused"
         }
       ]
