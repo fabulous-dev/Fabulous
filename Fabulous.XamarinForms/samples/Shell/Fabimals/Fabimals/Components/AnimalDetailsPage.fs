@@ -10,13 +10,13 @@ module AnimalDetails =
     type Msg = NoOp
     type CmdMsg = NoOp
     type ExternalMsg = NoOp
-    
+
     type Model =
         { Animal: Animal }
 
     let init (animal: Animal) =
         { Animal = animal }
-    
+
     let view model =
         dependsOn model.Animal (fun model animal ->
             // Currently Fabulous needs to handle its own ContentPage to support Routing inside Shell
@@ -38,7 +38,7 @@ module AnimalDetails =
                             horizontalOptions=LayoutOptions.Center
                         )
                         View.Image(
-                            source=ImagePath animal.ImageUrl,
+                            source=Image.fromPath animal.ImageUrl,
                             width=200.,
                             height=200.,
                             horizontalOptions=LayoutOptions.CenterAndExpand

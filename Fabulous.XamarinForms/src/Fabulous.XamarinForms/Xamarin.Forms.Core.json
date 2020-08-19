@@ -393,7 +393,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -448,7 +448,7 @@
           "source": "DragStarting"
         },
         {
-          "source": "DragCompleted"
+          "source": "DropCompleted"
         }
       ]
     },
@@ -738,9 +738,6 @@
     {
       "type": "Xamarin.Forms.FlyoutItem",
       "properties": [
-        {
-          "source": "IsVisible"
-        }
       ],
       "primaryConstructorMembers": [
         "Items"
@@ -885,6 +882,11 @@
       "events": [
         {
           "source": "Focused"
+        },
+        {
+          "source": "SizeChanged",
+          "inputType": "float * float -> unit",
+          "convertInputToModel": "ViewConverters.makeVisualElementSizeChangedEventHandler"
         },
         {
           "source": "Unfocused"
@@ -1296,7 +1298,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1360,7 +1362,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1512,7 +1514,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1548,7 +1550,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1599,7 +1601,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -1807,7 +1809,7 @@
       "genericConstraint": "'T when 'T :> Xamarin.Forms.BindableObject",
       "canBeInstantiated": false,
       "properties": [
-        
+
       ]
     },
     {
@@ -1993,7 +1995,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2367,7 +2369,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2564,7 +2566,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -2734,7 +2736,7 @@
         },
         {
           "source": "FontSize",
-          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize",
+          "inputType": "Fabulous.XamarinForms.InputTypes.FontSize.Value",
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
@@ -3153,8 +3155,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyBezierSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyBezierSegmentPoints"
         }
       ]
     },
@@ -3163,8 +3165,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyLineSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyLineSegmentPoints"
         }
       ]
     },
@@ -3173,8 +3175,8 @@
       "properties": [
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolyQuadraticBezierSegmentPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolyQuadraticBezierSegmentPoints"
         }
       ]
     },
@@ -3238,11 +3240,8 @@
       "properties": [
         {
           "source": "Figures",
-          "inputType": "ViewElement list",
-          "updateCode": "Collections.updatePathGeometryFigures",
-          "collection": {
-            "elementType": "Xamarin.Forms.Shapes.PathFigure"
-          }
+          "inputType": "InputTypes.Figures.Value",
+          "updateCode": "Collections.updatePathGeometryFigures"
         },
         {
           "source": "FillRule"
@@ -3421,7 +3420,7 @@
           "source": "StrokeLineJoin"
         },
         {
-          "source": "StrokeMiterLimitProperty"
+          "source": "StrokeMiterLimit"
         },
         {
           "source": "StrokeThickness"
@@ -3453,11 +3452,13 @@
       "properties": [
         {
           "source": "Data",
-          "inputType": "InputTypes.StringOrViewElement",
+          "inputType": "InputTypes.Content.Value",
           "updateCode": "ViewUpdaters.updatePathData"
         },
         {
-          "source": "RenderTransform"
+          "source": "RenderTransform",
+          "inputType": "InputTypes.Content.Value",
+          "updateCode": "ViewUpdaters.updatePathRenderTransform"
         }
       ]
     },
@@ -3469,8 +3470,8 @@
         },
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolygonPoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolygonPoints"
         }
       ]
     },
@@ -3482,8 +3483,8 @@
         },
         {
           "source": "Points",
-          "inputType": "Xamarin.Forms.Point list",
-          "updateCode": "Collections.updatePolylinePoints"
+          "inputType": "Fabulous.XamarinForms.InputTypes.Points.Value",
+          "updateCode": "ViewUpdaters.updatePolylinePoints"
         }
       ]
     },
@@ -3519,7 +3520,9 @@
           "source": "Color"
         },
         {
-          "source": "Offset"
+          "source": "Offset",
+          "inputType": "float",
+          "convertInputToModel": "single"
         }
       ]
     },

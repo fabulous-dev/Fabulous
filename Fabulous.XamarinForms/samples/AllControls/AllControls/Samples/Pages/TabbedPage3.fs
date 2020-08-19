@@ -26,7 +26,7 @@ module TabbedPage3 =
                                             View.Label(
                                                 text = "Seated Monkey",
                                                 margin = Thickness (0.0, 8.0),
-                                                fontSize = Named NamedSize.Large,
+                                                fontSize = FontSize.fromNamedSize NamedSize.Large,
                                                 textColor = Color.Blue
                                             )
                                             View.Label(
@@ -46,14 +46,14 @@ module TabbedPage3 =
                                             View.Image(
                                                 height = 240.0, 
                                                 width = 160.0, 
-                                                source = ImagePath "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                source = Image.fromPath "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
                                             ).Order(-1)
                                              .AlignSelf(FlexAlignSelf.Center)
                                             
                                             View.Label(margin = Thickness (0.0, 4.0)).Grow(1.0)
                                             View.Button(
                                                 text = "Learn More",
-                                                fontSize = Named NamedSize.Large,
+                                                fontSize = FontSize.fromNamedSize NamedSize.Large,
                                                 textColor = Color.White,
                                                 backgroundColor = Color.Green,
                                                 cornerRadius = 20
@@ -75,7 +75,7 @@ module TabbedPage3 =
                                             View.Label(
                                                 text = "Banana Monkey",
                                                 margin = Thickness (0.0, 8.0),
-                                                fontSize = Named NamedSize.Large,
+                                                fontSize = FontSize.fromNamedSize NamedSize.Large,
                                                 textColor = Color.Blue
                                             )
                                             View.Label(
@@ -96,14 +96,14 @@ module TabbedPage3 =
                                             View.Image(
                                                 height = 213.0, 
                                                 width = 320.0, 
-                                                source = ImagePath "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                source = Image.fromPath "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
                                             ).Order(-1)
                                              .AlignSelf(FlexAlignSelf.Center)
                                              
                                             View.Label(margin = Thickness (0.0, 4.0)).Grow(1.0)
                                             View.Button(
                                                 text = "Learn More",
-                                                fontSize = Named NamedSize.Large,
+                                                fontSize = FontSize.fromNamedSize NamedSize.Large,
                                                 textColor = Color.White,
                                                 backgroundColor = Color.Green,
                                                 cornerRadius = 20
@@ -183,7 +183,7 @@ module TabbedPage3 =
                 children = [ 
                     View.Label(
                         text = "AbsoluteLayout Demo",
-                        fontSize = Named NamedSize.Large,
+                        fontSize = FontSize.fromNamedSize NamedSize.Large,
                         horizontalOptions = LayoutOptions.Center
                     )
                     View.AbsoluteLayout(

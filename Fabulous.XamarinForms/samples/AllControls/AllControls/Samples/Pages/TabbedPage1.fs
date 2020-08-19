@@ -208,7 +208,7 @@ module TabbedPage1 =
             content = View.StackLayout([
                 View.Label(text = "Image (URL):")
                 View.Image(
-                    source = ImagePath "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
+                    source = Image.fromPath "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
                     horizontalOptions = LayoutOptions.Fill,
                     verticalOptions = LayoutOptions.FillAndExpand
                 )
@@ -217,7 +217,7 @@ module TabbedPage1 =
                     margin = Thickness (0., 20., 0., 0.)
                 )
                 View.Image(
-                    source = ImageSrc (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<Msg>.Assembly)), 
+                    source = Image.fromImageSource (ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<Msg>.Assembly)), 
                     horizontalOptions = LayoutOptions.Fill,
                     verticalOptions = LayoutOptions.FillAndExpand
                 )

@@ -11,7 +11,7 @@ module Effects =
         View.ScrollingContentPage(
             title = "Effects sample",
             content = View.StackLayout([
-                View.Label("Focus effect (no properties)", fontSize=Named NamedSize.Large)
+                View.Label("Focus effect (no properties)", fontSize=FontSize.fromNamedSize NamedSize.Large)
                 View.Label("Classic Entry field", margin=Thickness (0., 15., 0., 0.))
                 View.Entry()
                 View.Label("Entry field with Focus effect", margin=Thickness (0., 15., 0., 0.))
@@ -19,7 +19,7 @@ module Effects =
                     View.Effect("FabulousXamarinForms.FocusEffect")
                 ])
 
-                View.Label("Shadow effect (with properties)", fontSize=Named NamedSize.Large, margin=Thickness (0., 30., 0., 0.))
+                View.Label("Shadow effect (with properties)", fontSize=FontSize.fromNamedSize NamedSize.Large, margin=Thickness (0., 30., 0., 0.))
                 View.Label("Classic Label field", margin=Thickness (0., 15., 0., 0.))
                 View.Label("This is a label without shadows")
                 View.Label("Label field with Shadow effect", margin=Thickness (0., 15., 0., 0.))

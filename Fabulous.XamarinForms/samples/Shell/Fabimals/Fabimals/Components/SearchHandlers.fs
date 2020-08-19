@@ -29,7 +29,7 @@ module SearchHandlers =
                         coldefs=[ Stars 0.15; Stars 0.85],
                         children=[
                             View.Image(
-                                source=ImagePath animal.ImageUrl,
+                                source=Image.fromPath animal.ImageUrl,
                                 aspect=Aspect.AspectFill,
                                 height=40.,
                                 width=40.

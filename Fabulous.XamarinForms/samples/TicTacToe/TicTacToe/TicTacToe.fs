@@ -8,21 +8,21 @@ open Xamarin.Forms
 open Xamarin.Forms
 
 /// Represents a player and a player's move
-type Player = 
-    | X 
-    | O 
+type Player =
+    | X
+    | O
     member p.Swap = match p with X -> O | O -> X
     member p.Name = match p with X -> "X" | Y -> "Y"
 
 /// Represents the game state contents of a single cell
-type GameCell = 
-    | Empty 
+type GameCell =
+    | Empty
     | Full of Player
     member x.CanPlay = (x = Empty)
 
 /// Represents the result of a game
-type GameResult = 
-    | StillPlaying 
+type GameResult =
+    | StillPlaying
     | Win of Player
     | Draw
 
@@ -43,7 +43,7 @@ type Row = GameCell list
 
 /// Represents the state of the game
 type Model =
-    { 
+    {
       /// Who is next to play
       NextUp: Player
 
@@ -52,25 +52,25 @@ type Model =
 
       /// The state of play on the board
       GameScore: (int * int)
-      
+
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
       /// updates telling us the overall allocated size.
       VisualBoardSize: double option
     }
 
-/// The model, update and view content of the app. This is placed in an 
+/// The model, update and view content of the app. This is placed in an
 /// independent model to facilitate unit testing.
-module App = 
-    let positions = 
-        [ for x in 0 .. 2 do 
-            for y in 0 .. 2 do 
+module App =
+    let positions =
+        [ for x in 0 .. 2 do
+            for y in 0 .. 2 do
                yield (x, y) ]
 
-    let initialBoard = 
+    let initialBoard =
         Map.ofList [ for p in positions -> p, Empty ]
 
-    let init () = 
+    let init () =
         { NextUp = X
           Board = initialBoard
           GameScore = (0,0)
@@ -78,7 +78,7 @@ module App =
 
     /// Check if there are any more moves available in the game
     let anyMoreMoves m = m.Board |> Map.exists (fun _ c -> c = Empty)
-    
+
     let lines =
         [
             // rows
@@ -104,58 +104,58 @@ module App =
     let getGameResult model =
         match lines |> Seq.tryPick (getLine model.Board >> getLineWinner) with
         | Some p -> Win p
-        | _ -> 
+        | _ ->
            if anyMoreMoves model then StillPlaying
            else Draw
 
     /// Get a message to show the current game result
-    let getMessage model = 
-        match getGameResult model with 
+    let getMessage model =
+        match getGameResult model with
         | StillPlaying -> sprintf "%s's turn" model.NextUp.Name
         | Win p -> sprintf "%s wins!" p.Name
         | Draw -> "It is a draw!"
 
     /// The 'update' function to update the model
     let update gameOver msg model =
-        let newModel = 
+        let newModel =
             match msg with
-            | Play pos -> 
+            | Play pos ->
                 { model with Board = model.Board.Add(pos, Full model.NextUp)
                              NextUp = model.NextUp.Swap }
-            | Restart -> 
+            | Restart ->
                 { model with NextUp = X; Board = initialBoard }
-            | SetVisualBoardSize size -> 
+            | SetVisualBoardSize size ->
                 { model with VisualBoardSize = Some size }
 
-        // Make an announcement in the middle of the game. 
+        // Make an announcement in the middle of the game.
         let result = getGameResult newModel
-        if result <> StillPlaying then 
+        if result <> StillPlaying then
             gameOver (getMessage newModel)
 
-        let newModel2 = 
+        let newModel2 =
             let (x,y) = newModel.GameScore
-            match result with 
+            match result with
             | Win p -> { newModel with GameScore = (if p = X then (x+1, y) else (x, y+1)) }
             | _ -> newModel
-            
+
         // Return the new model.
         newModel2
 
-    /// A helper used in the 'view' function to get the name 
+    /// A helper used in the 'view' function to get the name
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         let path =
             match cell with
-            | Full X -> 
+            | Full X ->
                 match Device.RuntimePlatform with
                 | Device.macOS -> "Cross"
                 | _ -> "Cross.png"
-            | Full O -> 
+            | Full O ->
                 match Device.RuntimePlatform with
                 | Device.macOS -> "Nought"
                 | _ -> "Nought.png"
             | Empty -> ""
-        ImagePath path
+        Image.fromPath path
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
     let uiText (row,col) = sprintf "%d%d" row col
@@ -166,7 +166,7 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      View.NavigationPage(barBackgroundColor = Color.LightBlue, 
+      View.NavigationPage(barBackgroundColor = Color.LightBlue,
         barTextColor = Color.Black,
         pages=
           [View.ContentPage(
@@ -180,8 +180,8 @@ module App =
                         yield View.BoxView(Color.Black).Column(3).RowSpan(5)
 
                         for ((row,col) as pos) in positions ->
-                            let item = 
-                                if canPlay model model.Board.[pos] then 
+                            let item =
+                                if canPlay model model.Board.[pos] then
                                     View.Button(key = sprintf "Button%i_%i" row col, command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
                                     View.Image(key = sprintf "Image%i_%i" row col,
@@ -197,31 +197,31 @@ module App =
                     ?width = model.VisualBoardSize,
                     ?height = model.VisualBoardSize).Row(0)
 
-                View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black, 
+                View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black,
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
-                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=Named NamedSize.Large).Row(1)
+                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(1)
 
-                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=Named NamedSize.Large).Row(2)
+                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(2)
               ]),
 
-             // This requests a square board based on the width we get allocated on the device 
+             // This requests a square board based on the width we get allocated on the device
              sizeAllocated=(fun (width, height) ->
-               match model.VisualBoardSize with 
-               | None -> 
+               match model.VisualBoardSize with
+               | None ->
                    let sz = min width height - 80.0
                    dispatch (SetVisualBoardSize sz)
-               | Some _ -> 
+               | Some _ ->
                    () ))])
 
     // Display a modal message giving the game result. This is doing a UI
     // action in the model update, which is ok for modal messages. We factor
-    // this dependency out to allow unit testing of the 'update' function. 
+    // this dependency out to allow unit testing of the 'update' function.
 
     let gameOver msg =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
-    let program = 
+    let program =
         Program.mkSimple init (update gameOver) view
         |> Program.withConsoleTrace
 
@@ -234,10 +234,10 @@ module App =
 type App() as app =
     inherit Application()
 
-    let runner = 
+    let runner =
         App.program
         |> XamarinFormsProgram.run app
-        
+
 #if DEBUG && !TESTEVAL
     do runner.EnableLiveUpdate ()
 #endif

@@ -346,15 +346,7 @@ module Collections =
             | null -> let oc = GeometryCollection() in target.Children <- oc; oc
             | oc -> oc
         updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Geometry) updateChild attach
-
-    /// Update the figures of a PathGeometry, given previous and current view elements
-    let inline updatePathGeometryFigures prevCollOpt collOpt (target: PathGeometry) attach =
-        let targetColl =
-            match target.Figures with
-            | null -> let oc = PathFigureCollection() in target.Figures <- oc; oc
-            | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathFigure) updateChild attach
-
+        
     /// Update the segments of a PathFigure, given previous and current view elements
     let inline updatePathFigureSegments prevCollOpt collOpt (target: PathFigure) attach =
         let targetColl =
@@ -362,34 +354,7 @@ module Collections =
             | null -> let oc = PathSegmentCollection() in target.Segments <- oc; oc
             | oc -> oc
         updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathSegment) updateChild attach
-
-    let inline updatePoints getPointsFn setPointsFn prevCollOpt collOpt =
-        let targetColl =
-            match getPointsFn() with
-            | null -> let oc = PointCollection() in setPointsFn oc; oc
-            | oc -> oc
-        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ())
-
-    /// Update the points of a Polygon, given previous and current view elements
-    let inline updatePolygonPoints prevCollOpt collOpt (target: Polygon) =
-        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
-
-    /// Update the points of a Polyline, given previous and current view elements
-    let inline updatePolylinePoints prevCollOpt collOpt (target: Polyline) =
-        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
-
-    /// Update the points of a PolyBezierSegment, given previous and current view elements
-    let inline updatePolyBezierSegmentPoints prevCollOpt collOpt (target: PolyBezierSegment) =
-        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
-
-    /// Update the points of a PolyLineSegment, given previous and current view elements
-    let inline updatePolyLineSegmentPoints prevCollOpt collOpt (target: PolyLineSegment) =
-        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
-
-    /// Update the points of a PolyQuadraticBezierSegment, given previous and current view elements
-    let inline updatePolyQuadraticBezierSegmentPoints prevCollOpt collOpt (target: PolyQuadraticBezierSegment) =
-        updatePoints (fun () -> target.Points) (fun oc -> target.Points <- oc) prevCollOpt collOpt
-
+        
     /// Update the stroke dash values of a Shape, given previous and current float list
     let inline updateShapeStrokeDashArray prevCollOpt collOpt (target: Xamarin.Forms.Shapes.Shape) =
         let targetColl =
@@ -449,6 +414,38 @@ module Collections =
             itemsSource.[idx] :> obj
 
         updateItems prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ -> ()) (fun _ _ _ -> ())
+        
+        
+    let inline updatePathGeometryFigures (prevOpt: InputTypes.Figures.Value voption) (currOpt: InputTypes.Figures.Value voption) (target: PathGeometry) =
+        match prevOpt, currOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        
+        | _, ValueNone ->
+            target.Figures <- PathFigureCollection()
+        
+        | ValueNone, ValueSome (Figures.String curr)
+        | ValueSome _, ValueSome (Figures.String curr) ->
+            target.Figures <- PathFigureCollectionConverter().ConvertFromInvariantString(curr) :?> PathFigureCollection
+        
+        | ValueNone, ValueSome (Figures.FiguresList curr) ->
+            let targetColl =
+                match target.Figures with
+                | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
+                | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
+            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+            
+        | ValueSome (Figures.FiguresList prev), ValueSome (Figures.FiguresList curr) ->
+            let targetColl =
+                match target.Figures with
+                | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
+                | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
+            updateChildren (ValueSome prev) (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+        
+        | ValueSome (Figures.String _), ValueSome (Figures.FiguresList curr) ->
+            let targetColl = PathFigureCollection()
+            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+            target.Figures <- targetColl
 
     // Update the collection of gradient stops of a GradientBrush, given previous and current values
     let inline updateGradientBrushGradientStops (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (target: GradientBrush) =

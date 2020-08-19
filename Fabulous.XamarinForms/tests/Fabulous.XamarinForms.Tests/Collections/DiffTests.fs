@@ -490,7 +490,7 @@ module DiffTests =
               View.BoxView(Color.Black).Column(1).RowSpan(5)
               View.BoxView(Color.Black).Column(3).RowSpan(5)
               View.Image(
-                source=ImagePath "X",
+                source=Image.fromPath "X",
                 margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
                 verticalOptions=LayoutOptions.Center
               ).Row(0).Column(0)

@@ -12,8 +12,8 @@ module CityView =
           Temperature: int<kelvin>
           WeatherKind: WeatherKind
           HourlyForecast: HourlyForecastValue list }
-    
-    type CityData = 
+
+    type CityData =
         { Name: string
           Data: WeatherData option
           IsRefreshing: bool }
@@ -24,7 +24,7 @@ module CityView =
             View.StackLayout([
                 View.Label(
                     text = cityName.ToUpper(),
-                    fontSize = Named NamedSize.Title,
+                    fontSize = FontSize.fromNamedSize NamedSize.Title,
                     horizontalOptions = LayoutOptions.Center,
                     padding = Thickness(0., 20., 0., 0.)
                 )
@@ -35,7 +35,7 @@ module CityView =
                 )
             ])
         )
-    
+
     // View to display once we have data
     let loadedView (cityIndex: int, cityName: string, isRefreshing: bool, data: WeatherData) requestRefresh =
         dependsOn (cityName, isRefreshing, data) (fun _ (cityName, isRefreshing, data) ->
@@ -57,7 +57,7 @@ module CityView =
                     )
                 | _ ->
                     content
-        
+
             // UI
             containerView <|
                 View.Grid(
@@ -70,34 +70,34 @@ module CityView =
                             horizontalOptions = LayoutOptions.Center,
                             padding = Thickness(0., 20., 0., 0.)
                         )
-                            
+
                         View.Image(
-                            source = ImagePath (sprintf "%s.png" (cityName.Replace(" ", "_").ToLower())),
+                            source = Image.fromPath (sprintf "%s.png" (cityName.Replace(" ", "_").ToLower())),
                             aspect = Aspect.AspectFit,
-                            opacity = 0.8, 
+                            opacity = 0.8,
                             verticalOptions = LayoutOptions.FillAndExpand
                         ).Row(1)
-                            
+
                         View.Label(
                             text = (Helpers.kelvinToRoundedFahrenheit data.Temperature).ToString() + "°",
                             margin = Thickness(30., 0., 0., 0.),
                             horizontalTextAlignment = TextAlignment.Center,
                             fontSize = Styles.CurrentTemperatureFontSize
                         ).Row(2)
-                            
+
                         View.Label(
                             text = data.WeatherKind.ToString().ToUpper(),
                             fontSize = Styles.CurrentWeatherKindFontSize,
                             horizontalOptions = LayoutOptions.Center,
                             margin = Thickness(0., 10., 0., 0.)
                         ).Row(3)
-                            
+
                         View.Label(
                             text = data.Date.ToString("dddd, MMMM dd, yyyy, h:mm tt").ToUpper(),
                             fontSize = Styles.CurrentDateFontSize,
                             horizontalOptions = LayoutOptions.Center
                         ).Row(4)
-                            
+
                         View.StackLayout(
                             orientation = StackOrientation.Horizontal,
                             horizontalOptions = LayoutOptions.Center,
@@ -121,7 +121,7 @@ module CityView =
                                                         horizontalTextAlignment = TextAlignment.Center
                                                     )
                                                     View.Image(
-                                                        source = ImagePath (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
+                                                        source = Image.fromPath (sprintf "http://openweathermap.org/img/wn/%s@2x.png" forecast.IconName),
                                                         aspect = Aspect.AspectFit,
                                                         horizontalOptions = LayoutOptions.Center,
                                                         verticalOptions = LayoutOptions.CenterAndExpand

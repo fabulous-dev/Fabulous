@@ -15,7 +15,7 @@ module About =
         | ShowFabulous
         | ShowXamarinForms
         | ShowOriginalFabimalsSample
-        
+
     type CmdMsg = GoToUrl of string
 
     let goToUrl url =
@@ -46,7 +46,7 @@ module About =
                                 horizontalOptions=LayoutOptions.Fill,
                                 padding=Thickness (0., 40.),
                                 content=View.Image(
-                                    source=ImagePath "logo_fabulous.png",
+                                    source=Image.fromPath "logo_fabulous.png",
                                     horizontalOptions=LayoutOptions.Center,
                                     verticalOptions=LayoutOptions.Center,
                                     height=64.
@@ -58,12 +58,12 @@ module About =
                                 spacing=10.,
                                 children=[
                                     View.Label(
-                                        fontSize=FontSize 22.,
+                                        fontSize=FontSize.fromValue 22.,
                                         formattedText=View.FormattedString([
                                             View.Span(
                                                 text="Fabulous Animals",
                                                 fontAttributes=FontAttributes.Bold,
-                                                fontSize=FontSize 22.
+                                                fontSize=FontSize.fromValue 22.
                                             )
                                             View.Span " "
                                             View.Span(
