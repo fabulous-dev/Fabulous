@@ -12,7 +12,7 @@ module App =
     type Msg = Nope
 
     // Note, this declaration is needed if you enable LiveUpdate
-    let program = XamarinFormsProgram.mkSimple (fun () -> { Test = "" }) (fun (msg: Msg) model -> model) (fun _ _ -> PolylineDemoPage.view())
+    let program = XamarinFormsProgram.mkSimple (fun () -> { Test = "" }) (fun (msg: Msg) model -> model) (fun _ _ -> RectangleDemoPage.view())
     //let program = XamarinFormsProgram.mkSimple PathRenderTransformDemoPage.init PathRenderTransformDemoPage.update PathRenderTransformDemoPage.view
 
 type App () as app =
