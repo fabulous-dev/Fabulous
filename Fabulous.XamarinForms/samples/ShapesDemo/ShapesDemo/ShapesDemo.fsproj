@@ -22,6 +22,7 @@
     <Compile Include="PathDemoPage.fs" />
     <Compile Include="PathGeometryDemoPage.fs" />
     <Compile Include="PathRenderTransformDemoPage.fs" />
+    <Compile Include="PathRenderTransformExamplesDemoPage.fs" />
     <Compile Include="ShapesDemo.fs" />
     <None Include="Resources\DIN Condensed Bold.ttf" />
   </ItemGroup>

@@ -12,8 +12,8 @@ module App =
     type Msg = Nope
 
     // Note, this declaration is needed if you enable LiveUpdate
-//    let program = XamarinFormsProgram.mkSimple (fun () -> { Test = "" }) (fun (msg: Msg) model -> model) (fun _ _ -> MonekyFaceDemoPage.view())
-    let program = XamarinFormsProgram.mkSimple PathRenderTransformDemoPage.init PathRenderTransformDemoPage.update PathRenderTransformDemoPage.view
+    let program = XamarinFormsProgram.mkSimple (fun () -> { Test = "" }) (fun (msg: Msg) model -> model) (fun _ _ -> PathRenderTransformExamplesDemoPage.view())
+    //let program = XamarinFormsProgram.mkSimple PathRenderTransformDemoPage.init PathRenderTransformDemoPage.update PathRenderTransformDemoPage.view
 
 type App () as app =
     inherit Application ()
