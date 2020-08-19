@@ -32,6 +32,7 @@ module PolygonDemoPage =
                             strokeDashArray = [ 1.; 1. ],
                             strokeDashOffset = 6.
                         )
+
                         View.Label("EvenOdd polygon")
                         View.Polygon(
                             points = Points.fromString polygonPoints2,
