@@ -1,3 +1,10 @@
+#### 0.57.0
+
+BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.57.html)
+
+* [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.8 (https://github.com/fsprojects/Fabulous/pull/792)
+* [Fabulous.XamarinForms] Improved support for Paths (https://github.com/fsprojects/Fabulous/pull/782)
+
 #### 0.56.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.7 (https://github.com/fsprojects/Fabulous/pull/777)
