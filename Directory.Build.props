@@ -1,10 +1,12 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.56.0</Version>
+    <Version>0.57.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.56.0</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Added support for Xamarin.Forms 4.7 (https://github.com/fsprojects/Fabulous/pull/777)</PackageReleaseNotes>
+    <PackageVersion>0.57.0</PackageVersion>
+    <PackageReleaseNotes>BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.57.html)
+[Fabulous.XamarinForms] Added support for Xamarin.Forms 4.8 (https://github.com/fsprojects/Fabulous/pull/792)
+[Fabulous.XamarinForms] Improved support for Paths (https://github.com/fsprojects/Fabulous/pull/782)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
