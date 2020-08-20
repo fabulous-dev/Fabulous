@@ -9,4 +9,5 @@
 * [Migration guide from v0.36 to v0.40](migration-guide-to-0.40.html)
 * [Migration guide from v0.43 to v0.50](migration-guide-to-0.50.html)
 * [Migration guide from v0.52 to v0.53](migration-guide-to-0.53.html)
+* [Migration guide from v0.56 to v0.57](migration-guide-to-0.57.html)
 * [Further Resources](index.html#further-resources)
