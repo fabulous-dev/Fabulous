@@ -12,6 +12,8 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 * [Release Notes](RELEASE_NOTES.md)
 
+* [Roadmap](ROADMAP.md)
+
 This repository contains 4 different libraries:
 
 Package | NuGet
