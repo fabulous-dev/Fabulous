@@ -1,6 +1,8 @@
 <Project>
     <!-- External dependencies, will be marked as requirements (equal or higher) in the NuGet packages. Should target lowest possible major versions -->
     <ItemGroup>
+        <!-- All -->
+        <PackageReference Update="FSharp.Core" Version="4.7.0" />
         <!-- Fabulous.CodeGen -->
         <PackageReference Update="Microsoft.FSharpLu.Json" Version="0.11.6" />
         <PackageReference Update="Mono.Cecil" Version="0.11.2" />
@@ -20,7 +22,6 @@
     <!-- Internal dependencies, can be updated without impacting users -->
     <ItemGroup>
         <!-- Shared dependencies -->
-        <PackageReference Update="FSharp.Core" Version="4.7.2" PrivateAssets="All" />
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0" PrivateAssets="All" />
         <!-- Fabulous.Cli -->
         <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" /> <!-- Locked to 0.9.0 for FSharp.Compiler.PortaCode -->
