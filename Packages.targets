@@ -45,6 +45,11 @@
         <PackageReference Update="Xamarin.Forms.Maps.WPF" Version="4.8.0.1269" />
     </ItemGroup>
 
+    <!-- Tools and samples can use the latest version of FSharp.Core -->
+    <ItemGroup Condition=" '$(IsPackable)' == 'false' ">
+        <PackageReference Update="FSharp.Core" Version="4.7.2" />
+    </ItemGroup>
+
     <PropertyGroup>
         <RestoreSources>
             $(RestoreSources);
