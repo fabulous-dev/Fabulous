@@ -52,11 +52,25 @@ let dotnetBuild outputSubDir paths =
                 Configuration = DotNet.BuildConfiguration.Release
                 OutputPath = Some outputPath }) projectPath
 
+let computeBounds (semVer: SemVerInfo) =
+    match semVer.PreRelease with
+    | Some _ ->
+        sprintf "[%s]" semVer.AsString
+    | None when semVer.Major = 0u ->
+        sprintf "[0.%i%%2C0.%i)" semVer.Minor (semVer.Minor + 1u)
+    | None ->
+        sprintf "[%i.0%%2C%i.0)" semVer.Major (semVer.Major + 1u)
+
 let dotnetPack paths =
     for projectPath in paths do
+        let args =
+            sprintf "-p:IncludeSourceLink=True -p:IsPacking=true -p:VersionBounds=\"%s\" -p:RestoreAdditionalProjectSources=\"%s\""
+                (computeBounds release.SemVer)
+                (Path.GetFullPath(buildDir))
+
         DotNet.pack (fun opt ->
             { opt with
-                Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
+                Common = { opt.Common with CustomParams = Some args }
                 Configuration = DotNet.BuildConfiguration.Release
                 OutputPath = Some buildDir }) projectPath
 
@@ -230,7 +244,12 @@ Target.create "BuildFabulousStaticView" (fun _ ->
 )
 
 Target.create "PackFabulous" (fun _ -> 
+    // Pack Fabulous first since it is used by other packages
+    !! "src/Fabulous/Fabulous.fsproj"
+    |> dotnetPack
+
     !! "src/**/*.fsproj"
+    -- "src/Fabulous/Fabulous.fsproj"
     |> dotnetPack
 )
 

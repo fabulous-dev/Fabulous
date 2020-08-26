@@ -17,8 +17,13 @@
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" />
   </ItemGroup>
-  <ItemGroup>
+
+  <ItemGroup Condition=" '$(IsPacking)' != 'true' ">
     <ProjectReference Include="..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(IsPacking)' == 'true' ">
+    <PackageReference Include="Fabulous.XamarinForms" />
+  </ItemGroup>
+
   <Import Project="..\..\..\Packages.targets" />
 </Project>

@@ -15,8 +15,11 @@
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Xamarin.Forms" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(IsPacking)' != 'true' ">
     <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsPacking)' == 'true' ">
+    <PackageReference Include="Fabulous.LiveUpdate" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>

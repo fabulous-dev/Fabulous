@@ -16,8 +16,11 @@
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(IsPacking)' != 'true' ">
     <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsPacking)' == 'true' ">
+    <PackageReference Include="Fabulous" />
   </ItemGroup>
   <Import Project="..\..\Packages.targets" />
 </Project>

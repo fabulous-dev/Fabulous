@@ -50,6 +50,19 @@
         <PackageReference Update="FSharp.Core" Version="4.7.2" />
     </ItemGroup>
 
+    <!-- Versions for dotnet pack -->
+    <ItemGroup Condition=" '$(IsPacking)' == 'true' ">
+        <PackageReference Update="Fabulous" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.LiveUpdate" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.LiveUpdate" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.FFImageLoading" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.Maps" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.OxyPlot" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.SkiaSharp" Version="$(VersionBounds)" />
+        <PackageReference Update="Fabulous.XamarinForms.VideoManager" Version="$(VersionBounds)" />
+    </ItemGroup>
+
     <PropertyGroup>
         <RestoreSources>
             $(RestoreSources);
