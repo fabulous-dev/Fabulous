@@ -19,7 +19,7 @@ https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
 
 .NET Core SDK 3.1.100 or newer is required for building .NET Core 3.1 projects. (e.g. Fabulous.XamarinForms generator)
 
-Note: .NET Core SDK 3.1.200 or newer is required if you want to be the NuGet packages
+Note: .NET Core SDK 3.1.200 or newer is required if you want to build the NuGet packages
 
 ## Understanding the structure
 
