@@ -50,6 +50,23 @@
         <PackageReference Update="FSharp.Core" Version="4.7.2" />
     </ItemGroup>
 
+    <!--
+        Replace the versions of all ProjectReferences nodes during dotnet pack with a pre-computed bound (see build.fsx)
+        Currently, the ProjectReference nodes don't support setting an upper bound for the version, which results in a `>= X.Y.Z` constraint in the NuGet package.
+        To ensure only binary compatible packages are used together, this little hack replaces the default version value of ProjectReference with a proper bound.
+    -->
+    <Target Name="_BoundedProjectReferencesVersion" AfterTargets="_GetProjectReferenceVersions" Condition=" '$(IsPacking)' == 'true' ">
+        <ItemGroup>
+            <_ProjectReferencesWithBounds Include="@(_ProjectReferencesWithVersions)">
+                <ProjectVersion>$(VersionBounds)</ProjectVersion>
+            </_ProjectReferencesWithBounds>
+        </ItemGroup>
+        <ItemGroup>
+            <_ProjectReferencesWithVersions Remove="@(_ProjectReferencesWithVersions)" />
+            <_ProjectReferencesWithVersions Include="@(_ProjectReferencesWithBounds)" />
+        </ItemGroup>
+    </Target>
+
     <PropertyGroup>
         <RestoreSources>
             $(RestoreSources);

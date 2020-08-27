@@ -1,3 +1,7 @@
+#### 0.58.0
+
+* [All] Proper version constraints for the NuGet packages
+
 #### 0.57.0
 
 BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.57.html)
