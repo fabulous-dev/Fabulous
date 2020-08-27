@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MONO_VERSION=6_10_0
-XCODE_VERSION=11.5
+XCODE_VERSION=11.6
 
 echo "Switch to the latest Xamarin SDK"
 sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $MONO_VERSION
