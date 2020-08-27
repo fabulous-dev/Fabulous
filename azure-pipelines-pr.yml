@@ -11,7 +11,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs:
-      version: 3.1.201
+      version: 3.1.302
   - script: .\build.cmd
   - task: PublishTestResults@2
     inputs:
@@ -25,7 +25,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs:
-      version: 3.1.201
+      version: 3.1.302
   - script: ./azure-pipeline-osx-setup.sh
   - script: ./build.sh Test
   - task: PublishTestResults@2
