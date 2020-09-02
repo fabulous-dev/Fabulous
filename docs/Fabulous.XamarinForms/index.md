@@ -153,6 +153,8 @@ See also the curated list [Awesome Fabulous](https://github.com/jimbobbennett/Aw
 Further Resources
 --------
 
+Presentation: [Making Mobile App Development Simple with F#](https://www.youtube.com/watch?v=bEO7bl79uAM)
+
 Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin University Guest Lecture
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
