@@ -185,7 +185,7 @@ module ViewUpdaters =
                             //printfn "Skipping child %d" i
                             let targetChild = target.Pages |> Seq.item i
                             prevChildOpt, targetChild
-                    attach prevChildOpt newChild targetChild
+                    attach(prevChildOpt, newChild, box targetChild)
 
     /// Converts an F# function to a Xamarin.Forms ICommand
     let makeCommand f =

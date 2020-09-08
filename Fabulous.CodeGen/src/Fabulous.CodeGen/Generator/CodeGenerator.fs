@@ -111,11 +111,11 @@ module CodeGenerator =
                     w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
-                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> ignore)" attributeKey
 
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> ignore)" attributeKey
 
                 | _ ->
                     // If the type is ViewElement, then it's a type from the model
@@ -146,49 +146,44 @@ module CodeGenerator =
                             w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
                         w.printfn "        | ValueNone, ValueNone -> ()"
 
-        w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, UpdateFunc>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
-
         // Attached properties updaters
         if data.PropertiesWithAttachedProperties.Length > 0 then
             for p in data.PropertiesWithAttachedProperties do
                 let targetChildType = p.CollectionDataElementType |> Option.defaultValue "obj"
-                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) (targetChild: %s) =" p.UniqueName targetChildType
+                w.printfn "    static member Update%s%sAttachedProperties(prevChildOpt: ViewElement voption, newChild: ViewElement, targetChild: obj) =" data.Name p.UniqueName
+                w.printfn "        let targetChild = targetChild :?> %s" targetChildType
                 for ap in p.AttachedProperties do
                     let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
                     let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
 
-                    w.printfn "            let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
-                    w.printfn "            let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
+                    w.printfn "        let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
+                    w.printfn "        let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
 
                     if ap.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
-                        w.printfn "            // For structured objects, dependsOn on reference equality"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
-                        w.printfn "                newValue.UpdateIncremental(prevValue, (%s.Get%s(targetChild)))" data.FullName ap.Name
-                        w.printfn "            | _, ValueSome newValue ->"
-                        w.printfn "                %s.Set%s(targetChild, (newValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalType
-                        w.printfn "            | ValueSome _, ValueNone ->"
-                        w.printfn "                %s.Set%s(targetChild, null)" data.FullName ap.Name
-                        w.printfn "            | ValueNone, ValueNone -> ()"
+                        w.printfn "        match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
+                        w.printfn "        // For structured objects, dependsOn on reference equality"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "            newValue.UpdateIncremental(prevValue, (%s.Get%s(targetChild)))" data.FullName ap.Name
+                        w.printfn "        | _, ValueSome newValue ->"
+                        w.printfn "            %s.Set%s(targetChild, (newValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalType
+                        w.printfn "        | ValueSome _, ValueNone ->"
+                        w.printfn "            %s.Set%s(targetChild, null)" data.FullName ap.Name
+                        w.printfn "        | ValueNone, ValueNone -> ()"
 
                     elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
-                        w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
+                        w.printfn "        %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
 
                     else
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
-                        w.printfn "            | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                        w.printfn "            | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
-                        w.printfn "            | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
-                        w.printfn "            | _ -> ()"
-
-                    w.printfn "            overrideFunc prevChildOpt newChild targetChild"
+                        w.printfn "        match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
+                        w.printfn "        | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
+                        w.printfn "        | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
+                        w.printfn "        | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
+                        w.printfn "        | _ -> ()"
 
             w.printfn ""
-            for p in data.PropertiesWithAttachedProperties do
-                let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
-                w.printfn "        registry.[%s.KeyValue] <- (fun o p c t -> (update%sAttachedProperties o p c (unbox t)))(match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey p.UniqueName attributeKey
-            w.printfn ""
+
+        w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, UpdateFunc>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
 
         if (data.ImmediateMembers.Length = 0) then
             if (data.BaseName.IsNone) then
@@ -196,23 +191,28 @@ module CodeGenerator =
             else
                 w.printfn "        ViewBuilders.Update%s (registry, prevOpt, curr, target)" data.BaseName.Value
         else
-            if data.ImmediateMembers.Length > 0 then
-                for m in data.ImmediateMembers do
-                    w.printfn "        let mutable prev%sOpt = ValueNone" m.UniqueName
-                    w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName
-                w.printfn "        for kvp in curr.AttributesKeyed do"
-                for m in data.ImmediateMembers do
-                    let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
-                    w.printfn "            if kvp.Key = %s.KeyValue then " attributeKey
-                    w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
-                w.printfn "        match prevOpt with"
-                w.printfn "        | ValueNone -> ()"
-                w.printfn "        | ValueSome prev ->"
-                w.printfn "            for kvp in prev.AttributesKeyed do"
-                for m in data.ImmediateMembers do
-                    let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
-                    w.printfn "                if kvp.Key = %s.KeyValue then " attributeKey
-                    w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
+            if data.PropertiesWithAttachedProperties.Length > 0 then
+                for p in data.PropertiesWithAttachedProperties do
+                    let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
+                    w.printfn "        if not (registry.ContainsKey(%s.KeyValue)) then registry.[%s.KeyValue] <- ViewBuilders.Update%s%sAttachedProperties" attributeKey attributeKey data.Name p.UniqueName
+                w.printfn ""
+
+            for m in data.ImmediateMembers do
+                w.printfn "        let mutable prev%sOpt = ValueNone" m.UniqueName
+                w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName
+            w.printfn "        for kvp in curr.AttributesKeyed do"
+            for m in data.ImmediateMembers do
+                let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
+                w.printfn "            if kvp.Key = %s.KeyValue then " attributeKey
+                w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
+            w.printfn "        match prevOpt with"
+            w.printfn "        | ValueNone -> ()"
+            w.printfn "        | ValueSome prev ->"
+            w.printfn "            for kvp in prev.AttributesKeyed do"
+            for m in data.ImmediateMembers do
+                let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
+                w.printfn "                if kvp.Key = %s.KeyValue then " attributeKey
+                w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
 
             // Unsubscribe previous event handlers
             if data.Events.Length > 0 then

@@ -111,7 +111,9 @@ type ViewRef<'T when 'T : not struct>() =
 
 /// A description of a visual element
 type UpdateFunc = ViewElement voption * ViewElement * obj -> unit
+
 and UpdateFuncWithRegistry<'T> = Dictionary<int, UpdateFunc> * ViewElement voption * ViewElement * 'T -> unit
+
 and ViewElement internal (targetType: Type, create: (unit -> obj), update: UpdateFunc, attribs: KeyValuePair<int,obj>[]) =
 
     new (targetType: Type, create: (unit -> obj), update: UpdateFunc, attribsBuilder: AttributesBuilder) =
