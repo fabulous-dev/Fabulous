@@ -9,9 +9,15 @@ open System.Threading
 
 [<AutoOpen>]
 module ViewHelpers =
+    let [<Literal>] PagesAttribName = "Pages"
+    let [<Literal>] AutomationIdAttribName = "AutomationId"
+    let [<Literal>] NameAttribName = "Name"
+    let [<Literal>] ContentAttribName = "Content"
+    let [<Literal>] ChildrenAttribName = "Children"
+
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
-            
+
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
         if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
@@ -29,8 +35,8 @@ module ViewHelpers =
     // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
     // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
     and internal canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
-        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
-        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
+        let prevPages = prevChild.TryGetAttribute<ViewElement[]>(PagesAttribName)
+        let newPages = newChild.TryGetAttribute<ViewElement[]>(PagesAttribName)
 
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseView
@@ -39,23 +45,23 @@ module ViewHelpers =
     /// Checks whether the control can be reused given the previous and the new AutomationId.
     /// Xamarin.Forms can't change an already set AutomationId
     and internal canReuseAutomationId (prevChild: ViewElement) (newChild: ViewElement) =
-        let prevAutomationId = prevChild.TryGetAttribute<string>("AutomationId")
-        let newAutomationId = newChild.TryGetAttribute<string>("AutomationId")
+        let prevAutomationId = prevChild.TryGetAttribute<string>(AutomationIdAttribName)
+        let newAutomationId = newChild.TryGetAttribute<string>(AutomationIdAttribName)
 
         match prevAutomationId with
         | ValueSome _ when prevAutomationId <> newAutomationId -> false
         | _ -> true
-        
+
     /// Checks whether the CustomEffect can be reused given the previous and the new Effect name
     /// The effect is instantiated by Effect.Resolve and can't be reused when asking for a new effect
     and internal canReuseCustomEffect (prevChild:ViewElement) (newChild:ViewElement) =
-        let prevName = prevChild.TryGetAttribute<string>("Name")
-        let newName = newChild.TryGetAttribute<string>("Name")
+        let prevName = prevChild.TryGetAttribute<string>(NameAttribName)
+        let newName = newChild.TryGetAttribute<string>(NameAttribName)
 
         match prevName with
         | ValueSome _ when prevName <> newName -> false
         | _ -> true
-        
+
     /// Debounce multiple calls to a single function
     let debounce<'T> =
         let memoization = ConcurrentDictionary<obj, CancellationTokenSource>(HashIdentity.Structural)
@@ -80,25 +86,25 @@ module ViewHelpers =
     /// Looks for a view element with the given Automation ID in the view hierarchy.
     /// This function is not optimized for efficiency and may execute slowly.
     let rec tryFindViewElement automationId (element:ViewElement) =
-        let elementAutomationId = element.TryGetAttribute<string>("AutomationId")
+        let elementAutomationId = element.TryGetAttribute<string>(AutomationIdAttribName)
         match elementAutomationId with
         | ValueSome automationIdValue when automationIdValue = automationId -> Some element
         | _ ->
             let childElements =
-                match element.TryGetAttribute<ViewElement>("Content") with
+                match element.TryGetAttribute<ViewElement>(ContentAttribName) with
                 | ValueSome content -> [| content |]
                 | ValueNone ->
-                    match element.TryGetAttribute<ViewElement[]>("Pages") with
+                    match element.TryGetAttribute<ViewElement[]>(PagesAttribName) with
                     | ValueSome pages -> pages
                     | ValueNone ->
-                        match element.TryGetAttribute<ViewElement[]>("Children") with
+                        match element.TryGetAttribute<ViewElement[]>(ChildrenAttribName) with
                         | ValueNone -> [||]
                         | ValueSome children -> children
 
             childElements
             |> Seq.choose (tryFindViewElement automationId)
             |> Seq.tryHead
-     
+
     /// Looks for a view element with the given Automation ID in the view hierarchy
     /// Throws an exception if no element is found
     let findViewElement automationId element =
@@ -125,7 +131,7 @@ module ViewHelpers =
             attribs.Add(ContentsAttribKey, (fun stateObj -> contents (unbox (stateObj))))
 
             // The create method
-            let create () = 
+            let create () =
                 let state = init()
                 let desc = contents state
                 let item = desc.Create()
@@ -134,7 +140,7 @@ module ViewHelpers =
                 item
 
             // The update method
-            let update _ (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
+            let update (_, (prevOpt: ViewElement voption), (source: ViewElement), (target: obj)) =
                 let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
                 let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
                 let realSource = contents state
@@ -147,8 +153,8 @@ module ViewHelpers =
         static member OnCreate (contents : ViewElement, onCreate: (obj -> unit)) =
             View.Stateful (init = (fun () -> ()), contents = (fun _ -> contents), onCreate = (fun _ obj -> onCreate obj))
 
-        static member WithInternalModel(init: (unit -> 'InternalModel), 
-                                        update: ('InternalMessage -> 'InternalModel -> 'InternalModel), 
+        static member WithInternalModel(init: (unit -> 'InternalModel),
+                                        update: ('InternalMessage -> 'InternalModel -> 'InternalModel),
                                         view : ('InternalModel -> ('InternalMessage -> unit) -> ViewElement)) =
             let internalDispatch (state: 'InternalModel ref) msg = state.Value <- update msg state.Value
             View.Stateful (init = (fun () -> ref (init ())), contents = (fun state -> view state.Value (internalDispatch state)))
@@ -162,12 +168,12 @@ module ViewHelpers =
         /// the view where the object occurs.
         static member External (externalObj: 'T) : _ when 'T : not struct =
 
-            match externalsTable.TryGetValue(externalObj) with 
+            match externalsTable.TryGetValue(externalObj) with
             | true, v -> (v :?> ViewElement)
-            | _ -> 
+            | _ ->
                 let attribs = AttributesBuilder(0)
-                let create () = box externalObj 
-                let update (_prevOpt: ViewElement voption) (_source: ViewElement) (_target: obj) = ()
+                let create () = box externalObj
+                let update(_prevOpt: ViewElement voption, _source: ViewElement, _target: obj) = ()
                 let res = ViewElement(externalObj.GetType(), create, update, attribs)
                 externalsTable.Add(externalObj, res)
                 res

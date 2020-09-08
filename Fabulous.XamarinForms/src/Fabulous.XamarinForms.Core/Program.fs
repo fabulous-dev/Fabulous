@@ -10,7 +10,7 @@ type XamarinFormsHost(app: Application) =
         member __.GetRootView() =
             match app.MainPage with
             | null -> failwith "No root view"
-            | rootView -> rootView :> obj 
+            | rootView -> rootView :> obj
 
         member __.SetRootView(rootView) =
             match rootView with
@@ -20,15 +20,15 @@ type XamarinFormsHost(app: Application) =
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module XamarinFormsProgram =    
+module XamarinFormsProgram =
     let private syncDispatch (dispatch: 'msg -> unit) =
         fun msg ->
             Device.BeginInvokeOnMainThread(fun () -> dispatch msg)
-            
+
     let private syncAction (fn: unit -> unit) =
         fun () ->
             Device.BeginInvokeOnMainThread (fun () -> fn())
-            
+
     let private setXamarinFormsHandlers program =
         program
         |> Program.withCanReuseView ViewHelpers.canReuseView
@@ -41,7 +41,7 @@ module XamarinFormsProgram =
         |> setXamarinFormsHandlers
 
     /// Simple program that produces only new state with `init` and `update`.
-    let mkSimple (init : 'arg -> 'model) (update : 'msg -> 'model -> 'model) (view : 'model -> Dispatch<'msg> -> ViewElement) = 
+    let mkSimple (init : 'arg -> 'model) (update : 'msg -> 'model -> 'model) (view : 'model -> Dispatch<'msg> -> ViewElement) =
         Fabulous.Program.mkSimple init update view
         |> setXamarinFormsHandlers
 
@@ -56,6 +56,6 @@ module XamarinFormsProgram =
         program
         |> setXamarinFormsHandlers // TODO: Kept for not breaking existing apps. Need to be removed later
         |> Program.runWithFabulous host arg
-        
+
     let run app program =
         runWith app () program

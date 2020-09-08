@@ -10,13 +10,13 @@ open System.IO
 module CodeGenerator =
     let getAttributeKeyName uniqueName =
         sprintf "%sAttribKey" uniqueName
-    
+
     let getAttributeKey customAttributeKey uniqueName =
         match customAttributeKey with
         | None -> sprintf "ViewAttributes.%s" (getAttributeKeyName uniqueName)
         | Some attributeKey -> attributeKey
-    
-    let generateNamespace (namespaceOfGeneratedCode: string) (additionalNamespaces: string array) (w: StringWriter) = 
+
+    let generateNamespace (namespaceOfGeneratedCode: string) (additionalNamespaces: string array) (w: StringWriter) =
         w.printfn "// Copyright 2018-2020 Fabulous contributors. See LICENSE.md for license."
         w.printfn "namespace %s" namespaceOfGeneratedCode
         w.printfn ""
@@ -26,10 +26,10 @@ module CodeGenerator =
         w.printfn "#nowarn \"760\""
         w.printfn ""
         w.printfn "open Fabulous"
-        
+
         for additionalNamespace in additionalNamespaces do
             w.printfn "open %s" additionalNamespace
-        
+
         w.printfn ""
         w
 
@@ -40,7 +40,7 @@ module CodeGenerator =
                 match m.Name with
                 | "Created" -> "(obj -> unit)"
                 | _ -> "_"
-                
+
             w.printfn "    let %s : AttributeKey<%s> = AttributeKey<%s>(\"%s\")" (getAttributeKeyName m.UniqueName) typeName typeName m.UniqueName
         w.printfn ""
         w
@@ -65,7 +65,7 @@ module CodeGenerator =
                 w.printfn "        let attribCount = match %s with Some _ -> attribCount + 1 | None -> attribCount" m.Name
             w.printfn ""
 
-        match data.BaseName with 
+        match data.BaseName with
         | None ->
             w.printfn "        let attribBuilder = AttributesBuilder(attribCount)"
         | Some nameOfBaseCreator ->
@@ -78,8 +78,8 @@ module CodeGenerator =
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(attribCount%s)" nameOfBaseCreator baseMembers
 
         for m in immediateMembers do
-            let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName                
-            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(%s, %s(v)) " m.Name attributeKey m.ConvertInputToModel 
+            let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
+            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(%s, %s(v)) " m.Name attributeKey m.ConvertInputToModel
 
         w.printfn "        attribBuilder"
         w.printfn ""
@@ -90,15 +90,15 @@ module CodeGenerator =
         | None -> w
         | Some data ->
             w.printfn "    static member Create%s () : %s =" data.Name data.FullName
-            
+
             if data.TypeToInstantiate = data.FullName then
                 w.printfn "        %s()" data.TypeToInstantiate
             else
                 w.printfn "        upcast (%s())" data.TypeToInstantiate
-            
+
             w.printfn ""
             w
-        
+
     let generateUpdateFunction (data: UpdateData) (w: StringWriter) =
         let generateProperties (properties: UpdateProperty array) =
             for p in properties do
@@ -106,13 +106,13 @@ module CodeGenerator =
                 let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
 
                 // Check if the property is a collection
-                match p.CollectionDataElementType with 
+                match p.CollectionDataElementType with
                 | Some collectionDataElementType when not hasApply ->
                     w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
                     w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
-                    
+
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
                     w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
@@ -145,9 +145,9 @@ module CodeGenerator =
                         else
                             w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
                         w.printfn "        | ValueNone, ValueNone -> ()"
-        
-        w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
-        
+
+        w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, UpdateFunc>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
+
         // Attached properties updaters
         if data.PropertiesWithAttachedProperties.Length > 0 then
             for p in data.PropertiesWithAttachedProperties do
@@ -156,10 +156,10 @@ module CodeGenerator =
                 for ap in p.AttachedProperties do
                     let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
                     let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
-                    
+
                     w.printfn "            let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
                     w.printfn "            let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
-                    
+
                     if ap.ModelType = "ViewElement" && not hasApply then
                         w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
                         w.printfn "            // For structured objects, dependsOn on reference equality"
@@ -171,25 +171,25 @@ module CodeGenerator =
                         w.printfn "            | ValueSome _, ValueNone ->"
                         w.printfn "                %s.Set%s(targetChild, null)" data.FullName ap.Name
                         w.printfn "            | ValueNone, ValueNone -> ()"
-                        
+
                     elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
                         w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
-                        
+
                     else
                         w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
                         w.printfn "            | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
                         w.printfn "            | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
                         w.printfn "            | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
                         w.printfn "            | _ -> ()"
-                        
+
                     w.printfn "            overrideFunc prevChildOpt newChild targetChild"
-                    
+
             w.printfn ""
             for p in data.PropertiesWithAttachedProperties do
                 let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
                 w.printfn "        registry.[%s.KeyValue] <- (fun o p c t -> (update%sAttachedProperties o p c (unbox t)))(match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey p.UniqueName attributeKey
             w.printfn ""
-                        
+
         if (data.ImmediateMembers.Length = 0) then
             if (data.BaseName.IsNone) then
                 w.printfn "        ()"
@@ -213,7 +213,7 @@ module CodeGenerator =
                     let attributeKey = getAttributeKey m.CustomAttributeKey m.UniqueName
                     w.printfn "                if kvp.Key = %s.KeyValue then " attributeKey
                     w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
-            
+
             // Unsubscribe previous event handlers
             if data.Events.Length > 0 then
                 w.printfn "        // Unsubscribe previous event handlers"
@@ -243,7 +243,7 @@ module CodeGenerator =
             if data.Properties.Length > 0 then
                 w.printfn "        // Update properties"
                 generateProperties data.Properties
-            
+
             // Subscribe event handlers
             if data.Events.Length > 0 then
                 w.printfn "        // Subscribe new event handlers"
@@ -252,7 +252,7 @@ module CodeGenerator =
                     w.printfn "            match curr%sOpt with" e.UniqueName
                     w.printfn "            | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
                     w.printfn "            | ValueNone -> ()"
-                
+
         w.printfn ""
         w
 
@@ -284,7 +284,7 @@ module CodeGenerator =
             w.printfn ""
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
             w.printfn ""
-            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, (fun registry prevOpt curr target -> ViewBuilders.Update%s(registry, prevOpt, curr, target)), attribBuilder)" data.FullName data.Name data.Name
+            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, ViewBuilders.Update%s, attribBuilder)" data.FullName data.Name data.Name
             w.printfn ""
 
 
@@ -304,7 +304,7 @@ module CodeGenerator =
                 match typ.GenericConstraint with
                 | None -> ""
                 | Some constr -> sprintf "<%s>" constr
-            
+
             w.printfn "/// Viewer that allows to read the properties of a ViewElement representing a %s" typ.Name
             w.printfn "type %s%s(element: ViewElement) =" typ.ViewerName genericConstraint
 
@@ -315,7 +315,7 @@ module CodeGenerator =
                     match typ.InheritedGenericConstraint with
                     | None -> ""
                     | Some constr -> sprintf "<%s>" constr
-                
+
                 w.printfn "    inherit %s%s(element)" inheritedViewerName inheritedGenericConstraint
 
             w.printfn "    do if not ((typeof<%s>).IsAssignableFrom(element.TargetType)) then failwithf \"A ViewElement assignable to type '%s' is expected, but '%%s' was provided.\" element.TargetType.FullName" typ.FullName typ.FullName
@@ -359,7 +359,7 @@ module CodeGenerator =
             w.printfn ""
         w.printfn ""
         w
-    
+
     let generateViewExtensions (data: ViewExtensionsData array) (w: StringWriter) : StringWriter =
         let newLine = "\n                                       "
 
@@ -399,11 +399,11 @@ module CodeGenerator =
                 w.printfn "    /// Adjusts the %s property in the visual element" m.UniqueName
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
-        
+
     let generate data =
         let toString (w: StringWriter) = w.ToString()
         use writer = new StringWriter()
-        
+
         writer
         |> generateNamespace data.Namespace data.AdditionalNamespaces
         |> generateAttributes data.Attributes
@@ -417,7 +417,7 @@ module CodeGenerator =
         (prepareData: BoundModel -> GeneratorData)
         (generate: GeneratorData -> string)
         (bindings: BoundModel) : WorkflowResult<string> =
-        
+
         bindings
         |> prepareData
         |> generate

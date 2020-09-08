@@ -26,14 +26,15 @@ module ViewUpdaters =
         | ValueSome _, ValueNone ->
             clearValue ()
 
+
+    let private updateTargetGroupShortNameBinding enableJumpList (target: Xamarin.Forms.ListView) =
+        target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
+
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
-        let updateTarget enableJumpList =
-            target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
-
         match (prevOpt, currOpt) with
-        | ValueNone, ValueSome curr -> updateTarget curr
-        | ValueSome prev, ValueSome curr when prev <> curr -> updateTarget curr
+        | ValueNone, ValueSome curr -> updateTargetGroupShortNameBinding curr target
+        | ValueSome prev, ValueSome curr when prev <> curr -> updateTargetGroupShortNameBinding curr target
         | ValueSome _, ValueNone -> target.GroupShortNameBinding <- null
         | _, _ -> ()
 
@@ -187,12 +188,6 @@ module ViewUpdaters =
                             prevChildOpt, targetChild
                     attach prevChildOpt newChild targetChild
 
-    /// Update the OnSizeAllocated callback of a control, given previous and current values
-    let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) =
-        let target = (target :?> CustomContentPage)
-        match prevValueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.RemoveHandler(f)
-        match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
-
     /// Converts an F# function to a Xamarin.Forms ICommand
     let makeCommand f =
         let ev = Event<_,_>()
@@ -229,47 +224,43 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> target.CurrentPage <- Unchecked.defaultof<'a>
         | _, ValueSome curr -> target.CurrentPage <- target.Children.[curr]
 
+    let private updateSliderMinimumMaximumFunc (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Slider) =
+        if newMinimum >= prevMaximum then
+            target.Maximum <- newMaximum
+            target.Minimum <- newMinimum
+        else
+            target.Minimum <- newMinimum
+            target.Maximum <- newMaximum
+
     /// Update the Minimum and Maximum values of a slider, given previous and current values
     let updateSliderMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Slider) =
-        let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
-            if newMinimum >= prevMaximum then
-                target.Maximum <- newMaximum
-                target.Minimum <- newMinimum
-            else
-                target.Minimum <- newMinimum
-                target.Maximum <- newMaximum
-
-        let clearValues () =
+        match prevValueOpt, valueOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        | ValueSome prev, ValueSome curr -> updateSliderMinimumMaximumFunc prev curr target
+        | ValueNone, ValueSome curr -> updateSliderMinimumMaximumFunc (0.0, 1.0) curr target
+        | ValueSome _, ValueNone ->
             target.ClearValue Slider.MaximumProperty
             target.ClearValue Slider.MinimumProperty
 
-        match prevValueOpt, valueOpt with
-        | ValueNone, ValueNone -> ()
-        | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome prev, ValueSome curr -> updateFunc prev curr
-        | ValueSome _, ValueNone -> clearValues ()
-        | ValueNone, ValueSome curr -> updateFunc (0.0, 1.0) curr
+    let private updateStepperMinimumMaximumFunc (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Stepper) =
+        if newMinimum >= prevMaximum then
+            target.Maximum <- newMaximum
+            target.Minimum <- newMinimum
+        else
+            target.Minimum <- newMinimum
+            target.Maximum <- newMaximum
 
     /// Update the Minimum and Maximum values of a stepper, given previous and current values
     let updateStepperMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Stepper) =
-        let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
-            if newMinimum >= prevMaximum then
-                target.Maximum <- newMaximum
-                target.Minimum <- newMinimum
-            else
-                target.Minimum <- newMinimum
-                target.Maximum <- newMaximum
-
-        let clearValues () =
-            target.ClearValue Stepper.MaximumProperty
-            target.ClearValue Stepper.MinimumProperty
-
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome prev, ValueSome curr -> updateFunc prev curr
-        | ValueSome _, ValueNone -> clearValues ()
-        | ValueNone, ValueSome curr -> updateFunc (0.0, 1.0) curr
+        | ValueSome prev, ValueSome curr -> updateStepperMinimumMaximumFunc prev curr target
+        | ValueNone, ValueSome curr -> updateStepperMinimumMaximumFunc (0.0, 1.0) curr target
+        | ValueSome _, ValueNone ->
+            target.ClearValue Stepper.MaximumProperty
+            target.ClearValue Stepper.MinimumProperty
 
     /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
     let updateMenuItemAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
@@ -535,7 +526,7 @@ module ViewUpdaters =
     //
     // To avoid cluttering memory with dead handlers, we try to remove them whenever possible (the link is no longer wanted, the CarouselView instance is no longer accessible)
     // But we aren't notified when a CarouselView instance is disposed, and so we can't clean up the associated handler in that case...
-    let private carouselViewHandlers = Dictionary<int, Handler<Xamarin.Forms.IndicatorView>>()
+    let private carouselViewHandlers = lazy(Dictionary<int, Handler<Xamarin.Forms.IndicatorView>>())
 
     let private linkIndicatorViewToCarouselView (target: Xamarin.Forms.CarouselView) indicatorView =
         target.IndicatorView <- indicatorView
@@ -547,37 +538,38 @@ module ViewUpdaters =
 
     let private removeCarouselViewHandler (target: Xamarin.Forms.CarouselView) =
         let key = target.GetHashCode()
-        carouselViewHandlers.Remove(key) |> ignore
+        carouselViewHandlers.Force().Remove(key) |> ignore
+
+    let private getCarouselViewIndicatorViewHandler (target: Xamarin.Forms.CarouselView) =
+        let handlers = carouselViewHandlers.Force()
+        match handlers.TryGetValue(target.GetHashCode()) with
+        | true, handler -> handler
+        | false, _ ->
+            let key = target.GetHashCode()
+            let weakRef = WeakReference<Xamarin.Forms.CarouselView>(target)
+            let handler = Handler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
+                match weakRef.TryGetTarget() with
+                | false, _ -> handlers.Remove(key) |> ignore
+                | true, target -> linkIndicatorViewToCarouselView target indicatorView
+            )
+            handlers.Add(key, handler)
+            handler
 
     let updateCarouselViewIndicatorView (prevValueOpt: ViewRef<IndicatorView> voption) (currValueOpt: ViewRef<IndicatorView> voption) (target: Xamarin.Forms.CarouselView) =
-        let getHandler() =
-            match carouselViewHandlers.TryGetValue(target.GetHashCode()) with
-            | true, handler -> handler
-            | false, _ ->
-                let key = target.GetHashCode()
-                let weakRef = WeakReference<Xamarin.Forms.CarouselView>(target)
-                let handler = Handler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
-                    match weakRef.TryGetTarget() with
-                    | false, _ -> carouselViewHandlers.Remove(key) |> ignore
-                    | true, target -> linkIndicatorViewToCarouselView target indicatorView
-                )
-                carouselViewHandlers.Add(key, handler)
-                handler
-
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | ValueSome prevValue, ValueNone ->
-            let handler = getHandler()
+            let handler = getCarouselViewIndicatorViewHandler target
             prevValue.ValueChanged.RemoveHandler(handler)
             removeCarouselViewHandler target
             linkIndicatorViewToCarouselView target null
         | ValueNone, ValueSome currValue ->
-            let handler = getHandler()
+            let handler = getCarouselViewIndicatorViewHandler target
             currValue.ValueChanged.AddHandler(handler)
             tryLinkIndicatorViewToCarouselView target currValue
         | ValueSome prevValue, ValueSome currValue ->
-            let handler = getHandler()
+            let handler = getCarouselViewIndicatorViewHandler target
             prevValue.ValueChanged.RemoveHandler(handler)
             currValue.ValueChanged.AddHandler(handler)
             tryLinkIndicatorViewToCarouselView target currValue
