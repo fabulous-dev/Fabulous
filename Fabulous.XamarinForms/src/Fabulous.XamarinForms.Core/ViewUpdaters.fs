@@ -25,13 +25,12 @@ module ViewUpdaters =
             if target <> null then currValue.UpdateIncremental(prevValue, target)
         | ValueSome _, ValueNone ->
             clearValue ()
-
-
-    let private updateTargetGroupShortNameBinding enableJumpList (target: Xamarin.Forms.ListView) =
-        target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
-
+            
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
+        let inline updateTargetGroupShortNameBinding enableJumpList (target: Xamarin.Forms.ListView) =
+            target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
+
         match (prevOpt, currOpt) with
         | ValueNone, ValueSome curr -> updateTargetGroupShortNameBinding curr target
         | ValueSome prev, ValueSome curr when prev <> curr -> updateTargetGroupShortNameBinding curr target
@@ -224,40 +223,40 @@ module ViewUpdaters =
         | ValueSome _, ValueNone -> target.CurrentPage <- Unchecked.defaultof<'a>
         | _, ValueSome curr -> target.CurrentPage <- target.Children.[curr]
 
-    let private updateSliderMinimumMaximumFunc (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Slider) =
-        if newMinimum >= prevMaximum then
-            target.Maximum <- newMaximum
-            target.Minimum <- newMinimum
-        else
-            target.Minimum <- newMinimum
-            target.Maximum <- newMaximum
-
     /// Update the Minimum and Maximum values of a slider, given previous and current values
     let updateSliderMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Slider) =
+        let inline updateMinMax (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Slider) =
+            if newMinimum >= prevMaximum then
+                target.Maximum <- newMaximum
+                target.Minimum <- newMinimum
+            else
+                target.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome prev, ValueSome curr -> updateSliderMinimumMaximumFunc prev curr target
-        | ValueNone, ValueSome curr -> updateSliderMinimumMaximumFunc (0.0, 1.0) curr target
+        | ValueSome prev, ValueSome curr -> updateMinMax prev curr target
+        | ValueNone, ValueSome curr -> updateMinMax (0.0, 1.0) curr target
         | ValueSome _, ValueNone ->
             target.ClearValue Slider.MaximumProperty
             target.ClearValue Slider.MinimumProperty
 
-    let private updateStepperMinimumMaximumFunc (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Stepper) =
-        if newMinimum >= prevMaximum then
-            target.Maximum <- newMaximum
-            target.Minimum <- newMinimum
-        else
-            target.Minimum <- newMinimum
-            target.Maximum <- newMaximum
-
     /// Update the Minimum and Maximum values of a stepper, given previous and current values
     let updateStepperMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Stepper) =
+        let inline updateMinMax (_, prevMaximum) (newMinimum, newMaximum) (target: Xamarin.Forms.Stepper) =
+            if newMinimum >= prevMaximum then
+                target.Maximum <- newMaximum
+                target.Minimum <- newMinimum
+            else
+                target.Minimum <- newMinimum
+                target.Maximum <- newMaximum
+
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        | ValueSome prev, ValueSome curr -> updateStepperMinimumMaximumFunc prev curr target
-        | ValueNone, ValueSome curr -> updateStepperMinimumMaximumFunc (0.0, 1.0) curr target
+        | ValueSome prev, ValueSome curr -> updateMinMax prev curr target
+        | ValueNone, ValueSome curr -> updateMinMax (0.0, 1.0) curr target
         | ValueSome _, ValueNone ->
             target.ClearValue Stepper.MaximumProperty
             target.ClearValue Stepper.MinimumProperty
@@ -621,7 +620,7 @@ module ViewUpdaters =
         | ValueNone, ValueNone -> ()
 
 
-    let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
+    let updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
         match prevOpt, currOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()

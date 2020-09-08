@@ -114,9 +114,6 @@ type UpdateFunc = ViewElement voption * ViewElement * obj -> unit
 and UpdateFuncWithRegistry<'T> = Dictionary<int, UpdateFunc> * ViewElement voption * ViewElement * 'T -> unit
 and ViewElement internal (targetType: Type, create: (unit -> obj), update: UpdateFunc, attribs: KeyValuePair<int,obj>[]) =
 
-    let tryFindAttributeByKeyValue keyValue (kvp: KeyValuePair<_, _>)=
-        kvp.Key = keyValue
-
     new (targetType: Type, create: (unit -> obj), update: UpdateFunc, attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
@@ -148,7 +145,7 @@ and ViewElement internal (targetType: Type, create: (unit -> obj), update: Updat
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) =
-        match attribs |> Array.tryFind (tryFindAttributeByKeyValue key.KeyValue) with
+        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with
         | Some kvp -> ValueSome(unbox<'T>(kvp.Value))
         | None -> ValueNone
 
@@ -158,7 +155,7 @@ and ViewElement internal (targetType: Type, create: (unit -> obj), update: Updat
 
     /// Get an attribute of the visual element
     member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) =
-        match attribs |> Array.tryFind (tryFindAttributeByKeyValue key.KeyValue) with
+        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with
         | Some kvp -> unbox<'T>(kvp.Value)
         | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
 
@@ -197,7 +194,7 @@ and ViewElement internal (targetType: Type, create: (unit -> obj), update: Updat
 
         let n = attribs.Length
 
-        let existingAttrIndexOpt = attribs |> Array.tryFindIndex (tryFindAttributeByKeyValue key.KeyValue)
+        let existingAttrIndexOpt = attribs |> Array.tryFindIndex (fun kvp -> kvp.Key = key.KeyValue)
         match existingAttrIndexOpt with
         | Some i ->
             duplicateViewElement n i // duplicate and replace existing attribute
