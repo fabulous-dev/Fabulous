@@ -72,8 +72,8 @@ module MyViewExtensions =
             let create () = new ABC()
 
             // The incremental update method
-            let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
-                ViewBuilders.UpdateBASE (prev, source, target)
+            let update registry (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
+                ViewBuilders.UpdateBASE (registry, prev, source, target)
                 source.UpdateElementCollection (prev, rop1AttribKey, target.Prop1)
                 source.UpdatePrimitive (prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
