@@ -71,7 +71,7 @@ This is the default for apps created with templates 0.13.10 and higher. Do a cle
 7. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
 
         cd SqueakyApp\SqueakyApp
-        fabulous --watch --send 
+        dotnet fabulous --watch --send 
         
 8. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, `runner.EnableLiveUpdate()` may fail to start the HttpListener, which will cause LiveUpdate to fail.
 

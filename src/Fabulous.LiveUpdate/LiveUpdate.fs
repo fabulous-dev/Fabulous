@@ -134,7 +134,7 @@ type HttpServer(printAddressFn, ?port) =
         <p>  then</p>
         <pre>    dotnet tool install -g fabulous-cli --version FABULOUS_VERSION</pre>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    fabulous --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    dotnet fabulous --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directory</p>
     </body>
 </html>"""
