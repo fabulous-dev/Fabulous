@@ -96,3 +96,18 @@ View.Label(
     fontSize = FontSize.fromNamedSize NamedSize.Title
 )
 ```
+
+## Extension Changes
+
+The update function for extensions changed because the attached properties are handled different internally now. 
+_Old:_
+```fsharp
+    let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
+        ViewBuilders.UpdateBASE (prev, source, target)
+```
+
+_New:_
+```fsharp
+    let update registry (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
+        ViewBuilders.UpdateBASE (registry, prev, source, target)
+```
