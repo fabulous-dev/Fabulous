@@ -9,13 +9,15 @@ open Xamarin.Forms.Shapes
 
 /// This module contains the update logic for the controls with children
 module Collections =
+    [<Struct>]
     type Operation<'T> =
-        | Insert of index: int *  element: 'T
-        | Move of oldIndex: int * newIndex: int
-        | Update of index: int * prev: 'T * curr: 'T
-        | MoveAndUpdate of oldIndex: int * prev: 'T * newIndex: int * curr: 'T
-        | Delete of oldIndex: int
-
+        | Insert of insertIndex: int *  element: 'T
+        | Move of moveOldIndex: int * moveNewIndex: int
+        | Update of updateIndex: int * updatePrev: 'T * updateCurr: 'T
+        | MoveAndUpdate of moveAndUpdateOldIndex: int * moveAndUpdateprev: 'T * moveAndUpdatenewIndex: int * moveAndUpdatecurr: 'T
+        | Delete of deleteOldIndex: int
+        
+    [<Struct>]
     type DiffResult<'T> =
         | NoChange
         | ClearCollection

@@ -121,7 +121,7 @@ module CodeGenerator =
                     // If the type is ViewElement, then it's a type from the model
                     // Issue recursive calls to "Create" and "UpdateIncremental"
                     if p.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
                         w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
                         w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
@@ -137,7 +137,7 @@ module CodeGenerator =
                         w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
 
                     else
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
                         w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
                         w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
                         if p.DefaultValue = "" then
@@ -161,7 +161,7 @@ module CodeGenerator =
                     w.printfn "            let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
                     
                     if ap.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
+                        w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
                         w.printfn "            // For structured objects, dependsOn on reference equality"
                         w.printfn "            | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
                         w.printfn "            | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
@@ -176,7 +176,7 @@ module CodeGenerator =
                         w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
                         
                     else
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
+                        w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
                         w.printfn "            | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
                         w.printfn "            | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
                         w.printfn "            | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name

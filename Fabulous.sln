@@ -179,7 +179,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginShape.UWP", "Fabulous.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShapesDemo", "ShapesDemo", "{09E8890D-BEA5-4F3A-AE32-B5DE292783D4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShapesDemo", "Fabulous.XamarinForms\samples\ShapesDemo\ShapesDemo\ShapesDemo.fsproj", "{AA2BEC0E-9BA3-4103-A60E-1B61F0F83CE6}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "ShapesDemo", "Fabulous.XamarinForms\samples\ShapesDemo\ShapesDemo\ShapesDemo.fsproj", "{AA2BEC0E-9BA3-4103-A60E-1B61F0F83CE6}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShapesDemo.iOS", "Fabulous.XamarinForms\samples\ShapesDemo\iOS\ShapesDemo.iOS.fsproj", "{B7153CCA-BAE3-4571-A69F-79275DEAF88C}"
 EndProject
@@ -189,7 +189,12 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShapesDemo.macOS", "Fabulou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapesDemo.UWP", "Fabulous.XamarinForms\samples\ShapesDemo\UWP\ShapesDemo.UWP.csproj", "{D844F7AD-2860-4D92-8D53-B0017D62FC1F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShapesDemo.WPF", "Fabulous.XamarinForms\samples\ShapesDemo\WPF\ShapesDemo.WPF.fsproj", "{BD6B48FC-CE37-4AD3-9EC6-8BBCDE18B7C7}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "ShapesDemo.WPF", "Fabulous.XamarinForms\samples\ShapesDemo\WPF\ShapesDemo.WPF.fsproj", "{BD6B48FC-CE37-4AD3-9EC6-8BBCDE18B7C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FDE2AAC3-9813-4656-968F-54F49484E7A7}"
+	ProjectSection(SolutionItems) = preProject
+		RELEASE_NOTES.md = RELEASE_NOTES.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

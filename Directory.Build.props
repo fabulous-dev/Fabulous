@@ -3,8 +3,9 @@
   <PropertyGroup>
     <Version>0.58.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.58.0</PackageVersion>
-    <PackageReleaseNotes>[All] Proper version constraints for the NuGet packages</PackageReleaseNotes>
+    <PackageVersion>0.58.0-memory004</PackageVersion>
+    <PackageReleaseNotes>[All] Proper version constraints for the NuGet packages
+match struct</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

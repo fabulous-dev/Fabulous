@@ -112,6 +112,17 @@ type ViewRef<'T when 'T : not struct>() =
 /// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
+    let rec tryFindAttribRec key i =
+        if i >= attribs.Length then
+            ValueNone
+        elif attribs.[i].Key = key then
+            ValueSome (attribs.[i])
+        else
+            tryFindAttribRec key (i + 1)
+
+    let tryFindAttrib key =
+        tryFindAttribRec key 0
+    
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, attribsBuilder.Close())
 
@@ -140,13 +151,12 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
-    
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
-        | Some kvp -> ValueSome(unbox<'T>(kvp.Value)) 
-        | None -> ValueNone
+        match tryFindAttrib key.KeyValue with 
+        | ValueSome kvp -> ValueSome(unbox<'T>(kvp.Value)) 
+        | ValueNone -> ValueNone
 
     /// Get an attribute of the visual element
     member x.TryGetAttribute<'T>(name: string) = 
@@ -154,9 +164,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
  
     /// Get an attribute of the visual element
     member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
-        | Some kvp -> unbox<'T>(kvp.Value)
-        | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
+        match tryFindAttrib key.KeyValue with 
+        | ValueSome kvp -> unbox<'T>(kvp.Value)
+        | ValueNone -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
         
     /// Try get the key attribute value
     member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
