@@ -19,6 +19,7 @@ type AppDelegate() =
 
     override this.DidFinishLaunching(notification: NSNotification) =
         Forms.Init()
+        this.SetupNativeMenu()
         this.LoadApplication(new NewApp.App())
 
         base.DidFinishLaunching(notification)
@@ -28,6 +29,21 @@ type AppDelegate() =
         ()
         
     override __.ApplicationShouldTerminateAfterLastWindowClosed(_) = true        
+
+    member this.SetupNativeMenu() =
+        let menuBar = new NSMenu()
+        let appMenuItem = new NSMenuItem()
+        menuBar.AddItem(appMenuItem)
+        
+        let appMenu = new NSMenu()
+        appMenuItem.Submenu <- appMenu
+        
+        let quitMenuItem = new NSMenuItem(sprintf "Quit %s" window.Title, "q", EventHandler(fun _ _ ->
+            NSApplication.SharedApplication.Terminate(menuBar)
+        ))
+        appMenu.AddItem(quitMenuItem)
+            
+        NSApplication.SharedApplication.MainMenu <- menuBar
 
 module EntryClass = 
     [<EntryPoint>]
