@@ -1,4 +1,4 @@
-#### 0.58.0-memory004
+#### 0.58.0-memory015
 
 * [All] Proper version constraints for the NuGet packages
 * match struct

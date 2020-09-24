@@ -17,12 +17,6 @@ module Collections =
         | Update of updateIndex: int * updatePrev: 'T * updateCurr: 'T
         | MoveAndUpdate of moveAndUpdateOldIndex: int * moveAndUpdateprev: 'T * moveAndUpdatenewIndex: int * moveAndUpdatecurr: 'T
         | Delete of deleteOldIndex: int
-        
-    [<Struct>]
-    type DiffResult<'T> =
-        | NoChange
-        | ClearCollection
-        | Operations of Operation<'T> list
 
     let isMatch canReuse aggressiveReuseMode currIndex newChild (struct (index, reusableChild)) =
         canReuse reusableChild newChild
@@ -40,12 +34,12 @@ module Collections =
     let tryFindReusableElement canReuse aggressiveReuseMode currIndex newChild reusableElements reusableElementsCount =
         tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements reusableElementsCount 0
 
-    let deleteAt index (reusableElements: struct (int * 'T)[]) reusableElementsCount =
-        if index + 1 >= reusableElementsCount then
+    let deleteAt index (arr: 'T[]) arrCount =
+        if index + 1 >= arrCount then
             ()
         else
-            for i = index to reusableElementsCount - 1 do
-                reusableElements.[i] <- reusableElements.[i + 1]
+            for i = index to arrCount - 1 do
+                arr.[i] <- arr.[i + 1]
 
     let rec canReuseChildOfRec keyOf canReuse prevChild (coll: 'T[]) key i =
         if i >= coll.Length then
@@ -79,100 +73,100 @@ module Collections =
     /// In the non-aggressive reuse mode, the algorithm will try to reuse a reusable element only if it is at the same index
     let diff<'T when 'T : equality>
             (aggressiveReuseMode: bool)
+            (prevCollLength: int)
             (prevCollOpt: 'T[] voption)
-            (collOpt: 'T[] voption)
+            (coll: 'T[])
             (keyOf: 'T -> string voption)
             (canReuse: 'T -> 'T -> bool)
+
+            (workingSet: Operation<'T>[])
         =
+        let mutable workingSetIndex = 0
 
-        match prevCollOpt, collOpt with
-        | ValueNone, ValueNone -> NoChange
-        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> NoChange
-        | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> NoChange
-        | ValueSome _, ValueNone -> ClearCollection
-        | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> ClearCollection
-        | _, ValueSome coll ->
-            let prevCollLength = (match prevCollOpt with ValueNone -> 0 | ValueSome c -> c.Length)
+        // Separate the previous elements into 4 lists
+        // The ones whose instances have been reused (dependsOn)
+        // The ones whose keys have been reused and should be updated
+        // The ones whose keys have not been reused and should be discarded
+        // The rest which can be reused by any other element
+        let identicalElements = Dictionary<'T, int>()
+        let keyedElements = Dictionary<string, struct (int * 'T)>()
+        let reusableElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
+        let discardedElements = ArrayPool<int>.Shared.Rent(prevCollLength)
 
-            // Separate the previous elements into 4 lists
-            // The ones whose instances have been reused (dependsOn)
-            // The ones whose keys have been reused and should be updated
-            // The ones whose keys have not been reused and should be discarded
-            // The rest which can be reused by any other element
-            let identicalElements = Dictionary<'T, int>()
-            let keyedElements = Dictionary<string, struct (int * 'T)>()
-            let reusableElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
-            let discardedElements = ArrayPool<int>.Shared.Rent(prevCollLength)
+        let mutable reusableElementsCount = 0
+        let mutable discardedElementsCount = 0
 
-            let mutable reusableElementsCount = 0
-            let mutable discardedElementsCount = 0
+        if prevCollOpt.IsSome && prevCollOpt.Value.Length > 0 then
+            for prevIndex in 0 .. prevCollOpt.Value.Length - 1 do
+                let prevChild = prevCollOpt.Value.[prevIndex]
+                if isIdentical identical prevChild coll then
+                    identicalElements.Add(prevChild, prevIndex) |> ignore
+                else
+                    match keyOf prevChild with
+                    | ValueSome key when canReuseChildOf keyOf canReuse prevChild coll key ->
+                        keyedElements.Add(key, struct (prevIndex, prevChild))
+                    | ValueNone ->
+                        reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)
+                        reusableElementsCount <- reusableElementsCount + 1
+                    | ValueSome _ ->
+                        discardedElements.[discardedElementsCount] <- prevIndex
+                        discardedElementsCount <- discardedElementsCount + 1
 
-            if prevCollOpt.IsSome && prevCollOpt.Value.Length > 0 then
-                for prevIndex in 0 .. prevCollOpt.Value.Length - 1 do
-                    let prevChild = prevCollOpt.Value.[prevIndex]
-                    if isIdentical identical prevChild coll then
-                        identicalElements.Add(prevChild, prevIndex) |> ignore
+        for i in 0 .. coll.Length - 1 do
+            let newChild = coll.[i]
+
+            // Check if the same instance was reused (dependsOn), if so just move the element to the correct index
+            match identicalElements.TryGetValue(newChild) with
+            | (true, prevIndex) ->
+                if prevIndex <> i then
+                    workingSet.[workingSetIndex] <- Move (prevIndex, i)
+                    workingSetIndex <- workingSetIndex + 1
+            | _ ->
+                // If the key existed previously, reuse the previous element
+                match keyOf newChild with
+                | ValueSome key when keyedElements.ContainsKey(key) ->
+                    let struct (prevIndex, prevChild) = keyedElements.[key]
+                    if prevIndex <> i then
+                        workingSet.[workingSetIndex] <- MoveAndUpdate (prevIndex, prevChild, i, newChild)
+                        workingSetIndex <- workingSetIndex + 1
                     else
-                        match keyOf prevChild with
-                        | ValueSome key when canReuseChildOf keyOf canReuse prevChild coll key ->
-                            keyedElements.Add(key, struct (prevIndex, prevChild))
-                        | ValueNone ->
-                            reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)
-                            reusableElementsCount <- reusableElementsCount + 1
-                        | ValueSome _ ->
-                            discardedElements.[discardedElementsCount] <- prevIndex
-                            discardedElementsCount <- discardedElementsCount + 1
+                        workingSet.[workingSetIndex] <- Update (i, prevChild, newChild)
+                        workingSetIndex <- workingSetIndex + 1
 
-            let operations =
-                [ for i in 0 .. coll.Length - 1 do
-                    let newChild = coll.[i]
+                // Otherwise, reuse an old element if possible or create a new one
+                | _ ->
+                    match tryFindReusableElement canReuse aggressiveReuseMode i newChild reusableElements reusableElementsCount with
+                    | ValueSome (struct (reusableIndex, prevIndex, prevChild)) ->
+                        deleteAt reusableIndex reusableElements reusableElementsCount
+                        reusableElementsCount <- reusableElementsCount - 1
+                        if prevIndex <> i then
+                            workingSet.[workingSetIndex] <- MoveAndUpdate (prevIndex, prevChild, i, newChild)
+                            workingSetIndex <- workingSetIndex + 1
+                        else
+                            workingSet.[workingSetIndex] <- Update (i, prevChild, newChild)
+                            workingSetIndex <- workingSetIndex + 1
 
-                    // Check if the same instance was reused (dependsOn), if so just move the element to the correct index
-                    match identicalElements.TryGetValue(newChild) with
-                    | (true, prevIndex) ->
-                        if prevIndex <> i then yield Move (prevIndex, i)
-                    | _ ->
-                        // If the key existed previously, reuse the previous element
-                        match keyOf newChild with
-                        | ValueSome key when keyedElements.ContainsKey(key) ->
-                            let struct (prevIndex, prevChild) = keyedElements.[key]
-                            if prevIndex <> i then
-                                yield MoveAndUpdate (prevIndex, prevChild, i, newChild)
-                            else
-                                yield Update (i, prevChild, newChild)
+                    | ValueNone ->
+                        workingSet.[workingSetIndex] <- Insert (i, newChild)
+                        workingSetIndex <- workingSetIndex + 1
 
-                        // Otherwise, reuse an old element if possible or create a new one
-                        | _ ->
-                            match tryFindReusableElement canReuse aggressiveReuseMode i newChild reusableElements reusableElementsCount with
-                            | ValueSome (struct (reusableIndex, prevIndex, prevChild)) ->
-                                deleteAt reusableIndex reusableElements reusableElementsCount
-                                reusableElementsCount <- reusableElementsCount - 1
-                                if prevIndex <> i then
-                                    yield MoveAndUpdate (prevIndex, prevChild, i, newChild)
-                                else
-                                    yield Update (i, prevChild, newChild)
+        // If we have discarded elements, delete them
+        if discardedElementsCount > 0 then
+            for i = 0 to discardedElementsCount - 1 do
+                workingSet.[workingSetIndex] <- Delete discardedElements.[i]
+                workingSetIndex <- workingSetIndex + 1
 
-                            | ValueNone ->
-                                yield Insert (i, newChild)
+        // If we still have old elements that were not reused, delete them
+        if reusableElementsCount > 0 then
+            for i = 0 to reusableElementsCount - 1 do
+                let struct (prevIndex, _) = reusableElements.[reusableElementsCount]
+                workingSet.[workingSetIndex] <- Delete prevIndex
+                workingSetIndex <- workingSetIndex + 1
 
-                  // If we have discarded elements, delete them
-                  if discardedElementsCount > 0 then
-                      for i = 0 to discardedElementsCount - 1 do
-                          yield Delete discardedElements.[i]
+        ArrayPool<struct (int * 'T)>.Shared.Return(reusableElements)
+        ArrayPool<int>.Shared.Return(discardedElements)
 
-                  // If we still have old elements that were not reused, delete them
-                  if reusableElementsCount > 0 then
-                    for i = 0 to reusableElementsCount - 1 do
-                        let struct (prevIndex, _) = reusableElements.[reusableElementsCount]
-                        yield Delete prevIndex ]
-
-            ArrayPool<struct (int * 'T)>.Shared.Return(reusableElements)
-            ArrayPool<int>.Shared.Return(discardedElements)
-
-            if operations.Length = 0 then
-                NoChange
-            else
-                Operations operations
+        workingSetIndex
 
     // Shift all old indices by 1 (down the list) on insert after the inserted position
     let shiftForInsert (prevIndices: int[]) index =
@@ -210,42 +204,41 @@ module Collections =
     /// diff returns all the operations to move from List A to List B.
     /// Except with ObservableCollection, we're forced to apply the changes one after the other, changing the indices
     /// So this algorithm compensates this offsetting
-    let adaptDiffForObservableCollection (prevCollLength: int) (diffResult: DiffResult<'T>) : DiffResult<'T> =
-        match diffResult with
-        | NoChange -> NoChange
-        | ClearCollection -> ClearCollection
-        | Operations operations ->
-            let prevIndices = Array.init prevCollLength id
+    let adaptDiffForObservableCollection (prevCollLength: int) (workingSet: Operation<'T>[]) (workingSetIndex: int) =
+        let prevIndices = Array.init prevCollLength id
 
-            let operations =
-                [ for op in operations do
-                    match op with
-                    | Insert (index, element) ->
-                        yield Insert (index, element)
-                        shiftForInsert prevIndices index
+        let mutable position = 0
 
-                    | Move (oldIndex, newIndex) ->
-                        // Prevent a move if the actual indices match
-                        let prevIndex = prevIndices.[oldIndex]
-                        if prevIndex <> newIndex then
-                            yield (Move (prevIndex, newIndex))
-                            shiftForMove prevIndices oldIndex prevIndex newIndex
+        for i = 0 to workingSetIndex - 1 do
+            match workingSet.[i] with
+            | Insert (index, element) ->
+                workingSet.[position] <- Insert (index, element)
+                position <- position + 1
+                shiftForInsert prevIndices index
 
-                    | Update (index, prev, curr) ->
-                        yield moveAndUpdate prevIndices index prev index curr
+            | Move (oldIndex, newIndex) ->
+                // Prevent a move if the actual indices match
+                let prevIndex = prevIndices.[oldIndex]
+                if prevIndex <> newIndex then
+                    workingSet.[position] <- (Move (prevIndex, newIndex))
+                    position <- position + 1
+                    shiftForMove prevIndices oldIndex prevIndex newIndex
 
-                    | MoveAndUpdate (oldIndex, prev, newIndex, curr) ->
-                        yield moveAndUpdate prevIndices oldIndex prev newIndex curr
+            | Update (index, prev, curr) ->
+                workingSet.[position] <- moveAndUpdate prevIndices index prev index curr
+                position <- position + 1
 
-                    | Delete oldIndex ->
-                        let prevIndex = prevIndices.[oldIndex]
-                        yield Delete prevIndex
-                        shiftForDelete prevIndices oldIndex prevIndex ]
+            | MoveAndUpdate (oldIndex, prev, newIndex, curr) ->
+                workingSet.[position] <- moveAndUpdate prevIndices oldIndex prev newIndex curr
+                position <- position + 1
 
-            if operations.Length = 0 then
-                NoChange
-            else
-                Operations operations
+            | Delete oldIndex ->
+                let prevIndex = prevIndices.[oldIndex]
+                workingSet.[position] <- Delete prevIndex
+                position <- position + 1
+                shiftForDelete prevIndices oldIndex prevIndex
+
+        position
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -261,16 +254,22 @@ module Collections =
            (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
         =
 
-        let diffResult =
-            diff aggressiveReuseMode prevCollOpt collOpt keyOf canReuse
-            |> adaptDiffForObservableCollection (match prevCollOpt with ValueNone -> 0 | ValueSome c -> c.Length)
+        match prevCollOpt, collOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
+        | ValueSome _, ValueNone -> targetColl.Clear()
+        | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> targetColl.Clear()
+        | _, ValueSome coll ->
+            let prevCollLength = (match prevCollOpt with ValueNone -> 0 | ValueSome c -> c.Length)
+            let workingSet = ArrayPool<Operation<'T>>.Shared.Rent(prevCollLength + coll.Length)
 
-        match diffResult with
-        | NoChange -> ()
-        | ClearCollection -> targetColl.Clear()
-        | Operations operations ->
-            for op in operations do
-                match op with
+            let operationsCount =
+                diff aggressiveReuseMode prevCollLength prevCollOpt coll keyOf canReuse workingSet
+                |> adaptDiffForObservableCollection prevCollLength workingSet
+
+            for i = 0 to operationsCount - 1 do
+                match workingSet.[i] with
                 | Insert (index, element) ->
                     let child = create element
                     attach ValueNone element child
@@ -295,6 +294,8 @@ module Collections =
 
                 | Delete index ->
                     targetColl.RemoveAt(index) |> ignore
+
+            ArrayPool<Operation<'T>>.Shared.Return(workingSet)
 
     let updateChildren prevCollOpt collOpt target create update attach =
         updateCollection true prevCollOpt collOpt target ViewHelpers.tryGetKey ViewHelpers.canReuseView create update attach
