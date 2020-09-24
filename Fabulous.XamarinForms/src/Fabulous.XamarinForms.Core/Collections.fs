@@ -24,20 +24,50 @@ module Collections =
         | ClearCollection
         | Operations of Operation<'T> list
 
-    let isMatch canReuse aggressiveReuseMode currIndex newChild (index, reusableChild) =
+    let isMatch canReuse aggressiveReuseMode currIndex newChild (struct (index, reusableChild)) =
         canReuse reusableChild newChild
         && (aggressiveReuseMode || index = currIndex)
 
-    let rec tryFindRec canReuse aggressiveReuseMode currIndex newChild (reusableElements: ResizeArray<int * 'T>) index =
-        if index >= reusableElements.Count then
+    let rec tryFindRec canReuse aggressiveReuseMode currIndex newChild (reusableElements: struct (int * 'T)[]) (reusableElementsCount: int) index =
+        if index >= reusableElementsCount then
             ValueNone
         elif isMatch canReuse aggressiveReuseMode currIndex newChild reusableElements.[index] then
-            ValueSome reusableElements.[index]
+            let struct (prevIndex, prevChild) = reusableElements.[index]
+            ValueSome (struct (index, prevIndex, prevChild))
         else
-            tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements (index + 1)
+            tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements reusableElementsCount (index + 1)
 
-    let tryFindReusableElement canReuse aggressiveReuseMode currIndex newChild reusableElements =
-        tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements 0
+    let tryFindReusableElement canReuse aggressiveReuseMode currIndex newChild reusableElements reusableElementsCount =
+        tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements reusableElementsCount 0
+
+    let deleteAt index (reusableElements: struct (int * 'T)[]) reusableElementsCount =
+        if index + 1 >= reusableElementsCount then
+            ()
+        else
+            for i = index to reusableElementsCount - 1 do
+                reusableElements.[i] <- reusableElements.[i + 1]
+
+    let rec canReuseChildOfRec keyOf canReuse prevChild (coll: 'T[]) key i =
+        if i >= coll.Length then
+            false
+        elif keyOf coll.[i] = ValueSome key && canReuse prevChild coll.[i] then
+            true
+        else
+            canReuseChildOfRec keyOf canReuse prevChild coll key (i + 1)
+
+    let canReuseChildOf keyOf canReuse prevChild (coll: 'T[]) key =
+        canReuseChildOfRec keyOf canReuse prevChild coll key 0
+
+    let rec isIdenticalRec identical prevChild (coll: 'T[]) i =
+        if i >= coll.Length then
+            false
+        elif identical prevChild coll.[i] then
+            true
+        else
+            isIdenticalRec identical prevChild coll (i + 1)
+   
+    let isIdentical identical prevChild (coll: 'T[]) =
+        isIdenticalRec identical prevChild coll 0
 
     /// Returns a list of operations to apply to go from the initial list to the new list
     ///
@@ -62,35 +92,36 @@ module Collections =
         | ValueSome _, ValueNone -> ClearCollection
         | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> ClearCollection
         | _, ValueSome coll ->
+            let prevCollLength = (match prevCollOpt with ValueNone -> 0 | ValueSome c -> c.Length)
+
             // Separate the previous elements into 4 lists
             // The ones whose instances have been reused (dependsOn)
             // The ones whose keys have been reused and should be updated
             // The ones whose keys have not been reused and should be discarded
             // The rest which can be reused by any other element
             let identicalElements = Dictionary<'T, int>()
-            let keyedElements = Dictionary<string, int * 'T>()
-            let reusableElements = ResizeArray<int * 'T>()
-            let discardedElements = ResizeArray<int>()
+            let keyedElements = Dictionary<string, struct (int * 'T)>()
+            let reusableElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
+            let discardedElements = ArrayPool<int>.Shared.Rent(prevCollLength)
+
+            let mutable reusableElementsCount = 0
+            let mutable discardedElementsCount = 0
+
             if prevCollOpt.IsSome && prevCollOpt.Value.Length > 0 then
                 for prevIndex in 0 .. prevCollOpt.Value.Length - 1 do
                     let prevChild = prevCollOpt.Value.[prevIndex]
-                    if coll |> Array.exists (identical prevChild) then
+                    if isIdentical identical prevChild coll then
                         identicalElements.Add(prevChild, prevIndex) |> ignore
                     else
-                        let canReuseChildOf key =
-                            coll
-                            |> Array.exists (fun newChild ->
-                                keyOf newChild = ValueSome key
-                                && canReuse prevChild newChild
-                            )
-
                         match keyOf prevChild with
-                        | ValueSome key when canReuseChildOf key ->
-                            keyedElements.Add(key, (prevIndex, prevChild))
+                        | ValueSome key when canReuseChildOf keyOf canReuse prevChild coll key ->
+                            keyedElements.Add(key, struct (prevIndex, prevChild))
                         | ValueNone ->
-                            reusableElements.Add((prevIndex, prevChild))
+                            reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)
+                            reusableElementsCount <- reusableElementsCount + 1
                         | ValueSome _ ->
-                            discardedElements.Add(prevIndex)
+                            discardedElements.[discardedElementsCount] <- prevIndex
+                            discardedElementsCount <- discardedElementsCount + 1
 
             let operations =
                 [ for i in 0 .. coll.Length - 1 do
@@ -104,7 +135,7 @@ module Collections =
                         // If the key existed previously, reuse the previous element
                         match keyOf newChild with
                         | ValueSome key when keyedElements.ContainsKey(key) ->
-                            let prevIndex, prevChild = keyedElements.[key]
+                            let struct (prevIndex, prevChild) = keyedElements.[key]
                             if prevIndex <> i then
                                 yield MoveAndUpdate (prevIndex, prevChild, i, newChild)
                             else
@@ -112,9 +143,10 @@ module Collections =
 
                         // Otherwise, reuse an old element if possible or create a new one
                         | _ ->
-                            match tryFindReusableElement canReuse aggressiveReuseMode i newChild reusableElements with
-                            | ValueSome ((prevIndex, prevChild) as item) ->
-                                reusableElements.Remove item |> ignore
+                            match tryFindReusableElement canReuse aggressiveReuseMode i newChild reusableElements reusableElementsCount with
+                            | ValueSome (struct (reusableIndex, prevIndex, prevChild)) ->
+                                deleteAt reusableIndex reusableElements reusableElementsCount
+                                reusableElementsCount <- reusableElementsCount - 1
                                 if prevIndex <> i then
                                     yield MoveAndUpdate (prevIndex, prevChild, i, newChild)
                                 else
@@ -124,14 +156,18 @@ module Collections =
                                 yield Insert (i, newChild)
 
                   // If we have discarded elements, delete them
-                  if discardedElements.Count > 0 then
-                      for prevIndex in discardedElements do
-                          yield Delete prevIndex
+                  if discardedElementsCount > 0 then
+                      for i = 0 to discardedElementsCount - 1 do
+                          yield Delete discardedElements.[i]
 
                   // If we still have old elements that were not reused, delete them
-                  if reusableElements.Count > 0 then
-                    for prevIndex, _ in reusableElements do
+                  if reusableElementsCount > 0 then
+                    for i = 0 to reusableElementsCount - 1 do
+                        let struct (prevIndex, _) = reusableElements.[reusableElementsCount]
                         yield Delete prevIndex ]
+
+            ArrayPool<struct (int * 'T)>.Shared.Return(reusableElements)
+            ArrayPool<int>.Shared.Return(discardedElements)
 
             if operations.Length = 0 then
                 NoChange
