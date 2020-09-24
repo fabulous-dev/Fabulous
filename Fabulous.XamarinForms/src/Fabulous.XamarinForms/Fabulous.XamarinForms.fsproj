@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="Xamarin.Forms" />
   </ItemGroup>
   <ItemGroup>

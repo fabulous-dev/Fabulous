@@ -6,6 +6,7 @@ open System.Collections.Generic
 open System.Collections.ObjectModel
 open Xamarin.Forms
 open Xamarin.Forms.Shapes
+open System.Buffers
 
 /// This module contains the update logic for the controls with children
 module Collections =
@@ -22,6 +23,21 @@ module Collections =
         | NoChange
         | ClearCollection
         | Operations of Operation<'T> list
+
+    let isMatch canReuse aggressiveReuseMode currIndex newChild (index, reusableChild) =
+        canReuse reusableChild newChild
+        && (aggressiveReuseMode || index = currIndex)
+
+    let rec tryFindRec canReuse aggressiveReuseMode currIndex newChild (reusableElements: ResizeArray<int * 'T>) index =
+        if index >= reusableElements.Count then
+            ValueNone
+        elif isMatch canReuse aggressiveReuseMode currIndex newChild reusableElements.[index] then
+            ValueSome reusableElements.[index]
+        else
+            tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements (index + 1)
+
+    let tryFindReusableElement canReuse aggressiveReuseMode currIndex newChild reusableElements =
+        tryFindRec canReuse aggressiveReuseMode currIndex newChild reusableElements 0
 
     /// Returns a list of operations to apply to go from the initial list to the new list
     ///
@@ -96,19 +112,15 @@ module Collections =
 
                         // Otherwise, reuse an old element if possible or create a new one
                         | _ ->
-                            let isMatch (index, reusableChild) =
-                                canReuse reusableChild newChild
-                                && (aggressiveReuseMode || index = i)
-
-                            match reusableElements |> Seq.tryFind isMatch with
-                            | Some ((prevIndex, prevChild) as item) ->
+                            match tryFindReusableElement canReuse aggressiveReuseMode i newChild reusableElements with
+                            | ValueSome ((prevIndex, prevChild) as item) ->
                                 reusableElements.Remove item |> ignore
                                 if prevIndex <> i then
                                     yield MoveAndUpdate (prevIndex, prevChild, i, newChild)
                                 else
                                     yield Update (i, prevChild, newChild)
 
-                            | None ->
+                            | ValueNone ->
                                 yield Insert (i, newChild)
 
                   // If we have discarded elements, delete them
@@ -126,6 +138,37 @@ module Collections =
             else
                 Operations operations
 
+    // Shift all old indices by 1 (down the list) on insert after the inserted position
+    let shiftForInsert (prevIndices: int[]) index =
+        for i in 0 .. prevIndices.Length - 1 do
+            if prevIndices.[i] >= index then
+                prevIndices.[i] <- prevIndices.[i] + 1
+
+    // Shift all old indices by -1 (up the list) on delete after the deleted position
+    let shiftForDelete (prevIndices: int[]) originalIndexInPrevColl prevIndex =
+        for i in 0 .. prevIndices.Length - 1 do
+            if prevIndices.[i] > prevIndex then
+                prevIndices.[i] <- prevIndices.[i] - 1
+        prevIndices.[originalIndexInPrevColl] <- -1
+
+    // Shift all old indices between the previous and new position on move
+    let shiftForMove (prevIndices: int[]) originalIndexInPrevColl prevIndex newIndex =
+        for i in 0 .. prevIndices.Length - 1 do
+            if prevIndex < prevIndices.[i] && prevIndices.[i] <= newIndex then
+                prevIndices.[i] <- prevIndices.[i] - 1
+            else if newIndex <= prevIndices.[i] && prevIndices.[i] < prevIndex then
+                prevIndices.[i] <- prevIndices.[i] + 1
+        prevIndices.[originalIndexInPrevColl] <- newIndex
+
+    // Return an update operation preceded by a move only if actual indices don't match
+    let moveAndUpdate (prevIndices: int[]) oldIndex prev newIndex curr =
+        let prevIndex = prevIndices.[oldIndex]
+        if prevIndex = newIndex then
+            Update (newIndex, prev, curr)
+        else
+            shiftForMove prevIndices oldIndex prevIndex newIndex
+            MoveAndUpdate (prevIndex, prev, newIndex, curr)
+
     /// Reduces the operations of the DiffResult to be applicable to an ObservableCollection.
     ///
     /// diff returns all the operations to move from List A to List B.
@@ -138,61 +181,30 @@ module Collections =
         | Operations operations ->
             let prevIndices = Array.init prevCollLength id
 
-            // Shift all old indices by 1 (down the list) on insert after the inserted position
-            let shiftForInsert index =
-                for i in 0 .. prevIndices.Length - 1 do
-                    if prevIndices.[i] >= index then
-                        prevIndices.[i] <- prevIndices.[i] + 1
-
-            // Shift all old indices by -1 (up the list) on delete after the deleted position
-            let shiftForDelete originalIndexInPrevColl prevIndex =
-                for i in 0 .. prevIndices.Length - 1 do
-                    if prevIndices.[i] > prevIndex then
-                        prevIndices.[i] <- prevIndices.[i] - 1
-                prevIndices.[originalIndexInPrevColl] <- -1
-
-            // Shift all old indices between the previous and new position on move
-            let shiftForMove originalIndexInPrevColl prevIndex newIndex =
-                for i in 0 .. prevIndices.Length - 1 do
-                    if prevIndex < prevIndices.[i] && prevIndices.[i] <= newIndex then
-                        prevIndices.[i] <- prevIndices.[i] - 1
-                    else if newIndex <= prevIndices.[i] && prevIndices.[i] < prevIndex then
-                        prevIndices.[i] <- prevIndices.[i] + 1
-                prevIndices.[originalIndexInPrevColl] <- newIndex
-
-            // Return an update operation preceded by a move only if actual indices don't match
-            let moveAndUpdate oldIndex prev newIndex curr =
-                let prevIndex = prevIndices.[oldIndex]
-                if prevIndex = newIndex then
-                    Update (newIndex, prev, curr)
-                else
-                    shiftForMove oldIndex prevIndex newIndex
-                    MoveAndUpdate (prevIndex, prev, newIndex, curr)
-
             let operations =
                 [ for op in operations do
                     match op with
                     | Insert (index, element) ->
                         yield Insert (index, element)
-                        shiftForInsert index
+                        shiftForInsert prevIndices index
 
                     | Move (oldIndex, newIndex) ->
                         // Prevent a move if the actual indices match
                         let prevIndex = prevIndices.[oldIndex]
                         if prevIndex <> newIndex then
                             yield (Move (prevIndex, newIndex))
-                            shiftForMove oldIndex prevIndex newIndex
+                            shiftForMove prevIndices oldIndex prevIndex newIndex
 
                     | Update (index, prev, curr) ->
-                        yield moveAndUpdate index prev index curr
+                        yield moveAndUpdate prevIndices index prev index curr
 
                     | MoveAndUpdate (oldIndex, prev, newIndex, curr) ->
-                        yield moveAndUpdate oldIndex prev newIndex curr
+                        yield moveAndUpdate prevIndices oldIndex prev newIndex curr
 
                     | Delete oldIndex ->
                         let prevIndex = prevIndices.[oldIndex]
                         yield Delete prevIndex
-                        shiftForDelete oldIndex prevIndex ]
+                        shiftForDelete prevIndices oldIndex prevIndex ]
 
             if operations.Length = 0 then
                 NoChange
