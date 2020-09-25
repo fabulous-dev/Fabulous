@@ -7,6 +7,7 @@ open System.Collections
 open System.Collections.Generic
 open System.IO
 open System.Collections.ObjectModel
+open Fabulous
 
 module CollectionHelpers =
     /// Try and find a specific ListView item
@@ -95,6 +96,21 @@ module ViewConverters =
                 items.[i] :> obj
             else
                 null
+                
+    let convertXamarinFormsColor (v: Xamarin.Forms.Color) =
+        match StructMemoizations.TryGetValue(v) with
+        | ValueSome value -> value
+        | ValueNone -> StructMemoizations.Add(v)
+
+    let convertXamarinFormsThickness (v: Xamarin.Forms.Thickness) =
+        match StructMemoizations.TryGetValue(v) with
+        | ValueSome value -> value
+        | ValueNone -> StructMemoizations.Add(v)
+        
+    let convertXamarinFormsLayoutOptions (v: Xamarin.Forms.LayoutOptions) =
+        match StructMemoizations.TryGetValue(v) with
+        | ValueSome value -> value
+        | ValueNone -> StructMemoizations.Add(v)
 
 
     /////////////////
