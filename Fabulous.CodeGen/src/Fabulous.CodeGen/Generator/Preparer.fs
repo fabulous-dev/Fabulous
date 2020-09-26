@@ -48,10 +48,38 @@ module Preparer =
           FullName = boundType.FullName
           TypeToInstantiate = boundType.TypeToInstantiate }
 
+    let toUpdateAttachedPropertiesData (boundType: BoundType) =
+        let immediatePropertiesWithAttachedProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CollectionData.IsSome && p.CollectionData.Value.AttachedProperties.Length > 0)
+        
+        let updatePropertiesWithAttachedProperties =
+            immediatePropertiesWithAttachedProperties
+            |> Array.map (fun p ->
+                { UniqueName = p.UniqueName
+                  CustomAttributeKey = p.CustomAttributeKey
+                  CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType)
+                  AttachedProperties =
+                     p.CollectionData
+                     |> Option.map (fun cd ->
+                           cd.AttachedProperties
+                           |> Array.map (fun ap ->
+                               { Name = ap.Name
+                                 UniqueName = ap.UniqueName
+                                 CustomAttributeKey = ap.CustomAttributeKey
+                                 DefaultValue = ap.DefaultValue
+                                 OriginalType = ap.OriginalType
+                                 ModelType = ap.ModelType
+                                 ConvertModelToValue = ap.ConvertModelToValue
+                                 UpdateCode = ap.UpdateCode }))
+                     |> Option.defaultValue [||] })
+
+        { Name = boundType.Name
+          FullName = boundType.FullName
+          BaseName = boundType.BaseTypeName
+          PropertiesWithAttachedProperties = updatePropertiesWithAttachedProperties }
+
     let toUpdateData (boundType: BoundType) =
         let immediateEvents = boundType.Events |> Array.filter (fun e -> not e.IsInherited && e.CanBeUpdated)
         let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CanBeUpdated)
-        let immediatePropertiesWithAttachedProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CollectionData.IsSome && p.CollectionData.Value.AttachedProperties.Length > 0)
         
         let eventMembers = immediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; CustomAttributeKey = e.CustomAttributeKey; ModelType = e.ModelType })
         let propertyMembers = immediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; CustomAttributeKey = p.CustomAttributeKey; ModelType = p.ModelType })
@@ -67,7 +95,7 @@ module Preparer =
               UniqueName = e.UniqueName
               RelatedProperties = relatedProperties }
         )
-        
+
         let updateProperties =
             immediateProperties
             |> Array.filter (fun p -> not p.HasPriority)
@@ -95,27 +123,6 @@ module Preparer =
                   ConvertModelToValue = p.ConvertModelToValue
                   UpdateCode = p.UpdateCode
                   CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType) })
-            
-        let updatePropertiesWithAttachedProperties =
-            immediatePropertiesWithAttachedProperties
-            |> Array.map (fun p ->
-                { UniqueName = p.UniqueName
-                  CustomAttributeKey = p.CustomAttributeKey
-                  CollectionDataElementType = p.CollectionData |> Option.map (fun c -> c.ElementType)
-                  AttachedProperties =
-                     p.CollectionData
-                     |> Option.map (fun cd ->
-                           cd.AttachedProperties
-                           |> Array.map (fun ap ->
-                               { Name = ap.Name
-                                 UniqueName = ap.UniqueName
-                                 CustomAttributeKey = ap.CustomAttributeKey
-                                 DefaultValue = ap.DefaultValue
-                                 OriginalType = ap.OriginalType
-                                 ModelType = ap.ModelType
-                                 ConvertModelToValue = ap.ConvertModelToValue
-                                 UpdateCode = ap.UpdateCode }))
-                     |> Option.defaultValue [||] })
         
         { Name = boundType.Name
           FullName = boundType.FullName
@@ -123,8 +130,7 @@ module Preparer =
           ImmediateMembers = immediateMembers
           Events = updateEvents
           Properties = updateProperties
-          PriorityProperties = updatePriorityProperties
-          PropertiesWithAttachedProperties = updatePropertiesWithAttachedProperties }
+          PriorityProperties = updatePriorityProperties }
 
     let toConstructData (boundType: BoundType) : ConstructData =
         let properties = boundType.Properties |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType } : ConstructType)
@@ -138,6 +144,7 @@ module Preparer =
     let toBuilderData (boundType: BoundType) =
         { Build = toBuildData boundType
           Create = if boundType.CanBeInstantiated then Some (toCreateData boundType) else None
+          UpdateAttachedProperties = toUpdateAttachedPropertiesData boundType
           Update = toUpdateData boundType
           Construct = if boundType.CanBeInstantiated then Some (toConstructData boundType) else None }
 

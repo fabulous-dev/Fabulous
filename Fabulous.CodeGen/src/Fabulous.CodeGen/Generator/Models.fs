@@ -41,7 +41,7 @@ module Models =
         { Name: string
           UniqueName: string
           RelatedProperties: string array }
-        
+
     type UpdateProperty =
         { Name: string
           UniqueName: string
@@ -62,12 +62,18 @@ module Models =
           ModelType: string
           ConvertModelToValue: string
           UpdateCode: string }
-        
+          
     type UpdatePropertyWithAttachedProperties =
         { UniqueName: string
           CustomAttributeKey: string option
           CollectionDataElementType: string option
           AttachedProperties: UpdateAttachedProperty array }
+
+    type UpdateAttachedPropertiesData =
+        { Name: string
+          FullName: string
+          BaseName: string option
+          PropertiesWithAttachedProperties: UpdatePropertyWithAttachedProperties array }
 
     type UpdateData =
         { Name: string
@@ -76,8 +82,7 @@ module Models =
           ImmediateMembers : UpdateMember array
           Events: UpdateEvent array
           Properties: UpdateProperty array
-          PriorityProperties: UpdateProperty array
-          PropertiesWithAttachedProperties: UpdatePropertyWithAttachedProperties array }
+          PriorityProperties: UpdateProperty array }
 
     type ConstructData =
         { Name: string
@@ -87,6 +92,7 @@ module Models =
     type BuilderData =
         { Build: BuildData
           Create: CreateData option
+          UpdateAttachedProperties: UpdateAttachedPropertiesData
           Update: UpdateData
           Construct: ConstructData option }
 

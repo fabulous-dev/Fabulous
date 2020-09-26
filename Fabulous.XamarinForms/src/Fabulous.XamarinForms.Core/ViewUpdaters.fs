@@ -136,7 +136,7 @@ module ViewUpdaters =
                         | Some _ -> ()
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
+    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attributeKeyValue attach =
         match struct (prevCollOpt, collOpt) with
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
@@ -185,7 +185,7 @@ module ViewUpdaters =
                             //printfn "Skipping child %d" i
                             let targetChild = target.Pages |> Seq.item i
                             prevChildOpt, targetChild
-                    attach prevChildOpt newChild targetChild
+                    attach(attributeKeyValue, prevChildOpt, newChild, targetChild)
 
     /// Update the OnSizeAllocated callback of a control, given previous and current values
     let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) =
