@@ -11,6 +11,12 @@ open System.Threading
 module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
+
+    let identicalVOption (x: 'T voption) (y: 'T voption) =
+        match struct (x, y) with
+        | ValueNone, ValueNone -> true
+        | ValueSome x1, ValueSome y1 when identical x1 y1 -> true
+        | _ -> false
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =

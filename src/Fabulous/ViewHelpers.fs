@@ -25,7 +25,7 @@ module SimplerHelpers =
                 System.Diagnostics.Trace.WriteLine(sprintf "Clearing %s memoizations..." typeof<'T>.FullName)
                 StructMemoizations<'T>.T.Clear()
             let key = res.GetHashCode()
-            let value = box key
+            let value = box res
             StructMemoizations<'T>.T.[key] <- value
             value
         static member TryGetValue(res: 'T) =

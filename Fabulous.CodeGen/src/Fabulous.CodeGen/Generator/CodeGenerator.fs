@@ -220,10 +220,10 @@ module CodeGenerator =
                 for e in data.Events do
                     let relatedProperties =
                         e.RelatedProperties
-                        |> Array.map (fun p -> sprintf "(prev%sOpt = curr%sOpt)" p p)
+                        |> Array.map (fun p -> sprintf "(identicalVOption prev%sOpt curr%sOpt)" p p)
                         |> Array.fold (fun a b -> a + " && " + b) ""
 
-                    w.printfn "        let shouldUpdate%s = not ((prev%sOpt = curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
+                    w.printfn "        let shouldUpdate%s = not ((identicalVOption prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
                     w.printfn "        if shouldUpdate%s then" e.UniqueName
                     w.printfn "            match prev%sOpt with" e.UniqueName
                     w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
