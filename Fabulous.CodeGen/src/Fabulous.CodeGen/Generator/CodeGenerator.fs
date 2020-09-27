@@ -168,11 +168,11 @@ module CodeGenerator =
                     w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
-                    w.printfn "            %s.KeyValue curr.UpdateAttachedProperty" attributeKey
+                    w.printfn "            %s.KeyValue (fun key prevChildOpt currChild targetChild -> curr.UpdateAttachedProperty(key, prevChildOpt, currChild, targetChild))" attributeKey
                     
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-                    w.printfn "            %s.KeyValue curr.UpdateAttachedProperty" attributeKey
+                    w.printfn "            %s.KeyValue (fun key prevChildOpt currChild targetChild -> curr.UpdateAttachedProperty(key, prevChildOpt, currChild, targetChild))" attributeKey
 
                 | _ ->
                     // If the type is ViewElement, then it's a type from the model
@@ -299,7 +299,7 @@ module CodeGenerator =
             w.printfn ""
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
             w.printfn ""
-            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, ViewBuilders.Update%s, ViewBuilders.Update%sAttachedProperties, attribBuilder)" data.FullName data.Name data.Name data.Name
+            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, (fun prev curr target -> ViewBuilders.Update%s(prev, curr, target)), (fun key prev curr target -> ViewBuilders.Update%sAttachedProperties(key, prev, curr, target)), attribBuilder)" data.FullName data.Name data.Name data.Name
             w.printfn ""
 
 

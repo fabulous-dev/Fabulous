@@ -140,14 +140,14 @@ module ViewHelpers =
                 item
 
             // The update method
-            let update (prevOpt: ViewElement voption, source: ViewElement, target: obj) = 
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
                 let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
                 let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
                 let realSource = contents state
                 realSource.Update(prevOpt, source, target)
                 match onUpdate with None -> () | Some f -> f state target
 
-            let updateAttachedProperties(_, _, _, _) = ()
+            let updateAttachedProperties _key _prevOpt _source _target = ()
 
             // The element
             ViewElement.Create(create, update, updateAttachedProperties, attribs)
@@ -175,8 +175,8 @@ module ViewHelpers =
             | _ -> 
                 let attribs = AttributesBuilder(0)
                 let create () = box externalObj 
-                let update (_prevOpt: ViewElement voption, _source: ViewElement, _target: obj) = ()
-                let updateAttachedProperties(_, _, _, _) = ()
+                let update (_prevOpt: ViewElement voption) (_source: ViewElement) (_target: obj) = ()
+                let updateAttachedProperties _key _prevOpt _curr _target = ()
                 let res = ViewElement(externalObj.GetType(), create, update, updateAttachedProperties, attribs)
                 externalsTable.Add(externalObj, res)
                 res

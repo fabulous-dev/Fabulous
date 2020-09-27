@@ -110,7 +110,7 @@ type ViewRef<'T when 'T : not struct>() =
         | _ -> None
 
 /// A description of a visual element
-type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption * ViewElement * obj -> unit), updateAttachedProperties: (int * ViewElement voption * ViewElement * obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
+type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
     let rec tryFindAttribRec key i =
         if i >= attribs.Length then
@@ -123,18 +123,18 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     let tryFindAttrib key =
         tryFindAttribRec key 0
     
-    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption * ViewElement * obj -> unit), updateAttachedProperties: (int * ViewElement voption * ViewElement * obj -> unit), attribsBuilder: AttributesBuilder) =
+    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, updateAttachedProperties, attribsBuilder.Close())
 
     static member Create
             (create: (unit -> 'T),
-             update: (ViewElement voption * ViewElement * 'T -> unit),
-             updateAttachedProperties: (int * ViewElement voption * ViewElement * obj -> unit),
+             update: (ViewElement voption -> ViewElement -> 'T -> unit),
+             updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit),
              attribsBuilder: AttributesBuilder) =
         
         ViewElement(
             typeof<'T>, (create >> box),
-            (fun (prev, curr, target) -> update(prev, curr, (unbox target))),
+            (fun prev curr target -> update prev curr (unbox target)),
             updateAttachedProperties,
             attribsBuilder.Close()
         )
@@ -174,15 +174,15 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
 
     /// Apply initial settings to a freshly created visual element
-    member x.Update (target: obj) = update(ValueNone, x, target)
+    member x.Update (target: obj) = update ValueNone x target
 
     /// Differentially update a visual element given the previous settings
-    member x.UpdateIncremental(prev: ViewElement, target: obj) = update(ValueSome prev, x, target)
+    member x.UpdateIncremental(prev: ViewElement, target: obj) = update (ValueSome prev) x target
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
-    member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update(prevOpt, curr, target)
+    member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
 
-    member x.UpdateAttachedProperty<'T>(propertyKeyValue: int, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties(propertyKeyValue, prevOpt, curr, target)
+    member x.UpdateAttachedProperty<'T>(propertyKeyValue: int, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties propertyKeyValue prevOpt curr target
 
     /// Create the UI element from the view description
     member x.Create() : obj =

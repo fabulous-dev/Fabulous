@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Version>0.58.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.58.0-memory030</PackageVersion>
+    <PackageVersion>0.58.0-memory031</PackageVersion>
     <PackageReleaseNotes>[All] Proper version constraints for the NuGet packages
 match struct</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>

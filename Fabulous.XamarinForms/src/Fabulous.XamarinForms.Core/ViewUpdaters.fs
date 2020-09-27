@@ -185,7 +185,7 @@ module ViewUpdaters =
                             //printfn "Skipping child %d" i
                             let targetChild = target.Pages |> Seq.item i
                             prevChildOpt, targetChild
-                    attach(attributeKeyValue, prevChildOpt, newChild, targetChild)
+                    attach attributeKeyValue prevChildOpt newChild targetChild
 
     /// Update the OnSizeAllocated callback of a control, given previous and current values
     let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) =
