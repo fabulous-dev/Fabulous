@@ -112,15 +112,16 @@ type ViewRef<'T when 'T : not struct>() =
 /// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
-    let rec tryFindAttribRec key i =
-        if i >= attribs.Length then
-            ValueNone
-        elif attribs.[i].Key = key then
-            ValueSome (attribs.[i])
-        else
-            tryFindAttribRec key (i + 1)
-
+    // Recursive search of an attribute by its key.
+    // Perf note: This is preferred to Array.tryFind because it avoids capturing the context with a lambda
     let tryFindAttrib key =
+        let rec tryFindAttribRec key i =
+            if i >= attribs.Length then
+                ValueNone
+            elif attribs.[i].Key = key then
+                ValueSome (attribs.[i])
+            else
+                tryFindAttribRec key (i + 1)
         tryFindAttribRec key 0
     
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
