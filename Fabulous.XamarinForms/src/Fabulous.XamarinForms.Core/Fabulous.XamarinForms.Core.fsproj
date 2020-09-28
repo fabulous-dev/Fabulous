@@ -19,7 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />
-    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Buffers" />
     <PackageReference Include="Xamarin.Forms" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
