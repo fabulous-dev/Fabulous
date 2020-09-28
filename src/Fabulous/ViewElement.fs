@@ -182,7 +182,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
 
-    member x.UpdateAttachedProperty<'T>(propertyKeyValue: int, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties propertyKeyValue prevOpt curr target
+    /// Differentially update the attached properties of a child of a collection
+    member x.UpdateAttachedPropertiesForAttribute<'T>(attributeKey: AttributeKey<'T>, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties attributeKey.KeyValue prevOpt curr target
 
     /// Create the UI element from the view description
     member x.Create() : obj =

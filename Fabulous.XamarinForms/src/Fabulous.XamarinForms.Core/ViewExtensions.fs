@@ -60,4 +60,4 @@ module ViewExtensions =
             
             Collections.updateChildren
                 (ValueOption.map Seq.toArray prevCollOpt) (ValueOption.map Seq.toArray collOpt) targetCollection 
-                (fun x -> x.Create() :?> 'T) Collections.updateChild attribKey.KeyValue (fun _ _ _ _ -> ())
+                (fun x -> x.Create() :?> 'T) Collections.updateChild (fun _ _ _ -> ())

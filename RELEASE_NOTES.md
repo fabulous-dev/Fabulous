@@ -1,4 +1,4 @@
-#### 0.58.0-memory031
+#### 0.60.0-preview1
 
 * [All] Proper version constraints for the NuGet packages
 * match struct

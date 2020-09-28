@@ -168,11 +168,11 @@ module CodeGenerator =
                     w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
-                    w.printfn "            %s.KeyValue (fun key prevChildOpt currChild targetChild -> curr.UpdateAttachedProperty(key, prevChildOpt, currChild, targetChild))" attributeKey
+                    w.printfn "            (fun prevChildOpt currChild targetChild -> curr.UpdateAttachedPropertiesForAttribute(%s, prevChildOpt, currChild, targetChild))" attributeKey
                     
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-                    w.printfn "            %s.KeyValue (fun key prevChildOpt currChild targetChild -> curr.UpdateAttachedProperty(key, prevChildOpt, currChild, targetChild))" attributeKey
+                    w.printfn "            (fun prevChildOpt currChild targetChild -> curr.UpdateAttachedPropertiesForAttribute(%s, prevChildOpt, currChild, targetChild))" attributeKey
 
                 | _ ->
                     // If the type is ViewElement, then it's a type from the model

@@ -9,6 +9,7 @@ open Xamarin.Forms
 open Xamarin.Forms.Shapes
 open Xamarin.Forms.StyleSheets
 open System.Windows.Input
+open System.Diagnostics
 
 /// This module contains custom update logic for all kind of properties
 module ViewUpdaters =
@@ -136,7 +137,7 @@ module ViewUpdaters =
                         | Some _ -> ()
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attributeKeyValue attach =
+    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
         match struct (prevCollOpt, collOpt) with
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
         | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
@@ -148,15 +149,15 @@ module ViewUpdaters =
                 // Count the existing pages
                 let prevCount = target.Pages |> Seq.length
                 let newCount = coll.Length
-                //printfn "Updating NavigationPage, prevCount = %d, newCount = %d" prevCount newCount
+                Debug.WriteLine(sprintf "Updating NavigationPage, prevCount = %d, newCount = %d" prevCount newCount)
 
                 // Remove the excess pages
                 if newCount = 1 && prevCount > 1 then
-                    //printfn "Updating NavigationPage --> PopToRootAsync"
+                    Debug.WriteLine(sprintf "Updating NavigationPage --> PopToRootAsync")
                     target.PopToRootAsync() |> ignore
                 elif prevCount > newCount then
                     for i in prevCount - 1 .. -1 .. newCount do
-                        //printfn "PopAsync, page number %d" i
+                        Debug.WriteLine(sprintf "PopAsync, page number %d" i)
                         target.PopAsync () |> ignore
 
                 let n = min prevCount newCount
@@ -164,28 +165,28 @@ module ViewUpdaters =
                 for i in 0 .. newCount-1 do
                     let newChild = coll.[i]
                     let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length && i < n -> ValueSome coll.[i] | _ -> ValueNone
-                    let prevChildOpt, targetChild =
+                    let struct (prevChildOpt, targetChild) =
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
                             let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (ViewHelpers.canReuseView prevChild newChild))
                             if mustCreate then
-                                //printfn "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild
+                                System.Diagnostics.Debug.WriteLine(sprintf "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild)
                                 let targetChild = create newChild
                                 if i >= n then
-                                    //printfn "PushAsync, page number %d" i
+                                    Debug.WriteLine(sprintf "PushAsync, page number %d" i)
                                     target.PushAsync(targetChild) |> ignore
                                 else
                                     failwith "Error while updating NavigationPage pages: can't change type of one of the pages in the navigation chain during navigation"
-                                ValueNone, targetChild
+                                struct (ValueNone, targetChild)
                             else
-                                //printfn "Adjust page number %d" i
+                                Debug.WriteLine(sprintf "Adjust page number %d" i)
                                 let targetChild = target.Pages |> Seq.item i
                                 newChild.UpdateIncremental(prevChildOpt.Value, targetChild)
-                                prevChildOpt, targetChild
+                                struct (prevChildOpt, targetChild)
                         else
-                            //printfn "Skipping child %d" i
+                            Debug.WriteLine(sprintf "Skipping child %d" i)
                             let targetChild = target.Pages |> Seq.item i
-                            prevChildOpt, targetChild
-                    attach attributeKeyValue prevChildOpt newChild targetChild
+                            struct (prevChildOpt, targetChild)
+                    attach prevChildOpt newChild targetChild
 
     /// Update the OnSizeAllocated callback of a control, given previous and current values
     let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) =

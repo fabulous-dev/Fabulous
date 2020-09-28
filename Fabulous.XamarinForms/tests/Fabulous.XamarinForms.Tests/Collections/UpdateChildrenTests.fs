@@ -35,7 +35,7 @@ module UpdateChildrenTests =
             collection
             (fun x -> x.Create() :?> Xamarin.Forms.Element)
             (fun _ _ _ -> ())
-            -1 (fun _ _ _ _ -> ())
+            (fun _ _ _ -> ())
             
         let x = collection
         ()
