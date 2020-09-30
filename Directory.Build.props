@@ -1,11 +1,11 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.58.0</Version>
+    <Version>0.60.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.58.0-memory031</PackageVersion>
+    <PackageVersion>0.60.0-preview1</PackageVersion>
     <PackageReleaseNotes>[All] Proper version constraints for the NuGet packages
-match struct</PackageReleaseNotes>
+[All] Reduced allocations (https://github.com/fsprojects/Fabulous/pull/805#pullrequestreview-499099409)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
