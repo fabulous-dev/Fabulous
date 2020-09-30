@@ -123,7 +123,7 @@ module CodeGenerator =
 
                     w.printfn "            let prev%sOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
                     w.printfn "            let curr%sOpt = curr.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
-                    w.printfn "            let target = target :?> %s" (Option.defaultValue "Xamarin.Forms.BindableObject" p.CollectionDataElementType)
+                    w.printfn "            let target = target :?> %s" (Option.defaultValue "MISSING_COLLECTION_ELEMENT_TYPE" p.CollectionDataElementType)
 
                     if ap.ModelType = "ViewElement" && not hasApply then
                         w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
