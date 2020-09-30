@@ -159,7 +159,7 @@ module Collections =
         // If we still have old elements that were not reused, delete them
         if reusableElementsCount > 0 then
             for i = 0 to reusableElementsCount - 1 do
-                let struct (prevIndex, _) = reusableElements.[reusableElementsCount]
+                let struct (prevIndex, _) = reusableElements.[i]
                 workingSet.[workingSetIndex] <- Delete prevIndex
                 workingSetIndex <- workingSetIndex + 1
 

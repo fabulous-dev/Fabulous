@@ -1,7 +1,9 @@
 #### 0.60.0-preview1
 
-* [All] Proper version constraints for the NuGet packages
-* [All] Reduced allocations (https://github.com/fsprojects/Fabulous/pull/805#pullrequestreview-499099409)
+* [All] Proper version constraints for the NuGet packages (https://github.com/fsprojects/Fabulous/pull/797)
+* [All] Add FSharp.Core as a public dependency (https://github.com/fsprojects/Fabulous/pull/796)
+* [All] Reduced allocations (https://github.com/fsprojects/Fabulous/pull/805)
+* [Fabulous.XamarinForms] [Templates] Add native main menu to MacOS template (https://github.com/fsprojects/Fabulous/pull/806)
 
 #### 0.57.0
 

@@ -169,7 +169,7 @@ module ViewUpdaters =
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
                             let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (ViewHelpers.canReuseView prevChild newChild))
                             if mustCreate then
-                                System.Diagnostics.Debug.WriteLine(sprintf "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild)
+                                Debug.WriteLine(sprintf "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild)
                                 let targetChild = create newChild
                                 if i >= n then
                                     Debug.WriteLine(sprintf "PushAsync, page number %d" i)
