@@ -25,7 +25,7 @@ Fabulous.StaticView.XamarinForms | [![Fabulous.StaticView.XamarinForms NuGet ver
 
 ## Fabulous
 
-This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
+This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [Elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
 [Learn more about Fabulous](FABULOUS.md)
 
