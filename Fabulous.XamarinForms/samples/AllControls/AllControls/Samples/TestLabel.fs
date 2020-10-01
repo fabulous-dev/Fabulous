@@ -27,10 +27,12 @@ module TestLabel =
             let create () = Xamarin.Forms.Label()
 
             // The incremental update method
-            let update registry (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
-                ViewBuilders.UpdateView(registry, prevOpt, source, target)
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
+                ViewBuilders.UpdateView(prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
                 source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
 
-            ViewElement.Create<Xamarin.Forms.Label>(create, update, attribs)
+            let updateAttachedProperties _ _ _ _ = ()
+
+            ViewElement.Create<Xamarin.Forms.Label>(create, update, updateAttachedProperties, attribs)
 

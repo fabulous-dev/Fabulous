@@ -64,7 +64,7 @@ module PancakeViewExtensions =
             let create () = Xamarin.Forms.PancakeView.PancakeView()
 
             // The incremental update method
-            let update (prev: ViewElement voption, source: ViewElement, target: Xamarin.Forms.PancakeView.PancakeView) =
+            let update (prev: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.PancakeView.PancakeView) =
                 ViewBuilders.UpdateView(prev,source,target)
                 source.UpdateElement(prev,target, pancakeContentAttribKey,(fun target -> target.Content), (fun target v -> target.Content <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientStartColorAttribKey, (fun target v -> target.BackgroundGradientStartColor <- v))
@@ -73,8 +73,6 @@ module PancakeViewExtensions =
                 source.UpdatePrimitive(prev, target, cornerRadiusKey, (fun target v -> target.CornerRadius <- v))
                 source.UpdatePrimitive(prev, target, backgroundGradientAngleKey, (fun target v -> target.BackgroundGradientAngle <- v))
 
-            let updateAttachedProperties(_propertyKey: int,_prevOpt: ViewElement voption, _curr: ViewElement, _target: obj) =
-                ()
-                
+            let updateAttachedProperties _ _ _ _ = ()
 
             ViewElement.Create<Xamarin.Forms.PancakeView.PancakeView>(create, update, updateAttachedProperties, attribs)
