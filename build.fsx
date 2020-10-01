@@ -49,8 +49,7 @@ let dotnetBuild outputSubDir paths =
         let outputPath = composeOutputPath outputSubDir projectPath
         DotNet.build (fun opt ->
             { opt with
-                Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some outputPath }) projectPath
+                Configuration = DotNet.BuildConfiguration.Release }) projectPath
 
 let computeBounds (semVer: SemVerInfo) =
     match semVer.PreRelease with
@@ -84,10 +83,9 @@ let dotnetTest outputSubDir paths =
 
 let msbuild outputSubDir paths =
     for projectPath in paths do
-        let outputPath = composeOutputPath outputSubDir projectPath
         let projectName = Path.GetFileNameWithoutExtension projectPath
         let properties = [ ("Configuration", "Release") ] |> addJDK
-        MSBuild.run id outputPath "Build" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
+        MSBuild.run id "" "Build" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
 
 let nugetPack paths =
     for nuspecPath in paths do
@@ -197,7 +195,7 @@ Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
 )
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
-    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
+    let generatorPath = "Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/bin/Release/netcoreapp3.1/Fabulous.XamarinForms.Generator.dll"
     let mappingFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
     let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
@@ -220,7 +218,7 @@ Target.create "RunFabulousXamarinFormsTests" (fun _ ->
 )
 
 Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
-    let generatorPath = buildDir + "/Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/Fabulous.XamarinForms.Generator.dll"
+    let generatorPath = "Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/bin/Release/netcoreapp3.1/Fabulous.XamarinForms.Generator.dll"
 
     for mappingFile in !!"Fabulous.XamarinForms/extensions/**/*.json" do
         let outputFile = mappingFile.Replace(".json", ".fs")
