@@ -601,11 +601,11 @@ module ViewUpdaters =
 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
-            | Content.String prevStr, Content.String currStr when prevStr = currStr -> ()
-            | Content.ViewElement prevVe, Content.ViewElement currVe when identical prevVe currVe -> ()
-            | Content.ViewElement prevVe, Content.ViewElement currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
-            | _, Content.String currStr -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
-            | _, Content.ViewElement currVe -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
+            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
+            | struct (_, Content.String currStr) -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
+            | struct (_, Content.ViewElement currVe) -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
 
         | struct (ValueSome _, ValueNone) -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
         | struct (ValueNone, ValueNone) -> ()
@@ -620,11 +620,11 @@ module ViewUpdaters =
 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
-            | Content.String prevStr, Content.String currStr when prevStr = currStr -> ()
-            | Content.ViewElement prevVe, Content.ViewElement currVe when identical prevVe currVe -> ()
-            | Content.ViewElement prevVe, Content.ViewElement currVe when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.RenderTransform)
-            | _, Content.String currStr -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Transform
-            | _, Content.ViewElement currVe -> target.RenderTransform <- (currVe.Create() :?> Xamarin.Forms.Shapes.Transform)
+            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.RenderTransform)
+            | struct (_, Content.String currStr) -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Transform
+            | struct (_, Content.ViewElement currVe) -> target.RenderTransform <- (currVe.Create() :?> Xamarin.Forms.Shapes.Transform)
 
         | struct (ValueSome _, ValueNone) -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
         | struct (ValueNone, ValueNone) -> ()

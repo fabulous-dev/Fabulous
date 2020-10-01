@@ -255,12 +255,12 @@ module Collections =
         =
 
         match struct (prevCollOpt, collOpt) with
-        | ValueNone, ValueNone -> ()
-        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | ValueSome prevColl, ValueSome newColl when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
-        | ValueSome _, ValueNone -> targetColl.Clear()
-        | ValueSome _, ValueSome coll when (coll = null || coll.Length = 0) -> targetColl.Clear()
-        | _, ValueSome coll ->
+        | struct (ValueNone, ValueNone) -> ()
+        | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
+        | struct (ValueSome prevColl, ValueSome newColl) when prevColl <> null && newColl <> null && prevColl.Length = 0 && newColl.Length = 0 -> ()
+        | struct (ValueSome _, ValueNone) -> targetColl.Clear()
+        | struct (ValueSome _, ValueSome coll) when (coll = null || coll.Length = 0) -> targetColl.Clear()
+        | struct (_, ValueSome coll) ->
             let prevCollLength = (match prevCollOpt with ValueNone -> 0 | ValueSome c -> c.Length)
             let workingSet = ArrayPool<Operation<'T>>.Shared.Rent(prevCollLength + coll.Length)
 
