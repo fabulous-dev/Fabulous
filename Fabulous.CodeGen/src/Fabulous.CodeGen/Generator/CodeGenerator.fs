@@ -98,6 +98,63 @@ module CodeGenerator =
             
             w.printfn ""
             w
+
+    let generateUpdateAttachedPropertiesFunction (data: UpdateAttachedPropertiesData) (w: StringWriter) =
+        let printUpdateBaseIfNeeded (space: string) (isUnitRequired: bool) =
+            match data.BaseName with
+            | None when isUnitRequired = false ->
+                ()
+            | None ->
+                w.printfn "%s()" space
+            | Some baseName ->
+                w.printfn "%sViewBuilders.Update%sAttachedProperties(propertyKey, prevOpt, curr, target)" space baseName
+
+        w.printfn "    static member Update%sAttachedProperties (propertyKey: int, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = " data.Name
+        if data.PropertiesWithAttachedProperties.Length = 0 then
+            printUpdateBaseIfNeeded "        " true
+        else
+            w.printfn "        match propertyKey with"
+            for p in data.PropertiesWithAttachedProperties do
+                w.printfn "        | key when key = %s.KeyValue ->" (getAttributeKey p.CustomAttributeKey p.UniqueName)
+
+                for ap in p.AttachedProperties do
+                    let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
+                    let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
+
+                    w.printfn "            let prev%sOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
+                    w.printfn "            let curr%sOpt = curr.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
+                    w.printfn "            let target = target :?> %s" (Option.defaultValue "MISSING_COLLECTION_ELEMENT_TYPE" p.CollectionDataElementType)
+
+                    if ap.ModelType = "ViewElement" && not hasApply then
+                        w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
+                        w.printfn "            // For structured objects, dependsOn on reference equality"
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome newValue) when identical prevValue newValue -> ()"
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome newValue) when canReuseView prevValue newValue ->"
+                        w.printfn "                newValue.UpdateIncremental(prevValue, (%s.Get%s(target)))" data.FullName ap.Name
+                        w.printfn "            | struct (_, ValueSome newValue) ->"
+                        w.printfn "                %s.Set%s(target, (newValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalType
+                        w.printfn "            | struct (ValueSome _, ValueNone) ->"
+                        w.printfn "                %s.Set%s(target, null)" data.FullName ap.Name
+                        w.printfn "            | struct (ValueNone, ValueNone) -> ()"
+                        
+                    elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
+                        w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
+                        
+                    else
+                        w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()"
+                        w.printfn "            | struct (_, ValueSome currValue) -> target.SetValue(%s.%sProperty, %s currValue)" data.FullName ap.Name ap.ConvertModelToValue
+                        w.printfn "            | struct (ValueSome _, ValueNone) -> target.ClearValue(%s.%sProperty)" data.FullName ap.Name
+                        w.printfn "            | _ -> ()"
+                        
+                printUpdateBaseIfNeeded "            " false
+
+            w.printfn "        | _ ->"
+            printUpdateBaseIfNeeded "            " true
+        
+        w.printfn ""
+        w
+
         
     let generateUpdateFunction (data: UpdateData) (w: StringWriter) =
         let generateProperties (properties: UpdateProperty array) =
@@ -111,90 +168,48 @@ module CodeGenerator =
                     w.printfn "        Collections.updateChildren prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
                     w.printfn "            (fun x -> x.Create() :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
-                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+                    w.printfn "            (fun prevChildOpt currChild targetChild -> curr.UpdateAttachedPropertiesForAttribute(%s, prevChildOpt, currChild, targetChild))" attributeKey
                     
                 | Some _ when hasApply ->
                     w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
-                    w.printfn "            (match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey
+                    w.printfn "            (fun prevChildOpt currChild targetChild -> curr.UpdateAttachedPropertiesForAttribute(%s, prevChildOpt, currChild, targetChild))" attributeKey
 
                 | _ ->
                     // If the type is ViewElement, then it's a type from the model
                     // Issue recursive calls to "Create" and "UpdateIncremental"
                     if p.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
+                        w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome newValue) when identical prevValue newValue -> ()"
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome newValue) when canReuseView prevValue newValue ->"
                         w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
-                        w.printfn "        | _, ValueSome newValue ->"
+                        w.printfn "        | struct (_, ValueSome newValue) ->"
                         w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
-                        w.printfn "        | ValueSome _, ValueNone ->"
+                        w.printfn "        | struct (ValueSome _, ValueNone) ->"
                         w.printfn "            target.%s <- null"  p.Name
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                        w.printfn "        | struct (ValueNone, ValueNone) -> ()"
 
                     // Explicit update code
                     elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
                         w.printfn "        %s prev%sOpt curr%sOpt target" p.UpdateCode p.UniqueName p.UniqueName
 
                     else
-                        w.printfn "        match prev%sOpt, curr%sOpt with" p.UniqueName p.UniqueName
-                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
+                        w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()"
+                        w.printfn "        | struct (_, ValueSome currValue) -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
                         if p.DefaultValue = "" then
-                            w.printfn "        | ValueSome _, ValueNone -> target.ClearValue %s.%sProperty" data.FullName p.Name
+                            w.printfn "        | struct (ValueSome _, ValueNone) -> target.ClearValue %s.%sProperty" data.FullName p.Name
                         else
-                            w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                            w.printfn "        | struct (ValueSome _, ValueNone) -> target.%s <- %s" p.Name p.DefaultValue
+                        w.printfn "        | struct (ValueNone, ValueNone) -> ()"
         
-        w.printfn "    static member Update%s (registry: System.Collections.Generic.Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit>, prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
-        
-        // Attached properties updaters
-        if data.PropertiesWithAttachedProperties.Length > 0 then
-            for p in data.PropertiesWithAttachedProperties do
-                let targetChildType = p.CollectionDataElementType |> Option.defaultValue "obj"
-                w.printfn "        let update%sAttachedProperties overrideFunc (prevChildOpt: ViewElement voption) (newChild: ViewElement) (targetChild: %s) =" p.UniqueName targetChildType
-                for ap in p.AttachedProperties do
-                    let hasApply = not (System.String.IsNullOrWhiteSpace(ap.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(ap.UpdateCode))
-                    let attributeKey = getAttributeKey ap.CustomAttributeKey ap.UniqueName
-                    
-                    w.printfn "            let prev%sOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
-                    w.printfn "            let curr%sOpt = newChild.TryGetAttributeKeyed<%s>(%s)" ap.UniqueName ap.ModelType attributeKey
-                    
-                    if ap.ModelType = "ViewElement" && not hasApply then
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
-                        w.printfn "            // For structured objects, dependsOn on reference equality"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
-                        w.printfn "                newValue.UpdateIncremental(prevValue, (%s.Get%s(targetChild)))" data.FullName ap.Name
-                        w.printfn "            | _, ValueSome newValue ->"
-                        w.printfn "                %s.Set%s(targetChild, (newValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalType
-                        w.printfn "            | ValueSome _, ValueNone ->"
-                        w.printfn "                %s.Set%s(targetChild, null)" data.FullName ap.Name
-                        w.printfn "            | ValueNone, ValueNone -> ()"
-                        
-                    elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
-                        w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
-                        
-                    else
-                        w.printfn "            match prev%sOpt, curr%sOpt with" ap.UniqueName ap.UniqueName
-                        w.printfn "            | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                        w.printfn "            | _, ValueSome currChildValue -> targetChild.SetValue(%s.%sProperty, %s currChildValue)" data.FullName ap.Name ap.ConvertModelToValue
-                        w.printfn "            | ValueSome _, ValueNone -> targetChild.ClearValue(%s.%sProperty)" data.FullName ap.Name
-                        w.printfn "            | _ -> ()"
-                        
-                    w.printfn "            overrideFunc prevChildOpt newChild targetChild"
-                    
-            w.printfn ""
-            for p in data.PropertiesWithAttachedProperties do
-                let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
-                w.printfn "        registry.[%s.KeyValue] <- (fun o p c t -> (update%sAttachedProperties o p c (unbox t)))(match registry.TryGetValue(%s.KeyValue) with true, func -> func | false, _ -> (fun _ _ _ -> ()))" attributeKey p.UniqueName attributeKey
-            w.printfn ""
-                        
+        w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
+
         if (data.ImmediateMembers.Length = 0) then
             if (data.BaseName.IsNone) then
                 w.printfn "        ()"
             else
-                w.printfn "        ViewBuilders.Update%s (registry, prevOpt, curr, target)" data.BaseName.Value
+                w.printfn "        ViewBuilders.Update%s(prevOpt, curr, target)" data.BaseName.Value
         else
             if data.ImmediateMembers.Length > 0 then
                 for m in data.ImmediateMembers do
@@ -220,10 +235,10 @@ module CodeGenerator =
                 for e in data.Events do
                     let relatedProperties =
                         e.RelatedProperties
-                        |> Array.map (fun p -> sprintf "(identical prev%sOpt curr%sOpt)" p p)
+                        |> Array.map (fun p -> sprintf "(identicalVOption prev%sOpt curr%sOpt)" p p)
                         |> Array.fold (fun a b -> a + " && " + b) ""
 
-                    w.printfn "        let shouldUpdate%s = not ((identical prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
+                    w.printfn "        let shouldUpdate%s = not ((identicalVOption prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
                     w.printfn "        if shouldUpdate%s then" e.UniqueName
                     w.printfn "            match prev%sOpt with" e.UniqueName
                     w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
@@ -237,7 +252,7 @@ module CodeGenerator =
             // Update inherited members
             if data.BaseName.IsSome then
                 w.printfn "        // Update inherited members"
-                w.printfn "        ViewBuilders.Update%s (registry, prevOpt, curr, target)" data.BaseName.Value
+                w.printfn "        ViewBuilders.Update%s(prevOpt, curr, target)" data.BaseName.Value
 
             // Update properties
             if data.Properties.Length > 0 then
@@ -284,7 +299,7 @@ module CodeGenerator =
             w.printfn ""
             w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
             w.printfn ""
-            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, (fun registry prevOpt curr target -> ViewBuilders.Update%s(registry, prevOpt, curr, target)), attribBuilder)" data.FullName data.Name data.Name
+            w.printfn "        ViewElement.Create<%s>(ViewBuilders.Create%s, (fun prev curr target -> ViewBuilders.Update%s(prev, curr, target)), (fun key prev curr target -> ViewBuilders.Update%sAttachedProperties(key, prev, curr, target)), attribBuilder)" data.FullName data.Name data.Name data.Name
             w.printfn ""
 
 
@@ -294,6 +309,7 @@ module CodeGenerator =
             w
             |> generateBuildFunction typ.Build
             |> generateCreateFunction typ.Create
+            |> generateUpdateAttachedPropertiesFunction typ.UpdateAttachedProperties
             |> generateUpdateFunction typ.Update
             |> generateConstruct typ.Construct
         w

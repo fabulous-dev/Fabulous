@@ -110,19 +110,33 @@ type ViewRef<'T when 'T : not struct>() =
         | _ -> None
 
 /// A description of a visual element
-type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
+type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
-    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
-        ViewElement(targetType, create, update, attribsBuilder.Close())
+    // Recursive search of an attribute by its key.
+    // Perf note: This is preferred to Array.tryFind because it avoids capturing the context with a lambda
+    let tryFindAttrib key =
+        let rec tryFindAttribRec key i =
+            if i >= attribs.Length then
+                ValueNone
+            elif attribs.[i].Key = key then
+                ValueSome (attribs.[i])
+            else
+                tryFindAttribRec key (i + 1)
+        tryFindAttribRec key 0
+    
+    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
+        ViewElement(targetType, create, update, updateAttachedProperties, attribsBuilder.Close())
 
     static member Create
             (create: (unit -> 'T),
-             update: (Dictionary<int, ViewElement voption -> ViewElement -> obj -> unit> -> ViewElement voption -> ViewElement -> 'T -> unit),
+             update: (ViewElement voption -> ViewElement -> 'T -> unit),
+             updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit),
              attribsBuilder: AttributesBuilder) =
         
         ViewElement(
             typeof<'T>, (create >> box),
-            (fun prev curr target -> update (Dictionary()) prev curr (unbox target)),
+            (fun prev curr target -> update prev curr (unbox target)),
+            updateAttachedProperties,
             attribsBuilder.Close()
         )
 
@@ -140,13 +154,12 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
-    
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
-        | Some kvp -> ValueSome(unbox<'T>(kvp.Value)) 
-        | None -> ValueNone
+        match tryFindAttrib key.KeyValue with 
+        | ValueSome kvp -> ValueSome(unbox<'T>(kvp.Value)) 
+        | ValueNone -> ValueNone
 
     /// Get an attribute of the visual element
     member x.TryGetAttribute<'T>(name: string) = 
@@ -154,9 +167,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
  
     /// Get an attribute of the visual element
     member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
-        | Some kvp -> unbox<'T>(kvp.Value)
-        | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
+        match tryFindAttrib key.KeyValue with 
+        | ValueSome kvp -> unbox<'T>(kvp.Value)
+        | ValueNone -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
         
     /// Try get the key attribute value
     member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
@@ -169,6 +182,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
+
+    /// Differentially update the attached properties of a child of a collection
+    member x.UpdateAttachedPropertiesForAttribute<'T>(attributeKey: AttributeKey<'T>, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties attributeKey.KeyValue prevOpt curr target
 
     /// Create the UI element from the view description
     member x.Create() : obj =
@@ -189,7 +205,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
             let attribs2 = Array.zeroCreate newAttribsLength
             Array.blit attribs 0 attribs2 0 attribs.Length
             attribs2.[attribIndex] <- KeyValuePair(key.KeyValue, box value)
-            ViewElement(targetType, create, update, attribs2)
+            ViewElement(targetType, create, update, updateAttachedProperties, attribs2)
         
         let n = attribs.Length
         

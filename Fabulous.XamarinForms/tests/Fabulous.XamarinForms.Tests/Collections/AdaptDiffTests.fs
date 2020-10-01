@@ -7,6 +7,12 @@ open NUnit.Framework
 open FsUnit
 
 module AdaptDiffTests =
+    let testAdaptDiffForObservableCollection prev =
+        let prevArray = Array.ofList prev
+        let workingSetIndex = Collections.adaptDiffForObservableCollection prev.Length prevArray prevArray.Length
+        prevArray.[0 .. workingSetIndex - 1]
+        |> List.ofArray
+
     [<Test>]
     let ``Test Reduce``() =
         let previous =
@@ -31,7 +37,7 @@ module AdaptDiffTests =
               View.Button(key = "Button2_1")
               View.Button(key = "Button2_2") ]
             
-        let diffResult = DiffResult<ViewElement>.Operations [
+        let diffResult = [
             Update (0, previous.[0], current.[0])
             Update (1, previous.[1], current.[1])
             Update (2, previous.[2], current.[2])
@@ -43,9 +49,9 @@ module AdaptDiffTests =
             Update (8, previous.[8], current.[8])
             Delete 4
         ]
-        
-        Collections.adaptDiffForObservableCollection previous.Length diffResult
-        |> should equal (DiffResult<ViewElement>.Operations [
+
+        testAdaptDiffForObservableCollection diffResult
+        |> should equal [
             Update (0, previous.[0], current.[0])
             Update (1, previous.[1], current.[1])
             Update (2, previous.[2], current.[2])
@@ -56,7 +62,7 @@ module AdaptDiffTests =
             MoveAndUpdate (8, previous.[7], 7, current.[7])
             MoveAndUpdate (9, previous.[8], 8, current.[8])
             Delete 9
-        ])
+        ]
             
     [<Test>]
     let ``Test Reduce 2``() =
@@ -72,7 +78,7 @@ module AdaptDiffTests =
               View.Button(key = "Button0_1")
               View.Image(key = "Button0_2") ]
         
-        let diffResult = DiffResult<ViewElement>.Operations [
+        let diffResult = [
             Insert (0, current.[0])
             Update (1, previous.[1], current.[1])
             MoveAndUpdate (4, previous.[4], 2, current.[2])
@@ -81,15 +87,15 @@ module AdaptDiffTests =
             Delete 3
         ]
         
-        Collections.adaptDiffForObservableCollection previous.Length diffResult
-        |> should equal (DiffResult<ViewElement>.Operations [
+        testAdaptDiffForObservableCollection diffResult
+        |> should equal [
             Insert (0, current.[0])
             MoveAndUpdate (2, previous.[1], 1, current.[1])
             MoveAndUpdate (5, previous.[4], 2, current.[2])
             Delete 3
             Delete 3
             Delete 3
-        ])
+        ]
             
     [<Test>]
     let ``Test Reduce 3``() =
@@ -110,7 +116,7 @@ module AdaptDiffTests =
             [ View.Button(key = "0")
               View.Label() ]
         
-        let diffResult = DiffResult<ViewElement>.Operations [
+        let diffResult = [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             MoveAndUpdate (0, previous.[0], 1, current.[1])
             Delete 1
@@ -124,8 +130,8 @@ module AdaptDiffTests =
             Delete 10
         ]
         
-        Collections.adaptDiffForObservableCollection previous.Length diffResult
-        |> should equal (DiffResult<ViewElement>.Operations [
+        testAdaptDiffForObservableCollection diffResult
+        |> should equal [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             Update (1, previous.[0], current.[1])
             Delete 2
@@ -137,7 +143,7 @@ module AdaptDiffTests =
             Delete 2
             Delete 2
             Delete 2
-        ])
+        ]
         
         
         

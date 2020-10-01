@@ -14,6 +14,25 @@ module SimplerHelpers =
                  Memoizations.T.Clear()
              Memoizations.T.[key] <- System.WeakReference<obj>(box res)
 
+    /// Because ViewElement stores its values as KeyValuePair<AttributeKey, obj>,
+    /// Structs like Xamarin.Forms.Color/Thickness will be boxed each time we use them
+    /// To prevent that, we memoize the boxed value for the recently used structs
+    type StructMemoizations<'T when 'T : struct and 'T : equality>() =
+        static let t = Dictionary<int, obj>()
+        static member T = t
+        static member Add(res: 'T) =
+            if StructMemoizations<'T>.T.Count > 100 then
+                System.Diagnostics.Trace.WriteLine(sprintf "Clearing %s memoizations..." typeof<'T>.FullName)
+                StructMemoizations<'T>.T.Clear()
+            let key = res.GetHashCode()
+            let value = box res
+            StructMemoizations<'T>.T.[key] <- value
+            value
+        static member TryGetValue(res: 'T) =
+            match StructMemoizations<'T>.T.TryGetValue(res.GetHashCode()) with
+            | false, _ -> ValueNone
+            | true, value -> ValueSome value
+
     type DoNotUseModelInsideDependsOn = | DoNotUseModelInsideDependsOn
 
     /// Memoize part of a view model computation. Also prevent the use of the model inside

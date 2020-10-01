@@ -11,6 +11,12 @@ open System.Threading
 module ViewHelpers =
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
+
+    let identicalVOption (x: 'T voption) (y: 'T voption) =
+        match struct (x, y) with
+        | struct (ValueNone, ValueNone) -> true
+        | struct (ValueSome x1, ValueSome y1) when identical x1 y1 -> true
+        | _ -> false
             
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseView (prevChild: ViewElement) (newChild: ViewElement) =
@@ -134,15 +140,17 @@ module ViewHelpers =
                 item
 
             // The update method
-            let update _ (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
                 let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
                 let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
                 let realSource = contents state
                 realSource.Update(prevOpt, source, target)
                 match onUpdate with None -> () | Some f -> f state target
 
+            let updateAttachedProperties _key _prevOpt _source _target = ()
+
             // The element
-            ViewElement.Create(create, update, attribs)
+            ViewElement.Create(create, update, updateAttachedProperties, attribs)
 
         static member OnCreate (contents : ViewElement, onCreate: (obj -> unit)) =
             View.Stateful (init = (fun () -> ()), contents = (fun _ -> contents), onCreate = (fun _ obj -> onCreate obj))
@@ -168,6 +176,7 @@ module ViewHelpers =
                 let attribs = AttributesBuilder(0)
                 let create () = box externalObj 
                 let update (_prevOpt: ViewElement voption) (_source: ViewElement) (_target: obj) = ()
-                let res = ViewElement(externalObj.GetType(), create, update, attribs)
+                let updateAttachedProperties _key _prevOpt _curr _target = ()
+                let res = ViewElement(externalObj.GetType(), create, update, updateAttachedProperties, attribs)
                 externalsTable.Add(externalObj, res)
                 res
