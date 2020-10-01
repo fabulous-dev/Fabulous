@@ -128,23 +128,23 @@ module CodeGenerator =
                     if ap.ModelType = "ViewElement" && not hasApply then
                         w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
                         w.printfn "            // For structured objects, dependsOn on reference equality"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "            | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome newValue) when identical prevValue newValue -> ()"
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome newValue) when canReuseView prevValue newValue ->"
                         w.printfn "                newValue.UpdateIncremental(prevValue, (%s.Get%s(target)))" data.FullName ap.Name
-                        w.printfn "            | _, ValueSome newValue ->"
+                        w.printfn "            | struct (_, ValueSome newValue) ->"
                         w.printfn "                %s.Set%s(target, (newValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalType
-                        w.printfn "            | ValueSome _, ValueNone ->"
+                        w.printfn "            | struct (ValueSome _, ValueNone) ->"
                         w.printfn "                %s.Set%s(target, null)" data.FullName ap.Name
-                        w.printfn "            | ValueNone, ValueNone -> ()"
+                        w.printfn "            | struct (ValueNone, ValueNone) -> ()"
                         
                     elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
                         w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
                         
                     else
                         w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
-                        w.printfn "            | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-                        w.printfn "            | _, ValueSome currValue -> target.SetValue(%s.%sProperty, %s currValue)" data.FullName ap.Name ap.ConvertModelToValue
-                        w.printfn "            | ValueSome _, ValueNone -> target.ClearValue(%s.%sProperty)" data.FullName ap.Name
+                        w.printfn "            | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()"
+                        w.printfn "            | struct (_, ValueSome currValue) -> target.SetValue(%s.%sProperty, %s currValue)" data.FullName ap.Name ap.ConvertModelToValue
+                        w.printfn "            | struct (ValueSome _, ValueNone) -> target.ClearValue(%s.%sProperty)" data.FullName ap.Name
                         w.printfn "            | _ -> ()"
                         
                 printUpdateBaseIfNeeded "            " false
@@ -180,14 +180,14 @@ module CodeGenerator =
                     if p.ModelType = "ViewElement" && not hasApply then
                         w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome newValue) when identical prevValue newValue -> ()"
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome newValue) when canReuseView prevValue newValue ->"
                         w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" p.Name
-                        w.printfn "        | _, ValueSome newValue ->"
+                        w.printfn "        | struct (_, ValueSome newValue) ->"
                         w.printfn "            target.%s <- (newValue.Create() :?> %s)" p.Name p.OriginalType
-                        w.printfn "        | ValueSome _, ValueNone ->"
+                        w.printfn "        | struct (ValueSome _, ValueNone) ->"
                         w.printfn "            target.%s <- null"  p.Name
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                        w.printfn "        | struct (ValueNone, ValueNone) -> ()"
 
                     // Explicit update code
                     elif not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) then
@@ -195,13 +195,13 @@ module CodeGenerator =
 
                     else
                         w.printfn "        match struct (prev%sOpt, curr%sOpt) with" p.UniqueName p.UniqueName
-                        w.printfn "        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()"
-                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
+                        w.printfn "        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()"
+                        w.printfn "        | struct (_, ValueSome currValue) -> target.%s <- %s currValue" p.Name p.ConvertModelToValue
                         if p.DefaultValue = "" then
-                            w.printfn "        | ValueSome _, ValueNone -> target.ClearValue %s.%sProperty" data.FullName p.Name
+                            w.printfn "        | struct (ValueSome _, ValueNone) -> target.ClearValue %s.%sProperty" data.FullName p.Name
                         else
-                            w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s" p.Name p.DefaultValue
-                        w.printfn "        | ValueNone, ValueNone -> ()"
+                            w.printfn "        | struct (ValueSome _, ValueNone) -> target.%s <- %s" p.Name p.DefaultValue
+                        w.printfn "        | struct (ValueNone, ValueNone) -> ()"
         
         w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " data.Name data.FullName
 

@@ -46,7 +46,6 @@ let addJDK properties =
 
 let dotnetBuild outputSubDir paths =
     for projectPath in paths do
-        let outputPath = composeOutputPath outputSubDir projectPath
         DotNet.build (fun opt ->
             { opt with
                 Configuration = DotNet.BuildConfiguration.Release }) projectPath
@@ -81,7 +80,7 @@ let dotnetTest outputSubDir paths =
                 Logger = Some "trx"
                 ResultsDirectory = Some outputPath }) projectPath
 
-let msbuild outputSubDir paths =
+let msbuild paths =
     for projectPath in paths do
         let projectName = Path.GetFileNameWithoutExtension projectPath
         let properties = [ ("Configuration", "Release") ] |> addJDK
@@ -282,7 +281,7 @@ Target.create "PackFabulousXamarinFormsExtensions" (fun _ ->
 Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
     !! "Fabulous.XamarinForms/samples/**/*.fsproj"
     |> removeIncompatiblePlatformProjects
-    |> msbuild "Fabulous.XamarinForms/samples"
+    |> msbuild
 )
 
 Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
@@ -293,7 +292,7 @@ Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
 Target.create "BuildFabulousStaticViewSamples" (fun _ ->
     !! "Fabulous.StaticView/samples/**/*.fsproj"
     |> removeIncompatiblePlatformProjects
-    |> msbuild "Fabulous.StaticView/samples"
+    |> msbuild
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
