@@ -17,9 +17,6 @@ For more information, please take a look at the documentation.
 
 ## Roadmap
 
-* Make it compatible with 3rd party libraries
-   * Add support for referencing existing mapping file to allow inheritance of existing bindings
-
 * Add support for 2 new modes, so it can be run by anyone to generate bindings on any given dll
    * `generate-mapping`: Generate the JSON mapping file with all controls and properties
    * `bind`: Generate the F# bindings code for a given mapping file
