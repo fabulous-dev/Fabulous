@@ -55,7 +55,7 @@ let update msg model =
 let view model dispatch =
     View.ContentPage(
         View.StackLayout(
-            children=[
+            children = [
                 View.Image(source = "fabulous.png")
                 View.Label(text = model.Text, fontSize = 22.)
                 View.Button(text = "Click me", command = (fun () -> dispatch ButtonClicked))
