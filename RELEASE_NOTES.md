@@ -1,3 +1,7 @@
+#### 0.60.0-preview2
+
+* [Fabulous.XamarinForms] Disabled StructMemoization to check if it's the source of some issues
+
 #### 0.60.0-preview1
 
 * [All] Proper version constraints for the NuGet packages (https://github.com/fsprojects/Fabulous/pull/797)
@@ -18,7 +22,7 @@ BREAKING CHANGES: Please read the migration guide to know how to update to this 
 
 #### 0.55.0
 
-We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.  
+We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.
 By setting an optional `key` value on ViewElement, you can hint Fabulous which control it should reuse for better performance.
 More information here: https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-perf.html#optimizing-view-performance-in-advanced-scenarios-the-key-property
 
@@ -50,7 +54,7 @@ More information here: https://fsprojects.github.io/Fabulous/Fabulous.XamarinFor
 
 #### 0.55.0-preview1
 
-Preview build: We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.  
+Preview build: We changed the way Fabulous reuses controls when you provide a new view definition in the `view` function.
 By setting an optional `key` value on ViewElement, you can hint Fabulous which control it should reuse for better performance.
 More information here: https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-perf.html#optimizing-view-performance-in-advanced-scenarios-the-key-property
 
@@ -127,14 +131,14 @@ Please read the migration guide to know how to update to this new version (https
 
 #### 0.50.0-alpha.7
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] Fix issue for NavigationPage reuse
 
 #### 0.50.0-alpha.6
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] TableView now uses TableRoot and TableSections
@@ -142,7 +146,7 @@ Please only use this version with a backup of your solution.
 
 #### 0.50.0-alpha.5
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] Fixed bug preventing use of events on ListView
@@ -151,14 +155,14 @@ Please only use this version with a backup of your solution.
 
 #### 0.50.0-alpha.4
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] ListView now only accepts Cell types as items
 
 #### 0.50.0-alpha.3
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] Fixed an issue where an IndexOutOfRangeException could occur
@@ -169,7 +173,7 @@ Please only use this version with a backup of your solution.
 
 #### 0.50.0-alpha.2
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] Fixed an issue where events could be subscribed to several times in a row.
@@ -177,7 +181,7 @@ Please only use this version with a backup of your solution.
 
 #### 0.50.0-alpha
 
-This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.  
+This is an alpha release of an ongoing work with multiple breaking changes that might not be in the final version.
 Please only use this version with a backup of your solution.
 
 * [Fabulous.XamarinForms] Fabulous is no longer triggering property-related events when internally updating the value. This fixes the really annoying infinite looping issue on Android once and for all!
@@ -477,7 +481,7 @@ BREAKING CHANGES:
 
 #### 0.8.2
 
-* Fix template 
+* Fix template
 
 #### 0.8.0
 
@@ -510,7 +514,7 @@ BREAKING CHANGES:
 #### 0.5.0
 
 * Simplify generated code
-* Code generator now in F#  
+* Code generator now in F#
 * Remove `x |> margin 3.0`  pipelined versions of properties and instead people always need to use members `x.Margin(3.0)`
 
 #### 0.4.5
@@ -519,7 +523,7 @@ BREAKING CHANGES:
 * Sequences not lists for model inputs
 * `itemAppearing` and `itemDisappearing` now use integer indexes
 * Old view elements are now reusable after application resumes
-* Global `dispatch` function available to reduce number of closures 
+* Global `dispatch` function available to reduce number of closures
 
 #### 0.4.4
 
@@ -567,7 +571,7 @@ BREAKING CHANGES:
 
 #### 0.3.0
 
-* Add multi-page and navigation 
+* Add multi-page and navigation
 * Add dynamic views (NOTE: not usable since they flicker, see README.md)
 
 #### 0.2.0
