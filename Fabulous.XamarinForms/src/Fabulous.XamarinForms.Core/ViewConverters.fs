@@ -97,20 +97,20 @@ module ViewConverters =
             else
                 null
                 
-    let convertXamarinFormsColor (v: Xamarin.Forms.Color) =
-        match StructMemoizations.TryGetValue(v) with
-        | ValueSome value -> value
-        | ValueNone -> StructMemoizations.Add(v)
-
-    let convertXamarinFormsThickness (v: Xamarin.Forms.Thickness) =
-        match StructMemoizations.TryGetValue(v) with
-        | ValueSome value -> value
-        | ValueNone -> StructMemoizations.Add(v)
-        
-    let convertXamarinFormsLayoutOptions (v: Xamarin.Forms.LayoutOptions) =
-        match StructMemoizations.TryGetValue(v) with
-        | ValueSome value -> value
-        | ValueNone -> StructMemoizations.Add(v)
+//    let convertXamarinFormsColor (v: Xamarin.Forms.Color) =
+//        match StructMemoizations.TryGetValue(v) with
+//        | ValueSome value -> value
+//        | ValueNone -> StructMemoizations.Add(v)
+//
+//    let convertXamarinFormsThickness (v: Xamarin.Forms.Thickness) =
+//        match StructMemoizations.TryGetValue(v) with
+//        | ValueSome value -> value
+//        | ValueNone -> StructMemoizations.Add(v)
+//        
+//    let convertXamarinFormsLayoutOptions (v: Xamarin.Forms.LayoutOptions) =
+//        match StructMemoizations.TryGetValue(v) with
+//        | ValueSome value -> value
+//        | ValueNone -> StructMemoizations.Add(v)
 
 
     /////////////////

@@ -5,7 +5,7 @@ open Fabulous.CodeGen
 open Fabulous.CodeGen.Binder
 open Fabulous.CodeGen.Binder.Models
 
-module XFOptimizer =    
+module XFOptimizer =
     /// Optimize command properties by asking for an F# function for the input type instead of ICommand
     module OptimizeCommands =
         let private canBeOptimized (boundProperty: BoundProperty) =
@@ -14,7 +14,7 @@ module XFOptimizer =
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
             && boundProperty.ModelType = boundProperty.InputType
-        
+
         let optimizeBoundProperty (boundType: BoundType) (boundProperty: BoundProperty) =
             [|
                 // Accepts a function but don't apply it now
@@ -24,7 +24,7 @@ module XFOptimizer =
                     ConvertInputToModel = ""
                     ConvertModelToValue = ""
                     UpdateCode = "(fun _ _ _ -> ())" }
-                
+
                 // Accepts a boolean to know when the function can be executed
                 // Creates a Command for both CanExecute and the function
                 { Name = sprintf "%sCanExecute" boundProperty.Name
@@ -43,10 +43,10 @@ module XFOptimizer =
                   HasPriority = false
                   IsInherited = false }
             |]
-        
+
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) optimizeBoundProperty
-    
-    /// Optimize ImageSource properties by asking for InputTypes.Image instead of ImageSource  
+
+    /// Optimize ImageSource properties by asking for InputTypes.Image instead of ImageSource
     module OptimizeImageSource =
         let private canBeOptimized (boundProperty: BoundProperty) =
             boundProperty.InputType = "Xamarin.Forms.ImageSource"
@@ -54,16 +54,16 @@ module XFOptimizer =
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
             && boundProperty.ModelType = boundProperty.InputType
-        
+
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
                 InputType = "Fabulous.XamarinForms.InputTypes.Image.Value"
                 ModelType = "Fabulous.XamarinForms.InputTypes.Image.Value"
                 ConvertModelToValue = "ViewConverters.convertFabulousImageToXamarinFormsImageSource" }
-        
+
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
-    
-    /// Optimize MediaSource properties by asking for InputTypes.Media instead of MediaSource  
+
+    /// Optimize MediaSource properties by asking for InputTypes.Media instead of MediaSource
     module OptimizeMediaSource =
         let private canBeOptimized (boundProperty: BoundProperty) =
             boundProperty.InputType = "Xamarin.Forms.MediaSource"
@@ -71,77 +71,77 @@ module XFOptimizer =
             && boundProperty.ConvertModelToValue = ""
             && boundProperty.UpdateCode = ""
             && boundProperty.ModelType = boundProperty.InputType
-        
+
         let private optimizeBoundProperty (boundProperty: BoundProperty) =
             { boundProperty with
                 InputType = "Fabulous.XamarinForms.InputTypes.Media.Value"
                 ModelType = "Fabulous.XamarinForms.InputTypes.Media.Value"
                 ConvertModelToValue = "ViewConverters.convertFabulousMediaToXamarinFormsMediaSource" }
-        
-        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
-
-    /// Optimize Color properties to use memoization
-    module OptimizeColor =
-        let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = "Xamarin.Forms.Color"
-            && boundProperty.ConvertInputToModel = ""
-            && boundProperty.ConvertModelToValue = ""
-            && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = boundProperty.InputType
-            
-        let private optimizeBoundProperty (boundProperty: BoundProperty) =
-            { boundProperty with
-                ModelType = "obj"
-                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsColor"
-                ConvertModelToValue = "unbox" }
 
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
-        
-    /// Optimize Thickness properties to use memoization
-    module OptimizeThickness =
-        let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = "Xamarin.Forms.Thickness"
-            && boundProperty.ConvertInputToModel = ""
-            && boundProperty.ConvertModelToValue = ""
-            && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = boundProperty.InputType
-                    
-        let private optimizeBoundProperty (boundProperty: BoundProperty) =
-            { boundProperty with
-                ModelType = "obj"
-                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsThickness"
-                ConvertModelToValue = "unbox" }
-        
-        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
-        
-    /// Optimize LayoutOptions properties to use memoization
-    module OptimizeLayoutOptions =
-        let private canBeOptimized (boundProperty: BoundProperty) =
-            boundProperty.InputType = "Xamarin.Forms.LayoutOptions"
-            && boundProperty.ConvertInputToModel = ""
-            && boundProperty.ConvertModelToValue = ""
-            && boundProperty.UpdateCode = ""
-            && boundProperty.ModelType = boundProperty.InputType
-                    
-        let private optimizeBoundProperty (boundProperty: BoundProperty) =
-            { boundProperty with
-                ModelType = "obj"
-                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsLayoutOptions"
-                ConvertModelToValue = "unbox" }
-        
-        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
 
-    
+//    /// Optimize Color properties to use memoization
+//    module OptimizeColor =
+//        let private canBeOptimized (boundProperty: BoundProperty) =
+//            boundProperty.InputType = "Xamarin.Forms.Color"
+//            && boundProperty.ConvertInputToModel = ""
+//            && boundProperty.ConvertModelToValue = ""
+//            && boundProperty.UpdateCode = ""
+//            && boundProperty.ModelType = boundProperty.InputType
+//
+//        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+//            { boundProperty with
+//                ModelType = "obj"
+//                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsColor"
+//                ConvertModelToValue = "unbox" }
+//
+//        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+//
+//    /// Optimize Thickness properties to use memoization
+//    module OptimizeThickness =
+//        let private canBeOptimized (boundProperty: BoundProperty) =
+//            boundProperty.InputType = "Xamarin.Forms.Thickness"
+//            && boundProperty.ConvertInputToModel = ""
+//            && boundProperty.ConvertModelToValue = ""
+//            && boundProperty.UpdateCode = ""
+//            && boundProperty.ModelType = boundProperty.InputType
+//
+//        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+//            { boundProperty with
+//                ModelType = "obj"
+//                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsThickness"
+//                ConvertModelToValue = "unbox" }
+//
+//        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+//
+//    /// Optimize LayoutOptions properties to use memoization
+//    module OptimizeLayoutOptions =
+//        let private canBeOptimized (boundProperty: BoundProperty) =
+//            boundProperty.InputType = "Xamarin.Forms.LayoutOptions"
+//            && boundProperty.ConvertInputToModel = ""
+//            && boundProperty.ConvertModelToValue = ""
+//            && boundProperty.UpdateCode = ""
+//            && boundProperty.ModelType = boundProperty.InputType
+//
+//        let private optimizeBoundProperty (boundProperty: BoundProperty) =
+//            { boundProperty with
+//                ModelType = "obj"
+//                ConvertInputToModel = "Fabulous.XamarinForms.ViewConverters.convertXamarinFormsLayoutOptions"
+//                ConvertModelToValue = "unbox" }
+//
+//        let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) (fun _ prop -> [| optimizeBoundProperty prop |])
+
+
     let optimize =
         let xfOptimize boundModel =
             boundModel
             |> OptimizeCommands.apply
             |> OptimizeImageSource.apply
             |> OptimizeMediaSource.apply
-            |> OptimizeColor.apply
-            |> OptimizeThickness.apply
-            |> OptimizeLayoutOptions.apply
-        
+//            |> OptimizeColor.apply
+//            |> OptimizeThickness.apply
+//            |> OptimizeLayoutOptions.apply
+
         Optimizer.optimize
         >> WorkflowResult.map xfOptimize
 
