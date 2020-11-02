@@ -2,8 +2,7 @@
 
 {% include_relative contents.md %}
 
-Migrating from v0.56 to v0.57
---------
+## Migrating from v0.56 to v0.57
 
 Fabulous.XamarinForms 0.56 first introduced initial support for the new Path controls, followed by improved support in 0.57.
 
@@ -16,6 +15,7 @@ In Fabulous.XamarinForms 0.57, these discriminated unions have been replaced wit
 ### `Image.ImagePath`/`Image.ImageSrc`/etc become `Image.fromPath`/`Image.fromImageSource`/etc
 
 _Old:_
+
 ```fsharp
 View.Image(
     source = ImagePath "path/to/image.png"
@@ -35,6 +35,7 @@ View.Image(
 ```
 
 _New:_
+
 ```fsharp
 View.Image(
     source = Image.fromPath "path/to/image.png"
@@ -56,6 +57,7 @@ View.Image(
 ### `Media.MediaPath`/`Media.MediaSrc` become `Media.fromPath`/`Media.fromMediaSource`
 
 _Old:_
+
 ```fsharp
 View.Media(
     source = MediaPath "path/to/video.mp4"
@@ -66,6 +68,7 @@ View.Media(
 ```
 
 _New:_
+
 ```fsharp
 View.Media(
     source = Media.fromPath "path/to/video.mp4"
@@ -78,6 +81,7 @@ View.Media(
 ### `FontSize.FontSize`/`FontSize.Named` become `FontSize.fromValue`/`FontSize.fromNamedSize`
 
 _Old:_
+
 ```fsharp
 View.Label(
     fontSize = FontSize 14.
@@ -88,6 +92,7 @@ View.Label(
 ```
 
 _New:_
+
 ```fsharp
 View.Label(
     fontSize = FontSize.fromValue 14.
@@ -97,16 +102,49 @@ View.Label(
 )
 ```
 
+## Xamarin.Forms.SelectableItemsView - SelectionChanged signature changed
+
+_Old:_
+
+```fsharp
+SelectionChangedEventArgs ->  unit.
+```
+
+_New:_
+
+```fsharp
+(ViewElement list option*ViewElement list option)  ->  unit
+```
+
+_Example:_
+
+```fsharp
+let  navigateToAfterSelectionChanged dispatch (_,  (currentItems:  ViewElement list option))  =
+    match currentItems |> Option.bind (List.tryHead)  with
+        | None ->  ()
+        | Some item ->
+            let  animal  = item.TryGetTag<Animal>().Value
+            dispatch (SelectAnimal animal)
+
+View.CollectionView(
+	selectionMode=SelectionMode.Single,
+	selectionChanged=(navigateToAfterSelectionChanged dispatch),
+	items=(allAnimals |> List.map Templates.animalTemplate)
+)
+```
+
 ## Extension Changes
 
-The update function for extensions changed because the attached properties are handled different internally now. 
+The update function for extensions changed because the attached properties are handled different internally now.
 _Old:_
+
 ```fsharp
     let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
         ViewBuilders.UpdateBASE (prev, source, target)
 ```
 
 _New:_
+
 ```fsharp
     let update registry (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
         ViewBuilders.UpdateBASE (registry, prev, source, target)
