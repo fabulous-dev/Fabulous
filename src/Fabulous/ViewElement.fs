@@ -210,9 +210,6 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         match x.TryGetAttributeKeyed(ViewElement.CreatedAttribKey) with
         | ValueSome f -> f target
         | ValueNone -> ()
-        match x.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
-        | ValueSome f -> f.Set (target)
-        | ValueNone -> ()
         target
 
     /// Produce a new visual element with an adjusted attribute
