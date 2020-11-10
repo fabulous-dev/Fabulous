@@ -8,17 +8,17 @@ open System.Collections.Generic
 open System.Diagnostics
 
 [<AutoOpen>]
-module internal AttributeKeys = 
+module internal AttributeKeys =
     let attribKeys = Dictionary<string,int>()
     let attribNames = Dictionary<int,string>()
 
 [<Struct>]
-type AttributeKey<'T> internal (keyv: int) = 
+type AttributeKey<'T> internal (keyv: int) =
 
-    static let getAttribKeyValue (attribName: string) : int = 
-        match attribKeys.TryGetValue(attribName) with 
+    static let getAttribKeyValue (attribName: string) : int =
+        match attribKeys.TryGetValue(attribName) with
         | true, keyv -> keyv
-        | false, _ -> 
+        | false, _ ->
             let keyv = attribKeys.Count + 1
             attribKeys.[attribName] <- keyv
             attribNames.[keyv] <- attribName
@@ -30,88 +30,89 @@ type AttributeKey<'T> internal (keyv: int) =
 
     member __.Name = AttributeKey<'T>.GetName(keyv)
 
-    static member GetName(keyv: int) = 
-        match attribNames.TryGetValue(keyv) with 
+    static member GetName(keyv: int) =
+        match attribNames.TryGetValue(keyv) with
         | true, keyv -> keyv
         | false, _ -> failwithf "unregistered attribute key %d" keyv
 
 
 /// A description of a visual element
-type AttributesBuilder (attribCount: int) = 
+type AttributesBuilder (attribCount: int) =
 
     let mutable count = 0
-    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)    
+    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)
 
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
-    member __.Attributes = 
-        if isNull attribs then [| |] 
+    member __.Attributes =
+        if isNull attribs then [| |]
         else attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
 
     /// Get the attributes of the visual element
-    member __.Close() : _[] = 
-        let res = attribs 
+    member __.Close() : _[] =
+        let res = attribs
         attribs <- null
         res
 
     /// Produce a new visual element with an adjusted attribute
-    member __.Add(key: AttributeKey<'T>, value: 'T) = 
+    member __.Add(key: AttributeKey<'T>, value: 'T) =
         if isNull attribs then failwithf "The attribute builder has already been closed"
         if count >= attribs.Length then failwithf "The attribute builder was not large enough for the added attributes, it was given size %d. Did you get the attribute count right?" attribs.Length
         attribs.[count] <- KeyValuePair(key.KeyValue, box value)
         count <- count + 1
 
 
-type ViewRef() = 
+type ViewRef(onAttached, onDetached) =
     let handle = System.WeakReference<obj>(null)
-    
-    let valueChanged = Event<obj>()
-    
-    member __.ValueChanged = valueChanged.Publish
 
-    member __.Set(target: obj) : unit = 
-        handle.SetTarget(target)
-        valueChanged.Trigger(target) 
+    member private __.IsSameTarget(target) =
+        match handle.TryGetTarget() with
+        | true, res when res = target -> true
+        | _ -> false
 
-    member __.Unset() : unit = 
-        handle.SetTarget(null)
-        valueChanged.Trigger(null) 
+    member x.Set(target: obj) : unit =
+        if not (x.IsSameTarget(target)) then
+            handle.SetTarget(target)
+            onAttached(target)
 
-    member __.TryValue = 
-        match handle.TryGetTarget() with 
+    member x.Unset() : unit =
+        if not (x.IsSameTarget(null)) then
+            handle.SetTarget(null)
+            onDetached()
+
+    member __.TryValue =
+        match handle.TryGetTarget() with
         | true, null -> None
-        | true, res -> Some res 
+        | true, res -> Some res
         | _ -> None
 
-type ViewRef<'T when 'T : not struct>() = 
-    let handle = ViewRef()
-    
-    let valueChanged = Event<'T>()
-    
-    do handle.ValueChanged.Add(fun value ->
-        valueChanged.Trigger(unbox value)
-    )
-    
-    member __.ValueChanged = valueChanged.Publish
+type ViewRef<'T when 'T : not struct>() =
+    let viewElementAttached = Event<'T>()
+    let viewElementDetached = Event<obj>()
 
-    member __.Set(target: 'T) : unit =
-        handle.Set(box target)
-        
-    member __.Value : 'T = 
-        match handle.TryValue with 
+    let onAttached target = viewElementAttached.Trigger(unbox target)
+    let onDetached () = viewElementDetached.Trigger(null)
+
+    let handle = ViewRef(onAttached, onDetached)
+
+    member __.ViewElementMounted = viewElementAttached.Publish
+    member __.ViewElementUnmounted = viewElementDetached.Publish
+
+    member __.Value : 'T =
+        match handle.TryValue with
         | Some res -> unbox res
         | None -> failwith "view reference target has been collected or was not set"
 
+    member __.TryValue : 'T option =
+        match handle.TryValue with
+        | Some res -> Some (unbox res)
+        | None -> None
+
     member __.Unbox = handle
 
-    member __.TryValue : 'T option = 
-        match handle.TryValue with 
-        | Some res -> Some (unbox res)
-        | _ -> None
-
 /// A description of a visual element
-type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
-    
+type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) =
+
     // Recursive search of an attribute by its key.
     // Perf note: This is preferred to Array.tryFind because it avoids capturing the context with a lambda
     let tryFindAttrib key =
@@ -123,7 +124,8 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
             else
                 tryFindAttribRec key (i + 1)
         tryFindAttribRec key 0
-    
+
+
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, updateAttachedProperties, attribsBuilder.Close())
 
@@ -132,7 +134,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
              update: (ViewElement voption -> ViewElement -> 'T -> unit),
              updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit),
              attribsBuilder: AttributesBuilder) =
-        
+
         ViewElement(
             typeof<'T>, (create >> box),
             (fun prev curr target -> update prev curr (unbox target)),
@@ -156,32 +158,46 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(AttributeKey<int>.GetName kvp.Key, kvp.Value))
 
     /// Get an attribute of the visual element
-    member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match tryFindAttrib key.KeyValue with 
-        | ValueSome kvp -> ValueSome(unbox<'T>(kvp.Value)) 
+    member x.TryGetAttributeKeyed<'T>(key: AttributeKey<'T>) =
+        match tryFindAttrib key.KeyValue with
+        | ValueSome kvp -> ValueSome(unbox<'T>(kvp.Value))
         | ValueNone -> ValueNone
 
     /// Get an attribute of the visual element
-    member x.TryGetAttribute<'T>(name: string) = 
+    member x.TryGetAttribute<'T>(name: string) =
         x.TryGetAttributeKeyed<'T>(AttributeKey<'T> name)
- 
+
     /// Get an attribute of the visual element
-    member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
-        match tryFindAttrib key.KeyValue with 
+    member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) =
+        match tryFindAttrib key.KeyValue with
         | ValueSome kvp -> unbox<'T>(kvp.Value)
         | ValueNone -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
-        
+
     /// Try get the key attribute value
     member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
 
+    member private x.Update(prevOpt: ViewElement voption, curr: ViewElement, target: obj) =
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            match prev.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
+            | ValueNone -> ()
+            | ValueSome f -> f.Unset()
+
+        update prevOpt curr target
+
+        match curr.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
+        | ValueNone -> ()
+        | ValueSome f -> f.Set(target)
+
     /// Apply initial settings to a freshly created visual element
-    member x.Update (target: obj) = update ValueNone x target
+    member x.Update (target: obj) = x.Update(ValueNone, x, target)
 
     /// Differentially update a visual element given the previous settings
-    member x.UpdateIncremental(prev: ViewElement, target: obj) = update (ValueSome prev) x target
+    member x.UpdateIncremental(prev: ViewElement, target: obj) = x.Update(ValueSome prev, x, target)
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
-    member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
+    member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = x.Update(prevOpt, curr, target)
 
     /// Differentially update the attached properties of a child of a collection
     member x.UpdateAttachedPropertiesForAttribute<'T>(attributeKey: AttributeKey<'T>, prevOpt: ViewElement voption, curr: ViewElement, target: obj) = updateAttachedProperties attributeKey.KeyValue prevOpt curr target
@@ -195,7 +211,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         | ValueSome f -> f target
         | ValueNone -> ()
         match x.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
-        | ValueSome f -> f.Set (box target)
+        | ValueSome f -> f.Set (target)
         | ValueNone -> ()
         target
 
@@ -206,9 +222,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
             Array.blit attribs 0 attribs2 0 attribs.Length
             attribs2.[attribIndex] <- KeyValuePair(key.KeyValue, box value)
             ViewElement(targetType, create, update, updateAttachedProperties, attribs2)
-        
+
         let n = attribs.Length
-        
+
         let existingAttrIndexOpt = attribs |> Array.tryFindIndex (fun attr -> attr.Key = key.KeyValue)
         match existingAttrIndexOpt with
         | Some i ->
@@ -220,4 +236,3 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
 
 
-        
