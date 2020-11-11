@@ -1,3 +1,7 @@
+#### 0.60.0-preview3
+
+* [Fabulous.XamarinForms] Fixed ViewRef to be updated each time the target control changes (https://github.com/fsprojects/Fabulous/pull/812)
+
 #### 0.60.0-preview2
 
 * [Fabulous.XamarinForms] Disabled StructMemoization to check if it's the source of some issues
