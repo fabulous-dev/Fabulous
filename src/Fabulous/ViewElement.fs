@@ -65,6 +65,8 @@ type AttributesBuilder (attribCount: int) =
 type ViewRef(onAttached, onDetached) =
     let handle = System.WeakReference<obj>(null)
 
+    /// Check if the new target is the same than the previous one
+    /// This is done to avoid triggering change events when nothing changes
     member private __.IsSameTarget(target) =
         match handle.TryGetTarget() with
         | true, res when res = target -> true
@@ -87,16 +89,16 @@ type ViewRef(onAttached, onDetached) =
         | _ -> None
 
 type ViewRef<'T when 'T : not struct>() =
-    let viewElementAttached = Event<'T>()
-    let viewElementDetached = Event<obj>()
+    let attached = Event<'T>()
+    let detached = Event<obj>()
 
-    let onAttached target = viewElementAttached.Trigger(unbox target)
-    let onDetached () = viewElementDetached.Trigger(null)
+    let onAttached target = attached.Trigger(unbox target)
+    let onDetached () = detached.Trigger(null)
 
     let handle = ViewRef(onAttached, onDetached)
 
-    member __.ViewElementMounted = viewElementAttached.Publish
-    member __.ViewElementUnmounted = viewElementDetached.Publish
+    [<CLIEvent>] member __.Attached = attached.Publish
+    [<CLIEvent>] member __.Detached = detached.Publish
 
     member __.Value : 'T =
         match handle.TryValue with
@@ -124,7 +126,6 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
             else
                 tryFindAttribRec key (i + 1)
         tryFindAttribRec key 0
-
 
     new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), updateAttachedProperties: (int -> ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(targetType, create, update, updateAttachedProperties, attribsBuilder.Close())
@@ -176,19 +177,22 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Try get the key attribute value
     member x.TryGetKey() = x.TryGetAttributeKeyed(ViewElement.KeyAttribKey)
 
+    /// Differentially update a visual element and update the ViewRefs if present
     member private x.Update(prevOpt: ViewElement voption, curr: ViewElement, target: obj) =
-        match prevOpt with
-        | ValueNone -> ()
-        | ValueSome prev ->
-            match prev.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
-            | ValueNone -> ()
-            | ValueSome f -> f.Unset()
+        let prevViewRefOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed(ViewElement.RefAttribKey)
+        let currViewRefOpt = curr.TryGetAttributeKeyed(ViewElement.RefAttribKey)
+
+        // To avoid triggering unwanted events, don't unset if prevOpt = None or ViewRef is the same instance for prev and curr
+        match struct (prevViewRefOpt, currViewRefOpt) with
+        | struct (ValueSome prevViewRef, ValueSome currViewRef) when Object.ReferenceEquals(prevViewRef, currViewRef) -> ()
+        | struct (ValueSome prevViewRef, _) -> prevViewRef.Unset()
+        | _ -> ()
 
         update prevOpt curr target
 
-        match curr.TryGetAttributeKeyed(ViewElement.RefAttribKey) with
+        match currViewRefOpt with
         | ValueNone -> ()
-        | ValueSome f -> f.Set(target)
+        | ValueSome currViewRef -> currViewRef.Set(target)
 
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = x.Update(ValueNone, x, target)
@@ -206,7 +210,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     member x.Create() : obj =
         Debug.WriteLine (sprintf "Create %O" x.TargetType)
         let target = create()
-        x.Update(target)
+        x.Update(ValueNone, x, target)
         match x.TryGetAttributeKeyed(ViewElement.CreatedAttribKey) with
         | ValueSome f -> f target
         | ValueNone -> ()
