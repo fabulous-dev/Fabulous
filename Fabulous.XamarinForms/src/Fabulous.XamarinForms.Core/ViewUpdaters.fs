@@ -536,7 +536,7 @@ module ViewUpdaters =
     //
     // To avoid cluttering memory with dead handlers, we try to remove them whenever possible (the link is no longer wanted, the CarouselView instance is no longer accessible)
     // But we aren't notified when a CarouselView instance is disposed, and so we can't clean up the associated handler in that case...
-    let private carouselViewHandlers = Dictionary<int, Handler<Xamarin.Forms.IndicatorView>>()
+    let private carouselViewHandlers = Dictionary<int, EventHandler<Xamarin.Forms.IndicatorView>>()
 
     let private linkIndicatorViewToCarouselView (target: Xamarin.Forms.CarouselView) indicatorView =
         target.IndicatorView <- indicatorView
@@ -557,7 +557,7 @@ module ViewUpdaters =
             | false, _ ->
                 let key = target.GetHashCode()
                 let weakRef = WeakReference<Xamarin.Forms.CarouselView>(target)
-                let handler = Handler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
+                let handler = EventHandler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
                     match weakRef.TryGetTarget() with
                     | false, _ -> carouselViewHandlers.Remove(key) |> ignore
                     | true, target -> linkIndicatorViewToCarouselView target indicatorView

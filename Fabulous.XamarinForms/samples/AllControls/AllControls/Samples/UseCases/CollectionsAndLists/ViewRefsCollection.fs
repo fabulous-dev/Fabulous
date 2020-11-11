@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
+open System
 open AllControls.Helpers
 
 module ViewRefsCollection =
@@ -12,7 +13,8 @@ module ViewRefsCollection =
         | Item75Attached
         | Item75Detached
 
-    type CmdMsg = Nothing
+    type CmdMsg =
+        | ListenViewRefEvents
 
     type Model =
         { Item75SizeOpt: (int * int) option
@@ -20,16 +22,16 @@ module ViewRefsCollection =
 
     let viewRef = ViewRef<Label>()
 
-    let mapToCmd _ = Cmd.none
+    let mapToCmd cmdMsg =
+        match cmdMsg with
+        | ListenViewRefEvents ->
+            Cmd.ofSub (fun dispatch ->
+                viewRef.Attached.Add(fun _ -> dispatch Item75Attached)
+                viewRef.Detached.Add(fun _ -> dispatch Item75Detached)
+            )
 
     let init () =
-        let cmd =
-            Cmd.ofSub (fun dispatch ->
-                // TODO: Events are triggering inside ViewRef, but don't trigger here
-                viewRef.Attached.Add(fun _ -> dispatch Item75Attached)
-                viewRef.Detached.Add(fun _ -> dispatch Item75Attached)
-            )
-        { Item75SizeOpt = None; IsItem75Attached = false }, cmd
+        { Item75SizeOpt = None; IsItem75Attached = false }, [ListenViewRefEvents]
 
     let update msg model =
         match msg with
@@ -67,20 +69,22 @@ module ViewRefsCollection =
                         horizontalOptions = LayoutOptions.Center,
                         text = if isItem75Attached then "Item 75 is attached" else "Item 75 is detached"
                     )
-                    View.CollectionView(
-                        horizontalOptions = LayoutOptions.CenterAndExpand,
-                        items = [
-                            for i in 1 .. 100 ->
-                                dependsOn i (fun _ i ->
-                                    View.Label(
-                                        ?ref = (if i = 75 then Some viewRef else None),
-                                        text = "Item " + string i,
-                                        textColor = randomColor(),
-                                        height = 30.,
-                                        verticalTextAlignment = TextAlignment.Center
+                    dependsOn () (fun model () ->
+                        View.CollectionView(
+                            horizontalOptions = LayoutOptions.CenterAndExpand,
+                            items = [
+                                for i in 1 .. 100 ->
+                                    dependsOn i (fun _ i ->
+                                        View.Label(
+                                            ?ref = (if i = 75 then Some viewRef else None),
+                                            text = "Item " + string i,
+                                            textColor = randomColor(),
+                                            height = 30.,
+                                            verticalTextAlignment = TextAlignment.Center
+                                        )
                                     )
-                                )
-                        ]
+                            ]
+                        )
                     )
                 ])
             )

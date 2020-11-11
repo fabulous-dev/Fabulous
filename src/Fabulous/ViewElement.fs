@@ -75,12 +75,12 @@ type ViewRef(onAttached, onDetached) =
     member x.Set(target: obj) : unit =
         if not (x.IsSameTarget(target)) then
             handle.SetTarget(target)
-            onAttached(target)
+            onAttached x target
 
     member x.Unset() : unit =
         if not (x.IsSameTarget(null)) then
             handle.SetTarget(null)
-            onDetached()
+            onDetached x ()
 
     member __.TryValue =
         match handle.TryGetTarget() with
@@ -89,11 +89,11 @@ type ViewRef(onAttached, onDetached) =
         | _ -> None
 
 type ViewRef<'T when 'T : not struct>() =
-    let attached = Event<'T>()
-    let detached = Event<obj>()
+    let attached = Event<EventHandler<'T>, 'T>()
+    let detached = Event<EventHandler, EventArgs>()
 
-    let onAttached target = attached.Trigger(unbox target)
-    let onDetached () = detached.Trigger(null)
+    let onAttached sender target = attached.Trigger(sender, unbox target)
+    let onDetached sender () = detached.Trigger(sender, EventArgs())
 
     let handle = ViewRef(onAttached, onDetached)
 
