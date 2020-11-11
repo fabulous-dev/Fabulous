@@ -529,14 +529,14 @@ module ViewUpdaters =
     // there's no guarantee that when calling updateCarouselViewIndicatorView, the ViewRef will be bound.
     //
     // It means we need to create the link between the actual CarouselView and IndicatorView instances once ViewRef is bound.
-    // For that, we have a ViewRef.ValueChanged event we can listen to.
+    // For that, we have a ViewRef.Attached event we can listen to.
     //
     // But we need to store the handlers somewhere. Not on the ViewElements (they're supposed to be immutable and user-driven), not on the controls instances (we can't store arbitrary values on those).
-    // This means, we need to store them here, globally.
+    // This means, we need to store them here globally.
     //
     // To avoid cluttering memory with dead handlers, we try to remove them whenever possible (the link is no longer wanted, the CarouselView instance is no longer accessible)
     // But we aren't notified when a CarouselView instance is disposed, and so we can't clean up the associated handler in that case...
-    let private carouselViewHandlers = Dictionary<int, Handler<Xamarin.Forms.IndicatorView>>()
+    let private carouselViewHandlers = Dictionary<int, EventHandler<Xamarin.Forms.IndicatorView>>()
 
     let private linkIndicatorViewToCarouselView (target: Xamarin.Forms.CarouselView) indicatorView =
         target.IndicatorView <- indicatorView
@@ -557,7 +557,7 @@ module ViewUpdaters =
             | false, _ ->
                 let key = target.GetHashCode()
                 let weakRef = WeakReference<Xamarin.Forms.CarouselView>(target)
-                let handler = Handler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
+                let handler = EventHandler<Xamarin.Forms.IndicatorView>(fun _ indicatorView ->
                     match weakRef.TryGetTarget() with
                     | false, _ -> carouselViewHandlers.Remove(key) |> ignore
                     | true, target -> linkIndicatorViewToCarouselView target indicatorView
@@ -570,17 +570,17 @@ module ViewUpdaters =
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevValue, ValueNone) ->
             let handler = getHandler()
-            prevValue.ValueChanged.RemoveHandler(handler)
+            prevValue.Attached.RemoveHandler(handler)
             removeCarouselViewHandler target
             linkIndicatorViewToCarouselView target null
         | struct (ValueNone, ValueSome currValue) ->
             let handler = getHandler()
-            currValue.ValueChanged.AddHandler(handler)
+            currValue.Attached.AddHandler(handler)
             tryLinkIndicatorViewToCarouselView target currValue
         | struct (ValueSome prevValue, ValueSome currValue) ->
             let handler = getHandler()
-            prevValue.ValueChanged.RemoveHandler(handler)
-            currValue.ValueChanged.AddHandler(handler)
+            prevValue.Attached.RemoveHandler(handler)
+            currValue.Attached.AddHandler(handler)
             tryLinkIndicatorViewToCarouselView target currValue
 
     let updateIndicatorViewIndicatorProperty prevValueOpt currValueOpt (target: Xamarin.Forms.IndicatorView) =

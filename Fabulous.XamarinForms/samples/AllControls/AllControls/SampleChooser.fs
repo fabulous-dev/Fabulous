@@ -9,23 +9,23 @@ open Fabulous.XamarinForms
 module SampleChooser =
     type Msg =
         | NodeSelected of Node
-        
+
     type ExternalMsg =
         | NavigateToNode of Node
-        
+
     type Model =
         { Definition: SampleChooser }
-    
+
     let mapToCmd _ = Cmd.none
-    
+
     let init definition () =
-        { Definition = definition }
-        
+        { Definition = definition }, []
+
     let update msg model =
         match msg with
         | NodeSelected node ->
             model, [], Some (NavigateToNode node)
-        
+
     let view model dispatch =
         View.ScrollingContentPage(
             title = model.Definition.Title,
@@ -35,7 +35,7 @@ module SampleChooser =
                         match node with
                         | Sample definition -> definition.Title
                         | SampleChooser sampleChooser -> sampleChooser.Title
-                    
+
                     View.Button(
                         text = title,
                         command = fun () -> dispatch (NodeSelected node)

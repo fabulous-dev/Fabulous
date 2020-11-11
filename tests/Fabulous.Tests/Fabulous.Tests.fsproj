@@ -12,5 +12,11 @@
     <PackageReference Include="FsUnit" />
     <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewElementTests.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
   <Import Project="..\..\Packages.targets" />
 </Project>
