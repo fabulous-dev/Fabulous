@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace TicTacToe.Droid
 
 open System
