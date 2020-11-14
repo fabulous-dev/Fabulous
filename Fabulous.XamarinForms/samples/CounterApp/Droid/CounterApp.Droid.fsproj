@@ -83,6 +83,8 @@
       <Project>{49318C29-43F7-4B2F-AE4A-77B9643BE6C9}</Project>
       <Name>CounterApp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Java.Interop" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />

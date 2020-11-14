@@ -70,6 +70,7 @@ group androidxapp
   framework: monoandroid10.0
   source https://www.nuget.org/api/v2
   nuget FSharp.Core
+  nuget FSharp.Data
   nuget Xamarin.Forms ~> 4.8.0
   nuget Newtonsoft.Json
   nuget Xamarin.Android.FSharp.ResourceProvider

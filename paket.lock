@@ -259,6 +259,8 @@ RESTRICTION: == monoandroid10.0
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Core (5.0)
+    FSharp.Data (3.3.3)
+      FSharp.Core (>= 4.3.4)
     Newtonsoft.Json (12.0.3)
     Xamarin.Android.FSharp.ResourceProvider (1.0.0.28)
     Xamarin.AndroidX.Activity (1.1.0.4)
