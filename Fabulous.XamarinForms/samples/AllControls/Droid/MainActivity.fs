@@ -1,4 +1,4 @@
-// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace AllControls.Droid
 
 open Android.App
@@ -17,7 +17,6 @@ type MainActivity() =
         base.OnCreate (bundle)
         
         Xamarin.Forms.Forms.Init (this, bundle)
-        Xamarin.FormsMaps.Init(this, bundle) 
         OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init()
         FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer=Nullable true)
 

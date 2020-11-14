@@ -21,7 +21,6 @@
       <Compile Include="Samples\Controls\SwipeView.fs" />
       <Compile Include="Samples\Extensions\SkiaSharp.fs" />
       <Compile Include="Samples\Extensions\OxyPlot.fs" />
-      <Compile Include="Samples\Extensions\Maps.fs" />
       <Compile Include="Samples\Extensions\VideoManager.fs" />
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
       <Compile Include="Samples\Pages\CarouselPage.fs" />

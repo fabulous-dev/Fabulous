@@ -77,7 +77,6 @@ module Samples =
                         { Title = "Extensions"
                           Nodes =
                               [ Sample (createViewOnlyDefinition "FFImageLoading" Extensions.FFImageLoading.view)
-                                Sample (createViewOnlyDefinition "Maps" Extensions.Maps.view)
                                 Sample (createViewOnlyDefinition "OxyPlot" Extensions.OxyPlot.view)
                                 Sample
                                     ({ Title = "SkiaSharp"
