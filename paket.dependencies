@@ -40,32 +40,6 @@ group generator
   nuget OxyPlot.Xamarin.Forms 1.0.0
   nuget Xamarin.FFImageLoading.Forms 2.4.11.982
 
-# Dependencies used when compiling and running Android samples.
-group androidapp
-  framework: monoandroid9.0
-  source https://www.nuget.org/api/v2
-  nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.8.0
-  nuget Xamarin.Forms.Maps ~> 4.8.0
-  nuget Xamarin.Android.FSharp.ResourceProvider
-  nuget Newtonsoft.Json
-  nuget FSharp.Data
-  nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
-  nuget SkiaSharp.Views.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget Xamarin.FFImageLoading.Forms
-
-  nuget Plugin.MediaManager 0.9.6
-  nuget Plugin.MediaManager.Forms 0.9.6
-  nuget Xam.Plugins.Android.ExoPlayer 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.Core 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.Dash 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.Hls 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.SmoothStreaming 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.MediaSession 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-  nuget Xam.Plugins.Android.ExoPlayer.UI 2.9.8 # Pin ExoPlayer to this version because higher requires AndroidX
-
 group androidxapp
   framework: monoandroid10.0
   source https://www.nuget.org/api/v2
@@ -76,11 +50,11 @@ group androidxapp
   nuget Newtonsoft.Json
   nuget Xamarin.Android.FSharp.ResourceProvider
   nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
-  nuget SkiaSharp.Views.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget Xamarin.FFImageLoading.Forms
-  nuget Plugin.MediaManager.Forms
+  nuget Xamarin.Forms.PancakeView ~> 2.3
+  nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget OxyPlot.Xamarin.Forms ~> 1.0
+  nuget Xamarin.FFImageLoading.Forms ~> 2.4
+  nuget Plugin.MediaManager.Forms ~> 1.0
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
 # latest Xamarin.Forms though we pin them for now.
@@ -93,11 +67,11 @@ group iosapp
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
-  nuget SkiaSharp.Views.Forms
-  nuget Plugin.MediaManager.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget Xamarin.FFImageLoading.Forms
+  nuget Xamarin.Forms.PancakeView ~> 2.3
+  nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget OxyPlot.Xamarin.Forms ~> 1.0
+  nuget Xamarin.FFImageLoading.Forms ~> 2.4
+  nuget Plugin.MediaManager.Forms ~> 1.0
 
 group macosapp
   framework: xamarinmac20

@@ -15,8 +15,7 @@
         <PackageReference Update="Xamarin.Forms.Maps" Version="4.8.0.1269" />
         <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.0.0" />
         <PackageReference Update="SkiaSharp.Views.Forms" Version="1.68.1" />
-        <PackageReference Update="Xamarin.Forms.PancakeView" Version="1.3.6" />
-        <PackageReference Update="Plugin.MediaManager.Forms" Version="0.9.6" />
+        <PackageReference Update="Plugin.MediaManager.Forms" Version="1.0.0" />
         <PackageReference Update="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     </ItemGroup>
 
@@ -37,18 +36,18 @@
         <PackageReference Update="System.Reflection.Emit.ILGeneration" Version="4.7.0" />
         <PackageReference Update="System.Reflection.Emit.Lightweight" Version="4.7.0" />
         <PackageReference Update="NETStandard.Library" Version="2.0.3" />
-        <!-- Samples -->
+    </ItemGroup>
+
+    <!-- Tools and samples -->
+    <ItemGroup Condition=" '$(IsPackable)' == 'false' ">
+        <PackageReference Update="FSharp.Core" Version="5.0.0" />
+        <PackageReference Update="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
         <PackageReference Update="FSharp.Data" Version="3.3.3" />
         <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
         <PackageReference Update="SkiaSharp.Views.Forms.WPF" Version="1.68.1.1" />
         <PackageReference Update="Xamarin.Essentials" Version="1.5.1" />
         <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.8.0.1269" />
         <PackageReference Update="Xamarin.Forms.Maps.WPF" Version="4.8.0.1269" />
-    </ItemGroup>
-
-    <!-- Tools and samples can use the latest version of FSharp.Core -->
-    <ItemGroup Condition=" '$(IsPackable)' == 'false' ">
-        <PackageReference Update="FSharp.Core" Version="4.7.2" />
     </ItemGroup>
 
     <!--
