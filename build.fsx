@@ -155,6 +155,19 @@ Target.create "UpdateVersion" (fun _ ->
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
+
+    // Update dotnet-tools.json
+    let dotnetToolsFiles = "**/templates/**/.config/dotnet-tools.json"
+    for dotnetTools in !! dotnetToolsFiles do
+        File.readAsString dotnetTools
+        |> JObject.Parse
+        |> (fun o ->
+            let prop = o.["tools"].["fabulous-cli"].["version"] :?> JValue
+            prop.Value <- release.NugetVersion
+            o
+        )
+        |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
+        |> File.writeString false dotnetTools
 )
 
 Target.create "BuildTools" (fun _ ->
