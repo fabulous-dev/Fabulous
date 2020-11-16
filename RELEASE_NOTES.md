@@ -1,3 +1,9 @@
+#### 0.60.0-preview4
+
+* [Fabulous.XamarinForms] [Templates] Updated templates to target Android 11 by default
+* [Fabulous.XamarinForms] [Templates] Fixed fabulous-cli version referenced in templates
+* [Fabulous.XamarinForms] [Samples] Updated samples to target Android 11
+
 #### 0.60.0-preview3
 
 * [Fabulous.XamarinForms] Fixed ViewRef to be updated each time the target control changes (https://github.com/fsprojects/Fabulous/pull/812)
