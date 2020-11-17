@@ -111,7 +111,14 @@ Target.create "Clean" (fun _ ->
 )
 
 Target.create "Restore" (fun _ ->
-    DotNet.restore id "Fabulous.sln"
+    // Restore all projects (except templates) compatible with the current platform
+    !! "**/*.fsproj" ++ "**/*.csproj"
+    -- "**/templates/**/*.fsproj" -- "**/templates/**/*.csproj"
+    |> removeIncompatiblePlatformProjects
+    |> (fun projects ->
+        for project in projects do
+            DotNet.restore id project
+    )
 )
 
 Target.create "FormatBindings" (fun _ ->
