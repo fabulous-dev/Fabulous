@@ -5,7 +5,7 @@ trigger:
 jobs:
 - job: Linux
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-18.04'
   steps:
   - script: |
       sudo apt-get update
@@ -14,7 +14,7 @@ jobs:
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
-      version: 3.1.302
+      version: 5.0.100
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
@@ -37,7 +37,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs:
-      version: 3.1.302
+      version: 5.0.100
   - script: ./azure-pipeline-osx-setup.sh
   - script: ./build.sh Test
   - task: CopyFiles@1
@@ -61,7 +61,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs:
-      version: 3.1.302
+      version: 5.0.100
   - script: choco install gtksharp
   - script: .\build.cmd Test
   - task: CopyFiles@2
