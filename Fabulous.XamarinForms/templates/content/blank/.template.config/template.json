@@ -328,7 +328,7 @@
       "type": "parameter",
       "datatype": "string",
       "replaces": "XamarinAndroidXMigrationVersion",
-      "defaultValue": "1.1.0.1"
+      "defaultValue": "1.0.0.1"
     },
     "XamarinAndroidXMultiDexVersion": {
       "type": "parameter",
