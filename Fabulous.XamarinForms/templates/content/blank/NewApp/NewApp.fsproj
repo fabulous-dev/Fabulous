@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="NewApp.fs" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />

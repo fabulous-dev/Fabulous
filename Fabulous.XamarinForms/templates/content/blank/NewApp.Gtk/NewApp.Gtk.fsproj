@@ -74,7 +74,7 @@
       <HintPath>..\packages\Xamarin.Forms.Platform.GTK.XamarinFormsSdk\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\net45\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>

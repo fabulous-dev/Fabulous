@@ -1,4 +1,4 @@
-﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace NewApp
 
 open System.Diagnostics
@@ -9,8 +9,8 @@ open Xamarin.Forms
 
 module App = 
     type Model = 
-      { Count : int
-        Step : int
+      { Count: int
+        Step: int
         TimerOn: bool }
 
     type Msg = 
@@ -58,18 +58,19 @@ module App =
             ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
-    let program = XamarinFormsProgram.mkProgram init update view
+    let program =
+        XamarinFormsProgram.mkProgram init update view
+//-:cnd:noEmit
+#if DEBUG
+        |> Program.withConsoleTrace
+#endif
+//+:cnd:noEmit
 
 type App () as app = 
     inherit Application ()
 
     let runner = 
         App.program
-//-:cnd:noEmit
-#if DEBUG
-        |> Program.withConsoleTrace
-#endif
-//+:cnd:noEmit
         |> XamarinFormsProgram.run app
 
 //-:cnd:noEmit
