@@ -110,3 +110,13 @@ module InputTypes =
             
         let fromString str = String str
         let fromList lst = FiguresList (Array.ofList lst)
+
+    module StructuredItems =
+        type Value =
+            | Text of string
+            | ViewElement of ViewElement
+
+        /// A string used as content 
+        let fromString str = Text str
+        /// An element used as content
+        let fromElement viewElement = ViewElement viewElement
