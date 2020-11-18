@@ -123,6 +123,9 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\gtkapp\System.Buffers\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <!--
     <Reference Include="Plugin.MediaManager">
       <HintPath>..\..\..\..\packages\gtkapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>

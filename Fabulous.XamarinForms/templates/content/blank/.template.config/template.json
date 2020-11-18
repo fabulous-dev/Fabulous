@@ -432,6 +432,12 @@
       "replaces": "XamarinAndroidFSharpResourceProviderPkg",
       "defaultValue": "1.0.0.28"
     },
+    "SystemBuffersPkg": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "SystemBuffersPkg",
+      "defaultValue": "4.5.1"
+    },
     "FSharpCorePkgVersion": {
       "type": "parameter",
       "dataType": "string",

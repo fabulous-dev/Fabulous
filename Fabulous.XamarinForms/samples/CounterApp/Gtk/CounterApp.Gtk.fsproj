@@ -10,6 +10,7 @@
     <RootNamespace>CounterApp.Gtk</RootNamespace>
     <AssemblyName>CounterApp.Gtk</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +89,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\gtkapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\gtkapp\System.Buffers\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -55,6 +55,7 @@ group androidxapp
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
+  nuget System.Buffers
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
 # latest Xamarin.Forms though we pin them for now.
@@ -72,6 +73,7 @@ group iosapp
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
+  nuget System.Buffers
 
 group macosapp
   framework: xamarinmac20
@@ -82,28 +84,12 @@ group macosapp
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
-  nuget SkiaSharp.Views.Forms
-  nuget Plugin.MediaManager.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget Xamarin.FFImageLoading.Forms
-
-group wpfapp
-  framework: net472
-  source https://www.nuget.org/api/v2
-  nuget FSharp.Core
-  nuget Xamarin.Forms ~> 4.8.0
-  nuget Xamarin.Forms.Platform.WPF ~> 4.8.0
-  nuget Xamarin.Forms.Maps ~> 4.8.0
-  nuget Xamarin.Forms.Maps.WPF ~> 4.8.0
-  nuget Newtonsoft.Json
-  nuget FSharp.Data
-  nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
-  nuget SkiaSharp.Views.Forms.WPF
-  nuget Plugin.MediaManager.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget Xamarin.FFImageLoading.Forms
+  nuget Xamarin.Forms.PancakeView ~> 2.3
+  nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget OxyPlot.Xamarin.Forms ~> 1.0
+  nuget Xamarin.FFImageLoading.Forms ~> 2.4
+  nuget Plugin.MediaManager.Forms ~> 1.0
+  nuget System.Buffers
 
 group gtkapp
   framework: net471
@@ -116,9 +102,10 @@ group gtkapp
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
-  nuget Xamarin.Forms.PancakeView
   nuget SkiaSharp.Views.Gtk2
-  nuget Plugin.MediaManager.Forms
-  nuget OxyPlot.Xamarin.Forms
-  nuget OxyPlot.GtkSharp
-  nuget Xamarin.FFImageLoading.Forms
+  nuget Xamarin.Forms.PancakeView ~> 2.3
+  nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget OxyPlot.Xamarin.Forms ~> 1.0
+  nuget Xamarin.FFImageLoading.Forms ~> 2.4
+  nuget Plugin.MediaManager.Forms ~> 1.0
+  nuget System.Buffers
