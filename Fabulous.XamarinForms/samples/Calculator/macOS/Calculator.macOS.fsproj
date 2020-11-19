@@ -85,6 +85,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\macosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\macosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />

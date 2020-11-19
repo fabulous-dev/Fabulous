@@ -133,6 +133,9 @@
     <Reference Include="WebP.Touch">
       <HintPath>..\..\..\..\packages\macosapp\WebP.Touch\lib\Xamarin.Mac20\WebP.Mac.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\macosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />

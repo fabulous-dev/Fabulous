@@ -165,6 +165,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\iosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
       <Project>{391D3679-0EF6-44BB-978A-82F7EECF1A66}</Project>
       <Name>TicTacToe</Name>

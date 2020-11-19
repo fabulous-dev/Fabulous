@@ -114,6 +114,9 @@
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.SystemBuffersPkg\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">

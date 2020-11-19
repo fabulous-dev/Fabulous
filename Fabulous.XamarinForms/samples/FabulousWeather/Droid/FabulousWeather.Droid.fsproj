@@ -257,6 +257,9 @@
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\androidxapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\androidxapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\..\..\..\packages\androidxapp\Xamarin.AndroidX.MultiDex\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\..\..\..\packages\androidxapp\Xamarin.AndroidX.MultiDex\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />

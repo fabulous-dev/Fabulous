@@ -237,6 +237,9 @@
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.SystemBuffersPkg\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\packages\Xamarin.AndroidX.MultiDex.XamarinAndroidXMultiDexVersion\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\packages\Xamarin.AndroidX.MultiDex.XamarinAndroidXMultiDexVersion\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />
