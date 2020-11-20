@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "fabulous-cli": {
-      "version": "0.54.1",
+      "version": "FabulousPkgsVersion",
       "commands": [
         "fabulous"
       ]

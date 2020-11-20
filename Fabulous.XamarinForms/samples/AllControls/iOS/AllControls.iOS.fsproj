@@ -156,6 +156,9 @@
     <Reference Include="WebP.Touch">
       <HintPath>..\..\..\..\packages\iosapp\WebP.Touch\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\iosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">

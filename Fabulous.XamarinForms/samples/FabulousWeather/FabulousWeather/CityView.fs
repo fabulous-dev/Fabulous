@@ -108,9 +108,9 @@ module CityView =
                                         width = 50.,
                                         height = 130.,
                                         padding = Thickness(10.),
-                                        backgroundGradientStartColor = Styles.HourlyForecastStartColor,
-                                        backgroundGradientEndColor = Styles.HourlyForecastEndColor,
-                                        backgroundGradientAngle = 315,
+                                        backgroundGradientStops = Styles.HourlyForecastGradientStops,
+                                        backgroundGradientStartPoint = Point(0., 0.),
+                                        backgroundGradientEndPoint = Point(1., 1.),
                                         cornerRadius = CornerRadius(10.),
                                         content =
                                             View.StackLayout(

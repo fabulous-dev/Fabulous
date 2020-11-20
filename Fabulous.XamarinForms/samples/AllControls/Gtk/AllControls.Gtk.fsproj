@@ -43,6 +43,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="gtk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
       <SpecificVersion>False</SpecificVersion>
@@ -123,6 +124,9 @@
     <Reference Include="Xamarin.Forms.PancakeView">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.PancakeView\lib\netstandard2.0\Xamarin.Forms.PancakeView.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\gtkapp\System.Buffers\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <!--
     <Reference Include="Plugin.MediaManager">
       <HintPath>..\..\..\..\packages\gtkapp\Plugin.MediaManager\lib\net45\MediaManager.dll</HintPath>
@@ -136,9 +140,6 @@
     </Reference>
     <Reference Include="OxyPlot.Xamarin.Forms">
       <HintPath>..\..\..\..\packages\gtkapp\OxyPlot.Xamarin.Forms\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\OxyPlot.Xamarin.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.GtkSharp ">
-      <HintPath>..\..\..\..\packages\gtkapp\OxyPlot.GtkSharp\lib\net45\OxyPlot.GtkSharp.dll</HintPath>
     </Reference>
 <!--
     <Reference Include="FFImageLoading">

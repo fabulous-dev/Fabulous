@@ -54,3 +54,15 @@ module Styles =
             NightEndColor
         else
             ColdEndColor
+            
+    let gradientStops temp =
+        let coll = Xamarin.Forms.PancakeView.GradientStopCollection()
+        coll.Add(PancakeView.GradientStop(Color = getStartGradientColor temp, Offset = float32 0.))
+        coll.Add(PancakeView.GradientStop(Color = getEndGradientColor temp, Offset = float32 1.))
+        coll
+        
+    let HourlyForecastGradientStops =
+        let coll = Xamarin.Forms.PancakeView.GradientStopCollection()
+        coll.Add(PancakeView.GradientStop(Color = HourlyForecastStartColor, Offset = float32 0.))
+        coll.Add(PancakeView.GradientStop(Color = HourlyForecastEndColor, Offset = float32 1.))
+        coll

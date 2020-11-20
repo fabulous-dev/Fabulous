@@ -44,7 +44,7 @@ let addJDK properties =
     | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
     | _ -> properties
 
-let dotnetBuild outputSubDir paths =
+let dotnetBuild paths =
     for projectPath in paths do
         DotNet.build (fun opt ->
             { opt with
@@ -111,7 +111,14 @@ Target.create "Clean" (fun _ ->
 )
 
 Target.create "Restore" (fun _ ->
-    DotNet.restore id "Fabulous.sln"
+    // Restore all projects (except templates) compatible with the current platform
+    !! "**/*.fsproj" ++ "**/*.csproj"
+    -- "**/templates/**/*.fsproj" -- "**/templates/**/*.csproj"
+    |> removeIncompatiblePlatformProjects
+    |> (fun projects ->
+        for project in projects do
+            DotNet.restore id project
+    )
 )
 
 Target.create "FormatBindings" (fun _ ->
@@ -159,12 +166,12 @@ Target.create "UpdateVersion" (fun _ ->
 
 Target.create "BuildTools" (fun _ ->
     !! "tools/**/*.fsproj"
-    |> dotnetBuild "tools"
+    |> dotnetBuild
 )
 
 Target.create "BuildFabulous" (fun _ -> 
     !! "src/**/*.fsproj"
-    |> dotnetBuild "Fabulous"
+    |> dotnetBuild
 )
 
 Target.create "RunFabulousTests" (fun _ ->
@@ -174,7 +181,7 @@ Target.create "RunFabulousTests" (fun _ ->
 
 Target.create "BuildFabulousCodeGen" (fun _ -> 
     !! "Fabulous.CodeGen/src/**/*.fsproj"
-    |> dotnetBuild "Fabulous.CodeGen"
+    |> dotnetBuild
 )
 
 Target.create "RunFabulousCodeGenTests" (fun _ ->
@@ -184,13 +191,13 @@ Target.create "RunFabulousCodeGenTests" (fun _ ->
 
 Target.create "BuildFabulousXamarinFormsTools" (fun _ ->
     !! "Fabulous.XamarinForms/tools/**/*.fsproj"
-    |> dotnetBuild "Fabulous.XamarinForms/tools"
+    |> dotnetBuild
 )
 
 Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
     !! "Fabulous.XamarinForms/src/**/*.fsproj"
     -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj" // This one needs to run the generator beforehand
-    |> dotnetBuild "Fabulous.XamarinForms"
+    |> dotnetBuild
 )
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
@@ -208,7 +215,7 @@ Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
 
 Target.create "BuildFabulousXamarinForms" (fun _ -> 
     !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj"
-    |> dotnetBuild "Fabulous.XamarinForms"
+    |> dotnetBuild
 )
 
 Target.create "RunFabulousXamarinFormsTests" (fun _ ->
@@ -232,12 +239,12 @@ Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
 
 Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
     !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
-    |> dotnetBuild "Fabulous.XamarinForms/Extensions"
+    |> dotnetBuild
 )
 
 Target.create "BuildFabulousStaticView" (fun _ ->
     !! "Fabulous.StaticView/src/**/*.fsproj"
-    |> dotnetBuild "Fabulous.StaticView"
+    |> dotnetBuild
 )
 
 Target.create "PackFabulous" (fun _ -> 

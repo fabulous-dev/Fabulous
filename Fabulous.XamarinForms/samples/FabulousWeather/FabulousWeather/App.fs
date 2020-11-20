@@ -153,8 +153,7 @@ module App =
             created = onPageCreated,
             content =
                  View.PancakeView(
-                     backgroundGradientStartColor = Styles.getStartGradientColor temperatureOfCurrentCity, 
-                     backgroundGradientEndColor = Styles.getEndGradientColor temperatureOfCurrentCity,
+                     backgroundGradientStops = Styles.gradientStops temperatureOfCurrentCity,
                      content =
                          match Device.RuntimePlatform with
                          | Device.Android | Device.iOS -> carouselView model dispatch

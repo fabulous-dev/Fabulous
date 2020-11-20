@@ -9,7 +9,7 @@
         <projectUrl>https://fsprojects.github.io/Fabulous/</projectUrl>
         <license type="expression">Apache-2.0</license>
         <iconUrl>http://xamarin.com/content/images/nuget/xamarin.png</iconUrl>
-        <copyright>Copyright 2018</copyright>
+        <copyright>Copyright 2018-2020</copyright>
         <packageTypes>
             <packageType name="Template" />
         </packageTypes>

@@ -65,6 +65,7 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Core" />
@@ -131,6 +132,9 @@
     </Reference>
     <Reference Include="WebP.Touch">
       <HintPath>..\..\..\..\packages\macosapp\WebP.Touch\lib\Xamarin.Mac20\WebP.Mac.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\macosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />

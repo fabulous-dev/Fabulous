@@ -103,10 +103,6 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj">
-      <Project>{5b23ac3b-e949-4992-93bd-6ce091f4e351}</Project>
-      <Name>Fabulous.StaticView.XamarinForms</Name>
-    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
@@ -126,6 +122,15 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\..\..\packages\iosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj">
+      <Project>{5b23ac3b-e949-4992-93bd-6ce091f4e351}</Project>
+      <Name>Fabulous.StaticView.XamarinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
       <Name>StaticViewCounterApp</Name>
