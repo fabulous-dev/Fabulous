@@ -1,4 +1,4 @@
-version 5.245.1
+version 5.257.0
 
 # dependencies used for retrieving FAKE and its modules
 group fakebuild
@@ -6,6 +6,7 @@ group fakebuild
   framework: netstandard2.0
   storage: none
 
+  nuget FSharp.Core ~> 4.7
   nuget Fake.Api.GitHub
   nuget Fake.Core.ReleaseNotes
   nuget Fake.Core.Target
@@ -20,12 +21,12 @@ group fakebuild
 group neutral
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
-  github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
-  github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
-  github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
-  github fsprojects/FSharp.Compiler.PortaCode:master src/FromCompilerService.fs
-  github fsprojects/FSharp.Compiler.PortaCode:master src/ProcessCommandLine.fs
-  github fsprojects/FSharp.Compiler.PortaCode:master tests/PortaCodeTests.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 src/ProjectCracker.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 src/CodeModel.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 src/Interpreter.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 src/FromCompilerService.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 src/ProcessCommandLine.fs
+  github fsprojects/FSharp.Compiler.PortaCode:190a8c5b6d67de8cd4f75a9ee4197ed1f36c9b87 tests/PortaCodeTests.fs
 
 # dependencies used by Fabulous.XamarinForms.Generator to extract types via Reflection
 # should be pinned to a specific version, matching the one in Packages.targets
@@ -52,6 +53,8 @@ group androidxapp
   nuget Xamarin.Essentials
   nuget Xamarin.Forms.PancakeView ~> 2.3
   nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget SkiaSharp.Views ~> 1.68
+  nuget SkiaSharp ~> 1.68
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
@@ -70,6 +73,8 @@ group iosapp
   nuget Xamarin.Essentials
   nuget Xamarin.Forms.PancakeView ~> 2.3
   nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget SkiaSharp.Views ~> 1.68
+  nuget SkiaSharp ~> 1.68
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
@@ -86,6 +91,8 @@ group macosapp
   nuget Xamarin.Essentials
   nuget Xamarin.Forms.PancakeView ~> 2.3
   nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget SkiaSharp.Views ~> 1.68
+  nuget SkiaSharp ~> 1.68
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
@@ -102,10 +109,13 @@ group gtkapp
   nuget Newtonsoft.Json
   nuget FSharp.Data
   nuget Xamarin.Essentials
-  nuget SkiaSharp.Views.Gtk2
   nuget Xamarin.Forms.PancakeView ~> 2.3
   nuget SkiaSharp.Views.Forms ~> 1.68
+  nuget SkiaSharp.Views ~> 1.68
+  nuget SkiaSharp.Views.Gtk2 ~> 1.68
+  nuget SkiaSharp ~> 1.68
   nuget OxyPlot.Xamarin.Forms ~> 1.0
   nuget Xamarin.FFImageLoading.Forms ~> 2.4
   nuget Plugin.MediaManager.Forms ~> 1.0
   nuget System.Buffers
+  nuget OpenTK ~> 3

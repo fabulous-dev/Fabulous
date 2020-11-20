@@ -69,6 +69,7 @@
     <Reference Include="OpenTK">
       <HintPath>..\..\..\..\packages\gtkapp\OpenTK\lib\net20\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="webkit-sharp">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\webkit-sharp.dll</HintPath>
     </Reference>
@@ -76,7 +77,7 @@
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\gtkapp\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
