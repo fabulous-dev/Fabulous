@@ -10,7 +10,7 @@
     <RootNamespace>iOS</RootNamespace>
     <AssemblyName>iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AutoGenerateBindingRedirects>Resources</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SelectedDevice>iPhone Xs iOS 12.2</SelectedDevice>
     <DefaultDevice>iPhone Xs iOS 12.2</DefaultDevice>
   </PropertyGroup>
