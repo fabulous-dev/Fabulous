@@ -643,6 +643,44 @@ module ViewUpdaters =
                     lst |> List.iter (fun p -> coll.Add(p))
                     target.SetValue(bindableProperty, coll)
 
+    let updateStructuredItemsViewHeader prevValueOpt (currValueOpt: InputTypes.StructuredItems.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
+        match struct (prevValueOpt, currValueOpt) with
+        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
+        | struct (ValueNone, ValueSome currValue) ->
+            match currValue with
+            | StructuredItems.Value.Text str -> target.Header <- str
+            | StructuredItems.Value.ViewElement ve -> target.Header <- (ve.Create() :?> View)
+                
+        | struct (ValueSome prevValue, ValueSome currValue) ->
+            match struct (prevValue, currValue) with
+            | struct (StructuredItems.Value.Text prevStr, StructuredItems.Value.Text currStr) when prevStr = currStr -> ()
+            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Header)
+            | struct (_, StructuredItems.Value.Text currStr) -> target.Header <- currStr
+            | struct (_, StructuredItems.Value.ViewElement currVe) -> target.Header <- (currVe.Create() :?> View)
+
+        | struct (ValueSome _, ValueNone) -> target.Header <- null
+        | struct (ValueNone, ValueNone) -> ()
+
+    let updateStructuredItemsViewFooter prevValueOpt (currValueOpt: InputTypes.StructuredItems.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
+        match struct (prevValueOpt, currValueOpt) with
+        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
+        | struct (ValueNone, ValueSome currValue) ->
+            match currValue with
+            | StructuredItems.Value.Text str -> target.Footer <- str
+            | StructuredItems.Value.ViewElement ve -> target.Footer <- (ve.Create() :?> View)
+                
+        | struct (ValueSome prevValue, ValueSome currValue) ->
+            match struct (prevValue, currValue) with
+            | struct (StructuredItems.Value.Text prevStr, StructuredItems.Value.Text currStr) when prevStr = currStr -> ()
+            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Footer)
+            | struct (_, StructuredItems.Value.Text currStr) -> target.Footer <- currStr
+            | struct (_, StructuredItems.Value.ViewElement currVe) -> target.Footer <- (currVe.Create() :?> View)
+
+        | struct (ValueSome _, ValueNone) -> target.Footer <- null
+        | struct (ValueNone, ValueNone) -> ()
+
     /// Update the points of a Polygon, given previous and current view elements
     let inline updatePolygonPoints prevOpt currOpt (target: Polygon) =
         updatePoints target Polygon.PointsProperty prevOpt currOpt

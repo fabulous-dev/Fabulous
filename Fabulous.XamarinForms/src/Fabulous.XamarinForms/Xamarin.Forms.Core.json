@@ -1678,10 +1678,14 @@
       "canBeInstantiated": false,
       "properties": [
         {
-          "source": "Footer"
+          "source": "Header",
+          "inputType": "Fabulous.XamarinForms.InputTypes.StructuredItems.Value",
+          "updateCode": "ViewUpdaters.updateStructuredItemsViewHeader"
         },
         {
-          "source": "Header"
+          "source": "Footer",
+          "inputType": "Fabulous.XamarinForms.InputTypes.StructuredItems.Value",
+          "updateCode": "ViewUpdaters.updateStructuredItemsViewFooter"
         },
         {
           "source": "ItemsLayout"
