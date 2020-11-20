@@ -32,7 +32,8 @@ module TestLabel =
                 source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
                 source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
 
-            let updateAttachedProperties _ _ _ _ = ()
+            let updateAttachedProperties propertyKey prevOpt source targetChild =
+                ViewBuilders.UpdateViewAttachedProperties(propertyKey, prevOpt, source, targetChild)
 
             ViewElement.Create<Xamarin.Forms.Label>(create, update, updateAttachedProperties, attribs)
 

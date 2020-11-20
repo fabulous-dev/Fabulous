@@ -73,6 +73,7 @@ module PancakeViewExtensions =
                 source.UpdatePrimitive(prev, target, paddingAttribKey, (fun target v -> target.Padding <- v))
                 source.UpdatePrimitive(prev, target, cornerRadiusKey, (fun target v -> target.CornerRadius <- v))
 
-            let updateAttachedProperties _ _ _ _ = ()
+            let updateAttachedProperties propertyKey prevOpt source targetChild =
+                ViewBuilders.UpdateViewAttachedProperties(propertyKey, prevOpt, source, targetChild)
 
             ViewElement.Create<Xamarin.Forms.PancakeView.PancakeView>(create, update, updateAttachedProperties, attribs)
