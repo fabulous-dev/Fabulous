@@ -2,44 +2,27 @@
 
 *F# Functional App Development, using declarative dynamic UI*
 
- [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-* [Documentation](https://fsprojects.github.io/Fabulous/)
+Fabulous allows you to combine the power of functional programming (F#) and the ultra-simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
 
-* [Contributor guide](.github/CONTRIBUTING.md)
+# Documentation
 
-* [Release Notes](RELEASE_NOTES.md)
+* [Getting started](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/index.html#getting-started)
 
-* [Roadmap](ROADMAP.md)
+* [Fabulous documentation](https://fsprojects.github.io/Fabulous/)
 
-This repository contains 4 different libraries:
+* [Contributing to Fabulous](.github/GETTING_STARTED.md)
 
-Package | NuGet
----|---
-Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
-Fabulous.CodeGen | [![Fabulous.CodeGen NuGet version](https://badge.fury.io/nu/Fabulous.CodeGen.svg)](https://badge.fury.io/nu/Fabulous.CodeGen)  
-Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
-Fabulous.StaticView.XamarinForms | [![Fabulous.StaticView.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms)
+See also the [release notes](RELEASE_NOTES.md) of the current version and [roadmap](ROADMAP.md) for the future of Fabulous.
 
-## Fabulous
+# About Fabulous
 
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [Elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
 [Learn more about Fabulous](FABULOUS.md)
-
-## Fabulous.CodeGen
-
-This library automates the creation of bindings of existing UI frameworks for Fabulous through a simple JSON file. CodeGen will output an F# code file that you can include in your own project, like Fabulous for Xamarin.Forms.
-
-It can be easily included in a build process, or run via a command line tool.
-
-[Learn more about Fabulous.CodeGen](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.CodeGen)
-
-## Fabulous for Xamarin.Forms
-
-This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more using Xamarin.Forms. It is built on Fabulous.
 
 With Fabulous for Xamarin.Forms, you will be able to write complete applications fully in F#, like this:
 ```fsharp
@@ -56,9 +39,9 @@ let view model dispatch =
     View.ContentPage(
         View.StackLayout(
             children = [
-                View.Image(source = "fabulous.png")
-                View.Label(text = model.Text, fontSize = 22.)
-                View.Button(text = "Click me", command = (fun () -> dispatch ButtonClicked))
+                View.Image(source = Image.fromPath "fabulous.png")
+                View.Label(text = model.Text)
+                View.Button(text = "Click me", command = fun () -> dispatch ButtonClicked)
             ]
         )
     )
@@ -66,21 +49,14 @@ let view model dispatch =
 
 [Learn more about Fabulous for Xamarin.Forms](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms)
 
-## Fabulous StaticView
+# They use it
 
-This library allows you to write Xamarin.Forms apps using XAML and the Model-View-Update architecture.
+<img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" style="float:left;margin-right:1em" height="75" />
 
-It is not actively maintained.  
-If you wish to see more support for Fabulous.StaticView, please consider contributing.
+<div style="font-size:1.30em;font-weight:bold;">Tawasal - <a href="https://tawasal.ae">https://tawasal.ae</a></div>
 
-[Learn more about Fabulous StaticView](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.StaticView)
+Tawasal is a secure multi-purpose messenger and superapp, offering free voice, text, videoconferencing and lifestyle services to clients around the world.  
+[Learn more about Tawasal](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/they-use-it.html#Tawasal)
 
-## Contributing
-
-Please contribute to this repository through issue reports, pull requests, code reviews and discussion.
-
-See [the contributor guide](.github/CONTRIBUTING.md) and the [getting started guide](.github/GETTING_STARTED.md) to learn more.
-
-Credits
------
+# Credits
 This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
