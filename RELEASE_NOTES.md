@@ -1,3 +1,17 @@
+#### 0.60.0
+
+BREAKING CHANGES: Please read the migration guide to know how to update to this new version (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-0.60.html)
+Also take a look here to learn more about F# 5.0 and Fabulous (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/pitfalls.html)
+
+* [All] Reduced allocations (https://github.com/fsprojects/Fabulous/pull/805)
+* [All] Proper version constraints for the NuGet packages (https://github.com/fsprojects/Fabulous/pull/797)
+* [All] Add FSharp.Core as a public dependency (https://github.com/fsprojects/Fabulous/pull/796)
+* [Fabulous.XamarinForms] Fixed ViewRef to be updated each time the target control changes (https://github.com/fsprojects/Fabulous/pull/812)
+* [Fabulous.XamarinForms] CollectionView Header and Footer properties accept ViewElement and string values (https://github.com/fsprojects/Fabulous/pull/817)
+* [Fabulous.XamarinForms] [Templates] Add native main menu to MacOS template (https://github.com/fsprojects/Fabulous/pull/806)
+* [Fabulous.XamarinForms] [Templates] Updated templates to target Android 11 by default (https://github.com/fsprojects/Fabulous/pull/814)
+* [Fabulous.XamarinForms] [Templates] Fixed fabulous-cli version referenced in templates (https://github.com/fsprojects/Fabulous/pull/814)
+
 #### 0.60.0-preview4
 
 * [Fabulous.XamarinForms] [Templates] Updated templates to target Android 11 by default
