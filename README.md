@@ -9,7 +9,6 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 Fabulous allows you to combine the power of functional programming (F#) and the ultra-simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
 
 ## Documentation
----
 
 * [Getting started](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/index.html#getting-started)
 
@@ -20,7 +19,6 @@ Fabulous allows you to combine the power of functional programming (F#) and the 
 See also the [release notes](RELEASE_NOTES.md) of the current version and [roadmap](ROADMAP.md) for the future of Fabulous.
 
 ## About Fabulous
----
 
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [Elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
@@ -52,7 +50,6 @@ let view model dispatch =
 [Learn more about Fabulous for Xamarin.Forms](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms)
 
 ## They use it
----
 
 <img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" height="75" />
 
@@ -62,5 +59,4 @@ Tawasal is a secure multi-purpose messenger and superapp, offering free voice, t
 [Learn more about Tawasal](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/they-use-it.html#Tawasal)
 
 ## Credits
----
 This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
