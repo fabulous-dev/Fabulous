@@ -10,7 +10,7 @@ module TestLabel =
 
     type Fabulous.XamarinForms.View with 
 
-        static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
+        static member inline TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
 
             // Get the attributes for the base element. The number is the expected number of attributes.
             // You can add additional base element attributes here if you like
