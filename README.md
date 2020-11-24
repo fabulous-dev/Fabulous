@@ -67,7 +67,7 @@ To help you with that, Fabulous comes with its own code generator, called Fabulo
 
 <img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" height="75" />
 
-### Tawasal - [https://www.tawasal.ae](https://www.tawasal.ae)
+### Tawasal - [www.tawasal.ae](https://www.tawasal.ae)
 
 Tawasal is a secure multi-purpose messenger and superapp, offering free voice, text, videoconferencing and lifestyle services to clients around the world.  
 [Learn more about Tawasal](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/they-use-fabulous.html#Tawasal)

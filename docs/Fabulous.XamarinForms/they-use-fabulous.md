@@ -12,9 +12,9 @@
 
 Tawasal is a secure multi-purpose messenger and superapp, offering free voice, text, videoconferencing and lifestyle services to clients around the world. Tawasal introduces a full suite of exciting features with something for everyone, from live sports text broadcasts and giveaways, to payments and news services.
 
-Website: https://www.tawasal.ae
+[Website](https://www.tawasal.ae) | [Google Play Store link](https://play.google.com/store/apps/details?id=com.tawasul.messenger) | [App Store link](https://apps.apple.com/app/id1507761438)
 
-**Why they choose Fabulous?**
+**Why they chose Fabulous?**
 
 Tawasal team was looking for cross platform solution that was stable & supported. When we started looking into what Xamarin has to offer, we came across Fabulous - and due to usage of modern & reactive MVU pattern, as well as the ability to build basically anything using native Xamarin.iOS / Xamarin.Android bindings (using less code & functional approach with F#), while still maintaining a large shared codebase our choice was surely Fabulous.
 
