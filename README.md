@@ -57,7 +57,7 @@ let view model dispatch =
 ### Can I use Fabulous with other UI frameworks?
 
 Fabulous is not tied to Xamarin.Forms.  
-If you want to use your UI favorite framework instead, it's possible.
+If you want to use your favorite UI framework instead, it's possible.
 
 To help you with that, Fabulous comes with its own code generator, called Fabulous.CodeGen, to automate the creation of a DSL specific to your UI framework.
 
