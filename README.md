@@ -6,7 +6,7 @@
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-Fabulous allows you to combine the power of functional programming (F#) and the ultra-simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
+Fabulous allows you to combine the power of functional programming and the ultra-simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
 
 ## Documentation
 
@@ -20,11 +20,16 @@ See also the [release notes](RELEASE_NOTES.md) of the current version and [roadm
 
 ## About Fabulous
 
-This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [Elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
+Fabulous aims to provide all the tools to let you create your own mobile and desktop apps using only F# and the [Model-View-Update architecture](https://guide.elm-lang.org/architecture/) (shorten to MVU), with a great F# DSL for building dynamic UIs.  
+The combination of F# and MVU makes for a great development experience.
 
-[Learn more about Fabulous](FABULOUS.md)
+Note that Fabulous itself does not provide UI controls, so you'll need to combine it with another framework like Xamarin.Forms.
 
-With Fabulous for Xamarin.Forms, you will be able to write complete applications fully in F#, like this:
+### Fabulous for Xamarin.Forms
+
+Fabulous for Xamarin.Forms brings Fabulous to Xamarin.Forms with a tailored DSL to let you take advantage of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.
+
+With Fabulous for Xamarin.Forms, you will be able to write complete applications in F# like this:
 ```fsharp
 type Model = { Text: string }
 type Msg = ButtonClicked
@@ -49,14 +54,23 @@ let view model dispatch =
 
 [Learn more about Fabulous for Xamarin.Forms](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms)
 
-## They use it
+### Can I use Fabulous with other UI frameworks?
+
+Fabulous is not tied to Xamarin.Forms.  
+If you want to use your UI favorite framework instead, it's possible.
+
+To help you with that, Fabulous comes with its own code generator, called Fabulous.CodeGen, to automate the creation of a DSL specific to your UI framework.
+
+[Learn more about Fabulous.CodeGen](Fabulous.CodeGen/README.md)
+
+## They use Fabulous
 
 <img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" height="75" />
 
-### Tawasal - [https://tawasal.ae](https://tawasal.ae)
+### Tawasal - [https://www.tawasal.ae](https://www.tawasal.ae)
 
 Tawasal is a secure multi-purpose messenger and superapp, offering free voice, text, videoconferencing and lifestyle services to clients around the world.  
-[Learn more about Tawasal](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/they-use-it.html#Tawasal)
+[Learn more about Tawasal](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/they-use-fabulous.html#Tawasal)
 
 ## Credits
 This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
