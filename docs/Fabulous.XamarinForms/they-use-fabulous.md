@@ -18,5 +18,5 @@ Tawasal is a secure multi-purpose messenger and superapp, offering free voice, t
 
 Tawasal team was looking for cross platform solution that was stable & supported. When we started looking into what Xamarin has to offer, we came across Fabulous - and due to usage of modern & reactive MVU pattern, as well as the ability to build basically anything using native Xamarin.iOS / Xamarin.Android bindings (using less code & functional approach with F#), while still maintaining a large shared codebase our choice was surely Fabulous.
 
-<a href="../assets/apps-using-fabulous/tawasal/screenshot-2.png"><img alt="Screenshot of the chat interface of Tawasal" src="../assets/apps-using-fabulous/tawasal/screenshot-2.png" height="500" /></a>
+<a href="../assets/apps-using-fabulous/tawasal/screenshot-2.png"><img alt="Screenshot of the chat interface of Tawasal" src="../assets/apps-using-fabulous/tawasal/screenshot-2.png" height="500" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="../assets/apps-using-fabulous/tawasal/screenshot-1.png"><img alt="Screenshot of the result of a football match in Tawasal" src="../assets/apps-using-fabulous/tawasal/screenshot-1.png" height="500" /></a>
