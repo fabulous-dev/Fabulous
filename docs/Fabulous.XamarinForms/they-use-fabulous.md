@@ -8,7 +8,7 @@
 
 <img alt="Tawasal" src="../assets/apps-using-fabulous/tawasal/logo.png" height="75" />
 
-[Website](https://www.tawasal.ae) | [Google Play Store link](https://play.google.com/store/apps/details?id=com.tawasul.messenger) | [App Store link](https://apps.apple.com/app/id1507761438)
+[Website](https://www.tawasal.ae) | [Google Play Store](https://play.google.com/store/apps/details?id=com.tawasul.messenger) | [App Store](https://apps.apple.com/app/id1507761438)
 
 **Description**
 
