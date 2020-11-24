@@ -65,7 +65,7 @@ To help you with that, Fabulous comes with its own code generator, called Fabulo
 
 ## They use Fabulous
 
-<img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" height="75" align="left" />
+<img alt="Tawasal" src="docs/assets/apps-using-fabulous/tawasal/logo.png" height="125" align="left" />
 
 ### Tawasal - [www.tawasal.ae](https://www.tawasal.ae)
 
