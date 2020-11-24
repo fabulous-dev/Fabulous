@@ -8,11 +8,11 @@
 
 <img alt="Tawasal" src="../assets/apps-using-fabulous/tawasal/logo.png" height="75" />
 
+[Website](https://www.tawasal.ae) | [Google Play Store link](https://play.google.com/store/apps/details?id=com.tawasul.messenger) | [App Store link](https://apps.apple.com/app/id1507761438)
+
 **Description**
 
 Tawasal is a secure multi-purpose messenger and superapp, offering free voice, text, videoconferencing and lifestyle services to clients around the world. Tawasal introduces a full suite of exciting features with something for everyone, from live sports text broadcasts and giveaways, to payments and news services.
-
-[Website](https://www.tawasal.ae) | [Google Play Store link](https://play.google.com/store/apps/details?id=com.tawasul.messenger) | [App Store link](https://apps.apple.com/app/id1507761438)
 
 **Why they chose Fabulous?**
 
