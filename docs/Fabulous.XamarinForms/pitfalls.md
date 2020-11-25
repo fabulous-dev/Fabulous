@@ -14,10 +14,10 @@ Before .NET 5 came, there were 3 differents .NET frameworks: .NET Framework, .NE
 Historically, all Xamarin projects (Android, iOS, macOS and many other) run on Mono.  
 Since Fabulous.XamarinForms is built on top of Xamarin.Forms, it also shares the same framework.
 
-This new .NET 5 framework marks the deprecation of .NET Framework in favor of .NET Core, this replacement is done under a new name: .NET 5.  
+This new framework marks the deprecation of .NET Framework in favor of .NET Core, this replacement is done under a new name: .NET 5.  
 For the moment, Mono is still an independent framework and hence is not compatible with .NET 5.
 
-Microsoft is planning to retire Mono and use .NET 5 even for Xamarin applications when .NET 6 comes out (planned for the end of 2021).
+Microsoft is planning to retire Mono and use the same framework for everything including for Xamarin applications when .NET 6 comes out (planned for the end of 2021).
 
 In the meantime, it is recommended you target either .NET Standard 2.0 or 2.1 so you can share code between .NET 5 apps and Fabulous apps.
 
