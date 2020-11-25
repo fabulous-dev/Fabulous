@@ -6,7 +6,7 @@
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-Fabulous allows you to combine the power of functional programming and the ultra-simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
+Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
 
 ## Documentation
 
@@ -27,7 +27,7 @@ Note that Fabulous itself does not provide UI controls, so you'll need to combin
 
 ### Fabulous for Xamarin.Forms
 
-Fabulous for Xamarin.Forms brings Fabulous to Xamarin.Forms with a tailored DSL to let you take advantage of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.
+Fabulous for Xamarin.Forms combines both frameworks with a tailored DSL to let you take advantage of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.
 
 With Fabulous for Xamarin.Forms, you will be able to write complete applications in F# like this:
 ```fsharp
