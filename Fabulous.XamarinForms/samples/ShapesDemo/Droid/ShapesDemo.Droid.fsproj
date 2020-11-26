@@ -253,6 +253,37 @@
       <HintPath>..\..\..\..\packages\androidxapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+    <Compile Include="Properties\AssemblyInfo.fs" />
+    <Compile Include="MainActivity.fs" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Resources\AboutResources.txt" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable\monkeyface.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\layout\Tabbar.axml" />
+    <AndroidResource Include="Resources\layout\Toolbar.axml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+      <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
+      <Name>Fabulous</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+      <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
+      <Name>Fabulous.XamarinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShapesDemo\ShapesDemo.fsproj">
+      <Project>{AA2BEC0E-9BA3-4103-A60E-1B61F0F83CE6}</Project>
+      <Name>ShapesDemo</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
   <Import Project="..\..\..\..\packages\androidxapp\Xamarin.AndroidX.MultiDex\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\..\..\..\packages\androidxapp\Xamarin.AndroidX.MultiDex\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />
   <Import Project="..\..\..\..\packages\androidxapp\Xamarin.AndroidX.Migration\build\monoandroid90\Xamarin.AndroidX.Migration.targets" Condition="Exists('..\..\..\..\packages\androidxapp\Xamarin.AndroidX.Migration\build\monoandroid90\Xamarin.AndroidX.Migration.targets')" />

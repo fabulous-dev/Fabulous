@@ -31,5 +31,5 @@ module Templates =
                         verticalOptions=LayoutOptions.End
                     ).Row(1).Column(1)
                 ]
-            )
+            ) :> IViewElement
         )

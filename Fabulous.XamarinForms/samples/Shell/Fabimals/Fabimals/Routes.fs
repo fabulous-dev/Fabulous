@@ -12,30 +12,30 @@ open Fabimals.Views
 // Routing.RegisterRoute("SomePath", typeof<MyPage>)
 
 [<QueryProperty("Name", "name")>]
-type RoutingPage(animals, view: Animal -> ViewElement) =
+type RoutingPage(animals, view: Animal -> DynamicViewElement) =
     inherit ContentPage()
-    
+
     let mutable _name = ""
     let mutable _prevViewElement = None
-    
+
     let findAnimalByName (name: string) =
         animals |> List.find (fun a -> a.Name.ToLower() = name.ToLower())
-    
+
     member this.Name
         with get() = _name
         and set(value: string) =
             _name <- value.Replace("%20", " ")
-            this.Refresh()
-        
-    member this.Refresh() =
+            this.Refresh(Unchecked.defaultof<_>) // This will not work!!!
+
+    member this.Refresh(definition: ProgramDefinition) =
         let animal = findAnimalByName _name
         let viewElement = view animal
         match _prevViewElement with
         | None ->
-            this.Content <- viewElement.Create() :?> View
+            this.Content <- viewElement.Create(definition) :?> View
         | Some prevViewElement ->
-            viewElement.UpdateIncremental(prevViewElement, this.Content)
-            
+            viewElement.Update(definition, ValueSome prevViewElement, this.Content)
+
 type CatRoutingPage() =
     inherit RoutingPage(Cats.data, (CatDetails.init >> CatDetails.view))
 type DogRoutingPage() =

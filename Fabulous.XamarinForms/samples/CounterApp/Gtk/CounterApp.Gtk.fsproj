@@ -102,17 +102,9 @@
     <None Include="OpenTK.dll.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
-      <Project>{cf47f218-12c5-4026-b1f1-bd534d0a3fa6}</Project>
-      <Name>Fabulous.LiveUpdate</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
       <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
       <Name>Fabulous</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj">
-      <Project>{74083fca-7678-4c90-a257-59e2eebf415d}</Project>
-      <Name>Fabulous.XamarinForms.LiveUpdate</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
       <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>

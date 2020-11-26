@@ -34,7 +34,6 @@
     <PackageReference Include="FSharp.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
     <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
   </ItemGroup>  
   <Import Project="..\..\..\..\Packages.targets" />

@@ -98,28 +98,40 @@ module App =
                 | _ -> model, Cmd.none
 
     let view model dispatch =
-        View.NavigationPage(
-            popped = (fun _ -> dispatch NavigationPopped),
-            pages = [
-                for sampleState in List.rev model.SampleStates ->
-                    sampleState.Definition.View sampleState.Model (SampleMsg >> dispatch)
-            ]
+        View.Application(
+            View.NavigationPage(
+                popped = (fun _ -> dispatch NavigationPopped),
+                pages = [
+                    for sampleState in List.rev model.SampleStates ->
+                        sampleState.Definition.View sampleState.Model (SampleMsg >> dispatch)
+                ]
+            )
         )
 
 type App () as app =
     inherit Application ()
     do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
 
+    let themeChangedSub dispatch =
+        Application.Current.RequestedThemeChanged.AddHandler(
+            EventHandler<AppThemeChangedEventArgs>(fun _ args ->
+                dispatch (App.Msg.AppThemeChanged args.RequestedTheme)
+            )
+        )
+
+    let memoryWarningReceivedEvent = Event<_,_>()
+    let memoryWarningSub dispatch =
+        memoryWarningReceivedEvent.Publish.AddHandler(
+            EventHandler(fun _ _ ->
+                dispatch App.Msg.LowMemoryWarningReceived
+            )
+        )
+
     let runner =
         Program.mkProgram App.init App.update App.view
+        |> Program.withSubscription (fun _ -> Cmd.ofSub themeChangedSub)
+        |> Program.withSubscription (fun _ -> Cmd.ofSub memoryWarningSub)
         |> Program.withConsoleTrace
         |> XamarinFormsProgram.run app
 
-    let onRequestedThemeChanged = EventHandler<AppThemeChangedEventArgs>(fun _ args ->
-        runner.Dispatch (App.Msg.AppThemeChanged args.RequestedTheme)
-    )
-
-    member __.Program = runner
-
-    override this.OnStart() =
-        Application.Current.RequestedThemeChanged.AddHandler(onRequestedThemeChanged)
+    member __.MemoryWarningReceived() = memoryWarningReceivedEvent.Trigger(app, null)

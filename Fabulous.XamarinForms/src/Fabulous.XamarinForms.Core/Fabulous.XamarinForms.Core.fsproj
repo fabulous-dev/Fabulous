@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Include="InputTypes.fs" />
     <Compile Include="CustomControls.fs" />
+    <Compile Include="DynamicViewHelpers.fs" />
+    <Compile Include="Component.fs" />
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="ViewConverters.fs" />

@@ -2,7 +2,7 @@
   "assemblies": [
     "packages/generator/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
     "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Core/bin/Release/netstandard2.0/Fabulous.XamarinForms.Core.dll",
-    
+
     "packages/generator/Xamarin.Forms.Maps/lib/netstandard2.0/Xamarin.Forms.Maps.dll"
   ],
   "baseMappingFiles": [
@@ -30,14 +30,14 @@
         },
         {
           "source": "Pins",
-          "inputType": "ViewElement list",
+          "inputType": "IViewElement list",
           "collection": {
             "elementType": "Xamarin.Forms.Maps.Pin"
           }
         },
         {
           "source": "MapElements",
-          "inputType": "ViewElement list",
+          "inputType": "IViewElement list",
           "collection": {
             "elementType": "Xamarin.Forms.Maps.MapElement"
           }

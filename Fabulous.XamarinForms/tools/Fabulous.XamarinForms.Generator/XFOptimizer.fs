@@ -23,7 +23,7 @@ module XFOptimizer =
                     ModelType = "unit -> unit"
                     ConvertInputToModel = ""
                     ConvertModelToValue = ""
-                    UpdateCode = "(fun _ _ _ -> ())" }
+                    UpdateCode = "(fun _ _ _ _ -> ())" }
 
                 // Accepts a boolean to know when the function can be executed
                 // Creates a Command for both CanExecute and the function

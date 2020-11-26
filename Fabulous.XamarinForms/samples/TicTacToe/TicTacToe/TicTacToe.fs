@@ -3,7 +3,6 @@ namespace TicTacToe
 
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 open Xamarin.Forms
 
@@ -166,53 +165,55 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      View.NavigationPage(barBackgroundColor = Color.LightBlue,
-        barTextColor = Color.Black,
-        pages=
-          [View.ContentPage(
-            View.Grid(rowdefs=[ Star; Auto; Auto ],
-              children=[
-                View.Grid(rowdefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ], coldefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
-                    children=[
-                        yield View.BoxView(Color.Black).Row(1).ColumnSpan(5)
-                        yield View.BoxView(Color.Black).Row(3).ColumnSpan(5)
-                        yield View.BoxView(Color.Black).Column(1).RowSpan(5)
-                        yield View.BoxView(Color.Black).Column(3).RowSpan(5)
+      View.Application(
+          View.NavigationPage(barBackgroundColor = Color.LightBlue,
+            barTextColor = Color.Black,
+            pages=
+              [View.ContentPage(
+                View.Grid(rowdefs=[ Star; Auto; Auto ],
+                  children=[
+                    View.Grid(rowdefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ], coldefs=[ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
+                        children=[
+                            yield View.BoxView(Color.Black).Row(1).ColumnSpan(5)
+                            yield View.BoxView(Color.Black).Row(3).ColumnSpan(5)
+                            yield View.BoxView(Color.Black).Column(1).RowSpan(5)
+                            yield View.BoxView(Color.Black).Column(3).RowSpan(5)
 
-                        for ((row,col) as pos) in positions ->
-                            let item =
-                                if canPlay model model.Board.[pos] then
-                                    View.Button(key = sprintf "Button%i_%i" row col, command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
-                                else
-                                    View.Image(key = sprintf "Image%i_%i" row col,
-                                     source=imageForPos model.Board.[pos],
-                                     margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
-                                     verticalOptions=LayoutOptions.Center)
-                            item.Row(row*2).Column(col*2) ],
+                            for ((row,col) as pos) in positions ->
+                                let item =
+                                    if canPlay model model.Board.[pos] then
+                                        View.Button(key = sprintf "Button%i_%i" row col, command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
+                                    else
+                                        View.Image(key = sprintf "Image%i_%i" row col,
+                                         source=imageForPos model.Board.[pos],
+                                         margin=Thickness(10.0), horizontalOptions=LayoutOptions.Center,
+                                         verticalOptions=LayoutOptions.Center)
+                                item.Row(row*2).Column(col*2) ],
 
-                    rowSpacing=0.0,
-                    columnSpacing=0.0,
-                    horizontalOptions=LayoutOptions.Center,
-                    verticalOptions=LayoutOptions.Center,
-                    ?width = model.VisualBoardSize,
-                    ?height = model.VisualBoardSize).Row(0)
+                        rowSpacing=0.0,
+                        columnSpacing=0.0,
+                        horizontalOptions=LayoutOptions.Center,
+                        verticalOptions=LayoutOptions.Center,
+                        ?width = model.VisualBoardSize,
+                        ?height = model.VisualBoardSize).Row(0)
 
-                View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black,
-                    horizontalOptions=LayoutOptions.Center,
-                    verticalOptions=LayoutOptions.Center,
-                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(1)
+                    View.Label(text=getMessage model, margin=Thickness(10.0), textColor=Color.Black,
+                        horizontalOptions=LayoutOptions.Center,
+                        verticalOptions=LayoutOptions.Center,
+                        horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(1)
 
-                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(2)
-              ]),
+                    View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(2)
+                  ]),
 
-             // This requests a square board based on the width we get allocated on the device
-             sizeAllocated=(fun (width, height) ->
-               match model.VisualBoardSize with
-               | None ->
-                   let sz = min width height - 80.0
-                   dispatch (SetVisualBoardSize sz)
-               | Some _ ->
-                   () ))])
+                 // This requests a square board based on the width we get allocated on the device
+                 sizeAllocated=(fun (width, height) ->
+                   match model.VisualBoardSize with
+                   | None ->
+                       let sz = min width height - 80.0
+                       dispatch (SetVisualBoardSize sz)
+                   | Some _ ->
+                       () ))])
+        )
 
     // Display a modal message giving the game result. This is doing a UI
     // action in the model update, which is ok for modal messages. We factor
@@ -222,12 +223,9 @@ module App =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
     let program =
-        Program.mkSimple init (update gameOver) view
+        XamarinFormsProgram.mkSimple init (update gameOver) view
+#if DEBUG
         |> Program.withConsoleTrace
-
-#if TESTEVAL
-    let testInit = init ()
-    let testView = view testInit (fun _ -> ())
 #endif
 
 /// Stitch the model, update and view content into a single app.
@@ -237,7 +235,3 @@ type App() as app =
     let runner =
         App.program
         |> XamarinFormsProgram.run app
-
-#if DEBUG && !TESTEVAL
-    do runner.EnableLiveUpdate ()
-#endif

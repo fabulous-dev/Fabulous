@@ -14,16 +14,16 @@ open System.Diagnostics
 /// This module contains custom update logic for all kind of properties
 module ViewUpdaters =
     // Update a DataTemplate property taking a direct ViewElement
-    let private updateDirectViewElementDataTemplate setValue clearValue getTarget prevValueOpt currValueOpt =
+    let private updateDirectViewElementDataTemplate setValue clearValue getTarget definition prevValueOpt currValueOpt =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when identical prevValue currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueNone, ValueSome currValue) ->
-            setValue (DirectViewElementDataTemplate(currValue))
+            setValue (DirectViewElementDataTemplate(definition, currValue))
         | struct (ValueSome prevValue, ValueSome currValue) ->
-            setValue (DirectViewElementDataTemplate(currValue))
+            setValue (DirectViewElementDataTemplate(definition, currValue))
             let target = getTarget ()
-            if target <> null then currValue.UpdateIncremental(prevValue, target)
+            if target <> null then currValue.Update(definition, ValueSome prevValue, target)
         | struct (ValueSome _, ValueNone) ->
             clearValue ()
             
@@ -48,7 +48,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueNone) -> ()
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
-    let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
+    let updateListViewGroupedShowJumpList _ (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
         let updateTarget enableJumpList =
             target.GroupShortNameBinding <- (if enableJumpList then Binding("ShortName") else null)
 
@@ -59,7 +59,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Update the resources of a control, given previous and current view elements describing the resources
-    let updateResources (prevCollOpt: (string * obj) array voption) (collOpt: (string * obj) array voption) (target: Xamarin.Forms.VisualElement) =
+    let updateResources _ (prevCollOpt: (string * obj) array voption) (collOpt: (string * obj) array voption) (target: Xamarin.Forms.VisualElement) =
         match struct (prevCollOpt, collOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
@@ -91,7 +91,7 @@ module ViewUpdaters =
     /// Update the style sheets of a control, given previous and current view elements describing them
     // Note, style sheets can't be removed
     // Note, style sheets are compared by object identity
-    let updateStyleSheets (prevCollOpt: StyleSheet array voption) (collOpt: StyleSheet array voption) (target: Xamarin.Forms.VisualElement) =
+    let updateStyleSheets _ (prevCollOpt: StyleSheet array voption) (collOpt: StyleSheet array voption) (target: Xamarin.Forms.VisualElement) =
         match struct (prevCollOpt, collOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
@@ -125,7 +125,7 @@ module ViewUpdaters =
     /// Update the styles of a control, given previous and current view elements describing them
     // Note, styles can't be removed
     // Note, styles are compared by object identity
-    let updateStyles (prevCollOpt: Style array voption) (collOpt: Style array voption) (target: Xamarin.Forms.VisualElement) =
+    let updateStyles _ (prevCollOpt: Style array voption) (collOpt: Style array voption) (target: Xamarin.Forms.VisualElement) =
         match struct (prevCollOpt, collOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
@@ -157,12 +157,12 @@ module ViewUpdaters =
                         | Some _ -> ()
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
+    let updateNavigationPages (definition: ProgramDefinition) (prevCollOpt: IViewElement[] voption)  (collOpt: IViewElement[] voption) (target: NavigationPage) attach =
         match struct (prevCollOpt, collOpt) with
         | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
         | struct (_, ValueNone) -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
         | struct (_, ValueSome coll) ->
-            let create (desc: ViewElement) = (desc.Create() :?> Page)
+            let create (desc: IViewElement) = (desc.Create(definition) :?> Page)
             if (coll = null || coll.Length = 0) then
                 failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
             else
@@ -200,16 +200,16 @@ module ViewUpdaters =
                             else
                                 Debug.WriteLine(sprintf "Adjust page number %d" i)
                                 let targetChild = target.Pages |> Seq.item i
-                                newChild.UpdateIncremental(prevChildOpt.Value, targetChild)
+                                newChild.Update(definition, ValueSome prevChildOpt.Value, targetChild)
                                 struct (prevChildOpt, targetChild)
                         else
                             Debug.WriteLine(sprintf "Skipping child %d" i)
                             let targetChild = target.Pages |> Seq.item i
                             struct (prevChildOpt, targetChild)
-                    attach prevChildOpt newChild targetChild
+                    attach definition prevChildOpt newChild targetChild
 
     /// Update the OnSizeAllocated callback of a control, given previous and current values
-    let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) =
+    let updateOnSizeAllocated _ prevValueOpt valueOpt (target: obj) =
         let target = (target :?> CustomContentPage)
         match prevValueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.RemoveHandler(f)
         match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
@@ -233,7 +233,7 @@ module ViewUpdaters =
             member __.Execute _ = f() }
 
     /// Update the Command and CanExecute properties of a control, given previous and current values
-    let inline updateCommand prevCommandValueOpt commandValueOpt argTransform setter  prevCanExecuteValueOpt canExecuteValueOpt target =
+    let inline updateCommand prevCommandValueOpt commandValueOpt argTransform setter _ prevCanExecuteValueOpt canExecuteValueOpt target =
         match struct (prevCommandValueOpt, prevCanExecuteValueOpt, commandValueOpt, canExecuteValueOpt) with
         | struct (ValueNone, ValueNone, ValueNone, ValueNone) -> ()
         | struct (ValueSome prevf, ValueNone, ValueSome f, ValueNone) when identical prevf f -> ()
@@ -243,7 +243,7 @@ module ViewUpdaters =
         | struct (_, _, ValueSome f, ValueSome k) -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
 
     /// Update the CurrentPage of a control, given previous and current values
-    let updateMultiPageOfTCurrentPage<'a when 'a :> Xamarin.Forms.Page> prevValueOpt valueOpt (target: Xamarin.Forms.MultiPage<'a>) =
+    let updateMultiPageOfTCurrentPage<'a when 'a :> Xamarin.Forms.Page> _ prevValueOpt valueOpt (target: Xamarin.Forms.MultiPage<'a>) =
         match struct (prevValueOpt, valueOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prev, ValueSome curr) when prev = curr -> ()
@@ -251,7 +251,7 @@ module ViewUpdaters =
         | struct (_, ValueSome curr) -> target.CurrentPage <- target.Children.[curr]
 
     /// Update the Minimum and Maximum values of a slider, given previous and current values
-    let updateSliderMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Slider) =
+    let updateSliderMinimumMaximum _ prevValueOpt valueOpt (target: Xamarin.Forms.Slider) =
         let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
             if newMinimum >= prevMaximum then
                 target.Maximum <- newMaximum
@@ -272,7 +272,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome curr) -> updateFunc (0.0, 1.0) curr
 
     /// Update the Minimum and Maximum values of a stepper, given previous and current values
-    let updateStepperMinimumMaximum prevValueOpt valueOpt (target: Xamarin.Forms.Stepper) =
+    let updateStepperMinimumMaximum _ prevValueOpt valueOpt (target: Xamarin.Forms.Stepper) =
         let updateFunc (_, prevMaximum) (newMinimum, newMaximum) =
             if newMinimum >= prevMaximum then
                 target.Maximum <- newMaximum
@@ -293,7 +293,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome curr) -> updateFunc (0.0, 1.0) curr
 
     /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
-    let updateMenuItemAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
+    let updateMenuItemAccelerator _ prevValue currValue (target: Xamarin.Forms.MenuItem) =
         match struct (prevValue, currValue) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevVal, ValueSome newVal) when prevVal = newVal -> ()
@@ -301,7 +301,7 @@ module ViewUpdaters =
         | struct (_, ValueSome newVal) -> Xamarin.Forms.MenuItem.SetAccelerator(target, Xamarin.Forms.Accelerator.FromString newVal)
 
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
-    let triggerScrollToAsync _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
+    let triggerScrollToAsync _ _ (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
         match currValue with
         | ValueSome (x, y, animationKind) when x <> target.ScrollX || y <> target.ScrollY ->
             let animated =
@@ -312,7 +312,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Trigger ItemsView.ScrollTo if needed, given the current values
-    let triggerItemsViewScrollTo _ (currValue: ScrollToItem voption) (target: Xamarin.Forms.ItemsView) =
+    let triggerItemsViewScrollTo _ _ (currValue: ScrollToItem voption) (target: Xamarin.Forms.ItemsView) =
         match currValue with
         | ValueSome scrollToItem ->
             let animate =
@@ -324,7 +324,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Trigger ListView.ScrollTo if needed, given the current values
-    let triggerListViewScrollTo _ (currValue: ScrollToItem voption) (target: Xamarin.Forms.ListView) =
+    let triggerListViewScrollTo _ _ (currValue: ScrollToItem voption) (target: Xamarin.Forms.ListView) =
         match currValue with
         | ValueSome scrollToItem ->
             let animate =
@@ -339,7 +339,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Trigger ListViewGrouped.ScrollTo if needed, given the current values
-    let triggerListViewGroupedScrollTo _ (currValue: ScrollToGroupedItem voption) (target: Xamarin.Forms.ListView) =
+    let triggerListViewGroupedScrollTo _ _ (currValue: ScrollToGroupedItem voption) (target: Xamarin.Forms.ListView) =
         match currValue with
         | ValueSome scrollToGroupedItem ->
             let animate =
@@ -359,7 +359,7 @@ module ViewUpdaters =
         | _ -> ()
 
     /// Trigger Shell.GoToAsync if needed, given the current values
-    let triggerShellGoToAsync _ (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
+    let triggerShellGoToAsync _ _ (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
         match currValue with
         | ValueSome (navigationState, animationKind) ->
             let animated =
@@ -369,177 +369,178 @@ module ViewUpdaters =
             target.GoToAsync(navigationState, animated) |> ignore
         | _ -> ()
 
-    let updatePageShellSearchHandler prevValueOpt (currValueOpt: ViewElement voption) target =
+    let updatePageShellSearchHandler (definition: ProgramDefinition) prevValueOpt (currValueOpt: IViewElement voption) target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueSome prevValue, ValueSome currValue) ->
             let searchHandler = Shell.GetSearchHandler(target)
-            currValue.UpdateIncremental(prevValue, searchHandler)
-        | struct (ValueNone, ValueSome currValue) -> Shell.SetSearchHandler(target, currValue.Create() :?> Xamarin.Forms.SearchHandler)
+            currValue.Update(definition, ValueSome prevValue, searchHandler)
+        | struct (ValueNone, ValueSome currValue) -> Shell.SetSearchHandler(target, currValue.Create(definition) :?> Xamarin.Forms.SearchHandler)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.SearchHandlerProperty
 
-    let updateShellBackgroundColor prevValueOpt currValueOpt target =
+    let updateShellBackgroundColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetBackgroundColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.BackgroundColorProperty
 
-    let updateShellForegroundColor prevValueOpt currValueOpt target =
+    let updateShellForegroundColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetForegroundColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.ForegroundColorProperty
 
-    let updateShellTitleColor prevValueOpt currValueOpt target =
+    let updateShellTitleColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTitleColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TitleColorProperty
 
-    let updateShellDisabledColor prevValueOpt currValueOpt target =
+    let updateShellDisabledColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetDisabledColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.DisabledColorProperty
 
-    let updateShellUnselectedColor prevValueOpt currValueOpt target =
+    let updateShellUnselectedColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetUnselectedColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.UnselectedColorProperty
 
-    let updateShellTabBarBackgroundColor prevValueOpt currValueOpt target =
+    let updateShellTabBarBackgroundColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarBackgroundColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarBackgroundColorProperty
 
-    let updateShellTabBarForegroundColor prevValueOpt currValueOpt target =
+    let updateShellTabBarForegroundColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarForegroundColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarForegroundColorProperty
 
-    let updateShellBackButtonBehavior prevValueOpt (currValueOpt: ViewElement voption) target =
+    let updateShellBackButtonBehavior (definition: ProgramDefinition) prevValueOpt (currValueOpt: IViewElement voption) target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Shell.SetBackButtonBehavior(target, currValue.Create() :?> BackButtonBehavior)
+        | struct (_, ValueSome currValue) -> Shell.SetBackButtonBehavior(target, currValue.Create(definition) :?> BackButtonBehavior)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.BackButtonBehaviorProperty
 
-    let updateShellTitleView prevValueOpt (currValueOpt: ViewElement voption) target =
+    let updateShellTitleView (definition: ProgramDefinition) prevValueOpt (currValueOpt: IViewElement voption) target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Shell.SetTitleView(target, currValue.Create() :?> View)
+        | struct (_, ValueSome currValue) -> Shell.SetTitleView(target, currValue.Create(definition) :?> View)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TitleViewProperty
 
-    let updateShellFlyoutBehavior prevValueOpt currValueOpt target =
+    let updateShellFlyoutBehavior _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetFlyoutBehavior(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.FlyoutBehaviorProperty
 
-    let updateShellTabBarIsVisible prevValueOpt currValueOpt target =
+    let updateShellTabBarIsVisible _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarIsVisible(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarIsVisibleProperty
 
-    let updateShellNavBarIsVisible prevValueOpt currValueOpt target =
+    let updateShellNavBarIsVisible _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetNavBarIsVisible(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.NavBarIsVisibleProperty
 
-    let updateShellPresentationMode prevValueOpt currValueOpt target =
+    let updateShellPresentationMode _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetPresentationMode(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.PresentationModeProperty
 
-    let updateShellTabBarDisabledColor prevValueOpt currValueOpt target =
+    let updateShellTabBarDisabledColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarDisabledColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarDisabledColorProperty
 
-    let updateShellTabBarTitleColor prevValueOpt currValueOpt target =
+    let updateShellTabBarTitleColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarTitleColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarTitleColorProperty
 
-    let updateShellTabBarUnselectedColor prevValueOpt currValueOpt target =
+    let updateShellTabBarUnselectedColor _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetTabBarUnselectedColor(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TabBarUnselectedColorProperty
 
-    let updateNavigationPageHasNavigationBar prevValueOpt currValueOpt target =
+    let updateNavigationPageHasNavigationBar _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> NavigationPage.SetHasNavigationBar(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue NavigationPage.HasNavigationBarProperty
 
-    let updateShellContentContentTemplate prevValueOpt currValueOpt (target : Xamarin.Forms.ShellContent) =
+    let updateShellContentContentTemplate definition prevValueOpt currValueOpt (target : Xamarin.Forms.ShellContent) =
         updateDirectViewElementDataTemplate
             (fun v -> target.ContentTemplate <- v)
             (fun () -> target.ClearValue ShellContent.ContentTemplateProperty)
             (fun () -> (target :> Xamarin.Forms.IShellContentController).Page)
+            definition
             prevValueOpt
             currValueOpt
 
-    let updateShellNavBarHasShadow prevValueOpt currValueOpt target =
+    let updateShellNavBarHasShadow _ prevValueOpt currValueOpt target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Shell.SetNavBarHasShadow(target, currValue)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.NavBarHasShadowProperty
 
-    let updatePageUseSafeArea (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
+    let updatePageUseSafeArea _ (prevValueOpt: bool voption) (currValueOpt: bool voption) (target: Xamarin.Forms.Page) =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome currValue) -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(target, currValue)
         | struct (ValueSome _, ValueNone) -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(target, false)
 
-    let triggerWebViewReload _ curr (target: Xamarin.Forms.WebView) =
+    let triggerWebViewReload _ _ curr (target: Xamarin.Forms.WebView) =
         if curr = ValueSome true then target.Reload()
 
-    let updateEntryCursorPosition prev curr (target: Xamarin.Forms.Entry) =
+    let updateEntryCursorPosition _ prev curr (target: Xamarin.Forms.Entry) =
         match struct (prev, curr) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome value) -> target.CursorPosition <- value
         | struct (ValueSome _, ValueNone) -> target.ClearValue Entry.CursorPositionProperty
 
-    let updateEntrySelectionLength prev curr (target: Xamarin.Forms.Entry) =
+    let updateEntrySelectionLength _ prev curr (target: Xamarin.Forms.Entry) =
         match struct (prev, curr) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (_, ValueSome value) -> target.SelectionLength <- value
         | struct (ValueSome _, ValueNone) -> target.ClearValue Entry.SelectionLengthProperty
 
-    let updateElementMenu prevValueOpt (currValueOpt: ViewElement voption) target =
+    let updateElementMenu (definition: ProgramDefinition) prevValueOpt (currValueOpt: IViewElement voption) target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Element.SetMenu(target, currValue.Create() :?> Menu)
+        | struct (_, ValueSome currValue) -> Element.SetMenu(target, currValue.Create(definition) :?> Menu)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Element.MenuProperty
 
     // The CarouselView/IndicatorView combo in Xamarin.Forms is special.
@@ -570,7 +571,7 @@ module ViewUpdaters =
         let key = target.GetHashCode()
         carouselViewHandlers.Remove(key) |> ignore
 
-    let updateCarouselViewIndicatorView (prevValueOpt: ViewRef<IndicatorView> voption) (currValueOpt: ViewRef<IndicatorView> voption) (target: Xamarin.Forms.CarouselView) =
+    let updateCarouselViewIndicatorView _ (prevValueOpt: ViewRef<IndicatorView> voption) (currValueOpt: ViewRef<IndicatorView> voption) (target: Xamarin.Forms.CarouselView) =
         let getHandler() =
             match carouselViewHandlers.TryGetValue(target.GetHashCode()) with
             | true, handler -> handler
@@ -603,11 +604,12 @@ module ViewUpdaters =
             currValue.Attached.AddHandler(handler)
             tryLinkIndicatorViewToCarouselView target currValue
 
-    let updateIndicatorViewIndicatorProperty prevValueOpt currValueOpt (target: Xamarin.Forms.IndicatorView) =
+    let updateIndicatorViewIndicatorProperty definition prevValueOpt currValueOpt (target: Xamarin.Forms.IndicatorView) =
         updateDirectViewElementDataTemplate
             (fun v -> target.IndicatorTemplate <- v)
             (fun () -> target.ClearValue IndicatorView.IndicatorTemplateProperty)
             (fun () -> target)
+            definition
             prevValueOpt
             currValueOpt
 
@@ -636,63 +638,63 @@ module ViewUpdaters =
                 lst |> List.iter coll.Add
                 target.SetValue(bindableProperty, coll)
 
-    let updateStructuredItemsViewHeader prevValueOpt (currValueOpt: InputTypes.StructuredItems.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
+    let updateStructuredItemsViewHeader (definition: ProgramDefinition) prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueSome currValue) ->
             match currValue with
-            | StructuredItems.Value.Text str -> target.Header <- str
-            | StructuredItems.Value.ViewElement ve -> target.Header <- (ve.Create() :?> View)
+            | Content.String str -> target.Header <- str
+            | Content.ViewElement ve -> target.Header <- (ve.Create(definition) :?> View)
                 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
-            | struct (StructuredItems.Value.Text prevStr, StructuredItems.Value.Text currStr) when prevStr = currStr -> ()
-            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when identical prevVe currVe -> ()
-            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Header)
-            | struct (_, StructuredItems.Value.Text currStr) -> target.Header <- currStr
-            | struct (_, StructuredItems.Value.ViewElement currVe) -> target.Header <- (currVe.Create() :?> View)
+            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.Update(definition, ValueSome prevVe, target.Header)
+            | struct (_, Content.String currStr) -> target.Header <- currStr
+            | struct (_, Content.ViewElement currVe) -> target.Header <- (currVe.Create(definition) :?> View)
 
         | struct (ValueSome _, ValueNone) -> target.Header <- null
         | struct (ValueNone, ValueNone) -> ()
 
-    let updateStructuredItemsViewFooter prevValueOpt (currValueOpt: InputTypes.StructuredItems.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
+    let updateStructuredItemsViewFooter (definition: ProgramDefinition) prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueSome currValue) ->
             match currValue with
-            | StructuredItems.Value.Text str -> target.Footer <- str
-            | StructuredItems.Value.ViewElement ve -> target.Footer <- (ve.Create() :?> View)
+            | Content.String str -> target.Footer <- str
+            | Content.ViewElement ve -> target.Footer <- (ve.Create(definition) :?> View)
                 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
-            | struct (StructuredItems.Value.Text prevStr, StructuredItems.Value.Text currStr) when prevStr = currStr -> ()
-            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when identical prevVe currVe -> ()
-            | struct (StructuredItems.Value.ViewElement prevVe, StructuredItems.Value.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Footer)
-            | struct (_, StructuredItems.Value.Text currStr) -> target.Footer <- currStr
-            | struct (_, StructuredItems.Value.ViewElement currVe) -> target.Footer <- (currVe.Create() :?> View)
+            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.Update(definition, ValueSome prevVe, target.Footer)
+            | struct (_, Content.String currStr) -> target.Footer <- currStr
+            | struct (_, Content.ViewElement currVe) -> target.Footer <- (currVe.Create(definition) :?> View)
 
         | struct (ValueSome _, ValueNone) -> target.Footer <- null
         | struct (ValueNone, ValueNone) -> ()
 
     /// Update the points of a Polygon, given previous and current view elements
-    let inline updatePolygonPoints prevOpt currOpt (target: Polygon) =
-        updatePoints target Polygon.PointsProperty prevOpt currOpt
+    let inline updatePolygonPoints definition prevOpt currOpt (target: Polygon) =
+        updatePoints target Polygon.PointsProperty definition prevOpt currOpt
 
     /// Update the points of a Polyline, given previous and current view elements
-    let inline updatePolylinePoints prevOpt currOpt (target: Polyline) =
-        updatePoints target Polyline.PointsProperty prevOpt currOpt
+    let inline updatePolylinePoints definition prevOpt currOpt (target: Polyline) =
+        updatePoints target Polyline.PointsProperty definition prevOpt currOpt
 
     /// Update the points of a PolyBezierSegment, given previous and current view elements
-    let inline updatePolyBezierSegmentPoints prevOpt currOpt (target: PolyBezierSegment) =
-        updatePoints target PolyBezierSegment.PointsProperty prevOpt currOpt
+    let inline updatePolyBezierSegmentPoints definition prevOpt currOpt (target: PolyBezierSegment) =
+        updatePoints target PolyBezierSegment.PointsProperty definition prevOpt currOpt
 
     /// Update the points of a PolyLineSegment, given previous and current view elements
-    let inline updatePolyLineSegmentPoints prevOpt currOpt (target: PolyLineSegment) =
-        updatePoints target PolyLineSegment.PointsProperty prevOpt currOpt
+    let inline updatePolyLineSegmentPoints definition prevOpt currOpt (target: PolyLineSegment) =
+        updatePoints target PolyLineSegment.PointsProperty definition prevOpt currOpt
 
     /// Update the points of a PolyQuadraticBezierSegment, given previous and current view elements
-    let inline updatePolyQuadraticBezierSegmentPoints prevOpt currOpt (target: PolyQuadraticBezierSegment) =
-        updatePoints target PolyQuadraticBezierSegment.PointsProperty prevOpt currOpt
+    let inline updatePolyQuadraticBezierSegmentPoints definition prevOpt currOpt (target: PolyQuadraticBezierSegment) =
+        updatePoints target PolyQuadraticBezierSegment.PointsProperty definition prevOpt currOpt
         
     /// Update the Label Text/FormattedText properties in a single pass.
     /// We need to do this because Xamarin.Forms automatically sets to null the one property when the other is setted.

@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.XamarinForms
 
 open Fabulous
@@ -15,15 +15,18 @@ open System.ComponentModel
 [<AllowNullLiteral>]
 type IViewElementHolder =
     inherit INotifyPropertyChanged
-    abstract ViewElement : ViewElement
+    abstract ViewElement : IViewElement
+    abstract ProgramDefinition : ProgramDefinition
 
 [<AllowNullLiteral>]
-type ViewElementHolder(viewElement: ViewElement) =
-    let ev = new Event<_,_>()
+type ViewElementHolder(viewElement: IViewElement, programDefinition: ProgramDefinition) =
+    let ev = Event<_,_>()
     let mutable data = viewElement
+    let mutable definition = programDefinition
 
     interface IViewElementHolder with
         member x.ViewElement = data
+        member x.ProgramDefinition = programDefinition
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
 
     member x.ViewElement
@@ -32,16 +35,24 @@ type ViewElementHolder(viewElement: ViewElement) =
             data <- value
             ev.Trigger(x, PropertyChangedEventArgs "ViewElement")
 
-[<AllowNullLiteral>]
-type ViewElementHolderGroup(shortName: string, viewElement: ViewElement, items: ViewElement[]) =
-    inherit ObservableCollection<ViewElementHolder>(Seq.map ViewElementHolder items)
+    member x.ProgramDefinition
+        with get() = definition
+        and set(value) =
+            definition <- value
+            ev.Trigger(x, PropertyChangedEventArgs "ProgramDefinition")
 
-    let ev = new Event<_,_>()
+[<AllowNullLiteral>]
+type ViewElementHolderGroup(shortName: string, viewElement: IViewElement, items: IViewElement[], programDefinition: ProgramDefinition) =
+    inherit ObservableCollection<ViewElementHolder>(items |> Seq.map (fun i -> ViewElementHolder(i, programDefinition)))
+
+    let ev = Event<_,_>()
     let mutable shortNameData = shortName
     let mutable data = viewElement
+    let mutable definition = programDefinition
 
     interface IViewElementHolder with
         member x.ViewElement = data
+        member x.ProgramDefinition = definition
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
 
     member x.ViewElement
@@ -49,6 +60,12 @@ type ViewElementHolderGroup(shortName: string, viewElement: ViewElement, items: 
         and set(value) =
             data <- value
             ev.Trigger(x, PropertyChangedEventArgs "ViewElement")
+
+    member x.ProgramDefinition
+        with get() = definition
+        and set(value) =
+            definition <- value
+            ev.Trigger(x, PropertyChangedEventArgs "ProgramDefinition")
 
     member x.ShortName
         with get() = shortNameData
@@ -61,12 +78,12 @@ type ViewElementHolderGroup(shortName: string, viewElement: ViewElement, items: 
 module BindableHelpers =
     let createOnBindingContextChanged (bindableObject: BindableObject) =
         let mutable holderOpt : IViewElementHolder voption = ValueNone
-        let mutable prevModelOpt : ViewElement voption = ValueNone
+        let mutable prevModelOpt : IViewElement voption = ValueNone
 
         let onDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
             match args.PropertyName, holderOpt, prevModelOpt with
             | "ViewElement", ValueSome holder, ValueSome prevModel ->
-                holder.ViewElement.UpdateIncremental (prevModel, bindableObject)
+                holder.ViewElement.Update(holder.ProgramDefinition, ValueSome prevModel, bindableObject)
                 prevModelOpt <- ValueSome holder.ViewElement
             | _ -> ()
         )
@@ -80,7 +97,7 @@ module BindableHelpers =
             match bindableObject.BindingContext with
             | :? IViewElementHolder as newHolder ->
                 newHolder.PropertyChanged.AddHandler onDataPropertyChanged
-                newHolder.ViewElement.UpdateInherited(prevModelOpt, newHolder.ViewElement, bindableObject)
+                newHolder.ViewElement.Update(newHolder.ProgramDefinition, prevModelOpt, bindableObject)
                 holderOpt <- ValueSome newHolder
                 prevModelOpt <- ValueSome newHolder.ViewElement
             | _ ->
@@ -114,8 +131,8 @@ type ViewElementDataTemplateSelector() =
         | true, template ->
             template :> DataTemplate
 
-type DirectViewElementDataTemplate(viewElement: ViewElement) =
-    inherit DataTemplate(Func<obj>(viewElement.Create))
+type DirectViewElementDataTemplate(programDefinition: ProgramDefinition, viewElement: IViewElement) =
+    inherit DataTemplate(Func<obj>(fun () -> viewElement.Create(programDefinition)))
 
 /////////////////
 /// Cells
@@ -192,7 +209,7 @@ type CustomTimePicker() =
         if propertyName = "Time" then
             timeChanged.Trigger(this, this.Time)
 
-/// Itemslayout for CarouselView
+/// ItemsLayout for CarouselView
 type VerticalLinearItemsLayout() =
     inherit LinearItemsLayout(ItemsLayoutOrientation.Vertical)
 

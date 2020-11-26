@@ -5,6 +5,9 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Counter.fs" />
+    <Compile Include="Timer.fs" />
+    <Compile Include="NameForm.fs" />
     <Compile Include="CounterApp.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -12,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
   </ItemGroup>
   <Import Project="..\..\..\..\Packages.targets" />
 </Project>

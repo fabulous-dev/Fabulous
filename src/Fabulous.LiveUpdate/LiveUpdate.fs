@@ -11,53 +11,53 @@ open Fabulous
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
 
-module Ports = 
+module Ports =
     let DefaultPort = 9867
     let BroadcasterPort = 8098
     let BroadcasterReceiverPort = 8099
 
 
 [<CLIMutable>]
-type UpdateResponse = 
+type UpdateResponse =
     { Quacked: string }
 
 [<CLIMutable>]
-type BroadcasterAddress = 
+type BroadcasterAddress =
     { Address: string
       Port: int
       Interface : string }
 
 [<CLIMutable>]
-type BroadcastInfo = 
+type BroadcastInfo =
     { DeviceName: string
-      Addresses : BroadcasterAddress[] 
+      Addresses : BroadcasterAddress[]
       DeviceModel : string }
 
-    static member Start(printAddressesFn, ?httpPort) = 
+    static member Start(printAddressesFn, ?httpPort) =
         //let broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, Ports.BroadcasterReceiverPort)
 
         let httpPort = defaultArg httpPort Ports.DefaultPort
-        do 
-            async { 
+        do
+            async {
                for i in 0 .. 3 do
-                    try 
+                    try
                         //let client = new UdpClient (Ports.BroadcasterPort, EnableBroadcast = true)
-                        let iips = 
-                            [| for x in NetworkInterface.GetAllNetworkInterfaces () do 
+                        let iips =
+                            [| for x in NetworkInterface.GetAllNetworkInterfaces () do
                                  if x.NetworkInterfaceType <> NetworkInterfaceType.Loopback &&
                                     not (x.Name.StartsWith ("pdp_ip", StringComparison.Ordinal)) &&
                                     x.OperationalStatus = OperationalStatus.Up then
                                      for y in x.GetIPProperties().UnicastAddresses do
-                                        if y.Address.AddressFamily = AddressFamily.InterNetwork then 
+                                        if y.Address.AddressFamily = AddressFamily.InterNetwork then
                                              yield { Address = y.Address.ToString ()
                                                      Port = httpPort
                                                      Interface = x.Name } |]
-                        //let broadcast = 
+                        //let broadcast =
                         //    {  DeviceName = "Device"
                         //       DeviceModel = "Model"
                         //       Addresses = iips }
 
-                        if iips.Length > 0 then 
+                        if iips.Length > 0 then
                             printfn "----------"
                             printfn "  LiveUpdate: Ready for connection. Will show this message %d more times." (3 - i)
                             printfn "  "
@@ -65,39 +65,39 @@ type BroadcastInfo =
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/tools.html for more details"
                             printfn "----------"
-                        else 
+                        else
                             printfn "LiveUpdate: Couldn't find a network interface to recommend."
-                                
+
                         //let json = Newtonsoft.Json.JsonConvert.SerializeObject(broadcast)
                         //let bytes = System.Text.Encoding.UTF8.GetBytes (json)
 
                         //client.Send (bytes, bytes.Length, broadcastEndpoint)  |> ignore
-                    with e -> 
+                    with e ->
                         printfn "LiveUpdate: error on broadcast: %A" e.Message
                     do! Async.Sleep 10000 } |> Async.Start
 
 
-type HttpServer(printAddressFn, ?port) = 
+type HttpServer(printAddressFn, ?port) =
     let port = defaultArg port Ports.DefaultPort
     do BroadcastInfo.Start(printAddressFn)
     member x.Run (switchD) =
 
         let _syncCtxt = System.Threading.SynchronizationContext.Current
-        async { 
+        async {
             // Run this on the host machine
             (*
                adb -d forward --list
-             USB: 
-               adb -d forward  tcp:9867 tcp:9867 
-             EMULATOR: 
-              adb -e forward  tcp:9867 tcp:9867 
+             USB:
+               adb -d forward  tcp:9867 tcp:9867
+             EMULATOR:
+              adb -e forward  tcp:9867 tcp:9867
               *)
             // netsh http add urlacl url=http://*:9867/ user=System.Environment.UserDomainName
             let url = sprintf "http://*:%d/" port
 
             let listener = new HttpListener ()
             listener.Prefixes.Add (url)
-            try 
+            try
                 listener.Start ()
 
                 while true do
@@ -106,9 +106,9 @@ type HttpServer(printAddressFn, ?port) =
                     let path = c.Request.Url.AbsolutePath
                     printfn "LiveUpdate: got request, path = = %s" url
                     use resp = c.Response
-                    try 
+                    try
 
-                        let! (resString : string) = 
+                        let! (resString : string) =
                             async {
                                 //if (path = "/switch") then
                                 //    //let req = serializer.UnPickleOfString<UpdatePackage>(requestText)
@@ -148,14 +148,14 @@ type HttpServer(printAddressFn, ?port) =
                         resp.ContentLength64 <- bytes.LongLength
                         do! c.Response.OutputStream.WriteAsync (bytes, 0, bytes.Length) |> Async.AwaitTask
 
-                    with ex -> 
+                    with ex ->
                         let msg = "<html><body><pre>" + ex.ToString() + "</pre></body></html>"
                         printfn "LiveUpdate: setting response code to 500, msg = %s" msg
                         let bytes = Encoding.UTF8.GetBytes msg
                         resp.StatusCode <- 500
                         resp.ContentLength64 <- bytes.LongLength
                         do! c.Response.OutputStream.WriteAsync (bytes, 0, bytes.Length) |> Async.AwaitTask
-            with :? HttpListenerException as ex -> 
+            with :? HttpListenerException as ex ->
                 printfn "couldn't start listener %s" (ex.ToString())
         } |> Async.Start
 
@@ -165,33 +165,34 @@ type HttpServer(printAddressFn, ?port) =
 module Extensions =
 
 
-    let rec internal tryFindEntityByName name (decls: DDecl[]) = 
-        decls |> Array.tryPick (function 
-            | DDeclEntity (entityDef, subDecls) -> if entityDef.Name = name then Some (entityDef, subDecls) else tryFindEntityByName name subDecls 
+    let rec internal tryFindEntityByName name (decls: DDecl[]) =
+        decls |> Array.tryPick (function
+            | DDeclEntity (entityDef, subDecls) -> if entityDef.Name = name then Some (entityDef, subDecls) else tryFindEntityByName name subDecls
             | _ -> None)
 
-    let rec internal tryFindMemberByName name (decls: DDecl[]) = 
-        decls |> Array.tryPick (function 
-            | DDeclEntity (_, ds) -> tryFindMemberByName name ds 
+    let rec internal tryFindMemberByName name (decls: DDecl[]) =
+        decls |> Array.tryPick (function
+            | DDeclEntity (_, ds) -> tryFindMemberByName name ds
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
-    let internal castToProgramObj (program: Program<unit, obj, obj>) : Program<obj, obj, obj> =
-        { init = (fun x -> program.init ())
+    let internal castToProgramObj (program: RunnerDefinition<unit, obj, obj, obj>) : RunnerDefinition<obj, obj, obj, obj> =
+        { init = (fun _ -> program.init ())
           update = program.update
           subscribe = program.subscribe
           view = program.view
           canReuseView = program.canReuseView
           syncDispatch = program.syncDispatch
           syncAction = program.syncAction
-          debug = program.debug
+          traceLevel = program.traceLevel
+          trace = program.trace
           onError = program.onError }
 
-    let internal changeProgram (runner: ProgramRunner<'arg, 'model,'msg>) syncChangeProgram programErased =
-        // Stop the running program 
+    let internal changeProgram (runner: Runner<'arg, 'model, 'msg, 'externalMsg>) syncChangeProgram (definition: RunnerDefinition<'arg, 'model, 'msg, 'externalMsg>) =
+        // Stop the running program
         printfn "changing running program...."
         syncChangeProgram (fun () ->
-             runner.ChangeProgram(programErased)
+             runner.ChangeDefinition(definition)
         )
         printfn "*** LiveUpdate success:"
         printfn "***   [x] got code package"
@@ -202,13 +203,13 @@ module Extensions =
         Some { Quacked = "LiveUpdate quacked!" }
 
     /// Starts the HttpServer listening for changes
-    let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'arg, 'model,'msg>) =
+    let enableLiveUpdate printAddressesFn syncChangeProgram (runner: Runner<'arg, 'model, 'msg, 'externalMsg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
 
         let switchD (files: (string * DFile)[]) =
-          lock interp (fun () -> 
-            let res = 
-                try 
+          lock interp (fun () ->
+            let res =
+                try
                     for (_, file) in files do
                         printfn "LiveUpdate: adding declarations...."
                         interp.AddDecls file.Code
@@ -217,70 +218,70 @@ module Extensions =
                         printfn "LiveUpdate: evaluating decls in code package for side effects...."
                         interp.EvalDecls (envEmpty, file.Code)
                     Result.Ok ()
-                with exn -> 
+                with exn ->
                     Result.Error exn
 
-            match res with 
-            | Result.Error exn -> 
+            match res with
+            | Result.Error exn ->
                 printfn "*** LiveUpdate failure:"
                 printfn "***   [x] got code package"
                 printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
                 { Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn }
 
-            | Result.Ok () -> 
+            | Result.Ok () ->
 
-            match files.Length with 
+            match files.Length with
             | 0 -> { Quacked = "couldn't quack! Files were empty!" }
-            | _ -> 
-            let result = 
-                files |> Array.tryPick (fun (_, file) -> 
+            | _ ->
+            let result =
+                files |> Array.tryPick (fun (_, file) ->
 
-                    let programOptD = 
+                    let programOptD =
                         match tryFindMemberByName "programLiveUpdate" file.Code with
                         | Some d -> Some d
-                        | None -> 
+                        | None ->
                         match tryFindMemberByName "program" file.Code with
                         | None -> None
                         | Some d -> Some d
 
-                    match programOptD with 
+                    match programOptD with
                     | None -> None
 
-                    | Some (membDef, _) -> 
-                        if membDef.Parameters.Length > 0 then 
+                    | Some (membDef, _) ->
+                        if membDef.Parameters.Length > 0 then
                             printfn "*** LiveUpdate failure:"
                             printfn "***   [x] got code package"
                             printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
                             printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
                             Some { Quacked = "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!" }
 
-                        else 
+                        else
 
                             printfn "LiveUpdate: evaluating 'program'...."
                             let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                            let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
+                            let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name)
                             match getVal programObj with
 
-                            | :? Program<unit, obj, obj> as programErased ->
+                            | :? RunnerDefinition<unit, obj, obj, obj> as programErased ->
 
                                 programErased
                                 |> castToProgramObj
                                 |> changeProgram runner syncChangeProgram
 
-                            | :? Program<obj, obj, obj> as programErased -> 
+                            | :? RunnerDefinition<obj, obj, obj, obj> as programErased ->
 
                                 programErased
                                 |> changeProgram runner syncChangeProgram
-                    
-                            | p -> 
+
+                            | p ->
                                 printfn "*** LiveUpdate failure:"
                                 printfn "***   [x] got code package"
                                 printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
                                 printfn "***   [x] it had no parameters (good!)"
-                                printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Arg, Model, Msg>'" (p.GetType())
+                                printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Arg, Model, Msg, ExternalMsg>'" (p.GetType())
                                 Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" })
             match result with
-            | None -> 
+            | None ->
                 printfn "*** LiveUpdate failure:"
                 printfn "***   [x] got code package"
                 printfn "***   FAIL: couldn't find declaration called 'program' or 'programLiveUpdate'"
@@ -291,4 +292,4 @@ module Extensions =
         let server = HttpServer(printAddressesFn)
         server.Run(switchD)
 
-            
+

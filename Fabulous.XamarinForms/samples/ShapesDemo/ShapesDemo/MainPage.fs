@@ -38,7 +38,7 @@ module App =
     type SampleModel =
         { Init: unit -> obj * Cmd<Msg>
           Update: obj -> obj -> obj * Cmd<Msg>
-          View: obj -> Dispatch<Msg> -> ViewElement
+          View: obj -> Dispatch<Msg> -> DynamicViewElement
           Model: obj }
 
     let initSample sample =
@@ -136,15 +136,17 @@ module App =
         )
 
     let view model dispatch =
-        View.NavigationPage(
-            popped = (fun _ -> dispatch NavigatedBack),
-            pages = [
-                yield mainPageView dispatch
+        View.Application(
+            View.NavigationPage(
+                popped = (fun _ -> dispatch NavigatedBack),
+                pages = [
+                    yield mainPageView dispatch
 
-                match model.Sample with
-                | None -> ()
-                | Some sample -> yield sample.View sample.Model dispatch
-            ]
+                    match model.Sample with
+                    | None -> ()
+                    | Some sample -> yield sample.View sample.Model dispatch
+                ]
+            )
         )
 
     // Note, this declaration is needed if you enable LiveUpdate

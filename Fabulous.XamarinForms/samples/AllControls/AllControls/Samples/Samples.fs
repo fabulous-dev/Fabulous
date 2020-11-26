@@ -7,7 +7,7 @@ open Fabulous
 
 module Samples =
     /// Create a Sample definition with just a view function
-    let createViewOnlyDefinition title (view: unit -> ViewElement) =
+    let createViewOnlyDefinition title (view: unit -> DynamicViewElement) =
         { Title = title
           Init = ViewOnlySample.init
           Update = ViewOnlySample.update

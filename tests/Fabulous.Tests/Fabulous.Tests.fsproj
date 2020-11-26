@@ -13,7 +13,7 @@
     <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewElementTests.fs" />
+    <Compile Include="DynamicViewElementTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Fabulous\Fabulous.fsproj" />

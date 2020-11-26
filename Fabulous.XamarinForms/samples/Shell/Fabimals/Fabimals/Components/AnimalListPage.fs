@@ -11,9 +11,9 @@ module AnimalList =
     type Msg =
         | SearchHandlerMsg of SearchHandlers.Msg
         | SelectAnimal of Animal
-        
+
     type CmdMsg = NoOp
-        
+
     type ExternalMsg =
         | NavigateToDetails of Animal
 
@@ -36,12 +36,12 @@ module AnimalList =
         | SelectAnimal animal ->
             model, [], [(NavigateToDetails animal)]
 
-    let navigateToAfterSelectionChanged dispatch (_, (currentItems: ViewElement list option)) =
+    let navigateToAfterSelectionChanged dispatch (_, (currentItems: IViewElement list option)) =
         match currentItems |> Option.bind (List.tryHead) with
-        | None -> ()
-        | Some item ->
+        | Some (:? DynamicViewElement as item) ->
             let animal = item.TryGetTag<Animal>().Value
             dispatch (SelectAnimal animal)
+        | _ -> ()
 
     let view model dispatch =
         dependsOn (model.PageTitle, model.IsTopBarDisplayed, model.AllAnimals, model.FilteredAnimals) (fun model (pageTitle, isTopBarDisplayed, allAnimals, filteredAnimals) ->
