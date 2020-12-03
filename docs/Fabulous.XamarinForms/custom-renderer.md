@@ -4,12 +4,15 @@
 
 ## Views: Custom Renderer / ViewElements
 
-Xamarin.Forms user interfaces are rendered using the native controls of the target platform, allowing Xamarin.Forms applications to retain the appropriate look and feel for each platform. Developers can implement their own custom Renderer classes to customize the appearance and/or behavior of a control.
+If you want to know more about **Custom Renderers** in Xamarin.Forms and how it works take a look [here](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/).
 
 ### Customized ViewElements
 
-Sometimes you just want to change normal properties of a class to create your own viewelement e.g. a customized label.
-In this example we have a label which only allows a text, a fontFamily, a backgroundcolor and a rotation. Everything else is not possible to set on this label.
+If an existing control does not provide the feature you want, you can extend it through a custom control.
+To create a custom control you have to use the [extension API](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-extending.html).
+Usually you don't use a custom control without a custom renderer because to apply new features like underlining a label you have to use a custom renderer. Take a look at `UnderlinedLabel` in the `Pracitical Examples` section.
+
+In this example we have a label which only allows to set a text, a fontFamily, a backgroundcolor and a rotation.
 
 ```fsharp
 module TestLabel =
@@ -49,9 +52,10 @@ module TestLabel =
 
 ### Custom Renderer
 
-If it is not enough to customize specific properties but you want to make platform-specific enhancements and customizations you have to implemen a custom renderer.
+To create a custom renderer you can follow the example below or take a look in the `Pracitical Examples` section.
+There are different types of renderer in Xamarin.Forms which you can find [here](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/renderers)
 
-1. Create a custom renderer in the platform project. In this example we use the AllControls-Sample with a iOS-specific implementation.
+1. Create a custom renderer in the platform project. In this example we use the AllControls-Sample and a `ListViewRenderer` with a iOS-specific implementation.
 
 ```fsharp
 type MyListViewRenderer() =
@@ -60,17 +64,12 @@ type MyListViewRenderer() =
     override this.OnElementPropertyChanged(sender: obj, e: PropertyChangedEventArgs) =
         base.OnElementPropertyChanged(sender, e)
 
-        match e.PropertyName with
-        | "SelectedItem" ->
-            match this.Element, this.Control with
-            | null, null -> ()
-            | _ ->
-                this.Control.VisibleCells
-                |> Array.iter (fun v -> v.SelectionStyle <- UITableViewCellSelectionStyle.None ) // disable all selectionpossibilities
-        | _ -> ()
+        if e.PropertyName = "SelectedItem" then
+            for cell in this.Controls.VisibleCells do
+                cell.SelectionStyle <- UITableViewCellSelectionStyle.None
 ```
 
-2. Export the renderer with the following code. **Be careful** if you use a Fabulous.XamarinForms.\* it will effect every element of this type.
+2. Export the renderer with the following code. **Be careful** if you use a Fabulous.XamarinForms. It will effect every element of this type.
 
 ```fsharp
 [<assembly: ExportRenderer(typeof<Fabulous.XamarinForms.CustomListView>, typeof<MyListViewRenderer>)>]
@@ -106,7 +105,21 @@ Now we can export it with the correct type and it will only effect this specific
 [<assembly: ExportRenderer(typeof<AllControls.Samples.TestListViewModule.TLV>, typeof<MyListViewRenderer>)>]
 ```
 
+### Practical Examples
+
+- [FabulousContacts](https://github.com/TimLariviere/FabulousContacts)
+  - Renderer Example:
+    - BorderedEntry
+      - [BorderedEntryRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/BorderedEntryRenderer.fs)
+      - [BorderedEntryRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/BorderedEntryRenderer.fs)
+      - [Fabulous.XamarinForms - BorderedEntry](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/BorderedEntry.fs)
+    - UnderlinedLabel
+      - [UnderlinedLabelRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/UnderlinedLabelRenderer.fs)
+      - [UnderlinedLabelRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/UnderlinedLabelRenderer.fs)
+      - [Fabulous.XamarinForms - UnderlinedLabel](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/UnderlinedLabel.fs)
+
 See also:
 
 - [Xamarin.Forms - Custom Renderer](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/)
 - [Xamarin.Forms - Introduction to Custom Renderers](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/introduction)
+- [Xamarin.Forms - Renderer List](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/renderers)
