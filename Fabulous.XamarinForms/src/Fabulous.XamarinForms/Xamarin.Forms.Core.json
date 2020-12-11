@@ -2003,7 +2003,9 @@
           "convertModelToValue": "ViewConverters.convertFabulousFontSizeToXamarinFormsDouble (target.GetType())"
         },
         {
-          "source": "FormattedText"
+          "_comment": "Label.FormattedText and Label.Text are handled as one property",
+          "source": "FormattedText",
+          "updateCode": "(fun _ _ _ -> ())"
         },
         {
           "source": "HorizontalTextAlignment"
@@ -2021,7 +2023,9 @@
           "source": "Padding"
         },
         {
-          "source": "Text"
+          "_comment": "Label.FormattedText and Label.Text are handled as one property",
+          "source": "Text",
+          "updateCode": "ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt"
         },
         {
           "source": "TextColor"

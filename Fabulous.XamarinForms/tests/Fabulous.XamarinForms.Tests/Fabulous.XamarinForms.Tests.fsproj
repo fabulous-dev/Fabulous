@@ -12,6 +12,7 @@
     <Compile Include="Collections\DiffTests.fs" />
     <Compile Include="Collections\AdaptDiffTests.fs" />
     <Compile Include="Collections\UpdateChildrenTests.fs" />
+    <Compile Include="ViewUpdatersTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" />

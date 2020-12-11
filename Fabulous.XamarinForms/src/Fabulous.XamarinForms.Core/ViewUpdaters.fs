@@ -700,3 +700,45 @@ module ViewUpdaters =
     /// Update the points of a PolyQuadraticBezierSegment, given previous and current view elements
     let inline updatePolyQuadraticBezierSegmentPoints prevOpt currOpt (target: PolyQuadraticBezierSegment) =
         updatePoints target PolyQuadraticBezierSegment.PointsProperty prevOpt currOpt
+        
+    /// Update the Label Text/FormattedText properties in a single pass.
+    /// We need to do this because Xamarin.Forms automatically sets to null the one property when the other is setted.
+    /// To can lead to unexpected states that can crash the application
+    let updateLabelText (prevFormattedTextOpt: ViewElement voption) (currFormattedTextOpt: ViewElement voption) (prevValueOpt: string voption) (currValueOpt: string voption) (target: Xamarin.Forms.Label) =
+        // IMPORTANT NOTE: In case the user provided both Text and FormattedText, we favor the FormattedText value
+        
+        let prevOpt =
+            match struct (prevValueOpt, prevFormattedTextOpt) with
+            | struct (ValueNone, ValueNone) -> ValueNone
+            | struct (ValueSome prev, ValueNone) -> ValueSome (LabelText.fromString prev)
+            | struct (ValueNone, ValueSome prev) -> ValueSome (LabelText.fromFormattedString prev)
+            | struct (ValueSome _, ValueSome prev) -> ValueSome (LabelText.fromFormattedString prev)
+            
+        let currOpt =
+            match struct (currValueOpt, currFormattedTextOpt) with
+            | struct (ValueNone, ValueNone) -> ValueNone
+            | struct (ValueSome curr, ValueNone) -> ValueSome (LabelText.fromString curr)
+            | struct (ValueNone, ValueSome curr) -> ValueSome (LabelText.fromFormattedString curr)
+            | struct (ValueSome _, ValueSome curr) -> ValueSome (LabelText.fromFormattedString curr)
+        
+        match struct (prevOpt, currOpt) with
+        | struct (ValueNone, ValueNone) -> ()
+        | struct (ValueSome prev, ValueSome curr) when prev = curr -> ()
+        
+        | struct (_, ValueNone) ->
+            target.ClearValue(Label.TextProperty)
+            target.ClearValue(Label.FormattedTextProperty)
+        
+        | struct (ValueNone, ValueSome curr) ->
+            match curr with
+            | LabelText.Value.PlainString text -> target.Text <- text
+            | LabelText.Value.FormattedString viewElement -> target.FormattedText <- viewElement.Create() :?> Xamarin.Forms.FormattedString
+            
+        | struct (ValueSome _, ValueSome (LabelText.Value.PlainString newText)) ->
+            target.Text <- newText
+            
+        | struct (ValueSome (LabelText.Value.FormattedString prevVE), ValueSome (LabelText.Value.FormattedString currVE)) ->
+            currVE.UpdateIncremental(prevVE, target.FormattedText)
+            
+        | struct (ValueSome (LabelText.Value.PlainString _), ValueSome (LabelText.Value.FormattedString currVE)) ->
+            target.FormattedText <- currVE.Create() :?> Xamarin.Forms.FormattedString

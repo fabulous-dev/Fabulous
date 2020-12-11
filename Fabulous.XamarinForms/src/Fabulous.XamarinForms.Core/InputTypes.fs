@@ -120,3 +120,14 @@ module InputTypes =
         let fromString str = Text str
         /// An element used as content
         let fromElement viewElement = ViewElement viewElement
+        
+    /// Represents a text value for Xamarin.Forms.Label
+    module LabelText =
+        type Value =
+            | PlainString of string
+            | FormattedString of ViewElement
+            
+        /// Use a plain string
+        let fromString str = PlainString str
+        /// Use a formatted string
+        let fromFormattedString viewElement = FormattedString viewElement
