@@ -25,7 +25,7 @@ module ViewUpdatersTests =
     [<Test>]
     let ``UpdateLabelText Text None to Some``() =
         let prevTextOpt = ValueNone
-        let currTextOpt = ValueSome (LabelText.fromString "ABC")
+        let currTextOpt = ValueSome "ABC"
         
         let prevFormattedTextOpt = ValueNone
         let currFormattedTextOpt = ValueNone
@@ -39,8 +39,8 @@ module ViewUpdatersTests =
         
     [<Test>]
     let ``UpdateLabelText Text Some to Some``() =
-        let prevTextOpt = ValueSome (LabelText.fromString "ABC")
-        let currTextOpt = ValueSome (LabelText.fromString "DEF")
+        let prevTextOpt = ValueSome "ABC"
+        let currTextOpt = ValueSome "DEF"
         
         let prevFormattedTextOpt = ValueNone
         let currFormattedTextOpt = ValueNone
@@ -58,7 +58,7 @@ module ViewUpdatersTests =
         let currTextOpt = ValueNone
         
         let prevFormattedTextOpt = ValueNone
-        let currFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("ABC") ])))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
         
         let target = Label(Text = null, FormattedText = null)
         
@@ -74,8 +74,8 @@ module ViewUpdatersTests =
         let prevTextOpt = ValueNone
         let currTextOpt = ValueNone
         
-        let prevFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("ABC") ])))
-        let currFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("DEF") ])))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]))
         
         let formattedString = FormattedString()
         formattedString.Spans.Add(Span(Text = "ABC"))
@@ -91,11 +91,11 @@ module ViewUpdatersTests =
         
     [<Test>]
     let ``UpdateLabelText Text Some to FormattedText Some``() =
-        let prevTextOpt = ValueSome (LabelText.fromString "ABC")
+        let prevTextOpt = ValueSome "ABC"
         let currTextOpt = ValueNone
         
         let prevFormattedTextOpt = ValueNone
-        let currFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("DEF") ])))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]))
                 
         let target = Label(Text = "ABC", FormattedText = null)
         
@@ -109,9 +109,9 @@ module ViewUpdatersTests =
     [<Test>]
     let ``UpdateLabelText FormattedText Some to Text Some``() =
         let prevTextOpt = ValueNone
-        let currTextOpt = ValueSome (LabelText.fromString "DEF")
+        let currTextOpt = ValueSome "DEF"
         
-        let prevFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("ABC") ])))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
         let currFormattedTextOpt = ValueNone
         
         let formattedString = FormattedString()
@@ -126,11 +126,11 @@ module ViewUpdatersTests =
         
     [<Test>]
     let ``UpdateLabelText Text/FormattedText Some to Text/FormattedText Some``() =
-        let prevTextOpt = ValueSome (LabelText.fromString "ABC")
-        let currTextOpt = ValueSome (LabelText.fromString "DEF")
+        let prevTextOpt = ValueSome "ABC"
+        let currTextOpt = ValueSome "DEF"
         
-        let prevFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("GHI") ])))
-        let currFormattedTextOpt = ValueSome (LabelText.fromFormattedString (View.FormattedString(spans = [ View.Span("JKL") ])))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("GHI") ]))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("JKL") ]))
 
         let formattedString = FormattedString()
         formattedString.Spans.Add(Span(Text = "GHI"))

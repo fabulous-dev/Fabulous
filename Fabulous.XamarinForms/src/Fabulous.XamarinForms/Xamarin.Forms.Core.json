@@ -2005,8 +2005,6 @@
         {
           "_comment": "Label.FormattedText and Label.Text are handled as one property",
           "source": "FormattedText",
-          "modelType": "Fabulous.XamarinForms.InputTypes.LabelText.Value",
-          "convertInputToModel": "Fabulous.XamarinForms.InputTypes.LabelText.fromFormattedString",
           "updateCode": "(fun _ _ _ -> ())"
         },
         {
@@ -2027,8 +2025,6 @@
         {
           "_comment": "Label.FormattedText and Label.Text are handled as one property",
           "source": "Text",
-          "modelType": "Fabulous.XamarinForms.InputTypes.LabelText.Value",
-          "convertInputToModel": "Fabulous.XamarinForms.InputTypes.LabelText.fromString",
           "updateCode": "ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt"
         },
         {
