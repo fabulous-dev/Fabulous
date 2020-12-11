@@ -2,124 +2,117 @@
 
 {% include_relative contents-views.md %}
 
-## Views: Custom Renderer / ViewElements
+## Views: Custom renderers and Custom controls
 
-If you want to know more about **Custom Renderers** in Xamarin.Forms and how it works take a look [here](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/).
+### Custom renderers
 
-### Customized ViewElements
+In Xamarin.Forms, custom renderers define how a control is rendered on the UI, and are specific to a platform (iOS, Android, etc.).  
+For example, the default iOSButtonRenderer will render a Xamarin.Forms.Button as a UIKit.UIButton and will handle all the properties such as `Text`, `Color`, etc.
 
-If an existing control does not provide the feature you want, you can extend it through a custom control.
-To create a custom control you have to use the [extension API](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-extending.html).
-Usually you don't use a custom control without a custom renderer because to apply new features like underlining a label you have to use a custom renderer. Take a look at `UnderlinedLabel` in the `Pracitical Examples` section.
+Custom renderers are renderers you create to either change the default behavior of an existing renderer or create a completely new one.
 
-In this example we have a label which only allows to set a text, a fontFamily, a backgroundcolor and a rotation.
+With Fabulous for Xamarin.Forms, you can still use custom renderers like you would in plain Xamarin.Forms.
 
-```fsharp
-module TestLabel =
-    /// Test the extension API be making a 2nd wrapper for "Label":
-    let TestLabelTextAttribKey = AttributeKey<_> "TestLabel_Text"
-    let TestLabelFontFamilyAttribKey = AttributeKey<_> "TestLabel_FontFamily"
+Please read the [custom renderer official documentation](https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/custom-renderer/) to learn more about them.
+
+Here's an example of a custom renderer for displaying a Label with underlined text, which is not supported by Xamarin.Forms but the native platforms can do it:
+- [UnderlinedLabel](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/UnderlinedLabel.fs)
+- [UnderlinedLabelRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/UnderlinedLabelRenderer.fs)
+- [UnderlinedLabelRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/UnderlinedLabelRenderer.fs)
+
+### Custom controls
+
+In Xamarin.Forms, custom controls are controls that not part of the default controls of Xamarin.Forms.  
+They can either be extended controls (like the UnderlinedLabel above) or brand new ones.
+
+Those custom controls necessarily have custom renderers attached to them, because Xamarin.Forms doesn't know how to render them by default.
+
+When using with Fabulous, you'll need to both create the control class and its wrapper for Fabulous.
+
+Here's an example where we extend the Xamarin.Forms Entry control to add a `BorderColor` property:
+```fs
+type BorderedEntry() =
+    inherit Xamarin.Forms.Entry()
+
+    static let borderColorProperty =
+        BindableProperty.Create("BorderColor", typeof<Color>, typeof<BorderedEntry>, Color.Default)
+
+    member this.BorderColor
+        with get () =
+            this.GetValue(borderColorProperty) :?> Color
+        and set (value) =
+            this.SetValue(borderColorProperty, value)
+```
+
+Along with this control, we create the wrapper (like defined in the [View Extensions documentation](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/views-extending.html)) so we can use it in our Fabulous application:
+```fs
+[<AutoOpen>]
+module FabulousBorderedEntry =
+    let BorderedEntryBorderColorAttributeKey = AttributeKey<_> "BorderedEntry_BorderColor"
 
     type Fabulous.XamarinForms.View with
+        static member inline BorderedEntry(?borderColor: Color, ?placeholder, ?text, ?textChanged, ?keyboard) =
+            let attribCount = match borderColor with None -> 0 | Some _ -> 1
+            let attribs =
+                ViewBuilders.BuildEntry(attribCount,
+                                        ?placeholder = placeholder,
+                                        ?text = text,
+                                        ?textChanged = textChanged,
+                                        ?keyboard = keyboard)
 
-        static member inline TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) =
+            match borderColor with None -> () | Some v -> attribs.Add(BorderedEntryBorderColorAttributeKey, v)
 
-            // Get the attributes for the base element. The number is the expected number of attributes.
-            // You can add additional base element attributes here if you like
-            let attribCount = 0
-            let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
-            let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
-            let attribs = ViewBuilders.BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation)
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: BorderedEntry) =
+                ViewBuilders.UpdateEntry(prevOpt, source, target)
+                source.UpdatePrimitive(prevOpt, target, BorderedEntryBorderColorAttributeKey, (fun target v -> target.BorderColor <- v))
 
-            // Add our own attributes. They must have unique names.
-            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v)
-            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, v)
+            let updateAttachedProperties propertyKey prevOpt source target =
+                ViewBuilders.UpdateEntryAttachedProperties(propertyKey, prevOpt, source, target)
 
-            // The creation method
-            let create () = Xamarin.Forms.Label()
-
-            // The incremental update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) =
-                ViewBuilders.UpdateView(prevOpt, source, target)
-                source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
-                source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
-
-            let updateAttachedProperties propertyKey prevOpt source targetChild =
-                ViewBuilders.UpdateViewAttachedProperties(propertyKey, prevOpt, source, targetChild)
-
-            ViewElement.Create<Xamarin.Forms.Label>(create, update, updateAttachedProperties, attribs)
+            ViewElement.Create(BorderedEntry, update, updateAttachedProperties, attribs)
 ```
 
-### Custom Renderer
+Once this is done, we'll need a custom renderer _per platform_ for that control to handle the new BorderColor property.
 
-To create a custom renderer you can follow the example below or take a look in the `Pracitical Examples` section.
-There are different types of renderer in Xamarin.Forms which you can find [here](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/renderers)
+Here's the example for iOS:
+```fs
+type BorderedEntryRenderer() =
+    inherit EntryRenderer()
 
-1. Create a custom renderer in the platform project. In this example we use the AllControls-Sample and a `ListViewRenderer` with a iOS-specific implementation.
+    member this.BorderedEntry
+        with get() =
+            this.Element :?> FabulousContacts.Controls.BorderedEntry
 
-```fsharp
-type MyListViewRenderer() =
-    inherit ListViewRenderer()
+    override this.OnElementChanged(e) =
+        base.OnElementChanged(e)
 
-    override this.OnElementPropertyChanged(sender: obj, e: PropertyChangedEventArgs) =
-        base.OnElementPropertyChanged(sender, e)
+        if (e.NewElement <> null) then
+            this.Control.Layer.BorderColor <- this.BorderedEntry.BorderColor.ToCGColor()
+            this.Control.Layer.BorderWidth <- nfloat 1.
+            this.Control.Layer.CornerRadius <- nfloat 5.
+        else
+            ()
 
-        if e.PropertyName = "SelectedItem" then
-            for cell in this.Controls.VisibleCells do
-                cell.SelectionStyle <- UITableViewCellSelectionStyle.None
+    override this.OnElementPropertyChanged(_, e) =
+        if e.PropertyName = "BorderColor" then
+            this.Control.Layer.BorderColor <- this.BorderedEntry.BorderColor.ToCGColor()
+            this.Control.Layer.BorderWidth <- nfloat 1.
+            this.Control.Layer.CornerRadius <- nfloat 5.
+
+/// This dummy module is required by F# to be able to use [<assembly:ExportRendererAttribute>]
+/// so Xamarin.Forms can find your custom renderer
+module Dummy_BorderedEntryRenderer =
+    [<assembly: Xamarin.Forms.ExportRenderer(typeof<FabulousContacts.Controls.BorderedEntry>, typeof<BorderedEntryRenderer>)>]
+    do ()
 ```
 
-2. Export the renderer with the following code. **Be careful** if you use a Fabulous.XamarinForms. It will effect every element of this type.
-
-```fsharp
-[<assembly: ExportRenderer(typeof<Fabulous.XamarinForms.CustomListView>, typeof<MyListViewRenderer>)>]
-```
-
-If you only want to modify **one specific** ListView then you need to create your own type as follows:
-
-```fsharp
-module TestListViewModule =
-    type TLV() = inherit CustomListView() // define a custom type
-
-    type Fabulous.XamarinForms.View with
-            // use the specific properties you need
-            static member inline TestListView(?items: ViewElement list, ?itemAppearing: int -> unit, ?itemSelected: int option -> unit) =
-
-                let attribCount = 0
-                // input the props you need to the correct builder
-                let attribs = ViewBuilders.BuildListView(attribCount, ?items=items, ?itemAppearing=itemAppearing, ?itemSelected=itemSelected)
-
-                let update (prevOpt: ViewElement voption) (source: ViewElement) (target: TLV) =
-                    ViewBuilders.UpdateListView(prevOpt, source, target) // use the correct updatefunction
-
-                let updateAttachedProperties propertyKey prevOpt source targetChild =
-                    ViewBuilders.UpdateListViewAttachedProperties(propertyKey, prevOpt, source, targetChild) // use the correct updatefunction for attachedproperties
-
-                ViewElement.Create<TLV>(TLV, update, updateAttachedProperties, attribs) // create your customtype
-```
-
-Now we can export it with the correct type and it will only effect this specific type `TLV` in the example.
-
-```fsharp
-// use the correct path to your specific type - TLV is the example here
-[<assembly: ExportRenderer(typeof<AllControls.Samples.TestListViewModule.TLV>, typeof<MyListViewRenderer>)>]
-```
-
-### Practical Examples
-
-- [FabulousContacts](https://github.com/TimLariviere/FabulousContacts)
-  - Renderer Example:
-    - BorderedEntry
-      - [BorderedEntryRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/BorderedEntryRenderer.fs)
-      - [BorderedEntryRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/BorderedEntryRenderer.fs)
-      - [Fabulous.XamarinForms - BorderedEntry](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/BorderedEntry.fs)
-    - UnderlinedLabel
-      - [UnderlinedLabelRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/UnderlinedLabelRenderer.fs)
-      - [UnderlinedLabelRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/UnderlinedLabelRenderer.fs)
-      - [Fabulous.XamarinForms - UnderlinedLabel](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/UnderlinedLabel.fs)
+Complete example:
+- [BorderedEntry](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/BorderedEntry.fs)
+- [BorderedEntryRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/BorderedEntryRenderer.fs)
+- [BorderedEntryRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/BorderedEntryRenderer.fs)
 
 See also:
 
-- [Xamarin.Forms - Custom Renderer](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/)
-- [Xamarin.Forms - Introduction to Custom Renderers](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/introduction)
-- [Xamarin.Forms - Renderer List](https://docs.microsoft.com/de-de/xamarin/xamarin-forms/app-fundamentals/custom-renderer/renderers)
+- [Xamarin.Forms - Custom Renderer](https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/custom-renderer/)
+- [Xamarin.Forms - Introduction to Custom Renderers](https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/custom-renderer/introduction)
+- [Xamarin.Forms - Renderer List](https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/custom-renderer/renderers)
