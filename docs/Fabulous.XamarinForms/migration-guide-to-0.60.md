@@ -57,7 +57,7 @@ module TestLabel =
                 (...)
 
             // The increment update method for attached properties
-            let updateAttachedProperties (propertyKey, prevOpt, source, targetChild) =
+            let updateAttachedProperties propertyKey prevOpt source targetChild =
                 ViewBuilders.UpdateViewAttachedProperties(propertyKey, prevOpt, source, targetChild)
                 (...) // You can update your own attached properties here
 
