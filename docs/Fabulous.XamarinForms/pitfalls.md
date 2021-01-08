@@ -28,12 +28,11 @@ You can use any of the new features of F# 5.0 with Fabulous.
 
 But the reality of the moment is that the support is largely dependent on your IDE.
 
-As of November 2020, here is the support level we noticed for the various IDEs:
+As of January 2021, here is the support level we noticed for the various IDEs:
 
 - Visual Studio (Windows)
 
-    You'll need to install Visual Studio 16.8 or newer.  
-    The support of F# 5.0 is complete: can build, run, debug and support all new features (string interpolation, etc.).
+    Works perfectly out of the box with Visual Studio 16.8 or newer.
 
     **Known issues**:
     - Android projects might fail to build because of [an issue with `Xamarin.Android.FSharp.ResourceProvider`](https://github.com/xamarin/Xamarin.Android.FSharp.ResourceProvider/issues/9). A [known workaround](https://github.com/fsprojects/Fabulous/issues/813#issuecomment-726210183) is to remove `System` and `System.Numerics` from the Android project references.  
@@ -41,17 +40,12 @@ As of November 2020, here is the support level we noticed for the various IDEs:
 
 - Visual Studio (macOS)
 
-    The current stable release of Visual Studio for Mac 8.8 doesn't support F# 5.0.  
-    If you want to use F# 5.0, you'll need to switch to the preview channel and install Visual Studio for Mac 8.9 Preview.
+    The current stable release of Visual Studio for Mac 8.8.4 doesn't fully support F# 5.0.  
+    You can compile and debug F# 5.0 apps with it, but the syntax highlighting is broken if you try to use F# 5.0 features (like `open type` or string interpolation), which severely impede the coding experience.
 
     **Known issues**:
-    - Stable release doesn't support F# 5.0. The workaround is to switch to the preview channel for the moment. [Support for F# 5.0 will be released for VS Mac 8.8 stable in the near future](https://github.com/mono/mono/pull/20511#issuecomment-729170963).
     - Syntax highlighting is broken when using new features like string interpolation. There is no workaround for it. We need to wait for Microsoft to fix that. [Hopefully with VS Mac 8.9](https://github.com/mono/mono/pull/20511#issuecomment-729212506).
 
 - JetBrains Rider (Windows & macOS)
-
-    It shares the same behavior than Visual Studio for Mac.  
-    Depending on your OS, you'll either need Visual Studio 16.8 or Visual Studio 8.9 Preview installed next to it.
-
-    **Known issues**:
-    - Just like VS Mac, syntax highlighting is broken when using new features (string interpolation, `open type`). No workaround for it. We need to wait for a future update.
+    
+    Works perfectly out of the box with Jetbrains Rider 2020.3 or newer.
