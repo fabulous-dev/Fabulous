@@ -89,12 +89,18 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
+
             w.printfn "    static member Create%s () : %s =" data.Name data.FullName
             
+            let instantiateType =
+                match data.InstantiateType with
+                | Some instantiate -> System.String.Format(instantiate, data.TypeToInstantiate)
+                | _ -> sprintf "%s()" data.TypeToInstantiate
+
             if data.TypeToInstantiate = data.FullName then
-                w.printfn "        %s()" data.TypeToInstantiate
+                w.printfn "        %s" instantiateType
             else
-                w.printfn "        upcast (%s())" data.TypeToInstantiate
+                w.printfn "        upcast (%s)" instantiateType
             
             w.printfn ""
             w

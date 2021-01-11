@@ -30,7 +30,8 @@ module Models =
     type CreateData =
         { Name: string
           FullName: string
-          TypeToInstantiate: string }
+          TypeToInstantiate: string
+          InstantiateType: string option }
 
     type UpdateMember =
         { UniqueName: string
