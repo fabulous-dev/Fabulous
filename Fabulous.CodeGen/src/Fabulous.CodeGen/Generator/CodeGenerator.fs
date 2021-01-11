@@ -138,7 +138,7 @@ module CodeGenerator =
                         w.printfn "            | struct (ValueNone, ValueNone) -> ()"
                         
                     elif not (System.String.IsNullOrWhiteSpace(ap.UpdateCode)) then
-                        w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UniqueName ap.UniqueName ap.UpdateCode
+                        w.printfn "            %s prev%sOpt curr%sOpt targetChild" ap.UpdateCode ap.UniqueName ap.UniqueName
                         
                     else
                         w.printfn "            match struct (prev%sOpt, curr%sOpt) with" ap.UniqueName ap.UniqueName
