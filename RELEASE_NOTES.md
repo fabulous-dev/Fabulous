@@ -1,6 +1,6 @@
 #### 0.61.0-preview1
 
-* [Fabulous.XamarinForms] Add initial support for Xamarin.Forms (new features not included)
+* [Fabulous.XamarinForms] Add initial support for Xamarin.Forms 5.0 (new features not included)
 * [Fabulous.XamarinForms] Changed diffing of Label.Text and Label.FormattedText to avoid crash in some edge cases
 
 #### 0.60.0
