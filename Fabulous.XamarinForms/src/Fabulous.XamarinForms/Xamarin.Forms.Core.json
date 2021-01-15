@@ -2968,6 +2968,9 @@
       "type": "Xamarin.Forms.RadioButton",
       "properties": [
         {
+          "source": "Content"
+        },
+        {
           "source": "GroupName"
         },
         {
@@ -3414,6 +3417,9 @@
           "inputType": "float",
           "convertInputToModel": "single"
         }
+      ],
+      "primaryConstructorMembers": [
+        "Color"
       ]
     },
     {
@@ -3444,6 +3450,9 @@
         {
           "source": "Color"
         }
+      ],
+      "primaryConstructorMembers": [
+        "Color"
       ]
     }
   ]
