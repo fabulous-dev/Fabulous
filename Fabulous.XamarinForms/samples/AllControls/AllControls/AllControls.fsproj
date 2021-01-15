@@ -13,8 +13,6 @@
       <Compile Include="Samples\TestLabel.fs" />
       <Compile Include="Samples\Controls\CarouselView.fs" />
       <Compile Include="Samples\Controls\CollectionView.fs" />
-      <Compile Include="Samples\Controls\Expander.fs" />
-      <Compile Include="Samples\Controls\MediaElement.fs" />
       <Compile Include="Samples\Controls\RefreshView.fs" />
       <Compile Include="Samples\Controls\RadioButton.fs" />
       <Compile Include="Samples\Controls\ScrollView.fs" />

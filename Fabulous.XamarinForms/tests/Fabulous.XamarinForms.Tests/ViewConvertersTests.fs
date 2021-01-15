@@ -44,21 +44,3 @@ module ViewConvertersTests =
         Image.fromImageSource (ImageSource.FromFile("path/to/image.png"))
         |> ViewConverters.convertFabulousImageToXamarinFormsImageSource
         |> should be instanceOfType<ImageSource>
-        
-    [<Test>]
-    let ``Given a file system path, convertFabulousMediaToXamarinFormsMediaSource should return a FileMediaSource``() =
-        Media.fromPath "path/to/video.mp4"
-        |> ViewConverters.convertFabulousMediaToXamarinFormsMediaSource
-        |> should be instanceOfType<FileMediaSource>
-        
-    [<Test>]
-    let ``Given a network path, convertFabulousMediaToXamarinFormsMediaSource should return a UriMediaSource``() =
-        Media.fromPath "http://localhost/path/to/video.mp4"
-        |> ViewConverters.convertFabulousMediaToXamarinFormsMediaSource
-        |> should be instanceOfType<UriMediaSource>
-
-    [<Test>]
-    let ``Given an MediaSource, convertFabulousMediaToXamarinFormsMediaSource should return a MediaSource``() =
-        Media.fromMediaSource (MediaSource.FromFile("path/to/video.mp4"))
-        |> ViewConverters.convertFabulousMediaToXamarinFormsMediaSource
-        |> should be instanceOfType<MediaSource>

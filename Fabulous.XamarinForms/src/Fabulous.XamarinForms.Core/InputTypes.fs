@@ -61,17 +61,6 @@ module InputTypes =
         let fromFont fontImageSource = ImageFont fontImageSource
         /// An already defined ImageSource
         let fromImageSource imageSource = ImageSource imageSource
-
-    /// Represents a media source
-    module Media =
-        type Value =
-            | MediaPath of string
-            | MediaSource of Xamarin.Forms.MediaSource
-            
-        /// A path to the media file (local or network file)
-        let fromPath path = MediaPath path
-        /// An already defined MediaSource
-        let fromMediaSource src = MediaSource src
         
     /// Represents a font size
     module FontSize =

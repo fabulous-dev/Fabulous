@@ -6,33 +6,27 @@ open Xamarin.Forms
 
 module MasterDetailPage =
     type Msg =
-      | IsMasterPresentedChanged of bool
       | SetDetailPage of string
       
     type CmdMsg = Nothing
     
     type Model =
-      { IsMasterPresented: bool 
-        DetailPage: string }
+      { DetailPage: string }
       
     let mapToCmd _ = Cmd.none
       
     let init () =
-        { IsMasterPresented = false
-          DetailPage = "A" }
+        { DetailPage = "A" }
         
     let update msg model =
         match msg with
-        | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }, []
-        | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented = false }, []
+        | SetDetailPage s -> { model with DetailPage = s }, []
     
     let view model dispatch =
         // MasterDetail where the Master acts as a hamburger-style menu
-        dependsOn (model.DetailPage, model.IsMasterPresented) (fun model (detailPage, isMasterPresented) -> 
+        dependsOn (model.DetailPage) (fun model (detailPage) -> 
             View.MasterDetailPage(
                 masterBehavior = MasterBehavior.Popover, 
-                isPresented = isMasterPresented, 
-                isPresentedChanged = (fun b -> dispatch (IsMasterPresentedChanged b)), 
                 master = View.ContentPage(
                     useSafeArea = true,
                     title = "Master", 
@@ -71,8 +65,7 @@ module MasterDetailPage =
                             ) 
                         ).HasNavigationBar(true)
                          .HasBackButton(true)
-                    ], 
-                    poppedToRoot = fun _ -> dispatch (IsMasterPresentedChanged true)
+                    ]
                 )
             )
         )
