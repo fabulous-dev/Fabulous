@@ -226,7 +226,11 @@ Target.create "RunFabulousXamarinFormsTests" (fun _ ->
 Target.create "RunGeneratorForFabulousXamarinFormsExtensions" (fun _ ->
     let generatorPath = "Fabulous.XamarinForms/tools/Fabulous.XamarinForms.Generator/bin/Release/netcoreapp3.1/Fabulous.XamarinForms.Generator.dll"
 
-    for mappingFile in !!"Fabulous.XamarinForms/extensions/**/*.json" do
+    let files =
+        !! "Fabulous.XamarinForms/extensions/**/*.json"
+        -- "Fabulous.XamarinForms/extensions/**/obj/*.json"
+    
+    for mappingFile in files do
         let outputFile = mappingFile.Replace(".json", ".fs")
 
         DotNet.exec id generatorPath (sprintf "-m %s -o %s" mappingFile outputFile)

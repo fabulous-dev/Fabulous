@@ -47,13 +47,6 @@ module Samples =
                               [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
                                 Sample
-                                    ({ Title = "Expander"
-                                       Init = Controls.Expander.init |> ignoreCmdMsgs
-                                       Update = Controls.Expander.update |> ignoreMsgAndExternalMsg
-                                       View = Controls.Expander.view
-                                       MapToCmd = ignoreMapToCmd } |> boxSampleDefinition)
-                                Sample (createViewOnlyDefinition "MediaElement" Controls.MediaElement.view)
-                                Sample
                                     ({ Title = "RadioButton"
                                        Init = Controls.RadioButton.init |> ignoreCmdMsgs
                                        Update = Controls.RadioButton.update |> ignoreMsgAndExternalMsg

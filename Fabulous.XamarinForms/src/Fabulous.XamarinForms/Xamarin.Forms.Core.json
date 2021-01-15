@@ -955,13 +955,6 @@
           "defaultValue": "null"
         },
         {
-          "source": "IsGestureEnabled"
-        },
-        {
-          "source": "IsPresented",
-          "defaultValue": "(Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.macOS)"
-        },
-        {
           "source": null,
           "name": "Master",
           "inputType": "Xamarin.Forms.Page",
@@ -969,19 +962,6 @@
         },
         {
           "source": "MasterBehavior"
-        }
-      ],
-      "events": [
-        {
-          "source": "BackButtonPressed"
-        },
-        {
-          "source": "IsPresentedChanged",
-          "inputType": "bool -> unit",
-          "convertInputToModel": "ViewConverters.makeMasterDetailPageIsPresentedChangedEventHandler",
-          "relatedProperties": [
-            "IsPresented"
-          ]
         }
       ],
       "primaryConstructorMembers": [
@@ -2974,9 +2954,6 @@
       ],
       "events": [
         {
-          "source": "CloseRequested"
-        },
-        {
           "source": "SwipeChanging"
         },
         {
@@ -2988,103 +2965,12 @@
       ]
     },
     {
-      "type": "Xamarin.Forms.MediaElement",
-      "properties": [
-        {
-          "source": "Aspect"
-        },
-        {
-          "source": "AutoPlay"
-        },
-        {
-          "source": "IsLooping"
-        },
-        {
-          "source": "KeepScreenOn"
-        },
-        {
-          "source": "Position"
-        },
-        {
-          "source": "ShowsPlaybackControls"
-        },
-        {
-          "source": "Source"
-        },
-        {
-          "source": "Volume"
-        }
-      ],
-      "events": [
-        {
-          "source": "MediaEnded"
-        },
-        {
-          "source": "MediaFailed"
-        },
-        {
-          "source": "MediaOpened"
-        },
-        {
-          "source": "PositionRequested"
-        },
-        {
-          "source": "SeekCompleted"
-        },
-        {
-          "source": "SeekRequested"
-        },
-        {
-          "source": "StateRequested"
-        },
-        {
-          "source": "VolumeRequested"
-        }
-      ]
-    },
-    {
-      "type": "Xamarin.Forms.Expander",
-      "properties": [
-        {
-          "source": "CollapseAnimationEasing"
-        },
-        {
-          "source": "CollapseAnimationLength"
-        },
-        {
-          "source": "Command"
-        },
-        {
-          "source": "Content"
-        },
-        {
-          "source": "ExpandAnimationEasing"
-        },
-        {
-          "source": "ExpandAnimationLength"
-        },
-        {
-          "source": "ForceUpdateSizeCommand"
-        },
-        {
-          "source": "Header"
-        },
-        {
-          "source": "IsExpanded"
-        },
-        {
-          "source": "State"
-        }
-      ],
-      "events": [
-        {
-          "source": "Tapped"
-        }
-      ]
-    },
-    {
       "type": "Xamarin.Forms.RadioButton",
       "properties": [
+        {
+          "source": "Content",
+          "uniqueName": "RadioButtonContent"
+        },
         {
           "source": "GroupName"
         },
@@ -3532,6 +3418,9 @@
           "inputType": "float",
           "convertInputToModel": "single"
         }
+      ],
+      "primaryConstructorMembers": [
+        "Color"
       ]
     },
     {
@@ -3562,6 +3451,9 @@
         {
           "source": "Color"
         }
+      ],
+      "primaryConstructorMembers": [
+        "Color"
       ]
     }
   ]

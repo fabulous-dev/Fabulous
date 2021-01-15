@@ -56,19 +56,19 @@ module RadioButton =
                             | Some mode -> sprintf "You selected: %A" mode
                     )
                     View.RadioButton(
-                        text = "Car",
+                        content = "Car",
                         checkedChanged = onTransportModeChecked Car
                     )
                     View.RadioButton(
-                        text = "Bike",
+                        content = "Bike",
                         checkedChanged = onTransportModeChecked Bike
                     )
                     View.RadioButton(
-                        text = "Train",
+                        content = "Train",
                         checkedChanged = onTransportModeChecked Train
                     )
                     View.RadioButton(
-                        text = "Walking",
+                        content = "Walking",
                         checkedChanged = onTransportModeChecked Walking
                     )
                     
@@ -83,19 +83,19 @@ module RadioButton =
                             | Some mode -> sprintf "You selected: %A" mode
                     )
                     View.RadioButton(
-                        text = "Cat",
+                        content = "Cat",
                         groupName = "Pet",
                         isChecked = (model.PetKind = Some Cat),
                         checkedChanged = onPetKindChecked Cat
                     )
                     View.RadioButton(
-                        text = "Dog",
+                        content = "Dog",
                         groupName = "Pet",
                         isChecked = (model.PetKind = Some Dog),
                         checkedChanged = onPetKindChecked Dog
                     )
                     View.RadioButton(
-                        text = "I don't have pets",
+                        content = "I don't have pets",
                         groupName = "Pet",
                         isChecked = (model.PetKind = Some NoPet),
                         checkedChanged = onPetKindChecked NoPet

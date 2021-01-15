@@ -49,11 +49,6 @@ module ViewConverters =
         | Image.ImageFont fontImageSource -> fontImageSource :> ImageSource
         | Image.ImageSource imageSource -> imageSource
 
-    let convertFabulousMediaToXamarinFormsMediaSource (v: InputTypes.Media.Value) =
-        match v with
-        | Media.MediaPath path -> MediaSource.op_Implicit path
-        | Media.MediaSource mediaSource -> mediaSource
-
     let convertFabulousDimensionToXamarinFormsRowDefinition (v: InputTypes.Dimension array) =
         let rows =
             Array.map (fun vi ->
@@ -180,12 +175,6 @@ module ViewConverters =
     let makeListViewGroupedItemTappedEventHandler f =
         System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args ->
             CollectionHelpers.tryFindGroupedListViewItem sender args.Item |> Option.iter f
-        )
-
-    let makeMasterDetailPageIsPresentedChangedEventHandler f =
-        System.EventHandler(fun sender args ->
-            let masterDetailPage = sender :?> Xamarin.Forms.MasterDetailPage
-            f masterDetailPage.IsPresented
         )
 
     let makeCustomTimePickerTimeChangedEventHandler f =
