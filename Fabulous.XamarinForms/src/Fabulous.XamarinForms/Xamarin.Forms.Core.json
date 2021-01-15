@@ -2968,7 +2968,8 @@
       "type": "Xamarin.Forms.RadioButton",
       "properties": [
         {
-          "source": "Content"
+          "source": "Content",
+          "uniqueName": "RadioButtonContent"
         },
         {
           "source": "GroupName"
