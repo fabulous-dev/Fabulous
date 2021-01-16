@@ -36,7 +36,6 @@ module AssemblyResolver =
         resolver.RegisterAssembly assembly
         assembly
 
-    let loadAllAssemblies (paths: seq<string>) =
-        use resolver = new RegistrableResolver()
+    let loadAllAssemblies resolver (paths: seq<string>) =
         let loadAssembly = loadAssembly resolver
         paths |> Seq.toArray |> Array.map loadAssembly
