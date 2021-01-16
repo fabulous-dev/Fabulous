@@ -128,8 +128,8 @@ module Models =
         /// The properties/events to place first in the constructor so it can be used without name
         member val PrimaryConstructorMembers: string array option = None with get, set
         
-        /// The expression to instantiate type ({0} can be used to pass type name in expression)
-        member val InstantiateType: string option = None with get, set
+        /// The code to instantiate type ({0} can be used to pass type name in expression)
+        member val CreateCode: string option = None with get, set
     
     type Mapping() =
         /// Assemblies to read (can be relative paths to dlls)

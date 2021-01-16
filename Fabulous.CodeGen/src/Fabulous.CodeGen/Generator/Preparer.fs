@@ -47,7 +47,7 @@ module Preparer =
         { Name = boundType.Name
           FullName = boundType.FullName
           TypeToInstantiate = boundType.TypeToInstantiate
-          InstantiateType = boundType.InstantiateType }
+          CreateCode = boundType.CreateCode }
 
     let toUpdateAttachedPropertiesData (boundType: BoundType) =
         let immediatePropertiesWithAttachedProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CollectionData.IsSome && p.CollectionData.Value.AttachedProperties.Length > 0)
