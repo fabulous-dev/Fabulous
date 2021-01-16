@@ -112,7 +112,7 @@ module Reader =
         { FullName = tdef.FullName
           AssemblyName = tdef.Module.Assembly.Name.Name
           CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome
-          HasParameterlessConstructor = ctor.Value.Parameters.Count = 0
+          HasParameterlessConstructor = ctor.IsSome && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
