@@ -95,11 +95,11 @@ module Samples =
                                        View = Pages.NavigationPage.view
                                        MapToCmd = Pages.NavigationPage.mapToCmd } |> boxSampleDefinition)
                                 Sample
-                                    ({ Title = "MasterDetailPage"
-                                       Init = Pages.MasterDetailPage.init |> ignoreCmdMsgs
-                                       Update = Pages.MasterDetailPage.update |> ignoreExternalMsg
-                                       View = Pages.MasterDetailPage.view
-                                       MapToCmd = Pages.MasterDetailPage.mapToCmd } |> boxSampleDefinition)
+                                    ({ Title = "FlyoutPage"
+                                       Init = Pages.FlyoutPage.init |> ignoreCmdMsgs
+                                       Update = Pages.FlyoutPage.update |> ignoreExternalMsg
+                                       View = Pages.FlyoutPage.view
+                                       MapToCmd = Pages.FlyoutPage.mapToCmd } |> boxSampleDefinition)
                                 Sample (createViewOnlyDefinition "Shell" Pages.Shell.view)
                                 Sample
                                     ({ Title = "TabbedPage1"

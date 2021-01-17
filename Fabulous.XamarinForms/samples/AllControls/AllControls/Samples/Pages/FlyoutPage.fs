@@ -4,32 +4,37 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
-module MasterDetailPage =
+module FlyoutPage =
     type Msg =
+      | IsFlyoutPresentedChanged of bool
       | SetDetailPage of string
       
     type CmdMsg = Nothing
     
     type Model =
-      { DetailPage: string }
+      { IsFlyoutPresented: bool 
+        DetailPage: string }
       
     let mapToCmd _ = Cmd.none
       
     let init () =
-        { DetailPage = "A" }
+        { IsFlyoutPresented = false
+          DetailPage = "A" }
         
     let update msg model =
         match msg with
-        | SetDetailPage s -> { model with DetailPage = s }, []
+        | IsFlyoutPresentedChanged b -> { model with IsFlyoutPresented = b }, []
+        | SetDetailPage s -> { model with DetailPage = s ; IsFlyoutPresented = false }, []
     
     let view model dispatch =
-        // MasterDetail where the Master acts as a hamburger-style menu
-        dependsOn (model.DetailPage) (fun model (detailPage) -> 
-            View.MasterDetailPage(
-                masterBehavior = MasterBehavior.Popover, 
-                master = View.ContentPage(
+        dependsOn (model.DetailPage, model.IsFlyoutPresented) (fun model (detailPage, isFlyoutPresented) -> 
+            View.FlyoutPage(
+                flyoutLayoutBehavior = FlyoutLayoutBehavior.Popover, 
+                isPresented = isFlyoutPresented, 
+                isPresentedChanged = (fun () -> dispatch (IsFlyoutPresentedChanged (not isFlyoutPresented))), 
+                flyout = View.ContentPage(
                     useSafeArea = true,
-                    title = "Master", 
+                    title = "Flyout", 
                     content = View.StackLayout(
                         backgroundColor = Color.Gray, 
                         children = [
@@ -65,8 +70,8 @@ module MasterDetailPage =
                             ) 
                         ).HasNavigationBar(true)
                          .HasBackButton(true)
-                    ]
+                    ], 
+                    poppedToRoot = fun _ -> dispatch (IsFlyoutPresentedChanged true)
                 )
             )
         )
-
