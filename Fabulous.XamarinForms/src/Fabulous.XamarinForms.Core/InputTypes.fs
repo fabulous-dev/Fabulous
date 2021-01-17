@@ -103,7 +103,7 @@ module InputTypes =
     module StructuredItems =
         type Value =
             | Text of string
-            | ViewElement of ViewElement
+            | ViewElement of IViewElement
 
         /// A string used as content 
         let fromString str = Text str
@@ -114,7 +114,7 @@ module InputTypes =
     module LabelText =
         type Value =
             | PlainString of string
-            | FormattedString of ViewElement
+            | FormattedString of IViewElement
             
         /// Use a plain string
         let fromString str = PlainString str

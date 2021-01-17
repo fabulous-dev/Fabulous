@@ -28,7 +28,7 @@ module ViewUpdaters =
             clearValue ()
             
     /// Update a target property using InputTypes.Content
-    let private updateForInputTypeContent prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.BindableObject) attachedProperty setString (setViewElement: ViewElement -> unit) =
+    let private updateForInputTypeContent definition prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.BindableObject) attachedProperty setString (setViewElement: IViewElement -> unit) =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueSome currValue) ->
@@ -40,7 +40,7 @@ module ViewUpdaters =
             match struct (prevValue, currValue) with
             | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
             | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
-            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.GetValue(attachedProperty))
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.Update(definition, ValueSome prevVe, target.GetValue(attachedProperty))
             | struct (_, Content.String currStr) -> setString currStr
             | struct (_, Content.ViewElement currVe) -> setViewElement currVe
 
@@ -613,19 +613,19 @@ module ViewUpdaters =
             prevValueOpt
             currValueOpt
 
-    let updatePathData prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
+    let updatePathData definition prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
         updateForInputTypeContent
-            prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.DataProperty
+            definition prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.DataProperty
             (fun str -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry)
-            (fun ve -> target.Data <- ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
+            (fun ve -> target.Data <- ve.Create(definition) :?> Xamarin.Forms.Shapes.Geometry)
 
-    let updatePathRenderTransform prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
+    let updatePathRenderTransform definition prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
         updateForInputTypeContent
-            prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.RenderTransformProperty
+            definition prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.RenderTransformProperty
             (fun str -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Transform)
-            (fun ve -> target.RenderTransform <- (ve.Create() :?> Xamarin.Forms.Shapes.Transform))
+            (fun ve -> target.RenderTransform <- (ve.Create(definition) :?> Xamarin.Forms.Shapes.Transform))
 
-    let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
+    let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) _ (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
         match struct (prevOpt, currOpt) with
         | struct (ValueNone, ValueNone) -> ()
         | struct (ValueSome prev, ValueSome curr) when prev = curr -> ()
@@ -699,7 +699,7 @@ module ViewUpdaters =
     /// Update the Label Text/FormattedText properties in a single pass.
     /// We need to do this because Xamarin.Forms automatically sets to null the one property when the other is setted.
     /// To can lead to unexpected states that can crash the application
-    let updateLabelText (prevFormattedTextOpt: ViewElement voption) (currFormattedTextOpt: ViewElement voption) (prevValueOpt: string voption) (currValueOpt: string voption) (target: Xamarin.Forms.Label) =
+    let updateLabelText (prevFormattedTextOpt: IViewElement voption) (currFormattedTextOpt: IViewElement voption) definition (prevValueOpt: string voption) (currValueOpt: string voption) (target: Xamarin.Forms.Label) =
         // IMPORTANT NOTE: In case the user provided both Text and FormattedText, we favor the FormattedText value
         
         let prevOpt =
@@ -727,19 +727,19 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome curr) ->
             match curr with
             | LabelText.Value.PlainString text -> target.Text <- text
-            | LabelText.Value.FormattedString viewElement -> target.FormattedText <- viewElement.Create() :?> Xamarin.Forms.FormattedString
+            | LabelText.Value.FormattedString viewElement -> target.FormattedText <- viewElement.Create(definition) :?> Xamarin.Forms.FormattedString
             
         | struct (ValueSome _, ValueSome (LabelText.Value.PlainString newText)) ->
             target.Text <- newText
             
         | struct (ValueSome (LabelText.Value.FormattedString prevVE), ValueSome (LabelText.Value.FormattedString currVE)) ->
-            currVE.UpdateIncremental(prevVE, target.FormattedText)
+            currVE.Update(definition, ValueSome prevVE, target.FormattedText)
             
         | struct (ValueSome (LabelText.Value.PlainString _), ValueSome (LabelText.Value.FormattedString currVE)) ->
-            target.FormattedText <- currVE.Create() :?> Xamarin.Forms.FormattedString
+            target.FormattedText <- currVE.Create(definition) :?> Xamarin.Forms.FormattedString
             
-    let updateRadioButtonContent prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.RadioButton) =
+    let updateRadioButtonContent definition prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.RadioButton) =
         updateForInputTypeContent
-            prevValueOpt currValueOpt target Xamarin.Forms.RadioButton.ContentProperty
+            definition prevValueOpt currValueOpt target Xamarin.Forms.RadioButton.ContentProperty
             (fun str -> target.Content <- str)
-            (fun ve -> target.Content <- ve.Create())
+            (fun ve -> target.Content <- ve.Create(definition))
