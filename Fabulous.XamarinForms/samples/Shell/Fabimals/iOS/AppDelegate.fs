@@ -12,7 +12,6 @@ type AppDelegate () =
     inherit FormsApplicationDelegate ()
 
     override this.FinishedLaunching (app, options) =
-        Forms.SetFlags("CollectionView_Experimental")
         Forms.Init()
         this.LoadApplication (new Fabimals.FabimalsApp())
         base.FinishedLaunching(app, options)

@@ -110,12 +110,6 @@ type App () as app =
     inherit Application ()
     do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
 
-    do Device.SetFlags([
-        "Shell_Experimental"; "CollectionView_Experimental"; "Visual_Experimental";
-        "IndicatorView_Experimental"; "SwipeView_Experimental"; "MediaElement_Experimental"
-        "AppTheme_Experimental"; "RadioButton_Experimental"; "Expander_Experimental"
-    ])
-
     let runner =
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
