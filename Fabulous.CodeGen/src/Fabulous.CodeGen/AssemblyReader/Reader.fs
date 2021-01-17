@@ -127,7 +127,8 @@ module Reader =
             (baseTypeName: string)
             assemblies : WorkflowResult<AssemblyType array> =
         
-        let cecilAssemblies = AssemblyResolver.loadAllAssemblies assemblies
+        use resolver = new AssemblyResolver.RegistrableResolver()
+        let cecilAssemblies = AssemblyResolver.loadAllAssemblies resolver assemblies
         let assemblies = loadAllAssembliesByReflection assemblies
         
         let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
