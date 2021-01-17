@@ -34,7 +34,6 @@ module Program =
             1
         | Some options ->
             let flags = System.Collections.Generic.List<string>()
-            flags.Add("CollectionView_Experimental")
             Xamarin.Forms.Device.SetFlags(flags)
             
             let result =

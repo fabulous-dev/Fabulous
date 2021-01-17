@@ -17,7 +17,6 @@ type MainActivity() =
         FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
         FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate(bundle)
-        Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental")
         this.Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0,  0))
         Xamarin.Forms.Forms.Init (this, bundle)
 

@@ -23,7 +23,7 @@
       <Compile Include="Samples\Extensions\FFImageLoading.fs" />
       <Compile Include="Samples\Pages\CarouselPage.fs" />
       <Compile Include="Samples\Pages\NavigationPage.fs" />
-      <Compile Include="Samples\Pages\MasterDetailPage.fs" />
+      <Compile Include="Samples\Pages\FlyoutPage.fs" />
       <Compile Include="Samples\Pages\Shell.fs" />
       <Compile Include="Samples\Pages\TabbedPage1.fs" />
       <Compile Include="Samples\Pages\TabbedPage2.fs" />

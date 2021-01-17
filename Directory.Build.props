@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Version>0.61.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.61.0-preview1</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] Add initial support for Xamarin.Forms (new features not included)
-[Fabulous.XamarinForms] Changed diffing of Label.Text and Label.FormattedText to avoid crash in some edge cases</PackageReleaseNotes>
+    <PackageVersion>0.61.0</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Add support for Xamarin.Forms 5.0 (https://github.com/fsprojects/Fabulous/pull/845)
+[Fabulous.XamarinForms] Changed diffing of Label.Text and Label.FormattedText to avoid crash in some edge cases (https://github.com/fsprojects/Fabulous/pull/825)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

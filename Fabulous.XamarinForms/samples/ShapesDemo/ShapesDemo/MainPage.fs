@@ -153,8 +153,6 @@ module App =
 type App () as app =
     inherit Application ()
 
-    do Device.SetFlags([| "Shapes_Experimental"; "AppTheme_Experimental"; "Brush_Experimental" |]);
-
     let runner =
         App.program
 #if DEBUG

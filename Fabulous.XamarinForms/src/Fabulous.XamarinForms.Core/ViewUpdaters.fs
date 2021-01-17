@@ -26,6 +26,26 @@ module ViewUpdaters =
             if target <> null then currValue.UpdateIncremental(prevValue, target)
         | struct (ValueSome _, ValueNone) ->
             clearValue ()
+            
+    /// Update a target property using InputTypes.Content
+    let private updateForInputTypeContent prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.BindableObject) attachedProperty setString (setViewElement: ViewElement -> unit) =
+        match struct (prevValueOpt, currValueOpt) with
+        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
+        | struct (ValueNone, ValueSome currValue) ->
+            match currValue with
+            | Content.String str -> setString str
+            | Content.ViewElement ve -> setViewElement ve
+
+        | struct (ValueSome prevValue, ValueSome currValue) ->
+            match struct (prevValue, currValue) with
+            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
+            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.GetValue(attachedProperty))
+            | struct (_, Content.String currStr) -> setString currStr
+            | struct (_, Content.ViewElement currVe) -> setViewElement currVe
+
+        | struct (ValueSome _, ValueNone) -> target.ClearValue(attachedProperty)
+        | struct (ValueNone, ValueNone) -> ()
 
     /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
@@ -591,44 +611,17 @@ module ViewUpdaters =
             prevValueOpt
             currValueOpt
 
-    let updatePathData prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.Shapes.Path) =
-        match struct (prevValueOpt, currValueOpt) with
-        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
-        | struct (ValueNone, ValueSome currValue) ->
-            match currValue with
-            | Content.String str -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry
-            | Content.ViewElement ve -> target.Data <- (ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
+    let updatePathData prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
+        updateForInputTypeContent
+            prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.DataProperty
+            (fun str -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry)
+            (fun ve -> target.Data <- ve.Create() :?> Xamarin.Forms.Shapes.Geometry)
 
-        | struct (ValueSome prevValue, ValueSome currValue) ->
-            match struct (prevValue, currValue) with
-            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
-            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
-            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.Data)
-            | struct (_, Content.String currStr) -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Geometry
-            | struct (_, Content.ViewElement currVe) -> target.Data <- (currVe.Create() :?> Xamarin.Forms.Shapes.Geometry)
-
-        | struct (ValueSome _, ValueNone) -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
-        | struct (ValueNone, ValueNone) -> ()
-
-    let updatePathRenderTransform prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.Shapes.Path) =
-        match struct (prevValueOpt, currValueOpt) with
-        | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
-        | struct (ValueNone, ValueSome currValue) ->
-            match currValue with
-            | Content.String str -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Transform
-            | Content.ViewElement ve -> target.RenderTransform <- (ve.Create() :?> Xamarin.Forms.Shapes.Transform)
-
-        | struct (ValueSome prevValue, ValueSome currValue) ->
-            match struct (prevValue, currValue) with
-            | struct (Content.String prevStr, Content.String currStr) when prevStr = currStr -> ()
-            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
-            | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.UpdateIncremental(prevVe, target.RenderTransform)
-            | struct (_, Content.String currStr) -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(currStr) :?> Xamarin.Forms.Shapes.Transform
-            | struct (_, Content.ViewElement currVe) -> target.RenderTransform <- (currVe.Create() :?> Xamarin.Forms.Shapes.Transform)
-
-        | struct (ValueSome _, ValueNone) -> target.Data.ClearValue(Xamarin.Forms.Shapes.Path.DataProperty)
-        | struct (ValueNone, ValueNone) -> ()
-
+    let updatePathRenderTransform prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
+        updateForInputTypeContent
+            prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.RenderTransformProperty
+            (fun str -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Transform)
+            (fun ve -> target.RenderTransform <- (ve.Create() :?> Xamarin.Forms.Shapes.Transform))
 
     let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
         match struct (prevOpt, currOpt) with
@@ -636,12 +629,12 @@ module ViewUpdaters =
         | struct (ValueSome prev, ValueSome curr) when prev = curr -> ()
         | struct (ValueSome _, ValueNone) -> target.ClearValue(bindableProperty)
         | struct (_, ValueSome curr) ->
-                match curr with
-                | Points.String str -> target.SetValue(bindableProperty, PointCollectionConverter().ConvertFromInvariantString(str))
-                | Points.PointsList lst ->
-                    let coll = PointCollection()
-                    lst |> List.iter (fun p -> coll.Add(p))
-                    target.SetValue(bindableProperty, coll)
+            match curr with
+            | Points.String str -> target.SetValue(bindableProperty, PointCollectionConverter().ConvertFromInvariantString(str))
+            | Points.PointsList lst ->
+                let coll = PointCollection()
+                lst |> List.iter coll.Add
+                target.SetValue(bindableProperty, coll)
 
     let updateStructuredItemsViewHeader prevValueOpt (currValueOpt: InputTypes.StructuredItems.Value voption) (target: Xamarin.Forms.StructuredItemsView) =
         match struct (prevValueOpt, currValueOpt) with
@@ -742,3 +735,9 @@ module ViewUpdaters =
             
         | struct (ValueSome (LabelText.Value.PlainString _), ValueSome (LabelText.Value.FormattedString currVE)) ->
             target.FormattedText <- currVE.Create() :?> Xamarin.Forms.FormattedString
+            
+    let updateRadioButtonContent prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.RadioButton) =
+        updateForInputTypeContent
+            prevValueOpt currValueOpt target Xamarin.Forms.RadioButton.ContentProperty
+            (fun str -> target.Content <- str)
+            (fun ve -> target.Content <- ve.Create())
