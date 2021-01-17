@@ -2034,6 +2034,15 @@
       ]
     },
     {
+      "type": "Xamarin.Forms.TemplatedView",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "ControlTemplate"
+        }
+      ]
+    },
+    {
       "type": "Xamarin.Forms.Layout`1",
       "name": "LayoutOfT",
       "genericConstraint": "'T when 'T :> Xamarin.Forms.View",
@@ -2972,7 +2981,9 @@
         },
         {
           "source": "Content",
-          "uniqueName": "RadioButtonContent"
+          "uniqueName": "RadioButtonContent",
+          "inputType": "InputTypes.Content.Value",
+          "updateCode": "ViewUpdaters.updateRadioButtonContent"
         },
         {
           "source": "CornerRadius"

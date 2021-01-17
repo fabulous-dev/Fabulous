@@ -148,16 +148,25 @@ module Preparer =
           Update = toUpdateData boundType
           Construct = if boundType.CanBeInstantiated then Some (toConstructData boundType) else None }
 
-    let toViewerData (boundType: BoundType) : ViewerData =
+    let toViewerData (allTypes: BoundType array) (boundType: BoundType) : ViewerData =
         let properties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited) |> Array.map (fun p -> { Name = p.Name; UniqueName = p.UniqueName; CustomAttributeKey = p.CustomAttributeKey })
         let events = boundType.Events |> Array.filter (fun e -> not e.IsInherited) |> Array.map (fun e -> { Name = e.Name; UniqueName = e.UniqueName; CustomAttributeKey = e.CustomAttributeKey })
         let members = Array.concat [ properties; events ]
+            
+        let rec tryGetInheritedInstantiableType (typ: BoundType) =
+            match typ.BaseTypeName with
+            | None -> None
+            | Some name ->
+                match allTypes |> Array.tryFind (fun t -> t.Name = name) with
+                | None -> None
+                | Some x when x.CanBeInstantiated = false -> tryGetInheritedInstantiableType x
+                | Some _ -> Some name
             
         { Name = boundType.Name
           FullName = boundType.FullName
           ViewerName = sprintf "%sViewer" boundType.Name
           GenericConstraint = boundType.GenericConstraint
-          InheritedViewerName = boundType.BaseTypeName |> Option.map (sprintf "%sViewer")
+          InheritedViewerName = tryGetInheritedInstantiableType boundType |> Option.map (sprintf "%sViewer")
           InheritedGenericConstraint = boundType.BaseGenericConstraint
           Members = members }
     
@@ -221,7 +230,7 @@ module Preparer =
           AdditionalNamespaces = boundModel.AdditionalNamespaces
           Attributes = extractAttributes typesToGenerate
           Builders = typesToGenerate |> Array.map toBuilderData
-          Viewers = typesToGenerate |> Array.map toViewerData
+          Viewers = typesToGenerate |> Array.map (toViewerData boundModel.Types)
           Constructors = typesToGenerate |> Array.filter (fun t -> t.CanBeInstantiated) |> Array.map toConstructorData
           ViewExtensions = typesToGenerate |> getViewExtensionsData }
 

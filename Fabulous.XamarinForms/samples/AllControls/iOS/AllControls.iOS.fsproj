@@ -183,6 +183,10 @@
     <Compile Include="LabelShadowEffect.fs" />
     <Compile Include="RegisterEffects.fs" />
     <Compile Include="AppDelegate.fs" />
+    <BundleResource Include="Resources\monkey.png" />
+    <BundleResource Include="Resources\cat.png" />
+    <BundleResource Include="Resources\elephant.png" />
+    <BundleResource Include="Resources\dog.png" />
     <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
       <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
       <Name>Fabulous</Name>
