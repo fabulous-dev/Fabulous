@@ -22,6 +22,7 @@ module XFOptimizerTests =
                    BaseGenericConstraint = None
                    Name = "Name"
                    Events = [||]
+                   CreateCode = None
                    PrimaryConstructorMembers = None
                    Properties = properties } |] }
 

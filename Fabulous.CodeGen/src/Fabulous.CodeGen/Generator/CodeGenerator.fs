@@ -94,7 +94,7 @@ module CodeGenerator =
             
             let createCode =
                 match data.CreateCode with
-                | Some createCode -> System.String.Format(createCode, data.TypeToInstantiate)
+                | Some createCode -> createCode
                 | _ -> sprintf "%s()" data.TypeToInstantiate
 
             if data.TypeToInstantiate = data.FullName then
