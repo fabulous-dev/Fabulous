@@ -91,17 +91,18 @@ module DynamicViewHelpers =
         | ValueSome automationIdValue when automationIdValue = automationId -> Some element
         | _ ->
             let childElements =
-                match element.TryGetAttribute<DynamicViewElement>("Content") with
+                match element.TryGetAttribute<IViewElement>("Content") with
                 | ValueSome content -> [| content |]
                 | ValueNone ->
-                    match element.TryGetAttribute<DynamicViewElement[]>("Pages") with
+                    match element.TryGetAttribute<IViewElement[]>("Pages") with
                     | ValueSome pages -> pages
                     | ValueNone ->
-                        match element.TryGetAttribute<DynamicViewElement[]>("Children") with
+                        match element.TryGetAttribute<IViewElement[]>("Children") with
                         | ValueSome children -> children
                         | ValueNone -> [| |]
 
             childElements
+            |> Seq.choose (fun ve -> match ve with :? DynamicViewElement as dve -> Some dve | _ -> None)
             |> Seq.choose (tryFindViewElement automationId)
             |> Seq.tryHead
 

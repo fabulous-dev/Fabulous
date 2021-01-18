@@ -5,8 +5,15 @@ open Fabulous.XamarinForms
 open NUnit.Framework
 open FsUnit
 open Xamarin.Forms
+open Fabulous
 
 module ViewUpdatersTests =
+    let definition =
+        { canReuseView = fun _ _ -> false
+          dispatch = ignore
+          trace = fun _ _ -> ()
+          traceLevel = Tracing.TraceLevel.None }
+
     [<Test>]
     let ``UpdateLabelText All none``() =
         let prevTextOpt = ValueNone
@@ -17,7 +24,7 @@ module ViewUpdatersTests =
         
         let target = Label(Text = null, FormattedText = null)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal null
         target.FormattedText |> should equal null
@@ -32,7 +39,7 @@ module ViewUpdatersTests =
         
         let target = Label(Text = null, FormattedText = null)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal "ABC"
         target.FormattedText |> should equal null
@@ -47,7 +54,7 @@ module ViewUpdatersTests =
         
         let target = Label(Text = "ABC", FormattedText = null)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal "DEF"
         target.FormattedText |> should equal null
@@ -58,11 +65,11 @@ module ViewUpdatersTests =
         let currTextOpt = ValueNone
         
         let prevFormattedTextOpt = ValueNone
-        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]) :> IViewElement)
         
         let target = Label(Text = null, FormattedText = null)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal null
         target.FormattedText |> should not' (equal null)
@@ -74,15 +81,15 @@ module ViewUpdatersTests =
         let prevTextOpt = ValueNone
         let currTextOpt = ValueNone
         
-        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
-        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]) :> IViewElement)
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]) :> IViewElement)
         
         let formattedString = FormattedString()
         formattedString.Spans.Add(Span(Text = "ABC"))
         
         let target = Label(Text = null, FormattedText = formattedString)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal null
         target.FormattedText |> should not' (equal null)
@@ -95,11 +102,11 @@ module ViewUpdatersTests =
         let currTextOpt = ValueNone
         
         let prevFormattedTextOpt = ValueNone
-        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]))
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("DEF") ]) :> IViewElement)
                 
         let target = Label(Text = "ABC", FormattedText = null)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal null
         target.FormattedText |> should not' (equal null)
@@ -111,7 +118,7 @@ module ViewUpdatersTests =
         let prevTextOpt = ValueNone
         let currTextOpt = ValueSome "DEF"
         
-        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("ABC") ]) :> IViewElement)
         let currFormattedTextOpt = ValueNone
         
         let formattedString = FormattedString()
@@ -119,7 +126,7 @@ module ViewUpdatersTests =
         
         let target = Label(Text = null, FormattedText = formattedString)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal "DEF"
         target.FormattedText |> should equal null
@@ -129,15 +136,15 @@ module ViewUpdatersTests =
         let prevTextOpt = ValueSome "ABC"
         let currTextOpt = ValueSome "DEF"
         
-        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("GHI") ]))
-        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("JKL") ]))
+        let prevFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("GHI") ]) :> IViewElement)
+        let currFormattedTextOpt = ValueSome (View.FormattedString(spans = [ View.Span("JKL") ]) :> IViewElement)
 
         let formattedString = FormattedString()
         formattedString.Spans.Add(Span(Text = "GHI"))
         
         let target = Label(Text = null, FormattedText = formattedString)
         
-        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt prevTextOpt currTextOpt target
+        ViewUpdaters.updateLabelText prevFormattedTextOpt currFormattedTextOpt definition prevTextOpt currTextOpt target
         
         target.Text |> should equal null
         target.FormattedText |> should not' (equal null)
