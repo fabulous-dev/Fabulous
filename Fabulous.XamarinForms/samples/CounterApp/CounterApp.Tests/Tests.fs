@@ -1,7 +1,7 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace CounterApp.Tests
 
-open NUnit.Framework
+(*open NUnit.Framework
 open FsUnit
 open CounterApp
 open CounterApp.App
@@ -100,4 +100,4 @@ module ``View tests`` =
 
         let decrementButton = actualView |> findViewElement "DecrementButton" |> ButtonViewer
 
-        decrementButton.Command ()
+        decrementButton.Command ()*)
