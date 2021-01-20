@@ -83,18 +83,17 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
-
-            w.printfn "    static member Create%s () : %s =" data.Name data.FullName
-            
-            let createCode =
-                match data.CreateCode with
-                | Some createCode -> createCode
-                | _ -> sprintf "%s()" data.TypeToInstantiate
-
-            if data.TypeToInstantiate = data.FullName then
-                w.printfn "        %s" createCode
-            else
-                w.printfn "        upcast (%s)" createCode
+            w.printfn "    static member Create%s (curr: IViewElement) : %s =" data.Name data.FullName
+                
+            match data.CreateCode with
+            | Some createCode ->
+                w.printfn "        %s curr" createCode
+                
+            | None ->
+                if data.TypeToInstantiate = data.FullName then
+                    w.printfn "        %s()" data.TypeToInstantiate
+                else
+                    w.printfn "        upcast (%s())" data.TypeToInstantiate
             
             w.printfn ""
             w
@@ -309,7 +308,7 @@ module CodeGenerator =
             w.printfn "        let handler ="
             w.printfn "            Registrar.Register("
             w.printfn "                \"%s\"," data.FullName
-            w.printfn "                ViewBuilders.Create%s," data.Name
+            w.printfn "                (fun curr -> ViewBuilders.Create%s(curr))," data.Name
             w.printfn "                (fun def prev curr target -> ViewBuilders.Update%s(def, prev, curr, target))," data.Name
             w.printfn "                (fun key def prev curr target -> ViewBuilders.Update%sAttachedProperties(key, def, prev, curr, target))" data.Name
             w.printfn "            )"

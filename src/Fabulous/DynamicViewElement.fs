@@ -69,7 +69,7 @@ type Registrar private () =
     static member Register
         (
             name: string,
-            create: unit -> 'T,
+            create: DynamicViewElement -> 'T,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> 'T -> unit,
             updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
         ) =
@@ -81,7 +81,7 @@ type Registrar private () =
                 DynamicViewElementHandler(
                     key,
                     typeof<'T>,
-                    (fun () -> create() |> box),
+                    (fun curr -> create curr |> box),
                     (fun def prevOpt curr target -> update def prevOpt curr (unbox target)),
                     updateAttachedProperties
                 )
@@ -102,14 +102,14 @@ and [<Struct>] DynamicViewElementHandler
         (
             key: int,
             targetType: Type,
-            create: unit -> obj,
+            create: DynamicViewElement -> obj,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> obj -> unit,
             updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
         ) =
 
     member x.Key = key
     member x.TargetType = targetType
-    member x.Create() = create()
+    member x.Create(curr) = create curr
     member x.Update(definition, prevOpt, curr, target) = update definition prevOpt curr target
     member x.UpdateAttachedProperties(attrKey, definition, prevOpt, curr, target) = updateAttachedProperties attrKey definition prevOpt curr target
 
@@ -163,7 +163,7 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
     member x.Create(definition: ProgramDefinition) =
         ProgramTracing.traceDebug definition (sprintf "Create %O" x.Handler.TargetType)
 
-        let target = x.Handler.Create()
+        let target = x.Handler.Create(x)
         x.Update(definition, ValueNone, target)
 
         match x.TryGetAttributeKeyed(DynamicViewElement.CreatedAttribKey) with
