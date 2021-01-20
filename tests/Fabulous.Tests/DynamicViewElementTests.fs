@@ -10,7 +10,7 @@ module DynamicViewElementTests =
     type FakeControl() = class end
 
     let getFakeControlViewElement attribs =
-        let create () = FakeControl()
+        let create _ = FakeControl()
         let update _ _ _ _ = ()
         let updateAttachedProperties _ _ _ _ _ = ()
         let handler = Registrar.Register("FakeControl", create, update, updateAttachedProperties)
