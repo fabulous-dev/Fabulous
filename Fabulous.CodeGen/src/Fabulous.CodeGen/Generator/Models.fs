@@ -84,6 +84,19 @@ module Models =
           Events: UpdateEvent array
           Properties: UpdateProperty array
           PriorityProperties: UpdateProperty array }
+        
+    type UnmountProperty =
+        { Name: string
+          UniqueName: string
+          CustomAttributeKey: string option
+          IsCollection: bool
+          HasApply: bool }
+        
+    type UnmountData =
+        { Name: string
+          FullName: string
+          BaseName: string option
+          Properties: UnmountProperty array }
 
     type ConstructData =
         { Name: string
@@ -95,6 +108,7 @@ module Models =
           Create: CreateData option
           UpdateAttachedProperties: UpdateAttachedPropertiesData
           Update: UpdateData
+          Unmount: UnmountData
           Construct: ConstructData option }
 
     type ViewerMember =

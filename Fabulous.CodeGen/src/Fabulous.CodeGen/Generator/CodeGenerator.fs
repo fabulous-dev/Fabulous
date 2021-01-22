@@ -275,6 +275,34 @@ module CodeGenerator =
 
         w.printfn ""
         w
+        
+    let generateUnmountFunction (data: UnmountData) (w: StringWriter) =
+        w.printfn "    static member Unmount%s (curr: DynamicViewElement, target: %s) =" data.Name data.FullName
+        
+        // Update inherited members
+        if data.BaseName.IsSome then
+            w.printfn "        // Unmount inherited members"
+            w.printfn "        ViewBuilders.Unmount%s(curr, target)" data.BaseName.Value
+            
+        if data.Properties.Length = 0 then
+            w.printfn "        ()"
+        else
+            w.printfn "        // Unmount direct members"
+            for p in data.Properties do
+                let attributeKey = getAttributeKey p.CustomAttributeKey p.UniqueName
+                
+                w.printfn "        let curr%sOpt = curr.TryGetAttributeKeyed(%s)" p.UniqueName attributeKey
+                
+                match p.IsCollection, p.HasApply with
+                | _, true ->
+                    w.printfn "        ()"
+                | true, false ->
+                    w.printfn "        Collections.unmountChildren curr%sOpt target.%s" p.UniqueName p.Name
+                | false, false ->
+                    w.printfn "        match curr%sOpt with ValueNone -> () | ValueSome viewElement -> viewElement.Unmount(target)" p.UniqueName
+            
+        w.printfn ""
+        w
 
     let generateConstruct (data: ConstructData option) (w: StringWriter) =
         match data with
@@ -310,7 +338,8 @@ module CodeGenerator =
             w.printfn "                \"%s\"," data.FullName
             w.printfn "                (fun curr parentOpt -> ViewBuilders.Create%s(curr, parentOpt))," data.Name
             w.printfn "                (fun def prev curr target -> ViewBuilders.Update%s(def, prev, curr, target))," data.Name
-            w.printfn "                (fun key def prev curr target -> ViewBuilders.Update%sAttachedProperties(key, def, prev, curr, target))" data.Name
+            w.printfn "                (fun key def prev curr target -> ViewBuilders.Update%sAttachedProperties(key, def, prev, curr, target))," data.Name
+            w.printfn "                (fun curr target -> ViewBuilders.Unmount%s(curr, target))" data.Name
             w.printfn "            )"
             w.printfn ""
             w.printfn "        DynamicViewElement.Create(handler, attribBuilder)"
@@ -325,6 +354,7 @@ module CodeGenerator =
             |> generateCreateFunction typ.Create
             |> generateUpdateAttachedPropertiesFunction typ.UpdateAttachedProperties
             |> generateUpdateFunction typ.Update
+            |> generateUnmountFunction typ.Unmount
             |> generateConstruct typ.Construct
         w
 

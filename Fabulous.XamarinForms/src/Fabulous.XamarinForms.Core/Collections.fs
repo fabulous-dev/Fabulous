@@ -16,7 +16,7 @@ module Collections =
         | Move of moveOldIndex: int * moveNewIndex: int
         | Update of updateIndex: int * updatePrev: 'T * updateCurr: 'T
         | MoveAndUpdate of moveAndUpdateOldIndex: int * moveAndUpdateprev: 'T * moveAndUpdatenewIndex: int * moveAndUpdatecurr: 'T
-        | Delete of deleteOldIndex: int
+        | Delete of deleteOldIndex: int * deletePrev: 'T
 
     let isMatch canReuse aggressiveReuseMode currIndex newChild (struct (index, reusableChild)) =
         canReuse reusableChild newChild
@@ -91,7 +91,7 @@ module Collections =
         let identicalElements = Dictionary<'T, int>()
         let keyedElements = Dictionary<string, struct (int * 'T)>()
         let reusableElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
-        let discardedElements = ArrayPool<int>.Shared.Rent(prevCollLength)
+        let discardedElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
 
         let mutable reusableElementsCount = 0
         let mutable discardedElementsCount = 0
@@ -109,7 +109,7 @@ module Collections =
                         reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)
                         reusableElementsCount <- reusableElementsCount + 1
                     | ValueSome _ ->
-                        discardedElements.[discardedElementsCount] <- prevIndex
+                        discardedElements.[discardedElementsCount] <- struct (prevIndex, prevChild)
                         discardedElementsCount <- discardedElementsCount + 1
 
         for i in 0 .. coll.Length - 1 do
@@ -153,18 +153,19 @@ module Collections =
         // If we have discarded elements, delete them
         if discardedElementsCount > 0 then
             for i = 0 to discardedElementsCount - 1 do
-                workingSet.[workingSetIndex] <- Delete discardedElements.[i]
+                let struct (discardedIndex, discardedChild) = discardedElements.[i]
+                workingSet.[workingSetIndex] <- Delete (discardedIndex, discardedChild)
                 workingSetIndex <- workingSetIndex + 1
 
         // If we still have old elements that were not reused, delete them
         if reusableElementsCount > 0 then
             for i = 0 to reusableElementsCount - 1 do
-                let struct (prevIndex, _) = reusableElements.[i]
-                workingSet.[workingSetIndex] <- Delete prevIndex
+                let struct (prevIndex, prevChild) = reusableElements.[i]
+                workingSet.[workingSetIndex] <- Delete (prevIndex, prevChild)
                 workingSetIndex <- workingSetIndex + 1
 
         ArrayPool<struct (int * 'T)>.Shared.Return(reusableElements)
-        ArrayPool<int>.Shared.Return(discardedElements)
+        ArrayPool<struct (int * 'T)>.Shared.Return(discardedElements)
 
         workingSetIndex
 
@@ -232,9 +233,9 @@ module Collections =
                 workingSet.[position] <- moveAndUpdate prevIndices oldIndex prev newIndex curr
                 position <- position + 1
 
-            | Delete oldIndex ->
+            | Delete (oldIndex, prev) ->
                 let prevIndex = prevIndices.[oldIndex]
-                workingSet.[position] <- Delete prevIndex
+                workingSet.[position] <- Delete (prevIndex, prev)
                 position <- position + 1
                 shiftForDelete prevIndices oldIndex prevIndex
 
@@ -252,6 +253,7 @@ module Collections =
            (create: 'T -> 'TargetT)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
            (attach: 'T voption -> 'T -> obj -> unit) // adjust attached properties
+           (unmount: 'T -> 'TargetT -> unit)
         =
 
         match struct (prevCollOpt, collOpt) with
@@ -292,16 +294,25 @@ module Collections =
                     update prev curr child
                     attach (ValueSome prev) curr child
 
-                | Delete index ->
-                    targetColl.RemoveAt(index) |> ignore
+                | Delete (index, prev) ->
+                    unmount prev targetColl.[index]
+                    targetColl.RemoveAt(index)
 
             ArrayPool<Operation<'T>>.Shared.Return(workingSet)
 
     let updateChildren (definition: ProgramDefinition) prevCollOpt collOpt target create update attach =
-        updateCollection true prevCollOpt collOpt target ViewHelpers.tryGetKey definition.canReuseView (fun c -> create definition (ValueSome (box target)) c) (fun prev curr target -> update definition prev curr target) (fun prevOpt curr target -> attach definition prevOpt curr target)
+        updateCollection true prevCollOpt collOpt target ViewHelpers.tryGetKey definition.canReuseView
+            (fun c -> create definition (ValueSome (box target)) c)
+            (fun prev curr target -> update definition prev curr target)
+            (fun prevOpt curr target -> attach definition prevOpt curr target)
+            (fun prev target -> prev.Unmount(target))
 
     let updateItems definition prevCollOpt collOpt target keyOf canReuse create update attach =
-        updateCollection false prevCollOpt collOpt target keyOf canReuse (fun c -> create definition (ValueSome (box target)) c) (fun prev curr target -> update definition prev curr target) (fun prevOpt curr target -> attach definition prevOpt curr target)
+        updateCollection false prevCollOpt collOpt target keyOf canReuse
+            (fun c -> create definition (ValueSome (box target)) c)
+            (fun prev curr target -> update definition prev curr target)
+            (fun prevOpt curr target -> attach definition prevOpt curr target)
+            (fun prev target -> ())
 
     /// Update a control given the previous and new view elements
     let inline updateChild (definition: ProgramDefinition) (prevChild: IViewElement) (newChild: IViewElement) targetChild =
@@ -412,7 +423,7 @@ module Collections =
             match target.StrokeDashArray with
             | null -> let oc = DoubleCollection() in target.StrokeDashArray <- oc; oc
             | oc -> oc
-        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ())
+        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ()) (fun _ _ -> ())
 
     let inline updateViewElementHolderItems definition (prevCollOpt: IViewElement[] voption) (collOpt: IViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
         updateItems definition prevCollOpt collOpt targetColl
@@ -505,3 +516,12 @@ module Collections =
             | null -> let oc = GradientStopCollection() in target.GradientStops <- oc; oc
             | oc -> oc
         updateChildren definition prevCollOpt collOpt targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> GradientStop) updateChild (fun _ _ _ _ -> ())
+        
+    let unmountChildren (collOpt: IViewElement[] voption) (targetColl: IList<'a>) =
+        match struct (collOpt, targetColl) with
+        | struct (ValueNone, _) -> ()
+        | struct (_, null) -> ()
+        | struct (ValueSome coll, target) ->
+            for i = 0 to coll.Length - 1 do
+                let targetChild = target.[i]
+                coll.[i].Unmount(targetChild)

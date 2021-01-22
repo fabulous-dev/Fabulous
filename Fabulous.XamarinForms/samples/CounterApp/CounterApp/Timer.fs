@@ -30,7 +30,7 @@ module Timer =
 
     let update msg model =
         match msg with
-        | TimerTick -> { model with Ticks = model.Ticks + 1 }, timerCmd model.TimerState.IsEnabled
+        | TimerTick -> { model with Ticks = model.Ticks + 1 }, Cmd.none //timerCmd model.TimerState.IsEnabled
         | StateChanged state -> { model with TimerState = state }, timerCmd state.IsEnabled
         | Reset -> { model with Ticks = 0 }, timerCmd model.TimerState.IsEnabled
 
@@ -47,6 +47,16 @@ module Timer =
 
     let program =
         XamarinFormsProgram.mkProgram init update view
+        |> Program.withSubscription (fun _ dispatch ->
+            let timer = new System.Timers.Timer(200.)
+            timer.Elapsed.Add(fun _ ->
+                dispatch TimerTick
+            )
+            timer.Start()
+            { new System.IDisposable with
+                member _.Dispose() =
+                    timer.Dispose() }
+        )
 #if DEBUG
         |> Program.withConsoleTrace
 #endif

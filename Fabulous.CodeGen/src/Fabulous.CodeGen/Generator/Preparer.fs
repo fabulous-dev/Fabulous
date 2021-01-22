@@ -132,6 +132,25 @@ module Preparer =
           Events = updateEvents
           Properties = updateProperties
           PriorityProperties = updatePriorityProperties }
+        
+    let toUnmountData (boundType: BoundType) : UnmountData =
+        let immediateProperties = boundType.Properties |> Array.filter (fun p -> not p.IsInherited && p.CanBeUpdated)
+        
+        let unmountableProperties =
+            immediateProperties
+            |> Array.filter (fun p -> p.ModelType = "IViewElement" || p.CollectionData.IsSome)
+            |> Array.map (fun p ->
+                { Name = p.Name
+                  UniqueName = p.UniqueName
+                  CustomAttributeKey = p.CustomAttributeKey
+                  IsCollection = p.CollectionData.IsSome
+                  HasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) } : UnmountProperty
+            )
+        
+        { Name = boundType.Name
+          FullName = boundType.FullName
+          BaseName = boundType.BaseTypeName
+          Properties = unmountableProperties }
 
     let toConstructData (boundType: BoundType) : ConstructData =
         let properties = boundType.Properties |> Array.map (fun p -> { Name = p.ShortName; InputType = p.InputType } : ConstructType)
@@ -147,6 +166,7 @@ module Preparer =
           Create = if boundType.CanBeInstantiated then Some (toCreateData boundType) else None
           UpdateAttachedProperties = toUpdateAttachedPropertiesData boundType
           Update = toUpdateData boundType
+          Unmount = toUnmountData boundType
           Construct = if boundType.CanBeInstantiated then Some (toConstructData boundType) else None }
 
     let toViewerData (allTypes: BoundType array) (boundType: BoundType) : ViewerData =

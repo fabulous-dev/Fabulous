@@ -10,15 +10,18 @@ module Component =
 
     type ComponentHandler<'arg, 'msg, 'model, 'externalMsg>() =
         interface IComponentHandler<'arg, 'msg, 'model, 'externalMsg> with
-            member x.CreateRunner() = Runner<'arg, 'msg, 'model, 'externalMsg>() :> IRunner<'arg, 'msg, 'model, 'externalMsg>
+            member x.CreateRunner(arg) = Runner<'arg, 'msg, 'model, 'externalMsg>(arg) :> IRunner<'arg, 'msg, 'model, 'externalMsg>
 
             member x.GetRunnerForTarget(target) =
                 match (target :?> Xamarin.Forms.BindableObject).GetValue(ComponentRunnerProperty) with
                 | null -> ValueNone
                 | runner -> ValueSome (runner :?> IRunner<'arg, 'msg, 'model, 'externalMsg>)
 
-            member x.SetRunnerForTarget(runner, target) =
-                (target :?> Xamarin.Forms.BindableObject).SetValue(ComponentRunnerProperty, runner)
+            member x.SetRunnerForTarget(runnerOpt, target) =
+                let bindableObject = target :?> Xamarin.Forms.BindableObject
+                match runnerOpt with
+                | ValueNone -> bindableObject.ClearValue(ComponentRunnerProperty)
+                | ValueSome runner -> bindableObject.SetValue(ComponentRunnerProperty, runner)
 
     let forProgram(program) =
         let handler = ComponentHandler<unit, 'msg, 'model, 'externalMsg>()

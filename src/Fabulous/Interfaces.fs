@@ -13,6 +13,7 @@ type ProgramDefinition =
 and IViewElement =
     abstract Create: ProgramDefinition * obj voption -> obj
     abstract Update: ProgramDefinition * IViewElement voption * obj -> unit
+    abstract Unmount: obj -> unit
     abstract TryKey: string voption with get
     abstract TargetType: Type with get
 
@@ -20,7 +21,7 @@ type RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> =
     { init: 'arg -> 'model * Cmd<'msg> * ('externalMsg list)
       update: 'msg -> 'model -> 'model * Cmd<'msg> * ('externalMsg list)
       view: 'model -> Dispatch<'msg> -> IViewElement
-      subscribe: 'model -> Cmd<'msg>
+      subscribe: 'model -> Dispatch<'msg> -> IDisposable
       canReuseView: IViewElement -> IViewElement -> bool
       syncDispatch: Dispatch<'msg> -> Dispatch<'msg>
       syncAction: (unit -> unit) -> (unit -> unit)
@@ -29,8 +30,8 @@ type RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> =
       onError: string -> Exception -> unit }
 
 type IRunner<'arg, 'msg, 'model, 'externalMsg> =
-    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * 'arg * obj voption * obj voption -> obj
-    abstract ChangeDefinition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> -> unit
+    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj voption * obj voption -> obj
+    abstract Stop: unit -> unit
     abstract Dispatch: 'msg -> unit
 
 module ProgramTracing =

@@ -36,46 +36,63 @@ module App =
                     verticalOptions = LayoutOptions.Center,
                     spacing = 30.,
                     children = [
-                        View.Grid(
-                            backgroundColor = Color.LightGreen,
-                            children = [
-                                View.Counter()
-                            ]
+                        View.Switch(
+                            isToggled = model.TimerEnabled,
+                            toggled = fun x -> dispatch (TimerToggled x.Value)
                         )
-
-                        View.Grid(
-                            backgroundColor = Color.Yellow,
-                            children = [
-                                View.Counter()
-                            ]
-                        )
-
-                        View.StackLayout(
-                            orientation = StackOrientation.Horizontal,
-                            children = [
-                                View.Switch(
-                                    isToggled = model.TimerEnabled,
-                                    toggled = fun x -> dispatch (TimerToggled x.Value)
-                                )
-                                View.Label("Enable timer")
-                            ]
-                        )
-
-                        View.StackLayout(
-                            backgroundColor = Color.LightBlue,
-                            children = [
-                                View.Timer({ IsEnabled = model.TimerEnabled })
-                            ]
-                        )
-
-                        View.Label(sprintf "Component values: %s" model.FullName)
-
-                        View.StackLayout(
-                            backgroundColor = Color.LightSalmon,
-                            children = [
-                                View.NameForm(fun msg -> dispatch (NameFormMsg msg))
-                            ]
-                        )
+                        
+                        if not model.TimerEnabled then
+                            View.Grid([
+                                View.Label("Hello")
+                            ])
+                        else
+                            View.StackLayout(
+                                backgroundColor = Color.LightBlue,
+                                children = [
+                                    View.Timer({ IsEnabled = model.TimerEnabled })
+                                ]
+                            )
+                        
+//                        View.Grid(
+//                            backgroundColor = Color.LightGreen,
+//                            children = [
+//                                View.Counter()
+//                            ]
+//                        )
+//
+//                        View.Grid(
+//                            backgroundColor = Color.Yellow,
+//                            children = [
+//                                View.Counter()
+//                            ]
+//                        )
+//
+//                        View.StackLayout(
+//                            orientation = StackOrientation.Horizontal,
+//                            children = [
+//                                View.Switch(
+//                                    isToggled = model.TimerEnabled,
+//                                    toggled = fun x -> dispatch (TimerToggled x.Value)
+//                                )
+//                                View.Label("Enable timer")
+//                            ]
+//                        )
+//
+//                        View.StackLayout(
+//                            backgroundColor = Color.LightBlue,
+//                            children = [
+//                                View.Timer({ IsEnabled = model.TimerEnabled })
+//                            ]
+//                        )
+//
+//                        View.Label(sprintf "Component values: %s" model.FullName)
+//
+//                        View.StackLayout(
+//                            backgroundColor = Color.LightSalmon,
+//                            children = [
+//                                View.NameForm(fun msg -> dispatch (NameFormMsg msg))
+//                            ]
+//                        )
                     ]
                 )
             )

@@ -10,10 +10,15 @@ open System
 module Program =
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial (or resumed) model, but can dispatch new messages at any time.
-    let withSubscription (subscribe : 'model -> Cmd<'msg>) (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) =
-        let sub model =
-            Cmd.batch [ definition.subscribe model
-                        subscribe model ]
+    let withSubscription (subscribe : 'model -> Dispatch<'msg> -> IDisposable) (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) =
+        let sub model dispatch =
+            let x = definition.subscribe model dispatch
+            let y = subscribe model dispatch
+            { new IDisposable with
+                member _.Dispose() =
+                    if x <> null then x.Dispose()
+                    if y <> null then y.Dispose() }
+            
         { definition with subscribe = sub }
 
     /// Trace all the updates to the console

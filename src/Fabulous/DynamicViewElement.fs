@@ -71,7 +71,8 @@ type Registrar private () =
             name: string,
             create: DynamicViewElement -> obj voption -> 'T,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> 'T -> unit,
-            updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
+            updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit,
+            unmount: DynamicViewElement -> 'T -> unit
         ) =
         let key = getKeyValue name
         if handlers.ContainsKey(key) then
@@ -83,7 +84,8 @@ type Registrar private () =
                     typeof<'T>,
                     (fun curr parentOpt -> create curr parentOpt |> box),
                     (fun def prevOpt curr target -> update def prevOpt curr (unbox target)),
-                    updateAttachedProperties
+                    updateAttachedProperties,
+                    (fun curr target -> unmount curr (unbox target))
                 )
 
             handlers.[key] <- handler
@@ -104,7 +106,8 @@ and [<Struct>] DynamicViewElementHandler
             targetType: Type,
             create: DynamicViewElement -> obj voption -> obj,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> obj -> unit,
-            updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
+            updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit,
+            unmount: DynamicViewElement -> obj -> unit
         ) =
 
     member x.Key = key
@@ -112,6 +115,7 @@ and [<Struct>] DynamicViewElementHandler
     member x.Create(curr, parentOpt) = create curr parentOpt
     member x.Update(definition, prevOpt, curr, target) = update definition prevOpt curr target
     member x.UpdateAttachedProperties(attrKey, definition, prevOpt, curr, target) = updateAttachedProperties attrKey definition prevOpt curr target
+    member x.Unmount(curr, target) = unmount curr target
 
 and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj> list) =
 
@@ -208,6 +212,16 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
                 | ValueNone -> ValueNone
                 | ValueSome prev -> ValueSome (prev :?> DynamicViewElement)
             x.Update(definition, prevOpt, target)
+            
+        member x.Unmount(target) =
+            // Unset the ViewRef if defined
+            match x.TryGetAttributeKeyed(DynamicViewElement.RefAttribKey) with
+            | ValueNone -> ()
+            | ValueSome viewRef -> viewRef.Unset()
+            
+            // Unmount the handler
+            x.Handler.Unmount(x, target)
+            
         member x.TryKey with get () = x.TryKey
         member x.TargetType with get () = x.Handler.TargetType
 

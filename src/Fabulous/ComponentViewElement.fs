@@ -1,9 +1,9 @@
 namespace Fabulous
 
 type IComponentHandler<'arg, 'msg, 'model, 'externalMsg> =
-    abstract CreateRunner: unit -> IRunner<'arg, 'msg, 'model, 'externalMsg>
+    abstract CreateRunner: 'arg -> IRunner<'arg, 'msg, 'model, 'externalMsg>
     abstract GetRunnerForTarget: obj -> IRunner<'arg, 'msg, 'model, 'externalMsg> voption
-    abstract SetRunnerForTarget: IRunner<'arg, 'msg, 'model, 'externalMsg> * obj -> unit
+    abstract SetRunnerForTarget: IRunner<'arg, 'msg, 'model, 'externalMsg> voption * obj -> unit
 
 type IComponentViewElement =
     inherit IViewElement
@@ -44,23 +44,38 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
             runner.Dispatch(msg)
 
     member x.TargetType = runnerDefinition.GetType()
+    
+    member x.RunnerDefinition = runnerDefinition
 
     interface IComponentViewElement with
         member x.Create(definition, parentOpt) =
             let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
-            let runner = handler.CreateRunner()
-            let target = runner.Start(runnerDefinition, arg, ValueNone, parentOpt)
+            let runner = handler.CreateRunner(arg)
+            let target = runner.Start(runnerDefinition, ValueNone, parentOpt)
             dispatchStateChangedIfNeeded runner
-            handler.SetRunnerForTarget(runner, target)
+            handler.SetRunnerForTarget(ValueSome runner, target)
             target
 
-        member x.Update(definition, _, target) =
+        member x.Update(definition, prevOpt, target) =
             match handler.GetRunnerForTarget(target) with
             | ValueNone -> failwith "Can't reuse a control without an associated runner"
             | ValueSome runner ->
-                let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
-                runner.ChangeDefinition(runnerDefinition)
+                // Only change the definition when it's actually a different runner definition
+                match prevOpt with
+                | ValueSome (:? ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg> as prev) when System.Object.ReferenceEquals(prev.RunnerDefinition, runnerDefinition) -> ()
+                | _ ->
+                    let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
+                    runner.Stop()
+                    runner.Start(runnerDefinition, ValueSome (box target), ValueNone) |> ignore
+                    
                 dispatchStateChangedIfNeeded runner
+                
+        member x.Unmount(target) =
+            match handler.GetRunnerForTarget(target) with
+            | ValueNone -> ()
+            | ValueSome runner ->
+                runner.Stop()
+                handler.SetRunnerForTarget(ValueNone, target)
 
         member x.TryKey = keyOpt
         member x.TargetType = x.TargetType

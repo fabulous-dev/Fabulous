@@ -32,7 +32,7 @@ module XamarinFormsProgram =
           canReuseView = canReuseView
           syncDispatch = syncDispatch
           syncAction = syncAction
-          subscribe = fun _ -> Cmd.none
+          subscribe = (fun _ _ -> null)
           traceLevel = TraceLevel.None
           trace = (fun _ _ -> ())
           onError = onError }
@@ -69,8 +69,8 @@ module XamarinFormsProgram =
             mapToCmd
 
     let runWith (element: Element) (arg: 'arg) (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) =
-        let runner = Runner()
-        let _ = runner.Start(definition, arg, ValueSome (box element), ValueNone)
+        let runner = Runner(arg)
+        let _ = runner.Start(definition, ValueSome (box element), ValueNone)
         runner
 
     let run (element: Element) (definition: RunnerDefinition<unit, 'msg, 'model, 'externalMsg>) =
