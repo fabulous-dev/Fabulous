@@ -192,7 +192,8 @@ module Extensions =
         // Stop the running program
         printfn "changing running program...."
         syncChangeProgram (fun () ->
-             runner.ChangeDefinition(definition)
+             runner.Stop()
+             runner.Start(definition, ValueNone, ValueNone)
         )
         printfn "*** LiveUpdate success:"
         printfn "***   [x] got code package"
