@@ -29,7 +29,7 @@ module ShadowEffectViewExtension =
             match distanceX with None -> () | Some v -> attribs.Add(DistanceXAttribKey, v)
             match distanceY with None -> () | Some v -> attribs.Add(DistanceYAttribKey, v)
 
-            let create () = ShadowEffect()
+            let create _ _ = ShadowEffect()
 
             let update (definition: ProgramDefinition) (prevOpt: DynamicViewElement voption) (source: DynamicViewElement) (target: ShadowEffect) =
                 source.UpdatePrimitive(definition, prevOpt, target, RadiusAttribKey, (fun target v -> target.Radius <- v))
@@ -38,8 +38,10 @@ module ShadowEffectViewExtension =
                 source.UpdatePrimitive(definition, prevOpt, target, DistanceYAttribKey, (fun target v -> target.DistanceY <- v))
 
             let updateAttachedProperties _ _ _ _ _ = ()
+            
+            let unmount _ _ = ()
 
             let handler =
-                Registrar.Register(typeof<ShadowEffect>.FullName, create, update, updateAttachedProperties)
+                Registrar.Register(typeof<ShadowEffect>.FullName, create, update, updateAttachedProperties, unmount)
 
             DynamicViewElement.Create(handler, attribs)

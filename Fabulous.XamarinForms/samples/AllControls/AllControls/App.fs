@@ -112,25 +112,28 @@ type App () as app =
     inherit Application ()
     do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(), "AllControls.styles.css"))
 
-    let themeChangedSub dispatch =
-        Application.Current.RequestedThemeChanged.AddHandler(
-            EventHandler<AppThemeChangedEventArgs>(fun _ args ->
-                dispatch (App.Msg.AppThemeChanged args.RequestedTheme)
-            )
-        )
-
     let memoryWarningReceivedEvent = Event<_,_>()
-    let memoryWarningSub dispatch =
-        memoryWarningReceivedEvent.Publish.AddHandler(
-            EventHandler(fun _ _ ->
-                dispatch App.Msg.LowMemoryWarningReceived
-            )
-        )
-
     let runner =
-        Program.mkProgram App.init App.update App.view
-        |> Program.withSubscription (fun _ -> Cmd.ofSub themeChangedSub)
-        |> Program.withSubscription (fun _ -> Cmd.ofSub memoryWarningSub)
+        XamarinFormsProgram.mkProgram App.init App.update App.view
+        |> Program.withSubscription (fun _ dispatch ->
+            let themeChanged = 
+                EventHandler<AppThemeChangedEventArgs>(fun _ args ->
+                    dispatch (App.Msg.AppThemeChanged args.RequestedTheme)
+                )
+                
+            let memoryWarningReceived =
+                EventHandler(fun _ _ ->
+                    dispatch App.Msg.LowMemoryWarningReceived
+                )
+                
+            Application.Current.RequestedThemeChanged.AddHandler(themeChanged)
+            memoryWarningReceivedEvent.Publish.AddHandler(memoryWarningReceived)
+            
+            { new IDisposable with
+                member _.Dispose() =
+                    Application.Current.RequestedThemeChanged.RemoveHandler(themeChanged)
+                    memoryWarningReceivedEvent.Publish.RemoveHandler(memoryWarningReceived) }
+        )
         |> Program.withConsoleTrace
         |> XamarinFormsProgram.run app
 

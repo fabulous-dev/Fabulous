@@ -15,7 +15,7 @@ module ViewUpdaters =
         Collections.updateItems definition prevCollOpt currCollOpt target.Geopath
             (fun _ -> ValueNone)
             (fun prev curr -> prev = curr)
-            (fun _ x -> x)
+            (fun _ _ x -> x)
             (fun _ _ _ _ -> ())
             (fun _ _ _ _ -> ())
 
@@ -23,6 +23,6 @@ module ViewUpdaters =
         Collections.updateItems definition prevCollOpt currCollOpt target.Geopath
             (fun _ -> ValueNone)
             (fun prev curr -> prev = curr)
-            (fun _ x -> x)
+            (fun _ _ x -> x)
             (fun _ _ _ _ -> ())
             (fun _ _ _ _ -> ())

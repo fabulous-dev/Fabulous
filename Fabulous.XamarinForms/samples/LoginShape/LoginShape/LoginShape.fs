@@ -160,14 +160,18 @@ module App =
 type App () as app =
     inherit Application ()
 
-    let themeChangedSub dispatch =
-        Application.Current.RequestedThemeChanged.AddHandler(
-            EventHandler<AppThemeChangedEventArgs>(fun _ args ->
-                dispatch (App.Msg.SetRequestedAppTheme args.RequestedTheme)
-            )
-        )
-
     let runner =
         App.program
-        |> Program.withSubscription (fun _ -> Cmd.ofSub themeChangedSub)
+        |> Program.withSubscription (fun _ dispatch ->
+            let eventHandler =
+                EventHandler<AppThemeChangedEventArgs>(fun _ args ->
+                    dispatch (App.Msg.SetRequestedAppTheme args.RequestedTheme)
+                )
+                
+            Application.Current.RequestedThemeChanged.AddHandler(eventHandler)
+            
+            { new IDisposable with
+                member _.Dispose() =
+                    Application.Current.RequestedThemeChanged.RemoveHandler(eventHandler) }
+        )
         |> XamarinFormsProgram.run app

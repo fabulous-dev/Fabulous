@@ -32,7 +32,7 @@ type RoutingPage(animals, view: Animal -> DynamicViewElement) =
         let viewElement = view animal
         match _prevViewElement with
         | None ->
-            this.Content <- viewElement.Create(definition) :?> View
+            this.Content <- viewElement.Create(definition, ValueSome (box this)) :?> View
         | Some prevViewElement ->
             viewElement.Update(definition, ValueSome prevViewElement, this.Content)
 
