@@ -162,7 +162,7 @@ module ViewUpdaters =
         | struct (ValueSome prevColl, ValueSome newColl) when identical prevColl newColl -> ()
         | struct (_, ValueNone) -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
         | struct (_, ValueSome coll) ->
-            let create (desc: IViewElement) = (desc.Create(definition) :?> Page)
+            let create (desc: IViewElement) = (desc.Create(definition, ValueSome (box target)) :?> Page)
             if (coll = null || coll.Length = 0) then
                 failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
             else
@@ -376,7 +376,7 @@ module ViewUpdaters =
         | struct (ValueSome prevValue, ValueSome currValue) ->
             let searchHandler = Shell.GetSearchHandler(target)
             currValue.Update(definition, ValueSome prevValue, searchHandler)
-        | struct (ValueNone, ValueSome currValue) -> Shell.SetSearchHandler(target, currValue.Create(definition) :?> Xamarin.Forms.SearchHandler)
+        | struct (ValueNone, ValueSome currValue) -> Shell.SetSearchHandler(target, currValue.Create(definition, ValueSome (box target)) :?> Xamarin.Forms.SearchHandler)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.SearchHandlerProperty
 
     let updateShellBackgroundColor _ prevValueOpt currValueOpt target =
@@ -432,14 +432,14 @@ module ViewUpdaters =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Shell.SetBackButtonBehavior(target, currValue.Create(definition) :?> BackButtonBehavior)
+        | struct (_, ValueSome currValue) -> Shell.SetBackButtonBehavior(target, currValue.Create(definition, ValueSome (box target)) :?> BackButtonBehavior)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.BackButtonBehaviorProperty
 
     let updateShellTitleView (definition: ProgramDefinition) prevValueOpt (currValueOpt: IViewElement voption) target =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Shell.SetTitleView(target, currValue.Create(definition) :?> View)
+        | struct (_, ValueSome currValue) -> Shell.SetTitleView(target, currValue.Create(definition, ValueSome (box target)) :?> View)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Shell.TitleViewProperty
 
     let updateShellFlyoutBehavior _ prevValueOpt currValueOpt target =
@@ -540,7 +540,7 @@ module ViewUpdaters =
         match struct (prevValueOpt, currValueOpt) with
         | struct (ValueSome prevValue, ValueSome currValue) when prevValue = currValue -> ()
         | struct (ValueNone, ValueNone) -> ()
-        | struct (_, ValueSome currValue) -> Element.SetMenu(target, currValue.Create(definition) :?> Menu)
+        | struct (_, ValueSome currValue) -> Element.SetMenu(target, currValue.Create(definition, ValueSome (box target)) :?> Menu)
         | struct (ValueSome _, ValueNone) -> target.ClearValue Element.MenuProperty
 
     // The CarouselView/IndicatorView combo in Xamarin.Forms is special.
@@ -617,13 +617,13 @@ module ViewUpdaters =
         updateForInputTypeContent
             definition prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.DataProperty
             (fun str -> target.Data <- PathGeometryConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Geometry)
-            (fun ve -> target.Data <- ve.Create(definition) :?> Xamarin.Forms.Shapes.Geometry)
+            (fun ve -> target.Data <- ve.Create(definition, ValueSome (box target)) :?> Xamarin.Forms.Shapes.Geometry)
 
     let updatePathRenderTransform definition prevValueOpt currValueOpt (target: Xamarin.Forms.Shapes.Path) =
         updateForInputTypeContent
             definition prevValueOpt currValueOpt target Xamarin.Forms.Shapes.Path.RenderTransformProperty
             (fun str -> target.RenderTransform <- TransformTypeConverter().ConvertFromInvariantString(str) :?> Xamarin.Forms.Shapes.Transform)
-            (fun ve -> target.RenderTransform <- (ve.Create(definition) :?> Xamarin.Forms.Shapes.Transform))
+            (fun ve -> target.RenderTransform <- (ve.Create(definition, ValueSome (box target)) :?> Xamarin.Forms.Shapes.Transform))
 
     let inline updatePoints (target: Xamarin.Forms.BindableObject) (bindableProperty: Xamarin.Forms.BindableProperty) _ (prevOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) (currOpt: Fabulous.XamarinForms.InputTypes.Points.Value voption) =
         match struct (prevOpt, currOpt) with
@@ -644,7 +644,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome currValue) ->
             match currValue with
             | Content.String str -> target.Header <- str
-            | Content.ViewElement ve -> target.Header <- (ve.Create(definition) :?> View)
+            | Content.ViewElement ve -> target.Header <- (ve.Create(definition, ValueSome (box target)) :?> View)
                 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
@@ -652,7 +652,7 @@ module ViewUpdaters =
             | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
             | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.Update(definition, ValueSome prevVe, target.Header)
             | struct (_, Content.String currStr) -> target.Header <- currStr
-            | struct (_, Content.ViewElement currVe) -> target.Header <- (currVe.Create(definition) :?> View)
+            | struct (_, Content.ViewElement currVe) -> target.Header <- (currVe.Create(definition, ValueSome (box target)) :?> View)
 
         | struct (ValueSome _, ValueNone) -> target.Header <- null
         | struct (ValueNone, ValueNone) -> ()
@@ -663,7 +663,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome currValue) ->
             match currValue with
             | Content.String str -> target.Footer <- str
-            | Content.ViewElement ve -> target.Footer <- (ve.Create(definition) :?> View)
+            | Content.ViewElement ve -> target.Footer <- (ve.Create(definition, ValueSome (box target)) :?> View)
                 
         | struct (ValueSome prevValue, ValueSome currValue) ->
             match struct (prevValue, currValue) with
@@ -671,7 +671,7 @@ module ViewUpdaters =
             | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when identical prevVe currVe -> ()
             | struct (Content.ViewElement prevVe, Content.ViewElement currVe) when canReuseView prevVe currVe -> currVe.Update(definition, ValueSome prevVe, target.Footer)
             | struct (_, Content.String currStr) -> target.Footer <- currStr
-            | struct (_, Content.ViewElement currVe) -> target.Footer <- (currVe.Create(definition) :?> View)
+            | struct (_, Content.ViewElement currVe) -> target.Footer <- (currVe.Create(definition, ValueSome (box target)) :?> View)
 
         | struct (ValueSome _, ValueNone) -> target.Footer <- null
         | struct (ValueNone, ValueNone) -> ()
@@ -727,7 +727,7 @@ module ViewUpdaters =
         | struct (ValueNone, ValueSome curr) ->
             match curr with
             | LabelText.Value.PlainString text -> target.Text <- text
-            | LabelText.Value.FormattedString viewElement -> target.FormattedText <- viewElement.Create(definition) :?> Xamarin.Forms.FormattedString
+            | LabelText.Value.FormattedString viewElement -> target.FormattedText <- viewElement.Create(definition, ValueSome (box target)) :?> Xamarin.Forms.FormattedString
             
         | struct (ValueSome _, ValueSome (LabelText.Value.PlainString newText)) ->
             target.Text <- newText
@@ -736,10 +736,10 @@ module ViewUpdaters =
             currVE.Update(definition, ValueSome prevVE, target.FormattedText)
             
         | struct (ValueSome (LabelText.Value.PlainString _), ValueSome (LabelText.Value.FormattedString currVE)) ->
-            target.FormattedText <- currVE.Create(definition) :?> Xamarin.Forms.FormattedString
+            target.FormattedText <- currVE.Create(definition, ValueSome (box target)) :?> Xamarin.Forms.FormattedString
             
     let updateRadioButtonContent definition prevValueOpt (currValueOpt: InputTypes.Content.Value voption) (target: Xamarin.Forms.RadioButton) =
         updateForInputTypeContent
             definition prevValueOpt currValueOpt target Xamarin.Forms.RadioButton.ContentProperty
             (fun str -> target.Content <- str)
-            (fun ve -> target.Content <- ve.Create(definition))
+            (fun ve -> target.Content <- ve.Create(definition, ValueSome (box target)))

@@ -132,7 +132,7 @@ type ViewElementDataTemplateSelector() =
             template :> DataTemplate
 
 type DirectViewElementDataTemplate(programDefinition: ProgramDefinition, viewElement: IViewElement) =
-    inherit DataTemplate(Func<obj>(fun () -> viewElement.Create(programDefinition)))
+    inherit DataTemplate(Func<obj>(fun () -> viewElement.Create(programDefinition, ValueNone)))
 
 /////////////////
 /// Cells

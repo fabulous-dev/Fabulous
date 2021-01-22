@@ -47,7 +47,7 @@ module ViewExtensions =
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when ViewHelpers.canReuseView prevChild newChild ->
                 newChild.Update(definition, ValueSome prevChild, getter target)
-            | _, ValueSome newChild -> setter target (newChild.Create(definition) :?> 'T)
+            | _, ValueSome newChild -> setter target (newChild.Create(definition, ValueSome (box target)) :?> 'T)
             | ValueSome _, ValueNone -> setter target null
             | ValueNone, ValueNone -> ()
 
@@ -67,4 +67,4 @@ module ViewExtensions =
 
             Collections.updateChildren
                 definition (seqToArray prevCollOpt) (seqToArray collOpt) targetCollection
-                (fun def x -> x.Create(def) :?> 'T) Collections.updateChild (fun _ _ _ _ -> ())
+                (fun def parentOpt x -> x.Create(def, parentOpt) :?> 'T) Collections.updateChild (fun _ _ _ _ -> ())

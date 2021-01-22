@@ -70,7 +70,7 @@ module XamarinFormsProgram =
 
     let runWith (element: Element) (arg: 'arg) (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) =
         let runner = Runner()
-        let _ = runner.Start(definition, arg, Some (box element))
+        let _ = runner.Start(definition, arg, ValueSome (box element), ValueNone)
         runner
 
     let run (element: Element) (definition: RunnerDefinition<unit, 'msg, 'model, 'externalMsg>) =

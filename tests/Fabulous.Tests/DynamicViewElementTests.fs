@@ -10,7 +10,7 @@ module DynamicViewElementTests =
     type FakeControl() = class end
 
     let getFakeControlViewElement attribs =
-        let create _ = FakeControl()
+        let create _ _ = FakeControl()
         let update _ _ _ _ = ()
         let updateAttachedProperties _ _ _ _ _ = ()
         let handler = Registrar.Register("FakeControl", create, update, updateAttachedProperties)
@@ -29,7 +29,7 @@ module DynamicViewElementTests =
         attribs.Add(DynamicViewElement.RefAttribKey, viewRef.Unbox)
         let viewElement = getFakeControlViewElement attribs
 
-        let target = viewElement.Create(definition)
+        let target = viewElement.Create(definition, ValueNone)
 
         viewRef.Value |> should equal target
 
@@ -40,7 +40,7 @@ module DynamicViewElementTests =
         let prevAttribs = AttributesBuilder()
         prevAttribs.Add(DynamicViewElement.RefAttribKey, viewRef.Unbox)
         let prev = getFakeControlViewElement prevAttribs
-        let _oldTarget = prev.Create(definition)
+        let _oldTarget = prev.Create(definition, ValueNone)
 
         let currAttribs = AttributesBuilder()
         currAttribs.Add(DynamicViewElement.RefAttribKey, viewRef.Unbox)
@@ -58,7 +58,7 @@ module DynamicViewElementTests =
         let prevAttribs = AttributesBuilder()
         prevAttribs.Add(DynamicViewElement.RefAttribKey, prevViewRef.Unbox)
         let prev = getFakeControlViewElement prevAttribs
-        let _oldTarget = prev.Create(definition)
+        let _oldTarget = prev.Create(definition, ValueNone)
 
         let currViewRef = ViewRef<FakeControl>()
         let currAttribs = AttributesBuilder()
@@ -81,7 +81,7 @@ module DynamicViewElementTests =
         let prevAttribs = AttributesBuilder()
         prevAttribs.Add(DynamicViewElement.RefAttribKey, viewRef.Unbox)
         let prev = getFakeControlViewElement prevAttribs
-        let _oldTarget = prev.Create(definition)
+        let _oldTarget = prev.Create(definition, ValueNone)
 
         let currAttribs = AttributesBuilder()
         currAttribs.Add(DynamicViewElement.RefAttribKey, viewRef.Unbox)
@@ -102,7 +102,7 @@ module DynamicViewElementTests =
         let prevAttribs = AttributesBuilder()
         prevAttribs.Add(DynamicViewElement.RefAttribKey, prevViewRef.Unbox)
         let prev = getFakeControlViewElement prevAttribs
-        let _oldTarget = prev.Create(definition)
+        let _oldTarget = prev.Create(definition, ValueNone)
 
         let currViewRef = ViewRef<FakeControl>()
         let currAttribs = AttributesBuilder()

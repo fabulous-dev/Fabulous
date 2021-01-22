@@ -47,7 +47,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         RunnerTracing.traceDebug runnerDefinition (sprintf "View updated for model %0A" updatedModel)
 
-    member x.Start(definition, arg, rootOpt) =
+    member x.Start(definition, arg, rootOpt, parentOpt) =
         RunnerTracing.traceDebug definition (sprintf "Starting runner for %0A..." rootOpt)
 
         x.ChangeDefinition(definition)
@@ -61,10 +61,10 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
         // Update the given root control, or create a new one
         let target =
             match rootOpt with
-            | None ->
-                initialView.Create(programDefinition)
+            | ValueNone ->
+                initialView.Create(programDefinition, parentOpt)
 
-            | Some root ->
+            | ValueSome root ->
                 initialView.Update(programDefinition, ValueNone, root)
                 root
 
@@ -94,6 +94,6 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
         dispatch.DispatchViaThunk(msg)
 
     interface IRunner<'arg, 'msg, 'model, 'externalMsg> with
-        member x.Start(definition, arg, rootOpt) = x.Start(definition, arg, rootOpt)
+        member x.Start(definition, arg, rootOpt, parentOpt) = x.Start(definition, arg, rootOpt, parentOpt)
         member x.ChangeDefinition(definition) = x.ChangeDefinition(definition)
         member x.Dispatch(msg) = x.Dispatch(msg)

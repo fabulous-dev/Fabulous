@@ -83,7 +83,7 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
-            w.printfn "    static member Create%s (curr: IViewElement) : %s =" data.Name data.FullName
+            w.printfn "    static member Create%s (curr: IViewElement, parentOpt: obj voption) : %s =" data.Name data.FullName
                 
             match data.CreateCode with
             | Some createCode ->
@@ -134,7 +134,7 @@ module CodeGenerator =
                         w.printfn "                | struct (ValueSome prevValue, ValueSome newValue) when definition.canReuseView prevValue newValue ->"
                         w.printfn "                    newValue.Update(definition, ValueSome prevValue, (%s.Get%s(target)))" data.FullName ap.Name
                         w.printfn "                | struct (_, ValueSome newValue) ->"
-                        w.printfn "                    %s.Set%s(target, (newValue.Create(definition) :?> %s))" data.FullName ap.Name ap.OriginalType
+                        w.printfn "                    %s.Set%s(target, (newValue.Create(definition, ValueSome (box target)) :?> %s))" data.FullName ap.Name ap.OriginalType
                         w.printfn "                | struct (ValueSome _, ValueNone) ->"
                         w.printfn "                    %s.Set%s(target, null)" data.FullName ap.Name
                         w.printfn "                | struct (ValueNone, ValueNone) -> ()"
@@ -171,7 +171,7 @@ module CodeGenerator =
                 match p.CollectionDataElementType with
                 | Some collectionDataElementType when not hasApply ->
                     w.printfn "        Collections.updateChildren definition prev%sOpt curr%sOpt target.%s" p.UniqueName p.UniqueName p.Name
-                    w.printfn "            (fun definition x -> x.Create(definition) :?> %s)" collectionDataElementType
+                    w.printfn "            (fun definition parentOpt x -> x.Create(definition, parentOpt) :?> %s)" collectionDataElementType
                     w.printfn "            Collections.updateChild"
                     w.printfn "            (fun definition prevChildOpt currChild targetChild -> curr.UpdateAttachedPropertiesForAttribute(%s, definition, prevChildOpt, currChild, targetChild))" attributeKey
 
@@ -189,7 +189,7 @@ module CodeGenerator =
                         w.printfn "        | struct (ValueSome prevValue, ValueSome newValue) when definition.canReuseView prevValue newValue ->"
                         w.printfn "            newValue.Update(definition, ValueSome prevValue, target.%s)" p.Name
                         w.printfn "        | struct (_, ValueSome newValue) ->"
-                        w.printfn "            target.%s <- (newValue.Create(definition) :?> %s)" p.Name p.OriginalType
+                        w.printfn "            target.%s <- (newValue.Create(definition, ValueSome (box target)) :?> %s)" p.Name p.OriginalType
                         w.printfn "        | struct (ValueSome _, ValueNone) ->"
                         w.printfn "            target.%s <- null"  p.Name
                         w.printfn "        | struct (ValueNone, ValueNone) -> ()"
@@ -308,7 +308,7 @@ module CodeGenerator =
             w.printfn "        let handler ="
             w.printfn "            Registrar.Register("
             w.printfn "                \"%s\"," data.FullName
-            w.printfn "                (fun curr -> ViewBuilders.Create%s(curr))," data.Name
+            w.printfn "                (fun curr parentOpt -> ViewBuilders.Create%s(curr, parentOpt))," data.Name
             w.printfn "                (fun def prev curr target -> ViewBuilders.Update%s(def, prev, curr, target))," data.Name
             w.printfn "                (fun key def prev curr target -> ViewBuilders.Update%sAttachedProperties(key, def, prev, curr, target))" data.Name
             w.printfn "            )"

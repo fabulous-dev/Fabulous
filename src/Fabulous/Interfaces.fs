@@ -11,7 +11,7 @@ type ProgramDefinition =
       traceLevel: TraceLevel }
 
 and IViewElement =
-    abstract Create: ProgramDefinition -> obj
+    abstract Create: ProgramDefinition * obj voption -> obj
     abstract Update: ProgramDefinition * IViewElement voption * obj -> unit
     abstract TryKey: string voption with get
     abstract TargetType: Type with get
@@ -29,7 +29,7 @@ type RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> =
       onError: string -> Exception -> unit }
 
 type IRunner<'arg, 'msg, 'model, 'externalMsg> =
-    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * 'arg * obj option -> obj
+    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * 'arg * obj voption * obj voption -> obj
     abstract ChangeDefinition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> -> unit
     abstract Dispatch: 'msg -> unit
 

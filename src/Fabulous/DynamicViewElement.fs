@@ -69,7 +69,7 @@ type Registrar private () =
     static member Register
         (
             name: string,
-            create: DynamicViewElement -> 'T,
+            create: DynamicViewElement -> obj voption -> 'T,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> 'T -> unit,
             updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
         ) =
@@ -81,7 +81,7 @@ type Registrar private () =
                 DynamicViewElementHandler(
                     key,
                     typeof<'T>,
-                    (fun curr -> create curr |> box),
+                    (fun curr parentOpt -> create curr parentOpt |> box),
                     (fun def prevOpt curr target -> update def prevOpt curr (unbox target)),
                     updateAttachedProperties
                 )
@@ -102,14 +102,14 @@ and [<Struct>] DynamicViewElementHandler
         (
             key: int,
             targetType: Type,
-            create: DynamicViewElement -> obj,
+            create: DynamicViewElement -> obj voption -> obj,
             update: ProgramDefinition -> DynamicViewElement voption -> DynamicViewElement -> obj -> unit,
             updateAttachedProperties: int -> ProgramDefinition -> IViewElement voption -> IViewElement -> obj -> unit
         ) =
 
     member x.Key = key
     member x.TargetType = targetType
-    member x.Create(curr) = create curr
+    member x.Create(curr, parentOpt) = create curr parentOpt
     member x.Update(definition, prevOpt, curr, target) = update definition prevOpt curr target
     member x.UpdateAttachedProperties(attrKey, definition, prevOpt, curr, target) = updateAttachedProperties attrKey definition prevOpt curr target
 
@@ -160,10 +160,10 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         | ValueSome kvp -> unbox<'T>(kvp.Value)
         | ValueNone -> failwithf "Property '%s' does not exist on %s" key.Name x.Handler.TargetType.Name
 
-    member x.Create(definition: ProgramDefinition) =
+    member x.Create(definition: ProgramDefinition, parentOpt: obj voption) =
         ProgramTracing.traceDebug definition (sprintf "Create %O" x.Handler.TargetType)
 
-        let target = x.Handler.Create(x)
+        let target = x.Handler.Create(x, parentOpt)
         x.Update(definition, ValueNone, target)
 
         match x.TryGetAttributeKeyed(DynamicViewElement.CreatedAttribKey) with
@@ -201,7 +201,7 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         DynamicViewElement(handlerKey, KeyValuePair(key.KeyValue, box value) :: attribs)
 
     interface IViewElement with
-        member x.Create(definition) = x.Create(definition)
+        member x.Create(definition, parentOpt) = x.Create(definition, parentOpt)
         member x.Update(definition, prevOpt, target) =
             let prevOpt =
                 match prevOpt with
