@@ -79,8 +79,8 @@ module DiffTests =
         let x = testUpdateChildren (ValueSome previous) current
         x |> should equal [
             Update (0, previous.[0], current.[0])
-            Delete 1
-            Delete 2
+            Delete (1, previous.[1])
+            Delete (2, previous.[2])
         ]
 
     /// Keeping elements at the start (not same instance) and adding elements at the end should update the existing
@@ -137,7 +137,7 @@ module DiffTests =
             Update (0, previous.[0], current.[0])
             Update (1, previous.[1], current.[1])
             Update (2, previous.[2], current.[2])
-            Delete 3
+            Delete (3, previous.[3])
         ]
 
     /// Replacing an element with an element of another type should create the new control in place of the old one
@@ -151,7 +151,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             Insert (0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Adding a keyed element to an empty list should create the associated control
@@ -185,7 +185,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             Insert (0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Removing elements in the middle of others (not the same instances) should reuse the existing controls based
@@ -204,7 +204,7 @@ module DiffTests =
         |> should equal [
             Update (0, previous.[0], current.[0])
             MoveAndUpdate (2, previous.[2], 1, current.[1])
-            Delete 1
+            Delete (1, previous.[1])
         ]
 
     /// Reordering keyed elements should reuse the correct controls
@@ -222,7 +222,7 @@ module DiffTests =
         |> should equal [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             MoveAndUpdate (0, previous.[0], 1, current.[1])
-            Delete 1
+            Delete (1, previous.[1])
         ]
 
     /// New keyed elements should reuse discarded elements even though the keys are not matching,
@@ -243,7 +243,7 @@ module DiffTests =
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             Insert (1, current.[1])
             MoveAndUpdate (0, previous.[0], 2, current.[2])
-            Delete 1
+            Delete (1, previous.[1])
         ]
 
     /// Complex use cases with reordering and remove/add of keyed elements should reuse controls efficiently
@@ -281,7 +281,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             Insert (0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Replacing a keyed element with one of another type and another key, should create the new control
@@ -296,7 +296,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             Insert (0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Replacing a keyed element with a non-keyed one should reuse the discarded element
@@ -310,7 +310,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             Insert (0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Replacing a non-keyed element with another when a keyed element is present should reuse the discarded element
@@ -341,7 +341,7 @@ module DiffTests =
         testUpdateChildren (ValueSome previous) current
         |> should equal [
             MoveAndUpdate (1, previous.[1], 0, current.[0])
-            Delete 0
+            Delete (0, previous.[0])
         ]
 
     /// Complex use cases with reordering and remove/add of mixed elements should reuse controls efficiently
@@ -364,8 +364,8 @@ module DiffTests =
             Move (3, 0)
             MoveAndUpdate (0, previous.[0], 1, current.[1])
             MoveAndUpdate (1, previous.[1], 2, current.[2])
-            Delete 2
-            Delete 4
+            Delete (2, previous.[2])
+            Delete (4, previous.[4])
         ]
 
     open Xamarin.Forms
@@ -443,7 +443,7 @@ module DiffTests =
             Update (3, previous.[3], current.[3])
             Insert (4, current.[4])
             MoveAndUpdate (4, previous.[4], 5, current.[5])
-            Delete 5
+            Delete (5, previous.[5])
         ]
 
     [<Test>]
@@ -481,7 +481,7 @@ module DiffTests =
             Update (6, previous.[6], current.[6])
             Update (7, previous.[7], current.[7])
             Update (8, previous.[8], current.[8])
-            Delete 4
+            Delete (4, previous.[4])
         ]
 
     [<Test>]
@@ -503,10 +503,10 @@ module DiffTests =
             Insert (0, current.[0])
             Update (1, previous.[1], current.[1])
             Insert (2, current.[2])
-            Delete 0
-            Delete 2
-            Delete 3
-            Delete 4
+            Delete (0, previous.[0])
+            Delete (2, previous.[2])
+            Delete (3, previous.[3])
+            Delete (4, previous.[4])
         ]
 
     [<Test>]
@@ -534,15 +534,15 @@ module DiffTests =
             Update (1, previous.[1], current.[1])
 
             // Discarded elements = had a key that was not reused
-            Delete 0
-            Delete 3
-            Delete 5
+            Delete (0, previous.[0])
+            Delete (3, previous.[3])
+            Delete (5, previous.[5])
 
             // Not reused elements
-            Delete 4
-            Delete 6
-            Delete 7
-            Delete 8
-            Delete 9
-            Delete 10
+            Delete (4, previous.[4])
+            Delete (6, previous.[6])
+            Delete (7, previous.[7])
+            Delete (8, previous.[8])
+            Delete (9, previous.[9])
+            Delete (10, previous.[10])
         ]
