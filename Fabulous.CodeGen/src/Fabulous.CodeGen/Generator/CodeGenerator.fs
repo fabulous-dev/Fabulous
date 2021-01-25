@@ -83,7 +83,7 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
-            w.printfn "    static member Create%s (curr: IViewElement, parentOpt: obj voption) : %s =" data.Name data.FullName
+            w.printfn "    static member Create%s (curr: DynamicViewElement, parentOpt: obj voption) : %s =" data.Name data.FullName
                 
             match data.CreateCode with
             | Some createCode ->
