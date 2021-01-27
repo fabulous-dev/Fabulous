@@ -218,12 +218,17 @@ module Binder =
               IsRequired = bindingsTypeProperty.UpdateCode.IsNone && bindingsTypeProperty.CanBeUpdated <> Some false }
             
             { Name = "InputType"; Value = bindingsTypeProperty.InputType; IsRequired = true }
+            
+            { Name = "OriginalType"
+              Value = bindingsTypeProperty.OriginalType |> Option.orElse bindingsTypeProperty.InputType
+              IsRequired = false }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name
             (fun values ->
                 let name = values.[0]
                 let defaultValue = values.[1]
                 let inputType = values.[2]
+                let originalType = values.[3]
                 
                 { Name = name
                   ShortName = BinderHelpers.getShortName bindingsTypeProperty.ShortName name
@@ -231,7 +236,7 @@ module Binder =
                   CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
                   CustomAttributeKey = bindingsTypeProperty.CustomAttributeKey
                   DefaultValue = defaultValue
-                  OriginalType = inputType
+                  OriginalType = originalType
                   InputType = inputType
                   ModelType = Text.getValueOrDefault bindingsTypeProperty.ModelType inputType
                   ConvertInputToModel = Text.getValueOrDefault bindingsTypeProperty.ConvertInputToModel ""
