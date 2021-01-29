@@ -18,6 +18,7 @@ Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/
 Fabulous\.XamarinForms/samples/CounterApp/CounterApp/CounterApp\.args\.txt
 Fabulous\.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
 Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\/Xamarin\.Forms\.Core\.fs
+Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\/Xamarin\.Forms\.Core\.Attributes\.fs
 Fabulous\.StaticView/samples/**/*\.designer\.cs
 Fabulous\.XamarinForms/samples/**/*\.designer\.cs
 
@@ -32,4 +33,11 @@ Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.fs
 Fabulous.XamarinForms/extensions/FFImageLoading/Xamarin.FFImageLoading.Forms.fs
 Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs
 
+Fabulous.XamarinForms/extensions/OxyPlot/OxyPlot.Xamarin.Forms.Attributes.fs
+Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.Views.Forms.Attributes.fs
+Fabulous.XamarinForms/extensions/VideoManager/Plugin.MediaManager.Forms.Attributes.fs
+Fabulous.XamarinForms/extensions/FFImageLoading/Xamarin.FFImageLoading.Forms.Attributes.fs
+Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.Attributes.fs
+
 .paket/Paket.Restore.targets
+
