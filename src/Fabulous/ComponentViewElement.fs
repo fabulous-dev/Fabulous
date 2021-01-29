@@ -5,6 +5,7 @@ type IComponentHandler<'arg, 'msg, 'model, 'externalMsg> =
     abstract GetRunnerForTarget: obj -> IRunner<'arg, 'msg, 'model, 'externalMsg> voption
     abstract SetRunnerForTarget: IRunner<'arg, 'msg, 'model, 'externalMsg> voption * obj -> unit
 
+/// Represent a component with its own internal runner
 type IComponentViewElement =
     inherit IViewElement
 
