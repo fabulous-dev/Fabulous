@@ -18,6 +18,7 @@ module ViewUpdaters =
             (fun _ _ x -> x)
             (fun _ _ _ _ -> ())
             (fun _ _ _ _ -> ())
+            (fun _ _ -> ())
 
     let updatePolylineGeopath (definition: ProgramDefinition) (prevCollOpt: Xamarin.Forms.Maps.Position array voption) (currCollOpt: Xamarin.Forms.Maps.Position array voption) (target: Xamarin.Forms.Maps.Polyline) _ =
         Collections.updateItems definition prevCollOpt currCollOpt target.Geopath
@@ -26,3 +27,4 @@ module ViewUpdaters =
             (fun _ _ x -> x)
             (fun _ _ _ _ -> ())
             (fun _ _ _ _ -> ())
+            (fun _ _ -> ())

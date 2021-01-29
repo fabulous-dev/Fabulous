@@ -307,12 +307,12 @@ module Collections =
             (fun prevOpt curr target -> attach definition prevOpt curr target)
             (fun prev target -> prev.Unmount(target))
 
-    let updateItems definition prevCollOpt collOpt target keyOf canReuse create update attach =
+    let updateItems definition prevCollOpt collOpt target keyOf canReuse create update attach unmount =
         updateCollection false prevCollOpt collOpt target keyOf canReuse
             (fun c -> create definition (ValueSome (box target)) c)
             (fun prev curr target -> update definition prev curr target)
             (fun prevOpt curr target -> attach definition prevOpt curr target)
-            (fun prev target -> ())
+            unmount
 
     /// Update a control given the previous and new view elements
     let inline updateChild (definition: ProgramDefinition) (prevChild: IViewElement) (newChild: IViewElement) targetChild =
@@ -425,10 +425,12 @@ module Collections =
             | oc -> oc
         updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ()) (fun _ _ -> ())
 
-    let inline updateViewElementHolderItems definition (prevCollOpt: IViewElement[] voption) (collOpt: IViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
+    let inline updateViewElementHolderItems definition (prevCollOpt: IViewElement[] voption) (collOpt: IViewElement[] voption) (targetColl: IList<ViewElementHolder>) attach =
         updateItems definition prevCollOpt collOpt targetColl
             ViewHelpers.tryGetKey ViewHelpers.canReuseView
             (fun def parentOpt c -> ViewElementHolder(c, def)) (fun _ _ curr holder -> holder.ViewElement <- curr)
+            attach
+            (fun prev target -> prev.Unmount(target))
 
     let inline getCollection<'T> (coll: IEnumerable) (set: ObservableCollection<'T> -> unit) =
         match coll with
@@ -464,6 +466,7 @@ module Collections =
             (fun (_, prevHeader, _) (_, currHeader, _) -> ViewHelpers.canReuseView prevHeader currHeader)
             (fun def parentOpt (k, h, v) -> ViewElementHolderGroup(k, h, v, def)) updateViewElementHolderGroup
             (fun _ _ _ _ -> ())
+            (fun _ _ -> ())
 
     /// Update the selected items in a SelectableItemsView control, given previous and current indexes
     let inline updateSelectableItemsViewSelectedItems definition (prevCollOptOpt: int[] option voption) (collOptOpt: int[] option voption) (target: SelectableItemsView) =
@@ -475,7 +478,7 @@ module Collections =
             let itemsSource = target.ItemsSource :?> IList<ViewElementHolder>
             itemsSource.[idx] :> obj
 
-        updateItems definition prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ _ -> ()) (fun _ _ _ _ -> ())
+        updateItems definition prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ _ -> ()) (fun _ _ _ _ -> ()) (fun _ _ -> ())
 
 
     let inline updatePathGeometryFigures definition (prevOpt: InputTypes.Figures.Value voption) (currOpt: InputTypes.Figures.Value voption) (target: PathGeometry) =
