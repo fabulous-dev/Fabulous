@@ -10,6 +10,7 @@
     <PackageTags>xamarin;forms;xamarin.forms;mac;windows;android;ios;bitmap;image;cache;webp;quick;easy;lru;load;loading;save</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Xamarin.FFImageLoading.Forms.Attributes.fs" />
     <Compile Include="Xamarin.FFImageLoading.Forms.fs" />
     <None Include="Xamarin.FFImageLoading.Forms.json" />
   </ItemGroup>

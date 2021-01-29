@@ -8,7 +8,8 @@ open Fabulous.CodeGen
 module Program =
     type Options = {
         [<Option('m', "Mapping file", Required = true, HelpText = "Mapping file")>] MappingFile: string
-        [<Option('o', "Output file", Required = true, HelpText = "Output file")>] OutputFile: string
+        [<Option('a', "Output file for the attributes", Required = true, HelpText = "Output file for the attributes")>] AttributesOutputFile: string
+        [<Option('b', "Output file for the builders", Required = true, HelpText = "Output file for the builders")>] BuildersOutputFile: string
         [<Option('d', "Debug", Required = false, HelpText = "Debug")>] Debug: bool
     }
     
@@ -50,7 +51,7 @@ module Program =
                         isTypeResolvable = XFConverters.isTypeResolvable
                         convertTypeName = XFConverters.convertTypeName
                         tryGetStringRepresentationOfDefaultValue = XFConverters.tryGetStringRepresentationOfDefaultValue })
-                |> Program.run options.MappingFile options.OutputFile
+                |> Program.run options.MappingFile options.AttributesOutputFile options.BuildersOutputFile
                 
             // Exit code
             match result with

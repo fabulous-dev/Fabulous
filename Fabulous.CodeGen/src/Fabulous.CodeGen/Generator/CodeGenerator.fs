@@ -39,9 +39,9 @@ module CodeGenerator =
             let typeName =
                 match m.Name with
                 | "Created" -> "(obj -> unit)"
-                | _ -> "_"
+                | _ -> m.ModelType
                 
-            w.printfn "    let %s : AttributeKey<%s> = AttributeKey<%s>(\"%s\")" (getAttributeKeyName m.UniqueName) typeName typeName m.UniqueName
+            w.printfn "    let %s : AttributeKey<_> = AttributeKey<%s>(\"%s\")" (getAttributeKeyName m.UniqueName) typeName m.UniqueName
         w.printfn ""
         w
 
@@ -422,13 +422,21 @@ module CodeGenerator =
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
         
-    let generate data =
+    let generateCodeForAttributes data =
         let toString (w: StringWriter) = w.ToString()
         use writer = new StringWriter()
         
         writer
         |> generateNamespace data.Namespace data.AdditionalNamespaces
         |> generateAttributes data.Attributes
+        |> toString
+        
+    let generateCodeForBuilders data =
+        let toString (w: StringWriter) = w.ToString()
+        use writer = new StringWriter()
+        
+        writer
+        |> generateNamespace data.Namespace data.AdditionalNamespaces
         |> generateBuilders data.Builders
         |> generateViewers data.Viewers
         |> generateConstructors data.Constructors
@@ -437,10 +445,15 @@ module CodeGenerator =
 
     let generateCode
         (prepareData: BoundModel -> GeneratorData)
-        (generate: GeneratorData -> string)
-        (bindings: BoundModel) : WorkflowResult<string> =
+        (generateForAttributes: GeneratorData -> string)
+        (generateForBuilders: GeneratorData -> string)
+        (bindings: BoundModel) : WorkflowResult<string * string> =
         
         bindings
         |> prepareData
-        |> generate
+        |> (fun data ->
+            let attributes = generateForAttributes data
+            let builders = generateForBuilders data
+            (attributes, builders)
+        )
         |> WorkflowResult.ok
