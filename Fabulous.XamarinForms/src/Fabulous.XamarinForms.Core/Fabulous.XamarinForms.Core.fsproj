@@ -7,14 +7,6 @@
   <ItemGroup>
     <Compile Include="InputTypes.fs" />
     <Compile Include="CustomControls.fs" />
-    <Compile Include="DynamicViewHelpers.fs" />
-    <Compile Include="Component.fs" />
-    <Compile Include="ViewHelpers.fs" />
-    <Compile Include="Program.fs" />
-    <Compile Include="ViewConverters.fs" />
-    <Compile Include="ViewUpdaters.fs" />
-    <Compile Include="Collections.fs" />
-    <Compile Include="ViewExtensions.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />

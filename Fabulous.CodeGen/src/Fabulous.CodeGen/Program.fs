@@ -28,7 +28,8 @@ type ReadAssembliesConfiguration =
     
 type GeneratorConfiguration =
     { prepareData: BoundModel -> GeneratorData
-      generate: GeneratorData -> string }
+      generateForAttributes: GeneratorData -> string
+      generateForBuilders: GeneratorData -> string }
     
 type WorkflowConfiguration =
     { loadMappings: string -> WorkflowResult<Mapping * Mapping array option>
@@ -36,7 +37,7 @@ type WorkflowConfiguration =
       bind: AssemblyType array -> (Mapping * Mapping array option) -> WorkflowResult<BoundModel>
       optimize: BoundModel -> WorkflowResult<BoundModel>
       expand: AssemblyType array -> BoundModel -> WorkflowResult<BoundModel>
-      generateCode: GeneratorConfiguration -> BoundModel -> WorkflowResult<string> }
+      generateCode: GeneratorConfiguration -> BoundModel -> WorkflowResult<string * string> }
 
 type Program =
     { Debug: bool
@@ -85,10 +86,11 @@ module private Functions =
     let generateCode configuration bindings =
         CodeGenerator.generateCode
             configuration.prepareData
-            configuration.generate
+            configuration.generateForAttributes
+            configuration.generateForBuilders
             bindings
     
-    let runProgram program mappingFile outputFile =        
+    let runProgram program mappingFile attributesOutputFile buildersOutputFile =        
         let readAssemblies (mapping: Mapping, baseMappings) =
             program.Workflow.readAssemblies program.Configuration program.ReadAssembliesConfiguration mapping.Assemblies
             |> WorkflowResult.debug program.Debug "1-assembly-types.json"
@@ -111,8 +113,9 @@ module private Functions =
         let generateCode boundModel =
             program.Workflow.generateCode program.GeneratorConfiguration boundModel
             
-        let write outputFile generatedCode =
-            File.WriteAllText(outputFile, generatedCode)
+        let write attributesOutputFile buildersOutputFile (attributesGeneratedCode, buildersGeneratedCode) =
+            File.WriteAllText(attributesOutputFile, attributesGeneratedCode)
+            File.WriteAllText(buildersOutputFile, buildersGeneratedCode)
         
         program.Workflow.loadMappings mappingFile
         |> WorkflowResult.bind readAssemblies
@@ -120,7 +123,7 @@ module private Functions =
         |> WorkflowResult.bind optimize
         |> WorkflowResult.bind expand
         |> WorkflowResult.bind generateCode
-        |> WorkflowResult.tie (write outputFile)
+        |> WorkflowResult.tie (write attributesOutputFile buildersOutputFile)
         |> WorkflowResult.toProgramResult
     
 module Program =
@@ -142,7 +145,8 @@ module Program =
                 tryGetStringRepresentationOfDefaultValue = Converters.tryGetStringRepresentationOfDefaultValue }
           GeneratorConfiguration =
               { prepareData = Preparer.prepareData
-                generate = CodeGenerator.generate } }
+                generateForAttributes = CodeGenerator.generateCodeForAttributes
+                generateForBuilders = CodeGenerator.generateCodeForBuilders } }
         
     let withDebug debug program =
         { program with Debug = debug }
@@ -156,5 +160,5 @@ module Program =
     let withGeneratorConfiguration func program =
         { program with GeneratorConfiguration = func program.GeneratorConfiguration }
     
-    let run bindingsFile outputFile program =
-        Functions.runProgram program bindingsFile outputFile
+    let run bindingsFile attributesOutputFile buildersOutputFile program =
+        Functions.runProgram program bindingsFile attributesOutputFile buildersOutputFile

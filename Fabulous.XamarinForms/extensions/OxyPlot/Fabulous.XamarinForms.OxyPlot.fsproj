@@ -10,6 +10,7 @@
     <PackageTags>OxyPlot;Charting;2D</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="OxyPlot.Xamarin.Forms.Attributes.fs" />
     <Compile Include="OxyPlot.Xamarin.Forms.fs" />
     <None Include="OxyPlot.Xamarin.Forms.json" />
   </ItemGroup>

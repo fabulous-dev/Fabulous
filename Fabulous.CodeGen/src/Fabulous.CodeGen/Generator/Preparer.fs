@@ -11,18 +11,18 @@ module Preparer =
             for boundType in boundTypes do
                 for e in boundType.Events do
                     if e.IsInherited = false && e.CustomAttributeKey.IsNone then
-                        yield { UniqueName = e.UniqueName; Name = e.Name }
+                        yield { UniqueName = e.UniqueName; Name = e.Name; ModelType = e.ModelType }
                 for p in boundType.Properties do
                     if p.IsInherited = false then
                         if p.CustomAttributeKey.IsNone then
-                            yield { UniqueName = p.UniqueName; Name = p.Name }
+                            yield { UniqueName = p.UniqueName; Name = p.Name; ModelType = p.ModelType }
                    
                         match p.CollectionData with
                         | None -> ()
                         | Some cd ->
                             for ap in cd.AttachedProperties do
                                 if ap.CustomAttributeKey.IsNone then
-                                    yield { UniqueName = ap.UniqueName; Name = ap.Name } } : seq<AttributeData>)
+                                    yield { UniqueName = ap.UniqueName; Name = ap.Name; ModelType = ap.ModelType } } : seq<AttributeData>)
         |> Seq.distinctBy (fun a -> a.UniqueName)
         |> Seq.toArray
 

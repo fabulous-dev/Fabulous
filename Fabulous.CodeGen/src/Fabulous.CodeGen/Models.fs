@@ -23,6 +23,9 @@ module Models =
         /// The type which the user should provide for the member
         member val InputType: string option = None with get, set
         
+        // The type of original member
+        member val OriginalType: string option = None with get, set
+        
         /// The type as which the member's value will be stored in the ViewElement
         /// If the InputType is an F# List, the ModelType will automatically set to an array
         member val ModelType: string option = None with get, set

@@ -9,6 +9,7 @@
     <PackageTags>Maps</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Xamarin.Forms.Maps.Attributes.fs" />
     <Compile Include="ViewUpdaters.fs" />
     <Compile Include="Xamarin.Forms.Maps.fs" />
     <None Include="Xamarin.Forms.Maps.json" />

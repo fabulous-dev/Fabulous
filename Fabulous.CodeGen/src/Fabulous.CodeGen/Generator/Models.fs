@@ -4,7 +4,8 @@ namespace Fabulous.CodeGen.Generator
 module Models =
     type AttributeData =
         { UniqueName: string
-          Name: string }
+          Name: string
+          ModelType: string }
     
     type ConstructType =
         { Name: string

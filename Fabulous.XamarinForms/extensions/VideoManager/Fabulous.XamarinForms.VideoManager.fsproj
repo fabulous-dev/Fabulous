@@ -10,6 +10,7 @@
     <PackageTags>VideoManager;Audio;Video;Player</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Plugin.MediaManager.Forms.Attributes.fs" />
     <Compile Include="Plugin.MediaManager.Forms.fs" />
     <None Include="Plugin.MediaManager.Forms.json" />
   </ItemGroup>
