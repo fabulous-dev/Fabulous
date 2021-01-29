@@ -121,7 +121,14 @@ type ViewElementDataTemplateSelector() =
     let cache = Dictionary<Type, ViewElementDataTemplate>()
     override this.OnSelectTemplate(item, _) =
         let holder = item :?> IViewElementHolder
-        let targetType = holder.ViewElement.TargetType
+        
+        // Since we can't guarantee the type of the control that a component will return as root
+        // and ViewElementDataTemplate relies on the TargetType to work,
+        // we're forced to not allow directly components as children
+        let targetType =
+            match holder.ViewElement with
+            | :? IComponentViewElement -> failwithf "Can't directly use a component as a child of ListView/CollectionView. Please wrap it inside a ViewCell or ContentView first."
+            | ve -> ve.TargetType
 
         match cache.TryGetValue targetType with
         | false, _ ->
