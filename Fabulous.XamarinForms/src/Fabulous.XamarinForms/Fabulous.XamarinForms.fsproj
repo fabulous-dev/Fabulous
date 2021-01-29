@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="..\Fabulous.XamarinForms.Core\InputTypes.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\CustomControls.fs" />
+    <Compile Include="Xamarin.Forms.Core.Attributes.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\ViewHelpers.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\Program.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\ViewConverters.fs" />
