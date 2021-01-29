@@ -92,7 +92,7 @@ module Binder =
           CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
           CustomAttributeKey = bindingsAttachedProperty.CustomAttributeKey
           DefaultValue = Text.getValueOrDefault bindingsAttachedProperty.DefaultValue assemblyTypeAttachedProperty.DefaultValue
-          OriginalType = assemblyTypeAttachedProperty.Type
+          OriginalType = Text.getValueOrDefault bindingsAttachedProperty.OriginalType assemblyTypeAttachedProperty.Type
           InputType = Text.getValueOrDefault bindingsAttachedProperty.InputType assemblyTypeAttachedProperty.Type
           ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType assemblyTypeAttachedProperty.Type
           ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
@@ -105,19 +105,21 @@ module Binder =
             { Name = "Name"; Value = bindingsAttachedProperty.Name; IsRequired = true }
             { Name = "DefaultValue"; Value = bindingsAttachedProperty.DefaultValue; IsRequired = bindingsAttachedProperty.UpdateCode.IsNone }
             { Name = "InputType"; Value = bindingsAttachedProperty.InputType; IsRequired = true }
+            { Name = "OriginalType"; Value = bindingsAttachedProperty.OriginalType; IsRequired = false }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "attached property" bindingsAttachedProperty.Name
                (fun values ->
                     let name = values.[0]
                     let defaultValue = values.[1]
                     let inputType = values.[2]
+                    let originalType = values.[3]
                            
                     { Name = name
                       UniqueName = Text.getValueOrDefault bindingsAttachedProperty.UniqueName name
                       CanBeUpdated = bindingsAttachedProperty.CanBeUpdated |> Option.defaultValue true
                       CustomAttributeKey = bindingsAttachedProperty.CustomAttributeKey
                       DefaultValue = defaultValue
-                      OriginalType = inputType
+                      OriginalType = Text.eitherStringOrDefault originalType inputType ""
                       InputType = inputType
                       ModelType = Text.getValueOrDefault bindingsAttachedProperty.ModelType inputType
                       ConvertInputToModel = Text.getValueOrDefault bindingsAttachedProperty.ConvertInputToModel ""
@@ -160,7 +162,7 @@ module Binder =
           CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
           CustomAttributeKey = bindingsTypeProperty.CustomAttributeKey
           DefaultValue = Text.getValueOrDefault bindingsTypeProperty.DefaultValue assemblyTypeProperty.DefaultValue
-          OriginalType = assemblyTypeProperty.Type
+          OriginalType = Text.getValueOrDefault bindingsTypeProperty.OriginalType assemblyTypeProperty.Type
           InputType = Text.getValueOrDefault bindingsTypeProperty.InputType assemblyTypeProperty.Type
           ModelType =
               match bindingsTypeProperty.ConvertInputToModel with
@@ -218,10 +220,7 @@ module Binder =
               IsRequired = bindingsTypeProperty.UpdateCode.IsNone && bindingsTypeProperty.CanBeUpdated <> Some false }
             
             { Name = "InputType"; Value = bindingsTypeProperty.InputType; IsRequired = true }
-            
-            { Name = "OriginalType"
-              Value = bindingsTypeProperty.OriginalType |> Option.orElse bindingsTypeProperty.InputType
-              IsRequired = false }
+            { Name = "OriginalType"; Value = bindingsTypeProperty.OriginalType; IsRequired = false }
         ]
         |> BinderHelpers.createBinding logger containerTypeName "property" bindingsTypeProperty.Name
             (fun values ->
@@ -236,7 +235,7 @@ module Binder =
                   CanBeUpdated = bindingsTypeProperty.CanBeUpdated |> Option.defaultValue true
                   CustomAttributeKey = bindingsTypeProperty.CustomAttributeKey
                   DefaultValue = defaultValue
-                  OriginalType = originalType
+                  OriginalType = Text.eitherStringOrDefault originalType inputType ""
                   InputType = inputType
                   ModelType = Text.getValueOrDefault bindingsTypeProperty.ModelType inputType
                   ConvertInputToModel = Text.getValueOrDefault bindingsTypeProperty.ConvertInputToModel ""
