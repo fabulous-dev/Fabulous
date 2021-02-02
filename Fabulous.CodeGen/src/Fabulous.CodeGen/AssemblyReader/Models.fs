@@ -49,9 +49,6 @@ module Models =
           /// Indicates if the type can be instantiated (non-abstract type)
           CanBeInstantiated: bool
           
-          /// Indicates if the type has a public parameter-less constructor
-          HasParameterlessConstructor: bool
-          
           /// The types inherited by this type
           /// From first to last, the closest inherited type to the base
           InheritanceHierarchy: string array
