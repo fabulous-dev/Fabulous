@@ -6,7 +6,7 @@ type RunnerDispatch<'msg>()  =
     member x.DispatchViaThunk = id (fun msg -> dispatchImpl msg)
     member x.SetDispatchThunk v = dispatchImpl <- v
 
-/// Starts the Elmish dispatch loop for the page with the given Elmish program
+/// Starts the dispatch loop for the page with the given program
 type Runner<'arg, 'msg, 'model, 'externalMsg>(arg: 'arg) =
     let mutable runnerDefinition = Unchecked.defaultof<RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>>
     let mutable programDefinition = Unchecked.defaultof<ProgramDefinition>

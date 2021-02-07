@@ -99,7 +99,7 @@ type Registrar private () =
 /// An handler has a reference to the TargetType, the Create and Update functions
 /// The handler is identified by its key once registered in the Registrar
 /// The ViewElement only needs to store that key to access those functions
-and [<Struct>] DynamicViewElementHandler
+and DynamicViewElementHandler
     internal
         (
             key: int,

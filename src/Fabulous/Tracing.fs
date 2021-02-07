@@ -2,10 +2,18 @@
 namespace Fabulous
 
 module Tracing =
+    /// Represents a level of details in the trace outputs
     type TraceLevel =
+        /// Print out all traces 
         | Debug = 0
+        
+        /// Print out errors and informational traces
         | Info = 1
+        
+        /// Print out only errors
         | Error = 2
+        
+        /// No trace
         | None = 3
 
     let inline trace (traceFn: TraceLevel -> string -> unit) (targetTraceLevel: TraceLevel) (traceLevel: TraceLevel) (str: string) =
