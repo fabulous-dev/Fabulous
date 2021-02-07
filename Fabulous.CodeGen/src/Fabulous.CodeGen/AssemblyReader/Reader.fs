@@ -105,14 +105,11 @@ module Reader =
             (tdef: TypeDefinition) =
         let ctor =
             tdef.Methods
-             |> Seq.filter (fun x -> x.IsConstructor && x.IsPublic)
-             |> Seq.sortBy (fun x -> x.Parameters.Count)
-             |> Seq.tryHead
+             |> Seq.tryFind (fun x -> x.IsConstructor && x.IsPublic && x.Parameters.Count = 0)
         
         { FullName = tdef.FullName
           AssemblyName = tdef.Module.Assembly.Name.Name
           CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome
-          HasParameterlessConstructor = ctor.IsSome && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
