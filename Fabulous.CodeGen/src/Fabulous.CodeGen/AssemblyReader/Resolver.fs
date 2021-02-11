@@ -9,7 +9,9 @@ module Resolver =
         [ for assembly in assemblies do
             for ``module`` in assembly.Modules do
                 for ``type`` in ``module``.Types do
-                    yield ``type`` ]
+                    yield ``type``
+                    for nestedType in ``type``.NestedTypes do
+                        yield nestedType ]
 
     let rec private getAllTypesDerivingFromBaseTypeInner (allTypes: Mono.Cecil.TypeDefinition list) baseTypeName =
         match allTypes |> List.tryFind (fun tdef -> tdef.FullName = baseTypeName) with
