@@ -14,6 +14,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
     let mutable lastViewData = Unchecked.defaultof<IViewElement>
     let mutable disposableSubscription: System.IDisposable = null
     let mutable rootView = null
+    let mutable lastArg = Unchecked.defaultof<'arg>
     let dispatch = RunnerDispatch<'msg>()
 
     let rec processMsg msg =
@@ -48,10 +49,14 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         RunnerTracing.traceDebug runnerDefinition (sprintf "View updated for model %0A" updatedModel)
 
+    
+    member x.Arg = lastArg
+    
     member x.Start(definition, rootOpt, parentOpt, arg) =
         RunnerTracing.traceDebug definition (sprintf "Starting runner for %0A..." rootOpt)
 
         dispatch.SetDispatchThunk(definition.syncDispatch processMsg)
+        lastArg <- arg
         runnerDefinition <- definition
         programDefinition <-
             { canReuseView = definition.canReuseView
