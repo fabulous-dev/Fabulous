@@ -22,19 +22,21 @@ module Component =
                 match runnerOpt with
                 | ValueNone -> bindableObject.ClearValue(ComponentRunnerProperty)
                 | ValueSome runner -> bindableObject.SetValue(ComponentRunnerProperty, runner)
-
-    let forProgram(program) =
-        let handler = ComponentHandler<unit, 'msg, 'model, 'externalMsg>()
-        ComponentViewElement(handler, program, ValueNone, (), ValueNone, ValueNone)
-
-    let forProgramWithArgs(program, args) =
-        let handler = ComponentHandler<'arg, 'msg, 'model, 'externalMsg>()
-        ComponentViewElement(handler, program, ValueNone, args, ValueNone, ValueNone)
-
-    let forProgramWithState(program, state, onStateChanged) =
-        let handler = ComponentHandler<unit, 'msg, 'model, 'externalMsg>()
-        ComponentViewElement(handler, program, ValueNone, (), ValueSome (onStateChanged, state), ValueNone)
-
-    let forProgramWithExternalMsg(program, onExternalMsg) =
-        let handler = ComponentHandler<unit, 'msg, 'model, 'externalMsg>()
-        ComponentViewElement(handler, program, ValueNone, (), ValueNone, ValueSome onExternalMsg)
+    
+[<AbstractClass; Sealed>]
+type Component() =
+    static member inline forProgram(program, ?key, ?state: (('state -> 'msg) * 'state), ?externalMsg) =
+        let keyOpt = match key with Some x -> ValueSome x | None -> ValueNone
+        let stateOpt = match state with Some x -> ValueSome x | None -> ValueNone
+        let externalMsgOpt = match externalMsg with Some x -> ValueSome x | None -> ValueNone
+        
+        let handler = Component.ComponentHandler<unit, 'msg, 'model, 'externalMsg>()
+        ComponentViewElement(handler, program, keyOpt, (), stateOpt, externalMsgOpt)
+    
+    static member inline forProgramWithArgs(program, args, ?key, ?state: (('state -> 'msg) * 'state), ?externalMsg) =
+        let keyOpt = match key with Some x -> ValueSome x | None -> ValueNone
+        let stateOpt = match state with Some x -> ValueSome x | None -> ValueNone
+        let externalMsgOpt = match externalMsg with Some x -> ValueSome x | None -> ValueNone
+        
+        let handler = Component.ComponentHandler<'arg, 'msg, 'model, 'externalMsg>()
+        ComponentViewElement(handler, program, keyOpt, args, stateOpt, externalMsgOpt)
