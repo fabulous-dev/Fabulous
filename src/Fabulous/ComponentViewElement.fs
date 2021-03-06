@@ -13,7 +13,7 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
     (
         handler: IComponentHandler<'arg, 'msg, 'model, 'externalMsg>,
         runnerDefinition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>,
-        keyOpt: string voption,
+        key: string,
         arg: 'arg,
         state: (('state -> 'msg) * 'state) voption,
         externalMsg: ('externalMsg -> unit) voption
@@ -78,5 +78,5 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
                 runner.Stop()
                 handler.SetRunnerForTarget(ValueNone, target)
 
-        member x.TryKey = keyOpt
+        member x.TryKey = ValueSome key
         member x.TargetType = x.TargetType

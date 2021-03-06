@@ -62,8 +62,9 @@ module Timer =
 #endif
 
     type Fabulous.XamarinForms.View with
-        static member inline Timer(state) =
+        static member inline Timer(key, state) =
             Component.forProgram(
+                key,
                 program,
                 state = (StateChanged, state)
             )

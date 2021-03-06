@@ -39,4 +39,4 @@ module Counter =
 #endif
 
     type Fabulous.XamarinForms.View with
-        static member inline Counter() = Component.forProgram(program)
+        static member inline Counter(key) = Component.forProgram(key, program)

@@ -49,7 +49,10 @@ module App =
                             View.StackLayout(
                                 backgroundColor = Color.LightBlue,
                                 children = [
-                                    View.Timer({ IsEnabled = model.TimerEnabled })
+                                    View.Timer(
+                                        key = "timer",
+                                        state = { IsEnabled = model.TimerEnabled }
+                                    )
                                 ]
                             )
                         
