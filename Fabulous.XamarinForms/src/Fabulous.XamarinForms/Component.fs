@@ -10,7 +10,7 @@ module Component =
 
     type ComponentHandler<'arg, 'msg, 'model, 'externalMsg>() =
         interface IComponentHandler<'arg, 'msg, 'model, 'externalMsg> with
-            member x.CreateRunner(arg) = Runner<'arg, 'msg, 'model, 'externalMsg>(arg) :> IRunner<'arg, 'msg, 'model, 'externalMsg>
+            member x.CreateRunner() = Runner<'arg, 'msg, 'model, 'externalMsg>() :> IRunner<'arg, 'msg, 'model, 'externalMsg>
 
             member x.GetRunnerForTarget(target) =
                 match (target :?> Xamarin.Forms.BindableObject).GetValue(ComponentRunnerProperty) with

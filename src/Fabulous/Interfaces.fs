@@ -38,7 +38,7 @@ type RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> =
 /// Responsible for running the MVU loop
 type IRunner<'arg, 'msg, 'model, 'externalMsg> =
     /// Start the runner using the given definition
-    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj voption * obj voption -> obj
+    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj voption * obj voption * 'arg -> obj
     /// Stop the runner and dispose its subscriptions
     abstract Stop: unit -> unit
     /// Dispatch a message to the MVU loop of this runner

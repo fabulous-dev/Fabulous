@@ -10,94 +10,55 @@ open Counter
 open Timer
 open NameForm
 
+
+module TestCell =
+    type Model =
+        { Value: int }
+        
+    let init value =
+        { Value = value }
+    
+    let view model dispatch =
+        View.Label(
+            text = $"Cell {model.Value}",
+            margin = Thickness(100.)
+        )
+        
+    let program = XamarinFormsProgram.mkSimple init (fun (msg: unit) model -> model) view
+    
+    type Fabulous.XamarinForms.View with
+        static member inline TestCell(value) =
+            View.ContentView(
+                Component.forProgramWithArgs(
+                    $"Cell-{value}",
+                    program,
+                    value
+                )
+            )
+
+open TestCell
+
 module App =
     type Model =
-      { TimerEnabled: bool
-        FullName: string }
+      { Values: int list }
 
     type Msg =
-        | TimerToggled of bool
-        | NameFormMsg of NameForm.ExternalMsg
+        | Nothing
 
-    let init () = { TimerEnabled = false; FullName = "" }
+    let init () =
+        { Values = List.init 100 id }
 
     let update msg model =
         match msg with
-        | TimerToggled value -> { model with TimerEnabled = value }
-        | NameFormMsg msg ->
-            match msg with
-            | NameForm.ExternalMsg.FullNameChanged value -> { model with FullName = value }
+        | Nothing -> model
 
     let view (model: Model) dispatch =
         View.Application(
             View.ContentPage(
-                View.StackLayout(
-                    padding = Thickness 30.0,
-                    verticalOptions = LayoutOptions.Center,
-                    spacing = 30.,
-                    children = [
-                        View.Switch(
-                            isToggled = model.TimerEnabled,
-                            toggled = fun x -> dispatch (TimerToggled x.Value)
-                        )
-                        
-                        if not model.TimerEnabled then
-                            View.Grid([
-                                View.Label("Hello")
-                            ])
-                        else
-                            View.StackLayout(
-                                backgroundColor = Color.LightBlue,
-                                children = [
-                                    View.Timer(
-                                        key = "timer",
-                                        state = { IsEnabled = model.TimerEnabled }
-                                    )
-                                ]
-                            )
-                        
-//                        View.Grid(
-//                            backgroundColor = Color.LightGreen,
-//                            children = [
-//                                View.Counter()
-//                            ]
-//                        )
-//
-//                        View.Grid(
-//                            backgroundColor = Color.Yellow,
-//                            children = [
-//                                View.Counter()
-//                            ]
-//                        )
-//
-//                        View.StackLayout(
-//                            orientation = StackOrientation.Horizontal,
-//                            children = [
-//                                View.Switch(
-//                                    isToggled = model.TimerEnabled,
-//                                    toggled = fun x -> dispatch (TimerToggled x.Value)
-//                                )
-//                                View.Label("Enable timer")
-//                            ]
-//                        )
-//
-//                        View.StackLayout(
-//                            backgroundColor = Color.LightBlue,
-//                            children = [
-//                                View.Timer({ IsEnabled = model.TimerEnabled })
-//                            ]
-//                        )
-//
-//                        View.Label(sprintf "Component values: %s" model.FullName)
-//
-//                        View.StackLayout(
-//                            backgroundColor = Color.LightSalmon,
-//                            children = [
-//                                View.NameForm(fun msg -> dispatch (NameFormMsg msg))
-//                            ]
-//                        )
-                    ]
-                )
+                View.CollectionView([
+                    for value in model.Values do
+                        View.TestCell(value)
+                ])
             )
         )
 

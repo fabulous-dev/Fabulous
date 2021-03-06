@@ -7,7 +7,7 @@ type RunnerDispatch<'msg>()  =
     member x.SetDispatchThunk v = dispatchImpl <- v
 
 /// Starts the dispatch loop for the page with the given program
-type Runner<'arg, 'msg, 'model, 'externalMsg>(arg: 'arg) =
+type Runner<'arg, 'msg, 'model, 'externalMsg>() =
     let mutable runnerDefinition = Unchecked.defaultof<RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>>
     let mutable programDefinition = Unchecked.defaultof<ProgramDefinition>
     let mutable lastModel = Unchecked.defaultof<'model>
@@ -48,7 +48,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>(arg: 'arg) =
 
         RunnerTracing.traceDebug runnerDefinition (sprintf "View updated for model %0A" updatedModel)
 
-    member x.Start(definition, rootOpt, parentOpt) =
+    member x.Start(definition, rootOpt, parentOpt, arg) =
         RunnerTracing.traceDebug definition (sprintf "Starting runner for %0A..." rootOpt)
 
         dispatch.SetDispatchThunk(definition.syncDispatch processMsg)
@@ -101,6 +101,6 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>(arg: 'arg) =
         dispatch.DispatchViaThunk(msg)
 
     interface IRunner<'arg, 'msg, 'model, 'externalMsg> with
-        member x.Start(definition, rootOpt, parentOpt) = x.Start(definition, rootOpt, parentOpt)
+        member x.Start(definition, rootOpt, parentOpt, arg) = x.Start(definition, rootOpt, parentOpt, arg)
         member x.Stop() = x.Stop()
         member x.Dispatch(msg) = x.Dispatch(msg)
