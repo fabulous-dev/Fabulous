@@ -52,7 +52,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
     
     member x.Arg = lastArg
     
-    member x.Start(definition, rootOpt, parentOpt, arg) =
+    member private x.StartInternal(definition, rootOpt, parentOpt, prevModelOpt, arg) =
         RunnerTracing.traceDebug definition (sprintf "Starting runner for %0A..." rootOpt)
 
         dispatch.SetDispatchThunk(definition.syncDispatch processMsg)
@@ -77,7 +77,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
                 initialView.Create(programDefinition, parentOpt)
 
             | ValueSome root ->
-                initialView.Update(programDefinition, ValueNone, root)
+                initialView.Update(programDefinition, prevModelOpt, root)
                 root
 
         rootView <- target
@@ -92,6 +92,13 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         RunnerTracing.traceDebug definition (sprintf "Runner started for %0A" rootOpt)
         target
+        
+    member x.Start(definition, rootOpt, parentOpt, arg) =
+        x.StartInternal(definition, rootOpt, parentOpt, ValueNone, arg)
+        
+    member x.Restart(definition, root, arg) =
+        x.Stop()
+        x.StartInternal(definition, ValueSome root, ValueNone, ValueSome lastViewData, arg) |> ignore
         
     member x.Stop() =
         // Dispose the subscriptions
@@ -108,4 +115,5 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
     interface IRunner<'arg, 'msg, 'model, 'externalMsg> with
         member x.Start(definition, rootOpt, parentOpt, arg) = x.Start(definition, rootOpt, parentOpt, arg)
         member x.Stop() = x.Stop()
+        member x.Restart(definition, root, arg) = x.Restart(definition, root, arg)
         member x.Dispatch(msg) = x.Dispatch(msg)

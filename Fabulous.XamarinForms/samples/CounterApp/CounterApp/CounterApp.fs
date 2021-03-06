@@ -19,10 +19,12 @@ module TestCell =
         { Value = value }
     
     let view model dispatch =
-        View.Label(
-            text = $"Cell {model.Value}",
-            margin = Thickness(100.)
-        )
+        View.Grid([
+            View.Label(
+                text = $"Cell {model.Value}",
+                margin = Thickness(100.)
+            )
+        ])
         
     let program = XamarinFormsProgram.mkSimple init (fun (msg: unit) model -> model) view
     

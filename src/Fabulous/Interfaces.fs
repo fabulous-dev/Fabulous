@@ -41,6 +41,7 @@ type IRunner<'arg, 'msg, 'model, 'externalMsg> =
     abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj voption * obj voption * 'arg -> obj
     /// Stop the runner and dispose its subscriptions
     abstract Stop: unit -> unit
+    abstract Restart: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj * 'arg -> unit
     /// Dispatch a message to the MVU loop of this runner
     abstract Dispatch: 'msg -> unit
 

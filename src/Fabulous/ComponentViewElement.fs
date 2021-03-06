@@ -68,8 +68,7 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
                 | ValueSome (:? ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg> as prev) when prev.Key = x.Key && System.Object.ReferenceEquals(prev.RunnerDefinition, runnerDefinition) -> ()
                 | _ ->
                     let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
-                    runner.Stop()
-                    runner.Start(runnerDefinition, ValueSome (box target), ValueNone, arg) |> ignore
+                    runner.Restart(runnerDefinition, target, arg)
                     
                 dispatchStateChangedIfNeeded runner
                 
