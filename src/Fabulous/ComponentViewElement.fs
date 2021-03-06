@@ -47,6 +47,8 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
     member x.TargetType = runnerDefinition.GetType()
     
     member x.RunnerDefinition = runnerDefinition
+    
+    member x.TryKey = ValueSome key
 
     interface IComponentViewElement with
         member x.Create(definition, parentOpt) =
@@ -63,7 +65,7 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
             | ValueSome runner ->
                 // Only change the definition when it's actually a different runner definition
                 match prevOpt with
-                | ValueSome (:? ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg> as prev) when System.Object.ReferenceEquals(prev.RunnerDefinition, runnerDefinition) -> ()
+                | ValueSome (:? ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg> as prev) when prev.TryKey = x.TryKey && System.Object.ReferenceEquals(prev.RunnerDefinition, runnerDefinition) -> ()
                 | _ ->
                     let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
                     runner.Stop()
@@ -78,5 +80,5 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
                 runner.Stop()
                 handler.SetRunnerForTarget(ValueNone, target)
 
-        member x.TryKey = ValueSome key
+        member x.TryKey = x.TryKey
         member x.TargetType = x.TargetType
