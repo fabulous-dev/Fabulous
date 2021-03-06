@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Version>0.70.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.70.0-nightly6</PackageVersion>
+    <PackageVersion>0.70.0-nightly7</PackageVersion>
     <PackageReleaseNotes>VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
