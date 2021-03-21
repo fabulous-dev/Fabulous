@@ -4,9 +4,9 @@
     * [Models](models.html)
     * [Views](views.html)
         * [Pages](views-pages.html)
-        * Layouts
-        * Interface objects 
-        * Cells
+        * [Layouts](views-layouts.html)
+        * [Interface objects](views-interface-objects.html)
+        * [Cells]
     * [Update (and Messages)](update.html)
 * Developing
     * [Traces and Crashes](logging.html)

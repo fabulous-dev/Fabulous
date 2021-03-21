@@ -67,7 +67,7 @@ let view model dispatch =
 ```
 The four main control groups used to create the user interface of a Xamarin.Forms application are: 
 * [Pages](views-pages.html)
-* Layouts
+* [Layouts](view.layouts.html)
 * Interface objects 
 * Cells
 

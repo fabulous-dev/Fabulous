@@ -2,8 +2,6 @@
 
 {% include_relative contents.md %}
 
-{% include_relative _header.md %}
-
 *Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI*
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
