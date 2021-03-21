@@ -142,14 +142,13 @@ An example `Grid` is as follows:
 
 ```fsharp
 View.Grid(
-    rowdefs = [for _ in 1 .. 6 -> Dimension.Auto],
-    coldefs = [for _ in 1 .. 6 -> Dimension.Auto],
-    verticalOptions = LayoutOptions.FillAndExpand,
+    rowdefs = [for i in 1 .. 6 -> box "auto"],
+    coldefs = [for i in 1 .. 6 -> box "auto"],
     children = [
         for i in 1 .. 6 do
             for j in 1 .. 6 ->
                 let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
-                View.BoxView(color).Row(i-1).Column(j-1)
+                View.BoxView(color).GridRow(i-1).GridColumn(j-1)
     ]
 )
 ```
@@ -231,7 +230,7 @@ View.Shell(title = "TitleShell",
                    ])
            ])
 
-View.CarouselView(items = [
+View.CarouselView(itemsSource = [
             View.Label(text="Person1") 
             View.Label(text="Person2")
             View.Label(text="Person3")

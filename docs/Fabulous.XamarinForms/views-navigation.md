@@ -61,15 +61,6 @@ type Model =
 type Msg =
     | ...
     | ShowAbout of bool
-    
-let update msg model =
-    match msg with
-    | ...
-    | ShowAbout status ->       
-        if status then 
-            { model with ShowAbout = true }, Cmd.none    
-        else 
-            { model with ShowAbout = false }, Cmd.none   
 
 let view model dispatch =
     ...
@@ -88,7 +79,7 @@ let view model dispatch =
         [ yield rootPage dispatch
           if model.ShowAbout then
               yield modalPage dispatch
-        ], popped = fun args -> dispatch (ShowAbout false))
+        ])
 ```
 
 ### TabbedPage navigation

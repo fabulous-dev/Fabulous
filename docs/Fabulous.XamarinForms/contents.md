@@ -1,12 +1,16 @@
 * [Overview](guide.html)
 * [Getting started](index.html#getting-started)
-* [Views](views.html)
-* [Models](models.html)
-* [Update and Messages](update.html)
-* [Traces and Crashes](logging.html)
-* [Unit testing](testing.html)
-* [Tools](tools.html)
-* [Pitfalls and F# 5.0 support](pitfalls.html)
-* [Migration guide from v0.57 to v0.60](migration-guide-to-0.60.html)
+* [The MVU architecture](MVU.html)
+    * [Models](models.html)
+    * [Views](views.html)
+        * [Pages](views-pages.html)
+        * Layouts
+        * Interface objects 
+        * Cells
+    * [Update (and Messages)](update.html)
+* Developing
+    * [Traces and Crashes](logging.html)
+    * [Unit testing](testing.html)
+    * [Tools](tools.html)
+* [Migrations guides from older versions](migrations-guide.html)
 * [Further Resources](index.html#further-resources)
-* [They use Fabulous](they-use-fabulous.html)

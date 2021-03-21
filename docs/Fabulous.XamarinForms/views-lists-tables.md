@@ -2,7 +2,8 @@
 
 {% include_relative contents-views.md %}
 
-## Lists and Tables
+Lists and Tables
+-------------------
 
 ### ListView, ListGroupedView
 
@@ -23,14 +24,14 @@ View.ListView(
 
 The `itemSelected` callback uses integers indexes for keys to identify the elements.
 
-There is also a `ListViewGrouped` for grouped items of data. This uses the same Xamarin control under the hood but in a different mode of use.
+There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
 
 <img src="https://user-images.githubusercontent.com/52166903/60180201-5dfc5b00-9817-11e9-9508-a0daa7b7a81d.png" width="400">
 
 See also:
 
-- [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/)
-- [Xamarin.Forms Cells](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/controls/cells)
+* [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/)
+* [Xamarin.Forms Cells](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/controls/cells)
 
 ### TableView
 
@@ -83,7 +84,7 @@ View.TableView(
 
 See also:
 
-- [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView)
+* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView)
 
 #### "Infinite" or "unbounded" ListViews
 
@@ -121,13 +122,13 @@ let view model dispatch =
 
 Note:
 
-- The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
-- On each update to the view we produce all the visual items from `Item 1` onwards
-- The `itemAppearing` event is called for each item, e.g. when item `10` appears
-- When the event triggers we grow the underlying data model by 10
-- This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
+* On each update to the view we produce all the visual items from `Item 1` onwards
+* The `itemAppearing` event is called for each item, e.g. when item `10` appears
+* When the event triggers we grow the underlying data model by 10
+* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
 
-Surprisingly even this naive technique is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too). One simple one is to memoize each individual visual item using `dependsOn`:
+Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
 
 ```fsharp
 items = [
@@ -137,34 +138,27 @@ items = [
 ```
 
 With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
-There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model). We will document further techniques in due course.
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course.
 
 Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
 range of visual items that need to be generated.
 
 ### CollectionView
-
+ 
 Please read the Xamarin.Forms documentation to check whether this control is available for the platforms you target.
-You can set the header and footer with a string or a ViewElement.
 
 Usage:
-
 ```fsharp
-View.CollectionView(
-    header = (StructuredItems.fromString "String Header"),
-    items = [
-        View.Label(text = "Person1")
-        View.Label(text = "Person2")
-        View.Label(text = "Person3")
-        View.Label(text = "Person4")
-        View.Label(text = "Person5")
-    ],
-    footer = (StructuredItems.fromElement (View.Label("Label Footer")))
-)
+View.CollectionView(items = [
+    View.Label(text = "Person1") 
+    View.Label(text = "Person2")
+    View.Label(text = "Person3")
+    View.Label(text = "Person4")
+    View.Label(text = "Person5")
+])
 ```
 
 <img src="https://user-images.githubusercontent.com/52166903/60262083-4683a780-98d5-11e9-8afc-cde4d594171b.png" width="400">
 
 See also:
-
-- [Xamarin guide to CollectionView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/)
+* [Xamarin guide to CollectionView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/)

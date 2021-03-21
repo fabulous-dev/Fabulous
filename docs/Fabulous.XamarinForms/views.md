@@ -1,6 +1,6 @@
 {% include_relative _header.md %}
 
-{% include_relative contents-views.md %}
+{% include_relative contents.md %}
 
 Views
 ------
@@ -22,17 +22,24 @@ in the model. Differential update is used to efficiently update the Xamarin.Form
 and current view descriptions.
 
 Here is a larger example:
-
-```fsharp
+##### (reviewed for Version 0.61.0)
+```fsharp 
 type Model =
     { Balance : decimal
-      CurrencySymbol : string
-      User: string option }
+        CurrencySymbol : string
+        User: string option }
 
 type Msg =
     | Spend of decimal
     | Add of decimal
     | Login of string option
+
+
+let init() = 
+    { Balance = 2m
+        CurrencySymbol = "$"
+        User = Some "user"
+    }, Cmd.none    
 
 let update msg model =
     match msg with
@@ -43,7 +50,7 @@ let update msg model =
 let view model dispatch =
     View.ContentPage(
         title="Pocket Piggy Bank",
-        content=View.StackLayout(padding=20.0,
+        content=View.StackLayout(padding= Thickness 20.0,
             horizontalOptions=LayoutOptions.Center,
             verticalOptions=LayoutOptions.CenterAndExpand,
             children = [
@@ -51,17 +58,20 @@ let view model dispatch =
                 | Some user ->
                     yield View.Label(text=sprintf "Logged in as : %s" user)
                     yield View.Label(text=sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
-                    yield View.Button(text="Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
+                    yield View.Button(text="Withdraw", command=(fun () -> dispatch (Spend 10.0m)), commandCanExecute=(model.Balance > 0.0m))
                     yield View.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0m)))
                     yield View.Button(text="Logout", command=(fun () -> dispatch (Login None)))
                 | None ->
                     yield View.Button(text="Login", command=(fun () -> dispatch (Login (Some "user"))))
             ]))
 ```
+The four main control groups used to create the user interface of a Xamarin.Forms application are: 
+* [Pages](views-pages.html)
+* Layouts
+* Interface objects 
+* Cells
 
 See also:
 
-* [Core Elements](views-elements.md).
 * [Views and Performance](views-perf.md).
 * [Styling](views-styling.md).
-* [Multi-page Applications and Navigation](views-navigation.md).
