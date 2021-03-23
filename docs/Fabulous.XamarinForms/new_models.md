@@ -4,6 +4,10 @@
 
 Models
 --------
+The model is the core data from which the whole state of the app can be resurrected.  The model is generally immutable but may also contain elements such as service connections.
+It is common for the desgin of the model to grow "organically" as you prototype your app.
+
+The init function returns your initial model.  The update function updates the model as messages are received.
 
 ### Messages and Validation
 
