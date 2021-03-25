@@ -4,6 +4,7 @@
 
 Views
 ------
+##### (reviewed for Version 0.61.0)
 
 The `view` function is a function returning your view elements based on the current model. For example:
 
@@ -22,7 +23,6 @@ in the model. Differential update is used to efficiently update the Xamarin.Form
 and current view descriptions.
 
 Here is a larger example:
-##### (reviewed for Version 0.61.0)
 ```fsharp 
 type Model =
     { Balance : decimal

@@ -15,6 +15,11 @@ Pages
 | TabbedPage     | allows navigation among child pages using tabs                                                       |            |
 | CarouselPage   | allows navigation among child pages through finger swiping                                           |            |
 
+
+<br /> 
+
+See also [Multi-page Applications and Navigation](pages-navigation.html)
+
 <br /> 
 
 Examples
@@ -22,6 +27,9 @@ Examples
 <br />
 
 ### Content Page
+
+A single page app typically returns a `ContentPage`. For example:
+
 ```fsharp 
     let view model dispatch =
         View.ContentPage(
@@ -29,6 +37,10 @@ Examples
             content = View.Label(text = sprintf "Hello world!")
         )
 ```
+
+See also:
+
+* [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
 
 ### Flyout PAge
 ```fsharp 

@@ -4,6 +4,8 @@
 
 ViewRefs
 ------
+##### (topic last updated: pending)
+<br /> 
 
 Animations and focus are specified by accessing the underlying Xamarin.Forms control and using
 Xamarin.Forms animation specifications. The underlying control is usually accessed

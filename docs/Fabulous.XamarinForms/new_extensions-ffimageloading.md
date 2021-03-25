@@ -4,6 +4,8 @@
 
 Using FFImageLoading
 ------
+##### (topic last updated: pending)
+<br /> 
 
 The FFImageLoading plugin allows you to cache images as opposed to wasting time and memory with the built-in Image view. Using FFImageLoading, you have an easy way to cache images in your Fabulous.XamarinForms application.
 

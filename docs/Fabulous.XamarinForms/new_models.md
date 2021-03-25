@@ -4,6 +4,9 @@
 
 Models
 --------
+##### (topic last updated: v 0.61.0)
+<br /> 
+
 The model is the core data from which the whole state of the app can be resurrected.  The model is generally immutable but may also contain elements such as service connections.
 It is common for the desgin of the model to grow "organically" as you prototype your app.
 
@@ -13,7 +16,6 @@ The init function returns your initial model.  The update function updates the m
 
 Validation is generally done on updates to the model storing error messages from validation logic in the model so they can be correctly and simply displayed to the user. Here is a very basic example:
 
-##### (reviewed for Version 0.61.0)
 ```fsharp
 type Animal =
     | ValidAnimal of string
@@ -51,7 +53,6 @@ let init () = { AnimalName = validateAnimal "Emu" }
 
 A more advanced validation might use the `Result<'T,'TError>` type to wrap parts of the model that require validation: in the previous example the `Result` type has somewhat been reinvented. Using `Result` provides a consistent way of knowing which parts of the model are in a valid state, use of the standard `Result` functions like `map` and `bind` to perform branching logic, and more comprehensive error messaging. One thing to note is that `'TError` will usually need to carry the original input value so it can be displayed back to the user.
 
-##### (reviewed for Version 0.61.0)
 ```fSharp
 type Animal = Animal of string
 
@@ -104,7 +105,7 @@ Note that the same validation logic can be used in both your app and a service b
 ### Saving Application State
 
 Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using `Json.NET`:
-##### (reviewed for Version 0.61.0)
+
 ```fsharp
 
 type Application() =

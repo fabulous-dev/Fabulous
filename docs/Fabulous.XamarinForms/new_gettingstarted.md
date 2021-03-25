@@ -4,7 +4,8 @@
 
 Getting started 
 ------
-
+##### (topic last updated: v 0.61.0)
+<br /> 
 1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support, these are listed as 'Mobile development with .NET' and '.NET Core Cross-platform development' respectively.
 
 2. Open a command prompt window and install the template pack by entering:
@@ -77,7 +78,6 @@ A Basic Example
 ------
 
 Here is a full example of an app:
-##### (reviewed for Version 0.61.0)
 ```fsharp
 // replece with the namespace of your app
 namespace ExampleApp

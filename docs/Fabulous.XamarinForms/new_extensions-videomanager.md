@@ -4,6 +4,8 @@
 
 Using VideoManager
 ------
+##### (topic last updated: pending
+<br /> 
 
 The MediaManager plugin allow to play audio and video with Xamarin. Using this VideoManager, you can create a dedicated view to render a video in your fabulous application.
 

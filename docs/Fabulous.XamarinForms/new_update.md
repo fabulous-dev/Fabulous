@@ -4,6 +4,8 @@
 
 The Init and Update Functions
 ------
+##### (topic last updated: v 0.61.0)
+<br /> 
 
 The init function returns an initial model, and the update function processes a message and returns a new model:
 ```fsharp

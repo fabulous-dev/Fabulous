@@ -4,6 +4,8 @@
 
 View Extensions
 ------
+##### (topic last updated: pending)
+<br /> 
 
 Many open source and 3rd-party libraries of Xamarin.Forms controls exist. To use other controls, a small amount of wrapper code
 is typically needed to define a corresponding view element using the incremental-update model used by Fabulous.

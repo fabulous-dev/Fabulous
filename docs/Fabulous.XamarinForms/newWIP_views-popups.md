@@ -4,6 +4,8 @@
 
 Pop-ups
 -------------------
+##### (topic last updated: pending)
+<br /> 
 
 Pop-ups are a special case in Fabulous for Xamarin.Forms: they are part of the view, but don't follow the same lifecycle as the rest of the UI. In Xamarin.Forms pop-ups are exposed through 2 methods of the current page: `DisplayAlert` and `DisplayActionSheet`.
 

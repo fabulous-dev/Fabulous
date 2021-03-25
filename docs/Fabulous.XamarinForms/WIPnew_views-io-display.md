@@ -1,0 +1,230 @@
+{% include_relative _header.md %}
+
+{% include_relative contents.md %}
+
+Interface objects (Views) for displaying collections
+------
+##### (topic last updated: v 0.61.0)
+<br /> 
+
+### CarouselView
+```fsharp 
+View.CarouselView(items = [
+            View.Label(text="Person1") 
+            View.Label(text="Person2")
+            View.Label(text="Person3")
+            View.Label(text="Person4")
+            View.Label(text="Person5")
+        ])
+```
+
+<br /> 
+
+### CollectionView
+Please read the Xamarin.Forms documentation to check whether this control is available for the platforms you target.
+
+Usage:
+```fsharp
+View.CollectionView(items = [
+    View.Label(text = "Person1") 
+    View.Label(text = "Person2")
+    View.Label(text = "Person3")
+    View.Label(text = "Person4")
+    View.Label(text = "Person5")
+])
+```
+
+<img src="https://user-images.githubusercontent.com/52166903/60262083-4683a780-98d5-11e9-8afc-cde4d594171b.png" width="400">
+
+See also:
+* [Xamarin guide to CollectionView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/)
+
+<br /> 
+
+### IndicatorView
+let indicatorRef = ViewRef<IndicatorView>()
+
+View.IndicatorView( 
+    ref = indicatorRef, 
+    indicatorColor = Color.Red,
+    selectedIndicatorColor = Color.Blue, 
+    padding = Thickness(20.), 
+    indicatorsShape = IndicatorShape.Square
+)
+
+View.CarouselView(
+    indicatorView = indicatorRef,
+    items = [
+        for i = 0 to 15 do
+            yield View.StackLayout(
+                children = [
+                    View.Label(
+                        horizontalOptions = LayoutOptions.Center,
+                        verticalOptions = LayoutOptions.CenterAndExpand,
+                        text = sprintf "Person %i" i
+                    )
+                ]
+            )
+    ]
+)
+
+<br /> 
+
+### ListView
+A simple `ListView` is as follows:
+
+```fsharp
+View.ListView(
+    items = [
+        View.TextCell "Ionide"
+        View.TextCell "Visual Studio"
+        View.TextCell "Emacs"
+        View.TextCell "Visual Studio Code"
+        View.TextCell "JetBrains Rider"
+    ],
+    itemSelected = (fun idx -> dispatch (ListViewSelectedItemChanged idx))
+)
+```
+
+The `itemSelected` callback uses integers indexes for keys to identify the elements.
+
+There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
+
+<img src="https://user-images.githubusercontent.com/52166903/60180201-5dfc5b00-9817-11e9-9508-a0daa7b7a81d.png" width="400">
+
+See also:
+
+* [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/)
+* [Xamarin.Forms Cells](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/controls/cells)
+
+#### "Infinite" or "unbounded" ListViews
+##### (topic last updated: pending)
+
+"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
+underlying model in a direction that will then supply new items to the view.
+
+For example, consider this pattern:
+
+```fsharp
+type Model =
+    { ...
+      LatestItemAvailable: int
+    }
+
+type Message =
+    ...
+    | GetMoreItems of int
+
+let update msg model =
+    match msg with
+    | ...
+    | GetMoreItems n -> { model with LatestItemAvailable = n }
+
+let view model dispatch =
+    ...
+    View.ListView(
+        items = [
+            for i in 1 .. model.LatestItemAvailable do
+                yield View.TextCell("Item " + string i)
+        ],
+        itemAppearing = (fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )
+    )
+...
+```
+
+Note:
+
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
+* On each update to the view we produce all the visual items from `Item 1` onwards
+* The `itemAppearing` event is called for each item, e.g. when item `10` appears
+* When the event triggers we grow the underlying data model by 10
+* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+
+Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
+
+```fsharp
+items = [
+    for i in 1 .. model.LatestItemAvailable do
+        yield dependsOn i (fun model i -> View.Label("Item " + string i))
+]
+```
+
+With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course.
+
+Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
+range of visual items that need to be generated.
+
+<br /> 
+
+### Picker
+A simple `Picker` is as follows:
+
+```fsharp
+let pickerItems =
+    [ ("Aqua", Color.Aqua); ("Black", Color.Black);
+       ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+       ("Gray", Color.Gray); ("Green", Color.Green);
+       ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+       ("Navy", Color.Navy); ("Olive", Color.Olive);
+       ("Purple", Color.Purple); ("Red", Color.Red);
+       ("Silver", Color.Silver); ("Teal", Color.Teal);
+       ("White", Color.White); ("Yellow", Color.Yellow ) ]
+
+let pickedColorIndex = 2 // placeholder for testing purposes 
+
+View.Picker(
+    title = "Choose Color:",
+    textColor = snd pickerItems.[pickedColorIndex],
+    selectedIndex = pickedColorIndex,
+    itemsSource = List.map fst pickerItems,
+    selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
+)
+```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177361-9d737900-9810-11e9-87a2-ade4880f7222.png" width="400">
+
+See also:
+
+* [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
+
+<br /> 
+
+### TableView
+An example `TableView` is as follows:
+
+```fsharp
+ View.TableView(
+    root = View.TableRoot(
+        items = [
+            View.TableSection(
+                title = "Videos",
+                items = [
+                    View.SwitchCell(on = true, text = "Luca 2008") 
+                    View.SwitchCell(on = true, text = "Don 2010")
+                ]
+            )
+            View.TableSection(
+                title = "Books",
+                items = [
+                    View.SwitchCell(on = true, text = "Expert F#") 
+                    View.SwitchCell(on = false, text = "Programming F#")
+                ]
+            )
+            View.TableSection(
+                title = "Contact",
+                items = [
+                    View.EntryCell(label = "Email", placeholder = "foo@bar.com")
+                    View.EntryCell(label = "Phone", placeholder = "+44 87654321")
+                ]
+            )
+        ]
+    )
+)
+```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177365-9d737900-9810-11e9-92d5-88487316bbf6.png" width="400">
+
+See also:
+
+* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView)
