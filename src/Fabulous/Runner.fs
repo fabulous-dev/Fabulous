@@ -82,8 +82,10 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
             disposableSubscription <- null
             
     let restart definition arg =
+        let prevViewData = lastViewData
         stop()
         start definition arg
+        if rootView <> null then lastViewData.Update(programDefinition, ValueSome prevViewData, rootView)
         
     let createView parentViewOpt =
         rootView <- lastViewData.Create(programDefinition, parentViewOpt)
