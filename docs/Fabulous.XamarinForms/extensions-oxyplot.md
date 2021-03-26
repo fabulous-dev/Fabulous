@@ -46,5 +46,5 @@ let view (model: Model) dispatch =
 
 See also:
 
-* [Core Elements](views-elements.md)
+* [Interface Objects](views-interface-objects.md)
 * [View Extensions](views-extending.md)

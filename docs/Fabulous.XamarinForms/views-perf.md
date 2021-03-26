@@ -4,6 +4,8 @@
 
 Views and Performance
 ------
+##### (topic last updated: pending)
+<br /> 
 
 The performance of your app may in some cases be dominated by your view function.  
 This is particularly the case if many  message updates are being generated and processed, though not if other operations dominate such as network latency.

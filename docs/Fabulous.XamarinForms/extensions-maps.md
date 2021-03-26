@@ -48,7 +48,7 @@ View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
 
 See also:
 
-* [Core Elements](views-elements.md).
+* [Interface Objects](views-interface-objects.md).
 * [Working with Maps](https://developer.xamarin.com/samples/xamarin-forms/WorkingWithMaps).
 * [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
 * [Defining Extensions](views-extending.md)

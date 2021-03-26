@@ -35,7 +35,7 @@ View.VideoView(
 
 See also:
 
-* [Core Elements](views-elements.md).
+* [Interface Objects](views-interface-objects.md).
 * [Using MediaManager for Xamarin](https://devblogs.microsoft.com/xamarin/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/).
 * [Source for the VideoManager extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/VideoManager/VideoManager.fs)
 * [Source for the Xamarin MediaManager](https://github.com/martijn00/XamarinMediaManager)

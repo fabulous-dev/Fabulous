@@ -1,5 +1,5 @@
-* [Overview](guide.html)
-* [Getting started](index.html#getting-started)
+* [Introduction](introduction.html)
+* [Getting started](getting-started.html)
 * [The MVU architecture](MVU.html)
     * [Models](models.html)
     * [Views](views.html)

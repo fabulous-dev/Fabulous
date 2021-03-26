@@ -48,7 +48,7 @@ Use `FileImageSource`, `UriImageSource` or FFImageLoading's `EmbeddedResourceIma
 
 See also:
 
-* [Core Elements](views-elements.md)
+* [Interface Objects](views-interface-objects.md)
 * [The FFImageLoading wiki](https://github.com/luberda-molinet/FFImageLoading/wiki)
 * [Source for the FFImageLoading extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/FFImageLoading/CachedImage.fs)
 * [Source of FFImageLoading](https://github.com/luberda-molinet/FFImageLoading)

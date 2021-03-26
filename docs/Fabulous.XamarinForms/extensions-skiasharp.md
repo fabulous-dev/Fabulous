@@ -47,7 +47,7 @@ View.SKCanvasView(..., invalidate = true)
 
 See also:
 
-* [Core Elements](views-elements.md).
+* [Interface Objects](views-interface-objects.md).
 * [Using SkiaSharp in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/).
 * [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
 * [Defining Extensions](views-extending.md)

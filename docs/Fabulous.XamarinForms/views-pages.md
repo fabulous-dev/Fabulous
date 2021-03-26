@@ -4,6 +4,10 @@
 
 Pages 
 ------
+
+##### (topic last updated: v 0.61.0)
+<br /> 
+
  These visual elements occupy all or most of the screen and usually contain several layers of lower tier visual elements. 
  For example, a ContentPage may contain a StackLayout which in turn contains several buttons, labeles or other view elements. 
 
@@ -18,7 +22,9 @@ Pages
 
 <br /> 
 
-See also [Multi-page Applications and Navigation](pages-navigation.html)
+See also 
+[Multi-page Applications and Navigation](pages-navigation.html)
+[Shells](views-shell.html)
 
 <br /> 
 
@@ -40,7 +46,7 @@ let view model dispatch =
 
 See also:
 
-* [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
+* [`Xamarin.Forms.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
 
 ### FlyoutPage
 ```fsharp 
@@ -50,6 +56,10 @@ let view model dispatch =
         detail = View.ContentPage(content = View.Label("detail"))        
     )
 ```
+
+See also:
+
+* [`Xamarin.Forms.FlyoutPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.FlyoutPage)
 
 ### NavigationPage
 ```fsharp 
@@ -61,6 +71,10 @@ let view model dispatch =
             ])
     ])
 ```
+
+See also:
+
+* [`Xamarin.Forms.NavigationPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.NavigationPage)
 
 ### TabbedPage
 ```fsharp 
@@ -74,6 +88,10 @@ let view model dispatch =
     )
 ```
 
+See also:
+
+* [`Xamarin.Forms.TabbedPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TabbedPage)
+
 ### CarouselPage
 ```fsharp 
 let view model dispatch =
@@ -84,3 +102,7 @@ let view model dispatch =
         ]
     )
 ```
+
+See also:
+
+* [`Xamarin.Forms.CarouselPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.CarouselPage)

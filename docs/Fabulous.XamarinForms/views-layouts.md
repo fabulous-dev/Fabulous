@@ -42,11 +42,19 @@ Examples
 <br />
 
 ### Content View
+
+ A `ContentView` contains a single child element and is typically used to create custom, reusable controls. 
+
 ```fsharp 
 View.ContentView(
     View.Label("content")
 )        
 ```
+
+See also:
+
+* [Xamarin guide to ContentView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/ContentView/)
+* [Xamarin API docs for `ContentView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentView)
 
 <br /> 
 
