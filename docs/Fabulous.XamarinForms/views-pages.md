@@ -26,61 +26,61 @@ Examples
 ------
 <br />
 
-### Content Page
+### ContentPage
 
 A single page app typically returns a `ContentPage`. For example:
 
 ```fsharp 
-    let view model dispatch =
-        View.ContentPage(
-            title = "Pocket Piggy Bank",
-            content = View.Label(text = sprintf "Hello world!")
-        )
+let view model dispatch =
+    View.ContentPage(
+        title = "Pocket Piggy Bank",
+        content = View.Label(text = sprintf "Hello world!")
+    )
 ```
 
 See also:
 
 * [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
 
-### Flyout PAge
+### FlyoutPage
 ```fsharp 
-    let view model dispatch =
-        View.FlyoutPage(
-            flyout = View.ContentPage(title ="flyoutPage", content = View.Label("flyout")), // 'title' is needed for the flyout page
-            detail = View.ContentPage(content = View.Label("detail"))        
-        )
+let view model dispatch =
+    View.FlyoutPage(
+        flyout = View.ContentPage(title ="flyoutPage", content = View.Label("flyout")), // 'title' is needed for the flyout page
+        detail = View.ContentPage(content = View.Label("detail"))        
+    )
 ```
 
 ### NavigationPage
 ```fsharp 
-    let view model dispatch =
-        View.NavigationPage(pages = [
-            View.ContentPage(title ="navigation", content = View.Label("navigation page 1"))
-                .ToolbarItems([
-                    View.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) 
-                ])
-        ])
+let view model dispatch =
+    View.NavigationPage(pages = [
+        View.ContentPage(title ="navigation", content = View.Label("navigation page 1"))
+            .ToolbarItems([
+                View.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) 
+            ])
+    ])
 ```
 
 ### TabbedPage
 ```fsharp 
-    let view model dispatch =        
-        View.TabbedPage(
-            children = [
-                View.ContentPage(title ="tab1", content = View.Label("tabbed page 1"))                
-                View.ContentPage(title ="tab2", content = View.Label("tabbed page 2"))
-                ---
-            ]
-        )
+let view model dispatch =        
+    View.TabbedPage(
+        children = [
+            View.ContentPage(title ="tab1", content = View.Label("tabbed page 1"))                
+            View.ContentPage(title ="tab2", content = View.Label("tabbed page 2"))
+            ---
+        ]
+    )
 ```
 
 ### CarouselPage
 ```fsharp 
-    let view model dispatch =
-        View.CarouselPage(
-            children = [
-                View.ContentPage(title ="carousel1", content = View.Label("carousel page 1"))                
-                View.ContentPage(title ="carousel1", content = View.Label("carousel page 2"))
-            ]
-        )
+let view model dispatch =
+    View.CarouselPage(
+        children = [
+            View.ContentPage(title ="carousel1", content = View.Label("carousel page 1"))                
+            View.ContentPage(title ="carousel1", content = View.Label("carousel page 2"))
+        ]
+    )
 ```

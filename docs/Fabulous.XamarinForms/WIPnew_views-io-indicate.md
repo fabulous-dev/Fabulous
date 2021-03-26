@@ -23,6 +23,15 @@ See also:
 <br /> 
 
 ### ProgressBar
-```fsharp 
 
+ The Progress Bar represents progress as a horizontal bar, that is filled to a percentage, represented by a float value.
+
+```fsharp 
+View.ProgressBar(
+    progress = 0.5,
+    progressColor = Color.DarkRed
+    )
 ```
+
+* [Xamarin guide to ProgressBar](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/progressbar)
+* [`Xamarin.Forms.ProgressBar`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ProgressBar?view=xamarin-forms)

@@ -9,11 +9,20 @@ Interface objects (Views) for setting values
 ### CheckBox
 ```fsharp 
 
+View.CheckBox(
+    isChecked = true,
+    checkedChanged = (fun on -> dispatch (...))
+)
 ```
+
+See also:
+
+* [Xamarin guide to CheckBox](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/CheckBox)
+* [`Xamarin.Forms.CheckBox`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.CheckBox)
 
 <br /> 
 
-### Slider   TODO
+### Slider   
 A simple `Slider` is as follows:
 
 ```fsharp
@@ -34,16 +43,40 @@ See also:
 <br /> 
 
 ### Stepper
-```fsharp 
 
+Use a Stepper for selecting a numeric value from a range of values.
+
+```fsharp 
+View.Stepper(
+    minimumMaximum = (0.0, 10.0),
+    value = 2.,
+    increment = 1.,
+    valueChanged = fun args -> dispatch (SliderValueChanged (...))
+)
 ```
+
+See also:
+
+* [Xamarin guide to Stepper](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/Stepper)
+* [`Xamarin.Forms.Stepper`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Stepper)
 
 <br /> 
 
 ### Switch
-```fsharp 
 
+`Switch` is a horizontal toggle button that can be manipulated by the user to toggle between on and off states, which are represented by a boolean value. 
+
+```fsharp 
+View.Switch(
+    isToggled = false, 
+    toggled = fun on -> dispatch (SwitchToggled (...))
+)
 ```
+
+See also:
+
+* [Xamarin guide to Switch](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/Switch)
+* [`Xamarin.Forms.Switch`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Switch)
 
 <br /> 
 
@@ -68,5 +101,12 @@ See also:
 
 ### TimePicker
 ```fsharp 
-
+View.TimePicker(
+    time = TimeSpan (12, 22, 0)                
+)
 ```
+
+See also:
+
+* [Xamarin guide to TimePicker](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/TimePicker)
+* [`Xamarin.Forms.Core.TimePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TimePicker)

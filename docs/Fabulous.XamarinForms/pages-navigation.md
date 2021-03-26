@@ -102,14 +102,14 @@ let view model dispatch =
 
 ### MasterDetail Page navigation
 
-Return a `MasterDetailPage` from your view, choosing the appropriate `MasterBehavior`:
+Return a `FlyoutPage` from your view:
 
 ```fsharp
 let view model dispatch =
-    View.MasterDetailPage(
-        masterBehavior=MasterBehavior.Popover,
-        master = View.ContentPage(...),
-        detail = View.ContentPage(...))
+    View.FlyoutPage(
+        flyout = View.ContentPage(title ="flyoutPage", ...), // 'title' is needed for the flyout page
+        detail = View.ContentPage(...)        
+    )
 ```
 
 See also
