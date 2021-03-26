@@ -6,7 +6,7 @@
         * [Pages](views-pages.html)
         * [Layouts](views-layouts.html)
         * [Interface objects](views-interface-objects.html)
-        * [Cells]
+        * [Cells](views-cells.md)
     * [Update (and Messages)](update.html)
 * Developing
     * [Traces and Crashes](logging.html)
