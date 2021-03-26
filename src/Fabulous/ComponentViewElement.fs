@@ -54,8 +54,10 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
         member x.Create(definition, parentOpt) =
             let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
             let runner = handler.CreateRunner()
-            let target = runner.Start(runnerDefinition, ValueNone, parentOpt, arg)
+            runner.Start(runnerDefinition, arg)
             dispatchStateChangedIfNeeded runner
+            
+            let target = runner.CreateView(parentOpt)
             handler.SetRunnerForTarget(ValueSome runner, target)
             target
 
@@ -68,7 +70,7 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
                 | ValueSome (:? ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg> as prev) when prev.Key = x.Key && System.Object.ReferenceEquals(prev.RunnerDefinition, runnerDefinition) -> ()
                 | _ ->
                     let runnerDefinition = withExternalMsgsIfNeeded runnerDefinition
-                    runner.Restart(runnerDefinition, target, arg)
+                    runner.Restart(runnerDefinition, arg)
                     
                 dispatchStateChangedIfNeeded runner
                 

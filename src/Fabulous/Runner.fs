@@ -8,6 +8,7 @@ type RunnerDispatch<'msg>()  =
 
 /// Starts the dispatch loop for the page with the given program
 type Runner<'arg, 'msg, 'model, 'externalMsg>() =
+    let mutable runnerId = ""
     let mutable runnerDefinition = Unchecked.defaultof<RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>>
     let mutable programDefinition = Unchecked.defaultof<ProgramDefinition>
     let mutable lastModel = Unchecked.defaultof<'model>
@@ -18,12 +19,13 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
     let dispatch = RunnerDispatch<'msg>()
 
     let rec processMsg msg =
-        RunnerTracing.traceDebug runnerDefinition (sprintf "Processing message %0A..." msg)
+        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Processing message %0A..." msg)
         try
             let updatedModel, cmd, _ = runnerDefinition.update msg lastModel
             lastModel <- updatedModel
 
-            updateView updatedModel
+            if rootView <> null then
+                updateView updatedModel
 
             for sub in cmd do
                 try
@@ -31,12 +33,12 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
                 with ex ->
                     runnerDefinition.onError "Error executing commands" ex
 
-            RunnerTracing.traceDebug runnerDefinition (sprintf "Message %0A processed" msg)
+            RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Message %0A processed" msg)
         with ex ->
             runnerDefinition.onError (sprintf "Unable to process message %0A" msg) ex
 
     and updateView updatedModel =
-        RunnerTracing.traceDebug runnerDefinition (sprintf "Updating view for model %0A..." updatedModel)
+        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Updating view for model %0A..." updatedModel)
 
         let newPageElement = runnerDefinition.view updatedModel dispatch.DispatchViaThunk
 
@@ -47,14 +49,9 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         lastViewData <- newPageElement
 
-        RunnerTracing.traceDebug runnerDefinition (sprintf "View updated for model %0A" updatedModel)
-
+        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "View updated for model %0A" updatedModel)
     
-    member x.Arg = lastArg
-    
-    member private x.StartInternal(definition, rootOpt, parentOpt, prevModelOpt, arg) =
-        RunnerTracing.traceDebug definition (sprintf "Starting runner for %0A..." rootOpt)
-
+    let start definition arg =
         dispatch.SetDispatchThunk(definition.syncDispatch processMsg)
         lastArg <- arg
         runnerDefinition <- definition
@@ -69,18 +66,6 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         let initialView = definition.view initialModel dispatch.DispatchViaThunk
         lastViewData <- initialView
-
-        // Update the given root control, or create a new one
-        let target =
-            match rootOpt with
-            | ValueNone ->
-                initialView.Create(programDefinition, parentOpt)
-
-            | ValueSome root ->
-                initialView.Update(programDefinition, prevModelOpt, root)
-                root
-
-        rootView <- target
         
         disposableSubscription <- definition.subscribe initialModel dispatch.DispatchViaThunk
 
@@ -90,30 +75,56 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
             with ex ->
                 definition.onError "Error executing commands" ex
 
-        RunnerTracing.traceDebug definition (sprintf "Runner started for %0A" rootOpt)
-        target
-        
-    member x.Start(definition, rootOpt, parentOpt, arg) =
-        x.StartInternal(definition, rootOpt, parentOpt, ValueNone, arg)
-        
-    member x.Restart(definition, root, arg) =
-        x.Stop()
-        x.StartInternal(definition, ValueSome root, ValueNone, ValueSome lastViewData, arg) |> ignore
-        
-    member x.Stop() =
+    let stop () =
         // Dispose the subscriptions
         if disposableSubscription <> null then
             disposableSubscription.Dispose()
             disposableSubscription <- null
             
-        // Unmount the root ViewElement
+    let restart definition arg =
+        stop()
+        start definition arg
+        
+    let createView parentViewOpt =
+        rootView <- lastViewData.Create(programDefinition, parentViewOpt)
+        rootView
+        
+    let attachView existingView existingViewPrevModelOpt =
+        lastViewData.Update(programDefinition, existingViewPrevModelOpt, existingView)
+        rootView <- existingView
+        
+    let detachView () =
         lastViewData.Unmount(rootView)
-
-    member x.Dispatch(msg) =
-        dispatch.DispatchViaThunk(msg)
+        rootView <- null
+    
 
     interface IRunner<'arg, 'msg, 'model, 'externalMsg> with
-        member x.Start(definition, rootOpt, parentOpt, arg) = x.Start(definition, rootOpt, parentOpt, arg)
-        member x.Stop() = x.Stop()
-        member x.Restart(definition, root, arg) = x.Restart(definition, root, arg)
-        member x.Dispatch(msg) = x.Dispatch(msg)
+        member x.Arg = lastArg
+        
+        member x.Start(definition, arg) =
+            runnerId <- sprintf "<%s, %s, %s, %s> (Arg = %0A)" typeof<'arg>.Name typeof<'msg>.Name typeof<'model>.Name typeof<'externalMsg>.Name arg
+            RunnerTracing.traceDebug definition runnerId "Starting runner"
+            start definition arg
+        
+        member x.Restart(definition, arg) =
+            runnerId <- sprintf "<%s, %s, %s, %s> (Arg = %0A)" typeof<'arg>.Name typeof<'msg>.Name typeof<'model>.Name typeof<'externalMsg>.Name arg
+            RunnerTracing.traceDebug definition runnerId (sprintf "Restarting runner. Old arg was %0A, new is %O" lastArg arg)
+            restart definition arg
+        
+        member x.Stop() =
+            RunnerTracing.traceDebug runnerDefinition runnerId "Stopping runner"
+            stop()
+        
+        member x.CreateView(parentViewOpt) =
+            RunnerTracing.traceDebug runnerDefinition runnerId "Creating view for runner"
+            createView parentViewOpt
+        
+        member x.AttachView(existingView, existingViewPrevModelOpt) =
+            RunnerTracing.traceDebug runnerDefinition runnerId "Attaching view to runner"
+            attachView existingView existingViewPrevModelOpt
+        
+        member x.DetachView() =
+            RunnerTracing.traceDebug runnerDefinition runnerId "Detaching view from runner"
+            detachView()
+        
+        member x.Dispatch(msg) = dispatch.DispatchViaThunk(msg)

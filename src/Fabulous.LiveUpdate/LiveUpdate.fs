@@ -188,12 +188,11 @@ module Extensions =
           trace = program.trace
           onError = program.onError }
 
-    let internal changeProgram (runner: Runner<'arg, 'model, 'msg, 'externalMsg>) syncChangeProgram (definition: RunnerDefinition<'arg, 'model, 'msg, 'externalMsg>) =
+    let internal changeProgram (runner: IRunner<'arg, 'model, 'msg, 'externalMsg>) syncChangeProgram (definition: RunnerDefinition<'arg, 'model, 'msg, 'externalMsg>) =
         // Stop the running program
         printfn "changing running program...."
         syncChangeProgram (fun () ->
-             runner.Stop()
-             runner.Start(definition, ValueNone, ValueNone, runner.Arg)
+             runner.Restart(definition, runner.Arg)
         )
         printfn "*** LiveUpdate success:"
         printfn "***   [x] got code package"

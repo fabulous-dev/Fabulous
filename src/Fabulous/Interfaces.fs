@@ -37,11 +37,20 @@ type RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> =
 
 /// Responsible for running the MVU loop
 type IRunner<'arg, 'msg, 'model, 'externalMsg> =
+    /// Argument used to start the runner
+    abstract Arg: 'arg
     /// Start the runner using the given definition
-    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj voption * obj voption * 'arg -> obj
+    abstract Start: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * 'arg -> unit
+    /// Restart the runner using a different definition
+    abstract Restart: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * 'arg -> unit
     /// Stop the runner and dispose its subscriptions
     abstract Stop: unit -> unit
-    abstract Restart: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg> * obj * 'arg -> unit
+    /// Create a view with the current runner state and attach it
+    abstract CreateView: parentViewOpt: obj voption -> obj
+    /// Attach an existing view to the runner and update it with the current state
+    abstract AttachView: existingView: obj * existingViewPrevModelOpt: IViewElement voption -> unit
+    /// Detach the currently attached view from the runner
+    abstract DetachView: unit -> unit
     /// Dispatch a message to the MVU loop of this runner
     abstract Dispatch: 'msg -> unit
 
@@ -51,6 +60,6 @@ module internal ProgramTracing =
     let inline traceError (definition: ProgramDefinition) = traceError definition.trace definition.traceLevel
 
 module internal RunnerTracing =
-    let inline traceDebug (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) = traceDebug definition.trace definition.traceLevel
-    let inline traceInfo (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) = traceInfo definition.trace definition.traceLevel
-    let inline traceError (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) = traceError definition.trace definition.traceLevel
+    let inline traceDebug (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceDebug definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)
+    let inline traceInfo (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceInfo definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)
+    let inline traceError (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceError definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)

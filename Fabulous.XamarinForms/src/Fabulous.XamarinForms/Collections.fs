@@ -104,6 +104,8 @@ module Collections =
                 else
                     match keyOf prevChild with
                     | ValueSome key when canReuseChildOf keyOf canReuse prevChild coll key ->
+                        if keyedElements.ContainsKey(key) then
+                            failwithf "A same key '%s' can't be used multiple times inside a same collection. Please use different keys." key
                         keyedElements.Add(key, struct (prevIndex, prevChild))
                     | ValueNone ->
                         reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)

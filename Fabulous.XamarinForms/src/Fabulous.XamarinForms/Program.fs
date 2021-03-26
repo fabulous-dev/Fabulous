@@ -69,8 +69,9 @@ module XamarinFormsProgram =
             mapToCmd
 
     let runWith (element: Element) (arg: 'arg) (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) =
-        let runner = Runner()
-        let _ = runner.Start(definition, ValueSome (box element), ValueNone, arg)
+        let runner = Runner() :> IRunner<'arg, 'msg, 'model, 'externalMsg>
+        runner.Start(definition, arg)
+        runner.AttachView(element, ValueNone)
         runner
 
     let run (element: Element) (definition: RunnerDefinition<unit, 'msg, 'model, 'externalMsg>) =
