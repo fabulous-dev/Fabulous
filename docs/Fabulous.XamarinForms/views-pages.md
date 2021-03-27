@@ -23,8 +23,8 @@ Pages
 <br /> 
 
 See also 
-[Multi-page Applications and Navigation](pages-navigation.html)
-[Shells](views-shell.html)
+[Multi-page Applications and Navigation](pages-navigation.md)
+[Shells](views-shells.md)
 
 <br /> 
 
