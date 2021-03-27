@@ -9,18 +9,20 @@ Shells
 
 Xamarin.Forms Shell reduces the complexity of mobile application development by providing the fundamental features that most mobile applications require. This includes a common navigation user experience, a URI-based navigation scheme, and an integrated search handler.
 
+`Unfortunately Shell is only partially supported in Fabulous for technical reasons, so it is recommended not to use it for the moment.`
+
 ```fsharp     
-View.Shell(title = "TitleShell",
-    items = [
-        View.ShellItem(items = [
-            View.ShellSection( items = [
-                View.ShellContent(title = "Section 1", 
-                    content = View.ContentPage( content = View.Button(text = "press me")
-                    )                                        
-                )]
-            )]
-        )]
-)      
+View.Shell(title = "TitleShell", items = [
+    View.FlyoutItem(  title = "Flyout", flyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems, items = [
+        View.Tab( title = "Seiten", items = [
+            View.ShellContent( title = "welcome", content = View.ContentPage(View.Label("welcome ...")))                    
+            View.ShellContent( title = "stuff", content = View.ContentPage(View.Label("stuff ...")))
+        ])   
+        View.ShellContent( title = "more", content = View.ContentPage(View.Label("more stuff ...")))
+    ])
+    View.MenuItem( text = "config")
+])   
+  
 ```
 
 See also:
