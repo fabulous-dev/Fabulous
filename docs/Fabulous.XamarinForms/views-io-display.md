@@ -42,6 +42,9 @@ See also:
 <br /> 
 
 ### IndicatorView
+
+Usage:
+```fsharp
 let indicatorRef = ViewRef<IndicatorView>()
 
 View.IndicatorView( 
@@ -67,6 +70,8 @@ View.CarouselView(
             )
     ]
 )
+```
+
 
 <br /> 
 
