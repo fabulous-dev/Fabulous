@@ -37,11 +37,10 @@ Examples
 A single page app typically returns a `ContentPage`. For example:
 
 ```fsharp 
-let view model dispatch =
-    View.ContentPage(
-        title = "Pocket Piggy Bank",
-        content = View.Label(text = sprintf "Hello world!")
-    )
+View.ContentPage(
+    title = "Pocket Piggy Bank",
+    content = View.Label(text = sprintf "Hello world!")
+)
 ```
 
 See also:
@@ -50,11 +49,10 @@ See also:
 
 ### FlyoutPage
 ```fsharp 
-let view model dispatch =
-    View.FlyoutPage(
-        flyout = View.ContentPage(title ="flyoutPage", content = View.Label("flyout")), // 'title' is needed for the flyout page
-        detail = View.ContentPage(content = View.Label("detail"))        
-    )
+View.FlyoutPage(
+    flyout = View.ContentPage(title ="flyoutPage", content = View.Label("flyout")), // 'title' is needed for the flyout page
+    detail = View.ContentPage(content = View.Label("detail"))        
+)
 ```
 
 See also:
@@ -63,13 +61,12 @@ See also:
 
 ### NavigationPage
 ```fsharp 
-let view model dispatch =
-    View.NavigationPage(pages = [
-        View.ContentPage(title ="navigation", content = View.Label("navigation page 1"))
-            .ToolbarItems([
-                View.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) 
-            ])
-    ])
+View.NavigationPage(pages = [
+    View.ContentPage(title ="navigation", content = View.Label("navigation page 1"))
+        .ToolbarItems([
+            View.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) 
+        ])
+])
 ```
 
 See also:
@@ -77,15 +74,14 @@ See also:
 * [`Xamarin.Forms.NavigationPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.NavigationPage)
 
 ### TabbedPage
-```fsharp 
-let view model dispatch =        
-    View.TabbedPage(
-        children = [
-            View.ContentPage(title ="tab1", content = View.Label("tabbed page 1"))                
-            View.ContentPage(title ="tab2", content = View.Label("tabbed page 2"))
-            ---
-        ]
-    )
+```fsharp       
+View.TabbedPage(
+    children = [
+        View.ContentPage(title ="tab1", content = View.Label("tabbed page 1"))                
+        View.ContentPage(title ="tab2", content = View.Label("tabbed page 2"))
+        ---
+    ]
+)
 ```
 
 See also:
@@ -94,13 +90,12 @@ See also:
 
 ### CarouselPage
 ```fsharp 
-let view model dispatch =
-    View.CarouselPage(
-        children = [
-            View.ContentPage(title ="carousel1", content = View.Label("carousel page 1"))                
-            View.ContentPage(title ="carousel1", content = View.Label("carousel page 2"))
-        ]
-    )
+View.CarouselPage(
+    children = [
+        View.ContentPage(title ="carousel1", content = View.Label("carousel page 1"))                
+        View.ContentPage(title ="carousel1", content = View.Label("carousel page 2"))
+    ]
+)
 ```
 
 See also:
