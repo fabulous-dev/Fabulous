@@ -4,7 +4,7 @@
 
 The Init and Update Functions
 ------
-##### `topic last updated: v0.61.0`
+##### `topic last updated: v0.61.0 - 31.03.2021 - 02:51pm`
 <br /> 
 
 The init function returns an initial model, and the update function processes a message and returns a new model:

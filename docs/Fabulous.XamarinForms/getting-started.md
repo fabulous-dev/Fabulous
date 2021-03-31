@@ -4,7 +4,7 @@
 
 Getting started 
 ------
-##### `topic last updated: v0.61.0`
+##### `topic last updated: v0.61.0 - 31.03.2021 - 02:51pm`
 <br /> 
 1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support, these are listed as 'Mobile development with .NET' and '.NET Core Cross-platform development' respectively.
 
