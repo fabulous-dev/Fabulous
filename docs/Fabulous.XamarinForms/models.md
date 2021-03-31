@@ -4,7 +4,7 @@
 
 Models
 --------
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v0.61.0`
 <br /> 
 
 The model is the core data from which the whole state of the app can be resurrected.  The model is generally immutable but may also contain elements such as service connections.

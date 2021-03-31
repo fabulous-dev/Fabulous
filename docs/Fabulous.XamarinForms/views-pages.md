@@ -5,7 +5,7 @@
 Pages 
 ------
 
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v0.61.0`
 <br /> 
 
  These visual elements occupy all or most of the screen and usually contain several layers of lower tier visual elements. 

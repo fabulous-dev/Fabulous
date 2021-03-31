@@ -4,7 +4,7 @@
 
 Cells 
 ------
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v0.61.0`
 <br /> 
 
 A cell is a specialized element used for items in a table and describes how each item in a list should be rendered. A cell is not itself a visual element; it is instead a template for creating a visual element.

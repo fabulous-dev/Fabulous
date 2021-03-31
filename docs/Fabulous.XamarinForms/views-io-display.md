@@ -4,7 +4,7 @@
 
 Interface objects (Views) for displaying collections
 ------
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v0.61.0`
 <br /> 
 
 ### CarouselView
@@ -167,23 +167,25 @@ A simple `Picker` is as follows:
 
 ```fsharp
 let pickerItems =
-    [ ("Aqua", Color.Aqua); ("Black", Color.Black);
-       ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
-       ("Gray", Color.Gray); ("Green", Color.Green);
-       ("Lime", Color.Lime); ("Maroon", Color.Maroon);
-       ("Navy", Color.Navy); ("Olive", Color.Olive);
-       ("Purple", Color.Purple); ("Red", Color.Red);
-       ("Silver", Color.Silver); ("Teal", Color.Teal);
-       ("White", Color.White); ("Yellow", Color.Yellow ) ]
+    [   ("Aqua", Color.Aqua); ("Black", Color.Black);
+        ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+        ("Gray", Color.Gray); ("Green", Color.Green);
+        ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+        ("Navy", Color.Navy); ("Olive", Color.Olive);
+        ("Purple", Color.Purple); ("Red", Color.Red);
+        ("Silver", Color.Silver); ("Teal", Color.Teal);
+        ("White", Color.White); ("Yellow", Color.Yellow ) ]
 
 let pickedColorIndex = 2 // placeholder for testing purposes 
-
-View.Picker(
-    title = "Choose Color:",
-    textColor = snd pickerItems.[pickedColorIndex],
-    selectedIndex = pickedColorIndex,
-    itemsSource = List.map fst pickerItems,
-    selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
+View.ContentPage(title ="CarouselView", content =                     
+    View.Picker
+        (
+            title = "Choose Color:",
+            textColor = snd pickerItems.[pickedColorIndex],
+            selectedIndex = pickedColorIndex,
+            items = List.map fst pickerItems
+            //selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
+        )
 )
 ```
 

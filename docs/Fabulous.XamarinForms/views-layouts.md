@@ -4,7 +4,7 @@
 
 Layouts 
 ------
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v0.61.0`
 <br /> 
 
 Xamarin.Forms has several layouts and features for organizing content on screen.
