@@ -4,7 +4,7 @@
 
 Pitfalls and F# 5.0 support
 ------
-##### (topic last updated: v 0.61.0)
+##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29p,`
 <br /> 
 
 Here are some common pitfalls you might encounter when using Fabulous.
