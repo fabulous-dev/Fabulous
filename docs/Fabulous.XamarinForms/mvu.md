@@ -4,7 +4,7 @@
 
 MVU
 ------
-##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29p,`
+##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29pm,`
 <br /> 
 
 Applications built with Fabulous use the MVU design pattern (Model-View-Update, also known from the origin The Elm Architecture). 

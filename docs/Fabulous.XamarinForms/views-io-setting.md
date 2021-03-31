@@ -4,7 +4,7 @@
 
 Interface objects (Views) for setting values
 ------
-##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29p,`
+##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29pm,`
 
 ### CheckBox
 ```fsharp 
