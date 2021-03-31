@@ -359,7 +359,7 @@ See also:
 
 ### Map
 
-This topic is covered [here](extensions-maps.html)
+This topic is covered [here](extensions-maps.md)
 
 <br /> 
 

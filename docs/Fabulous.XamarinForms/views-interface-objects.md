@@ -11,7 +11,7 @@ Interface objects such as labels, buttons, and sliders are commonly known as con
 
 <br /> 
 
-| [presentation](views-io-present.html) | [initiate commands](views-io-initiate.html) | [setting values](views-io-setting.html) | [editing text](views-io-edit.html) | [indicate activity](views-io-indicate.html) | [display collections](views-io-display.html) |
+| [presentation](views-io-present.md) | [initiate commands](views-io-initiate.md) | [setting values](views-io-setting.md) | [editing text](views-io-edit.md) | [indicate activity](views-io-indicate.md) | [display collections](views-io-display.md) |
 |--------------|-------------------|----------------|--------------|-------------------|---------------------|
 | BoxView      | Button            | CheckBox       | Entry        | ActivityIndicator | CarouselView        |
 | Ellipse      | ImageButton       | Slider         | Editor       | ProgressBar       | CollectionView      |

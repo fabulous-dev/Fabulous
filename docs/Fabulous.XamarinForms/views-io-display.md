@@ -10,12 +10,12 @@ Interface objects (Views) for displaying collections
 ### CarouselView
 ```fsharp 
 View.CarouselView(items = [
-            View.Label(text="Person1") 
-            View.Label(text="Person2")
-            View.Label(text="Person3")
-            View.Label(text="Person4")
-            View.Label(text="Person5")
-        ])
+    View.Label(text="Person1") 
+    View.Label(text="Person2")
+    View.Label(text="Person3")
+    View.Label(text="Person4")
+    View.Label(text="Person5")
+])
 ```
 
 <br /> 
@@ -42,6 +42,9 @@ See also:
 <br /> 
 
 ### IndicatorView
+
+Usage:
+```fsharp
 let indicatorRef = ViewRef<IndicatorView>()
 
 View.IndicatorView( 
@@ -67,6 +70,8 @@ View.CarouselView(
             )
     ]
 )
+```
+
 
 <br /> 
 
