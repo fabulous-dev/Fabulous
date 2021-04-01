@@ -1,33 +1,6 @@
-#### 0.70.0-nightly9
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
+#### 1.0.0
 
-#### 0.70.0-nightly8
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly7
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly6
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly5
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly4
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly3
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly2
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.
-
-#### 0.70.0-nightly1
-VERY EARLY PREVIEW, DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING.  
-This is an extremely early preview of a deep change in the structure of Fabulous, it won't be compatible with your existing code right away.  
-To learn more about this release, please read the PR below and look at the CounterApp sample on the PR's branch.
-
-* [All] Deep restructuring (https://github.com/fsprojects/Fabulous/pull/809)
+* Stable release
 
 #### 0.61.0
 * [Fabulous.XamarinForms] Add support for Xamarin.Forms 5.0 (https://github.com/fsprojects/Fabulous/pull/845)
