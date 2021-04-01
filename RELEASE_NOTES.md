@@ -1,3 +1,7 @@
+#### 1.0.0
+
+* Stable release
+
 #### 0.61.0
 * [Fabulous.XamarinForms] Add support for Xamarin.Forms 5.0 (https://github.com/fsprojects/Fabulous/pull/845)
 * [Fabulous.XamarinForms] Changed diffing of Label.Text and Label.FormattedText to avoid crash in some edge cases (https://github.com/fsprojects/Fabulous/pull/825)
