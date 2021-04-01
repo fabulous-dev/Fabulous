@@ -12,14 +12,14 @@ module TabbedPage2 =
         | ListViewSelectedItemChanged of int option
         | ListViewGroupedSelectedItemChanged of (int * int) option
         | ExecuteSearch of string
-        
+
     type CmdMsg = Nothing
-    
+
     type Model =
         { PickedColorIndex: int
           SearchTerm: string }
-        
-    let pickerItems = 
+
+    let pickerItems =
         [ ("Aqua", Color.Aqua); ("Black", Color.Black);
           ("Blue", Color.Blue); ("Fuchsia", Color.Fuchsia);
           ("Gray", Color.Gray); ("Green", Color.Green);
@@ -28,20 +28,20 @@ module TabbedPage2 =
           ("Purple", Color.Purple); ("Red", Color.Red);
           ("Silver", Color.Silver); ("Teal", Color.Teal);
           ("White", Color.White); ("Yellow", Color.Yellow ) ]
-        
+
     let mapToCmd _ = Cmd.none
-        
+
     let init () =
         { PickedColorIndex = 0
           SearchTerm = "nothing!" }
-        
+
     let update msg model =
         match msg with
         | PickerItemChanged i -> { model with PickedColorIndex = i }, []
         | ListViewSelectedItemChanged _ -> model, []
         | ListViewGroupedSelectedItemChanged _ -> model, []
         | ExecuteSearch search -> { model with SearchTerm = search }, []
-        
+
     let tab1View pickedColorIndex dispatch =
         View.ScrollingContentPage(
             title = "Picker",
@@ -57,15 +57,15 @@ module TabbedPage2 =
                 )
             ])
         )
-        
+
     let tab2View dispatch =
         View.ScrollingContentPage(
             title = "ListView",
             content = View.StackLayout([
                 View.Label(text = "ListView:")
-                View.ListView( 
-                    items = [ 
-                        for _ in 0 .. 10 do 
+                View.ListView(
+                    items = [
+                        for _ in 0 .. 10 do
                             yield View.TextCell "Ionide"
                             yield View.ViewCell(
                                 view = View.Label(
@@ -80,7 +80,7 @@ module TabbedPage2 =
                                         )
                                     ])
                                 )
-                            ) 
+                            )
                             yield View.TextCell "Emacs"
                             yield View.ViewCell(
                                 view = View.Label(
@@ -101,13 +101,13 @@ module TabbedPage2 =
                                 )
                             )
                             yield View.TextCell "Rider"
-                    ], 
-                    horizontalOptions = LayoutOptions.CenterAndExpand, 
+                    ],
+                    horizontalOptions = LayoutOptions.CenterAndExpand,
                     itemSelected = fun idx -> dispatch (ListViewSelectedItemChanged idx)
                 )
             ])
         )
-        
+
     let tab3View searchTerm dispatch =
         View.ScrollingContentPage(
             title = "SearchBar",
@@ -117,11 +117,11 @@ module TabbedPage2 =
                     placeholder = "Enter search term",
                     searchCommand = (fun searchBarText -> dispatch (ExecuteSearch searchBarText)),
                     searchCommandCanExecute = true
-                ) 
+                )
                 View.Label(text = "You searched for " + searchTerm)
             ])
         )
-        
+
     let tab4View dispatch =
         View.NonScrollingContentPage(
             title = "ListViewGrouped",
@@ -129,36 +129,36 @@ module TabbedPage2 =
                 View.Label(text = "ListView (grouped):")
                 View.ListViewGrouped(
                     showJumpList = true,
-                    items= [ 
-                        "B", View.TextCell "B", [ View.TextCell "Baboon"; View.TextCell "Blue Monkey" ]
-                        "C", View.TextCell "C", [ View.TextCell "Capuchin Monkey"; View.TextCell "Common Marmoset" ]
-                        "G", View.TextCell "G", [ View.TextCell "Gibbon"; View.TextCell "Golden Lion Tamarin" ]
-                        "H", View.TextCell "H", [ View.TextCell "Howler Monkey" ]
-                        "J", View.TextCell "J", [ View.TextCell "Japanese Macaque" ]
-                        "M", View.TextCell "M", [ View.TextCell "Mandrill" ]
-                        "P", View.TextCell "P", [ View.TextCell "Proboscis Monkey"; View.TextCell "Pygmy Marmoset" ]
-                        "R", View.TextCell "R", [ View.TextCell "Rhesus Macaque" ]
-                        "S", View.TextCell "S", [ View.TextCell "Spider Monkey"; View.TextCell "Squirrel Monkey" ]
-                        "V", View.TextCell "V", [ View.TextCell "Vervet Monkey" ]
-                    ], 
+                    items= [
+                        "B", (View.TextCell "B" :> IViewElement), [ View.TextCell "Baboon"; View.TextCell "Blue Monkey" ]
+                        "C", (View.TextCell "C" :> IViewElement), [ View.TextCell "Capuchin Monkey"; View.TextCell "Common Marmoset" ]
+                        "G", (View.TextCell "G" :> IViewElement), [ View.TextCell "Gibbon"; View.TextCell "Golden Lion Tamarin" ]
+                        "H", (View.TextCell "H" :> IViewElement), [ View.TextCell "Howler Monkey" ]
+                        "J", (View.TextCell "J" :> IViewElement), [ View.TextCell "Japanese Macaque" ]
+                        "M", (View.TextCell "M" :> IViewElement), [ View.TextCell "Mandrill" ]
+                        "P", (View.TextCell "P" :> IViewElement), [ View.TextCell "Proboscis Monkey"; View.TextCell "Pygmy Marmoset" ]
+                        "R", (View.TextCell "R" :> IViewElement), [ View.TextCell "Rhesus Macaque" ]
+                        "S", (View.TextCell "S" :> IViewElement), [ View.TextCell "Spider Monkey"; View.TextCell "Squirrel Monkey" ]
+                        "V", (View.TextCell "V" :> IViewElement), [ View.TextCell "Vervet Monkey" ]
+                    ],
                     horizontalOptions = LayoutOptions.CenterAndExpand,
                     itemSelected = fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)
                 )
             ])
         )
-    
+
     let view model dispatch =
         View.TabbedPage(
-            useSafeArea = true, 
+            useSafeArea = true,
             children = [
                 dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) ->
                     tab1View pickedColorIndex dispatch
                 )
-                      
+
                 dependsOn () (fun model () ->
                     tab2View dispatch
                 )
-     
+
                 dependsOn (model.SearchTerm) (fun model (searchTerm) ->
                     tab3View searchTerm dispatch
                 )

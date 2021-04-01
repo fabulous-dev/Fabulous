@@ -4,6 +4,7 @@ namespace Fabimals.Components
 open Fabulous.XamarinForms
 open Xamarin.Forms
 open Fabimals.Models
+open Fabulous
 
 module SearchHandlers =
     type Msg =
@@ -17,10 +18,10 @@ module SearchHandlers =
             queryChanged=(fun (_, newValue) -> dispatch (QueryChanged newValue)),
             itemSelected=(fun itemOpt ->
                 match itemOpt with
-                | None -> ()
-                | Some item ->
+                | Some (:? DynamicViewElement as item) ->
                     let animal = item.TryGetTag<Animal>().Value
-                    dispatch (AnimalSelected animal)),
+                    dispatch (AnimalSelected animal)
+                | _ -> ()),
             items=[
                 for animal in animals do
                     yield View.Grid(

@@ -1,3 +1,7 @@
+#### 2.0.0-preview
+
+* Preparing next version
+
 #### 1.0.0
 
 * Stable release

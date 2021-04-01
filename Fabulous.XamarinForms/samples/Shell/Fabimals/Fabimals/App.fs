@@ -3,7 +3,6 @@ namespace Fabimals
 
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 open Xamarin.Essentials
 open System
@@ -14,7 +13,7 @@ open Fabimals.Components
 open Fabimals.Routes
 
 module AppStyles =
-    let applyDefaultShellItemStyle (element: ViewElement) =
+    let applyDefaultShellItemStyle (element: DynamicViewElement) =
         element.ShellBackgroundColor(Color.FromHex("#455A64"))
                .ShellForegroundColor(Color.White)
                .ShellTitleColor(Color.White)
@@ -125,147 +124,113 @@ module App =
             updateAnimalListPage Bears.update (fun m -> { model with BearsPageModel = m }) msg model.BearsPageModel
 
     let view (model: Model) dispatch =
-        View.Shell(
-            ref=shellRef,
-            flyoutHeaderBehavior=FlyoutHeaderBehavior.CollapseOnScroll,
-            flyoutHeader=View.ContentView(
-                height=200.,
-                content=View.Grid(
-                    backgroundColor=Color.Black,
-                    children=[
-                        View.Image(
-                            aspect=Aspect.AspectFill,
-                            source=Image.fromPath "xamarinstore.jpg",
-                            opacity=0.6
-                        )
-                        View.Label(
-                            text="Animals",
-                            textColor=Color.White,
-                            fontAttributes=FontAttributes.Bold,
-                            horizontalOptions=LayoutOptions.Center,
-                            verticalOptions=LayoutOptions.Center
-                        )
-                    ]
-                )
-            ),
-            items=[
-                View.FlyoutItem(
-                    title="Animals",
-                    route="animals",
-                    icon=Image.fromPath "cat.png",
-                    flyoutDisplayOptions=FlyoutDisplayOptions.AsMultipleItems,
-                    items=[
-                        View.Tab(
-                            title="Domestic",
-                            route="domestic",
-                            icon=Image.fromPath "paw.png",
-                            items=[
-                                View.ShellContent(
-                                    title="Cats",
-                                    route="cats",
-                                    icon=Image.fromPath "cat.png",
-                                    content=Cats.view model.CatsPageModel (CatsPageMsg >> dispatch)
-                                )
-                                View.ShellContent(
-                                    title="Dogs",
-                                    route="dogs",
-                                    icon=Image.fromPath "dog.png",
-                                    content=Dogs.view model.DogsPageModel (DogsPageMsg >> dispatch)
-                                )
-                            ]
-                        ) |> AppStyles.applyDomesticItemStyle
-                        View.ShellContent(
-                            title="Monkeys",
-                            route="monkeys",
-                            icon=Image.fromPath "monkey.png",
-                            content=Monkeys.view model.MonkeysPageModel (MonkeysPageMsg >> dispatch)
-                        ) |> AppStyles.applyMonkeysItemStyle
-                        View.ShellContent(
-                            title="Elephants",
-                            route="elephants",
-                            icon=Image.fromPath "elephant.png",
-                            content=Elephants.view model.ElephantsPageModel (ElephantsPageMsg >> dispatch)
-                        ) |> AppStyles.applyElephantsItemStyle
-                        View.ShellContent(
-                            title="Bears",
-                            route="bears",
-                            icon=Image.fromPath "bear.png",
-                            content=Bears.view model.BearsPageModel (BearsPageMsg >> dispatch)
-                        ) |> AppStyles.applyBearsItemStyle
-                    ]
-                ) |> AppStyles.applyDefaultShellItemStyle
-
-                View.ShellContent(
-                    title="About",
-                    route="about",
-                    icon=Image.fromPath "info.png",
-                    content=About.view (AboutPageMsg >> dispatch)
-                ) |> AppStyles.applyAboutItemStyle
-
-                View.MenuItem(
-                    text="Random",
-                    icon=Image.fromPath "random.png",
-                    command=(fun () ->
-                        let random = Random()
-                        let categories = [ Cats.data; Dogs.data; Monkeys.data; Elephants.data; Bears.data ]
-                        let category = categories.[random.Next(categories.Length)]
-                        let animal = category.[random.Next(category.Length)]
-                        dispatch (NavigateToDetails animal)
+        View.Application(
+            View.Shell(
+                ref=shellRef,
+                flyoutHeaderBehavior=FlyoutHeaderBehavior.CollapseOnScroll,
+                flyoutHeader=View.ContentView(
+                    height=200.,
+                    content=View.Grid(
+                        backgroundColor=Color.Black,
+                        children=[
+                            View.Image(
+                                aspect=Aspect.AspectFill,
+                                source=Image.fromPath "xamarinstore.jpg",
+                                opacity=0.6
+                            )
+                            View.Label(
+                                text="Animals",
+                                textColor=Color.White,
+                                fontAttributes=FontAttributes.Bold,
+                                horizontalOptions=LayoutOptions.Center,
+                                verticalOptions=LayoutOptions.Center
+                            )
+                        ]
                     )
-                )
-                View.MenuItem(
-                    text="Help",
-                    icon=Image.fromPath "help.png",
-                    command=(fun () -> dispatch ShowHelp)
-                )
-            ]
+                ),
+                items=[
+                    View.FlyoutItem(
+                        title="Animals",
+                        route="animals",
+                        icon=Image.fromPath "cat.png",
+                        flyoutDisplayOptions=FlyoutDisplayOptions.AsMultipleItems,
+                        items=[
+                            View.Tab(
+                                title="Domestic",
+                                route="domestic",
+                                icon=Image.fromPath "paw.png",
+                                items=[
+                                    View.ShellContent(
+                                        title="Cats",
+                                        route="cats",
+                                        icon=Image.fromPath "cat.png",
+                                        content=Cats.view model.CatsPageModel (CatsPageMsg >> dispatch)
+                                    )
+                                    View.ShellContent(
+                                        title="Dogs",
+                                        route="dogs",
+                                        icon=Image.fromPath "dog.png",
+                                        content=Dogs.view model.DogsPageModel (DogsPageMsg >> dispatch)
+                                    )
+                                ]
+                            ) |> AppStyles.applyDomesticItemStyle
+                            View.ShellContent(
+                                title="Monkeys",
+                                route="monkeys",
+                                icon=Image.fromPath "monkey.png",
+                                content=Monkeys.view model.MonkeysPageModel (MonkeysPageMsg >> dispatch)
+                            ) |> AppStyles.applyMonkeysItemStyle
+                            View.ShellContent(
+                                title="Elephants",
+                                route="elephants",
+                                icon=Image.fromPath "elephant.png",
+                                content=Elephants.view model.ElephantsPageModel (ElephantsPageMsg >> dispatch)
+                            ) |> AppStyles.applyElephantsItemStyle
+                            View.ShellContent(
+                                title="Bears",
+                                route="bears",
+                                icon=Image.fromPath "bear.png",
+                                content=Bears.view model.BearsPageModel (BearsPageMsg >> dispatch)
+                            ) |> AppStyles.applyBearsItemStyle
+                        ]
+                    ) |> AppStyles.applyDefaultShellItemStyle
+
+                    View.ShellContent(
+                        title="About",
+                        route="about",
+                        icon=Image.fromPath "info.png",
+                        content=About.view (AboutPageMsg >> dispatch)
+                    ) |> AppStyles.applyAboutItemStyle
+
+                    View.MenuItem(
+                        text="Random",
+                        icon=Image.fromPath "random.png",
+                        command=(fun () ->
+                            let random = Random()
+                            let categories = [ Cats.data; Dogs.data; Monkeys.data; Elephants.data; Bears.data ]
+                            let category = categories.[random.Next(categories.Length)]
+                            let animal = category.[random.Next(category.Length)]
+                            dispatch (NavigateToDetails animal)
+                        )
+                    )
+                    View.MenuItem(
+                        text="Help",
+                        icon=Image.fromPath "help.png",
+                        command=(fun () -> dispatch ShowHelp)
+                    )
+                ]
+            )
         )
 
     let program =
-        Program.mkProgramWithCmdMsg init update view mapCmdMsgToCmd
+        XamarinFormsProgram.mkProgramWithCmdMsg init update view mapCmdMsgToCmd
+#if DEBUG
+        |> Program.withConsoleTrace
+#endif
 
 type FabimalsApp () as app =
     inherit Application ()
 
     let runner =
         App.program
-        |> Program.withConsoleTrace
         |> XamarinFormsProgram.run app
-
-#if DEBUG
-    // Run LiveUpdate using:
-    //
-    //do runner.EnableLiveUpdate ()
-#endif
-
-
-#if SAVE_MODEL_WITH_JSON
-    let modelId = "model"
-    override __.OnSleep() =
-
-        let json = Newtonsoft.Json.JsonConvert.SerializeObject(runner.CurrentModel)
-        Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
-
-        app.Properties.[modelId] <- json
-
-    override __.OnResume() =
-        Debug.WriteLine "OnResume: checking for model in app.Properties"
-        try
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) ->
-
-                Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<App.Model>(json)
-
-                Debug.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
-                runner.SetCurrentModel (model, Cmd.none)
-
-            | _ -> ()
-        with ex ->
-            App.program.onError("Error while restoring model found in app.Properties", ex)
-
-    override this.OnStart() =
-        Debug.WriteLine "OnStart: using same logic as OnResume()"
-        this.OnResume()
-
-#endif

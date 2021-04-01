@@ -7,8 +7,13 @@
     <Description>F# Functional App Dev Framework</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Tracing.fs" />
+    <Compile Include="ViewRef.fs" />
     <Compile Include="Cmd.fs" />
-    <Compile Include="ViewElement.fs" />
+    <Compile Include="Interfaces.fs" />
+    <Compile Include="ComponentViewElement.fs" />
+    <Compile Include="DynamicViewElement.fs" />
+    <Compile Include="Runner.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="ViewHelpers.fs" />
   </ItemGroup>

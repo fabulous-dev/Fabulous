@@ -30,7 +30,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
       <PackageReference Include="Xamarin.Essentials" />
     </ItemGroup>
     <Import Project="..\..\..\..\..\Packages.targets" />

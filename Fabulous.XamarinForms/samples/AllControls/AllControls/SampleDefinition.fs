@@ -9,7 +9,7 @@ module SampleDefinition =
         { Title: string
           Init: unit -> obj * obj list
           Update: obj -> obj -> obj * obj list * obj option
-          View: obj -> (obj -> unit) -> ViewElement
+          View: obj -> (obj -> unit) -> DynamicViewElement
           MapToCmd: obj -> Cmd<obj> }
 
     /// An intermediate page allowing to choose from several samples
@@ -27,7 +27,7 @@ module SampleDefinition =
         { Title: string
           Init: unit -> 'Model * 'CmdMsg list
           Update: 'Msg -> 'Model -> 'Model * 'CmdMsg list * 'ExternalMsg option
-          View: 'Model -> ('Msg -> unit) -> ViewElement
+          View: 'Model -> ('Msg -> unit) -> DynamicViewElement
           MapToCmd: 'CmdMsg -> Cmd<'Msg> }
 
     /// Downcast the strongly-typed Sample definition to a loosely-typed one, while still making sure it's usable

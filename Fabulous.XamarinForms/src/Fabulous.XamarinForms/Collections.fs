@@ -16,7 +16,7 @@ module Collections =
         | Move of moveOldIndex: int * moveNewIndex: int
         | Update of updateIndex: int * updatePrev: 'T * updateCurr: 'T
         | MoveAndUpdate of moveAndUpdateOldIndex: int * moveAndUpdateprev: 'T * moveAndUpdatenewIndex: int * moveAndUpdatecurr: 'T
-        | Delete of deleteOldIndex: int
+        | Delete of deleteOldIndex: int * deletePrev: 'T
 
     let isMatch canReuse aggressiveReuseMode currIndex newChild (struct (index, reusableChild)) =
         canReuse reusableChild newChild
@@ -59,7 +59,7 @@ module Collections =
             true
         else
             isIdenticalRec identical prevChild coll (i + 1)
-   
+
     let isIdentical identical prevChild (coll: 'T[]) =
         isIdenticalRec identical prevChild coll 0
 
@@ -91,7 +91,7 @@ module Collections =
         let identicalElements = Dictionary<'T, int>()
         let keyedElements = Dictionary<string, struct (int * 'T)>()
         let reusableElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
-        let discardedElements = ArrayPool<int>.Shared.Rent(prevCollLength)
+        let discardedElements = ArrayPool<struct (int * 'T)>.Shared.Rent(prevCollLength)
 
         let mutable reusableElementsCount = 0
         let mutable discardedElementsCount = 0
@@ -104,12 +104,14 @@ module Collections =
                 else
                     match keyOf prevChild with
                     | ValueSome key when canReuseChildOf keyOf canReuse prevChild coll key ->
+                        if keyedElements.ContainsKey(key) then
+                            failwithf "A same key '%s' can't be used multiple times inside a same collection. Please use different keys." key
                         keyedElements.Add(key, struct (prevIndex, prevChild))
                     | ValueNone ->
                         reusableElements.[reusableElementsCount] <- struct (prevIndex, prevChild)
                         reusableElementsCount <- reusableElementsCount + 1
                     | ValueSome _ ->
-                        discardedElements.[discardedElementsCount] <- prevIndex
+                        discardedElements.[discardedElementsCount] <- struct (prevIndex, prevChild)
                         discardedElementsCount <- discardedElementsCount + 1
 
         for i in 0 .. coll.Length - 1 do
@@ -153,18 +155,19 @@ module Collections =
         // If we have discarded elements, delete them
         if discardedElementsCount > 0 then
             for i = 0 to discardedElementsCount - 1 do
-                workingSet.[workingSetIndex] <- Delete discardedElements.[i]
+                let struct (discardedIndex, discardedChild) = discardedElements.[i]
+                workingSet.[workingSetIndex] <- Delete (discardedIndex, discardedChild)
                 workingSetIndex <- workingSetIndex + 1
 
         // If we still have old elements that were not reused, delete them
         if reusableElementsCount > 0 then
             for i = 0 to reusableElementsCount - 1 do
-                let struct (prevIndex, _) = reusableElements.[i]
-                workingSet.[workingSetIndex] <- Delete prevIndex
+                let struct (prevIndex, prevChild) = reusableElements.[i]
+                workingSet.[workingSetIndex] <- Delete (prevIndex, prevChild)
                 workingSetIndex <- workingSetIndex + 1
 
         ArrayPool<struct (int * 'T)>.Shared.Return(reusableElements)
-        ArrayPool<int>.Shared.Return(discardedElements)
+        ArrayPool<struct (int * 'T)>.Shared.Return(discardedElements)
 
         workingSetIndex
 
@@ -232,9 +235,9 @@ module Collections =
                 workingSet.[position] <- moveAndUpdate prevIndices oldIndex prev newIndex curr
                 position <- position + 1
 
-            | Delete oldIndex ->
+            | Delete (oldIndex, prev) ->
                 let prevIndex = prevIndices.[oldIndex]
-                workingSet.[position] <- Delete prevIndex
+                workingSet.[position] <- Delete (prevIndex, prev)
                 position <- position + 1
                 shiftForDelete prevIndices oldIndex prevIndex
 
@@ -252,6 +255,7 @@ module Collections =
            (create: 'T -> 'TargetT)
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
            (attach: 'T voption -> 'T -> obj -> unit) // adjust attached properties
+           (unmount: 'T -> 'TargetT -> unit)
         =
 
         match struct (prevCollOpt, collOpt) with
@@ -292,29 +296,38 @@ module Collections =
                     update prev curr child
                     attach (ValueSome prev) curr child
 
-                | Delete index ->
-                    targetColl.RemoveAt(index) |> ignore
+                | Delete (index, prev) ->
+                    unmount prev targetColl.[index]
+                    targetColl.RemoveAt(index)
 
             ArrayPool<Operation<'T>>.Shared.Return(workingSet)
 
-    let updateChildren prevCollOpt collOpt target create update attach =
-        updateCollection true prevCollOpt collOpt target ViewHelpers.tryGetKey ViewHelpers.canReuseView create update attach
+    let updateChildren (definition: ProgramDefinition) prevCollOpt collOpt target create update attach =
+        updateCollection true prevCollOpt collOpt target ViewHelpers.tryGetKey definition.canReuseView
+            (fun c -> create definition (ValueSome (box target)) c)
+            (fun prev curr target -> update definition prev curr target)
+            (fun prevOpt curr target -> attach definition prevOpt curr target)
+            (fun prev target -> prev.Unmount(target))
 
-    let updateItems prevCollOpt collOpt target keyOf canReuse create update attach =
-        updateCollection false prevCollOpt collOpt target keyOf canReuse create update attach
+    let updateItems definition prevCollOpt collOpt target keyOf canReuse create update attach unmount =
+        updateCollection false prevCollOpt collOpt target keyOf canReuse
+            (fun c -> create definition (ValueSome (box target)) c)
+            (fun prev curr target -> update definition prev curr target)
+            (fun prevOpt curr target -> attach definition prevOpt curr target)
+            unmount
 
     /// Update a control given the previous and new view elements
-    let inline updateChild (prevChild: ViewElement) (newChild: ViewElement) targetChild =
-        newChild.UpdateIncremental(prevChild, targetChild)
+    let inline updateChild (definition: ProgramDefinition) (prevChild: IViewElement) (newChild: IViewElement) targetChild =
+        newChild.Update(definition, ValueSome prevChild, targetChild)
 
     /// Update the items of a TableSectionBase<'T> control, given previous and current view elements
-    let inline updateTableSectionBaseOfTItems<'T when 'T :> BindableObject> prevCollOpt collOpt (target: TableSectionBase<'T>) attach =
-        updateChildren prevCollOpt collOpt target (fun c -> c.Create() :?> 'T) updateChild attach
+    let inline updateTableSectionBaseOfTItems<'T when 'T :> BindableObject> definition prevCollOpt collOpt (target: TableSectionBase<'T>) attach =
+        updateChildren definition prevCollOpt collOpt target (fun def parentOpt c -> c.Create(def, parentOpt) :?> 'T) updateChild attach
 
     /// Update the items of a Shell, given previous and current view elements
-    let inline updateShellItems prevCollOpt collOpt (target: Shell) attach =
-        let createChild (desc: ViewElement) =
-            match desc.Create() with
+    let inline updateShellItems definition prevCollOpt collOpt (target: Shell) attach =
+        let createChild definition parentOpt (desc: IViewElement) =
+            match desc.Create(definition, parentOpt) with
             | :? ShellContent as shellContent -> ShellItem.op_Implicit shellContent
             | :? TemplatedPage as templatedPage -> ShellItem.op_Implicit templatedPage
             | :? ShellSection as shellSection -> ShellItem.op_Implicit shellSection
@@ -322,7 +335,7 @@ module Collections =
             | :? ShellItem as shellItem -> shellItem
             | child -> failwithf "%s is not compatible with the type ShellItem" (child.GetType().Name)
 
-        let updateChild prevViewElement (currViewElement: ViewElement) (target: ShellItem) =
+        let updateChild (definition: ProgramDefinition) prevViewElement (currViewElement: IViewElement) (target: ShellItem) =
             let realTarget =
                 match currViewElement.TargetType with
                 | t when t = typeof<ShellContent> -> target.Items.[0].Items.[0] :> Element
@@ -330,94 +343,96 @@ module Collections =
                 | t when t = typeof<ShellSection> -> target.Items.[0] :> Element
                 | t when t = typeof<MenuItem> -> target.GetType().GetProperty("MenuItem").GetValue(target) :?> Element // MenuShellItem is marked as internal
                 | _ -> target :> Element
-            updateChild prevViewElement currViewElement realTarget
+            updateChild definition prevViewElement currViewElement realTarget
 
-        updateChildren prevCollOpt collOpt target.Items createChild updateChild attach
+        updateChildren definition prevCollOpt collOpt target.Items createChild updateChild attach
 
     /// Update the menu items of a ShellContent, given previous and current view elements
-    let inline updateShellContentMenuItems prevCollOpt collOpt (target: ShellContent) =
-        updateChildren prevCollOpt collOpt target.MenuItems (fun c -> c.Create() :?> MenuItem) updateChild (fun _ _ _ -> ())
+    let inline updateShellContentMenuItems definition prevCollOpt collOpt (target: ShellContent) =
+        updateChildren definition prevCollOpt collOpt target.MenuItems (fun def parentOpt c -> c.Create(def, parentOpt) :?> MenuItem) updateChild (fun _ _ _ _ -> ())
 
     /// Update the items of a ShellItem, given previous and current view elements
-    let inline updateShellItemItems prevCollOpt collOpt (target: ShellItem) attach =
-        let createChild (desc: ViewElement) =
-            match desc.Create() with
+    let inline updateShellItemItems definition prevCollOpt collOpt (target: ShellItem) attach =
+        let createChild definition parentOpt (desc: IViewElement) =
+            match desc.Create(definition, parentOpt) with
             | :? ShellContent as shellContent -> ShellSection.op_Implicit shellContent
             | :? TemplatedPage as templatedPage -> ShellSection.op_Implicit templatedPage
             | :? ShellSection as shellSection -> shellSection
             | child -> failwithf "%s is not compatible with the type ShellSection" (child.GetType().Name)
 
-        let updateChild prevViewElement (currViewElement: ViewElement) (target: ShellSection) =
+        let updateChild definition prevViewElement (currViewElement: IViewElement) (target: ShellSection) =
             let realTarget =
                 match currViewElement.TargetType with
                 | t when t = typeof<ShellContent> -> target.Items.[0] :> BaseShellItem
                 | t when t = typeof<TemplatedPage> -> target.Items.[0] :> BaseShellItem
                 | _ -> target :> BaseShellItem
-            updateChild prevViewElement currViewElement realTarget
+            updateChild definition prevViewElement currViewElement realTarget
 
-        updateChildren prevCollOpt collOpt target.Items createChild updateChild attach
+        updateChildren definition prevCollOpt collOpt target.Items createChild updateChild attach
 
     /// Update the items of a ShellSection, given previous and current view elements
-    let inline updateShellSectionItems prevCollOpt collOpt (target: ShellSection) attach =
-        updateChildren prevCollOpt collOpt target.Items (fun c -> c.Create() :?> ShellContent) updateChild attach
+    let inline updateShellSectionItems definition prevCollOpt collOpt (target: ShellSection) attach =
+        updateChildren definition prevCollOpt collOpt target.Items (fun def parentOpt c -> c.Create(def, parentOpt) :?> ShellContent) updateChild attach
 
     /// Update the items of a SwipeItems, given previous and current view elements
-    let inline updateSwipeItems prevCollOpt collOpt (target: SwipeItems) =
-        updateChildren prevCollOpt collOpt target (fun c -> c.Create() :?> ISwipeItem) updateChild (fun _ _ _ -> ())
+    let inline updateSwipeItems definition prevCollOpt collOpt (target: SwipeItems) =
+        updateChildren definition prevCollOpt collOpt target (fun def parentOpt c -> c.Create(def, parentOpt) :?> ISwipeItem) updateChild (fun _ _ _ _ -> ())
 
     /// Update the children of a Menu, given previous and current view elements
-    let inline updateMenuChildren prevCollOpt collOpt (target: Menu) attach =
-        updateChildren prevCollOpt collOpt target (fun c -> c.Create() :?> Menu) updateChild attach
+    let inline updateMenuChildren definition prevCollOpt collOpt (target: Menu) attach =
+        updateChildren definition prevCollOpt collOpt target (fun def parentOpt c -> c.Create(def, parentOpt) :?> Menu) updateChild attach
 
     /// Update the effects of an Element, given previous and current view elements
-    let inline updateElementEffects prevCollOpt collOpt (target: Element) attach =
-        let createChild (desc: ViewElement) =
-            match desc.Create() with
+    let inline updateElementEffects definition prevCollOpt collOpt (target: Element) attach =
+        let createChild definition parentOpt (desc: IViewElement) =
+            match desc.Create(definition, parentOpt) with
             | :? CustomEffect as customEffect -> Effect.Resolve(customEffect.Name)
             | effect -> effect :?> Effect
 
-        updateChildren prevCollOpt collOpt target.Effects createChild updateChild attach
+        updateChildren definition prevCollOpt collOpt target.Effects createChild updateChild attach
 
     /// Update the toolbar items of a Page, given previous and current view elements
-    let inline updatePageToolbarItems prevCollOpt collOpt (target: Page) attach =
-        updateChildren prevCollOpt collOpt target.ToolbarItems (fun c -> c.Create() :?> ToolbarItem) updateChild attach
+    let inline updatePageToolbarItems definition prevCollOpt collOpt (target: Page) attach =
+        updateChildren definition prevCollOpt collOpt target.ToolbarItems (fun def parentOpt c -> c.Create(def, parentOpt) :?> ToolbarItem) updateChild attach
 
     /// Update the children of a TransformGroup, given previous and current view elements
-    let inline updateTransformGroupChildren prevCollOpt collOpt (target: TransformGroup) attach =
+    let inline updateTransformGroupChildren definition prevCollOpt collOpt (target: TransformGroup) attach =
         let targetColl =
             match target.Children with
             | null -> let oc = TransformCollection() in target.Children <- oc; oc
             | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Transform) updateChild attach
+        updateChildren definition prevCollOpt collOpt targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> Transform) updateChild attach
 
     /// Update the children of a GeometryGroup, given previous and current view elements
-    let inline updateGeometryGroupChildren prevCollOpt collOpt (target: GeometryGroup) attach =
+    let inline updateGeometryGroupChildren definition prevCollOpt collOpt (target: GeometryGroup) attach =
         let targetColl =
             match target.Children with
             | null -> let oc = GeometryCollection() in target.Children <- oc; oc
             | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> Geometry) updateChild attach
-        
+        updateChildren definition prevCollOpt collOpt targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> Geometry) updateChild attach
+
     /// Update the segments of a PathFigure, given previous and current view elements
-    let inline updatePathFigureSegments prevCollOpt collOpt (target: PathFigure) attach =
+    let inline updatePathFigureSegments definition prevCollOpt collOpt (target: PathFigure) attach =
         let targetColl =
             match target.Segments with
             | null -> let oc = PathSegmentCollection() in target.Segments <- oc; oc
             | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> PathSegment) updateChild attach
-        
+        updateChildren definition prevCollOpt collOpt targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> PathSegment) updateChild attach
+
     /// Update the stroke dash values of a Shape, given previous and current float list
-    let inline updateShapeStrokeDashArray prevCollOpt collOpt (target: Xamarin.Forms.Shapes.Shape) =
+    let inline updateShapeStrokeDashArray _ prevCollOpt collOpt (target: Xamarin.Forms.Shapes.Shape) =
         let targetColl =
             match target.StrokeDashArray with
             | null -> let oc = DoubleCollection() in target.StrokeDashArray <- oc; oc
             | oc -> oc
-        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ())
+        updateCollection true prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun _ _ -> false) (fun c -> c) (fun _ _ _ -> ()) (fun _ _ _ -> ()) (fun _ _ -> ())
 
-    let inline updateViewElementHolderItems (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (targetColl: IList<ViewElementHolder>) =
-        updateItems prevCollOpt collOpt targetColl
+    let inline updateViewElementHolderItems definition (prevCollOpt: IViewElement[] voption) (collOpt: IViewElement[] voption) (targetColl: IList<ViewElementHolder>) attach =
+        updateItems definition prevCollOpt collOpt targetColl
             ViewHelpers.tryGetKey ViewHelpers.canReuseView
-            ViewElementHolder (fun _ curr holder -> holder.ViewElement <- curr)
+            (fun def parentOpt c -> ViewElementHolder(c, def)) (fun _ _ curr holder -> holder.ViewElement <- curr)
+            attach
+            (fun prev target -> prev.Unmount(target))
 
     let inline getCollection<'T> (coll: IEnumerable) (set: ObservableCollection<'T> -> unit) =
         match coll with
@@ -425,83 +440,93 @@ module Collections =
         | _ -> let oc = ObservableCollection<'T>() in set oc; oc
 
     /// Update the items in a ItemsView control, given previous and current view elements
-    let inline updateItemsViewItems prevCollOpt collOpt (target: ItemsView) =
+    let inline updateItemsViewItems definition prevCollOpt collOpt (target: ItemsView) =
         let targetColl = getCollection<ViewElementHolder> target.ItemsSource (fun oc -> target.ItemsSource <- oc)
-        updateViewElementHolderItems prevCollOpt collOpt targetColl (fun _ _ _ -> ())
+        updateViewElementHolderItems definition prevCollOpt collOpt targetColl (fun _ _ _ _ -> ())
 
     /// Update the items in a ItemsView<'T> control, given previous and current view elements
-    let inline updateItemsViewOfTItems<'T when 'T :> BindableObject> prevCollOpt collOpt (target: ItemsView<'T>) =
+    let inline updateItemsViewOfTItems<'T when 'T :> BindableObject> definition prevCollOpt collOpt (target: ItemsView<'T>) =
         let targetColl = getCollection<ViewElementHolder> target.ItemsSource (fun oc -> target.ItemsSource <- oc)
-        updateViewElementHolderItems prevCollOpt collOpt targetColl (fun _ _ _ -> ())
+        updateViewElementHolderItems definition prevCollOpt collOpt targetColl (fun _ _ _ _ -> ())
 
     /// Update the items in a SearchHandler control, given previous and current view elements
-    let inline updateSearchHandlerItems _ collOpt (target: SearchHandler) =
+    let inline updateSearchHandlerItems definition _ collOpt (target: SearchHandler) =
         let targetColl = List<ViewElementHolder>()
-        updateViewElementHolderItems ValueNone collOpt targetColl (fun _ _ _ -> ())
+        updateViewElementHolderItems definition ValueNone collOpt targetColl (fun _ _ _ _ -> ())
         target.ItemsSource <- targetColl
 
     /// Update the items in a GroupedListView control, given previous and current view elements
-    let inline updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: ListView) =
-        let updateViewElementHolderGroup (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ViewElementHolderGroup) =
+    let inline updateListViewGroupedItems definition (prevCollOpt: (string * IViewElement * IViewElement[])[] voption) (collOpt: (string * IViewElement * IViewElement[])[] voption) (target: ListView) =
+        let updateViewElementHolderGroup definition (_prevShortName: string, _prevKey, prevColl: IViewElement[]) (currShortName: string, currKey, currColl: IViewElement[]) (target: ViewElementHolderGroup) =
             target.ShortName <- currShortName
             target.ViewElement <- currKey
-            updateViewElementHolderItems (ValueSome prevColl) (ValueSome currColl) target (fun _ _ _ -> ())
+            updateViewElementHolderItems definition (ValueSome prevColl) (ValueSome currColl) target (fun _ _ _ _ -> ())
 
         let targetColl = getCollection<ViewElementHolderGroup> target.ItemsSource (fun oc -> target.ItemsSource <- oc)
-        updateItems prevCollOpt collOpt targetColl
+        updateItems definition prevCollOpt collOpt targetColl
             (fun (key, _, _) -> ValueSome key)
             (fun (_, prevHeader, _) (_, currHeader, _) -> ViewHelpers.canReuseView prevHeader currHeader)
-            ViewElementHolderGroup updateViewElementHolderGroup
-            (fun _ _ _ -> ())
+            (fun def parentOpt (k, h, v) -> ViewElementHolderGroup(k, h, v, def)) updateViewElementHolderGroup
+            (fun _ _ _ _ -> ())
+            (fun _ _ -> ())
 
     /// Update the selected items in a SelectableItemsView control, given previous and current indexes
-    let inline updateSelectableItemsViewSelectedItems (prevCollOptOpt: int[] option voption) (collOptOpt: int[] option voption) (target: SelectableItemsView) =
+    let inline updateSelectableItemsViewSelectedItems definition (prevCollOptOpt: int[] option voption) (collOptOpt: int[] option voption) (target: SelectableItemsView) =
         let prevCollOpt = match prevCollOptOpt with ValueNone | ValueSome None -> ValueNone | ValueSome (Some x) -> ValueSome x
         let collOpt = match collOptOpt with ValueNone | ValueSome None -> ValueNone | ValueSome (Some x) -> ValueSome x
         let targetColl = getCollection<obj> target.SelectedItems (fun oc -> target.SelectedItems <- oc)
 
-        let findItem idx =
+        let findItem _ _ idx =
             let itemsSource = target.ItemsSource :?> IList<ViewElementHolder>
             itemsSource.[idx] :> obj
 
-        updateItems prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ -> ()) (fun _ _ _ -> ())
-        
-        
-    let inline updatePathGeometryFigures (prevOpt: InputTypes.Figures.Value voption) (currOpt: InputTypes.Figures.Value voption) (target: PathGeometry) =
+        updateItems definition prevCollOpt collOpt targetColl (fun _ -> ValueNone) (fun x y -> x = y) findItem (fun _ _ _ _ -> ()) (fun _ _ _ _ -> ()) (fun _ _ -> ())
+
+
+    let inline updatePathGeometryFigures definition (prevOpt: InputTypes.Figures.Value voption) (currOpt: InputTypes.Figures.Value voption) (target: PathGeometry) =
         match prevOpt, currOpt with
         | ValueNone, ValueNone -> ()
         | ValueSome prev, ValueSome curr when prev = curr -> ()
-        
+
         | _, ValueNone ->
             target.Figures <- PathFigureCollection()
-        
+
         | ValueNone, ValueSome (Figures.String curr)
         | ValueSome _, ValueSome (Figures.String curr) ->
             target.Figures <- PathFigureCollectionConverter().ConvertFromInvariantString(curr) :?> PathFigureCollection
-        
+
         | ValueNone, ValueSome (Figures.FiguresList curr) ->
             let targetColl =
                 match target.Figures with
                 | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
                 | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
-            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
-            
+            updateChildren definition ValueNone (ValueSome curr) targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> PathFigure) updateChild (fun _ _ _ _ -> ())
+
         | ValueSome (Figures.FiguresList prev), ValueSome (Figures.FiguresList curr) ->
             let targetColl =
                 match target.Figures with
                 | oc when oc.GetType() = typeof<PathFigureCollection> -> oc
                 | _ -> let oc = PathFigureCollection() in target.Figures <- oc; oc
-            updateChildren (ValueSome prev) (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
-        
+            updateChildren definition (ValueSome prev) (ValueSome curr) targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> PathFigure) updateChild (fun _ _ _ _ -> ())
+
         | ValueSome (Figures.String _), ValueSome (Figures.FiguresList curr) ->
             let targetColl = PathFigureCollection()
-            updateChildren ValueNone (ValueSome curr) targetColl (fun c -> c.Create() :?> PathFigure) updateChild (fun _ _ _ -> ())
+            updateChildren definition ValueNone (ValueSome curr) targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> PathFigure) updateChild (fun _ _ _ _ -> ())
             target.Figures <- targetColl
 
     // Update the collection of gradient stops of a GradientBrush, given previous and current values
-    let inline updateGradientBrushGradientStops (prevCollOpt: ViewElement[] voption) (collOpt: ViewElement[] voption) (target: GradientBrush) =
+    let inline updateGradientBrushGradientStops definition (prevCollOpt: IViewElement[] voption) (collOpt: IViewElement[] voption) (target: GradientBrush) =
         let targetColl =
             match target.GradientStops with
             | null -> let oc = GradientStopCollection() in target.GradientStops <- oc; oc
             | oc -> oc
-        updateChildren prevCollOpt collOpt targetColl (fun c -> c.Create() :?> GradientStop) updateChild (fun _ _ _ -> ())
+        updateChildren definition prevCollOpt collOpt targetColl (fun def parentOpt c -> c.Create(def, parentOpt) :?> GradientStop) updateChild (fun _ _ _ _ -> ())
+        
+    let unmountChildren (collOpt: IViewElement[] voption) (targetColl: IList<'a>) =
+        match struct (collOpt, targetColl) with
+        | struct (ValueNone, _) -> ()
+        | struct (_, null) -> ()
+        | struct (ValueSome coll, target) ->
+            for i = 0 to coll.Length - 1 do
+                let targetChild = target.[i]
+                coll.[i].Unmount(targetChild)

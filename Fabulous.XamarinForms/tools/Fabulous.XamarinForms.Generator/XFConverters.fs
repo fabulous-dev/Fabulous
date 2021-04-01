@@ -10,7 +10,7 @@ module XFConverters =
         match typeName with
         | "Xamarin.Forms.UriImageSource" -> false
         | _ -> true
-        
+
     let convertTypeName (typeName: string) =
         match typeName with
         | "Xamarin.Forms.Grid.IGridList<Xamarin.Forms.View>"
@@ -18,17 +18,17 @@ module XFConverters =
         | "System.Collections.Generic.IList<T>"
         | "System.Collections.Generic.IList<Xamarin.Forms.Behavior>"
         | "System.Collections.Generic.IList<Xamarin.Forms.Span>"
-        | "System.Collections.Generic.IList<Xamarin.Forms.MenuItem>" -> "ViewElement list"
+        | "System.Collections.Generic.IList<Xamarin.Forms.MenuItem>" -> "IViewElement list"
         | "Xamarin.Forms.Button+ButtonContentLayout" -> "Xamarin.Forms.Button.ButtonContentLayout"
         | "System.EventHandler<Xamarin.Forms.VisualElement/FocusRequestArgs>" -> "System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>"
         | "System.EventHandler<System.Tuple<System.String,System.String>>" -> "System.EventHandler<string * string>"
         | "System.Tuple<System.String,System.String>" -> "(string * string)"
         | _ -> Converters.convertTypeName typeName
-        
+
     let rec tryGetStringRepresentationOfDefaultValue (defaultValue: obj) : string option =
         let floatToString = Converters.numberWithDecimalsToString ""
         let float32ToString = Converters.numberWithDecimalsToString "f"
-        
+
         match defaultValue with
         | :? Color as color when color = Color.Default || color = Unchecked.defaultof<Color> -> Some "Xamarin.Forms.Color.Default"
         | :? Keyboard as keyboard when keyboard = Keyboard.Default -> Some "Xamarin.Forms.Keyboard.Default"

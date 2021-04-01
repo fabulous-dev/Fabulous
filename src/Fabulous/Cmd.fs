@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Elmish and Fabulous contributors. See LICENSE.md for license.
+// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous
 
 /// Dispatch - feed new message into the processing loop
@@ -48,7 +48,7 @@ module Cmd =
 
     /// Command to issue a message at the end of an asynchronous task, only when Option.IsSome = true
     let ofAsyncMsgOption (p: Async<'msg option>) : Cmd<'msg> =
-        [ fun dispatch -> async { 
+        [ fun dispatch -> async {
             let! msg = p
             match msg with
             | None -> ()

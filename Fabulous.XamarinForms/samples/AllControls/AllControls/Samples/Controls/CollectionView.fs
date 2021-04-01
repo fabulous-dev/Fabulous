@@ -11,7 +11,7 @@ module CollectionView =
             title = "CollectionView sample",
             content =
                 View.CollectionView(
-                    header = (StructuredItems.fromString "String Header"),
+                    header = (Content.fromString "String Header"),
                     items = [
                         View.Label(text = "Person 1", height = 25.) 
                         View.Label(text = "Person 2", height = 25.)
@@ -27,7 +27,7 @@ module CollectionView =
                         View.Label(text = "Person 13", height = 25.)
                         View.Label(text = "Person 14", height = 25.)
                     ],
-                    footer = (StructuredItems.fromElement (View.Label("Label Footer")))
+                    footer = (Content.fromElement (View.Label("Label Footer")))
                 )
         )
     

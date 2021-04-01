@@ -10,6 +10,8 @@
     <Compile Include="..\Fabulous.XamarinForms.Core\InputTypes.fs" />
     <Compile Include="..\Fabulous.XamarinForms.Core\CustomControls.fs" />
     <Compile Include="Xamarin.Forms.Core.Attributes.fs" />
+    <Compile Include="DynamicViewHelpers.fs" />
+    <Compile Include="Component.fs" />
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="ViewConverters.fs" />

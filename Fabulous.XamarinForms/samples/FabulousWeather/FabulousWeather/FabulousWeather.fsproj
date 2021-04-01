@@ -20,7 +20,6 @@
     <PackageReference Include="Xamarin.Forms.PancakeView" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
     <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
   </ItemGroup>  
   <Import Project="..\..\..\..\Packages.targets" />

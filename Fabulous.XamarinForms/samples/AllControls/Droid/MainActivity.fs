@@ -26,6 +26,6 @@ type MainActivity() =
 
     override this.OnTrimMemory(level) =
         match _app with
-        | Some app -> app.Program.Dispatch(AllControls.App.Msg.LowMemoryWarningReceived)
+        | Some app -> app.MemoryWarningReceived()
         | None -> ()
 

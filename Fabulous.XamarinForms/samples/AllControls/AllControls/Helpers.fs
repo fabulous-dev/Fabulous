@@ -1,16 +1,15 @@
 namespace AllControls
 
 open Xamarin.Forms
-open Fabulous
 open Fabulous.XamarinForms
 
 module Helpers =
     let randomColor() =
         let rand = System.Random()
         Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255))
-    
-    type Fabulous.XamarinForms.View with            
-        static member ScrollingContentPage(title, (content: ViewElement)) =
+
+    type Fabulous.XamarinForms.View with
+        static member ScrollingContentPage(title, content) =
             View.ContentPage(
                 title = title,
                 useSafeArea = true,
@@ -19,8 +18,8 @@ module Helpers =
                     content = content
                 )
             )
-            
-        static member NonScrollingContentPage(title, (content: ViewElement), ?backgroundColor) =
+
+        static member NonScrollingContentPage(title, content, ?backgroundColor) =
             View.ContentPage(
                 title = title,
                 useSafeArea = true,

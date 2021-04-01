@@ -47,7 +47,7 @@ module AdaptDiffTests =
             Update (6, previous.[6], current.[6])
             Update (7, previous.[7], current.[7])
             Update (8, previous.[8], current.[8])
-            Delete 4
+            Delete (4, previous.[4])
         ]
 
         testAdaptDiffForObservableCollection diffResult
@@ -61,7 +61,7 @@ module AdaptDiffTests =
             MoveAndUpdate (7, previous.[6], 6,current.[6])
             MoveAndUpdate (8, previous.[7], 7, current.[7])
             MoveAndUpdate (9, previous.[8], 8, current.[8])
-            Delete 9
+            Delete (9, previous.[4])
         ]
             
     [<Test>]
@@ -82,9 +82,9 @@ module AdaptDiffTests =
             Insert (0, current.[0])
             Update (1, previous.[1], current.[1])
             MoveAndUpdate (4, previous.[4], 2, current.[2])
-            Delete 0
-            Delete 2
-            Delete 3
+            Delete (0, previous.[0])
+            Delete (2, previous.[2])
+            Delete (3, previous.[3])
         ]
         
         testAdaptDiffForObservableCollection diffResult
@@ -92,9 +92,9 @@ module AdaptDiffTests =
             Insert (0, current.[0])
             MoveAndUpdate (2, previous.[1], 1, current.[1])
             MoveAndUpdate (5, previous.[4], 2, current.[2])
-            Delete 3
-            Delete 3
-            Delete 3
+            Delete (3, previous.[0])
+            Delete (3, previous.[2])
+            Delete (3, previous.[3])
         ]
             
     [<Test>]
@@ -119,30 +119,30 @@ module AdaptDiffTests =
         let diffResult = [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             MoveAndUpdate (0, previous.[0], 1, current.[1])
-            Delete 1
-            Delete 3
-            Delete 4
-            Delete 5
-            Delete 6
-            Delete 7
-            Delete 8
-            Delete 9
-            Delete 10
+            Delete (1, previous.[1])
+            Delete (3, previous.[3])
+            Delete (4, previous.[4])
+            Delete (5, previous.[5])
+            Delete (6, previous.[6])
+            Delete (7, previous.[7])
+            Delete (8, previous.[8])
+            Delete (9, previous.[9])
+            Delete (10, previous.[10])
         ]
         
         testAdaptDiffForObservableCollection diffResult
         |> should equal [
             MoveAndUpdate (2, previous.[2], 0, current.[0])
             Update (1, previous.[0], current.[1])
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
-            Delete 2
+            Delete (2, previous.[1])
+            Delete (2, previous.[3])
+            Delete (2, previous.[4])
+            Delete (2, previous.[5])
+            Delete (2, previous.[6])
+            Delete (2, previous.[7])
+            Delete (2, previous.[8])
+            Delete (2, previous.[9])
+            Delete (2, previous.[10])
         ]
         
         
