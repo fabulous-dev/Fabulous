@@ -5,19 +5,19 @@
 Pages 
 ------
 
-##### `topic last updated: v0.61.0`
+##### `topic last updated: v1.0 - 02.04.2021 - 11:47pm`
 <br /> 
 
  These visual elements occupy all or most of the screen and usually contain several layers of lower tier visual elements. 
  For example, a ContentPage may contain a StackLayout which in turn contains several buttons, labeles or other view elements. 
 
 | Page type          | Description                                                                                          | Appearance |
-|----------------|------------------------------------------------------------------------------------------------------|------------|
-| ContentPage    | a simple page, containing a single View object (usually a layout)                                    |            |
-| FlyoutPage     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |            |
-| NavigationPage | manages navigation among other pages using a stack-based architecture                                |            |
-| TabbedPage     | allows navigation among child pages using tabs                                                       |            |
-| CarouselPage   | allows navigation among child pages through finger swiping                                           |            |
+|----------------|------------------------------------------------------------------------------------------------------|---------------------------|
+| ContentPage    | a simple page, containing a single View object (usually a layout)                                    |<img src="images/pages/contentpage-android.png" width="100">|
+| FlyoutPage     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyoutpage-android.png" width="100">|
+| NavigationPage | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigationpage-android.png" width="100">|
+| TabbedPage     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbedpage-android.png" width="100">|
+| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carouselpage-android.png" width="100">|
 
 
 <br /> 
@@ -38,10 +38,20 @@ A single page app typically returns a `ContentPage`. For example:
 
 ```fsharp 
 View.ContentPage(
-    title = "Pocket Piggy Bank",
-    content = View.Label(text = sprintf "Hello world!")
+    backgroundColor = style.PageColor,
+    title = "ContentPage",
+    content = 
+        View.Label
+            (   
+                horizontalOptions = LayoutOptions.Start,
+                verticalOptions = LayoutOptions.Start,
+                backgroundColor = Color.White,
+                padding = Thickness 0.,
+                text = sprintf "ContentPage with a single Label" 
+            )
 )
 ```
+<img src="images/pages/contentpage-android.png" width="200">
 
 See also:
 
@@ -50,10 +60,33 @@ See also:
 ### FlyoutPage
 ```fsharp 
 View.FlyoutPage(
-    flyout = View.ContentPage(title ="flyoutPage", content = View.Label("flyout")), // 'title' is needed for the flyout page
-    detail = View.ContentPage(content = View.Label("detail"))        
+    flyout = 
+        View.ContentPage(
+            backgroundColor = style.PageColor,
+            title = "FlyoutPage",
+            content = 
+                View.StackLayout( children = [
+                    View.ListViewGrouped(
+                        items = [ 
+                            "Introduction Pages", View.TextCell("Introduction Pages", textColor = Color.LightGray), (pagesToNavigateName introductionPages)
+                            "Sample Pages", View.TextCell("Sample Pages", textColor = Color.LightGray), pagesToNavigateName (SamplePages.samplePages model.MyStyle)
+                            "Sample Layouts", View.TextCell("Sample Layouts", textColor = Color.LightGray), pagesToNavigateName (SampleLayouts.sampleLayouts model.MyStyle)
+                            "Sample Displays", View.TextCell("Sample Displays", textColor = Color.LightGray), pagesToNavigateName (SampleDisplays.sampleDisplays model.MyStyle)
+                        ], 
+                        itemSelected = (fun idx -> dispatch (ListViewSelectedItemChanged idx.Value); dispatch (ResetStyle))
+                    )
+                ])
+    detail = 
+        View.NavigationPage
+            (   
+                title = "details", 
+                pages = [
+                    activePage model.SelectedPage
+                ] 
+            )
 )
 ```
+<img src="images/pages/flyoutpage-android.png" width="200">
 
 See also:
 
@@ -61,13 +94,24 @@ See also:
 
 ### NavigationPage
 ```fsharp 
-View.NavigationPage(pages = [
-    View.ContentPage(title ="navigation", content = View.Label("navigation page 1"))
-        .ToolbarItems([
-            View.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) 
-        ])
+View.NavigationPage(
+    pages = [
+        View.ContentPage(
+                title ="Navigation Page", 
+                content = 
+                    View.Label
+                        (
+                            horizontalOptions = LayoutOptions.Start,
+                            verticalOptions = LayoutOptions.Start,
+                            backgroundColor = Color.White,
+                            padding = Thickness 0.,
+                            text = "navigation page 1"
+                        )
+        )
 ])
 ```
+
+<img src="images/pages/navigationpage-android.png" width="200">
 
 See also:
 
@@ -76,13 +120,31 @@ See also:
 ### TabbedPage
 ```fsharp       
 View.TabbedPage(
+    backgroundColor = style.PageColor,
+    title ="TabbedPage",
     children = [
-        View.ContentPage(title ="tab1", content = View.Label("tabbed page 1"))                
-        View.ContentPage(title ="tab2", content = View.Label("tabbed page 2"))
-        ---
-    ]
-)
+        View.ContentPage( title ="First Tab", content = View.Label
+            (                                 
+                horizontalOptions = LayoutOptions.Start,
+                verticalOptions = LayoutOptions.Start,
+                backgroundColor = Color.White,
+                padding = Thickness 0.,
+                text = "TabbedPage 1" 
+            ) 
+        )
+        View.ContentPage( title ="Second Tab", content = View.Label
+            (                                
+                horizontalOptions = LayoutOptions.Start,
+                verticalOptions = LayoutOptions.Start,
+                backgroundColor = Color.White,
+                padding = Thickness 0.,
+                text = "TabbedPage 2"
+            ) 
+        )                
+    ] )
 ```
+
+<img src="images/pages/tabbedpage-android.png" width="200">
 
 See also:
 
@@ -91,12 +153,32 @@ See also:
 ### CarouselPage
 ```fsharp 
 View.CarouselPage(
+    backgroundColor = style.PageColor,
+    title = "CarouselPage",
     children = [
-        View.ContentPage(title ="carousel1", content = View.Label("carousel page 1"))                
-        View.ContentPage(title ="carousel1", content = View.Label("carousel page 2"))
+        View.ContentPage(title ="carousel1", content = View.Label
+            (
+                horizontalOptions = LayoutOptions.Start,
+                verticalOptions = LayoutOptions.Start,
+                backgroundColor = Color.White,
+                padding = Thickness 0.,
+                text = "carousel page 1"
+            )
+        )                
+        View.ContentPage(title ="carousel1", content = View.Label
+            (
+                horizontalOptions = LayoutOptions.Start,
+                verticalOptions = LayoutOptions.Start,
+                backgroundColor = Color.White,
+                padding = Thickness 0.,
+                text = "carousel page 2"
+            )
+        )
     ]
 )
 ```
+
+<img src="images/pages/carouselpage-android.png" width="200">
 
 See also:
 

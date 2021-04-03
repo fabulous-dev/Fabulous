@@ -4,7 +4,7 @@
 
 Interface objects (Views) for displaying collections
 ------
-##### `topic last updated: v0.61.0`
+##### `topic last updated: v0.61.0 - 31.03.2021 - 02:51pm`
 <br /> 
 
 ### CarouselView
