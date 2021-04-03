@@ -13,11 +13,11 @@ Pages
 
 | Page type          | Description                                                                                          | Appearance |
 |----------------|------------------------------------------------------------------------------------------------------|---------------------------|
-| ContentPage    | a simple page, containing a single View object (usually a layout)                                    |<img src="images/pages/contentpage-android.png" width="100">|
-| FlyoutPage     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyoutpage-android.png" width="100">|
-| NavigationPage | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigationpage-android.png" width="100">|
-| TabbedPage     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbedpage-android.png" width="100">|
-| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carouselpage-android.png" width="100">|
+| [ContentPage](pages/contentpage.md)    | a simple page, containing a single View object (usually a layout)                                    |<img src="images/pages/content-adr-styled.png" width="100">|
+| [FlyoutPage](pages/flyoutpage.md)     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyout-adr-basic.png" width="100">|
+| [NavigationPage](pages/navigationpage.md) | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigation-adr-basic.png" width="100">|
+| [TabbedPage](pages/tabbedpage.md)     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbed-adr-styled.png" width="100">|
+| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carousel-adr-styled.png" width="100">|
 
 
 <br /> 
