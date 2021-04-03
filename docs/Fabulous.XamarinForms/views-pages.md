@@ -13,11 +13,11 @@ Pages
 
 | Page type          | Description                                                                                          | Appearance |
 |----------------|------------------------------------------------------------------------------------------------------|---------------------------|
-| ContentPage    | a simple page, containing a single View object (usually a layout)                                    |<img src="images/pages/contentpage-android.jpg" width="100">|
-| FlyoutPage     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyoutpage-android.jpg" width="100">|
-| NavigationPage | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigationpage-android.jpg" width="100">|
-| TabbedPage     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbedpage-android.jpg" width="100">|
-| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carouselpage-android.jpg" width="100">|
+| ContentPage    | a simple page, containing a single View object (usually a layout)                                    |<img src="images/pages/contentpage-android.png" width="100">|
+| FlyoutPage     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyoutpage-android.png" width="100">|
+| NavigationPage | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigationpage-android.png" width="100">|
+| TabbedPage     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbedpage-android.png" width="100">|
+| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carouselpage-android.png" width="100">|
 
 
 <br /> 
@@ -51,7 +51,7 @@ View.ContentPage(
             )
 )
 ```
-<img src="images/pages/contentpage-android.jpg" width="200">
+<img src="images/pages/contentpage-android.png" width="200">
 
 See also:
 
@@ -86,7 +86,7 @@ View.FlyoutPage(
             )
 )
 ```
-<img src="images/pages/flyoutpage-android.jpg" width="200">
+<img src="images/pages/flyoutpage-android.png" width="200">
 
 See also:
 
@@ -111,7 +111,7 @@ View.NavigationPage(
 ])
 ```
 
-<img src="images/pages/navigationpage-android.jpg" width="200">
+<img src="images/pages/navigationpage-android.png" width="200">
 
 See also:
 
@@ -144,7 +144,7 @@ View.TabbedPage(
     ] )
 ```
 
-<img src="images/pages/tabbedpage-android.jpg" width="200">
+<img src="images/pages/tabbedpage-android.png" width="200">
 
 See also:
 
@@ -178,7 +178,7 @@ View.CarouselPage(
 )
 ```
 
-<img src="images/pages/carouselpage-android.jpg" width="200">
+<img src="images/pages/carouselpage-android.png" width="200">
 
 See also:
 
