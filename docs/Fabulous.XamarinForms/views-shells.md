@@ -4,7 +4,7 @@
 
 Shells 
 ------
-##### `topic last updated: v0.61.0 - 31.03.2021 - 02:51pm`
+##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
 <br /> 
 
 Xamarin.Forms Shell reduces the complexity of mobile application development by providing the fundamental features that most mobile applications require. This includes a common navigation user experience, a URI-based navigation scheme, and an integrated search handler.

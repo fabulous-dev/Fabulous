@@ -4,7 +4,7 @@
 
 Views
 ------
-##### `topic last updated: v 0.61.0 - 31.03.2021 - 02:29pm,`
+##### `topic last updated: v 0.61.0 - 04.04.2021 - 02:29pm,`
 
 The `view` function is a function returning your view elements based on the current model. For example:
 
