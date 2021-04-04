@@ -17,7 +17,7 @@ Pages
 | [FlyoutPage](pages/flyoutpage.md)     | contains a flyout pane (usually a list or menu) plus a detail pane (usually showing a selected item) |<img src="images/pages/flyout-adr-basic.png" width="100">|
 | [NavigationPage](pages/navigationpage.md) | manages navigation among other pages using a stack-based architecture                                |<img src="images/pages/navigation-adr-basic.png" width="100">|
 | [TabbedPage](pages/tabbedpage.md)     | allows navigation among child pages using tabs                                                       |<img src="images/pages/tabbed-adr-styled.png" width="100">|
-| CarouselPage   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carousel-adr-styled.png" width="100">|
+| [CarouselPage](pages/carouselpage.md)   | allows navigation among child pages through finger swiping                                           |<img src="images/pages/carousel-adr-styled.png" width="100">|
 
 
 <br /> 
