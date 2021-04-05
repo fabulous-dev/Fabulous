@@ -2,7 +2,7 @@
 
 {% include_relative ../../contents.md %}
 
-CarouselView
+sample
 --------
 
 <br /> 
@@ -14,7 +14,7 @@ CarouselView
 
 ```
 
-<img src="../../images/views/.png" width="300">
+<img src="../../images/views/sample-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -25,10 +25,16 @@ CarouselView
 ```
 
 
-<img src="../../images/views/.png" width="300">
+<img src="../../images/views/sample-adr-styled.png" width="300">
 
 <br /> <br /> 
 
 See also:
 
-* [`Xamarin.Forms.`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.)
+* [`Xamarin.Forms.sample`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.sample)
+
+<br /> 
+
+### More examples
+
+`to-do`
