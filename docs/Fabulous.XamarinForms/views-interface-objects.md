@@ -13,8 +13,8 @@ Interface objects such as labels, buttons, and sliders are commonly known as con
 
 | [presentation](views-io-present.md) | [initiate commands](views-io-initiate.md) | [setting values](views-io-setting.md) | [editing text](views-io-edit.md) | [indicate activity](views-io-indicate.md) | [display collections](views-io-display.md) |
 |--------------|-------------------|----------------|--------------|-------------------|---------------------|
-| BoxView      | Button            | CheckBox       | [Entry](interface/edit/entry.md)        | ActivityIndicator | [CarouselView](interface/display/carouselview.md)|
-| Ellipse      | ImageButton       | Slider         | [Editor](interface/edit/editor.md)       | ProgressBar       | [CollectionView](interface/display/CollectionView.md)|
+| BoxView      | Button            | CheckBox       | [Entry](interface/edit/entry.md)        | [ActivityIndicator](interface/indicate/activityindicator.md) | [CarouselView](interface/display/carouselview.md)|
+| Ellipse      | ImageButton       | Slider         | [Editor](interface/edit/editor.md)       | [ProgressBar](interface/indicate/activityindicator.md)       | [CollectionView](interface/display/CollectionView.md)|
 | Label        | RadioButton       | Stepper        |              |                   | [IndicatorView](interface/display/IndicatorView.md)|
 | Line         | RefreshView       | Switch         |              |                   | [ListView](interface/display/ListView.md)|
 | Image        | SearchBar         | DatePicker     |              |                   | [Picker](interface/display/Picker.md)|

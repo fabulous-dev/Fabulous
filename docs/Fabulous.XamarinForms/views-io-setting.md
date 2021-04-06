@@ -6,21 +6,16 @@ Interface objects (Views) for setting values
 ------
 ##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
 
-### CheckBox
-```fsharp 
+| Editing text                                  | Description                                                                                           | Appearance                                                   |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| [CheckBox](interface/setting/CheckBox.md)     | a type of button that can either be checked or empty                                                  | <img src="images/views/sample.png" width="300"> |
+| [Slider](interface/setting/TimePicker.md)     | a horizontal bar that can be manipulated by the user to select a double value from a continuous range | <img src="images/views/sample.png" width="300"> |
+| [Stepper](interface/setting/TimePicker.md)    | two buttons that can be manipulated to incrementally select a double value from a range of values     | <img src="images/views/sample.png" width="300"> |
+| [Switch](interface/setting/TimePicker.md)     | a horizontal toggle button that can be manipulated by the user to toggle between on and off states    | <img src="images/views/sample.png" width="300"> |
+| [TimePicker](interface/setting/TimePicker.md) | invokes the platform's date-picker control and allows the user to select a date                       | <img src="images/views/sample.png" width="300"> |
+| [DatePicker](interface/setting/TimePicker.md) | invokes the platform's time-picker control and allows the user to select a time                       | <img src="images/views/sample.png" width="300"> |
 
-View.CheckBox(
-    isChecked = true,
-    checkedChanged = (fun on -> dispatch (...))
-)
-```
 
-See also:
-
-* [Xamarin guide to CheckBox](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/CheckBox)
-* [`Xamarin.Forms.CheckBox`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.CheckBox)
-
-<br /> 
 
 ### Slider   
 A simple `Slider` is as follows:
