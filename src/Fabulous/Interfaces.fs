@@ -60,6 +60,7 @@ module internal ProgramTracing =
     let inline traceError (definition: ProgramDefinition) = traceError definition.trace definition.traceLevel
 
 module internal RunnerTracing =
-    let inline traceDebug (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceDebug definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)
-    let inline traceInfo (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceInfo definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)
-    let inline traceError (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId str = traceError definition.trace definition.traceLevel (sprintf "[Runner%s] %s" runnerId str)
+    let runnerMsgFn (runnerId: string) (msg: string) = String.Format("[Runner{0}] {1}", runnerId, msg)
+    let inline traceDebug (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceDebug definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)
+    let inline traceInfo (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceInfo definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)
+    let inline traceError (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceError definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)

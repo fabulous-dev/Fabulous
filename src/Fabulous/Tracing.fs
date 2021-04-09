@@ -16,10 +16,10 @@ module Tracing =
         /// No trace
         | None = 3
 
-    let inline trace (traceFn: TraceLevel -> string -> unit) (targetTraceLevel: TraceLevel) (traceLevel: TraceLevel) (str: string) =
-        if (int targetTraceLevel) >= (int traceLevel) then
-            traceFn targetTraceLevel str
+    let inline trace (targetTraceLevel: TraceLevel) (traceFn: TraceLevel -> string -> unit) (traceLevel: TraceLevel) (args: 'args) (msgFn: 'args -> string) =
+        if targetTraceLevel >= traceLevel then
+            traceFn targetTraceLevel (msgFn args)
 
-    let inline traceDebug traceFn traceLevel str = trace traceFn TraceLevel.Debug traceLevel str
-    let inline traceInfo traceFn traceLevel str = trace traceFn TraceLevel.Info traceLevel str
-    let inline traceError traceFn traceLevel str = trace traceFn TraceLevel.Error traceLevel str
+    let inline traceDebug traceFn traceLevel args msgFn = trace TraceLevel.Debug traceFn traceLevel args msgFn
+    let inline traceInfo traceFn traceLevel args msgFn = trace TraceLevel.Info traceFn traceLevel args msgFn
+    let inline traceError traceFn traceLevel args msgFn = trace TraceLevel.Error traceFn traceLevel args msgFn

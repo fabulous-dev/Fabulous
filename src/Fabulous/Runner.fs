@@ -1,26 +1,34 @@
 // Copyright Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous
 
+open System
+
 type RunnerDispatch<'msg>()  =
     let mutable dispatchImpl = (fun (_msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
     member x.DispatchViaThunk = id (fun msg -> dispatchImpl msg)
     member x.SetDispatchThunk v = dispatchImpl <- v
 
 /// Starts the dispatch loop for the page with the given program
-type Runner<'arg, 'msg, 'model, 'externalMsg>() =
-    let runnerId = System.String.Format("<{0}, {1}, {2}, {3}> - {4}", typeof<'arg>.Name, typeof<'msg>.Name, typeof<'model>.Name, typeof<'externalMsg>.Name, System.Guid.NewGuid())
+type Runner<'arg, 'msg, 'model, 'externalMsg>() as this =
+    let runnerId = String.Format("<{0}, {1}, {2}, {3}>(...)@{4}", typeof<'arg>.Name, typeof<'msg>.Name, typeof<'model>.Name, typeof<'externalMsg>.Name, this.GetHashCode())
     
     let mutable runnerDefinition = Unchecked.defaultof<RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>>
     let mutable programDefinition = Unchecked.defaultof<ProgramDefinition>
     let mutable lastModel = Unchecked.defaultof<'model>
     let mutable lastViewData = Unchecked.defaultof<IViewElement>
-    let mutable disposableSubscription: System.IDisposable = null
+    let mutable disposableSubscription: IDisposable = null
     let mutable rootView = null
     let mutable lastArg = Unchecked.defaultof<'arg>
     let dispatch = RunnerDispatch<'msg>()
+    
+    let debug msgFn args =
+        RunnerTracing.traceDebug runnerDefinition runnerId args msgFn
 
     let rec processMsg msg =
-        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Processing message %0A..." msg)
+        let traceStart (msg: 'msg) = sprintf "Processing message %0A..." msg
+        let traceEnd (msg: 'msg) = sprintf "Message %0A processed" msg
+        
+        debug traceStart msg
         try
             let updatedModel, cmd, _ = runnerDefinition.update msg lastModel
             lastModel <- updatedModel
@@ -34,13 +42,16 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
                 with ex ->
                     runnerDefinition.onError "Error executing commands" ex
 
-            RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Message %0A processed" msg)
+            debug traceEnd msg
         with ex ->
             runnerDefinition.onError (sprintf "Unable to process message %0A" msg) ex
 
     and updateView updatedModel =
-        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "Updating view for model %0A..." updatedModel)
-
+        let traceStart (updatedModel: 'model) = sprintf "Updating view for model %0A..." updatedModel
+        let traceEnd (updatedModel: 'model) = sprintf "View updated for model %0A" updatedModel
+        
+        debug traceStart updatedModel
+        
         let newPageElement = runnerDefinition.view updatedModel dispatch.DispatchViaThunk
 
         if runnerDefinition.canReuseView lastViewData newPageElement then
@@ -50,7 +61,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
 
         lastViewData <- newPageElement
 
-        RunnerTracing.traceDebug runnerDefinition runnerId (sprintf "View updated for model %0A" updatedModel)
+        debug traceEnd updatedModel
     
     let start definition arg =
         dispatch.SetDispatchThunk(definition.syncDispatch processMsg)
@@ -105,27 +116,39 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() =
         member x.Arg = lastArg
         
         member x.Start(definition, arg) =
-            RunnerTracing.traceDebug definition runnerId "Starting runner"
+            let trace () = "Starting runner"
+            
+            RunnerTracing.traceDebug definition runnerId () trace
             start definition arg
         
         member x.Restart(definition, arg) =
-            RunnerTracing.traceDebug definition runnerId (sprintf "Restarting runner. Old arg was %0A, new is %O" lastArg arg)
+            let trace (lastArg, arg) = sprintf "Restarting runner. Old arg was %0A, new is %O" lastArg arg
+            
+            RunnerTracing.traceDebug definition runnerId (lastArg, arg) trace
             restart definition arg
         
         member x.Stop() =
-            RunnerTracing.traceDebug runnerDefinition runnerId "Stopping runner"
+            let trace () = "Stopping runner"
+            
+            debug trace ()
             stop()
         
         member x.CreateView(parentViewOpt) =
-            RunnerTracing.traceDebug runnerDefinition runnerId "Creating view for runner"
+            let trace () = "Creating view for runner"
+            
+            debug trace ()
             createView parentViewOpt
         
         member x.AttachView(existingView, existingViewPrevModelOpt) =
-            RunnerTracing.traceDebug runnerDefinition runnerId "Attaching view to runner"
+            let trace () = "Attaching view to runner"
+            
+            debug trace ()
             attachView existingView existingViewPrevModelOpt
         
         member x.DetachView() =
-            RunnerTracing.traceDebug runnerDefinition runnerId "Detaching view from runner"
+            let trace () = "Detaching view from runner"
+            
+            debug trace ()
             detachView()
         
         member x.Dispatch(msg) = dispatch.DispatchViaThunk(msg)
