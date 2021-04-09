@@ -38,7 +38,7 @@ module Collections =
         if index + 1 >= arrCount then
             ()
         else
-            for i = index to arrCount - 1 do
+            for i = index to arrCount - 2 do
                 arr.[i] <- arr.[i + 1]
 
     let rec canReuseChildOfRec keyOf canReuse prevChild (coll: 'T[]) key i =
