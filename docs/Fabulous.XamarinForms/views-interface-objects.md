@@ -13,12 +13,12 @@ Interface objects such as labels, buttons, and sliders are commonly known as con
 
 | [presentation](views-io-present.md) | [initiate commands](views-io-initiate.md) | [setting values](views-io-setting.md) | [editing text](views-io-edit.md) | [indicate activity](views-io-indicate.md) | [display collections](views-io-display.md) |
 |--------------|-------------------|----------------|--------------|-------------------|---------------------|
-| BoxView      | Button            | [CheckBox](interface/setting/CheckBox.md)       | [Entry](interface/edit/entry.md)        | [ActivityIndicator](interface/indicate/activityindicator.md) | [CarouselView](interface/display/carouselview.md)|
-| Ellipse      | ImageButton       | [Slider](interface/setting/Slider.md)         | [Editor](interface/edit/editor.md)       | [ProgressBar](interface/indicate/activityindicator.md)       | [CollectionView](interface/display/CollectionView.md)|
-| Label        | RadioButton       | [Stepper](interface/setting/Stepper.md)        |              |                   | [IndicatorView](interface/display/IndicatorView.md)|
-| Line         | RefreshView       | [Switch](interface/setting/Switch.md)         |              |                   | [ListView](interface/display/ListView.md)|
-| Image        | SearchBar         | [DatePicker](interface/setting/DatePicker.md)     |              |                   | [Picker](interface/display/Picker.md)|
-| Map          | SwipeView         | [TimePicker](interface/setting/TimePicker.md)     |              |                   | [TableView](interface/display/TableView.md)|
+| BoxView      | [Button](interface/initiate/Button.md)            | [CheckBox](interface/setting/CheckBox.md)       | [Entry](interface/edit/entry.md)        | [ActivityIndicator](interface/indicate/activityindicator.md) | [CarouselView](interface/display/carouselview.md)|
+| Ellipse      | [ImageButton](interface/initiate/ImageButton.md)       | [Slider](interface/setting/Slider.md)         | [Editor](interface/edit/editor.md)       | [ProgressBar](interface/indicate/activityindicator.md)       | [CollectionView](interface/display/CollectionView.md)|
+| Label        | [RadioButton](interface/initiate/RadioButton.md)       | [Stepper](interface/setting/Stepper.md)        |              |                   | [IndicatorView](interface/display/IndicatorView.md)|
+| Line         | [RefreshView](interface/initiate/RefreshView.md)       | [Switch](interface/setting/Switch.md)         |              |                   | [ListView](interface/display/ListView.md)|
+| Image        | [SearchBar](interface/initiate/SearchBar.md)         | [DatePicker](interface/setting/DatePicker.md)     |              |                   | [Picker](interface/display/Picker.md)|
+| Map          | [SwipeView](interface/initiate/Swipeview.md)         | [TimePicker](interface/setting/TimePicker.md)     |              |                   | [TableView](interface/display/TableView.md)|
 | OpenGLView   |                   |                |              |                   |                     |
 | Path         |                   |                |              |                   |                     |
 | Polygon      |                   |                |              |                   |                     |
