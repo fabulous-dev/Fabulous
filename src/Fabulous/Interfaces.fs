@@ -2,7 +2,20 @@
 namespace Fabulous
 
 open System
-open Fabulous.Tracing
+
+/// Represents a level of details in the trace outputs
+type TraceLevel =
+    /// Print out all traces 
+    | Debug = 0
+    
+    /// Print out errors and informational traces
+    | Info = 1
+    
+    /// Print out only errors
+    | Error = 2
+    
+    /// No trace
+    | None = 3
 
 type ProgramDefinition =
     { canReuseView: IViewElement -> IViewElement -> bool
@@ -55,12 +68,21 @@ type IRunner<'arg, 'msg, 'model, 'externalMsg> =
     abstract Dispatch: 'msg -> unit
 
 module internal ProgramTracing =
-    let inline traceDebug (definition: ProgramDefinition) = traceDebug definition.trace definition.traceLevel
-    let inline traceInfo (definition: ProgramDefinition) = traceInfo definition.trace definition.traceLevel
-    let inline traceError (definition: ProgramDefinition) = traceError definition.trace definition.traceLevel
+    let private trace<'traceArgs> targetTraceLevel (definition: ProgramDefinition) (args: 'traceArgs) msgFn =
+        if definition.traceLevel <= targetTraceLevel then
+            definition.trace targetTraceLevel (msgFn args)
+    
+    let traceDebug<'traceArgs> = trace<'traceArgs> TraceLevel.Debug
+    let traceInfo<'traceArgs> = trace<'traceArgs> TraceLevel.Info
+    let traceError<'traceArgs> = trace<'traceArgs> TraceLevel.Error
 
 module internal RunnerTracing =
-    let runnerMsgFn (runnerId: string) (msg: string) = String.Format("[Runner{0}] {1}", runnerId, msg)
-    let inline traceDebug (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceDebug definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)
-    let inline traceInfo (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceInfo definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)
-    let inline traceError (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId args msgFn = traceError definition.trace definition.traceLevel args (msgFn >> runnerMsgFn runnerId)
+    let private trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> targetTraceLevel (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId (args: 'traceArgs) msgFn =
+        if definition.traceLevel <= targetTraceLevel then
+            let msg = msgFn args
+            let traceMsg = String.Format("[Runner{0}] {1}", runnerId, msg)
+            definition.trace targetTraceLevel traceMsg
+        
+    let traceDebug<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> = trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> TraceLevel.Debug
+    let traceInfo<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> = trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> TraceLevel.Info
+    let traceError<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> = trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> TraceLevel.Error
