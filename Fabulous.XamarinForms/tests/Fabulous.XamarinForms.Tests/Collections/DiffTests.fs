@@ -553,11 +553,11 @@ module DiffTests =
         // And we had an Off-by-One error in the deletion of an element
         // so since the array was longer than the size we really needed, the error was not visible
         // But if you have exactly 16 items in the array (the real size of the rented array), an IndexOutOfRange is thrown
-        let previous =
+        let previous: IViewElement list =
             [ for i = 1 to 15 do yield View.Label(text = i.ToString())
               yield View.Button(text = "16") ]
             
-        let current =
+        let current: IViewElement list =
             [ yield View.Label(text = "1")
               yield View.Button(text = "16")
               for i = 2 to 15 do yield View.Label(text = i.ToString()) ]
