@@ -107,7 +107,7 @@ module Reader =
             tdef.Methods
              |> Seq.tryFind (fun x -> x.IsConstructor && x.IsPublic && x.Parameters.Count = 0)
         
-        { FullName = tdef.FullName
+        { FullName = tdef.FullName.Replace('/', '.')
           AssemblyName = tdef.Module.Assembly.Name.Name
           CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 

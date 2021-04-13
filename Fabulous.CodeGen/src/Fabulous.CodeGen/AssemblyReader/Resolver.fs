@@ -41,7 +41,7 @@ module Resolver =
     /// Finds all types that derive from a given base type (on all depth levels)
     let getAllTypesDerivingFromBaseType (isTypeResolvable: string -> bool) (allTypes: TypeDefinition list) baseTypeName =
         getAllTypesDerivingFromBaseTypeInner allTypes baseTypeName
-        |> List.filter (fun tdef -> tdef.IsPublic)
+        |> List.filter (fun tdef -> tdef.IsPublic || tdef.IsNestedPublic)
         |> List.filter (fun tdef -> tdef.FullName |> isTypeResolvable)
         |> List.rev
         |> List.toArray
