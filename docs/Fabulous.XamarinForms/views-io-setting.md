@@ -6,7 +6,7 @@ Interface objects (Views) for setting values
 ------
 ##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
 
-| Editing text                                  | Description                                                                                           | Appearance                                                   |
+| Name                                                | Description                                                                                           | Appearance                                                   |
 |-----------------------------------------------|-------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
 | [CheckBox](interface/setting/CheckBox.md)     | a type of button that can either be checked or empty                                                  | <img src="images/views/CheckBox-adr-styled.png" width="300"> |
 | [Slider](interface/setting/TimePicker.md)     | a horizontal bar that can be manipulated by the user to select a double value from a continuous range | <img src="images/views/Slider-adr-styled.png" width="300"> |

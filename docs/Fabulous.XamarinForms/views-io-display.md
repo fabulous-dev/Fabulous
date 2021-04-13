@@ -7,7 +7,7 @@ Interface objects (Views) for displaying collections
 ##### `topic last updated: v1.0 - 04.04.2021 - 11:30pm`
 <br /> 
 
-| Display collections                                       | Description                                                                                                  | Appearance                                                                 |
+| Name                                       | Description                                                                                                  | Appearance                                                                 |
 |-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | [CarouselView](interface/display/carouselview.md)             | displays a scrollable list of data items                                                                     |<img src="images/views/carousel-adr-styled.png" width="300">          |
 | [CollectionView](interface/display/collectionview.md)                                        | displays a scrollable list of selectable data items, using different layout specifications                   | <img src="images/views/collection-adr-styled.png" width="300">                                                                        |
