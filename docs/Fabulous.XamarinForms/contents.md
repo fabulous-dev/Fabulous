@@ -1,6 +1,6 @@
 * [Introduction](introduction.md)
 * [Getting started](getting-started.md)
-* [The MVU architecture](MVU.md)
+* [The MVU architecture](mvu.md)
     * [Models](models.md)
     * [Views](views.md)
         * [Pages](views-pages.md)
