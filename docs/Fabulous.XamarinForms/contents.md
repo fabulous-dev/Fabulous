@@ -13,4 +13,4 @@
     * [Unit testing](testing.md)
     * [Tools](tools.md)
 * Misc ...
-* [Migrations guides from older versions](migrations-guides.md)
+* [Migrations guides from older versions](migration-guides.md)
