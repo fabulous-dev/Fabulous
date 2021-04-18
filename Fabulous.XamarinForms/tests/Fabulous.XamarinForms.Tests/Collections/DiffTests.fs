@@ -546,3 +546,38 @@ module DiffTests =
             Delete 9
             Delete 10
         ]
+            
+    [<Test>]
+    let ``Test Delete Issue #861``() =
+        // Explanations: ArrayPool.Rent returns an array of size 16 minimum
+        // And we had an Off-by-One error in the deletion of an element
+        // so since the array was longer than the size we really needed, the error was not visible
+        // But if you have exactly 16 items in the array (the real size of the rented array), an IndexOutOfRange is thrown
+        let previous =
+            [ for i = 1 to 15 do yield View.Label(text = i.ToString())
+              yield View.Button(text = "16") ]
+            
+        let current =
+            [ yield View.Label(text = "1")
+              yield View.Button(text = "16")
+              for i = 2 to 15 do yield View.Label(text = i.ToString()) ]
+        
+        testUpdateChildren (ValueSome previous) current
+        |> should equal [
+            Update (0, previous.[0], current.[0])
+            MoveAndUpdate (15, previous.[15], 1, current.[1])
+            MoveAndUpdate (1, previous.[1], 2, current.[2])
+            MoveAndUpdate (2, previous.[2], 3, current.[3])
+            MoveAndUpdate (3, previous.[3], 4, current.[4])
+            MoveAndUpdate (4, previous.[4], 5, current.[5])
+            MoveAndUpdate (5, previous.[5], 6, current.[6])
+            MoveAndUpdate (6, previous.[6], 7, current.[7])
+            MoveAndUpdate (7, previous.[7], 8, current.[8])
+            MoveAndUpdate (8, previous.[8], 9, current.[9])
+            MoveAndUpdate (9, previous.[9], 10, current.[10])
+            MoveAndUpdate (10, previous.[10], 11, current.[11])
+            MoveAndUpdate (11, previous.[11], 12, current.[12])
+            MoveAndUpdate (12, previous.[12], 13, current.[13])
+            MoveAndUpdate (13, previous.[13], 14, current.[14])
+            MoveAndUpdate (14, previous.[14], 15, current.[15])
+        ]
