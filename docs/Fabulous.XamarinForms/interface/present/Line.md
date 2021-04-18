@@ -48,6 +48,7 @@ View.Line
 
 See also:
 
+* [Line in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/Line)
 * [`Xamarin.Forms.Line`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Line)
 
 <br /> 

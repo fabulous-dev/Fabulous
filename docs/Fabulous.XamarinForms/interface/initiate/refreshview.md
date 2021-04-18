@@ -59,6 +59,7 @@ View.RefreshView
 
 See also:
 
+* [RefreshView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/RefreshView)
 * [`Xamarin.Forms.RefreshView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RefreshView)
 
 <br /> 

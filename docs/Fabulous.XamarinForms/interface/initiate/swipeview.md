@@ -109,6 +109,7 @@ View.SwipeView
 
 See also:
 
+* [SwipeView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/SwipeView)
 * [`Xamarin.Forms.SwipeView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.SwipeView)
 
 <br /> 

@@ -38,6 +38,7 @@ View.ActivityIndicator
 
 See also:
 
+* [ActivityIndicator in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/ActivityIndicator)
 * [`Xamarin.Forms.ActivityIndicator`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ActivityIndicator)
 
 <br /> 

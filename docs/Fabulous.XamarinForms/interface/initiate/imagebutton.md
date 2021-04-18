@@ -42,6 +42,7 @@ View.ImageButton
 
 See also:
 
+* [ImageButton in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/ImageButton)
 * [`Xamarin.Forms.ImageButton`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ImageButton)
 
 <br /> 

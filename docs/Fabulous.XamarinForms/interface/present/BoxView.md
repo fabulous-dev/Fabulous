@@ -36,6 +36,7 @@ View.BoxView
 
 See also:
 
+* [BoxView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/BoxView)
 * [`Xamarin.Forms.BoxView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.BoxView)
 
 <br /> 

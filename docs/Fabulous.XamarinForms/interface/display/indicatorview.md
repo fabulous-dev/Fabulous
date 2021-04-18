@@ -24,7 +24,7 @@ View.StackLayout( children = [
 ] )
 ```
 
-<img src="../../images/views/indicator-adr-basic.png" width="300">
+<img src="../../images/views/IndicatorView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -80,10 +80,11 @@ View.StackLayout
 ```
 
 
-<img src="../../images/views/indicator-adr-styled.png" width="300">
+<img src="../../images/views/IndicatorView-adr-styled.png" width="300">
 
 <br /> <br /> 
 
 See also:
 
+* [IndicatorView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/IndicatorView)
 * [`Xamarin.Forms.IndicatorView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.IndicatorView)

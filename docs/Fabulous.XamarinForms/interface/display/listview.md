@@ -58,6 +58,7 @@ View.ListViewGrouped(items = [
 
 See also:
 
+* [ListView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/ListView)
 * [`Xamarin.Forms.ListView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ListView)
 
 ### More examples

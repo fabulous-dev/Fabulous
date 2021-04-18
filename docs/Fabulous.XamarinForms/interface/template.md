@@ -31,6 +31,7 @@ sample
 
 See also:
 
+* [sample in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/sample)
 * [`Xamarin.Forms.sample`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.sample)
 
 <br /> 

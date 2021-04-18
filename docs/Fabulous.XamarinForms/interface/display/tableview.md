@@ -58,6 +58,7 @@ View.TableView( root =
 
 See also:
 
+* [TableView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/TableView)
 * [`Xamarin.Forms.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView)
 
 

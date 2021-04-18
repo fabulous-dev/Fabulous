@@ -23,7 +23,7 @@ View.CollectionView(items = [
 ] )
 ```
 
-<img src="../../images/views/collection-adr-basic.png" width="300">
+<img src="../../images/views/CollectionView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -64,12 +64,13 @@ View.CollectionView
     )
 ```
 
-<img src="../../images/views/collection-adr-styled.png" width="300">
+<img src="../../images/views/CollectionView-adr-styled.png" width="300">
 
 <br /> <br /> 
 
 See also:
 
+* [CollectionView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/CollectionView)
 * [`Xamarin.Forms.CollectionView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.CollectionView)
 
 

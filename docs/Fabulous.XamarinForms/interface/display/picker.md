@@ -43,6 +43,7 @@ View.ContentPage(title ="Picker", content =
 
 See also:
 
+* [Picker in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/Picker)
 * [`Xamarin.Forms.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
 
 

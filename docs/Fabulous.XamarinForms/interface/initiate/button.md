@@ -38,6 +38,7 @@ View.Button
 
 See also:
 
+* [Button in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/Button)
 * [`Xamarin.Forms.Button`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Button)
 
 <br /> 

@@ -37,6 +37,7 @@ View.SearchBar
 
 See also:
 
+* [SearchBar in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/SearchBar)
 * [`Xamarin.Forms.SearchBar`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.SearchBar)
 
 <br /> 

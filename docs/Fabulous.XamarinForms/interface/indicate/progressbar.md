@@ -39,6 +39,7 @@ View.ProgressBar
 
 See also:
 
+* [ProgressBar in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/ProgressBar)
 * [`Xamarin.Forms.ProgressBar`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ProgressBar)
 
 <br /> 

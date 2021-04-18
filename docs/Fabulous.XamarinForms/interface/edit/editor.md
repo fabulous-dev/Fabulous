@@ -38,7 +38,8 @@ View.Editor
 
 See also:
 
-* [`Xamarin.Forms.`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.)
+* [Editor in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/text/Editor)
+* [`Xamarin.Forms.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor)
 
 <br /> 
 

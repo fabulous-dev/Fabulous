@@ -21,7 +21,7 @@ View.CarouselView(items = [
 ] )
 ```
 
-<img src="../../images/views/carousel-adr-basic.png" width="300">
+<img src="../../images/views/CarouselView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -63,10 +63,11 @@ View.CarouselView
 ```
 
 
-<img src="../../images/views/carousel-adr-styled.png" width="300">
+<img src="../../images/views/CarouselView-adr-styled.png" width="300">
 
 <br /> <br /> 
 
 See also:
 
+* [CarouselView in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/CarouselView)
 * [`Xamarin.Forms.CarouselView`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.carouselview?view=xamarin-forms)
