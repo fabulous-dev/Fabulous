@@ -2,7 +2,10 @@
 
 {% include_relative contents.md %}
 
-## Pitfalls and F# 5.0 support
+Pitfalls and F# 5.0 support
+------
+##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
+<br /> 
 
 Here are some common pitfalls you might encounter when using Fabulous.
 

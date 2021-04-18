@@ -4,17 +4,19 @@
 
 View Extensions
 ------
+##### (topic last updated: pending)
+<br /> 
 
 Many open source and 3rd-party libraries of Xamarin.Forms controls exist. To use other controls, a small amount of wrapper code
 is typically needed to define a corresponding view element using the incremental-update model used by Fabulous.
 
 The following additional view elements are available as pre-built nuget libraries:
 
-* [FFImageLoading](views-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
-* [Maps](views-maps.md) for platform maps
-* [SkiaSharp](views-skiasharp.md) for drawing 2D graphics
-* [OxyPlot](views-oxyplot.md) for charting
-* [VideoManager](views-videomanager.md) for playing audio and video
+* [FFImageLoading](extensions-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
+* [Maps](extensions-maps.md) for platform maps
+* [SkiaSharp](extensions-skiasharp.md) for drawing 2D graphics
+* [OxyPlot](extensions-oxyplot.md) for charting
+* [VideoManager](extensions-videomanager.md) for playing audio and video
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
@@ -78,11 +80,7 @@ module MyViewExtensions =
                 source.UpdatePrimitive (prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
 
-            let updateAttachedProperties (propertyKey: int) (prev: ViewElement voption) (curr: ViewElement) (targetChild: obj) =
-                ViewBuilders.UpdateBASEAttachedProperties(propertyKey, prev, curr, targetChild)
-                ...
-
-            ViewElement.Create<ABC>(create, update, updateAttachedProperties, attribs)
+            ViewElement.Create<ABC>(create, update, attribs)
 ```
 
 The control is then used as follows:
@@ -185,11 +183,8 @@ module MapsExtension =
                 source.UpdateElementCollection(prevOpt, MapPinsAttribKey, target.Pins)
                 source.UpdatePrimitive(prevOpt, target, MapRequestingRegionAttribKey, (fun target v -> target.MoveToRegion(v)))
 
-            let updateAttachedProperties (propertyKey: int) (prevOpt: ViewElement voption) (source: ViewElement) (targetChild: obj) =
-                ViewBuilders.UpdateViewAttachedProperties(propertyKey, prevOpt, source, target)
-
             // The element
-            ViewElement.Create<Xamarin.Forms.Maps.Map>(Map, update, updateAttachedProperties, attribs)
+            ViewElement.Create<Xamarin.Forms.Maps.Map>(Map, update, attribs)
 
         /// Describes a Pin in the view
         static member Pin(?position: Position, ?label: string, ?pinType: PinType, ?address: string) =
@@ -216,11 +211,8 @@ module MapsExtension =
                 source.UpdatePrimitive(prevOpt, target, PinTypeAttribKey, (fun target v -> target.Type <- v))
                 source.UpdatePrimitive(prevOpt, target, PinAddressAttribKey, (fun target v -> target.Address <- v))
 
-            let updateAttachedProperties (propertyKey: int) (prevOpt: ViewElement voption) (source: ViewElement) (targetChild: obj) =
-                ()
-
             // The element
-            ViewElement.Create<Xamarin.Forms.Maps.Pin>(Pin, update, updateAttachedProperties, attribs)
+            ViewElement.Create<Xamarin.Forms.Maps.Pin>(Pin, update, attribs)
 ```
 
 In the above example, inherited properties from `View` (such as `margin` or `horizontalOptions`) have been included in the facade for `Map`.  These properties
@@ -228,6 +220,21 @@ need not be added, you can set them on elements using the helper `With`, usable 
 
 ```fsharp
 View.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
+```
+
+### Example: MasterDetailPage without a toolbar on UWP with custom ViewBuilders
+
+Fabulous uses ViewBuilders to create the underlying Xamarin.Forms classes. Customizing ViewBuilders is not the recommended way for custom controls but it is a great solution for overridden controls like in the following example:
+
+```fsharp
+type MasterDetailPageWithoutToolbar() =
+    inherit Xamarin.Forms.MasterDetailPage()
+    override __.ShouldShowToolbarButton() = false
+
+Fabulous.XamarinForms.ViewBuilders.CreateFuncMasterDetailPage <- fun () ->
+    upcast(new MasterDetailPageWithoutToolbar())
+
+View.MasterDetailPage() // this now uses MasterDetailPageWithoutToolbar
 ```
 
 See also:

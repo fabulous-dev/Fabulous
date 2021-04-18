@@ -4,6 +4,8 @@
 
 Traces and Crashes
 ------
+##### (topic last updated: pending)
+<br /> 
 
 In Fabulous, everything happens in a centralized message loop that is responsible for calling your `init`, `update` and `view` functions.  
 Fabulous allows you to plug into this loop to run custom logic such as logging and error handling.
@@ -18,6 +20,7 @@ There's a few built-in functions available already:
 
 To use them, you will need to add them when declaring the runner, before calling `XamarinFormsProgram.run`.  
 You can add multiple trace functions, one after another.
+
 ```fsharp
 type App () as app = 
     inherit Application ()
@@ -25,7 +28,7 @@ type App () as app =
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
-        |> Program.withErrorHandling (fun (message, exn) -> writeToDisk exn)
+        |> Program.withErrorHandler (fun (message, exn) -> writeToDisk exn)
         |> XamarinFormsProgram.run app
 ```
 In this example, logs will be written to the console before the error handler can write the exceptions to the disk.

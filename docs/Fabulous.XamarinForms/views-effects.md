@@ -4,6 +4,9 @@
 
 Views: Effects
 -------
+##### (topic last updated: pending)
+<br /> 
+
 Xamarin.Forms user interfaces are rendered using the native controls of the target platform, allowing Xamarin.Forms applications to retain the appropriate look and feel for each platform. Effects allow the native controls on each platform to be customized without having to resort to a custom renderer implementation.
 
 ### Using Effects in Fabulous.XamarinForms

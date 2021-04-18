@@ -4,6 +4,8 @@
 
 Gestures
 -------------------
+##### (topic last updated: pending)
+<br /> 
 
 Gesture recognizers can be added to any visual element.
 
