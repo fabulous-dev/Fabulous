@@ -23,8 +23,8 @@ Pages
 <br /> 
 
 See also 
-[Multi-page Applications and Navigation](pages-navigation.md)
-[Shells](views-shells.md)
+* [Multi-page Applications and Navigation](pages-navigation.md)
+* [Shells](views-shells.md)
 
 <br /> 
 
@@ -51,7 +51,7 @@ View.ContentPage(
             )
 )
 ```
-<img src="images/pages/contentpage-android.png" width="200">
+<img src="images/pages/content-adr-styled.png" width="200">
 
 See also:
 
@@ -86,7 +86,7 @@ View.FlyoutPage(
             )
 )
 ```
-<img src="images/pages/flyoutpage-android.png" width="200">
+<img src="images/pages/flyout-adr-basic.png" width="200">
 
 See also:
 
@@ -111,7 +111,7 @@ View.NavigationPage(
 ])
 ```
 
-<img src="images/pages/navigationpage-android.png" width="200">
+<img src="images/pages/navigation-adr-basic.png" width="200">
 
 See also:
 
@@ -144,7 +144,7 @@ View.TabbedPage(
     ] )
 ```
 
-<img src="images/pages/tabbedpage-android.png" width="200">
+<img src="images/pages/tabbed-adr-styled.png" width="200">
 
 See also:
 
@@ -178,7 +178,7 @@ View.CarouselPage(
 )
 ```
 
-<img src="images/pages/carouselpage-android.png" width="200">
+<img src="images/pages/carousel-adr-styled.png" width="200">
 
 See also:
 

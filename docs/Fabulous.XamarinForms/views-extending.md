@@ -12,11 +12,11 @@ is typically needed to define a corresponding view element using the incremental
 
 The following additional view elements are available as pre-built nuget libraries:
 
-* [FFImageLoading](views-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
-* [Maps](views-maps.md) for platform maps
-* [SkiaSharp](views-skiasharp.md) for drawing 2D graphics
-* [OxyPlot](views-oxyplot.md) for charting
-* [VideoManager](views-videomanager.md) for playing audio and video
+* [FFImageLoading](extensions-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
+* [Maps](extensions-maps.md) for platform maps
+* [SkiaSharp](extensions-skiasharp.md) for drawing 2D graphics
+* [OxyPlot](extensions-oxyplot.md) for charting
+* [VideoManager](extensions-videomanager.md) for playing audio and video
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
