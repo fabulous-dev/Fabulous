@@ -24,4 +24,6 @@
     * [Unit testing](testing.md)
     * [Tools](tools.md)
     * [Pitfalls](pitfalls.md)
-* [Migrations guides from older versions](migration-guides.md)
+* Misc
+    * [They use Fabulous](they-use-fabulous.md)
+    * [Migrations guides from older versions](migration-guides.md)
