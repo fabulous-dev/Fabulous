@@ -4,6 +4,11 @@
 
 ProgressBar
 --------
+##### `topic last updated: v1.0 - 24.04.2021 - 11:47pm`
+
+### [back to interface objects](view-interface-objects.html#interface-objects)
+
+<br />
 
 The Progress Bar represents progress as a horizontal bar, that is filled to a percentage, represented by a float value. 
 

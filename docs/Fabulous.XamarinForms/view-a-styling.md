@@ -2,7 +2,7 @@
 
 {% include_relative contents.md %}
 
-Views: Styling
+Styling
 -------
 ##### (topic last updated: pending)
 <br /> 

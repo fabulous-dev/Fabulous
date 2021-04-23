@@ -4,7 +4,7 @@
 
 TabbedPage
 --------
-##### `topic last updated: v1.0 - 02.04.2021 - 11:47pm`
+##### `topic last updated: v1.0 - 24.04.2021 - 11:47pm`
 
 <br /> 
 A TabbedPage displays an array of tabs across the top of the screen, each of which loads content onto the screen.

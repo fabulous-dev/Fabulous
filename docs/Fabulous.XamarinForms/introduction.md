@@ -1,7 +1,5 @@
 {% include_relative _header.md %}
 
-{% include_relative contents.md %}
-
 *Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI*
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
@@ -18,7 +16,7 @@ The combination of F# and MVU makes for a great development experience.
 This guide augments the primary [Xamarin.Forms documentation](https://docs.microsoft.com/xamarin/xamarin-forms/) with information
 specific to the Fabulous programming model. For detailed guides to different parts of the library, please visit the respective pages via the links below:
 
-{% include_relative contents.md %}
+{% include_relative contents-view.md %}
 
 > NOTE: A comprehensive guide to Xamarin.Forms programming is available for free
 in the [Creating Mobile Apps with Xamarin.Forms](https://docs.microsoft.com/xamarin/xamarin-forms/creating-mobile-apps-xamarin-forms/) ebook.

@@ -4,8 +4,9 @@
 
 CarouselPage
 --------
+##### `topic last updated: v1.0 - 24.04.2021 - 11:47pm`
 
-<br /> 
+<br />
 
 ### Basic example
 

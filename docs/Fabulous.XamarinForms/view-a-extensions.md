@@ -2,7 +2,7 @@
 
 {% include_relative contents.md %}
 
-View Extensions
+Extensions
 ------
 ##### (topic last updated: pending)
 <br /> 
@@ -12,11 +12,11 @@ is typically needed to define a corresponding view element using the incremental
 
 The following additional view elements are available as pre-built nuget libraries:
 
-* [FFImageLoading](view-a-e-ffimageloading.md) for cached images, as opposed to the built-in Image view that wastes time and memory
-* [Maps](view-a-e-maps.md) for platform maps
-* [SkiaSharp](view-a-e-skiasharp.md) for drawing 2D graphics
-* [OxyPlot](view-a-e-oxyplot.md) for charting
-* [VideoManager](view-a-e-videomanager.md) for playing audio and video
+* [FFImageLoading](view-a-e-ffimageloading.html) for cached images, as opposed to the built-in Image view that wastes time and memory
+* [Maps](view-a-e-maps.html) for platform maps
+* [SkiaSharp](view-a-e-skiasharp.html) for drawing 2D graphics
+* [OxyPlot](view-a-e-oxyplot.html) for charting
+* [VideoManager](view-a-e-videomanager.html) for playing audio and video
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
@@ -239,8 +239,8 @@ View.MasterDetailPage() // this now uses MasterDetailPageWithoutToolbar
 
 See also:
 
-* [Core Elements](view-elements.md)
-* [Maps](view-maps.md)
-* [SkiaSharp](view-skiasharp.md)
+* [Core Elements](view-elements.html)
+* [Maps](view-maps.html)
+* [SkiaSharp](view-skiasharp.html)
 * [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
 * [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)

@@ -2,7 +2,7 @@
  
 {% include_relative contents.md %}
 
-Views: Custom renderers and Custom controls
+Custom renderers and Custom controls
 ------
 ##### (topic last updated: pending)
 <br /> 

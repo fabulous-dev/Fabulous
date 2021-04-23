@@ -2,7 +2,7 @@
 
 {% include_relative contents.md %}
 
-Views: Effects
+Effects
 -------
 ##### (topic last updated: pending)
 <br /> 
@@ -25,7 +25,7 @@ This way is only suitable if your effect doesn't need any external values.
 ### Create wrapper for custom effects with properties
 
 If you want to use your own effects with properties in Fabulous.XamarinForms, you will need to write an extension.  
-For more information, please read about [View Extensions](view-a-extensions.md)
+For more information, please read about [View Extensions](view-a-extensions.html)
 
 Let's take this ShadowEffect for example:
 

@@ -4,7 +4,11 @@
 
 Picker
 --------
-##### `topic last updated: v1.0 - 02.04.2021 - 11:47pm`
+##### `topic last updated: v1.0 - 24.04.2021 - 11:47pm`
+
+### [back to interface objects](view-interface-objects.html#interface-objects)
+
+<br />
 
 displays a selected item from a list of text strings, and allows selecting that item when the view is tapped
 

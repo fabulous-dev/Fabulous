@@ -1,6 +1,6 @@
 {% include_relative _header.md %}
 
-{% include_relative contents.md %}
+{% include_relative contents-view.md %}
 
 Views
 ------
@@ -66,12 +66,12 @@ let view model dispatch =
             ]))
 ```
 The four main control groups used to create the user interface of a Xamarin.Forms application are: 
-* [Pages](view-pages.md)
-* [Layouts](view-layouts.md)
-* [Interface objects](view-interface-objects.md)
-* [Cells](view-cells.md)
+* [Pages](view-pages.html)
+* [Layouts](view-layouts.html)
+* [Interface objects](view-interface-objects.html)
+* [Cells](view-cells.html)
 
 See also:
 
-* [Views and Performance](view-a-performance.md).
-* [Styling](view-a-styling.md).
+* [Views and Performance](view-a-performance.html).
+* [Styling](view-a-styling.html).

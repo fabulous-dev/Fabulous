@@ -9,7 +9,7 @@ Cells
 
 A cell is a specialized element used for items in a table and describes how each item in a list should be rendered. A cell is not itself a visual element; it is instead a template for creating a visual element.
 
-`Cell` is used exclusively with ListView and TableView controls. To learn how to use and customize cells, refer to the [ListView](view-if-di-listview.md) and [TableView](view-if-di-tableview.md) documentation.
+`Cell` is used exclusively with ListView and TableView controls. To learn how to use and customize cells, refer to the [ListView](view-if-di-listview.html#listview) and [TableView](view-if-di-tableview.html#tableview) documentation.
 
 | Cell       | Description                                                 |
 |------------|-------------------------------------------------------------|

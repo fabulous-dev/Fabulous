@@ -7,7 +7,7 @@ Using Maps
 ##### (topic last updated: pending)
 <br /> 
 
-The nuget [`Fabulous.XamarinForms.Maps`](https://www.nuget.org/packages/Fabulous.XamarinForms.Maps) implements an [extension](view-a-extensions.md) for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
+The nuget [`Fabulous.XamarinForms.Maps`](https://www.nuget.org/packages/Fabulous.XamarinForms.Maps) implements an [extension](view-a-extensions.html) for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
 [Pin](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.pin?view=xamarin-forms).
 
 [![Maps example from Microsoft](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)
@@ -48,7 +48,7 @@ View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
 
 See also:
 
-* [Interface Objects](view-interface-objects.md).
+* [Interface Objects](view-interface-objects.html).
 * [Working with Maps](https://developer.xamarin.com/samples/xamarin-forms/WorkingWithMaps).
 * [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
-* [Defining Extensions](view-a-extensions.md)
+* [Defining Extensions](view-a-extensions.html)
