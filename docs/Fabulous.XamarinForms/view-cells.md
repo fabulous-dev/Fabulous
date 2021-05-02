@@ -1,6 +1,6 @@
 {% include_relative _header.md %}
 
-{% include_relative contents.md %}
+{% include_relative contents-view.md %}
 
 Cells 
 ------
@@ -9,7 +9,7 @@ Cells
 
 A cell is a specialized element used for items in a table and describes how each item in a list should be rendered. A cell is not itself a visual element; it is instead a template for creating a visual element.
 
-`Cell` is used exclusively with ListView and TableView controls. To learn how to use and customize cells, refer to the [ListView](view-if-di-listview.html#listview) and [TableView](view-if-di-tableview.html#tableview) documentation.
+`Cell` is used exclusively with ListView and TableView controls. To learn how to use and customize cells, refer to the [ListView](view-if-di-listview.html) and [TableView](view-if-di-tableview.html) documentation.
 
 | Cell       | Description                                                 |
 |------------|-------------------------------------------------------------|
@@ -18,6 +18,6 @@ A cell is a specialized element used for items in a table and describes how each
 | SwitchCell | contains text and an on/off switch                          |            
 | EntryCell  | defines a Label property and a single line of editable text |            
 
-</br>
+<br/>
 
 <img src="images/views/tableview-adr-basic.png" width="300">

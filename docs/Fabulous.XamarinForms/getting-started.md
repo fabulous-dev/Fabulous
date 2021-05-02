@@ -106,14 +106,15 @@ module App =
     /// The view function giving updated content for the page
     let view (model: Model) dispatch =
         View.ContentPage(
-            content=View.StackLayout(
-                children=[
-                    if model.Pressed then
-                        yield View.Label(text="I was pressed!")
-                    else
-                        yield View.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
-                ]
-            )
+            View.StackLayout([
+                if model.Pressed then
+                    View.Label("I was pressed!")
+                else
+                    View.Button(
+                        text = "Press Me!",
+                        command = fun () -> dispatch Pressed
+                    )
+            ])
         )
     
  type App () as app =
@@ -137,13 +138,13 @@ Some advantages of using an immutable model are:
 Samples
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
+The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms/samples/AllControls/AllControls/Samples) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/tree/v1.0/Fabulous.XamarinForms/samples/AllControls/AllControls/Samples) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
-The sample [Calculator](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/Calculator/Calculator/Calculator.fs) ([original external sample](https://github.com/nosami/Elmish.Calculator/)) is a small calculator app.
+The sample [Calculator](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/Calculator/Calculator/Calculator.fs) ([original external sample](https://github.com/nosami/Elmish.Calculator/)) is a small calculator app.
 
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 

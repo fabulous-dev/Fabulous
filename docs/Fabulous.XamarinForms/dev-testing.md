@@ -87,7 +87,7 @@ let ``Given the message Reset, Update should reset the state``() =
 Testing `Cmd<'msg>` can be hard, because there's no way of knowing what the functions inside `Cmd` really are before executing them.
 
 The recommended way is to apply the `CmdMsg` pattern.  
-See [Replacing commands with command messages for better testability](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability)
+See [Replacing commands with command messages for better testability](Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability)
 
 ### Testing view
 
@@ -201,4 +201,4 @@ let ``Clicking the button Increment should send the message Increment``() =
 
 
 ### See also
-- [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)
+- [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)

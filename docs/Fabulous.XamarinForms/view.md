@@ -73,5 +73,5 @@ The four main control groups used to create the user interface of a Xamarin.Form
 
 See also:
 
-* [Views and Performance](view-a-performance.html).
-* [Styling](view-a-styling.html).
+* [Views and Performance](view-a-performance.html)
+* [Styling](view-a-styling.html)

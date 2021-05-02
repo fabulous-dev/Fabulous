@@ -50,6 +50,6 @@ See also:
 
 * [Interface Objects](view-interface-objects.html)
 * [The FFImageLoading wiki](https://github.com/luberda-molinet/FFImageLoading/wiki)
-* [Source for the FFImageLoading extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/FFImageLoading/CachedImage.fs)
+* [Source for the FFImageLoading extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/FFImageLoading/CachedImage.fs)
 * [Source of FFImageLoading](https://github.com/luberda-molinet/FFImageLoading)
 * [Defining Extensions](view-a-extensions.html)

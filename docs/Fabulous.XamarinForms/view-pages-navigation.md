@@ -116,4 +116,4 @@ let view model dispatch =
 
 See also
 
-* [The `AllControls` sample](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/AllControls/AllControls/AllControls.fs)
+* [The `AllControls` sample](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/AllControls/AllControls/AllControls.fs)

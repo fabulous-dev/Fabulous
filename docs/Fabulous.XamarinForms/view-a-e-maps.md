@@ -50,5 +50,5 @@ See also:
 
 * [Interface Objects](view-interface-objects.html).
 * [Working with Maps](https://developer.xamarin.com/samples/xamarin-forms/WorkingWithMaps).
-* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
+* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
 * [Defining Extensions](view-a-extensions.html)

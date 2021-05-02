@@ -37,6 +37,6 @@ See also:
 
 * [Interface Objects](view-interface-objects.html).
 * [Using MediaManager for Xamarin](https://devblogs.microsoft.com/xamarin/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/).
-* [Source for the VideoManager extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/VideoManager/VideoManager.fs)
+* [Source for the VideoManager extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/VideoManager/VideoManager.fs)
 * [Source for the Xamarin MediaManager](https://github.com/martijn00/XamarinMediaManager)
 * [Defining Extensions](view-a-extensions.html)

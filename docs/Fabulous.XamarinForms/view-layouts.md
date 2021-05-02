@@ -1,6 +1,6 @@
 {% include_relative _header.md %}
 
-{% include_relative contents.md %}
+{% include_relative contents-view.md %}
 
 Layouts 
 ------

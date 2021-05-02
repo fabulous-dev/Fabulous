@@ -242,5 +242,5 @@ See also:
 * [Core Elements](view-elements.html)
 * [Maps](view-maps.html)
 * [SkiaSharp](view-skiasharp.html)
-* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
+* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
+* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
