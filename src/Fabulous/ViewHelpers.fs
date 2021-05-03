@@ -22,7 +22,7 @@ module SimplerHelpers =
         static member T = t
         static member Add(res: 'T) =
             if StructMemoizations<'T>.T.Count > 100 then
-                System.Diagnostics.Trace.WriteLine(sprintf "Clearing %s memoizations..." typeof<'T>.FullName)
+                System.Diagnostics.Trace.WriteLine("Clearing {0} memoizations...", typeof<'T>.FullName)
                 StructMemoizations<'T>.T.Clear()
             let key = res.GetHashCode()
             let value = box res

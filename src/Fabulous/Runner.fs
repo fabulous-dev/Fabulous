@@ -25,8 +25,8 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() as this =
         RunnerTracing.traceDebug runnerDefinition runnerId args msgFn
 
     let rec processMsg msg =
-        let traceStart (msg: 'msg) = sprintf "Processing message %0A..." msg
-        let traceEnd (msg: 'msg) = sprintf "Message %0A processed" msg
+        let traceStart (msg: 'msg) = String.Format("Processing message {0}...", msg)
+        let traceEnd (msg: 'msg) = String.Format("Message {0} processed", msg)
         
         debug traceStart msg
         try
@@ -44,11 +44,11 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() as this =
 
             debug traceEnd msg
         with ex ->
-            runnerDefinition.onError (sprintf "Unable to process message %0A" msg) ex
+            runnerDefinition.onError (String.Format("Unable to process message {0}", msg)) ex
 
     and updateView updatedModel =
-        let traceStart (updatedModel: 'model) = sprintf "Updating view for model %0A..." updatedModel
-        let traceEnd (updatedModel: 'model) = sprintf "View updated for model %0A" updatedModel
+        let traceStart (updatedModel: 'model) = String.Format("Updating view for model {0}...", updatedModel)
+        let traceEnd (updatedModel: 'model) = String.Format("View updated for model {0}", updatedModel)
         
         debug traceStart updatedModel
         
@@ -122,7 +122,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() as this =
             start definition arg
         
         member x.Restart(definition, arg) =
-            let trace (lastArg, arg) = sprintf "Restarting runner. Old arg was %0A, new is %O" lastArg arg
+            let trace (lastArg, arg) = String.Format("Restarting runner. Old arg was {0}, new is {1}", lastArg, arg)
             
             RunnerTracing.traceDebug definition runnerId (lastArg, arg) trace
             restart definition arg

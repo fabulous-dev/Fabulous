@@ -26,30 +26,30 @@ module Program =
         let traceInit arg =
             try
                 let initModel,cmd,externalMsgs = definition.init arg
-                definition.trace TraceLevel.Info (sprintf "Initial model: %0A" initModel)
+                definition.trace TraceLevel.Info (String.Format("Initial model: {0}", initModel))
                 initModel,cmd,externalMsgs
             with ex ->
-                definition.trace TraceLevel.Error (sprintf "Error in init function: %0A" ex)
+                definition.trace TraceLevel.Error (String.Format("Error in init function: {0}", ex))
                 reraise ()
 
         let traceUpdate msg model =
-            Console.WriteLine (sprintf "Message: %0A" msg)
+            Console.WriteLine("Message: {0}", msg)
             try
                 let newModel,cmd,externalMsgs = definition.update msg model
-                definition.trace TraceLevel.Info (sprintf "Updated model: %0A" newModel)
+                definition.trace TraceLevel.Info (String.Format("Updated model: {0}", newModel))
                 newModel,cmd,externalMsgs
             with e ->
-                definition.trace TraceLevel.Error (sprintf "Error in model function: %0A" e)
+                definition.trace TraceLevel.Error (String.Format("Error in model function: {0}", e))
                 reraise ()
 
         let traceView model =
-            definition.trace TraceLevel.Info (sprintf "View, model = %0A" model)
+            definition.trace TraceLevel.Info (String.Format("View, model = {0}", model))
             try
                 let info = definition.view model
-                definition.trace TraceLevel.Info (sprintf "View result: %0A" info)
+                definition.trace TraceLevel.Info (String.Format("View result: {0}", info))
                 info
             with e ->
-                definition.trace TraceLevel.Error (sprintf "Error in view function: %0A" e)
+                definition.trace TraceLevel.Error (String.Format("Error in view function: {0}", e))
                 reraise ()
 
         { definition with
@@ -76,7 +76,7 @@ module Program =
                 | _ -> currentColor
 
             Console.ForegroundColor <- newColor
-            Console.WriteLine(sprintf "[%A] - Fabulous - %s" traceLevel str)
+            Console.WriteLine("[{0}] - Fabulous - {1}", traceLevel, str)
             Console.ForegroundColor <- currentColor
 
         { definition with trace = traceFn }

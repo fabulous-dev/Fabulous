@@ -11,7 +11,7 @@ open Xamarin.Forms
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module XamarinFormsProgram =
     let private onError (text: string) (ex: exn) =
-        Console.WriteLine(sprintf "%s: %A" text ex)
+        Console.WriteLine("{0}: {1}", text, ex)
 
     let private syncDispatch (dispatch: 'msg -> unit) =
         fun msg ->
