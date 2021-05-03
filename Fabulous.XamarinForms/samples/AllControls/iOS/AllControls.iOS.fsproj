@@ -85,6 +85,43 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
   <Import Project="..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <Compile Include="FocusEffect.fs" />
+    <Compile Include="LabelShadowEffect.fs" />
+    <Compile Include="RegisterEffects.fs" />
+    <Compile Include="AppDelegate.fs" />
+    <BundleResource Include="Resources\monkey.png" />
+    <BundleResource Include="Resources\cat.png" />
+    <BundleResource Include="Resources\elephant.png" />
+    <BundleResource Include="Resources\dog.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -162,31 +199,6 @@
     <Reference Include="System.Buffers">
       <HintPath>..\..\..\..\packages\iosapp\System.Buffers\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
-    <ImageAsset Include="Assets.xcassets\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <InterfaceDefinition Include="LaunchScreen.storyboard" />
-    <None Include="Info.plist" />
-    <None Include="Entitlements.plist" />
-    <Compile Include="FocusEffect.fs" />
-    <Compile Include="LabelShadowEffect.fs" />
-    <Compile Include="RegisterEffects.fs" />
-    <Compile Include="AppDelegate.fs" />
-    <BundleResource Include="Resources\monkey.png" />
-    <BundleResource Include="Resources\cat.png" />
-    <BundleResource Include="Resources\elephant.png" />
-    <BundleResource Include="Resources\dog.png" />
     <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
       <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
       <Name>Fabulous</Name>

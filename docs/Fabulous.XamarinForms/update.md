@@ -4,6 +4,8 @@
 
 The Init and Update Functions
 ------
+##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
+<br /> 
 
 The init function returns an initial model, and the update function processes a message and returns a new model:
 ```fsharp
@@ -297,7 +299,7 @@ match model.IsLoggedIn with
 Platform-specific dispatch
 -----
 
-Some platform-specific features (like deep linking, memory warnings, ...) are not available in Xamarin.Forms, and need you to implement them in the corresponding app project.  
+Some platform-specific features (like deep linking, memory warnings, ...) are not available in Xamarin.Forms, and need you to implement them in the corresponding app projet.  
 In this case, you might want to dispatch a message from the app project to Fabulous to start a shared logic between platforms (to warn user, ...).
 
 To allow for this kind of use case, the `dispatch` function is exposed as a `Dispatch(msg)` method by the `ProgramRunner`. By default this runner is not accessible, but you can make a read-only property to let apps access it.
