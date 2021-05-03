@@ -10,7 +10,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs:
-      version: 5.0.201
+      version: 5.0.202
   - script: choco install gtksharp
   - script: .\build.cmd Release
     env:
