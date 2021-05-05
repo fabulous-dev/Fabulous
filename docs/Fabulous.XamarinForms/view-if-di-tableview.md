@@ -56,7 +56,7 @@ View.TableView( root =
 )
 ```
 
-<img src="images/views/tableview-adr-basic.png" width="300">
+<img src="images/views/TableView-adr-basic.png" width="300">
 
 <br /> <br /> 
 

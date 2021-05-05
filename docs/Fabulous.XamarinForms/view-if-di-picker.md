@@ -41,7 +41,7 @@ View.ContentPage(title ="Picker", content =
 )
 ```
 
-<img src="images/views/picker-adr-basic.png" width="300">
+<img src="images/views/Picker-adr-basic.png" width="300">
 
 <br /> <br /> 
 

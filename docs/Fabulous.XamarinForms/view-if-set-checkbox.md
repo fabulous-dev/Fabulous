@@ -17,7 +17,7 @@ CheckBox
 View.CheckBox(true)
 ```
 
-<img src="images/views/checkbox-adr-basic.png" width="300">
+<img src="images/views/CheckBox-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -34,7 +34,7 @@ View.CheckBox
 ```
 
 
-<img src="images/views/checkbox-adr-styled.png" width="300">
+<img src="images/views/CheckBox-adr-styled.png" width="300">
 
 <br /> <br /> 
 

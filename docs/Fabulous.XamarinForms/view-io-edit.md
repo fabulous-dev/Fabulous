@@ -9,5 +9,5 @@ Interface objects (Views) for editing text
 
 | Name                               | Description                                                  | Appearance                                                 |
 |------------------------------------|--------------------------------------------------------------|------------------------------------------------------------|
-| [Entry](view-if-ed-entry.html#entry)   | can be used to set and read the text presented by the Entry  | <img src="images/views/entry-adr-styled.png" width="300">  |
-| [Editor](view-if-ed-editor.html#editor) | can be used to set and read the text presented by the Editor | <img src="images/views/editor-adr-styled.png" width="300"> |
+| [Entry](view-if-ed-entry.html#entry)   | can be used to set and read the text presented by the Entry  | <img src="images/views/Entry-adr-styled.png" width="300">  |
+| [Editor](view-if-ed-editor.html#editor) | can be used to set and read the text presented by the Editor | <img src="images/views/Editor-adr-styled.png" width="300"> |

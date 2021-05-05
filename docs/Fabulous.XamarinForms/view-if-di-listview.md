@@ -25,7 +25,7 @@ View.ListView(items = [
 ], itemSelected = (fun idx -> dispatch (ListViewSelectedItemChanged idx)) )    
 ```
 
-<img src="images/views/listview-adr-basic.png" width="300">
+<img src="images/views/ListView-adr-basic.png" width="300">
 
 The `itemSelected` callback uses integers indexes for keys to identify the elements.
 
