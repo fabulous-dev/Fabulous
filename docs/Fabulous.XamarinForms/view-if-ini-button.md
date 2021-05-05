@@ -19,7 +19,7 @@ Button
 View.Button("Button")
 ```
 
-<img src="images/views/Button-adr-basic.png" width="300">
+<img src="images/view/Button-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -37,7 +37,7 @@ View.Button
 ```
 
 
-<img src="images/views/Button-adr-styled.png" width="300">
+<img src="images/view/Button-adr-styled.png" width="300">
 
 <br /> <br /> 
 

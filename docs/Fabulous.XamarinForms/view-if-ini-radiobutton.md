@@ -17,7 +17,7 @@ RadioButton
 View.StackLayout(children = [ View.RadioButton(content = Content.String "RadioButton 1"); View.RadioButton(content = Content.String "RadioButton 2") ] )
 ```
 
-<img src="images/views/RadioButton-adr-basic.png" width="300">
+<img src="images/view/RadioButton-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -53,7 +53,7 @@ View.StackLayout
 ```
 
 
-<img src="images/views/RadioButton-adr-styled.png" width="300">
+<img src="images/view/RadioButton-adr-styled.png" width="300">
 
 <br /> <br /> 
 

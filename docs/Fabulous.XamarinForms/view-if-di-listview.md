@@ -25,7 +25,7 @@ View.ListView(items = [
 ], itemSelected = (fun idx -> dispatch (ListViewSelectedItemChanged idx)) )    
 ```
 
-<img src="images/views/ListView-adr-basic.png" width="300">
+<img src="images/view/ListView-adr-basic.png" width="300">
 
 The `itemSelected` callback uses integers indexes for keys to identify the elements.
 
@@ -56,7 +56,7 @@ View.ListViewGrouped(items = [
 ```
 
 
-<img src="images/views/listgroupview-adr-basic.png" width="300">
+<img src="images/view/ListGroupView-adr-basic.png" width="300">
 
 <br /> <br /> 
 

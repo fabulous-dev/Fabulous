@@ -24,7 +24,7 @@ View.Rectangle
     )
 ```
 
-<img src="images/views/Rectangle-adr-basic.png" width="300">
+<img src="images/view/Rectangle-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -46,7 +46,7 @@ View.Rectangle
 ```
 
 
-<img src="images/views/Rectangle-adr-styled.png" width="300">
+<img src="images/view/Rectangle-adr-styled.png" width="300">
 
 <br /> <br /> 
 

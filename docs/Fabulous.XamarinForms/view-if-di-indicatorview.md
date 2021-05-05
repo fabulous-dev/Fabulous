@@ -28,7 +28,7 @@ View.StackLayout( children = [
 ] )
 ```
 
-<img src="images/views/IndicatorView-adr-basic.png" width="300">
+<img src="images/view/IndicatorView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -84,7 +84,7 @@ View.StackLayout
 ```
 
 
-<img src="images/views/IndicatorView-adr-styled.png" width="300">
+<img src="images/view/IndicatorView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

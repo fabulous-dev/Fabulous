@@ -17,7 +17,7 @@ BoxView
 View.BoxView()
 ```
 
-<img src="images/views/BoxView-adr-basic.png" width="300">
+<img src="images/view/BoxView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -33,7 +33,7 @@ View.BoxView
 ```
 
 
-<img src="images/views/BoxView-adr-styled.png" width="300">
+<img src="images/view/BoxView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

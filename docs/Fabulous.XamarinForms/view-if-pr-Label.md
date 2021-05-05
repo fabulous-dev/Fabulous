@@ -17,7 +17,7 @@ Label
 View.Label("Label")
 ```
 
-<img src="images/views/Label-adr-basic.png" width="300">
+<img src="images/view/Label-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -35,7 +35,7 @@ View.Label
 ```
 
 
-<img src="images/views/Label-adr-styled.png" width="300">
+<img src="images/view/Label-adr-styled.png" width="300">
 
 <br /> <br /> 
 

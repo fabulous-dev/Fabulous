@@ -14,7 +14,7 @@ sample
 
 ```
 
-<img src="images/views/sample-adr-basic.png" width="300">
+<img src="images/view/sample-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -25,7 +25,7 @@ sample
 ```
 
 
-<img src="images/views/sample-adr-styled.png" width="300">
+<img src="images/view/sample-adr-styled.png" width="300">
 
 <br /> <br /> 
 

@@ -17,7 +17,7 @@ Path
 View.Path(stroke = View.SolidColorBrush(Color.Black), data = Content.fromString "M 10,100 C 100,0 200,200 300,100")
 ```
 
-<img src="images/views/Path-adr-basic.png" width="300">
+<img src="images/view/Path-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -35,7 +35,7 @@ View.Path
 ```
 
 
-<img src="images/views/Path-adr-styled.png" width="300">
+<img src="images/view/Path-adr-styled.png" width="300">
 
 <br /> <br /> 
 

@@ -22,7 +22,7 @@ View.ImageButton
     )
 ```
 
-<img src="images/views/ImageButton-adr-basic.png" width="300">
+<img src="images/view/ImageButton-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -41,7 +41,7 @@ View.ImageButton
 ```
 
 
-<img src="images/views/ImageButton-adr-styled.png" width="300">
+<img src="images/view/ImageButton-adr-styled.png" width="300">
 
 <br /> <br /> 
 

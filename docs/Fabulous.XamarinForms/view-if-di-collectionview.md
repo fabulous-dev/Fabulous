@@ -27,7 +27,7 @@ View.CollectionView(items = [
 ] )
 ```
 
-<img src="images/views/CollectionView-adr-basic.png" width="300">
+<img src="images/view/CollectionView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -68,7 +68,7 @@ View.CollectionView
     )
 ```
 
-<img src="images/views/CollectionView-adr-styled.png" width="300">
+<img src="images/view/CollectionView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

@@ -22,7 +22,7 @@ View.Polyline
     )
 ```
 
-<img src="images/views/Polyline-adr-basic.png" width="300">
+<img src="images/view/Polyline-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -42,7 +42,7 @@ View.Polyline
 ```
 
 
-<img src="images/views/Polyline-adr-styled.png" width="300">
+<img src="images/view/Polyline-adr-styled.png" width="300">
 
 <br /> <br /> 
 

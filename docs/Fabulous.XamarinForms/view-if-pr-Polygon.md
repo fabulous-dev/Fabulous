@@ -23,7 +23,7 @@ View.Polygon
     )
 ```
 
-<img src="images/views/Polygon-adr-basic.png" width="300">
+<img src="images/view/Polygon-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -44,7 +44,7 @@ View.Polygon
 ```
 
 
-<img src="images/views/Polygon-adr-styled.png" width="300">
+<img src="images/view/Polygon-adr-styled.png" width="300">
 
 <br /> <br /> 
 

@@ -24,7 +24,7 @@ View.Line
     )
 ```
 
-<img src="images/views/Line-adr-basic.png" width="300">
+<img src="images/view/Line-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -45,7 +45,7 @@ View.Line
 ```
 
 
-<img src="images/views/Line-adr-styled.png" width="300">
+<img src="images/view/Line-adr-styled.png" width="300">
 
 <br /> <br /> 
 

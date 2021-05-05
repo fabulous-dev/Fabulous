@@ -19,7 +19,7 @@ View.ActivityIndicator
 (isRunning = true)
 ```
 
-<img src="images/views/ActivityIndicator-adr-basic.png" width="300">
+<img src="images/view/ActivityIndicator-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -36,7 +36,7 @@ View.ActivityIndicator
 ```
 
 
-<img src="images/views/ActivityIndicator-adr-styled.png" width="300">
+<img src="images/view/ActivityIndicator-adr-styled.png" width="300">
 
 <br /> <br /> 
 

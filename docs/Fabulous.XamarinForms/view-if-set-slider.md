@@ -17,7 +17,7 @@ Slider
 View.Slider( 5.0 )
 ```
 
-<img src="images/views/Slider-adr-basic.png" width="300">
+<img src="images/view/Slider-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -33,7 +33,7 @@ View.Slider
 ```
 
 
-<img src="images/views/Slider-adr-styled.png" width="300">
+<img src="images/view/Slider-adr-styled.png" width="300">
 
 <br /> <br /> 
 

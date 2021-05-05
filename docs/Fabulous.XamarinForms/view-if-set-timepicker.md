@@ -17,7 +17,7 @@ TimePicker
 View.TimePicker()
 ```
 
-<img src="images/views/TimePicker-adr-basic.png" width="300">
+<img src="images/view/TimePicker-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -33,7 +33,7 @@ View.TimePicker
 ```
 
 
-<img src="images/views/TimePicker-adr-styled.png" width="300">
+<img src="images/view/TimePicker-adr-styled.png" width="300">
 
 <br /> <br /> 
 
