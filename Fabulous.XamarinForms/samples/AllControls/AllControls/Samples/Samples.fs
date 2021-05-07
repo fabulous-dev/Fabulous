@@ -44,7 +44,13 @@ module Samples =
                   [ SampleChooser
                         { Title = "Controls"
                           Nodes =
-                              [ Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
+                              [ Sample
+                                    ({ Title = "Button"
+                                       Init = Controls.Button.init |> ignoreCmdMsgs
+                                       Update = Controls.Button.update |> ignoreMsgAndExternalMsg
+                                       View = Controls.Button.view
+                                       MapToCmd = ignoreMapToCmd } |> boxSampleDefinition)
+                                Sample (createViewOnlyDefinition "CarouselView" Controls.CarouselView.view)
                                 Sample (createViewOnlyDefinition "CollectionView" Controls.CollectionView.view)
                                 Sample
                                     ({ Title = "RadioButton"

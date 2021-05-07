@@ -11,6 +11,7 @@
       <Compile Include="SampleChooser.fs" />
       <Compile Include="Samples\ShadowEffect.fs" />
       <Compile Include="Samples\TestLabel.fs" />
+      <Compile Include="Samples\Controls\Button.fs" />
       <Compile Include="Samples\Controls\CarouselView.fs" />
       <Compile Include="Samples\Controls\CollectionView.fs" />
       <Compile Include="Samples\Controls\RefreshView.fs" />
