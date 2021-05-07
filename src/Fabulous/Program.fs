@@ -1,7 +1,6 @@
 // Copyright Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous
 
-open Fabulous.Tracing
 open System
 
 /// Program module - functions to manipulate program instances
@@ -32,8 +31,8 @@ module Program =
                 definition.trace TraceLevel.Error (String.Format("Error in init function: {0}", ex))
                 reraise ()
 
-        let traceUpdate msg model =
-            Console.WriteLine("Message: {0}", msg)
+        let traceUpdate (msg: 'msg) (model: 'model) =
+            definition.trace TraceLevel.Info (String.Format("Message: {0}", msg))
             try
                 let newModel,cmd,externalMsgs = definition.update msg model
                 definition.trace TraceLevel.Info (String.Format("Updated model: {0}", newModel))
@@ -42,7 +41,7 @@ module Program =
                 definition.trace TraceLevel.Error (String.Format("Error in model function: {0}", e))
                 reraise ()
 
-        let traceView model =
+        let traceView (model: 'model) =
             definition.trace TraceLevel.Info (String.Format("View, model = {0}", model))
             try
                 let info = definition.view model

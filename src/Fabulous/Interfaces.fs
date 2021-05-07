@@ -77,7 +77,7 @@ module internal ProgramTracing =
     let traceError<'traceArgs> = trace<'traceArgs> TraceLevel.Error
 
 module internal RunnerTracing =
-    let private trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> targetTraceLevel (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId (args: 'traceArgs) msgFn =
+    let private trace<'arg, 'msg, 'model, 'externalMsg, 'traceArgs> targetTraceLevel (definition: RunnerDefinition<'arg, 'msg, 'model, 'externalMsg>) runnerId (args: 'traceArgs) (msgFn: 'traceArgs -> string) =
         if definition.traceLevel <= targetTraceLevel then
             let msg = msgFn args
             let traceMsg = String.Format("[Runner{0}] {1}", runnerId, msg)

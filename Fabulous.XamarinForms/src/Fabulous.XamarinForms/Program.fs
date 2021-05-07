@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 
 open System
 open Fabulous
-open Fabulous.Tracing
 open Xamarin.Forms
 
 /// Program module - functions to manipulate program instances
