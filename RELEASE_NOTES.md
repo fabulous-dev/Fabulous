@@ -1,3 +1,7 @@
+#### 1.1.0
+
+* [Fabulous.XamarinForms] Added Pressed and Released events to Button (https://github.com/fsprojects/Fabulous/pull/873)
+
 #### 1.0.1
 
 * [Fabulous.XamarinForms] Fix an IndexOutOfRange exception (https://github.com/fsprojects/Fabulous/pull/863)
