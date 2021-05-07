@@ -25,7 +25,7 @@ View.ContentPage(
 )
 ```
 
-<img src="images/views/WebView-adr-basic.png" width="300">
+<img src="images/view/WebView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -46,7 +46,7 @@ View.ContentPage(
 ```
 
 
-<img src="images/views/WebView-adr-styled.png" width="300">
+<img src="images/view/WebView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

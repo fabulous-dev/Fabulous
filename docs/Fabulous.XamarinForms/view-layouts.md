@@ -15,9 +15,9 @@ For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.micros
 
 | Layout      | Description                                          | Appearance                                                             |
 |-------------|------------------------------------------------------|------------------------------------------------------------------------|
-| ContentView | contains a single child                              | <img src="images/views/ContentView-adr-styled.png" width="100">        |
-| Frame       | displays a border, or frame, around its single child | <img src="images/views/Frame-adr-styled.png" width="100">              |
-| ScrollView  | capable of scrolling its contents                    | <img src="images/views/ScrollView-adr-styled.png" width="100">         |
+| ContentView | contains a single child                              | <img src="images/view/ContentView-adr-styled.png" width="100">        |
+| Frame       | displays a border, or frame, around its single child | <img src="images/view/Frame-adr-styled.png" width="100">              |
+| ScrollView  | capable of scrolling its contents                    | <img src="images/view/ScrollView-adr-styled.png" width="100">         |
  
 <br /> 
 
@@ -26,11 +26,11 @@ For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.micros
 
 | Layout         | Description                                                                           | Appearance                                                             |
 |----------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| StackLayout    | positions child elements in a stack either horizontally or vertically                 | <img src="images/views/StackLayout-adr-styled.png" width="100">        |
-| Grid           | positions its child elements in a grid of rows and columns                            | <img src="images/views/Grid-adr-styled.png" width="100">               |
-| AbsoluteLayout | positions child elements at specific locations relative to its parent                 | <img src="images/views/AbsoluteLayout-adr-styled.png" width="100">     |
-| RelativeLayout | positions child elements relative to the RelativeLayout itself or to their siblings   | <img src="images/views/RelativeLayout-adr-styled.png" width="100">     |
-| FlexLayout     | allows children to be stacked or wrapped with many alignment and orientation options. | <img src="images/views/FlexLayout-adr-styled.png" width="100">         |
+| StackLayout    | positions child elements in a stack either horizontally or vertically                 | <img src="images/view/StackLayout-adr-styled.png" width="100">        |
+| Grid           | positions its child elements in a grid of rows and columns                            | <img src="images/view/Grid-adr-styled.png" width="100">               |
+| AbsoluteLayout | positions child elements at specific locations relative to its parent                 | <img src="images/view/AbsoluteLayout-adr-styled.png" width="100">     |
+| RelativeLayout | positions child elements relative to the RelativeLayout itself or to their siblings   | <img src="images/view/RelativeLayout-adr-styled.png" width="100">     |
+| FlexLayout     | allows children to be stacked or wrapped with many alignment and orientation options. | <img src="images/view/FlexLayout-adr-styled.png" width="100">         |
 
 <br /> 
 

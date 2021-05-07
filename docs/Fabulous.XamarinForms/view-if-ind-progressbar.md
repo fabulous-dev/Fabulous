@@ -21,7 +21,7 @@ The Progress Bar represents progress as a horizontal bar, that is filled to a pe
 View.ProgressBar(progress = 0.5)
 ```
 
-<img src="images/views/ProgressBar-adr-basic.png" width="300">
+<img src="images/view/ProgressBar-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -38,7 +38,7 @@ View.ProgressBar
 ```
 
 
-<img src="images/views/ProgressBar-adr-styled.png" width="300">
+<img src="images/view/ProgressBar-adr-styled.png" width="300">
 
 <br /> <br /> 
 

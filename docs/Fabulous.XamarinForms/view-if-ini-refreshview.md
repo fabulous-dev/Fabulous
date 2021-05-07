@@ -27,7 +27,7 @@ View.RefreshView
     )
 ```
 
-<img src="images/views/RefreshView-adr-basic.png" width="300">
+<img src="images/view/RefreshView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -56,7 +56,7 @@ View.RefreshView
 ```
 
 
-<img src="images/views/RefreshView-adr-styled.png" width="300">
+<img src="images/view/RefreshView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

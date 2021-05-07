@@ -17,7 +17,7 @@ OpenGLView
 View.OpenGLView(hasRenderLoop = true)
 ```
 
-<img src="images/views/OpenGLView-adr-basic.png" width="300">
+<img src="images/view/OpenGLView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -35,7 +35,7 @@ View.OpenGLView
 ```
 
 
-<img src="images/views/OpenGLView-adr-styled.png" width="300">
+<img src="images/view/OpenGLView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

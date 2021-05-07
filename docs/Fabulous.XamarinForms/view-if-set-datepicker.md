@@ -17,7 +17,7 @@ DatePicker
 View.DatePicker()
 ```
 
-<img src="images/views/DatePicker-adr-basic.png" width="300">
+<img src="images/view/DatePicker-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -33,7 +33,7 @@ View.DatePicker
 ```
 
 
-<img src="images/views/DatePicker-adr-styled.png" width="300">
+<img src="images/view/DatePicker-adr-styled.png" width="300">
 
 <br /> <br /> 
 

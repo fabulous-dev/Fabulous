@@ -17,7 +17,7 @@ Stepper
 View.Stepper( 5.0 )
 ```
 
-<img src="images/views/Stepper-adr-basic.png" width="300">
+<img src="images/view/Stepper-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -35,7 +35,7 @@ View.Stepper
 ```
 
 
-<img src="images/views/Stepper-adr-styled.png" width="300">
+<img src="images/view/Stepper-adr-styled.png" width="300">
 
 <br /> <br /> 
 

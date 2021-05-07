@@ -18,7 +18,7 @@ View.Editor
     ("Editor")
 ```
 
-<img src="images/views/editor-adr-basic.png" width="300">
+<img src="images/view/Editor-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -35,7 +35,7 @@ View.Editor
 ```
 
 
-<img src="images/views/editor-adr-styled.png" width="300">
+<img src="images/view/Editor-adr-styled.png" width="300">
 
 <br /> <br /> 
 

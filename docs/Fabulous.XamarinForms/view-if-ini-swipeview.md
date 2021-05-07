@@ -43,7 +43,7 @@ SwipeView
 )
 ```
 
-<img src="images/views/SwipeView-adr-basic.png" width="300">
+<img src="images/view/SwipeView-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -107,7 +107,7 @@ View.SwipeView
 ```
 
 
-<img src="images/views/SwipeView-adr-styled.png" width="300">
+<img src="images/view/SwipeView-adr-styled.png" width="300">
 
 <br /> <br /> 
 

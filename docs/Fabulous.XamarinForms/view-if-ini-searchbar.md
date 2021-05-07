@@ -17,7 +17,7 @@ SearchBar
 View.SearchBar(placeholder = "SearchBar")
 ```
 
-<img src="images/views/SearchBar-adr-basic.png" width="300">
+<img src="images/view/SearchBar-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -34,7 +34,7 @@ View.SearchBar
 ```
 
 
-<img src="images/views/SearchBar-adr-styled.png" width="300">
+<img src="images/view/SearchBar-adr-styled.png" width="300">
 
 <br /> <br /> 
 

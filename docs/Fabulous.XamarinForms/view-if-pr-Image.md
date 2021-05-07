@@ -17,7 +17,7 @@ Image
 View.Image(source = Image.ImagePath "icon.png")
 ```
 
-<img src="images/views/Image-adr-basic.png" width="300">
+<img src="images/view/Image-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -34,7 +34,7 @@ View.Image
 ```
 
 
-<img src="images/views/Image-adr-styled.png" width="300">
+<img src="images/view/Image-adr-styled.png" width="300">
 
 <br /> <br /> 
 

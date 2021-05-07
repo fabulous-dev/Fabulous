@@ -17,7 +17,7 @@ Ellipse
 View.Ellipse(fill = View.SolidColorBrush(Color.Black), width = 50., height = 50.)
 ```
 
-<img src="images/views/Ellipse-adr-basic.png" width="300">
+<img src="images/view/Ellipse-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -36,7 +36,7 @@ View.Ellipse
 ```
 
 
-<img src="images/views/Ellipse-adr-styled.png" width="300">
+<img src="images/view/Ellipse-adr-styled.png" width="300">
 
 <br /> <br /> 
 

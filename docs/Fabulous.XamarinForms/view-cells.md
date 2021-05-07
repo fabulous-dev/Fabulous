@@ -20,4 +20,4 @@ A cell is a specialized element used for items in a table and describes how each
 
 <br/>
 
-<img src="images/views/tableview-adr-basic.png" width="300">
+<img src="images/view/TableView-adr-basic.png" width="300">

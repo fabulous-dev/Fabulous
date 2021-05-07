@@ -17,7 +17,7 @@ Entry
 View.Entry("Entry")
 ```
 
-<img src="images/views/entry-adr-basic.png" width="300">
+<img src="images/view/Entry-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -33,7 +33,7 @@ View.Entry
     )
 ```
 
-<img src="images/views/entry-adr-styled.png" width="300">
+<img src="images/view/Entry-adr-styled.png" width="300">
 
 <br /> <br /> 
 

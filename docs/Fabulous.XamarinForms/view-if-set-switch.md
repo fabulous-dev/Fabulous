@@ -17,7 +17,7 @@ Switch
 View.Switch()
 ```
 
-<img src="images/views/Switch-adr-basic.png" width="300">
+<img src="images/view/Switch-adr-basic.png" width="300">
 
 <br /> <br /> 
 
@@ -34,7 +34,7 @@ View.Switch
 ```
 
 
-<img src="images/views/Switch-adr-styled.png" width="300">
+<img src="images/view/Switch-adr-styled.png" width="300">
 
 <br /> <br /> 
 
