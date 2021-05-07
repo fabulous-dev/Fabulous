@@ -50,17 +50,23 @@ module Models =
         /// Completely replace the code generated for this property in Update*ControlType*
         abstract UpdateCode: string option
         
+        /// The function that will handle the unmount process for this property
+        /// Completely replace the code generated for this property in Unmount*ControlType*
+        abstract UnmountCode: string option
+        
     type AttachedProperty() =
         inherit Member()
         
         member val DefaultValue = None with get, set
         member val ConvertModelToValue = None with get, set
         member val UpdateCode = None with get, set
+        member val UnmountCode = None with get, set
         
         interface IProperty with
             member x.DefaultValue = x.DefaultValue
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
+            member x.UnmountCode = x.UnmountCode
 
     type PropertyCollectionData() =
         /// The type of the elements if the property is a collection
@@ -80,6 +86,7 @@ module Models =
         member val ConvertModelToValue = None with get, set
         member val UpdateCode = None with get, set
         member val HasPriority : bool option = None with get, set
+        member val UnmountCode = None with get, set
         
         interface IConstructorMember with
             member x.ShortName = x.ShortName
@@ -88,6 +95,7 @@ module Models =
             member x.DefaultValue = x.DefaultValue
             member x.ConvertModelToValue = x.ConvertModelToValue
             member x.UpdateCode = x.UpdateCode
+            member x.UnmountCode = x.UnmountCode
 
     type Event() =
         inherit Member()
