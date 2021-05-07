@@ -1286,6 +1286,14 @@
           "source": "TextColor"
         }
       ],
+      "events": [
+        {
+          "source": "Pressed"
+        },
+        {
+          "source": "Released"
+        }
+      ],
       "primaryConstructorMembers": [
         "Text",
         "Command"
