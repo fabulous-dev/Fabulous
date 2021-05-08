@@ -144,7 +144,9 @@ module Preparer =
                   UniqueName = p.UniqueName
                   CustomAttributeKey = p.CustomAttributeKey
                   IsCollection = p.CollectionData.IsSome
-                  HasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode)) } : UnmountProperty
+                  HasApply = not (System.String.IsNullOrWhiteSpace(p.ConvertModelToValue)) || not (System.String.IsNullOrWhiteSpace(p.UpdateCode))
+                  UnmountCode = p.UnmountCode
+                } : UnmountProperty
             )
         
         { Name = boundType.Name

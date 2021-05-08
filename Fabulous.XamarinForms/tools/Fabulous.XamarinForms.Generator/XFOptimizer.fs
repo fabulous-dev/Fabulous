@@ -41,7 +41,8 @@ module XFOptimizer =
                   UpdateCode = sprintf "ViewUpdaters.updateCommand prev%sOpt curr%sOpt (fun _target -> ()) (fun (target: %s) cmd -> target.%s <- cmd)" boundProperty.UniqueName boundProperty.UniqueName boundType.FullName boundProperty.Name
                   CollectionData = None
                   HasPriority = false
-                  IsInherited = false }
+                  IsInherited = false
+                  UnmountCode = "" }
             |]
 
         let apply = Optimizer.propertyOptimizer (fun _ prop -> canBeOptimized prop) optimizeBoundProperty

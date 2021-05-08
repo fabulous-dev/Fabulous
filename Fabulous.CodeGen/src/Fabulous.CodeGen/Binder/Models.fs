@@ -78,7 +78,8 @@ module Models =
           UpdateCode: string
           CollectionData: BoundPropertyCollectionData option
           HasPriority: bool
-          IsInherited: bool }
+          IsInherited: bool
+          UnmountCode: string }
         interface IBoundConstructorMember with
             member this.ShortName = this.ShortName
             member this.UniqueName = this.UniqueName

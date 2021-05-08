@@ -182,7 +182,8 @@ module Binder =
                         bindingsCollection.AttachedProperties
                         (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
           HasPriority = bindingsTypeProperty.HasPriority |> Option.defaultValue false
-          IsInherited = false }
+          IsInherited = false
+          UnmountCode = Text.getValueOrDefault bindingsTypeProperty.UnmountCode "" }
        
     /// Try to create a bound event binding from the bindings data only 
     let tryCreateEvent logger containerTypeName (bindingsTypeEvent: Event) =
@@ -250,7 +251,8 @@ module Binder =
                                     cd.AttachedProperties
                                     (tryBindAttachedProperty logger containerTypeName assemblyTypeAttachedProperties) })
                   HasPriority = bindingsTypeProperty.HasPriority |> Option.defaultValue false
-                  IsInherited = false }
+                  IsInherited = false
+                  UnmountCode = Text.getValueOrDefault bindingsTypeProperty.UnmountCode "" }
             )
     
     /// Try to bind or create an event binding

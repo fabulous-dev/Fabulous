@@ -91,7 +91,8 @@ module Models =
           UniqueName: string
           CustomAttributeKey: string option
           IsCollection: bool
-          HasApply: bool }
+          HasApply: bool
+          UnmountCode: string }
         
     type UnmountData =
         { Name: string
