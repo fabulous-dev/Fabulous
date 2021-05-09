@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 
 open System
 open Fabulous
-open Fabulous.Tracing
 open Xamarin.Forms
 
 /// Program module - functions to manipulate program instances
@@ -11,7 +10,7 @@ open Xamarin.Forms
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module XamarinFormsProgram =
     let private onError (text: string) (ex: exn) =
-        Console.WriteLine(sprintf "%s: %A" text ex)
+        Console.WriteLine("{0}: {1}", text, ex)
 
     let private syncDispatch (dispatch: 'msg -> unit) =
         fun msg ->

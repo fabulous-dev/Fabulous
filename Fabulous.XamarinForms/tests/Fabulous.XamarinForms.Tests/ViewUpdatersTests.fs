@@ -12,7 +12,7 @@ module ViewUpdatersTests =
         { canReuseView = fun _ _ -> false
           dispatch = ignore
           trace = fun _ _ -> ()
-          traceLevel = Tracing.TraceLevel.None }
+          traceLevel = TraceLevel.None }
 
     [<Test>]
     let ``UpdateLabelText All none``() =

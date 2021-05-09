@@ -165,7 +165,9 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         | ValueNone -> failwithf "Property '%s' does not exist on %s" key.Name x.Handler.TargetType.Name
 
     member x.Create(definition: ProgramDefinition, parentOpt: obj voption) =
-        ProgramTracing.traceDebug definition (sprintf "Create %O" x.Handler.TargetType)
+        let trace (targetTypeName: string) = String.Format("Create {0}", targetTypeName)
+        
+        ProgramTracing.traceDebug definition x.Handler.TargetType.Name trace
 
         let target = x.Handler.Create(x, parentOpt)
         x.Update(definition, ValueNone, target)
@@ -177,7 +179,9 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         target
 
     member x.Update(definition, prevOpt: DynamicViewElement voption, target) =
-        ProgramTracing.traceDebug definition (sprintf "Update %A" x)
+        let trace (x: DynamicViewElement) = String.Format("Update {0}", x)
+        
+        ProgramTracing.traceDebug definition x trace
 
         let prevViewRefOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed(DynamicViewElement.RefAttribKey)
         let currViewRefOpt = x.TryGetAttributeKeyed(DynamicViewElement.RefAttribKey)
@@ -195,7 +199,9 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         | ValueSome currViewRef -> currViewRef.Set(target)
 
     member x.UpdateAttachedPropertiesForAttribute<'T>(attributeKey: AttributeKey<'T>, definition, prevOpt, curr, target) =
-        ProgramTracing.traceDebug definition (sprintf "Update attached properties of %A.%s" x attributeKey.Name)
+        let trace (struct (x, attributeKeyName)) = String.Format("Update attached properties of {0}.{1}", x, attributeKeyName)
+        
+        ProgramTracing.traceDebug definition (struct (x, attributeKey.Name)) trace
         x.Handler.UpdateAttachedProperties(attributeKey.KeyValue, definition, prevOpt, curr, target)
 
     /// Produce a new visual element with an adjusted attribute
@@ -225,4 +231,4 @@ and DynamicViewElement internal (handlerKey: int, attribs: KeyValuePair<int, obj
         member x.TryKey with get () = x.TryKey
         member x.TargetType with get () = x.Handler.TargetType
 
-    override x.ToString() = sprintf "%s(...)@%d" x.Handler.TargetType.Name (x.GetHashCode())
+    override x.ToString() = String.Format("{0}(...)@{1}", x.Handler.TargetType.Name, x.GetHashCode())

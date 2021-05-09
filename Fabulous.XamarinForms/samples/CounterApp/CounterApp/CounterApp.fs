@@ -67,7 +67,7 @@ module App =
     let program =
         XamarinFormsProgram.mkSimple init update view
 #if DEBUG
-        |> Program.withTraceLevel Tracing.TraceLevel.Info
+        |> Program.withTraceLevel TraceLevel.Debug
         |> Program.withConsoleTrace
 #endif
 

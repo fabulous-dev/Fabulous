@@ -2,7 +2,6 @@
 namespace Fabulous.Tests
 
 open Fabulous
-open Fabulous.Tracing
 open NUnit.Framework
 open FsUnit
 
