@@ -108,7 +108,7 @@ type Runner<'arg, 'msg, 'model, 'externalMsg>() as this =
         rootView <- existingView
         
     let detachView () =
-        lastViewData.Unmount(rootView)
+        lastViewData.Unmount(rootView, true)
         rootView <- null
     
 

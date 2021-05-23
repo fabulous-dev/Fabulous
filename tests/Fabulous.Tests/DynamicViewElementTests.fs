@@ -12,7 +12,7 @@ module DynamicViewElementTests =
         let create _ _ = FakeControl()
         let update _ _ _ _ = ()
         let updateAttachedProperties _ _ _ _ _ = ()
-        let unmount _ _ = ()
+        let unmount _ _ _ = ()
         let handler = Registrar.Register("FakeControl", create, update, updateAttachedProperties, unmount)
         DynamicViewElement.Create(handler, attribs)
 

@@ -74,11 +74,11 @@ type ComponentViewElement<'arg, 'msg, 'model, 'state, 'externalMsg>
                     
                 dispatchStateChangedIfNeeded runner
                 
-        member x.Unmount(target) =
+        member x.Unmount(target, stopRunner) =
             match handler.GetRunnerForTarget(target) with
             | ValueNone -> ()
             | ValueSome runner ->
-                runner.Stop()
+                if stopRunner then runner.Stop()
                 handler.SetRunnerForTarget(ValueNone, target)
 
         member x.TryKey = ValueSome key

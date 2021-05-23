@@ -26,11 +26,11 @@ type ProgramDefinition =
 /// Represents a visual element
 and IViewElement =
     /// Create the target control from this ViewElement
-    abstract Create: ProgramDefinition * obj voption -> obj
+    abstract Create: definition: ProgramDefinition * parentViewOpt: obj voption -> obj
     /// Update an existing control by applying the diff between a previous ViewElement and this one
-    abstract Update: ProgramDefinition * IViewElement voption * obj -> unit
+    abstract Update: definition: ProgramDefinition * prevViewElement: IViewElement voption * target: obj -> unit
     /// Signal the ViewElement that its associated control is no longer available
-    abstract Unmount: obj -> unit
+    abstract Unmount: target: obj * stopRunner: bool -> unit
     /// Try get the key of this ViewElement
     abstract TryKey: string voption with get
     /// Target type of the control that will be created by this ViewElement
