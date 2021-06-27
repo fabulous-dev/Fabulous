@@ -23,6 +23,8 @@ How to improve it?
 - Decorrelate Update from View to allow for faster update loops
 - Use the new .NET types to get the best performances (byref, spans, etc)
 
+NOTE: Flutter seems to not use diff algorithms. Instead they just optimize for the most common paths. See https://flutter.dev/docs/resources/inside-flutter#linear-reconciliation
+
 #### Advanced Use-cases
 
 How to improve it?

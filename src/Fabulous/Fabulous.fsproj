@@ -4,9 +4,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
-    <Compile Include="State.fs" />
-    <Compile Include="Runner.fs" />
-    <Compile Include="ViewElement.fs" />
+    <Compile Include="Widget.fs" />
   </ItemGroup>
 </Project>

@@ -4,8 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Adapter.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="Xamarin.Forms.Core.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
