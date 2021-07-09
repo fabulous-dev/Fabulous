@@ -22,7 +22,8 @@ type StaticWidget =
 /// Logical element without state able to generate a logical tree composed of child widgets
 type StatelessWidget =
     { Key: Key option
-      View: Attribute[] -> IWidget }
+      View: Attribute[] -> IWidget
+      ExtendedAttributes: Attribute[] voption }
     interface IWidget with
         member x.Key = x.Key
 
@@ -43,15 +44,3 @@ type Runner(widget: StatefulWidget) =
     member x.Pause() = ()
     member x.Restart() = ()
     member x.Stop() = ()
-
-type Builder<'T> (attribs: Attribute list, append: Attribute list -> 'T) =
-  member x.Append(attrib) = append (attrib :: attribs)
-
-type ViewBuilder (attribs: Attribute list) =
-  inherit Builder<ViewBuilder>(attribs, fun attribs -> ViewBuilder(attribs))
-  
-type ButtonBuilder (attribs: Attribute list) =
-  inherit Builder<ButtonBuilder>(attribs, fun attribs -> ButtonBuilder(attribs))
-
-type ViewBuilder with
-  member x.Toto() = x.Append({ Name = "Toto"; Value = "toto" })
