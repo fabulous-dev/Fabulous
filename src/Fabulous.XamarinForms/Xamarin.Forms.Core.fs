@@ -61,10 +61,29 @@ module StatelessPanel =
     type Fab with
         static member inline StatelessPanel(extendedAttributes) = { Key = None; View = view; ExtendedAttributes = ValueSome extendedAttributes }
 
+module StatefulPanel =
+    open type Fab
+
+    type Model = { Text: string }
+
+    let init () = { Text = "" }
+    let update msg model = model
+    let view model extendedAttributes =
+        StackLayout([
+            Label(model.Text)
+        ])
+
+    type Fab with
+        static member inline StatefulPanel(extendedAttributes) =
+            { Key = None; State = None; Init = (fun _ -> box (init ())); Update = (fun (msg, model) -> box (update (unbox msg) (unbox model))); View = (fun (model, extendedAttributes) -> (view (unbox model) extendedAttributes) :> IWidget) }
+    
+
+
 module Test =
     open x
     open type Fab
     open StatelessPanel
+    open StatefulPanel
 
     let test2() =
         Label("World")
@@ -89,4 +108,5 @@ module Test =
         StackLayout([
             Button()
             Fab.StatelessPanel([| |])
+            Fab.StatefulPanel([| |])
         ])
