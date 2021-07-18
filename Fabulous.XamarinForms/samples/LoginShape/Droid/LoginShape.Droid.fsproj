@@ -80,7 +80,7 @@
       <Name>Fabulous.XamarinForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoginShape\LoginShape.fsproj">
-      <Project>{566B273F-79E4-4CE3-B312-5633602BE687}</Project>
+      <Project>{D190EBE6-F41A-417A-8A6C-C14B07060B0C}</Project>
       <Name>LoginShape</Name>
     </ProjectReference>
   </ItemGroup>

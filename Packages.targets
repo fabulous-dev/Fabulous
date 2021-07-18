@@ -2,7 +2,7 @@
     <!-- External dependencies, will be marked as requirements (equal or higher) in the NuGet packages. Should target lowest possible major versions -->
     <ItemGroup>
         <!-- All -->
-        <PackageReference Update="FSharp.Core" Version="4.7.0" />
+        <PackageReference Update="FSharp.Core" Version="5.0.0" />
         <!-- Fabulous.CodeGen -->
         <PackageReference Update="Microsoft.FSharpLu.Json" Version="0.11.6" />
         <PackageReference Update="Mono.Cecil" Version="0.11.2" />
@@ -24,8 +24,8 @@
         <!-- Shared dependencies -->
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0" PrivateAssets="All" />
         <!-- Fabulous.Cli -->
-        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" /> <!-- Locked to 0.9.0 for FSharp.Compiler.PortaCode -->
-        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" /> <!-- Locked to 25.0.1 for FSharp.Compiler.PortaCode -->
+        <PackageReference Update="Dotnet.ProjInfo" Version="0.44.0" />
+        <PackageReference Update="FSharp.Compiler.Service" Version="38.0.01" />
         <!-- Fabulous.XamarinForms.Generator -->
         <PackageReference Update="CommandLineParser.FSharp" Version="2.7.82" />
         <!-- Unit tests -->

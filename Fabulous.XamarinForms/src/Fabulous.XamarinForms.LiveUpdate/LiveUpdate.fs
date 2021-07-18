@@ -6,15 +6,15 @@
 
  module LiveUpdate =
      /// Trace all the updates to the console
-     type ProgramRunner<'arg, 'model,'msg> with
+     type ProgramRunner<'arg, 'msg, 'model> with
 
          member runner.EnableLiveUpdate() =
              async {
                  let syncChangeProgram (changeProgram: unit -> unit) =
                      Device.BeginInvokeOnMainThread (fun() ->
-                        changeProgram()    
+                        changeProgram()
                      )
-                     
+
                  let printAddresses iips httpPort =
                     if Device.RuntimePlatform = Device.iOS then
                         printfn "  LiveUpdate: Connect using:"
@@ -35,14 +35,13 @@
                         else
                             printfn "      dotnet fabulous --watch --webhook:http://localhost:%d/update" httpPort
                     else
-                        printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
-                        printfn "  LiveUpdate: You can still try to connect using:" 
+                        printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform
+                        printfn "  LiveUpdate: You can still try to connect using:"
                         if httpPort = Ports.DefaultPort then
                             printfn "      dotnet fabulous --watch --send"
                         else
                             printfn "      dotnet fabulous --watch --webhook:http://localhost:%d/update" httpPort
 
                  Extensions.enableLiveUpdate printAddresses syncChangeProgram runner
-                 
+
              } |> Async.Start
- 

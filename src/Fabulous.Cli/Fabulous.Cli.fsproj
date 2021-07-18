@@ -16,6 +16,7 @@
     <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" />
     <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" />
     <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\LiveCheckEvaluation.fs" />
     <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" />
     <Compile Include="fscd.fs" />
   </ItemGroup>

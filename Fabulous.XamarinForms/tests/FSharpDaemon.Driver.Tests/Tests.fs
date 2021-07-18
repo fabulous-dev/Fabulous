@@ -7,7 +7,7 @@ open FsUnit
 open FSharp.Compiler.PortaCode.Tests.Basic // for TestHelpers
 
 module Versions = 
-    let XamarinForms = "4.7.0.968"
+    let XamarinForms = "5.0.0.1874"
     let NewtonsoftJson = "11.0.2"
 
 module TestModule =
@@ -28,30 +28,30 @@ module TestModule =
         |> fun s -> s.Replace("NEWTONSOFTJSONVERSION", Versions.NewtonsoftJson)
         |> fun s -> s.Replace("XAMARINFORMSVERSION", Versions.XamarinForms)
 
-    let ElmishTestCase name code = 
-        let directory = __SOURCE_DIRECTORY__ + "/data"
-        TestHelpers.GeneralTestCase directory name code elmishExtraRefs
+//    let ElmishTestCase name code = 
+//        let directory = __SOURCE_DIRECTORY__ + "/data"
+//        TestHelpers.GeneralTestCase directory name code elmishExtraRefs
 
-    [<Test>]
-    let TestCanEvaluateCounterApp () =
-        Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/CounterApp/CounterApp"
-        TestHelpers.createNetStandardProjectArgs "CounterApp"  elmishExtraRefs
-        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@CounterApp.args.txt" |]))
+//    [<Test>]
+//    let TestCanEvaluateCounterApp () =
+//        Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/CounterApp/CounterApp"
+//        TestHelpers.createNetStandardProjectArgs "CounterApp"  elmishExtraRefs
+//        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@CounterApp.args.txt" |]))
 
-    [<Test>]
-    let TestCanEvaluateTicTacToeApp () =
-        Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/TicTacToe/TicTacToe"
-        TestHelpers.createNetStandardProjectArgs "TicTacToe" elmishExtraRefs
-        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@TicTacToe.args.txt" |]))
+//    [<Test>]
+//    let TestCanEvaluateTicTacToeApp () =
+//        Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/TicTacToe/TicTacToe"
+//        TestHelpers.createNetStandardProjectArgs "TicTacToe" elmishExtraRefs
+//        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@TicTacToe.args.txt" |]))
 
-    [<Test>]
-    let ViewRefSmoke() =
-        ElmishTestCase "ViewRefSmoke" """
-let theRef = Fabulous.DynamicViews.ViewRef<Xamarin.Forms.Label>()
-       """
+//    [<Test>]
+//    let ViewRefSmoke() =
+//        ElmishTestCase "ViewRefSmoke" """
+//let theRef = Fabulous.DynamicViews.ViewRef<Xamarin.Forms.Label>()
+//       """
 
-    [<Test>]
-    let TestCallUnitFunction() =
-        ElmishTestCase "TestCallUnitFunction" """ 
-let theRef = FSharp.Core.LanguagePrimitives.GenericZeroDynamic<int>()
-       """
+//    [<Test>]
+//    let TestCallUnitFunction() =
+//        ElmishTestCase "TestCallUnitFunction" """ 
+//let theRef = FSharp.Core.LanguagePrimitives.GenericZeroDynamic<int>()
+//       """

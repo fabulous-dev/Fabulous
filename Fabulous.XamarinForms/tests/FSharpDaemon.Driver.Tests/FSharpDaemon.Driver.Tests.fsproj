@@ -12,6 +12,7 @@
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" Link="FromCompilerService.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\LiveCheckEvaluation.fs" Link="LiveCheckEvaluation.fs"/>
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" Link="ProcessCommandLine.fs" />
     <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\tests\PortaCodeTests.fs" />
     <Compile Include="..\..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
@@ -37,7 +38,7 @@
 
   <!-- Fix these packages to a specific version, independently of Packages.target, to match the versions used by PortaCode tests -->
   <ItemGroup>
-    <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
+    <PackageReference Update="Dotnet.ProjInfo" Version="0.44.0" />
     <PackageReference Update="FSharp.Core" Version="4.5.2" />
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
