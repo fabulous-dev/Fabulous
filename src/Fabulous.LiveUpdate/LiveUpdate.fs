@@ -269,15 +269,11 @@ module Extensions =
                     let res =
                         try
                             for (n, file) in files do
-                                Console.WriteLine n
-                                Console.WriteLine "LiveUpdate: adding declarations...."
                                 printfn "LiveUpdate: adding declarations...."
                                 interp(n).AddDecls file.Code
 
                             for (n, file) in files do
-                                Console.WriteLine n
                                 printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                                Console.WriteLine "LiveUpdate: evaluating decls in code package for side effects...."
                                 interp(n).EvalDecls(envEmpty, file.Code)
 
                             Result.Ok()
