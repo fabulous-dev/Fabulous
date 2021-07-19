@@ -201,7 +201,7 @@ module App =
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
                     horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(1)
-
+                
                 View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=FontSize.fromNamedSize NamedSize.Large).Row(2)
               ]),
 
