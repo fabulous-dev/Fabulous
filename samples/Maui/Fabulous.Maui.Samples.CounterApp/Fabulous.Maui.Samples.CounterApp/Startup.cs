@@ -3,6 +3,7 @@ using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Controls.Xaml;
+using Fabulous.Maui.Samples.CounterApp.Core;
 
 [assembly: XamlCompilationAttribute(XamlCompilationOptions.Compile)]
 
@@ -13,7 +14,7 @@ namespace Fabulous.Maui.Samples.CounterApp
 		public void Configure(IAppHostBuilder appBuilder)
 		{
 			appBuilder
-				.UseMauiApp<App>()
+				.UseFabulousApp(App.widget)
 				.ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -9,7 +9,6 @@
     <Compile Include="Widget.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Runner.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
 </Project>

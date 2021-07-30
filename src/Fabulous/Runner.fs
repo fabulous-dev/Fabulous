@@ -3,7 +3,7 @@ namespace Fabulous
 type IRunner = interface end
 
 // Runner is created for the widget itself. No point in reusing a runner for another widget
-type Runner<'arg, 'model, 'msg, 'view when 'view :> IWidget>(key: RunnerKey, widget: StatefulWidget<'arg, 'model, 'msg, 'view>) =
+type Runner<'arg, 'model, 'msg, 'view when 'view :> IWidget>(key: RunnerKey, widget: IStatefulWidget<'arg, 'model, 'msg, 'view>) =
     let start arg =
         let model = widget.Init(arg)
         States.setState key model

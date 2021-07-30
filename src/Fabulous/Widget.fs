@@ -9,6 +9,37 @@ type [<Struct>] AttributeKey = AttributeKey of int
 type Attribute =
     { Key: AttributeKey
       Value: obj }
+    
+module Attributes =
+    type IAttributeDefinition = interface end
+    type AttributeDefinition<'inputType, 'modelType> =
+        { Key: AttributeKey
+          Convert: 'inputType -> 'modelType }
+        interface IAttributeDefinition
+        member x.WithValue(value) =
+           { Key = x.Key
+             Value = x.Convert(value) } 
+    
+    let private _keys = Dictionary<string, AttributeKey>()
+    let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
+    
+    let createDefinitionWithConverter<'inputType, 'modelType> name (convert: 'inputType -> 'modelType) =
+        if not (_keys.ContainsKey(name)) then
+            let key = AttributeKey (_keys.Count + 1)
+            let definition =
+                { Key = key
+                  Convert = convert }
+            _keys.Add(name, key)
+            _attributes.Add(key, definition)
+            definition
+        else
+            let key = _keys.[name]
+            _attributes.[key] :?> AttributeDefinition<'inputType, 'modelType>
+    
+    let createDefinition<'T> name =
+        createDefinitionWithConverter<'T, 'T> name id
+        
+            
 
 /// Base logical element
 type IWidget = interface end
@@ -36,14 +67,13 @@ module ControlWidget =
     
 
 /// Logical element without state able to generate a logical tree composed of child widgets
-type StatelessWidget =
-    { View: Attribute[] -> IWidget
-      ExtendedAttributes: Attribute[] voption }
+type IStatelessWidget<'view when 'view :> IWidget> =
+    abstract View: Attribute[] -> 'view 
 
 /// Logical element with MVU state able to generate a logical tree composed of child widgets
-type StatefulWidget<'arg, 'model, 'msg, 'view when 'view :> IWidget> =
-    { State: RunnerKey option
-      Init: 'arg -> 'model
-      Update: 'msg * 'model -> 'model
-      View: 'model * Attribute[] -> 'view }
+type IStatefulWidget<'arg, 'model, 'msg, 'view when 'view :> IWidget> =
+    abstract State: RunnerKey option
+    abstract Init: 'arg -> 'model
+    abstract Update: 'msg * 'model -> 'model
+    abstract View: 'model * Attribute[] -> 'view
 
