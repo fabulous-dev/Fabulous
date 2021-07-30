@@ -2,6 +2,7 @@
 
 open Fabulous
 open Fabulous.Maui
+open Microsoft.Maui.Graphics
 
 module App =
     type Model = { Count: int }
@@ -18,8 +19,8 @@ module App =
         View.Application([
             View.Window("Main",
                 View.StackLayout([
-                    View.Label()
-                    View.Button()
+                    View.Label().TextColor(Colors.Aqua).Font("")
+                    View.Button().Font("")
                 ])
             )
         ])

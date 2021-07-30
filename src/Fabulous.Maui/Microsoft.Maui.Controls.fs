@@ -1,7 +1,10 @@
 ﻿namespace Fabulous.Maui
 
+open System.ComponentModel
+open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
+open Microsoft.Maui.Graphics
 
 type FabulousApplication () =
     interface IApplication with
@@ -157,44 +160,61 @@ type IViewWidget = inherit ControlWidget.IControlWidget
 
 
 type [<Struct>] ApplicationWidget =
-    { Attributes: Attribute[] }
-    interface IApplicationWidget
+    private { Attributes: Attribute list }
+    interface IApplicationWidget with
+        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
         
     static member inline Create(windows: seq<#IWindowWidget>) =
         ControlWidget.register<ApplicationWidget, FabulousApplication>()
-        { Attributes = [||] }
+        { Attributes = [] }
         
 type [<Struct>] WindowWidget =
-    { Attributes: Attribute[] }
-    interface IWindowWidget
+    private { Attributes: Attribute list }
+    interface IWindowWidget with
+        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
     
     static member inline Create(title: string, content: #IViewWidget) =
         ControlWidget.register<WindowWidget, FabulousWindow>()
-        { Attributes = [||] }
+        { Attributes = [] }
         
 type [<Struct>] StackLayoutWidget =
-    { Attributes: Attribute[] }
-    interface IViewWidget
+    private { Attributes: Attribute list }
+    interface IViewWidget with
+        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
     
     static member inline Create(children: seq<IViewWidget>) =
         ControlWidget.register<StackLayoutWidget, FabulousStackLayout>()
-        { Attributes = [||] }
+        { Attributes = [] }
         
 type [<Struct>] LabelWidget =
-    { Attributes: Attribute[] }
-    interface IViewWidget
+    private { Attributes: Attribute list }
+    interface IViewWidget with
+        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
     
     static member inline Create() =
         ControlWidget.register<LabelWidget, FabulousLabel>()
-        { Attributes = [||] }
+        { Attributes = [] }
         
 type [<Struct>] ButtonWidget =
-    { Attributes: Attribute[] }
-    interface IViewWidget
+    private { Attributes: Attribute list }
+    interface IViewWidget with
+        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
     
     static member inline Create() =
         ControlWidget.register<ButtonWidget, FabulousButton>()
-        { Attributes = [||] }
+        { Attributes = [] }
+
+[<Extension>]
+type IViewWidgetExtensions () =
+    [<Extension>]
+    static member inline Font<'T when 'T :> IViewWidget>(this: 'T, fontFamily: string) =
+        this.Add({ Key = AttributeKey 1; Value = null }) :?> 'T
+        
+[<Extension>]
+type LabelWidgetExtensions () =
+    [<Extension>]
+    static member inline TextColor(this: LabelWidget, value: Color) =
+        this
     
 [<AbstractClass; Sealed>]
 type View private () =

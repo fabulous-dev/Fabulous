@@ -14,7 +14,9 @@ type Attribute =
 type IWidget = interface end
     
 module ControlWidget =
-    type IControlWidget = inherit IWidget
+    type IControlWidget =
+        inherit IWidget
+        abstract Add: Attribute -> IControlWidget
         
     type Handler =
         { TargetType: Type
