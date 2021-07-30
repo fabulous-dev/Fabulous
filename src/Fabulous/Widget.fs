@@ -1,46 +1,47 @@
 namespace Fabulous
 
+open System
+open System.Collections.Generic
+
+type [<Struct>] RunnerKey = RunnerKey of int
+type [<Struct>] AttributeKey = AttributeKey of int
+    
 type Attribute =
-    { Name: string
+    { Key: AttributeKey
       Value: obj }
 
-type Key = struct end
-type StateKey = struct end
-
 /// Base logical element
-type IWidget =
-    abstract Key: Key option
-
-/// Logical element able to instantiate a real UI type
-type StaticWidget =
-    { Key: Key option
-      Attributes: Attribute[]
-      Create: unit -> obj }
-    interface IWidget with
-        member x.Key = x.Key
+type IWidget = interface end
+    
+module ControlWidget =
+    type IControlWidget = inherit IWidget
+        
+    type Handler =
+        { TargetType: Type
+          Create: Attribute[] -> obj }
+    
+    let private _handlers = Dictionary<Type, Handler>()
+    
+    let registerWithCustomCtor<'Builder, 'T> (create: Attribute[] -> 'T) =
+        if not (_handlers.ContainsKey(typeof<'Builder>)) then
+            _handlers.[typeof<'Builder>] <-
+                { TargetType = typeof<'T>
+                  Create = create >> box }
+                
+    let register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
+        registerWithCustomCtor<'Builder, 'T> (fun _ -> new 'T())
+        
+    
 
 /// Logical element without state able to generate a logical tree composed of child widgets
 type StatelessWidget =
-    { Key: Key option
-      View: Attribute[] -> IWidget
+    { View: Attribute[] -> IWidget
       ExtendedAttributes: Attribute[] voption }
-    interface IWidget with
-        member x.Key = x.Key
 
 /// Logical element with MVU state able to generate a logical tree composed of child widgets
-type StatefulWidget =
-    { Key: Key option
-      State: StateKey option
-      Init: obj -> obj
-      Update: obj * obj -> obj
-      View: obj * Attribute[] -> IWidget }
-    interface IWidget with
-        member x.Key = x.Key
+type StatefulWidget<'arg, 'model, 'msg, 'view when 'view :> IWidget> =
+    { State: RunnerKey option
+      Init: 'arg -> 'model
+      Update: 'msg * 'model -> 'model
+      View: 'model * Attribute[] -> 'view }
 
-// Runner is created for the widget itself. No point in reusing a runner for another widget
-type Runner(widget: StatefulWidget) =
-    member x.State = StateKey()
-    member x.Start() = ()
-    member x.Pause() = ()
-    member x.Restart() = ()
-    member x.Stop() = ()
