@@ -35,6 +35,28 @@
           "source": "Touch"
         }
       ]
+    },
+    {
+      "type": "SkiaSharp.Views.Forms.SKGLView",
+      "properties": [
+        {
+          "source": "EnableTouchEvents"
+        },
+        {
+          "source": null,
+          "name": "Invalidate",
+          "inputType": "bool",
+          "updateCode": "ViewUpdaters.updateSKGLViewInvalidate"
+        }
+      ],
+      "events": [
+        {
+          "source": "PaintSurface"
+        },
+        {
+          "source": "Touch"
+        }
+      ]
     }
   ]
 }
