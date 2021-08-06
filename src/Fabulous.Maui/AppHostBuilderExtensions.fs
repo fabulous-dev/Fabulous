@@ -10,10 +10,13 @@ open Fabulous
 [<Extension>]
 type AppHostBuilderExtensions () =
     [<Extension>]
-    static member UseFabulousApp<'arg, 'model, 'msg, 'view when 'view :> IWidget and 'view :> IApplicationWidget>(this: IAppHostBuilder, app: StatefulApplication<'arg, 'model, 'msg, 'view>) =
+    static member UseFabulousApp<'arg, 'model, 'msg, 'view when 'view :> IWidget and 'view :> IApplicationWidget>(this: IAppHostBuilder, app: StatefulApplication<unit, 'model, 'msg, 'view>) =
         this.ConfigureServices(fun (collection: IServiceCollection) ->
             collection.AddSingleton<IApplication>(fun (x: IServiceProvider) ->
-                Unchecked.defaultof<IApplication>
+                let runner = Runners.createRunner app
+                let adapter = ViewAdapter.createForRunner runner
+                runner.Start()
+                adapter.CreateView() |> unbox
             ) |> ignore
         )
 

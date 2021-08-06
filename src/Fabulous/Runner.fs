@@ -16,6 +16,7 @@ type Runner<'arg, 'model, 'msg, 'view when 'view :> IWidget>(key: RunnerKey, wid
     interface IRunner
     
     member x.Key = key
+    member x.Widget = widget
     member x.Start(arg) = start arg
     member x.Pause() = ()
     member x.Restart() = ()

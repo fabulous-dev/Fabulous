@@ -4,6 +4,9 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
+open Fabulous.ControlWidget
+
+// MAUI CONTROLS
 
 type FabulousApplication () =
     interface IApplication with
@@ -152,90 +155,98 @@ type FabulousButton () =
         member this.Visibility = failwith "todo"
         member this.Width = failwith "todo"
 
-
-type IApplicationWidget = interface end
-type IWindowWidget = interface end
-type IViewWidget = interface end
+// ATTRIBUTES
 
 module Attributes =
-    let IApplication_Windows = Attributes.createDefinitionWithConverter<_,_> "IApplication_Windows" Seq.toArray
-    let IWindow_Title = Attributes.createDefinition<_> "IWindow_Title"
-    let IWindow_Content = Attributes.createDefinition<IViewWidget> "IWindow_Content"
-    let IContainer_Children = Attributes.createDefinitionWithConverter<_,_> "IContainer_Children" Seq.toArray
-    let IText_Text = Attributes.createDefinition<_> "IText_Text"
-    let ITextStyle_Font = Attributes.createDefinition<_> "ITextStyle_Font"
-    let ITextStyle_TextColor = Attributes.createDefinition<_> "ITextStyle_TextColor"
-    let IButton_Clicked = Attributes.createDefinition<_> "IButton_Clicked"
+    let IApplication_Windows = Attributes.createDefinitionWithConverter<_,_> Seq.toArray
+    let IWindow_Title = Attributes.createDefinition<_>
+    let IWindow_Content = Attributes.createDefinition<IViewWidget>
+    let IContainer_Children = Attributes.createDefinitionWithConverter<_,_> Seq.toArray
+    let IText_Text = Attributes.createDefinition<_>
+    let ITextStyle_Font = Attributes.createDefinition<_>
+    let ITextStyle_TextColor = Attributes.createDefinition<_>
+    let IButton_Clicked = Attributes.createDefinition<_>
+    let IStackLayout_Spacing = Attributes.createDefinition<_>
 
-/////////// WIDGET
-type [<Struct>] ApplicationWidget =
-    { Attributes: Attribute list }
-    interface IApplicationWidget
-    interface ControlWidget.IControlWidget with
-        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
-        
+// WIDGETS
+
+type [<Struct>] ApplicationWidget (attributes: Attribute[]) =
+    static do register<ApplicationWidget, FabulousApplication>()
+
     static member inline Create(windows: seq<#IWindowWidget>) =
-        ControlWidget.register<ApplicationWidget, FabulousApplication>()
-        { Attributes = [ Attributes.IApplication_Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) ] }
+        ApplicationWidget([| Attributes.IApplication_Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
+    
+    interface IApplicationWidget
+    interface IControlWidget with
+        member this.Add(attribute) = addAttribute ApplicationWidget attributes attribute
         
-type [<Struct>] WindowWidget =
-    { Attributes: Attribute list }
-    interface IWindowWidget
-    interface ControlWidget.IControlWidget with
-        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
+type [<Struct>] WindowWidget (attributes: Attribute[]) =
+    static do register<WindowWidget, FabulousWindow>()
     
     static member inline Create(title: string, content: #IViewWidget) =
-        ControlWidget.register<WindowWidget, FabulousWindow>()
-        { Attributes =
-            [ Attributes.IWindow_Title.WithValue(title)
-              Attributes.IWindow_Content.WithValue(content) ] }
-        
-type [<Struct>] StackLayoutWidget =
-    { Attributes: Attribute list }
-    interface IViewWidget
-    interface ControlWidget.IControlWidget with
-        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
+        WindowWidget(
+            [| Attributes.IWindow_Title.WithValue(title)
+               Attributes.IWindow_Content.WithValue(content) |]
+        )
     
-    static member inline Create(children: seq<IViewWidget>) =
-        ControlWidget.register<StackLayoutWidget, FabulousStackLayout>()
-        { Attributes = [ Attributes.IContainer_Children.WithValue(children) ] }
+    interface IWindowWidget
+    interface IControlWidget with
+        member this.Add(attribute) = addAttribute WindowWidget attributes attribute
         
-type [<Struct>] LabelWidget =
-    { Attributes: Attribute list }
+type [<Struct>] StackLayoutWidget (attributes: Attribute[]) =
+    static do register<StackLayoutWidget, FabulousStackLayout>()
+    
+    static member inline Create(children: seq<IViewWidget>) =        
+        StackLayoutWidget([| Attributes.IContainer_Children.WithValue(children) |])
+        
     interface IViewWidget
-    interface ControlWidget.IControlWidget with
-        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
+    interface IControlWidget with
+        member this.Add(attribute) = addAttribute StackLayoutWidget attributes attribute
+        
+type [<Struct>] LabelWidget (attributes: Attribute[]) =
+    static do register<LabelWidget, FabulousLabel>()
     
     static member inline Create(text: string) =
-        ControlWidget.register<LabelWidget, FabulousLabel>()
-        { Attributes = [ Attributes.IText_Text.WithValue(text) ] }
+        LabelWidget([| Attributes.IText_Text.WithValue(text) |])
+        
+    interface IViewWidget
+    interface IControlWidget with
+        member this.Add(attribute) = addAttribute LabelWidget attributes attribute
         
 type [<Struct>] ButtonWidget =
-    { Attributes: Attribute list }
+    { Attributes: Attribute[] }
     interface IViewWidget
-    interface ControlWidget.IControlWidget with
-        member this.Add(attribute) = { Attributes = attribute :: this.Attributes } :> ControlWidget.IControlWidget
+    interface IControlWidget with
+        member this.Add(attribute) = addAttribute (fun attrs -> { Attributes = attrs }) this.Attributes attribute
     
     static member inline Create(text: string, clicked: #obj) =
-        ControlWidget.register<ButtonWidget, FabulousButton>()
+        register<ButtonWidget, FabulousButton>()
         { Attributes =
-            [ Attributes.IText_Text.WithValue(text)
-              Attributes.IButton_Clicked.WithValue(box clicked) ] }
+            [| Attributes.IText_Text.WithValue(text)
+               Attributes.IButton_Clicked.WithValue(box clicked) |] }
 
-/////////// WIDGET EXTENSIONS
+// EXTENSIONS
+    
 [<Extension>]
 type IViewWidgetExtensions () =
     [<Extension>]
-    static member inline Font<'T when 'T :> IViewWidget and 'T :> ControlWidget.IControlWidget>(this: 'T, value: Font) =
-        this.Add(Attributes.ITextStyle_Font.WithValue(value)) :?> 'T
+    static member inline font<'T when 'T :> IViewWidget and 'T :> IControlWidget>(this: 'T, value: Font) =
+        this.AddAttribute(Attributes.ITextStyle_Font.WithValue(value))
         
 [<Extension>]
 type LabelWidgetExtensions () =
     [<Extension>]
-    static member inline TextColor(this: LabelWidget, value: Color) =
-        (this :> ControlWidget.IControlWidget).Add(Attributes.ITextStyle_TextColor.WithValue(value)) :?> LabelWidget
+    static member inline textColor(this: LabelWidget, value: Color) =
+        this.AddAttribute(Attributes.ITextStyle_TextColor.WithValue(value))
         
-/////////// WIDGET EXPOSURE
+[<Extension>]
+type StackLayoutExtensions () =
+    [<Extension>]
+    static member inline spacing(this: StackLayoutWidget, value: int) =
+        this.AddAttribute(Attributes.IStackLayout_Spacing.WithValue(value))
+        
+// EXPOSITION
+
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application(windows) = ApplicationWidget.Create(windows)
@@ -244,52 +255,3 @@ type View private () =
     static member inline Label(text) = LabelWidget.Create(text)
     static member inline Button(text, clicked) = ButtonWidget.Create(text, clicked)
     
-    
-/////////// STATEFUL WIDGETS
-type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget and 'view :> IWidget> =
-    { State: RunnerKey option
-      Init: 'arg -> 'model
-      Update: 'msg -> 'model -> 'model
-      View: 'model -> Attribute[] -> 'view }
-    interface IApplicationWidget
-    interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
-        member x.State = x.State
-        member x.Init(arg) = x.Init arg
-        member x.Update(msg, model) = x.Update msg model
-        member x.View(model, attributes) = x.View model attributes
-
-type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IViewWidget and 'view :> IWidget> =
-    { State: RunnerKey option
-      Init: 'arg -> 'model
-      Update: 'msg -> 'model -> 'model
-      View: 'model -> Attribute[] -> 'view }
-    interface IViewWidget
-    interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
-        member x.State = x.State
-        member x.Init(arg) = x.Init arg
-        member x.Update(msg, model) = x.Update msg model
-        member x.View(model, attributes) = x.View model attributes
-    
-module StatefulWidget =
-    let mkSimpleView init update view : StatefulView<_,_,_,_> =
-        { State = None
-          Init = init
-          Update = update
-          View = view }
-        
-    let mkSimpleApp init update view : StatefulApplication<_,_,_,_> =
-        { State = None
-          Init = init
-          Update = update
-          View = view }
-        
-/////////// STATELESS WIDGETS
-type StatelessView<'view when 'view :> IViewWidget and 'view :> IWidget> =
-    { View: Attribute[] -> 'view }
-    interface IViewWidget
-    interface IStatelessWidget<'view> with
-        member x.View(attrs) = x.View attrs
-        
-module StatelessWidget =
-    let mkSimpleView view : StatelessView<_> =
-        { View = view }

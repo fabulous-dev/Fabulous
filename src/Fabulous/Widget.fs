@@ -2,6 +2,7 @@ namespace Fabulous
 
 open System
 open System.Collections.Generic
+open System.Runtime.CompilerServices
 
 type [<Struct>] RunnerKey = RunnerKey of int
 type [<Struct>] AttributeKey = AttributeKey of int
@@ -20,29 +21,24 @@ module Attributes =
            { Key = x.Key
              Value = x.Convert(value) } 
     
-    let private _keys = Dictionary<string, AttributeKey>()
     let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
     
-    let createDefinitionWithConverter<'inputType, 'modelType> name (convert: 'inputType -> 'modelType) =
-        if not (_keys.ContainsKey(name)) then
-            let key = AttributeKey (_keys.Count + 1)
-            let definition =
-                { Key = key
-                  Convert = convert }
-            _keys.Add(name, key)
-            _attributes.Add(key, definition)
-            definition
-        else
-            let key = _keys.[name]
-            _attributes.[key] :?> AttributeDefinition<'inputType, 'modelType>
+    let createDefinitionWithConverter<'inputType, 'modelType> (convert: 'inputType -> 'modelType) =
+        let key = AttributeKey (_attributes.Count + 1)
+        let definition =
+            { Key = key
+              Convert = convert }
+        _attributes.Add(key, definition)
+        definition
     
-    let createDefinition<'T> name =
-        createDefinitionWithConverter<'T, 'T> name id
+    let createDefinition<'T> =
+        createDefinitionWithConverter<'T, 'T> id
         
             
 
 /// Base logical element
-type IWidget = interface end
+type IWidget =
+    abstract CreateView: unit -> obj
     
 module ControlWidget =
     type IControlWidget =
@@ -63,6 +59,19 @@ module ControlWidget =
                 
     let register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
         registerWithCustomCtor<'Builder, 'T> (fun _ -> new 'T())
+        
+    
+    let inline addAttribute (fn: Attribute[] -> #IControlWidget) (attribs: Attribute[]) (attr: Attribute) =
+        let attribs2 = Array.zeroCreate (attribs.Length + 1)
+        Array.blit attribs 0 attribs2 0 attribs.Length
+        attribs2.[attribs.Length + 1] <- attr
+        (fn attribs2) :> IControlWidget
+        
+    [<Extension>]
+    type IControlWidgetExtensions () =
+        [<Extension>]
+        static member inline AddAttribute<'T when 'T :> IControlWidget>(this: 'T, attr: Attribute) =
+            this.Add(attr) :?> 'T
         
     
 

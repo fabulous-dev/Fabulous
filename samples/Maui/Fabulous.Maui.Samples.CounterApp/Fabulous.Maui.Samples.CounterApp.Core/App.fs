@@ -4,9 +4,10 @@ open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
-open type Fabulous.Maui.View
 
 module StatelessLabel =
+    open type Fabulous.Maui.View
+    
     let view _ =
         Label("Stateless Hello World")
         
@@ -14,6 +15,8 @@ module StatelessLabel =
         static member inline StatelessLabel() = StatelessWidget.mkSimpleView view
 
 module CounterWidget =
+    open type Fabulous.Maui.View
+    
     type Model = { CountX: int }
     
     type Msg =
@@ -42,6 +45,7 @@ module CounterWidget =
 module App =
     open CounterWidget
     open StatelessLabel
+    open type Fabulous.Maui.View
 
     type Model = { Count: int }
     
@@ -58,18 +62,19 @@ module App =
             Window("Main",
                 StackLayout([
                     Label("Hello World")
-                        .TextColor(Colors.Aqua)
-                        .Font(Font.OfSize("OpenSansRegular", 12.))
+                        .textColor(Colors.Aqua)
+                        .font(Font.OfSize("OpenSansRegular", 12.))
                         
                     Label($"Count is {model.Count}")
                         
                     Button("Click me", Increment)
-                        .Font(Font.SystemFontOfSize(15.))
+                        .font(Font.SystemFontOfSize(15.))
                         
-                    View.CounterWidget()
+                    CounterWidget()
                     
-                    View.StatelessLabel()
-                ])
+                    StatelessLabel()
+                    
+                ]).spacing(10)
             )
         ])
         
