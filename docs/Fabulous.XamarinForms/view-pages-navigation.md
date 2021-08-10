@@ -23,6 +23,7 @@ The basic principles of implementing push/pop navigation are as follows:
 2. Return the current visual page stack in the `pages` property of `NavigationPage`.
 3. Set `HasNavigationBar` and `HasBackButton` on each sub-page according to your desire
 4. Dispatch messages in order to navigate, where the corresponding `update` adjusts the page stack in the model
+5. Utilize `popped` event to handle page removal
 
 ```fsharp
 let view model dispatch =
@@ -35,7 +36,8 @@ let view model dispatch =
                 yield View.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
             | "PageB" ->
                 yield View.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
-        ])
+        ],
+        popped = (fun _ -> dispatch NavigationPopped))
 ```
 
 ### NavigationPage Toolbar
