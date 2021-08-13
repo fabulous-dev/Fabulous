@@ -10,11 +10,18 @@ open Fabulous.ControlWidget
 
 type FabulousApplication () =
     interface IApplication with
+        member this.ThemeChanged() = failwith "todo"
         member this.CreateWindow(activationState) = failwith "todo"
         member this.Windows = failwith "todo"
         
 type FabulousWindow () =
     interface IWindow with
+        member this.Activated() = failwith "todo"
+        member this.Created() = failwith "todo"
+        member this.Deactivated() = failwith "todo"
+        member this.Destroying() = failwith "todo"
+        member this.Resumed() = failwith "todo"
+        member this.Stopped() = failwith "todo"
         member this.Content = failwith "todo"
         member val Handler = failwith "todo" with get, set
         member this.Parent = failwith "todo"
@@ -22,32 +29,64 @@ type FabulousWindow () =
         
 type FabulousStackLayout () =
     interface IStackLayout with
-        member this.Add(child) = failwith "todo"
+        member this.Add(item: IView) = failwith "todo"
         member this.AnchorX = failwith "todo"
         member this.AnchorY = failwith "todo"
-        member this.Arrange(bounds) = failwith "todo"
+        member this.Arrange(bounds: Rectangle) = failwith "todo"
         member this.AutomationId = failwith "todo"
         member this.Background = failwith "todo"
-        member this.Children = failwith "todo"
+        member this.Clear() = failwith "todo"
         member this.Clip = failwith "todo"
+        member this.Contains(item: IView) = failwith "todo"
+        member this.CopyTo(array: IView [], arrayIndex: int) = failwith "todo"
+        member this.Count = failwith "todo"
         member this.DesiredSize = failwith "todo"
         member this.FlowDirection = failwith "todo"
-        member val Frame = failwith "todo" with get, set
-        member val Handler : IViewHandler = failwith "todo" with get, set
-        member this.get_Handler() = Unchecked.defaultof<IElementHandler>
-        member this.set_Handler(value: IElementHandler) = ()
+        member this.Frame
+            with get (): Rectangle = 
+                raise (System.NotImplementedException())
+            and set (v: Rectangle): unit = 
+                raise (System.NotImplementedException())
+        member this.GetEnumerator(): System.Collections.Generic.IEnumerator<IView> = 
+            raise (System.NotImplementedException())
+        member this.GetEnumerator(): System.Collections.IEnumerator = 
+            raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IElementHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IElementHandler): unit = 
+                raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IViewHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IViewHandler): unit = 
+                raise (System.NotImplementedException())
         member this.Height = failwith "todo"
         member this.HorizontalLayoutAlignment = failwith "todo"
+        member this.IgnoreSafeArea = failwith "todo"
+        member this.IndexOf(item: IView) = failwith "todo"
+        member this.Insert(index: int, item: IView) = failwith "todo"
         member this.InvalidateArrange() = failwith "todo"
         member this.InvalidateMeasure() = failwith "todo"
         member this.IsEnabled = failwith "todo"
+        member this.IsReadOnly = failwith "todo"
+        member this.Item
+            with get (index: int): IView = 
+                raise (System.NotImplementedException())
+            and set (index: int) (v: IView): unit = 
+                raise (System.NotImplementedException())
         member this.LayoutHandler = failwith "todo"
+        member this.LayoutManager = failwith "todo"
         member this.Margin = failwith "todo"
-        member this.Measure(widthConstraint, heightConstraint) = failwith "todo"
+        member this.Measure(widthConstraint: float, heightConstraint: float) = failwith "todo"
         member this.Opacity = failwith "todo"
-        member this.Parent : IFrameworkElement = failwith "todo"
-        member this.get_Parent() = Unchecked.defaultof<IElement>
-        member this.Remove(child) = failwith "todo"
+        member this.Padding = failwith "todo"
+        member this.Parent: IElement = 
+            raise (System.NotImplementedException())
+        member this.Parent: IView = 
+            raise (System.NotImplementedException())
+        member this.Remove(item: IView) = failwith "todo"
+        member this.RemoveAt(index: int) = failwith "todo"
         member this.Rotation = failwith "todo"
         member this.RotationX = failwith "todo"
         member this.RotationY = failwith "todo"
@@ -66,7 +105,7 @@ type FabulousLabel () =
     interface ILabel with
         member this.AnchorX = failwith "todo"
         member this.AnchorY = failwith "todo"
-        member this.Arrange(bounds) = failwith "todo"
+        member this.Arrange(bounds: Rectangle) = failwith "todo"
         member this.AutomationId = failwith "todo"
         member this.Background = failwith "todo"
         member this.CharacterSpacing = failwith "todo"
@@ -74,10 +113,21 @@ type FabulousLabel () =
         member this.DesiredSize = failwith "todo"
         member this.FlowDirection = failwith "todo"
         member this.Font = failwith "todo"
-        member val Frame = failwith "todo" with get, set
-        member val Handler : IViewHandler = failwith "todo" with get, set
-        member this.get_Handler() = Unchecked.defaultof<IElementHandler>
-        member this.set_Handler(value: IElementHandler) = ()
+        member this.Frame
+            with get (): Rectangle = 
+                raise (System.NotImplementedException())
+            and set (v: Rectangle): unit = 
+                raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IElementHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IElementHandler): unit = 
+                raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IViewHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IViewHandler): unit = 
+                raise (System.NotImplementedException())
         member this.Height = failwith "todo"
         member this.HorizontalLayoutAlignment = failwith "todo"
         member this.HorizontalTextAlignment = failwith "todo"
@@ -88,11 +138,13 @@ type FabulousLabel () =
         member this.LineHeight = failwith "todo"
         member this.Margin = failwith "todo"
         member this.MaxLines = failwith "todo"
-        member this.Measure(widthConstraint, heightConstraint) = failwith "todo"
+        member this.Measure(widthConstraint: float, heightConstraint: float) = failwith "todo"
         member this.Opacity = failwith "todo"
         member this.Padding = failwith "todo"
-        member this.Parent : IFrameworkElement = failwith "todo"
-        member this.get_Parent() = Unchecked.defaultof<IElement>
+        member this.Parent: IElement = 
+            raise (System.NotImplementedException())
+        member this.Parent: IView = 
+            raise (System.NotImplementedException())
         member this.Rotation = failwith "todo"
         member this.RotationX = failwith "todo"
         member this.RotationY = failwith "todo"
@@ -114,7 +166,7 @@ type FabulousButton () =
     interface IButton with
         member this.AnchorX = failwith "todo"
         member this.AnchorY = failwith "todo"
-        member this.Arrange(bounds) = failwith "todo"
+        member this.Arrange(bounds: Rectangle) = failwith "todo"
         member this.AutomationId = failwith "todo"
         member this.Background = failwith "todo"
         member this.CharacterSpacing = failwith "todo"
@@ -123,21 +175,34 @@ type FabulousButton () =
         member this.DesiredSize = failwith "todo"
         member this.FlowDirection = failwith "todo"
         member this.Font = failwith "todo"
-        member val Frame = failwith "todo" with get, set
-        member val Handler : IViewHandler = failwith "todo" with get, set
-        member this.get_Handler() = Unchecked.defaultof<IElementHandler>
-        member this.set_Handler(value: IElementHandler) = ()
+        member this.Frame
+            with get (): Rectangle = 
+                raise (System.NotImplementedException())
+            and set (v: Rectangle): unit = 
+                raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IElementHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IElementHandler): unit = 
+                raise (System.NotImplementedException())
+        member this.Handler
+            with get (): IViewHandler = 
+                raise (System.NotImplementedException())
+            and set (v: IViewHandler): unit = 
+                raise (System.NotImplementedException())
         member this.Height = failwith "todo"
         member this.HorizontalLayoutAlignment = failwith "todo"
         member this.InvalidateArrange() = failwith "todo"
         member this.InvalidateMeasure() = failwith "todo"
         member this.IsEnabled = failwith "todo"
         member this.Margin = failwith "todo"
-        member this.Measure(widthConstraint, heightConstraint) = failwith "todo"
+        member this.Measure(widthConstraint: float, heightConstraint: float) = failwith "todo"
         member this.Opacity = failwith "todo"
         member this.Padding = failwith "todo"
-        member this.Parent : IFrameworkElement = failwith "todo"
-        member this.get_Parent() = Unchecked.defaultof<IElement>
+        member this.Parent: IElement = 
+            raise (System.NotImplementedException())
+        member this.Parent: IView = 
+            raise (System.NotImplementedException())
         member this.Pressed() = failwith "todo"
         member this.Released() = failwith "todo"
         member this.Rotation = failwith "todo"
@@ -179,6 +244,7 @@ type [<Struct>] ApplicationWidget (attributes: Attribute[]) =
     interface IApplicationWidget
     interface IControlWidget with
         member this.Add(attribute) = addAttribute ApplicationWidget attributes attribute
+        member this.CreateView() = box (FabulousApplication())
         
 type [<Struct>] WindowWidget (attributes: Attribute[]) =
     static do register<WindowWidget, FabulousWindow>()
@@ -192,6 +258,7 @@ type [<Struct>] WindowWidget (attributes: Attribute[]) =
     interface IWindowWidget
     interface IControlWidget with
         member this.Add(attribute) = addAttribute WindowWidget attributes attribute
+        member this.CreateView() = Unchecked.defaultof<_>
         
 type [<Struct>] StackLayoutWidget (attributes: Attribute[]) =
     static do register<StackLayoutWidget, FabulousStackLayout>()
@@ -202,6 +269,7 @@ type [<Struct>] StackLayoutWidget (attributes: Attribute[]) =
     interface IViewWidget
     interface IControlWidget with
         member this.Add(attribute) = addAttribute StackLayoutWidget attributes attribute
+        member this.CreateView() = box (FabulousWindow())
         
 type [<Struct>] LabelWidget (attributes: Attribute[]) =
     static do register<LabelWidget, FabulousLabel>()
@@ -212,12 +280,14 @@ type [<Struct>] LabelWidget (attributes: Attribute[]) =
     interface IViewWidget
     interface IControlWidget with
         member this.Add(attribute) = addAttribute LabelWidget attributes attribute
+        member this.CreateView() = box (FabulousLabel())
         
 type [<Struct>] ButtonWidget =
     { Attributes: Attribute[] }
     interface IViewWidget
     interface IControlWidget with
         member this.Add(attribute) = addAttribute (fun attrs -> { Attributes = attrs }) this.Attributes attribute
+        member this.CreateView() = box (FabulousButton())
     
     static member inline Create(text: string, clicked: #obj) =
         register<ButtonWidget, FabulousButton>()
