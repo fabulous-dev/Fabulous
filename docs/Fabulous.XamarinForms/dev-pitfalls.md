@@ -41,6 +41,21 @@ As of January 2021, here is the support level we noticed for the various IDEs:
     - Android projects might fail to build because of [an issue with `Xamarin.Android.FSharp.ResourceProvider`](https://github.com/xamarin/Xamarin.Android.FSharp.ResourceProvider/issues/9). A [known workaround](https://github.com/fsprojects/Fabulous/issues/813#issuecomment-726210183) is to remove `System` and `System.Numerics` from the Android project references.  
     This issue only affects VS 16.8. So lower versions will require `System` and `System.Numerics` to build.
 
+    - iOS projects may fail after updating FSharp.Core. You will see an exception about a missing ValueOption type. This is caused by VS making a breaking change to the iOS fsproj file. 
+    This block:
+    ```
+    <Reference Include="FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.4.7.2\lib\netstandard2.0\FSharp.Core.dll</HintPath>
+    </Reference>
+    ```
+    gets replaced with this:
+    ```
+    <Reference Include="FSharp.Core">
+      <Private>True</Private>
+    </Reference>
+    ```
+    There is a simple fix - reverse the change in the proj file, but update the `FSharp.Core.4.7.2` part of the hint path to the new version you have just installed.
+
 - Visual Studio (macOS)
 
     The current stable release of Visual Studio for Mac 8.8.4 doesn't fully support F# 5.0.  
