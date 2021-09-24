@@ -2,16 +2,17 @@ namespace Fabulous.Maui
 
 open Fabulous
 
-type IApplicationWidget = interface end
-type IWindowWidget = interface end
-type IViewWidget = interface end
+type IApplicationWidget = inherit IWidget
+type IWindowWidget = inherit IWidget
+type IViewWidget = inherit IWidget
 
 type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget and 'view :> IWidget> =
     { State: RunnerKey option
       Init: 'arg -> 'model
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
-    interface IApplicationWidget
+    interface IApplicationWidget with
+        member x.CreateView() = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
         member x.Init(arg) = x.Init arg
@@ -23,7 +24,8 @@ type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IViewWidget and 'view 
       Init: 'arg -> 'model
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
-    interface IViewWidget
+    interface IViewWidget with
+        member x.CreateView() = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
         member x.Init(arg) = x.Init arg
@@ -45,7 +47,8 @@ module StatefulWidget =
 
 type StatelessView<'view when 'view :> IViewWidget and 'view :> IWidget> =
     { View: Attribute[] -> 'view }
-    interface IViewWidget
+    interface IViewWidget with
+        member x.CreateView() = failwith "todo"
     interface IStatelessWidget<'view> with
         member x.View(attrs) = x.View attrs
         

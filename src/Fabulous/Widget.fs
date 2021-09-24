@@ -42,7 +42,6 @@ type IWidget =
     
 module ControlWidget =
     type IControlWidget =
-        inherit IWidget
         abstract Add: Attribute -> IControlWidget
         
     type Handler =

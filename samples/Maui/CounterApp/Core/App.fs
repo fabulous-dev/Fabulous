@@ -32,7 +32,7 @@ module CounterWidget =
         | Decrement -> { model with CountX = model.CountX - 1 }
         
     let view model _ =
-        StackLayout([
+        VerticalStackLayout([
             Button("-", Decrement)
             Label(model.CountX.ToString())
             Button("+", Increment)
@@ -60,19 +60,20 @@ module App =
     let view model _ =
         Application([
             Window("Main",
-                StackLayout([
+                VerticalStackLayout([
                     Label("Hello World from Fabulous")
                         
                     //Label($"Count is {model.Count}")
                         
-                    //Button("Click me", Increment)
+                    Button("Click me", Increment)
                     //    .font(Font.SystemFontOfSize(15.))
                         
                     //CounterWidget()
                     
                     //StatelessLabel()
                     
-                ]).spacing(10)
+                ]).spacing(10.)
+                  .background(SolidPaint(Colors.Yellow))
             )
         ])
         
