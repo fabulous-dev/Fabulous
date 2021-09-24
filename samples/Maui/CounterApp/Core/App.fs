@@ -51,7 +51,7 @@ module App =
     
     type Msg = Increment
     
-    let init initialCount = { Count = initialCount }
+    let init () = { Count = 0 }
     
     let update msg model =
         match msg with
@@ -61,18 +61,16 @@ module App =
         Application([
             Window("Main",
                 StackLayout([
-                    Label("Hello World")
-                        .textColor(Colors.Aqua)
-                        .font(Font.OfSize("OpenSansRegular", 12.))
+                    Label("Hello World from Fabulous")
                         
-                    Label($"Count is {model.Count}")
+                    //Label($"Count is {model.Count}")
                         
-                    Button("Click me", Increment)
-                        .font(Font.SystemFontOfSize(15.))
+                    //Button("Click me", Increment)
+                    //    .font(Font.SystemFontOfSize(15.))
                         
-                    CounterWidget()
+                    //CounterWidget()
                     
-                    StatelessLabel()
+                    //StatelessLabel()
                     
                 ]).spacing(10)
             )

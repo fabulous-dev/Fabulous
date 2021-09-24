@@ -64,7 +64,7 @@ module ControlWidget =
     let inline addAttribute (fn: Attribute[] -> #IControlWidget) (attribs: Attribute[]) (attr: Attribute) =
         let attribs2 = Array.zeroCreate (attribs.Length + 1)
         Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length + 1] <- attr
+        attribs2.[attribs.Length] <- attr
         (fn attribs2) :> IControlWidget
         
     [<Extension>]
