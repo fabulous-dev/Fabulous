@@ -6,68 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Fabulous.ControlWidget
 open System.Collections.Generic
-open Microsoft.Maui.Controls
-
-// ATTRIBUTES
-
-module Attributes =
-    let IApplication_Windows = Attributes.createDefinitionWithConverter<_,_> Seq.toArray
-    let IApplication_ThemeChanged = Attributes.createDefinition<_>
-    let IWindow_Activated = Attributes.createDefinition<_>
-    let IWindow_Created = Attributes.createDefinition<_>
-    let IWindow_Deactivated = Attributes.createDefinition<_>
-    let IWindow_Destroying = Attributes.createDefinition<_>
-    let IWindow_Resumed = Attributes.createDefinition<_>
-    let IWindow_Stopped = Attributes.createDefinition<_>
-    let IWindow_Title = Attributes.createDefinition<_>
-    let IWindow_Content = Attributes.createDefinition<IViewWidget>
-    let IContainer_Children = Attributes.createDefinitionWithConverter<_,_> Seq.toArray
-    let IText_Text = Attributes.createDefinition<_>
-    let ITextStyle_CharacterSpacing = Attributes.createDefinition<_>
-    let ITextStyle_Font = Attributes.createDefinition<_>
-    let ITextStyle_TextColor = Attributes.createDefinition<_>
-    let IButton_Clicked = Attributes.createDefinition<_>
-    let IButton_Pressed = Attributes.createDefinition<_>
-    let IButton_Released = Attributes.createDefinition<_>
-    let IButton_ImageSource = Attributes.createDefinition<IImageSource>
-    let IButton_ImageSourceLoaded = Attributes.createDefinition<_>
-    let IStackLayout_Orientation = Attributes.createDefinition<StackOrientation>
-    let IStackLayout_Spacing = Attributes.createDefinition<_>
-    let IView_AutomationId = Attributes.createDefinition<_>
-    let IView_Background = Attributes.createDefinition<_>
-    let IView_Clip = Attributes.createDefinition<IShape>
-    let IView_FlowDirection = Attributes.createDefinition<_>
-    let IView_Height = Attributes.createDefinition<_>
-    let IView_HorizontalLayoutAlignment = Attributes.createDefinition<_>
-    let IView_IsEnabled = Attributes.createDefinition<_>
-    let IView_Margin = Attributes.createDefinition<_>
-    let IView_MaximumHeight = Attributes.createDefinition<_>
-    let IView_MaximumWidth = Attributes.createDefinition<_>
-    let IView_MinimumHeight = Attributes.createDefinition<_>
-    let IView_MinimumWidth = Attributes.createDefinition<_>
-    let IView_Opacity = Attributes.createDefinition<_>
-    let IView_Semantics = Attributes.createDefinition<_>
-    let IView_VerticalLayoutAlignment = Attributes.createDefinition<_>
-    let IView_Visibility = Attributes.createDefinition<_>
-    let IView_Width = Attributes.createDefinition<_>
-    let ITransform_AnchorX = Attributes.createDefinition<_>
-    let ITransform_AnchorY = Attributes.createDefinition<_>
-    let ITransform_Rotation = Attributes.createDefinition<_>
-    let ITransform_RotationX = Attributes.createDefinition<_>
-    let ITransform_RotationY = Attributes.createDefinition<_>
-    let ITransform_Scale = Attributes.createDefinition<_>
-    let ITransform_ScaleX = Attributes.createDefinition<_>
-    let ITransform_ScaleY = Attributes.createDefinition<_>
-    let ITransform_TranslationX = Attributes.createDefinition<_>
-    let ITransform_TranslationY = Attributes.createDefinition<_>
-    let ILayout_Padding = Attributes.createDefinition<_>
-    let ISafeAreaView_IgnoreSafeArea = Attributes.createDefinition<_>
-    let ILabel_LineBreakMode = Attributes.createDefinition<_>
-    let ILabel_LineHeight = Attributes.createDefinition<_>
-    let ILabel_MaxLines = Attributes.createDefinition<_>
-    let ILabel_TextDecorations = Attributes.createDefinition<_>
-    let ITextAlignment_HorizontalTextAlignment = Attributes.createDefinition<_>
-    let ITextAlignment_VerticalTextAlignment = Attributes.createDefinition<_>
+open Attributes
 
 // MAUI CONTROLS
 
@@ -77,20 +16,7 @@ type FabulousComponent() =
     member this.SetAttributes(attributes) =
         _attributes <- attributes
 
-    member this.TryGetAttributeValue<'_a, 'modelType>(attrDef: Attributes.AttributeDefinition<'_a, 'modelType>): 'modelType option =
-        _attributes
-        |> Array.tryFind (fun a -> a.Key = attrDef.Key)
-        |> Option.map (fun a -> unbox a.Value)
-
-    member this.GetAttributeValueOrDefault<'_a, 'modelType>(attrDef: Attributes.AttributeDefinition<'_a, 'modelType>, defaultWith) =
-        match this.TryGetAttributeValue(attrDef) with
-        | None -> defaultWith ()
-        | Some value -> value
-
-    member this.TryExecuteFunction(attrDef: Attributes.AttributeDefinition<_,_>, arg) =
-        match this.TryGetAttributeValue attrDef with
-        | None -> ()
-        | Some fn -> fn arg
+    member this.Attributes = _attributes
 
 type FabulousApplication () =
     inherit FabulousComponent()
@@ -99,13 +25,13 @@ type FabulousApplication () =
 
     interface IApplication with
         member this.CreateWindow(activationState) = failwith "todo"
-        member this.ThemeChanged() = this.TryExecuteFunction(Attributes.IApplication_ThemeChanged, ())
+        member this.ThemeChanged() = Application.ThemeChanged.Execute(this.Attributes, ())
         member this.Windows =
-            match this.TryGetAttributeValue Attributes.IApplication_Windows with
+            match Application.Windows.TryGetValue(this.Attributes) with
             | None -> ()
             | Some windowWidgets ->
                 for widget in windowWidgets do
-                    let view = unbox ((widget :> IWindowWidget).CreateView())
+                    let view = unbox (widget.CreateView())
                     _windows.Add(view)
 
             _windows :> IReadOnlyList<_>
@@ -114,23 +40,27 @@ type FabulousApplication () =
 type FabulousWindow () =
     inherit FabulousComponent()
 
+    let mutable _handler = Microsoft.Maui.Handlers.WindowHandler() :> IElementHandler
+
     interface IWindow with
-        member this.Activated() = this.TryExecuteFunction(Attributes.IWindow_Activated, ())
-        member this.Created() = this.TryExecuteFunction(Attributes.IWindow_Created, ())
-        member this.Deactivated() = this.TryExecuteFunction(Attributes.IWindow_Deactivated, ())
-        member this.Destroying() = this.TryExecuteFunction(Attributes.IWindow_Destroying, ())
-        member this.Resumed() = this.TryExecuteFunction(Attributes.IWindow_Resumed, ())
-        member this.Stopped() = this.TryExecuteFunction(Attributes.IWindow_Stopped, ())
+        member this.Activated() = Window.Activated.Execute(this.Attributes, ())
+        member this.Created() = Window.Created.Execute(this.Attributes, ())
+        member this.Deactivated() = Window.Deactivated.Execute(this.Attributes, ())
+        member this.Destroying() = Window.Destroying.Execute(this.Attributes, ())
+        member this.Resumed() = Window.Resumed.Execute(this.Attributes, ())
+        member this.Stopped() = Window.Stopped.Execute(this.Attributes, ())
         member this.Content = 
-            match this.TryGetAttributeValue(Attributes.IWindow_Content) with
+            match Window.Content.TryGetValue(this.Attributes) with
             | None -> null
-            | Some widget ->
+            | Some ValueNone -> null
+            | Some (ValueSome widget) ->
                 let view = unbox (widget.CreateView())
                 view
-
-        member val Handler = Microsoft.Maui.Handlers.WindowHandler() :> IElementHandler with get, set
+        member this.Handler 
+            with get() = _handler
+            and set(v) = _handler <- v
         member this.Parent = failwith "todo"
-        member this.Title = this.GetAttributeValueOrDefault(Attributes.IWindow_Title, (fun () -> ""))
+        member this.Title = Window.Title.GetValue(this.Attributes)
         
 type FabulousVerticalStackLayout () =
     inherit FabulousComponent()
@@ -142,31 +72,31 @@ type FabulousVerticalStackLayout () =
 
     interface IStackLayout with
         member this.Add(item: IView) = failwith "todo"
-        member this.AnchorX = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorX, fun () -> 0.5)
-        member this.AnchorY = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorY, fun () -> 0.5)
+        member this.AnchorX = Transform.AnchorX.GetValue(this.Attributes)
+        member this.AnchorY = Transform.AnchorY.GetValue(this.Attributes)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
             if _handler <> null then _handler.NativeArrange(_frame)
             _frame.Size
-        member this.AutomationId = this.GetAttributeValueOrDefault(Attributes.IView_AutomationId, fun () -> null)
-        member this.Background = this.GetAttributeValueOrDefault(Attributes.IView_Background, fun () -> null)
+        member this.AutomationId = View.AutomationId.GetValue(this.Attributes)
+        member this.Background = View.Background.GetValue(this.Attributes)
         member this.Clear() = failwith "todo"
-        member this.Clip = this.GetAttributeValueOrDefault(Attributes.IView_Clip, fun () -> null)
+        member this.Clip = View.Clip.GetValue(this.Attributes)
         member this.Contains(item: IView) = _children.Contains(item)
         member this.CopyTo(array: IView [], arrayIndex: int) = failwith "todo"
         member this.Count = _children.Count
         member this.DesiredSize = _desiredSize
-        member this.FlowDirection = this.GetAttributeValueOrDefault(Attributes.IView_FlowDirection, fun () -> FlowDirection.LeftToRight)
+        member this.FlowDirection = View.FlowDirection.GetValue(this.Attributes)
         member this.Frame
             with get (): Rectangle = _frame
             and set (v: Rectangle): unit = _frame <- v
         member this.GetEnumerator() =
             _children.Clear()
-            match this.TryGetAttributeValue(Attributes.IContainer_Children) with
+            match Container.Children.TryGetValue(this.Attributes) with
             | None -> ()
             | Some children ->
                 for child in children do
-                    let view = unbox ((child :> IViewWidget).CreateView())
+                    let view = unbox (child.CreateView())
                     _children.Add(view)
         
             _children.GetEnumerator() :> System.Collections.Generic.IEnumerator<IView>
@@ -178,48 +108,48 @@ type FabulousVerticalStackLayout () =
         member this.Handler
             with get () = _handler
             and set (v: IViewHandler) = _handler <- v
-        member this.Height = this.GetAttributeValueOrDefault(Attributes.IView_Height, fun () -> -1.)
-        member this.HorizontalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_HorizontalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Start)
-        member this.IgnoreSafeArea = this.GetAttributeValueOrDefault(Attributes.ISafeAreaView_IgnoreSafeArea, fun () -> false)
+        member this.Height = View.Height.GetValue(this.Attributes)
+        member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this.Attributes)
+        member this.IgnoreSafeArea = SafeAreaView.IgnoreSafeArea.GetValue(this.Attributes)
         member this.IndexOf(item: IView) = _children.IndexOf(item)
         member this.Insert(index: int, item: IView) = failwith "todo"
         member this.InvalidateArrange() = failwith "todo"
         member this.InvalidateMeasure() = failwith "todo"
-        member this.IsEnabled = this.GetAttributeValueOrDefault(Attributes.IView_IsEnabled, fun () -> true)
+        member this.IsEnabled = View.IsEnabled.GetValue(this.Attributes)
         member this.IsReadOnly = true
         member this.Item
             with get (index: int): IView = _children.[index]
             and set (index: int) (v: IView): unit = failwith "todo"
         member this.LayoutManager = Microsoft.Maui.Layouts.VerticalStackLayoutManager(this) :> Microsoft.Maui.Layouts.ILayoutManager
-        member this.Margin = this.GetAttributeValueOrDefault(Attributes.IView_Margin, fun () -> Thickness.Zero)
+        member this.Margin = View.Margin.GetValue(this.Attributes)
         member this.Measure(widthConstraint: float, heightConstraint: float) =
             _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
             _desiredSize
-        member this.MinimumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MinimumWidth, fun () -> -1.)
-        member this.MinimumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MinimumHeight, fun () -> -1.)
-        member this.MaximumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MaximumWidth, fun () -> -1.)
-        member this.MaximumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MaximumHeight, fun () -> -1.)
-        member this.Opacity = this.GetAttributeValueOrDefault(Attributes.IView_Opacity, fun () -> 1.)
-        member this.Padding = this.GetAttributeValueOrDefault(Attributes.ILayout_Padding, fun () -> Thickness.Zero)
+        member this.MinimumWidth = View.MinimumWidth.GetValue(this.Attributes)
+        member this.MinimumHeight = View.MinimumHeight.GetValue(this.Attributes)
+        member this.MaximumWidth = View.MaximumWidth.GetValue(this.Attributes)
+        member this.MaximumHeight = View.MaximumHeight.GetValue(this.Attributes)
+        member this.Opacity = View.Opacity.GetValue(this.Attributes)
+        member this.Padding = Layout.Padding.GetValue(this.Attributes)
         member this.Parent: IElement = 
             raise (System.NotImplementedException())
         member this.Parent: IView = 
             raise (System.NotImplementedException())
         member this.Remove(item: IView) = failwith "todo"
         member this.RemoveAt(index: int) = failwith "todo"
-        member this.Rotation = this.GetAttributeValueOrDefault(Attributes.ITransform_Rotation, fun () -> 0.)
-        member this.RotationX = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationX, fun () -> 0.)
-        member this.RotationY = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationY, fun () -> 0.)
-        member this.Scale = this.GetAttributeValueOrDefault(Attributes.ITransform_Scale, fun () -> 1.)
-        member this.ScaleX = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleX, fun () -> 1.)
-        member this.ScaleY = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleY, fun () -> 1.)
-        member this.Semantics = this.GetAttributeValueOrDefault(Attributes.IView_Semantics, fun () -> Semantics())
-        member this.Spacing = this.GetAttributeValueOrDefault(Attributes.IStackLayout_Spacing, fun () -> 0.)
-        member this.TranslationX = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationX, fun () -> 0.)
-        member this.TranslationY = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationY, fun () -> 0.)
-        member this.VerticalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_VerticalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Start)
-        member this.Visibility = this.GetAttributeValueOrDefault(Attributes.IView_Visibility, fun () -> Visibility.Visible)
-        member this.Width = this.GetAttributeValueOrDefault(Attributes.IView_Width, fun () -> -1.)
+        member this.Rotation = Transform.Rotation.GetValue(this.Attributes)
+        member this.RotationX = Transform.RotationX.GetValue(this.Attributes)
+        member this.RotationY = Transform.RotationY.GetValue(this.Attributes)
+        member this.Scale = Transform.Scale.GetValue(this.Attributes)
+        member this.ScaleX = Transform.ScaleX.GetValue(this.Attributes)
+        member this.ScaleY = Transform.ScaleY.GetValue(this.Attributes)
+        member this.Semantics = View.Semantics.GetValue(this.Attributes)
+        member this.Spacing = StackLayout.Spacing.GetValue(this.Attributes)
+        member this.TranslationX = Transform.TranslationX.GetValue(this.Attributes)
+        member this.TranslationY = Transform.TranslationY.GetValue(this.Attributes)
+        member this.VerticalLayoutAlignment = View.VerticalLayoutAlignment.GetValue(this.Attributes)
+        member this.Visibility = View.Visibility.GetValue(this.Attributes)
+        member this.Width = View.Width.GetValue(this.Attributes)
         
 type FabulousLabel () =
     inherit FabulousComponent()
@@ -229,19 +159,19 @@ type FabulousLabel () =
     let mutable _desiredSize = Size.Zero
 
     interface ILabel with
-        member this.AnchorX = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorX, fun () -> 0.5)
-        member this.AnchorY = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorY, fun () -> 0.5)
+        member this.AnchorX = Transform.AnchorX.GetValue(this.Attributes)
+        member this.AnchorY = Transform.AnchorY.GetValue(this.Attributes)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
             if _handler <> null then _handler.NativeArrange(_frame)
             _frame.Size
-        member this.AutomationId = this.GetAttributeValueOrDefault(Attributes.IView_AutomationId, fun () -> null)
-        member this.Background = this.GetAttributeValueOrDefault(Attributes.IView_Background, fun () -> null)
-        member this.CharacterSpacing = this.GetAttributeValueOrDefault(Attributes.ITextStyle_CharacterSpacing, fun () -> 0.)
-        member this.Clip = this.GetAttributeValueOrDefault(Attributes.IView_Clip, fun () -> null)
+        member this.AutomationId = View.AutomationId.GetValue(this.Attributes)
+        member this.Background = View.Background.GetValue(this.Attributes)
+        member this.CharacterSpacing = TextStyle.CharacterSpacing.GetValue(this.Attributes)
+        member this.Clip = View.Clip.GetValue(this.Attributes)
         member this.DesiredSize = _desiredSize
-        member this.FlowDirection = this.GetAttributeValueOrDefault(Attributes.IView_FlowDirection, fun () -> FlowDirection.LeftToRight)
-        member this.Font = this.GetAttributeValueOrDefault(Attributes.ITextStyle_Font, fun () -> Font.Default)
+        member this.FlowDirection = View.FlowDirection.GetValue(this.Attributes)
+        member this.Font = TextStyle.Font.GetValue(this.Attributes)
         member this.Frame
             with get () = _frame
             and set (v: Rectangle): unit = _frame <- v
@@ -251,45 +181,45 @@ type FabulousLabel () =
         member this.Handler
             with get () = _handler
             and set (v: IViewHandler): unit = _handler <- v
-        member this.Height = this.GetAttributeValueOrDefault(Attributes.IView_Height, fun () -> -1.)
-        member this.HorizontalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_HorizontalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Start)
-        member this.HorizontalTextAlignment = this.GetAttributeValueOrDefault(Attributes.ITextAlignment_HorizontalTextAlignment, fun () -> TextAlignment.Start)
+        member this.Height = View.Height.GetValue(this.Attributes)
+        member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this.Attributes)
+        member this.HorizontalTextAlignment = TextAlignment.HorizontalTextAlignment.GetValue(this.Attributes)
         member this.InvalidateArrange() = failwith "todo"
         member this.InvalidateMeasure() = failwith "todo"
-        member this.IsEnabled = this.GetAttributeValueOrDefault(Attributes.IView_IsEnabled, fun () -> true)
-        member this.LineBreakMode = this.GetAttributeValueOrDefault(Attributes.ILabel_LineBreakMode, fun () -> LineBreakMode.WordWrap)
-        member this.LineHeight = this.GetAttributeValueOrDefault(Attributes.ILabel_LineHeight, fun () -> -1.)
-        member this.Margin = this.GetAttributeValueOrDefault(Attributes.IView_Margin, fun () -> Thickness.Zero)
-        member this.MaxLines = this.GetAttributeValueOrDefault(Attributes.ILabel_MaxLines, fun () -> -1)
+        member this.IsEnabled = View.IsEnabled.GetValue(this.Attributes)
+        member this.LineBreakMode = Label.LineBreakMode.GetValue(this.Attributes)
+        member this.LineHeight = Label.LineHeight.GetValue(this.Attributes)
+        member this.Margin = View.Margin.GetValue(this.Attributes)
+        member this.MaxLines = Label.MaxLines.GetValue(this.Attributes)
         member this.Measure(widthConstraint: float, heightConstraint: float) =
             _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
             _desiredSize
-        member this.MinimumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MinimumWidth, fun () -> -1.)
-        member this.MinimumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MinimumHeight, fun () -> -1.)
-        member this.MaximumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MaximumWidth, fun () -> -1.)
-        member this.MaximumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MaximumHeight, fun () -> -1.)
-        member this.Opacity = this.GetAttributeValueOrDefault(Attributes.IView_Opacity, fun () -> 1.)
-        member this.Padding = this.GetAttributeValueOrDefault(Attributes.ILayout_Padding, fun () -> Thickness.Zero)
+        member this.MinimumWidth = View.MinimumWidth.GetValue(this.Attributes)
+        member this.MinimumHeight = View.MinimumHeight.GetValue(this.Attributes)
+        member this.MaximumWidth = View.MaximumWidth.GetValue(this.Attributes)
+        member this.MaximumHeight = View.MaximumHeight.GetValue(this.Attributes)
+        member this.Opacity = View.Opacity.GetValue(this.Attributes)
+        member this.Padding = Layout.Padding.GetValue(this.Attributes)
         member this.Parent: IElement = 
             raise (System.NotImplementedException())
         member this.Parent: IView = 
             raise (System.NotImplementedException())
-        member this.Rotation = this.GetAttributeValueOrDefault(Attributes.ITransform_Rotation, fun () -> 0.)
-        member this.RotationX = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationX, fun () -> 0.)
-        member this.RotationY = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationY, fun () -> 0.)
-        member this.Scale = this.GetAttributeValueOrDefault(Attributes.ITransform_Scale, fun () -> 1.)
-        member this.ScaleX = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleX, fun () -> 1.)
-        member this.ScaleY = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleY, fun () -> 1.)
-        member this.Semantics = this.GetAttributeValueOrDefault(Attributes.IView_Semantics, fun () -> Semantics())
-        member this.Text = this.GetAttributeValueOrDefault(Attributes.IText_Text, fun () -> "")
-        member this.TextColor = this.GetAttributeValueOrDefault(Attributes.ITextStyle_TextColor, fun () -> Colors.Black)
-        member this.TextDecorations = this.GetAttributeValueOrDefault(Attributes.ILabel_TextDecorations, fun () -> TextDecorations.None)
-        member this.TranslationX = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationX, fun () -> 0.)
-        member this.TranslationY = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationY, fun () -> 0.)
-        member this.VerticalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_VerticalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Fill)
-        member this.VerticalTextAlignment = this.GetAttributeValueOrDefault(Attributes.ITextAlignment_VerticalTextAlignment, fun () -> TextAlignment.Start)
-        member this.Visibility = this.GetAttributeValueOrDefault(Attributes.IView_Visibility, fun () -> Visibility.Visible)
-        member this.Width = this.GetAttributeValueOrDefault(Attributes.IView_Width, fun () -> -1.)
+        member this.Rotation = Transform.Rotation.GetValue(this.Attributes)
+        member this.RotationX = Transform.RotationX.GetValue(this.Attributes)
+        member this.RotationY = Transform.RotationY.GetValue(this.Attributes)
+        member this.Scale = Transform.Scale.GetValue(this.Attributes)
+        member this.ScaleX = Transform.ScaleX.GetValue(this.Attributes)
+        member this.ScaleY = Transform.ScaleY.GetValue(this.Attributes)
+        member this.Semantics = View.Semantics.GetValue(this.Attributes)
+        member this.Text = Text.Text.GetValue(this.Attributes)
+        member this.TextColor = TextStyle.TextColor.GetValue(this.Attributes)
+        member this.TextDecorations = Label.TextDecorations.GetValue(this.Attributes)
+        member this.TranslationX = Transform.TranslationX.GetValue(this.Attributes)
+        member this.TranslationY = Transform.TranslationY.GetValue(this.Attributes)
+        member this.VerticalLayoutAlignment = View.VerticalLayoutAlignment.GetValue(this.Attributes)
+        member this.VerticalTextAlignment = TextAlignment.VerticalTextAlignment.GetValue(this.Attributes)
+        member this.Visibility = View.Visibility.GetValue(this.Attributes)
+        member this.Width = View.Width.GetValue(this.Attributes)
 
 type FabulousButton () =
     inherit FabulousComponent()
@@ -299,20 +229,20 @@ type FabulousButton () =
     let mutable _desiredSize = Size.Zero
 
     interface IButton with
-        member this.AnchorX = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorX, fun () -> 0.5)
-        member this.AnchorY = this.GetAttributeValueOrDefault(Attributes.ITransform_AnchorY, fun () -> 0.5)
+        member this.AnchorX = Transform.AnchorX.GetValue(this.Attributes)
+        member this.AnchorY = Transform.AnchorY.GetValue(this.Attributes)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
             if _handler <> null then _handler.NativeArrange(_frame)
             _frame.Size
-        member this.AutomationId = this.GetAttributeValueOrDefault(Attributes.IView_AutomationId, fun () -> null)
-        member this.Background = this.GetAttributeValueOrDefault(Attributes.IView_Background, fun () -> null)
-        member this.CharacterSpacing = this.GetAttributeValueOrDefault(Attributes.ITextStyle_CharacterSpacing, fun () -> 0.)
-        member this.Clicked() = this.TryExecuteFunction(Attributes.IButton_Clicked, ())
-        member this.Clip = this.GetAttributeValueOrDefault(Attributes.IView_Clip, fun () -> null)
+        member this.AutomationId = View.AutomationId.GetValue(this.Attributes)
+        member this.Background = View.Background.GetValue(this.Attributes)
+        member this.CharacterSpacing = TextStyle.CharacterSpacing.GetValue(this.Attributes)
+        member this.Clicked() = Button.Clicked.Execute(this.Attributes, ())
+        member this.Clip = View.Clip.GetValue(this.Attributes)
         member this.DesiredSize = _desiredSize
-        member this.FlowDirection = this.GetAttributeValueOrDefault(Attributes.IView_FlowDirection, fun () -> FlowDirection.LeftToRight)
-        member this.Font = this.GetAttributeValueOrDefault(Attributes.ITextStyle_Font, fun () -> Font.Default)
+        member this.FlowDirection = View.FlowDirection.GetValue(this.Attributes)
+        member this.Font = TextStyle.Font.GetValue(this.Attributes)
         member this.Frame
             with get () = _frame
             and set (v: Rectangle): unit = _frame <- v
@@ -322,43 +252,43 @@ type FabulousButton () =
         member this.Handler
             with get () = _handler
             and set (v: IViewHandler): unit = _handler <- v
-        member this.Height = this.GetAttributeValueOrDefault(Attributes.IView_Height, fun () -> -1.)
-        member this.HorizontalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_HorizontalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Start)
-        member this.ImageSource = this.GetAttributeValueOrDefault(Attributes.IButton_ImageSource, fun () -> null)
-        member this.ImageSourceLoaded() = this.TryExecuteFunction(Attributes.IButton_ImageSourceLoaded, ())
+        member this.Height = View.Height.GetValue(this.Attributes)
+        member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this.Attributes)
+        member this.ImageSource = Button.ImageSource.GetValue(this.Attributes)
+        member this.ImageSourceLoaded() = Button.ImageSourceLoaded.Execute(this.Attributes, ())
         member this.InvalidateArrange() = failwith "todo"
         member this.InvalidateMeasure() = failwith "todo"
-        member this.IsEnabled = this.GetAttributeValueOrDefault(Attributes.IView_IsEnabled, fun () -> true)
-        member this.Margin = this.GetAttributeValueOrDefault(Attributes.IView_Margin, fun () -> Thickness.Zero)
+        member this.IsEnabled = View.IsEnabled.GetValue(this.Attributes)
+        member this.Margin = View.Margin.GetValue(this.Attributes)
         member this.Measure(widthConstraint: float, heightConstraint: float) =
             _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
             _desiredSize
-        member this.MinimumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MinimumWidth, fun () -> -1.)
-        member this.MinimumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MinimumHeight, fun () -> -1.)
-        member this.MaximumWidth = this.GetAttributeValueOrDefault(Attributes.IView_MaximumWidth, fun () -> -1.)
-        member this.MaximumHeight = this.GetAttributeValueOrDefault(Attributes.IView_MaximumHeight, fun () -> -1.)
-        member this.Opacity = this.GetAttributeValueOrDefault(Attributes.IView_Opacity, fun () -> 1.)
-        member this.Padding = this.GetAttributeValueOrDefault(Attributes.ILayout_Padding, fun () -> Thickness.Zero)
+        member this.MinimumWidth = View.MinimumWidth.GetValue(this.Attributes)
+        member this.MinimumHeight = View.MinimumHeight.GetValue(this.Attributes)
+        member this.MaximumWidth = View.MaximumWidth.GetValue(this.Attributes)
+        member this.MaximumHeight = View.MaximumHeight.GetValue(this.Attributes)
+        member this.Opacity = View.Opacity.GetValue(this.Attributes)
+        member this.Padding = Layout.Padding.GetValue(this.Attributes)
         member this.Parent: IElement = 
             raise (System.NotImplementedException())
         member this.Parent: IView = 
             raise (System.NotImplementedException())
-        member this.Pressed() = this.TryExecuteFunction(Attributes.IButton_Pressed, ())
-        member this.Released() = this.TryExecuteFunction(Attributes.IButton_Released, ())
-        member this.Rotation = this.GetAttributeValueOrDefault(Attributes.ITransform_Rotation, fun () -> 0.)
-        member this.RotationX = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationX, fun () -> 0.)
-        member this.RotationY = this.GetAttributeValueOrDefault(Attributes.ITransform_RotationY, fun () -> 0.)
-        member this.Scale = this.GetAttributeValueOrDefault(Attributes.ITransform_Scale, fun () -> 1.)
-        member this.ScaleX = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleX, fun () -> 1.)
-        member this.ScaleY = this.GetAttributeValueOrDefault(Attributes.ITransform_ScaleY, fun () -> 1.)
-        member this.Semantics = this.GetAttributeValueOrDefault(Attributes.IView_Semantics, fun () -> Semantics())
-        member this.Text = this.GetAttributeValueOrDefault(Attributes.IText_Text, fun () -> "")
-        member this.TextColor = this.GetAttributeValueOrDefault(Attributes.ITextStyle_TextColor, fun () -> Colors.Black)
-        member this.TranslationX = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationX, fun () -> 0.)
-        member this.TranslationY = this.GetAttributeValueOrDefault(Attributes.ITransform_TranslationY, fun () -> 0.)
-        member this.VerticalLayoutAlignment = this.GetAttributeValueOrDefault(Attributes.IView_VerticalLayoutAlignment, fun () -> Primitives.LayoutAlignment.Fill)
-        member this.Visibility = this.GetAttributeValueOrDefault(Attributes.IView_Visibility, fun () -> Visibility.Visible)
-        member this.Width = this.GetAttributeValueOrDefault(Attributes.IView_Width, fun () -> -1.)
+        member this.Pressed() = Button.Pressed.Execute(this.Attributes, ())
+        member this.Released() = Button.Released.Execute(this.Attributes, ())
+        member this.Rotation = Transform.Rotation.GetValue(this.Attributes)
+        member this.RotationX = Transform.RotationX.GetValue(this.Attributes)
+        member this.RotationY = Transform.RotationY.GetValue(this.Attributes)
+        member this.Scale = Transform.Scale.GetValue(this.Attributes)
+        member this.ScaleX = Transform.ScaleX.GetValue(this.Attributes)
+        member this.ScaleY = Transform.ScaleY.GetValue(this.Attributes)
+        member this.Semantics = View.Semantics.GetValue(this.Attributes)
+        member this.Text = Text.Text.GetValue(this.Attributes)
+        member this.TextColor = TextStyle.TextColor.GetValue(this.Attributes)
+        member this.TranslationX = Transform.TranslationX.GetValue(this.Attributes)
+        member this.TranslationY = Transform.TranslationY.GetValue(this.Attributes)
+        member this.VerticalLayoutAlignment = View.VerticalLayoutAlignment.GetValue(this.Attributes)
+        member this.Visibility = View.Visibility.GetValue(this.Attributes)
+        member this.Width = View.Width.GetValue(this.Attributes)
 
 // WIDGETS
 
@@ -366,7 +296,7 @@ type [<Struct>] ApplicationWidget (attributes: Attribute[]) =
     static do register<ApplicationWidget, FabulousApplication>()
 
     static member inline Create(windows: seq<#IWindowWidget>) =
-        ApplicationWidget([| Attributes.IApplication_Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
+        ApplicationWidget([| Application.Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
     
     interface IApplicationWidget with
         member this.CreateView() =
@@ -382,8 +312,8 @@ type [<Struct>] WindowWidget (attributes: Attribute[]) =
     
     static member inline Create(title: string, content: #IViewWidget) =
         WindowWidget(
-            [| Attributes.IWindow_Title.WithValue(title)
-               Attributes.IWindow_Content.WithValue(content) |]
+            [| Window.Title.WithValue(title)
+               Window.Content.WithValue(ValueSome (content :> IViewWidget)) |]
         )
     
     interface IWindowWidget with
@@ -399,7 +329,7 @@ type [<Struct>] VerticalStackLayoutWidget (attributes: Attribute[]) =
     static do register<VerticalStackLayoutWidget, FabulousVerticalStackLayout>()
     
     static member inline Create(children: seq<IViewWidget>) =        
-        VerticalStackLayoutWidget([| Attributes.IContainer_Children.WithValue(children) |])
+        VerticalStackLayoutWidget([| Container.Children.WithValue(children) |])
         
     interface IViewWidget with
         member this.CreateView() =
@@ -414,13 +344,13 @@ type [<Struct>] LabelWidget (attributes: Attribute[]) =
     static do register<LabelWidget, FabulousLabel>()
     
     static member inline Create(text: string) =
-        LabelWidget([| Attributes.IText_Text.WithValue(text) |])
+        LabelWidget([| Text.Text.WithValue(text) |])
         
     interface IViewWidget with
         member this.CreateView() = 
             let view = FabulousLabel()
             view.SetAttributes(attributes)
-            view
+            box view
 
     interface IControlWidget with
         member this.Add(attribute) = addAttribute LabelWidget attributes attribute
@@ -430,8 +360,8 @@ type [<Struct>] ButtonWidget (attributes: Attribute[]) =
     
     static member inline Create(text: string, clicked: #obj) =
         ButtonWidget
-            [| Attributes.IText_Text.WithValue(text)
-               Attributes.IButton_Clicked.WithValue(ignore) |]
+            [| Text.Text.WithValue(text)
+               Button.Clicked.WithValue(ignore) |]
 
     interface IViewWidget with
         member this.CreateView() =
@@ -448,22 +378,22 @@ type [<Struct>] ButtonWidget (attributes: Attribute[]) =
 type IViewWidgetExtensions () =
     [<Extension>]
     static member inline background<'T when 'T :> IViewWidget and 'T :> IControlWidget>(this: 'T, value: Paint) =
-        this.AddAttribute(Attributes.IView_Background.WithValue(value))
+        this.AddAttribute(View.Background.WithValue(value))
     [<Extension>]
     static member inline font<'T when 'T :> IViewWidget and 'T :> IControlWidget>(this: 'T, value: Font) =
-        this.AddAttribute(Attributes.ITextStyle_Font.WithValue(value))
+        this.AddAttribute(TextStyle.Font.WithValue(value))
         
 [<Extension>]
 type LabelWidgetExtensions () =
     [<Extension>]
     static member inline textColor(this: LabelWidget, value: Color) =
-        this.AddAttribute(Attributes.ITextStyle_TextColor.WithValue(value))
+        this.AddAttribute(TextStyle.TextColor.WithValue(value))
         
 [<Extension>]
 type VerticalStackLayoutExtensions () =
     [<Extension>]
     static member inline spacing(this: VerticalStackLayoutWidget, value: float) =
-        this.AddAttribute(Attributes.IStackLayout_Spacing.WithValue(value))
+        this.AddAttribute(StackLayout.Spacing.WithValue(value))
         
 // EXPOSITION
 

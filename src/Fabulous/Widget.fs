@@ -9,32 +9,64 @@ type [<Struct>] AttributeKey = AttributeKey of int
     
 type Attribute =
     { Key: AttributeKey
+#if DEBUG
+      Name: string
+#endif
       Value: obj }
     
 module Attributes =
     type IAttributeDefinition = interface end
+
     type AttributeDefinition<'inputType, 'modelType> =
         { Key: AttributeKey
+          Name: string
+          DefaultWith: unit -> 'modelType
           Convert: 'inputType -> 'modelType }
         interface IAttributeDefinition
-        member x.WithValue(value) =
-           { Key = x.Key
-             Value = x.Convert(value) } 
     
     let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
     
-    let createDefinitionWithConverter<'inputType, 'modelType> (convert: 'inputType -> 'modelType) =
+    let createDefinitionWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) =
         let key = AttributeKey (_attributes.Count + 1)
         let definition =
             { Key = key
+              Name = name
+              DefaultWith = defaultWith >> convert
               Convert = convert }
         _attributes.Add(key, definition)
         definition
     
-    let createDefinition<'T> =
-        createDefinitionWithConverter<'T, 'T> id
+    let createDefinition<'T> name defaultValue =
+        createDefinitionWithConverter<'T, 'T> name defaultValue id
+             
+    [<Extension>]
+    type AttributeDefinitionExtensions =
+        [<Extension>]
+        static member inline WithValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, value) =
+            { Key = x.Key
+    #if DEBUG
+              Name = x.Name
+    #endif
+              Value = x.Convert(value) }
+              
+        [<Extension>]
+        static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, attrs: Attribute array) : 'modelType option =
+            attrs
+            |> Array.tryFind (fun a -> a.Key = x.Key)
+            |> Option.map (fun a -> unbox a.Value)
+
+        [<Extension>]
+        static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, attrs: Attribute array) =
+            AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, attrs)
+            |> Option.defaultWith x.DefaultWith
+
+        [<Extension>]
+        static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)> , attrs: Attribute array, args: 'arg) =
+            let fn = x.GetValue(attrs)
+            fn args
         
             
+
 
 /// Base logical element
 type IWidget =
