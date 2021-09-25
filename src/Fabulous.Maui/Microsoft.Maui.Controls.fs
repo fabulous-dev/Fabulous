@@ -417,7 +417,11 @@ type [<Struct>] LabelWidget (attributes: Attribute[]) =
         LabelWidget([| Attributes.IText_Text.WithValue(text) |])
         
     interface IViewWidget with
-        member this.CreateView() = box (FabulousLabel())
+        member this.CreateView() = 
+            let view = FabulousLabel()
+            view.SetAttributes(attributes)
+            view
+
     interface IControlWidget with
         member this.Add(attribute) = addAttribute LabelWidget attributes attribute
         
