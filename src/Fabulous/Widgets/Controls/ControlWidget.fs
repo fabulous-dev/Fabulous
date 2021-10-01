@@ -24,7 +24,7 @@ module ControlWidget =
     let inline register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
         registerWithCustomCtor<'Builder, 'T> (fun _ -> new 'T())
 
-    let inline createView<'T when 'T :> IControlView and 'T : (new: unit -> 'T)> (attrs: Attribute[]) =
+    let inline createView<'T when 'T :> IViewNode and 'T : (new: unit -> 'T)> (attrs: Attribute[]) =
         let view = new 'T()
         view.SetAttributes(attrs)
         box view

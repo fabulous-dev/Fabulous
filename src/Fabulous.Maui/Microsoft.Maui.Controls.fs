@@ -10,16 +10,16 @@ open Fabulous.Maui.Attributes
 
 // MAUI CONTROLS
 
-type ControlView() =
+type ViewNode() =
     let mutable _attributes: Attribute[] = [||]
 
-    interface IControlView with
+    interface IViewNode with
         member _.Attributes = _attributes
         member _.SetAttributes(attributes) =
             _attributes <- attributes
 
 type FabulousApplication () =
-    inherit ControlView()
+    inherit ViewNode()
 
     let _windows = List<IWindow>()
 
@@ -38,7 +38,7 @@ type FabulousApplication () =
                 
         
 type FabulousWindow () =
-    inherit ControlView()
+    inherit ViewNode()
 
     let mutable _handler = Microsoft.Maui.Handlers.WindowHandler() :> IElementHandler
 
@@ -63,7 +63,7 @@ type FabulousWindow () =
         member this.Title = Window.Title.GetValue(this)
         
 type FabulousVerticalStackLayout () =
-    inherit ControlView()
+    inherit ViewNode()
 
     let mutable _handler: IViewHandler = Microsoft.Maui.Handlers.LayoutHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
@@ -152,7 +152,7 @@ type FabulousVerticalStackLayout () =
         member this.Width = View.Width.GetValue(this)
         
 type FabulousLabel () =
-    inherit ControlView()
+    inherit ViewNode()
 
     let mutable _handler = Microsoft.Maui.Handlers.LabelHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
@@ -222,7 +222,7 @@ type FabulousLabel () =
         member this.Width = View.Width.GetValue(this)
 
 type FabulousButton () =
-    inherit ControlView()
+    inherit ViewNode()
 
     let mutable _handler = Microsoft.Maui.Handlers.ButtonHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
@@ -292,58 +292,58 @@ type FabulousButton () =
 
 // WIDGETS
 
-type [<Struct>] ApplicationWidget (attributes: Attribute[]) =
-    static do ControlWidget.register<ApplicationWidget, FabulousApplication>()
+type [<Struct>] ApplicationWidget<'msg> (attributes: Attribute[]) =
+    static do ControlWidget.register<ApplicationWidget<'msg>, FabulousApplication>()
 
-    static member inline Create(windows: seq<#IWindowWidget>) =
-        ApplicationWidget([| Application.Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
+    static member inline Create(windows: seq<#IWindowWidget<'msg>>) =
+        ApplicationWidget<'msg> ([| Application.Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
             
-    interface IApplicationControlWidget with
+    interface IApplicationControlWidget<'msg> with
         member _.Attributes = attributes
         member _.CreateView() = ControlWidget.createView<FabulousApplication> attributes
         
-type [<Struct>] WindowWidget (attributes: Attribute[]) =
-    static do ControlWidget.register<WindowWidget, FabulousWindow>()
+type [<Struct>] WindowWidget<'msg> (attributes: Attribute[]) =
+    static do ControlWidget.register<WindowWidget<'msg>, FabulousWindow>()
     
-    static member inline Create(title: string, content: #IViewWidget) =
-        WindowWidget(
+    static member inline Create(title: string, content: #IViewWidget<'msg>) =
+        WindowWidget<'msg> (
             [| Window.Title.WithValue(title)
                Window.Content.WithValue(ValueSome (content :> IViewWidget)) |]
         )
         
-    interface IWindowControlWidget with
+    interface IWindowControlWidget<'msg> with
         member _.Attributes = attributes
         member _.CreateView() = ControlWidget.createView<FabulousWindow> attributes
         
-type [<Struct>] VerticalStackLayoutWidget (attributes: Attribute[]) =
-    static do ControlWidget.register<VerticalStackLayoutWidget, FabulousVerticalStackLayout>()
+type [<Struct>] VerticalStackLayoutWidget<'msg> (attributes: Attribute[]) =
+    static do ControlWidget.register<VerticalStackLayoutWidget<'msg>, FabulousVerticalStackLayout>()
     
-    static member inline Create(children: seq<IViewWidget>) =        
-        VerticalStackLayoutWidget([| Container.Children.WithValue(children) |])
+    static member inline Create(children: seq<IViewWidget<'msg>>) =        
+        VerticalStackLayoutWidget<'msg> ([| Container.Children.WithValue(children |> Seq.map (fun c -> c :> IViewWidget)) |])
         
-    interface IViewControlWidget with
+    interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
         member _.CreateView() = ControlWidget.createView<FabulousVerticalStackLayout> attributes
         
-type [<Struct>] LabelWidget (attributes: Attribute[]) =
-    static do ControlWidget.register<LabelWidget, FabulousLabel>()
+type [<Struct>] LabelWidget<'msg> (attributes: Attribute[]) =
+    static do ControlWidget.register<LabelWidget<'msg>, FabulousLabel>()
     
     static member inline Create(text: string) =
-        LabelWidget([| Text.Text.WithValue(text) |])
+        LabelWidget<'msg> ([| Text.Text.WithValue(text) |])
         
-    interface IViewControlWidget with
+    interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
         member _.CreateView() = ControlWidget.createView<FabulousLabel> attributes
         
-type [<Struct>] ButtonWidget (attributes: Attribute[]) =
-    static do ControlWidget.register<ButtonWidget, FabulousButton>()
+type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
+    static do ControlWidget.register<ButtonWidget<'msg>, FabulousButton>()
     
-    static member inline Create(text: string, clicked: #obj) =
-        ButtonWidget
+    static member inline Create(text: string, clicked: 'msg) =
+        ButtonWidget<'msg>
             [| Text.Text.WithValue(text)
                Button.Clicked.WithValue(ignore) |]
 
-    interface IViewControlWidget with
+    interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
         member _.CreateView() = ControlWidget.createView<FabulousButton> attributes
 
@@ -352,31 +352,31 @@ type [<Struct>] ButtonWidget (attributes: Attribute[]) =
 [<Extension>] 
 type IViewWidgetExtensions () =
     [<Extension>]
-    static member inline background(this: #IViewControlWidget, value: Paint) =
+    static member inline background(this: #IViewControlWidget<'msg>, value: Paint) =
         this.AddAttribute(View.Background.WithValue(value))
     [<Extension>]
-    static member inline font(this: #IViewControlWidget, value: Font) =
+    static member inline font(this: #IViewControlWidget<'msg>, value: Font) =
         this.AddAttribute(TextStyle.Font.WithValue(value))
         
 [<Extension>]
 type LabelWidgetExtensions () =
     [<Extension>]
-    static member inline textColor(this: LabelWidget, value: Color) =
+    static member inline textColor<'msg>(this: LabelWidget<'msg>, value: Color) =
         this.AddAttribute(TextStyle.TextColor.WithValue(value))
         
 [<Extension>]
 type VerticalStackLayoutExtensions () =
     [<Extension>]
-    static member inline spacing(this: VerticalStackLayoutWidget, value: float) =
+    static member inline spacing<'msg>(this: VerticalStackLayoutWidget<'msg>, value: float) =
         this.AddAttribute(StackLayout.Spacing.WithValue(value))
         
-// EXPOSE
+// PUBLIC API
 
 [<AbstractClass; Sealed>]
 type View private () =
-    static member inline Application(windows) = ApplicationWidget.Create(windows)
-    static member inline Window(title, content) = WindowWidget.Create(title, content)
-    static member inline VerticalStackLayout(children) = VerticalStackLayoutWidget.Create(children)
-    static member inline Label(text) = LabelWidget.Create(text)
-    static member inline Button(text, clicked) = ButtonWidget.Create(text, clicked)
+    static member inline Application<'msg>(windows) = ApplicationWidget<'msg>.Create(windows)
+    static member inline Window<'msg>(title, content) = WindowWidget<'msg>.Create(title, content)
+    static member inline VerticalStackLayout<'msg>(children) = VerticalStackLayoutWidget<'msg>.Create(children)
+    static member inline Label<'msg>(text) = LabelWidget<'msg>.Create(text)
+    static member inline Button<'msg>(text, clicked) = ButtonWidget<'msg>.Create(text, clicked)
     

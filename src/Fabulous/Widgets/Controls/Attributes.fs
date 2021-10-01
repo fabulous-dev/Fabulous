@@ -15,7 +15,7 @@ type [<Struct>] Attribute =
 
 type IAttributeDefinition = interface end
 
-type IControlView =
+type IViewNode =
     abstract Attributes: Attribute[]
     abstract SetAttributes: Attribute[] -> unit
 
@@ -86,17 +86,17 @@ type AttributeDefinitionExtensions =
           Value = x.Convert(value) }
               
     [<Extension>]
-    static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, controlView: IControlView) : 'modelType option =
-        controlView.Attributes
+    static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IViewNode) : 'modelType option =
+        node.Attributes
         |> Array.tryFind (fun a -> a.Key = x.Key)
         |> Option.map (fun a -> unbox a.Value)
 
     [<Extension>]
-    static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, controlView: IControlView) =
-        AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, controlView)
+    static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IViewNode) =
+        AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, node)
         |> Option.defaultWith x.DefaultWith
 
     [<Extension>]
-    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)>, controlView: IControlView, args: 'arg) =
-        let fn = x.GetValue(controlView)
+    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)>, node: IViewNode, args: 'arg) =
+        let fn = x.GetValue(node)
         fn args

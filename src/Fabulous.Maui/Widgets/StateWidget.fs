@@ -4,12 +4,12 @@ open Fabulous
 open Fabulous.Widgets
 open Fabulous.Widgets.Controls
 
-type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget and 'view :> IWidget> =
+type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget<'msg> and 'view :> IWidget> =
     { State: RunnerKey option
       Init: 'arg -> 'model
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
-    interface IApplicationWidget with
+    interface IApplicationWidget<'msg> with
         member x.CreateView() = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
@@ -17,12 +17,12 @@ type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWid
         member x.Update(msg, model) = x.Update msg model
         member x.View(model, attributes) = x.View model attributes
 
-type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IViewWidget and 'view :> IWidget> =
+type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IViewWidget<'msg> and 'view :> IWidget> =
     { State: RunnerKey option
       Init: 'arg -> 'model
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
-    interface IViewWidget with
+    interface IViewWidget<'msg> with
         member x.CreateView() = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
@@ -43,9 +43,9 @@ module StatefulWidget =
           Update = update
           View = view }
 
-type StatelessView<'view when 'view :> IViewWidget and 'view :> IWidget> =
+type StatelessView<'view when 'view :> IViewWidget<unit> and 'view :> IWidget> =
     { View: Attribute[] -> 'view }
-    interface IViewWidget with
+    interface IViewWidget<unit> with
         member x.CreateView() = failwith "todo"
     interface IStatelessWidget<'view> with
         member x.View(attrs) = x.View attrs
