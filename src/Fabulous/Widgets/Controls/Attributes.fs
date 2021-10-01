@@ -3,6 +3,7 @@
 open System
 open System.Collections.Generic
 open System.Runtime.CompilerServices
+open Fabulous.Widgets
 
 type [<Struct>] AttributeKey = AttributeKey of int
 
@@ -17,7 +18,9 @@ type IAttributeDefinition = interface end
 
 type IViewNode =
     abstract Attributes: Attribute[]
+    abstract Context: ViewTreeContext
     abstract SetAttributes: Attribute[] -> unit
+    abstract SetContext: ViewTreeContext -> unit
 
 type [<Struct>] AttributeComparison =
     | Same
@@ -70,7 +73,7 @@ module Attributes =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.noCompare
 
     let inline defineEvent<'T> name =
-        defineNoCompare<'T -> unit> name (fun _ -> ignore)
+        defineNoCompare<'T -> obj> name (fun () -> fun _ -> null)
 
     let inline define<'T when 'T: equality> name defaultValue =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer
@@ -97,6 +100,10 @@ type AttributeDefinitionExtensions =
         |> Option.defaultWith x.DefaultWith
 
     [<Extension>]
-    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)>, node: IViewNode, args: 'arg) =
-        let fn = x.GetValue(node)
-        fn args
+    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> 'msg)>, node: IViewNode, args: 'arg) =
+        match x.TryGetValue(node) with
+        | None -> ()
+        | Some fn ->
+            fn args
+            |> box
+            |> node.Context.Dispatch

@@ -7,16 +7,24 @@ open System.Collections.Generic
 open Fabulous.Widgets.Controls
 open Fabulous.Maui.Widgets
 open Fabulous.Maui.Attributes
+open Fabulous.Widgets
 
 // MAUI CONTROLS
 
 type ViewNode() =
     let mutable _attributes: Attribute[] = [||]
+    let mutable _context = Unchecked.defaultof<_>
+
+    member _.Context = _context
 
     interface IViewNode with
         member _.Attributes = _attributes
+        member _.Context = _context
         member _.SetAttributes(attributes) =
             _attributes <- attributes
+        member _.SetContext(context) =
+            _context <- context
+            
 
 type FabulousApplication () =
     inherit ViewNode()
@@ -31,7 +39,7 @@ type FabulousApplication () =
             | None -> ()
             | Some windowWidgets ->
                 for widget in windowWidgets do
-                    let view = unbox (widget.CreateView())
+                    let view = unbox (widget.CreateView(this.Context))
                     _windows.Add(view)
 
             _windows :> IReadOnlyList<_>
@@ -54,7 +62,7 @@ type FabulousWindow () =
             | None -> null
             | Some ValueNone -> null
             | Some (ValueSome widget) ->
-                let view = unbox (widget.CreateView())
+                let view = unbox (widget.CreateView(this.Context))
                 view
         member this.Handler 
             with get() = _handler
@@ -96,7 +104,7 @@ type FabulousVerticalStackLayout () =
             | None -> ()
             | Some children ->
                 for child in children do
-                    let view = unbox (child.CreateView())
+                    let view = unbox (child.CreateView(this.Context))
                     _children.Add(view)
         
             _children.GetEnumerator() :> System.Collections.Generic.IEnumerator<IView>
@@ -300,7 +308,7 @@ type [<Struct>] ApplicationWidget<'msg> (attributes: Attribute[]) =
             
     interface IApplicationControlWidget<'msg> with
         member _.Attributes = attributes
-        member _.CreateView() = ControlWidget.createView<FabulousApplication> attributes
+        member _.CreateView(context) = ControlWidget.createView<FabulousApplication> context attributes
         
 type [<Struct>] WindowWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<WindowWidget<'msg>, FabulousWindow>()
@@ -313,7 +321,7 @@ type [<Struct>] WindowWidget<'msg> (attributes: Attribute[]) =
         
     interface IWindowControlWidget<'msg> with
         member _.Attributes = attributes
-        member _.CreateView() = ControlWidget.createView<FabulousWindow> attributes
+        member _.CreateView(context) = ControlWidget.createView<FabulousWindow> context attributes
         
 type [<Struct>] VerticalStackLayoutWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<VerticalStackLayoutWidget<'msg>, FabulousVerticalStackLayout>()
@@ -323,7 +331,7 @@ type [<Struct>] VerticalStackLayoutWidget<'msg> (attributes: Attribute[]) =
         
     interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
-        member _.CreateView() = ControlWidget.createView<FabulousVerticalStackLayout> attributes
+        member _.CreateView(context) = ControlWidget.createView<FabulousVerticalStackLayout> context attributes
         
 type [<Struct>] LabelWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<LabelWidget<'msg>, FabulousLabel>()
@@ -333,7 +341,7 @@ type [<Struct>] LabelWidget<'msg> (attributes: Attribute[]) =
         
     interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
-        member _.CreateView() = ControlWidget.createView<FabulousLabel> attributes
+        member _.CreateView(context) = ControlWidget.createView<FabulousLabel> context attributes
         
 type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<ButtonWidget<'msg>, FabulousButton>()
@@ -341,11 +349,11 @@ type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
     static member inline Create(text: string, clicked: 'msg) =
         ButtonWidget<'msg>
             [| Text.Text.WithValue(text)
-               Button.Clicked.WithValue(ignore) |]
+               Button.Clicked.WithValue(fun () -> box clicked) |]
 
     interface IViewControlWidget<'msg> with
         member _.Attributes = attributes
-        member _.CreateView() = ControlWidget.createView<FabulousButton> attributes
+        member _.CreateView(context) = ControlWidget.createView<FabulousButton> context attributes
 
 // EXTENSIONS
     

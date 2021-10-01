@@ -10,7 +10,7 @@ type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWid
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
     interface IApplicationWidget<'msg> with
-        member x.CreateView() = failwith "todo"
+        member x.CreateView(context) = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
         member x.Init(arg) = x.Init arg
@@ -23,7 +23,7 @@ type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IViewWidget<'msg> and 
       Update: 'msg -> 'model -> 'model
       View: 'model -> Attribute[] -> 'view }
     interface IViewWidget<'msg> with
-        member x.CreateView() = failwith "todo"
+        member x.CreateView(context) = failwith "todo"
     interface IStatefulWidget<'arg, 'model, 'msg, 'view> with
         member x.State = x.State
         member x.Init(arg) = x.Init arg
@@ -46,7 +46,7 @@ module StatefulWidget =
 type StatelessView<'view when 'view :> IViewWidget<unit> and 'view :> IWidget> =
     { View: Attribute[] -> 'view }
     interface IViewWidget<unit> with
-        member x.CreateView() = failwith "todo"
+        member x.CreateView(context) = failwith "todo"
     interface IStatelessWidget<'view> with
         member x.View(attrs) = x.View attrs
         

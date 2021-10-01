@@ -6,19 +6,21 @@ type IRunner = interface end
 
 // Runner is created for the widget itself. No point in reusing a runner for another widget
 type Runner<'arg, 'model, 'msg, 'view when 'view :> IWidget>(key: RunnerKey, widget: IStatefulWidget<'arg, 'model, 'msg, 'view>) =
-    let start arg =
-        let model = widget.Init(arg)
-        States.setState key model
-        
+    
     let processMsg msg =
         let model = unbox (States.getState key)
         let newModel = widget.Update(msg, model)
         States.setState key newModel
+
+    let start arg =
+        let model = widget.Init(arg)
+        States.setState key model
         
     interface IRunner
     
     member x.Key = key
     member x.Widget = widget
+    member x.ViewTreeContext = { Dispatch = unbox >> processMsg }
     member x.Start(arg) = start arg
     member x.Pause() = ()
     member x.Restart() = ()
