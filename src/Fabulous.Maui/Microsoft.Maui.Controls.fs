@@ -352,22 +352,34 @@ type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
 [<Extension>] 
 type IViewWidgetExtensions () =
     [<Extension>]
-    static member inline background(this: #IViewControlWidget<'msg>, value: Paint) =
+    static member inline background(this: #IViewControlWidget<_>, value: Paint) =
         this.AddAttribute(View.Background.WithValue(value))
     [<Extension>]
-    static member inline font(this: #IViewControlWidget<'msg>, value: Font) =
+    static member inline font(this: #IViewControlWidget<_>, value: Font) =
         this.AddAttribute(TextStyle.Font.WithValue(value))
+    [<Extension>]
+    static member inline horizontalLayoutAlignment(this: #IViewControlWidget<_>, value: Primitives.LayoutAlignment) =
+        this.AddAttribute(View.HorizontalLayoutAlignment.WithValue(value))
+    [<Extension>]
+    static member inline verticalLayoutAlignment(this: #IViewControlWidget<_>, value: Primitives.LayoutAlignment) =
+        this.AddAttribute(View.VerticalLayoutAlignment.WithValue(value))
+    [<Extension>]
+    static member inline margin(this: #IViewControlWidget<_>, value: Thickness) =
+        this.AddAttribute(View.Margin.WithValue(value))
         
 [<Extension>]
 type LabelWidgetExtensions () =
     [<Extension>]
-    static member inline textColor<'msg>(this: LabelWidget<'msg>, value: Color) =
+    static member inline textColor(this: LabelWidget<_>, value: Color) =
         this.AddAttribute(TextStyle.TextColor.WithValue(value))
+    [<Extension>]
+    static member inline horizontalTextAlignment(this: LabelWidget<_>, value: TextAlignment) =
+        this.AddAttribute(TextAlignment.HorizontalTextAlignment.WithValue(value))
         
 [<Extension>]
 type VerticalStackLayoutExtensions () =
     [<Extension>]
-    static member inline spacing<'msg>(this: VerticalStackLayoutWidget<'msg>, value: float) =
+    static member inline spacing(this: VerticalStackLayoutWidget<_>, value: float) =
         this.AddAttribute(StackLayout.Spacing.WithValue(value))
         
 // PUBLIC API

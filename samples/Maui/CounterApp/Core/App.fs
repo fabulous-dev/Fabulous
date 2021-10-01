@@ -4,6 +4,7 @@ open Fabulous.Maui
 open Fabulous.Maui.Widgets
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
+open System.Runtime.CompilerServices
 
 module StatelessLabel =
     open type Fabulous.Maui.View
@@ -41,10 +42,32 @@ module CounterWidget =
     type Fabulous.Maui.View with
         static member inline CounterWidget() = StatefulWidget.mkSimpleView init update view
 
+module Extensions =
+    open Fabulous.Widgets.Controls
+    open Fabulous.Maui.Attributes
+
+    [<Extension>]
+    type MyCustomExtensions =
+        [<Extension>]
+        static member inline margin(this: #IViewControlWidget<_>, ?left: float, ?top: float, ?right: float, ?bottom: float) =
+            let value =
+                Thickness(
+                    (match left with None -> 0. | Some v -> v),
+                    (match top with None -> 0. | Some v -> v),
+                    (match right with None -> 0. | Some v -> v),
+                    (match bottom with None -> 0. | Some v -> v)
+                )
+
+            this.AddAttribute(View.Margin.WithValue(value))
+
+        [<Extension>]
+        static member inline centerHorizontally(this: #IViewControlWidget<_>) =
+            this.AddAttribute(View.HorizontalLayoutAlignment.WithValue(Primitives.LayoutAlignment.Center))
 
 module App =
     open CounterWidget
     open StatelessLabel
+    open Extensions
     open type Fabulous.Maui.View
 
     type Model = { Count: int }
@@ -62,6 +85,11 @@ module App =
             Window("Main",
                 VerticalStackLayout([
                     Label("Hello World from Fabulous")
+                        .font(Font.SystemFontOfSize(20.))
+                        .horizontalLayoutAlignment(Primitives.LayoutAlignment.Fill)
+                        .verticalLayoutAlignment(Primitives.LayoutAlignment.Fill)
+                        .horizontalTextAlignment(TextAlignment.Center)
+                        .background(SolidPaint(Colors.Red))
                         
                     //Label($"Count is {model.Count}")
                         
