@@ -1,6 +1,6 @@
 ﻿namespace Fabulous.Maui.Widgets
 
-open Fabulous.Widgets
+open Fabulous.Widgets.Controls
 
 type IApplicationControlWidget =
     inherit IApplicationWidget

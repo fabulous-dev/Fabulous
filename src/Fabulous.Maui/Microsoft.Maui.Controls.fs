@@ -3,11 +3,10 @@
 open System.Runtime.CompilerServices
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
-open Fabulous.Widgets
 open System.Collections.Generic
-open Attributes
-open Fabulous.Widgets.ControlWidget
+open Fabulous.Widgets.Controls
 open Fabulous.Maui.Widgets
+open Fabulous.Maui.Attributes
 
 // MAUI CONTROLS
 
@@ -353,10 +352,10 @@ type [<Struct>] ButtonWidget (attributes: Attribute[]) =
 [<Extension>] 
 type IViewWidgetExtensions () =
     [<Extension>]
-    static member inline background(this: ^T when ^T :> IViewControlWidget, value: Paint) =
+    static member inline background(this: #IViewControlWidget, value: Paint) =
         this.AddAttribute(View.Background.WithValue(value))
     [<Extension>]
-    static member inline font(this: ^T when ^T :> IViewControlWidget, value: Font) =
+    static member inline font(this: #IViewControlWidget, value: Font) =
         this.AddAttribute(TextStyle.Font.WithValue(value))
         
 [<Extension>]
@@ -371,7 +370,7 @@ type VerticalStackLayoutExtensions () =
     static member inline spacing(this: VerticalStackLayoutWidget, value: float) =
         this.AddAttribute(StackLayout.Spacing.WithValue(value))
         
-// EXPOSITION
+// EXPOSE
 
 [<AbstractClass; Sealed>]
 type View private () =

@@ -1,6 +1,7 @@
 namespace Fabulous
 
 open Fabulous.Widgets
+open Fabulous.Widgets.Controls
 
 type [<Struct>] RunnerKey = RunnerKey of int
 

@@ -7,8 +7,10 @@
 
   <ItemGroup>
     <Compile Include="Widgets\Widget.fs" />
-    <Compile Include="Widgets\ControlWidget.fs" />
+    <Compile Include="Widgets\Controls\Attributes.fs" />
+    <Compile Include="Widgets\Controls\ControlWidget.fs" />
     <Compile Include="Widgets\StateWidget.fs" />
+    <Compile Include="Reconciler\AttributeDiffing.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Runner.fs" />
     <Compile Include="ViewAdapter.fs" />

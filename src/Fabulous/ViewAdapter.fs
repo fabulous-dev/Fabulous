@@ -1,6 +1,7 @@
 namespace Fabulous
 
 open Fabulous.Widgets
+open Fabulous.Widgets.Controls
 
 type ViewAdapter<'model, 'view when 'view :> IWidget> (key: RunnerKey, view: 'model * Attribute[] -> 'view) =
     member x.CreateView() =

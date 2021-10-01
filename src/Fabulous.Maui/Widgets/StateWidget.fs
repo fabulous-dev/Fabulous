@@ -2,6 +2,7 @@
 
 open Fabulous
 open Fabulous.Widgets
+open Fabulous.Widgets.Controls
 
 type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget and 'view :> IWidget> =
     { State: RunnerKey option
