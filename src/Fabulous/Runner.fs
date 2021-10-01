@@ -1,5 +1,7 @@
 namespace Fabulous
 
+open Fabulous.Widgets
+
 type IRunner = interface end
 
 // Runner is created for the widget itself. No point in reusing a runner for another widget

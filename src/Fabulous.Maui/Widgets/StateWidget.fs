@@ -1,10 +1,7 @@
-namespace Fabulous.Maui
+﻿namespace Fabulous.Maui.Widgets
 
 open Fabulous
-
-type IApplicationWidget = inherit IWidget
-type IWindowWidget = inherit IWidget
-type IViewWidget = inherit IWidget
+open Fabulous.Widgets
 
 type StatefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidget and 'view :> IWidget> =
     { State: RunnerKey option

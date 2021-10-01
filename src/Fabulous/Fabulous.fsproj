@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Widget.fs" />
+    <Compile Include="Widgets\Widget.fs" />
+    <Compile Include="Widgets\ControlWidget.fs" />
+    <Compile Include="Widgets\StateWidget.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Runner.fs" />
     <Compile Include="ViewAdapter.fs" />

@@ -1,13 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-ios;net6.0-android;net6.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net6.0-android</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<UseMaui>true</UseMaui>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Widget.fs" />
+    <Compile Include="Widgets\Widget.fs" />
+    <Compile Include="Widgets\ControlWidget.fs" />
+    <Compile Include="Widgets\StateWidget.fs" />
     <Compile Include="Microsoft.Maui.Controls.Attributes.fs" />
     <Compile Include="Microsoft.Maui.Controls.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />

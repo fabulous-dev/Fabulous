@@ -1,19 +1,25 @@
-namespace Fabulous
+﻿namespace Fabulous.Widgets
 
 open System
 open System.Collections.Generic
 open System.Runtime.CompilerServices
 
-type [<Struct>] RunnerKey = RunnerKey of int
 type [<Struct>] AttributeKey = AttributeKey of int
-    
-type Attribute =
+
+type [<Struct>] Attribute =
     { Key: AttributeKey
 #if DEBUG
       Name: string
 #endif
       Value: obj }
-    
+
+type IControlWidget =
+    abstract Attributes: Attribute[]
+
+type IControlView =
+    abstract Attributes: Attribute[]
+    abstract SetAttributes: Attribute[] -> unit
+
 module Attributes =
     type IAttributeDefinition = interface end
 
@@ -23,7 +29,7 @@ module Attributes =
           DefaultWith: unit -> 'modelType
           Convert: 'inputType -> 'modelType }
         interface IAttributeDefinition
-    
+
     let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
     
     let createDefinitionWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) =
@@ -50,32 +56,22 @@ module Attributes =
               Value = x.Convert(value) }
               
         [<Extension>]
-        static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, attrs: Attribute array) : 'modelType option =
-            attrs
+        static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, controlView: IControlView) : 'modelType option =
+            controlView.Attributes
             |> Array.tryFind (fun a -> a.Key = x.Key)
             |> Option.map (fun a -> unbox a.Value)
 
         [<Extension>]
-        static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, attrs: Attribute array) =
-            AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, attrs)
+        static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, controlView: IControlView) =
+            AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, controlView)
             |> Option.defaultWith x.DefaultWith
 
         [<Extension>]
-        static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)> , attrs: Attribute array, args: 'arg) =
-            let fn = x.GetValue(attrs)
+        static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> unit)>, controlView: IControlView, args: 'arg) =
+            let fn = x.GetValue(controlView)
             fn args
-        
-            
 
-
-/// Base logical element
-type IWidget =
-    abstract CreateView: unit -> obj
-    
 module ControlWidget =
-    type IControlWidget =
-        abstract Add: Attribute -> IControlWidget
-        
     type Handler =
         { TargetType: Type
           Create: Attribute[] -> obj }
@@ -88,32 +84,22 @@ module ControlWidget =
                 { TargetType = typeof<'T>
                   Create = create >> box }
                 
-    let register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
+    let inline register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
         registerWithCustomCtor<'Builder, 'T> (fun _ -> new 'T())
-        
-    
-    let inline addAttribute (fn: Attribute[] -> #IControlWidget) (attribs: Attribute[]) (attr: Attribute) =
-        let attribs2 = Array.zeroCreate (attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-        (fn attribs2) :> IControlWidget
+
+    let inline createView<'T when 'T :> IControlView and 'T : (new: unit -> 'T)> (attrs: Attribute[]) =
+        let view = new 'T()
+        view.SetAttributes(attrs)
+        box view
+
         
     [<Extension>]
     type IControlWidgetExtensions () =
         [<Extension>]
-        static member inline AddAttribute<'T when 'T :> IControlWidget>(this: 'T, attr: Attribute) =
-            this.Add(attr) :?> 'T
-        
-    
-
-/// Logical element without state able to generate a logical tree composed of child widgets
-type IStatelessWidget<'view when 'view :> IWidget> =
-    abstract View: Attribute[] -> 'view 
-
-/// Logical element with MVU state able to generate a logical tree composed of child widgets
-type IStatefulWidget<'arg, 'model, 'msg, 'view when 'view :> IWidget> =
-    abstract State: RunnerKey option
-    abstract Init: 'arg -> 'model
-    abstract Update: 'msg * 'model -> 'model
-    abstract View: 'model * Attribute[] -> 'view
-
+        static member inline AddAttribute(this: ^T when ^T :> IControlWidget, attr: Attribute) =
+            let attribs = this.Attributes
+            let attribs2 = Array.zeroCreate (attribs.Length + 1)
+            Array.blit attribs 0 attribs2 0 attribs.Length
+            attribs2.[attribs.Length] <- attr
+            let result = (^T : (new : Attribute[] -> ^T) attribs2)
+            result

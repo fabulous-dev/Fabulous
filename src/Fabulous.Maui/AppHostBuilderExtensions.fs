@@ -3,8 +3,10 @@ namespace Fabulous.Maui
 open System
 open System.Runtime.CompilerServices
 open Microsoft.Maui
-open Microsoft.Extensions.DependencyInjection.Extensions;
+open Microsoft.Extensions.DependencyInjection.Extensions
 open Fabulous
+open Fabulous.Widgets
+open Fabulous.Maui.Widgets
 
 [<Extension>]
 type AppHostBuilderExtensions () =

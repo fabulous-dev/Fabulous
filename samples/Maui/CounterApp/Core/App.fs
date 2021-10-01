@@ -1,7 +1,7 @@
 ﻿namespace Fabulous.Maui.Samples.CounterApp.Core
 
-open Fabulous
 open Fabulous.Maui
+open Fabulous.Maui.Widgets
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 
@@ -73,7 +73,6 @@ module App =
                     //StatelessLabel()
                     
                 ]).spacing(10.)
-                  .background(SolidPaint(Colors.Yellow))
             )
         ])
         

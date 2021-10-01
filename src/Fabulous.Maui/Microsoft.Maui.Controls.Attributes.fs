@@ -1,9 +1,10 @@
 ﻿module Fabulous.Maui.Attributes
 
-open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Primitives
+open Fabulous.Widgets
+open Fabulous.Maui.Widgets
 
 module Application =
     let Windows = Attributes.createDefinitionWithConverter<IWindowWidget seq, _> "Application_Windows" (fun () -> Seq.empty) Seq.toArray
@@ -41,12 +42,12 @@ module StackLayout =
     let Spacing = Attributes.createDefinition<float> "StackLayout_Spacing" (fun () -> 0.)
 
 module View =
-    let AutomationId = Attributes.createDefinition<string> "View_AutomationId" (fun () -> "")
+    let AutomationId = Attributes.createDefinition<string> "View_AutomationId" (fun () -> null)
     let Background = Attributes.createDefinition<Paint> "View_Background" (fun () -> null)
     let Clip = Attributes.createDefinition<IShape> "View_Clip" (fun () -> null)
-    let FlowDirection = Attributes.createDefinition<FlowDirection> "View_FlowDirection" (fun () -> FlowDirection.MatchParent)
+    let FlowDirection = Attributes.createDefinition<FlowDirection> "View_FlowDirection" (fun () -> FlowDirection.LeftToRight) // TODO: Why setting this one to MatchParent breaks the app? This is the default in MVVM MAUI...
     let Height = Attributes.createDefinition<float> "View_Height" (fun () -> -1.)
-    let HorizontalLayoutAlignment = Attributes.createDefinition<LayoutAlignment> "View_HorizontalLayountAlignment" (fun () -> LayoutAlignment.Start)
+    let HorizontalLayoutAlignment = Attributes.createDefinition<LayoutAlignment> "View_HorizontalLayoutAlignment" (fun () -> LayoutAlignment.Start)
     let IsEnabled = Attributes.createDefinition<bool> "View_IsEnabled" (fun () -> true)
     let Margin = Attributes.createDefinition<Thickness> "View_Margin" (fun () -> Thickness.Zero)
     let MaximumHeight = Attributes.createDefinition<float> "View_MaximumHeight" (fun () -> -1.)
