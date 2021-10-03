@@ -1,13 +1,15 @@
-﻿namespace Fabulous.Widgets.Controls
+﻿namespace Fabulous.Controls
 
 open System
 open System.Collections.Generic
 open System.Runtime.CompilerServices
-open Fabulous.Widgets.Controls
-open Fabulous.Widgets
+open Fabulous
+open Fabulous.Controls
 
 type IControlWidget =
+    inherit IWidget
     abstract Attributes: Attribute[]
+    abstract TargetType: Type
 
 module ControlWidget =
     type Handler =
@@ -25,11 +27,13 @@ module ControlWidget =
     let inline register<'Builder, 'T when 'T : (new : unit -> 'T)> () =
         registerWithCustomCtor<'Builder, 'T> (fun _ -> new 'T())
 
-    let inline createView<'T when 'T :> IViewNode and 'T : (new: unit -> 'T)> (context: ViewTreeContext) (attrs: Attribute[]) =
+    let inline createView<'T when 'T :> IAttributedViewNode and 'T : (new: unit -> 'T)> (context: ViewTreeContext) (widget: IControlWidget) =
         let view = new 'T()
-        view.SetAttributes(attrs)
         view.SetContext(context)
-        box view
+
+        view.ApplyDiff(WidgetDiff.ReplacedBy widget)
+
+        view :> IViewNode
 
         
 [<Extension>]

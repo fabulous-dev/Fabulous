@@ -1,26 +1,23 @@
-﻿namespace Fabulous.Widgets.Controls
+﻿namespace Fabulous.Controls
 
-open System
 open System.Collections.Generic
 open System.Runtime.CompilerServices
-open Fabulous.Widgets
+open Fabulous
 
 type [<Struct>] AttributeKey = AttributeKey of int
 
 type [<Struct>] Attribute =
     { Key: AttributeKey
 #if DEBUG
-      Name: string
+      DebugName: string
 #endif
       Value: obj }
 
 type IAttributeDefinition = interface end
 
-type IViewNode =
+type IAttributedViewNode =
+    inherit IViewNode
     abstract Attributes: Attribute[]
-    abstract Context: ViewTreeContext
-    abstract SetAttributes: Attribute[] -> unit
-    abstract SetContext: ViewTreeContext -> unit
 
 type [<Struct>] AttributeComparison =
     | Same
@@ -84,23 +81,23 @@ type AttributeDefinitionExtensions =
     static member inline WithValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, value) =
         { Key = x.Key
 #if DEBUG
-          Name = x.Name
+          DebugName = x.Name
 #endif
           Value = x.Convert(value) }
               
     [<Extension>]
-    static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IViewNode) : 'modelType option =
+    static member inline TryGetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IAttributedViewNode) : 'modelType option =
         node.Attributes
         |> Array.tryFind (fun a -> a.Key = x.Key)
         |> Option.map (fun a -> unbox a.Value)
 
     [<Extension>]
-    static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IViewNode) =
+    static member inline GetValue<'inputType, 'modelType>(x: AttributeDefinition<'inputType, 'modelType>, node: IAttributedViewNode) =
         AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, node)
         |> Option.defaultWith x.DefaultWith
 
     [<Extension>]
-    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> 'msg)>, node: IViewNode, args: 'arg) =
+    static member inline Execute(x: AttributeDefinition<'inputType, ('arg -> 'msg)>, node: IAttributedViewNode, args: 'arg) =
         match x.TryGetValue(node) with
         | None -> ()
         | Some fn ->

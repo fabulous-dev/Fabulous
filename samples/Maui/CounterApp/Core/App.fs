@@ -32,7 +32,7 @@ module CounterWidget =
         | Increment -> { model with CountX = model.CountX + 1 }
         | Decrement -> { model with CountX = model.CountX - 1 }
         
-    let view model _ =
+    let view model =
         VerticalStackLayout([
             Button("-", Decrement)
             Label(model.CountX.ToString())
@@ -43,7 +43,7 @@ module CounterWidget =
         static member inline CounterWidget() = StatefulWidget.mkSimpleView init update view
 
 module Extensions =
-    open Fabulous.Widgets.Controls
+    open Fabulous.Controls
     open Fabulous.Maui.Attributes
 
     [<Extension>]
@@ -80,11 +80,11 @@ module App =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }
         
-    let view model _ =
+    let view model =
         Application([
             Window("Main",
                 VerticalStackLayout([
-                    Label("Hello World from Fabulous")
+                    Label($"Hello World from Fabulous: {model.Count}")
                         .font(Font.SystemFontOfSize(20.))
                         .horizontalLayoutAlignment(Primitives.LayoutAlignment.Fill)
                         .verticalLayoutAlignment(Primitives.LayoutAlignment.Fill)

@@ -4,30 +4,58 @@ open System.Runtime.CompilerServices
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open System.Collections.Generic
-open Fabulous.Widgets.Controls
+open Fabulous
+open Fabulous.Controls
 open Fabulous.Maui.Widgets
 open Fabulous.Maui.Attributes
-open Fabulous.Widgets
+
 
 // MAUI CONTROLS
 
-type ViewNode() =
+type ViewNode(handler) =
     let mutable _attributes: Attribute[] = [||]
     let mutable _context = Unchecked.defaultof<_>
+    let mutable _handler : IElementHandler = handler
 
     member _.Context = _context
 
-    interface IViewNode with
+    member _.Handler
+        with get() = _handler
+        and set(v) = _handler <- v
+
+    member _.ViewHandler
+        with get() = _handler :?> IViewHandler
+        and set(v: IViewHandler) = _handler <- v
+
+    interface IAttributedViewNode with
         member _.Attributes = _attributes
         member _.Context = _context
-        member _.SetAttributes(attributes) =
-            _attributes <- attributes
+
         member _.SetContext(context) =
             _context <- context
+
+        member _.ApplyDiff(diff) =
+            // TODO: Update the attributes array from the diff result and then trigger event on each updated properties to let MAUI know about it
+            match diff with
+            | WidgetDiff.Identical -> ()
+            | WidgetDiff.ReplacedBy (:? IControlWidget as newWidget) ->
+                // TODO: Reset unset properties
+                _attributes <- newWidget.Attributes
+
+                printfn "ViewNode - Handler is %s" (if _handler = null then "null" else "not null")
+                if _handler <> null then
+                    for attribute in newWidget.Attributes do
+                         match PropertyAttributes.tryGetMauiPropertyName(attribute) with
+                         | ValueNone -> ()
+                         | ValueSome propertyName ->
+                            printfn $"ViewNode - UpdateValue for '{propertyName}'"
+                            _handler.UpdateValue(propertyName)
+
+            | _ -> failwith "Not implemented"
             
 
 type FabulousApplication () =
-    inherit ViewNode()
+    inherit ViewNode(null)
 
     let _windows = List<IWindow>()
 
@@ -46,9 +74,7 @@ type FabulousApplication () =
                 
         
 type FabulousWindow () =
-    inherit ViewNode()
-
-    let mutable _handler = Microsoft.Maui.Handlers.WindowHandler() :> IElementHandler
+    inherit ViewNode(Microsoft.Maui.Handlers.WindowHandler())
 
     interface IWindow with
         member this.Activated() = Window.Activated.Execute(this, ())
@@ -65,15 +91,14 @@ type FabulousWindow () =
                 let view = unbox (widget.CreateView(this.Context))
                 view
         member this.Handler 
-            with get() = _handler
-            and set(v) = _handler <- v
+            with get() = this.Handler
+            and set(v) = this.Handler <- v
         member this.Parent = failwith "todo"
         member this.Title = Window.Title.GetValue(this)
         
 type FabulousVerticalStackLayout () =
-    inherit ViewNode()
+    inherit ViewNode(Microsoft.Maui.Handlers.LayoutHandler())
 
-    let mutable _handler: IViewHandler = Microsoft.Maui.Handlers.LayoutHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
     let mutable _desiredSize = Size.Zero
     let _children = List<IView>()
@@ -84,7 +109,7 @@ type FabulousVerticalStackLayout () =
         member this.AnchorY = Transform.AnchorY.GetValue(this)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
-            if _handler <> null then _handler.NativeArrange(_frame)
+            if this.ViewHandler <> null then this.ViewHandler.NativeArrange(_frame)
             _frame.Size
         member this.AutomationId = View.AutomationId.GetValue(this)
         member this.Background = View.Background.GetValue(this)
@@ -111,11 +136,11 @@ type FabulousVerticalStackLayout () =
 
         member this.GetEnumerator() = _children.GetEnumerator() :> System.Collections.IEnumerator
         member this.Handler
-            with get () = _handler :> IElementHandler
-            and set (v: IElementHandler) = _handler <- (v :?> IViewHandler)
+            with get () = this.Handler
+            and set (v: IElementHandler) = this.Handler <- v
         member this.Handler
-            with get () = _handler
-            and set (v: IViewHandler) = _handler <- v
+            with get () = this.ViewHandler
+            and set (v: IViewHandler) = this.ViewHandler <- v
         member this.Height = View.Height.GetValue(this)
         member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this)
         member this.IgnoreSafeArea = SafeAreaView.IgnoreSafeArea.GetValue(this)
@@ -160,9 +185,8 @@ type FabulousVerticalStackLayout () =
         member this.Width = View.Width.GetValue(this)
         
 type FabulousLabel () =
-    inherit ViewNode()
+    inherit ViewNode(Microsoft.Maui.Handlers.LabelHandler())
 
-    let mutable _handler = Microsoft.Maui.Handlers.LabelHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
     let mutable _desiredSize = Size.Zero
 
@@ -171,7 +195,7 @@ type FabulousLabel () =
         member this.AnchorY = Transform.AnchorY.GetValue(this)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
-            if _handler <> null then _handler.NativeArrange(_frame)
+            if this.ViewHandler <> null then this.ViewHandler.NativeArrange(_frame)
             _frame.Size
         member this.AutomationId = View.AutomationId.GetValue(this)
         member this.Background = View.Background.GetValue(this)
@@ -184,11 +208,11 @@ type FabulousLabel () =
             with get () = _frame
             and set (v: Rectangle): unit = _frame <- v
         member this.Handler
-            with get () = _handler :> IElementHandler
-            and set (v: IElementHandler): unit = _handler <- (v :?> IViewHandler)
+            with get () = this.Handler
+            and set (v: IElementHandler): unit = this.Handler <- v
         member this.Handler
-            with get () = _handler
-            and set (v: IViewHandler): unit = _handler <- v
+            with get () = this.ViewHandler
+            and set (v: IViewHandler): unit = this.ViewHandler <- v
         member this.Height = View.Height.GetValue(this)
         member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this)
         member this.HorizontalTextAlignment = TextAlignment.HorizontalTextAlignment.GetValue(this)
@@ -230,9 +254,8 @@ type FabulousLabel () =
         member this.Width = View.Width.GetValue(this)
 
 type FabulousButton () =
-    inherit ViewNode()
+    inherit ViewNode(Microsoft.Maui.Handlers.ButtonHandler())
 
-    let mutable _handler = Microsoft.Maui.Handlers.ButtonHandler() :> IViewHandler
     let mutable _frame = Rectangle.Zero
     let mutable _desiredSize = Size.Zero
 
@@ -241,7 +264,7 @@ type FabulousButton () =
         member this.AnchorY = Transform.AnchorY.GetValue(this)
         member this.Arrange(bounds: Rectangle) =
             _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
-            if _handler <> null then _handler.NativeArrange(_frame)
+            if this.ViewHandler <> null then this.ViewHandler.NativeArrange(_frame)
             _frame.Size
         member this.AutomationId = View.AutomationId.GetValue(this)
         member this.Background = View.Background.GetValue(this)
@@ -255,11 +278,11 @@ type FabulousButton () =
             with get () = _frame
             and set (v: Rectangle): unit = _frame <- v
         member this.Handler
-            with get () = _handler :> IElementHandler
-            and set (v: IElementHandler): unit = _handler <- (v :?> IViewHandler)
+            with get () = this.Handler
+            and set (v: IElementHandler): unit = this.Handler <- v
         member this.Handler
-            with get () = _handler
-            and set (v: IViewHandler): unit = _handler <- v
+            with get () = this.ViewHandler
+            and set (v: IViewHandler): unit = this.ViewHandler <- v
         member this.Height = View.Height.GetValue(this)
         member this.HorizontalLayoutAlignment = View.HorizontalLayoutAlignment.GetValue(this)
         member this.ImageSource = Button.ImageSource.GetValue(this)
@@ -307,8 +330,9 @@ type [<Struct>] ApplicationWidget<'msg> (attributes: Attribute[]) =
         ApplicationWidget<'msg> ([| Application.Windows.WithValue(windows |> Seq.map (fun w -> w :> IWindowWidget)) |])
             
     interface IApplicationControlWidget<'msg> with
+        member _.TargetType = typeof<FabulousApplication>
         member _.Attributes = attributes
-        member _.CreateView(context) = ControlWidget.createView<FabulousApplication> context attributes
+        member this.CreateView(context) = ControlWidget.createView<FabulousApplication> context this
         
 type [<Struct>] WindowWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<WindowWidget<'msg>, FabulousWindow>()
@@ -320,8 +344,9 @@ type [<Struct>] WindowWidget<'msg> (attributes: Attribute[]) =
         )
         
     interface IWindowControlWidget<'msg> with
+        member _.TargetType = typeof<FabulousWindow>
         member _.Attributes = attributes
-        member _.CreateView(context) = ControlWidget.createView<FabulousWindow> context attributes
+        member this.CreateView(context) = ControlWidget.createView<FabulousWindow> context this
         
 type [<Struct>] VerticalStackLayoutWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<VerticalStackLayoutWidget<'msg>, FabulousVerticalStackLayout>()
@@ -330,8 +355,9 @@ type [<Struct>] VerticalStackLayoutWidget<'msg> (attributes: Attribute[]) =
         VerticalStackLayoutWidget<'msg> ([| Container.Children.WithValue(children |> Seq.map (fun c -> c :> IViewWidget)) |])
         
     interface IViewControlWidget<'msg> with
+        member _.TargetType = typeof<FabulousVerticalStackLayout>
         member _.Attributes = attributes
-        member _.CreateView(context) = ControlWidget.createView<FabulousVerticalStackLayout> context attributes
+        member this.CreateView(context) = ControlWidget.createView<FabulousVerticalStackLayout> context this
         
 type [<Struct>] LabelWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<LabelWidget<'msg>, FabulousLabel>()
@@ -340,8 +366,9 @@ type [<Struct>] LabelWidget<'msg> (attributes: Attribute[]) =
         LabelWidget<'msg> ([| Text.Text.WithValue(text) |])
         
     interface IViewControlWidget<'msg> with
+        member _.TargetType = typeof<FabulousLabel>
         member _.Attributes = attributes
-        member _.CreateView(context) = ControlWidget.createView<FabulousLabel> context attributes
+        member this.CreateView(context) = ControlWidget.createView<FabulousLabel> context this
         
 type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
     static do ControlWidget.register<ButtonWidget<'msg>, FabulousButton>()
@@ -352,8 +379,9 @@ type [<Struct>] ButtonWidget<'msg> (attributes: Attribute[]) =
                Button.Clicked.WithValue(fun () -> box clicked) |]
 
     interface IViewControlWidget<'msg> with
+        member _.TargetType = typeof<FabulousButton>
         member _.Attributes = attributes
-        member _.CreateView(context) = ControlWidget.createView<FabulousButton> context attributes
+        member this.CreateView(context) = ControlWidget.createView<FabulousButton> context this
 
 // EXTENSIONS
     

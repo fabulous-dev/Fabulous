@@ -6,10 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Widgets\Widget.fs" />
-    <Compile Include="Widgets\Controls\Attributes.fs" />
-    <Compile Include="Widgets\Controls\ControlWidget.fs" />
-    <Compile Include="Widgets\StateWidget.fs" />
+    <Compile Include="Widget.fs" />
+    <Compile Include="Controls\Attributes.fs" />
+    <Compile Include="Controls\ControlWidget.fs" />
     <Compile Include="Reconciler\AttributeDiffing.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Runner.fs" />

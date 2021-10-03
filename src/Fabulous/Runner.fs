@@ -1,6 +1,6 @@
 namespace Fabulous
 
-open Fabulous.Widgets
+open Fabulous
 
 type IRunner = interface end
 
