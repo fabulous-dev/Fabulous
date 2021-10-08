@@ -13,7 +13,8 @@ open Fabulous
 ///
 /// Those interfaces also allow for targeted extension members to avoid cluttering IntelliSense
 /// with inappropriate attribute setters
-
+///
+/// Other note: We need to find a better name for IWidget. It should not be confused with the struct Fabulous.Widget
 
 type IWidget =
     abstract Attributes: Attribute[]
