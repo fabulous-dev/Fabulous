@@ -1,7 +1,6 @@
 ﻿namespace Fabulous.Maui.Samples.CounterApp.Core
 
 open Fabulous.Maui
-open Fabulous.Maui.Widgets
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open System.Runtime.CompilerServices
@@ -43,13 +42,12 @@ module CounterWidget =
         static member inline CounterWidget() = StatefulWidget.mkSimpleView init update view
 
 module Extensions =
-    open Fabulous.Controls
     open Fabulous.Maui.Attributes
 
     [<Extension>]
     type MyCustomExtensions =
         [<Extension>]
-        static member inline margin(this: #IViewControlWidget<_>, ?left: float, ?top: float, ?right: float, ?bottom: float) =
+        static member inline margin(this: #IViewWidget<_>, ?left: float, ?top: float, ?right: float, ?bottom: float) =
             let value =
                 Thickness(
                     (match left with None -> 0. | Some v -> v),
@@ -61,7 +59,7 @@ module Extensions =
             this.AddAttribute(View.Margin.WithValue(value))
 
         [<Extension>]
-        static member inline centerHorizontally(this: #IViewControlWidget<_>) =
+        static member inline centerHorizontally(this: #IViewWidget<_>) =
             this.AddAttribute(View.HorizontalLayoutAlignment.WithValue(Primitives.LayoutAlignment.Center))
 
 module App =
@@ -101,6 +99,7 @@ module App =
                     //StatelessLabel()
                     
                 ]).spacing(10.)
+                  .background(SolidPaint(Colors.Aqua))
             )
         ])
         

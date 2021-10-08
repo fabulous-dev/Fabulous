@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Widgets\Widget.fs" />
-    <Compile Include="Widgets\ControlWidget.fs" />
-    <Compile Include="Widgets\StateWidget.fs" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="Widgets.fs" />
     <Compile Include="Microsoft.Maui.Controls.Attributes.fs" />
     <Compile Include="Microsoft.Maui.Controls.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />

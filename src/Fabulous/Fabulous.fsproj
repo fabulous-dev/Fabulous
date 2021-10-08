@@ -6,13 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Widget.fs" />
-    <Compile Include="Controls\Attributes.fs" />
-    <Compile Include="Controls\ControlWidget.fs" />
-    <Compile Include="Reconciler\AttributeDiffing.fs" />
-    <Compile Include="State.fs" />
-    <Compile Include="Runner.fs" />
-    <Compile Include="ViewAdapter.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="Stores.fs" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="Widgets.fs" />
+    <Compile Include="Reconciler.fs" />
+    <Compile Include="Runners.fs" />
   </ItemGroup>
 
 </Project>
