@@ -79,18 +79,18 @@ module Attributes =
     [<Extension>]
     type AttributeDefinitionExtensions =              
         [<Extension>]
-        static member inline TryGetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, node: IAttributedViewNode) : 'modelType option =
-            node.Attributes
+        static member inline TryGetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, attributes: Attribute[]) : 'modelType option =
+            attributes
             |> Array.tryFind (fun a -> a.Key = x.Key)
             |> Option.map (fun a -> unbox a.Value)
 
         [<Extension>]
-        static member inline GetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, node: IAttributedViewNode) =
-            AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, node)
+        static member inline GetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, attributes: Attribute[]) =
+            AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, attributes)
             |> Option.defaultWith x.DefaultWith
 
         [<Extension>]
-        static member inline Execute(x: IAttributeDefinition<'args -> obj, 'args -> obj>, node: IAttributedViewNode, dispatch: obj -> unit, args: 'args): unit =
-            match x.TryGetValue(node) with
+        static member inline Execute(x: IAttributeDefinition<'args -> obj, 'args -> obj>, attributes: Attribute[], dispatch: obj -> unit, args: 'args): unit =
+            match x.TryGetValue(attributes) with
             | None -> ()
             | Some fn -> fn args |> dispatch

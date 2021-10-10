@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="Attributes.fs" />
     <Compile Include="Widgets.fs" />
+    <Compile Include="ViewNode.fs" />
     <Compile Include="Microsoft.Maui.Controls.Attributes.fs" />
     <Compile Include="Microsoft.Maui.Controls.fs" />
     <Compile Include="AppHostBuilderExtensions.fs" />

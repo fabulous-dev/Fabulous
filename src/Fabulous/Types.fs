@@ -40,16 +40,26 @@ type Widget =
     { Key: WidgetKey
       Attributes: Attribute[] }
 
+[<Struct; RequireQualifiedAccess>]
+type CollectionDiff =
+    | Identical
+
 [<Struct; RequireQualifiedAccess>] 
 type AttributeDiff =
     | Identical
-    | NewValue of value: obj
+    | Added of addedValue: obj
+    | ScalarUpdated of updatedValue: obj
+    | ScalarWidgetUpdated of updatedWidget: WidgetDiff
+    | CollectionUpdated of collectionDiffs: CollectionDiff[]
+    | Removed
 
-[<Struct; RequireQualifiedAccess>]
-type WidgetDiff =
+and [<Struct; RequireQualifiedAccess>] AttributeDiffWithKey =
+    { Key: AttributeKey
+      Diff: AttributeDiff }
+
+and [<Struct; RequireQualifiedAccess>] WidgetDiff =
     | Identical
-    | ReplacedBy of newWidget: Widget
-    | Updated of attributeDiffs: AttributeDiff[]
+    | Updated of updatedAttributes: AttributeDiffWithKey[]
 
 type ViewTreeContext =
     { Dispatch: obj -> unit }
@@ -58,10 +68,6 @@ type ViewTreeContext =
 type IViewNode =
     abstract SetContext: ViewTreeContext -> unit
     abstract ApplyDiff: WidgetDiff -> unit
-
-type IAttributedViewNode =
-    inherit IViewNode
-    abstract Attributes: Attribute[]
 
 type IComponent = interface end
 
