@@ -6,4 +6,7 @@ module ViewUpdaters =
         match currOpt with
         | ValueSome true -> target.InvalidateSurface()
         | _ -> ()
-
+    let updateSKGLViewInvalidate _ (currOpt: bool voption) (target: SkiaSharp.Views.Forms.SKGLView) =
+        match currOpt with
+        | ValueSome true -> target.InvalidateSurface()
+        | _ -> ()
