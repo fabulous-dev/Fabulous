@@ -28,72 +28,114 @@ type ViewAdapterKey = int
 /// For example, Maui needs to know
 [<Struct>]
 type Attribute =
-    { Key: AttributeKey
+    {
+        Key: AttributeKey
 #if DEBUG
-      DebugName: string
+        DebugName: string
 #endif
-      Value: obj }
-      
+        Value: obj
+    }
+
 /// Represents a virtual UI element such as a Label, a Button, etc.
 [<Struct>]
 type Widget =
-    { Key: WidgetKey
-      Attributes: Attribute[] }
+    {
+        Key: WidgetKey
+        Attributes: Attribute []
+    }
 
 [<Struct; RequireQualifiedAccess>]
-type CollectionDiff =
-    | Identical
+type AttributeChange =
+    | Added of added: Attribute
+    | Removed of removed: Attribute
+    | Updated of struct (Attribute * Attribute * obj voption)
 
-[<Struct; RequireQualifiedAccess>] 
-type AttributeDiff =
-    | Identical
-    | Added of addedValue: obj
-    | ScalarUpdated of updatedValue: obj
-    | ScalarWidgetUpdated of updatedWidget: WidgetDiff
-    | CollectionUpdated of collectionDiffs: CollectionDiff[]
-    | Removed
+//
+//    | Identical
+//    | ScalarUpdated of updatedValue: obj
+//    | ScalarWidgetUpdated of updatedWidget: WidgetDiff
+//    | CollectionUpdated of collectionDiffs: CollectionDiff []
+//[<RequireQualifiedAccess>]
+//    type AttributeDiff =
+//        | Different of struct (Attribute * Attribute * obj option)
+//        | Added of Attribute
+//        | Removed of Attribute
 
-and [<Struct; RequireQualifiedAccess>] AttributeDiffWithKey =
-    { Key: AttributeKey
-      Diff: AttributeDiff }
+//and [<Struct; RequireQualifiedAccess>] AttributeDiffWithKey =
+//    {
+//        Key: AttributeKey
+//        Diff: AttributeChange
+//    }
 
-and [<Struct; RequireQualifiedAccess>] WidgetDiff =
-    | Identical
-    | Updated of updatedAttributes: AttributeDiffWithKey[]
+type [<Struct; RequireQualifiedAccess>] WidgetDiff =
+   {
+       Changes: AttributeChange[]
+       NewAttributes: Attribute[]
+   }
 
-type ViewTreeContext =
-    { Dispatch: obj -> unit }
+type ViewTreeContext = { Dispatch: obj -> unit }
 
 /// Represents a UI element created from a widget
 type IViewNode =
-    abstract SetContext: ViewTreeContext -> unit
-    abstract ApplyDiff: WidgetDiff -> unit
+    abstract SetContext : ViewTreeContext -> unit
+    abstract ApplyDiff : WidgetDiff -> UpdateResult
+    abstract Attributes : Attribute[]
+    abstract Origin: WidgetKey
+    
+and [<Struct>] ChildrenUpdate =
+    {
+        ChildrenAfterUpdate: IViewNode []
+        Added: IViewNode list voption
+        Removed: IViewNode list voption
+    }
 
-type IComponent = interface end
+// TODO should it be IList? or a simpler custom interface will do?
+and IViewContainer =
+    abstract Children : IViewNode []
+    abstract UpdateChildren : ChildrenUpdate -> unit
+
+and [<RequireQualifiedAccess; Struct>] UpdateResult =
+    | Done
+    | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)    
+
+
+type IComponent =
+    interface
+    end
 
 type IStatefulComponent<'arg, 'model, 'msg> =
     inherit IComponent
-    abstract Init: 'arg -> 'model
-    abstract Update: 'msg * 'model -> 'model
-    abstract View: 'model -> Widget
+    abstract Init : 'arg -> 'model
+    abstract Update : 'msg * 'model -> 'model
+    abstract View : 'model -> Widget
 
 type IStatelessComponent =
     inherit IComponent
-    abstract View: unit -> Widget
+    abstract View : unit -> Widget
 
-type IAttributeDefinition = interface end
+[<Struct>]
+[<RequireQualifiedAccess>]
+type AttributeComparison =
+    | Identical
+    | Different of data: obj voption
+
+type IAttributeDefinition =
+    abstract CompareBoxed : obj * obj -> AttributeComparison
+
 type IAttributeDefinition<'inputType, 'modelType> =
     inherit IAttributeDefinition
-    abstract Key: AttributeKey
-    abstract DefaultWith: unit -> 'modelType
+    abstract Key : AttributeKey
+    abstract DefaultWith : unit -> 'modelType
 
 type IWidgetDefinition =
-    abstract CreateView: unit -> IViewNode
+    abstract CreateView : Widget -> IViewNode
 
-type IRunner = interface end
+type IRunner =
+    interface
+    end
 
 type IViewAdapter =
     inherit IDisposable
-    abstract CreateView: unit -> IViewNode
-    abstract Attach: IViewNode -> unit
-    abstract Detach: bool -> unit
+    abstract CreateView : unit -> IViewNode
+    abstract Attach : IViewNode -> unit
+    abstract Detach : bool -> unit

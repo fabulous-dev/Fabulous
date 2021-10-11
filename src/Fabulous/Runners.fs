@@ -39,7 +39,7 @@ module ViewAdapters =
 
     type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext) as this =
 
-        let mutable _widget = Unchecked.defaultof<Widget>
+//        let mutable _widget = Unchecked.defaultof<Widget>
         let mutable _viewNode = Unchecked.defaultof<IViewNode>
 
         let _stateSubscription = StateStore.StateChanged.Subscribe(this.OnStateChanged)
@@ -48,14 +48,14 @@ module ViewAdapters =
             let state = unbox (StateStore.get stateKey)
             let widget = view state
             let widgetDefinition = WidgetDefinitionStore.get widget.Key
-            let viewNode = widgetDefinition.CreateView()
+            let viewNode = widgetDefinition.CreateView widget
 
-            let diff = Reconciler.diff ValueNone widget
+            // let diff = Reconciler.diff ValueNone widget
 
             viewNode.SetContext(context)
-            viewNode.ApplyDiff(diff)
+            // viewNode.ApplyDiff(diff)
 
-            _widget <- widget
+//            _widget <- widget
             _viewNode <- viewNode
 
             _viewNode
@@ -63,13 +63,11 @@ module ViewAdapters =
         member _.OnStateChanged(args) =
             if args.Key = stateKey then
                 let state = unbox args.NewState
-                let previousWidget = _widget
+                // let previousWidget = _widget
                 let currentWidget = view state
 
-                let diff = Reconciler.diff (ValueSome previousWidget) currentWidget
-                _viewNode.ApplyDiff(diff)
-
-                _widget <- currentWidget
+                // TODO handle the case when Type of the widget changes
+                Reconciler.update _viewNode currentWidget.Attributes
 
         member _.Dispose() =
             _stateSubscription.Dispose()

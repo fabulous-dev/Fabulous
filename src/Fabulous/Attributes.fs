@@ -13,29 +13,30 @@
 open System.Runtime.CompilerServices
 
 module Attributes =
-    [<Struct; RequireQualifiedAccess>]
-    type AttributeComparison =
-        | Identical
 
     type AttributeDefinition<'inputType, 'modelType> =
         {
-          Key: AttributeKey
-          Name: string
-          DefaultWith: unit -> 'modelType
-          Convert: 'inputType -> 'modelType
-          Compare: struct ('modelType * 'modelType) -> AttributeComparison
+            Key: AttributeKey
+            Name: string
+            DefaultWith: unit -> 'modelType
+            Convert: 'inputType -> 'modelType
+            Compare: struct ('modelType * 'modelType) -> AttributeComparison
         }
 
         member x.WithValue(value) =
-            { Key = x.Key
+            {
+                Key = x.Key
 #if DEBUG
-              DebugName = x.Name
+                DebugName = x.Name
 #endif
-              Value = x.Convert(value) }
+                Value = x.Convert(value)
+            }
 
         interface IAttributeDefinition<'inputType, 'modelType> with
             member x.Key = x.Key
-            member x.DefaultWith () = x.DefaultWith ()
+            member x.DefaultWith() = x.DefaultWith()
+            member x.CompareBoxed(a, b) =
+                x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
 
     module AttributeComparers =
         let equalityComparer struct (a, b) =
@@ -44,26 +45,39 @@ module Attributes =
             else
                 AttributeComparison.Identical //Different (ValueSome (box b))
 
-        let noCompare struct (a, b) =
-            AttributeComparison.Identical //Different (ValueSome (box b))
+        let noCompare struct (a, b) = AttributeComparison.Identical //Different (ValueSome (box b))
+        
+        let alwaysDifferent struct (a, b) = AttributeComparison.Different ValueNone
 
-        let collectionComparer struct (a, b) =
-            AttributeComparison.Identical //Same
+        let collectionComparer struct (a: 'T, b: 'T) = AttributeComparison.Identical //Same
 
-    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) =
+    let defineWithConverter<'inputType, 'modelType>
+        name
+        defaultWith
+        (convert: 'inputType -> 'modelType)
+        (compare: struct ('modelType * 'modelType) -> AttributeComparison)
+        =
         let key = AttributeDefinitionStore.getNextKey()
+
         let definition =
-            { Key = key
-              Name = name
-              DefaultWith = defaultWith >> convert
-              Convert = convert
-              Compare = compare }
+            {
+                Key = key
+                Name = name
+                DefaultWith = defaultWith >> convert
+                Convert = convert
+                Compare = compare
+            }
+
         AttributeDefinitionStore.set key definition
         definition
-        
+
     let inline defineCollection<'elementType> name =
-        defineWithConverter<'elementType seq, 'elementType array> name (fun () -> Seq.empty) Seq.toArray AttributeComparers.collectionComparer
-    
+        defineWithConverter<'elementType seq, 'elementType array>
+            name
+            (fun () -> Seq.empty)
+            Seq.toArray
+            AttributeComparers.collectionComparer
+
     let inline defineWithComparer<'T> name defaultValue compare =
         defineWithConverter<'T, 'T> name defaultValue id compare
 
@@ -77,20 +91,36 @@ module Attributes =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer
 
     [<Extension>]
-    type AttributeDefinitionExtensions =              
+    type AttributeDefinitionExtensions =
         [<Extension>]
-        static member inline TryGetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, attributes: Attribute[]) : 'modelType option =
+        static member inline TryGetValue<'inputType, 'modelType>
+            (
+                x: IAttributeDefinition<'inputType, 'modelType>,
+                attributes: Attribute []
+            ) : 'modelType option =
             attributes
-            |> Array.tryFind (fun a -> a.Key = x.Key)
-            |> Option.map (fun a -> unbox a.Value)
+            |> Array.tryFind(fun a -> a.Key = x.Key)
+            |> Option.map(fun a -> unbox a.Value)
 
         [<Extension>]
-        static member inline GetValue<'inputType, 'modelType>(x: IAttributeDefinition<'inputType, 'modelType>, attributes: Attribute[]) =
+        static member inline GetValue<'inputType, 'modelType>
+            (
+                x: IAttributeDefinition<'inputType, 'modelType>,
+                attributes: Attribute []
+            ) =
             AttributeDefinitionExtensions.TryGetValue<'inputType, 'modelType>(x, attributes)
             |> Option.defaultWith x.DefaultWith
 
         [<Extension>]
-        static member inline Execute(x: IAttributeDefinition<'args -> obj, 'args -> obj>, attributes: Attribute[], dispatch: obj -> unit, args: 'args): unit =
+        static member inline Execute
+            (
+                x: IAttributeDefinition<'args -> obj, 'args -> obj>,
+                attributes: Attribute [],
+                dispatch: obj -> unit,
+                args: 'args
+            ) : unit =
             match x.TryGetValue(attributes) with
             | None -> ()
             | Some fn -> fn args |> dispatch
+    
+    
