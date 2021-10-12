@@ -56,7 +56,7 @@ View.ListViewGrouped(items = [
 ```
 
 
-<img src="images/view/ListGroupView-adr-basic.png" width="300">
+<img src="images/view/ListViewGrouped-adr-basic" width="300">
 
 <br /> <br /> 
 

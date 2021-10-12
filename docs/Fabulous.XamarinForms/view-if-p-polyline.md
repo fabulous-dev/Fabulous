@@ -49,7 +49,7 @@ View.Polyline
 See also:
 
 * [Polyline in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/Polyline)
-* [`Xamarin.Forms.Polyline`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Polyline)
+* [`Xamarin.Forms.Polyline`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.shapes.polyline?view=xamarin-forms)
 
 <br /> 
 

@@ -240,7 +240,7 @@ View.MasterDetailPage() // this now uses MasterDetailPageWithoutToolbar
 See also:
 
 * [Core Elements](view-elements.html)
-* [Maps](view-maps.html)
-* [SkiaSharp](view-skiasharp.html)
-* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
+* [Maps](view-a-e-maps.html)
+* [SkiaSharp](view-a-e-skiasharp.html)
+* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/tree/v1.0/Fabulous.XamarinForms/extensions/Maps)
+* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/tree/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp)

@@ -159,11 +159,17 @@ See also the curated list [Awesome Fabulous](https://github.com/jimbobbennett/Aw
 Further Resources
 --------
 
-Presentation: [Making Mobile App Development Simple with F#](https://twitter.com/dsyme/status/1037119834969067522)
-
 Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin University Guest Lecture
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+Presentation: Introduction to Fabulous a F# MVU Framework for Xamarin
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TX959tx72qo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+Presentation: F# Fabulous - Beyond MVU Basics
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CGSYyK8-sik" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 **General Docs**
 
@@ -192,5 +198,5 @@ Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
-* [Submit a fix to this guide](https://github.com/fsprojects/Fabulous/tree/master/docs)
+* [Submit a fix to this guide](https://github.com/fsprojects/Fabulous/tree/v1.0/docs)
 
