@@ -52,3 +52,4 @@ The Label view is used for displaying text, both single and multi-line. Labels c
 
 ```fsharp 
 View.Label(text = "this is a label")
+```
