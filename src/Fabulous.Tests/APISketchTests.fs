@@ -117,15 +117,7 @@ module SimpleStackTests =
                         (id_, text_))
 
     let view model =
-        Stack(
-            [
-                Button("hey", AddNew(1, "a"))
-                yield!
-                    model
-                    |> List.map(fun (id, text) -> Label(text).automationId(id.ToString()).cast())
-            ]
-        )
-            .automationId("stack")
+        Stack( model |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast()) ).automationId("stack")
 
 
     let init () = []
@@ -188,7 +180,7 @@ module ReconcilerTests =
             |]
 
         let res = compareAttributes prev next
-        Assert.AreEqual([], res)
+        Assert.AreEqual([], res, "this should fail for now, not a real test")
         ()
 
 //module MapViewTests =

@@ -27,13 +27,11 @@ type IWidgetExtensions() =
 
         result
 
-type ViewNodeForTests(widget: Widget) =
+type ViewNodeForTests(widget: Widget, ctx: ViewTreeContext) =
     member val attributes: Attribute [] = widget.Attributes with get, set
-    member val ctx: ViewTreeContext = Unchecked.defaultof<ViewTreeContext> with get, set
+    member val ctx: ViewTreeContext = ctx
 
     interface IViewNode with
-        member x.SetContext c = x.ctx <- c
-
         member x.ApplyDiff diff =
             x.attributes <- diff.NewAttributes
             UpdateResult.Done
@@ -83,8 +81,8 @@ module A =
 
 open Attributes
 
-type TestLabel(widget) =
-    inherit ViewNodeForTests(widget)
+type TestLabel(widget, ctx) =
+    inherit ViewNodeForTests(widget, ctx)
 
     member x.Color =
         A.TextStyle.TextColor.GetValue x.attributes
@@ -111,9 +109,8 @@ type LabelWidgetExtensions() =
 
 ///----------------
 
-type TestButton(widget) =
-
-    inherit ViewNodeForTests(widget)
+type TestButton(widget, ctx) =
+    inherit ViewNodeForTests(widget, ctx)
 
     member x.Text = A.Text.Text.GetValue x.attributes
 
@@ -147,12 +144,15 @@ type ButtonWidgetExtensions() =
         this.AddAttribute(A.TextStyle.TextColor.WithValue(value))
 
 ///----Stack----
-type TestStack(widget) as x =
-    inherit ViewNodeForTests(widget)
+type TestStack(widget, ctx) as x =
+    inherit ViewNodeForTests(widget, ctx)
 
     let mutable children: IViewNode [] =
         A.Container.Children.GetValue x.attributes
-        |> Array.map(fun w -> (WidgetDefinitionStore.get w.Key).CreateView(w))
+        |> Array.map
+            (fun w ->
+                (WidgetDefinitionStore.get w.Key)
+                    .CreateView(w, ctx))
 
     interface IViewContainer with
         member this.Children = children
@@ -166,12 +166,6 @@ type TestStack(widget) as x =
                 A.Container.Children.GetValue x.attributes
 
             UpdateResult.UpdateChildren struct (this :> IViewContainer, childrenWidgets, x.ctx)
-
-        member x.SetContext ctx =
-            x.ctx <- ctx
-
-            for child in children do
-                child.SetContext ctx
 
 
 
@@ -318,9 +312,10 @@ module Run =
             let model = (program.Init(arg))
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
-            
-            let view = widgetDef.CreateView(widget)
-            view.SetContext x.viewContext
+
+            let view =
+                widgetDef.CreateView(widget, x.viewContext)
+
             state <- Some(model, view)
 
             {

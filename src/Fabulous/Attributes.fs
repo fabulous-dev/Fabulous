@@ -43,7 +43,7 @@ module Attributes =
             if a = b then
                 AttributeComparison.Identical
             else
-                AttributeComparison.Identical //Different (ValueSome (box b))
+                AttributeComparison.Different ValueNone //Different (ValueSome (box b))
 
         let noCompare struct (a, b) = AttributeComparison.Identical //Different (ValueSome (box b))
         

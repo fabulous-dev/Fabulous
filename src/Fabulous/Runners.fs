@@ -5,18 +5,18 @@ namespace Fabulous
 module Runners =
     // Runner is created for the component itself. No point in reusing a runner for another component
     type Runner<'arg, 'model, 'msg>(key: StateKey, statefulComponent: IStatefulComponent<'arg, 'model, 'msg>) =
-    
+
         let processMsg msg =
-            let model = unbox (StateStore.get key)
+            let model = unbox(StateStore.get key)
             let newModel = statefulComponent.Update(msg, model)
             StateStore.set key newModel
 
         let start arg =
             let model = statefulComponent.Init(arg)
             StateStore.set key model
-        
+
         interface IRunner
-    
+
         member _.Key = key
         member _.Component = statefulComponent
         member _.ViewTreeContext = { Dispatch = unbox >> processMsg }
@@ -26,7 +26,7 @@ module Runners =
         member _.Stop() = ()
 
     let create<'arg, 'model, 'msg> (statefulComponent: IStatefulComponent<'arg, 'model, 'msg>) =
-        let key = StateStore.getNextKey ()
+        let key = StateStore.getNextKey()
         let runner = Runner(key, statefulComponent)
         RunnerStore.set key runner
         runner
@@ -39,23 +39,25 @@ module ViewAdapters =
 
     type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext) as this =
 
-//        let mutable _widget = Unchecked.defaultof<Widget>
+        //        let mutable _widget = Unchecked.defaultof<Widget>
         let mutable _viewNode = Unchecked.defaultof<IViewNode>
 
-        let _stateSubscription = StateStore.StateChanged.Subscribe(this.OnStateChanged)
+        let _stateSubscription =
+            StateStore.StateChanged.Subscribe(this.OnStateChanged)
 
         member _.CreateView() =
-            let state = unbox (StateStore.get stateKey)
+            let state = unbox(StateStore.get stateKey)
             let widget = view state
-            let widgetDefinition = WidgetDefinitionStore.get widget.Key
-            let viewNode = widgetDefinition.CreateView widget
+            let definition = WidgetDefinitionStore.get widget.Key
+
+            let viewNode = definition.CreateView(widget, context)
 
             // let diff = Reconciler.diff ValueNone widget
 
-            viewNode.SetContext(context)
+            //            viewNode.SetContext(context)
             // viewNode.ApplyDiff(diff)
 
-//            _widget <- widget
+            //            _widget <- widget
             _viewNode <- viewNode
 
             _viewNode
@@ -69,17 +71,19 @@ module ViewAdapters =
                 // TODO handle the case when Type of the widget changes
                 Reconciler.update _viewNode currentWidget.Attributes
 
-        member _.Dispose() =
-            _stateSubscription.Dispose()
+        member _.Dispose() = _stateSubscription.Dispose()
 
         interface IViewAdapter with
             member x.Dispose() = x.Dispose()
             member x.CreateView() = x.CreateView()
             member _.Attach(node) = ()
             member _.Detach(shouldDestroyNode) = ()
-            
+
     let create<'arg, 'model, 'msg> (runner: Runner<'arg, 'model, 'msg>) =
-        let key = ViewAdapterStore.getNextKey ()
-        let viewAdapter = new ViewAdapter<'model>(key, runner.Key, runner.Component.View, runner.ViewTreeContext)
+        let key = ViewAdapterStore.getNextKey()
+
+        let viewAdapter =
+            new ViewAdapter<'model>(key, runner.Key, runner.Component.View, runner.ViewTreeContext)
+
         ViewAdapterStore.set key viewAdapter
         viewAdapter

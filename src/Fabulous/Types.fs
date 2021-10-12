@@ -77,7 +77,6 @@ type ViewTreeContext = { Dispatch: obj -> unit }
 
 /// Represents a UI element created from a widget
 type IViewNode =
-    abstract SetContext : ViewTreeContext -> unit
     abstract ApplyDiff : WidgetDiff -> UpdateResult
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
@@ -128,7 +127,7 @@ type IAttributeDefinition<'inputType, 'modelType> =
     abstract DefaultWith : unit -> 'modelType
 
 type IWidgetDefinition =
-    abstract CreateView : Widget -> IViewNode
+    abstract CreateView : Widget * ViewTreeContext -> IViewNode
 
 type IRunner =
     interface

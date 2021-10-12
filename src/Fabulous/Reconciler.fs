@@ -142,8 +142,7 @@ module Reconciler =
 
     let inline private createViewFromWidget widget ctx =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let viewNode = widgetDefinition.CreateView()
-        viewNode.SetContext ctx
+        let viewNode = widgetDefinition.CreateView (widget, ctx)
         viewNode
 
     let inline private addItem item maybeList =
@@ -154,7 +153,6 @@ module Reconciler =
     let rec update (node: IViewNode) (attributes: Attribute []) : unit =
 
         let prevAttributes = node.Attributes
-        let prevOrigin = node.Origin
 
         let diff =
             compareAttributes prevAttributes attributes
@@ -203,7 +201,7 @@ module Reconciler =
                         target.[i] <- viewNode
                         added <- addItem viewNode added
 
-                    | Some p, widget when widget.Key = prevOrigin ->
+                    | Some p, widget when widget.Key = p.Origin ->
                         // same type, just update
                         target.[i] <- p
                         update p widget.Attributes
