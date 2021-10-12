@@ -42,7 +42,7 @@ View.Path
 See also:
 
 * [Path in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/Path)
-* [`Xamarin.Forms.Path`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Path)
+* [`Xamarin.Forms.Path`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.shapes.polygon?view=xamarin-forms)
 
 <br /> 
 
