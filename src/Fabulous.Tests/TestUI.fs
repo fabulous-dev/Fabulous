@@ -27,9 +27,8 @@ type IWidgetExtensions() =
 
         result
 
-type ViewNodeForTests(widget: Widget, ctx: ViewTreeContext) =
+type ViewNodeForTests(widget: Widget) =
     member val attributes: Attribute [] = widget.Attributes with get, set
-    member val ctx: ViewTreeContext = ctx
 
     interface IViewNode with
         member x.ApplyDiff diff =
@@ -66,9 +65,17 @@ module A =
             Attributes.define<obj option> "_Clicked" (justValue None) // TODO fix option
 
 
-    module Automation =
+    module SystemAttributes =
         let AutomationId =
             Attributes.define<string> "AutomationId" (justValue "")
+
+        let private id x = x
+
+        let MapMsg =
+            Attributes.defineWithComparer<obj -> obj>
+                "MapMsg"
+                (justValue id)
+                Attributes.AttributeComparers.alwaysDifferent
 
 //    module Runtime =
 //        let MapMsgFn =
@@ -82,7 +89,7 @@ module A =
 open Attributes
 
 type TestLabel(widget, ctx) =
-    inherit ViewNodeForTests(widget, ctx)
+    inherit ViewNodeForTests(widget)
 
     member x.Color =
         A.TextStyle.TextColor.GetValue x.attributes
@@ -110,13 +117,13 @@ type LabelWidgetExtensions() =
 ///----------------
 
 type TestButton(widget, ctx) =
-    inherit ViewNodeForTests(widget, ctx)
+    inherit ViewNodeForTests(widget)
 
     member x.Text = A.Text.Text.GetValue x.attributes
 
     member x.Press() =
         match A.Button.Clicked.GetValue x.attributes with
-        | Some msg -> x.ctx.Dispatch msg
+        | Some msg -> ctx.Dispatch msg
         | _ -> ()
 
 
@@ -145,7 +152,7 @@ type ButtonWidgetExtensions() =
 
 ///----Stack----
 type TestStack(widget, ctx) as x =
-    inherit ViewNodeForTests(widget, ctx)
+    inherit ViewNodeForTests(widget)
 
     let mutable children: IViewNode [] =
         A.Container.Children.GetValue x.attributes
@@ -165,7 +172,7 @@ type TestStack(widget, ctx) as x =
             let childrenWidgets =
                 A.Container.Children.GetValue x.attributes
 
-            UpdateResult.UpdateChildren struct (this :> IViewContainer, childrenWidgets, x.ctx)
+            UpdateResult.UpdateChildren struct (this :> IViewContainer, childrenWidgets, ctx)
 
 
 
@@ -194,25 +201,32 @@ type StackLayoutWidget<'msg>(attributes: Attribute []) =
 
 // TODO handle message mapping
 
-//
-//// Note that it is ok it to be not a [<Struct>] because it is not intended to be copied
-//type MapDispatchWidget<'msg, 'childMsg>(mapFn: 'childMsg -> 'msg, child: ITypedWidget<'childMsg>) =
-//    interface IWidget with
-//        member this.Attributes = child.Attributes
-//
-//        member this.CreateView(ctx) =
-//            let dispatch (msg: obj) =
-//                ctx.Dispatch(unbox<'childMsg> msg |> mapFn |> box)
-//
-//            child.CreateView({ ctx with Dispatch = dispatch })
-//
-//        member this.Source = child.Source
-//
-//    interface ITypedWidget<'msg>
-//
-//module Widget =
-//    let inline map (fn: 'a -> 'b) (widget: ITypedWidget<'a>) : ITypedWidget<'b> =
-//        MapDispatchWidget(fn, widget) :> ITypedWidget<'b>
+
+// Note that it is ok it to be not a [<Struct>] because it is not intended to be copied
+type MapDispatchWidget<'msg, 'childMsg>(mapFn: 'childMsg -> 'msg, child: IWidget<'childMsg>) =
+    let childWidget = child.Compile()
+
+    let attributes =
+        Array.append
+            // TODO make it efficient
+            [|
+                A.SystemAttributes.MapMsg.WithValue(fun m -> unbox<'childMsg> m |> mapFn |> box)
+            |]
+            childWidget.Attributes
+
+    interface IWidget<'msg> with
+        member x.Compile() =
+            {
+                Key = childWidget.Key
+                Attributes = attributes
+            }
+
+        member this.Attributes = attributes
+
+
+module Widget =
+    let inline map (fn: 'a -> 'b) (widget: IWidget<'a>) : IWidget<'b> =
+        MapDispatchWidget(fn, widget) :> IWidget<'b>
 
 
 //----------
@@ -221,7 +235,7 @@ type StackLayoutWidget<'msg>(attributes: Attribute []) =
 type SharedExtensions() =
     [<Extension>]
     static member inline automationId(this: #IWidget, value: string) =
-        this.AddAttribute(A.Automation.AutomationId.WithValue(value))
+        this.AddAttribute(A.SystemAttributes.AutomationId.WithValue(value))
 
     [<Extension>]
     static member inline cast<'msg>(this: IWidget<'msg>) = this
@@ -325,7 +339,7 @@ module Run =
                             view
                             (fun node ->
                                 let maybeId =
-                                    A.Automation.AutomationId.TryGetValue node.Attributes
+                                    A.SystemAttributes.AutomationId.TryGetValue node.Attributes
 
                                 match maybeId with
                                 | Some automationId -> automationId = id
