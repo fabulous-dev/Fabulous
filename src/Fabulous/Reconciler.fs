@@ -1,5 +1,7 @@
 ﻿namespace Fabulous
 
+open Fabulous
+
 // module Reconciler =
 //    let diff (previousOpt: Widget voption) (current: Widget) =
 //        WidgetDiff.Identical
@@ -140,7 +142,7 @@ module Reconciler =
 //  }
 //}
 
-    let inline private createViewFromWidget widget ctx =
+    let inline private createViewFromWidget (widget: Widget) (ctx: ViewTreeContext): IViewNode =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let viewNode = widgetDefinition.CreateView (widget, ctx)
         viewNode
@@ -235,3 +237,27 @@ module Reconciler =
 // 2. Should 'mounting' views done by core framework or should be part of MAUI? I think the latter is fine
 // 3. Should widgets have 1st class parent -> child relationships like in react?
 // Meaning that we can fully control creations of new controls via core
+
+// TODO find a better file/home for this logic
+module Runtime =
+    let MapMsg =
+        Attributes.defineWithComparer<obj -> obj>
+            "MapMsg"
+            (fun () -> id )
+            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
+            Attributes.AttributeComparers.alwaysDifferent
+
+    let MapMsgKey = MapMsg.Key
+
+    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
+        let inline mapEv (e: obj) (attributes: Attribute[]) =
+            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
+            | Some attr -> unbox<obj -> obj>attr.Value e
+            | None -> e
+        
+        let mutable ev = mapEv ev node.Attributes
+        for ancestor in ctx.Ancestors do
+            ev <- mapEv ev ancestor.Attributes
+        
+        ctx.Dispatch ev
+            

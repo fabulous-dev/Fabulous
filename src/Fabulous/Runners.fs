@@ -19,7 +19,7 @@ module Runners =
 
         member _.Key = key
         member _.Component = statefulComponent
-        member _.ViewTreeContext = { Dispatch = unbox >> processMsg }
+        member _.ViewTreeContext = { Dispatch = unbox >> processMsg; Ancestors = [] }
         member _.Start(arg) = start arg
         member _.Pause() = ()
         member _.Restart() = ()

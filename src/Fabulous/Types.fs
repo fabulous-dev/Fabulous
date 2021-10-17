@@ -73,14 +73,14 @@ type [<Struct; RequireQualifiedAccess>] WidgetDiff =
        NewAttributes: Attribute[]
    }
 
-type ViewTreeContext = { Dispatch: obj -> unit }
 
 /// Represents a UI element created from a widget
 type IViewNode =
     abstract ApplyDiff : WidgetDiff -> UpdateResult
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
-    
+and [<Struct>]  ViewTreeContext = { Dispatch: obj -> unit; Ancestors: IViewNode list }
+
 and [<Struct>] ChildrenUpdate =
     {
         ChildrenAfterUpdate: IViewNode []
@@ -96,7 +96,6 @@ and IViewContainer =
 and [<RequireQualifiedAccess; Struct>] UpdateResult =
     | Done
     | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)    
-
 
 type IComponent =
     interface
