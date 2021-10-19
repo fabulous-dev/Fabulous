@@ -84,6 +84,7 @@ let msbuild paths =
     for projectPath in paths do
         let projectName = Path.GetFileNameWithoutExtension projectPath
         let properties = [ ("Configuration", "Release") ] |> addJDK
+        MSBuild.run id "" "Rebuild" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
         MSBuild.run id "" "Build" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
 
 let nugetPack paths =
