@@ -83,33 +83,24 @@ and [<Struct>]  ViewTreeContext = { Dispatch: obj -> unit; Ancestors: IViewNode 
 
 and [<Struct>] ChildrenUpdate =
     {
-        ChildrenAfterUpdate: IViewNode []
-        Added: IViewNode list voption
-        Removed: IViewNode list voption
+        ChildrenAfterUpdate: obj []
+        Added: obj list voption
+        Removed: obj list voption
     }
 
 // TODO should it be IList? or a simpler custom interface will do?
 and IViewContainer =
-    abstract Children : IViewNode []
+    abstract Children : obj []
     abstract UpdateChildren : ChildrenUpdate -> unit
 
 and [<RequireQualifiedAccess; Struct>] UpdateResult =
     | Done
     | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)    
 
-type IComponent =
-    interface
-    end
-
-type IStatefulComponent<'arg, 'model, 'msg> =
-    inherit IComponent
-    abstract Init : 'arg -> 'model
-    abstract Update : 'msg * 'model -> 'model
-    abstract View : 'model -> Widget
-
-type IStatelessComponent =
-    inherit IComponent
-    abstract View : unit -> Widget
+type Program<'arg, 'model, 'msg> =
+    { Init : 'arg -> 'model
+      Update : 'msg * 'model -> 'model
+      View : 'model -> Widget }
 
 [<Struct>]
 [<RequireQualifiedAccess>]
@@ -126,7 +117,7 @@ type IAttributeDefinition<'inputType, 'modelType> =
     abstract DefaultWith : unit -> 'modelType
 
 type IWidgetDefinition =
-    abstract CreateView : Widget * ViewTreeContext -> IViewNode
+    abstract CreateView : Widget * ViewTreeContext -> obj
 
 type IRunner =
     interface
@@ -134,6 +125,6 @@ type IRunner =
 
 type IViewAdapter =
     inherit IDisposable
-    abstract CreateView : unit -> IViewNode
-    abstract Attach : IViewNode -> unit
+    abstract CreateView : unit -> obj
+    abstract Attach : obj -> unit
     abstract Detach : bool -> unit

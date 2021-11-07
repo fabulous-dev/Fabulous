@@ -4,11 +4,15 @@
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
         <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
         <PackageReference Include="FSharp.Core" Version="6.0.1" />
     </ItemGroup>
     <ItemGroup>
       <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
     </ItemGroup>
 </Project>

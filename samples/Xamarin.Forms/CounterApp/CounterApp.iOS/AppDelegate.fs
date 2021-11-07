@@ -3,9 +3,11 @@ namespace Fabulous.XamarinForms.Samples.CounterApp.iOS
 open System
 open UIKit
 open Foundation
+open Xamarin.Essentials
 open Xamarin.Forms
 open Xamarin.Forms.Platform.iOS
 open Fabulous.XamarinForms.Samples.CounterApp
+open Fabulous.XamarinForms
 
 [<Register ("AppDelegate")>]
 type AppDelegate () =
@@ -13,7 +15,8 @@ type AppDelegate () =
 
     override this.FinishedLaunching (app, options) =
         Forms.Init()
-        this.LoadApplication(App())
+        let application : Xamarin.Forms.Application = unbox (Program.create App.program ())
+        this.LoadApplication(application)
         base.FinishedLaunching(app, options)
 
 module Main =

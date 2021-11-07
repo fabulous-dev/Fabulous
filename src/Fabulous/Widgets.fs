@@ -19,21 +19,7 @@ module Widgets =
         {
           Key: WidgetKey
           Name: string
-          Compare: struct (Widget voption * Widget) -> WidgetComparison
-          CreateView: Widget * ViewTreeContext -> IViewNode
+          CreateView: Widget * ViewTreeContext -> obj
         }
         interface IWidgetDefinition with
-            member x.CreateView (w, tree) = x.CreateView (w, tree )
-
-    let register<'targetType when 'targetType :> IViewNode> (create: Widget * ViewTreeContext -> 'targetType) =
-        let key = WidgetDefinitionStore.getNextKey ()
-        let definition =
-            { Key = key
-              Name = nameof<'targetType>
-              Compare = fun _ -> WidgetComparison.Identical
-              CreateView =
-                fun w ->
-                    let target = create w
-                    target :> IViewNode }
-        WidgetDefinitionStore.set key definition
-        key
+            member x.CreateView (w, tree) = x.CreateView (w, tree)

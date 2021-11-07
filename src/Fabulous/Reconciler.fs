@@ -142,19 +142,20 @@ module Reconciler =
 //  }
 //}
 
-    let inline private createViewFromWidget (widget: Widget) (ctx: ViewTreeContext): IViewNode =
+    let inline private createViewFromWidget (widget: Widget) (ctx: ViewTreeContext) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let viewNode = widgetDefinition.CreateView (widget, ctx)
-        viewNode
+        let view = widgetDefinition.CreateView (widget, ctx)
+        view
 
     let inline private addItem item maybeList =
         match maybeList with
         | ValueSome l -> ValueSome(item :: l)
         | ValueNone -> ValueSome [ item ]
 
-    let rec update (node: IViewNode) (attributes: Attribute []) : unit =
+    let rec update (getViewNode: obj -> IViewNode) (node: obj) (attributes: Attribute []) : unit =
 
-        let prevAttributes = node.Attributes
+        let viewNode = getViewNode node
+        let prevAttributes = viewNode.Attributes
 
         let diff =
             compareAttributes prevAttributes attributes
@@ -162,7 +163,7 @@ module Reconciler =
         if List.isEmpty diff then
             ()
         else
-            match node.ApplyDiff
+            match viewNode.ApplyDiff
                       {
                           // TODO return Array from comparison
                           Changes = diff |> List.toArray
@@ -174,15 +175,15 @@ module Reconciler =
 
                 // if the size is the same we can just reuse the same array to avoid allocations
                 // it is safe to do so because diffing goes only forward, thus safe to do it in place
-                let target: IViewNode [] =
+                let target: obj [] =
                     if widgets.Length = children.Length then
                         children
                     else
                         Array.zeroCreate(widgets.Length)
 
-                let mutable added: IViewNode list voption = ValueNone
+                let mutable added: obj list voption = ValueNone
 
-                let mutable removed: IViewNode list voption =
+                let mutable removed: obj list voption =
                     // if we are downsizing then the tail needs to be added to removed
                     if children.Length > widgets.Length then
                         children
@@ -203,10 +204,10 @@ module Reconciler =
                         target.[i] <- viewNode
                         added <- addItem viewNode added
 
-                    | Some p, widget when widget.Key = p.Origin ->
+                    | Some p, widget when widget.Key = (getViewNode p).Origin ->
                         // same type, just update
                         target.[i] <- p
-                        update p widget.Attributes
+                        update getViewNode p widget.Attributes
 
                     | Some p, widget ->
                         // different type, thus replacement is needed

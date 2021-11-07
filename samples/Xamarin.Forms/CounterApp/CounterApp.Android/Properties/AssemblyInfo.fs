@@ -1,17 +1,17 @@
-﻿namespace CounterApp.Android
+﻿namespace Fabulous.XamarinForms.Samples.CounterApp.Android
 
 open System.Reflection
 open System.Runtime.CompilerServices
 open Android.App
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
-type Resources = CounterApp.Android.Resources
-[<assembly: Android.Runtime.ResourceDesigner("CounterApp.Android.Resource", IsApplication=true)>]
+//type Resources = Fabulous.XamarinForms.Samples.CounterApp.Android.Resources
+[<assembly: Android.Runtime.ResourceDesigner("Fabulous.XamarinForms.Samples.CounterApp.Android.Resource", IsApplication=true)>]
 
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[<assembly: AssemblyTitle("CounterApp.Android")>]
+[<assembly: AssemblyTitle("Fabulous.XamarinForms.Samples.CounterApp.Android")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

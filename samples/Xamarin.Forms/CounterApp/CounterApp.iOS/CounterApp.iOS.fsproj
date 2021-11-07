@@ -137,6 +137,12 @@
             <Name>CounterApp</Name>
             <ReferenceSourceTarget></ReferenceSourceTarget>
         </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+          <Name>Fabulous.XamarinForms</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+          <Name>Fabulous</Name>
+        </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

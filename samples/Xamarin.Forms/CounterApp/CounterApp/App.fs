@@ -1,13 +1,24 @@
 namespace Fabulous.XamarinForms.Samples.CounterApp
 
 open Xamarin.Forms
+open Fabulous.XamarinForms
+open type Fabulous.XamarinForms.View
 
-type App () as app = 
-    inherit Application ()
-    let page = ContentPage()
-    let label = Label()
-    do label.Text <- "Hello Fabulous"
-    do label.HorizontalOptions <- LayoutOptions.Center
-    do label.VerticalOptions <- LayoutOptions.Center
-    do page.Content <- label
-    do app.MainPage <- page
+module App =
+    let view () =
+        Application(
+            ContentPage(
+                VerticalStackLayout(spacing = 30., children = [
+                    Label("Hello Fabulous")
+                        .centerAndExpand()
+                    Label("Test")
+                        .centerHorizontally()
+                    Label("Test2")
+                        .centerHorizontally()
+                    Label("End")
+                        .centerAndExpand()
+                ])
+            )
+        )
+
+    let program = Program.statelessApplication view
