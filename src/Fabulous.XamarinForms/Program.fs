@@ -9,6 +9,11 @@ module Program =
           Update = ignore
           View = fun () -> (view ()).Compile() } : Program<unit, unit, unit>
 
+    let statefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidgetBuilder<'msg>> (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> 'view) =
+        { Init = init
+          Update = fun (msg, model) -> update msg model
+          View = fun model -> (view model).Compile() }
+
     let getViewNode (target: obj) =
         (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> IViewNode
 

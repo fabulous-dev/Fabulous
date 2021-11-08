@@ -2,6 +2,7 @@
 
 open Fabulous
 open Fabulous.Widgets
+open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XamarinFormsAttributes
 open System.Runtime.CompilerServices
 
@@ -32,13 +33,7 @@ type IWidgetExtensions () =
         let result = (^T : (new : Attribute[] -> ^T) attribs2)
         result
 
-type ViewNode(key, attributes) =
-    static member ViewNodeProperty = Xamarin.Forms.BindableProperty.Create("ViewNode", typeof<ViewNode>, typeof<Xamarin.Forms.View>, null)
 
-    interface IViewNode with
-        member _.ApplyDiff(diffs) = UpdateResult.Done
-        member _.Attributes = attributes
-        member _.Origin = key
 
 module Widgets =
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> () =
@@ -47,13 +42,13 @@ module Widgets =
             { Key = key
               Name = nameof<'T>
               CreateView = fun (widget, context) ->
-                  let node = ViewNode(key, widget.Attributes)
+                  let node = ViewNode(key, widget.Attributes, context)
                   let view = new 'T()
                   view.SetValue(ViewNode.ViewNodeProperty, node)
 
                   for attr in widget.Attributes do
                     let def = (AttributeDefinitionStore.get attr.Key) :?> IXamarinFormsAttributeDefinition
-                    def.UpdateTarget(ValueSome attr.Value, view)
+                    def.UpdateTarget(ValueNone, ValueSome attr.Value, view)
 
                   box view }
         

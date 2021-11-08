@@ -7,7 +7,7 @@ open System.Collections.Generic
 open Fabulous.XamarinForms.Widgets
 
 module Application =
-    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (newValueOpt, target) ->
+    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (_, newValueOpt, target) ->
         let app = target :?> Xamarin.Forms.Application
         match newValueOpt with
         | ValueNone -> app.MainPage <- null
@@ -28,7 +28,7 @@ module ContentPage =
     let Content = XamarinFormsAttributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
 
 module LayoutOfView =
-    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (newValueOpt, target) ->
+    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (_, newValueOpt, target) ->
         let layout = target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>
         match newValueOpt with
         | ValueNone -> layout.Children.Clear()
@@ -50,3 +50,7 @@ module View =
 
 module Label =
     let Text = XamarinFormsAttributes.defineBindable<string> Xamarin.Forms.Label.TextProperty
+
+module Button =
+    let Text = XamarinFormsAttributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
+    let Clicked = XamarinFormsAttributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)

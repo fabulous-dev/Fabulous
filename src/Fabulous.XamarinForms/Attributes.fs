@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open Fabulous
 open Fabulous.Attributes
 open Xamarin.Forms
+open System
 
 module XamarinFormsAttributeComparers =
     let widgetComparer (struct (prevOpt: Widget voption, currOpt: Widget voption)) =
@@ -14,7 +15,7 @@ module XamarinFormsAttributeComparers =
 
 module XamarinFormsAttributes =
     type IXamarinFormsAttributeDefinition =
-        abstract member UpdateTarget: obj voption * obj -> unit
+        abstract member UpdateTarget: obj voption * obj voption * obj -> unit
 
     type XamarinFormsAttributeDefinition<'inputType, 'modelType> =
         {
@@ -23,7 +24,7 @@ module XamarinFormsAttributes =
             DefaultWith: unit -> 'modelType
             Convert: 'inputType -> 'modelType
             Compare: struct ('modelType voption * 'modelType voption) -> AttributeComparison
-            UpdateTarget: struct ('modelType voption * obj) -> unit
+            UpdateTarget: struct ('modelType voption * 'modelType voption * obj) -> unit
         }
 
         member x.WithValue(value) =
@@ -34,16 +35,17 @@ module XamarinFormsAttributes =
               Value = x.Convert(value) }
 
         interface IXamarinFormsAttributeDefinition with
-            member x.UpdateTarget(newValueOpt, target) =
+            member x.UpdateTarget(oldValueOpt, newValueOpt, target) =
+                let oldValueOpt = match oldValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
                 let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-                x.UpdateTarget (struct (newValueOpt, target))
+                x.UpdateTarget (struct (oldValueOpt, newValueOpt, target))
 
         interface IAttributeDefinition<'inputType, 'modelType> with
             member x.Key = x.Key
             member x.DefaultWith () = x.DefaultWith ()
             member x.CompareBoxed(a, b) = x.Compare(struct (unbox a, unbox b))
 
-    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType voption * 'modelType voption) -> AttributeComparison) (updateTarget: struct ('modelType voption * obj) -> unit) =
+    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType voption * 'modelType voption) -> AttributeComparison) (updateTarget: struct ('modelType voption * 'modelType voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
             { Key = key
@@ -55,7 +57,7 @@ module XamarinFormsAttributes =
         AttributeDefinitionStore.set key definition
         definition
 
-    let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * obj) -> unit) =
+    let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * 'elementType array voption * obj) -> unit) =
         defineWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
 
     let defineWidgetCollection name updateTarget =
@@ -72,7 +74,7 @@ module XamarinFormsAttributes =
               DefaultWith = fun () -> Unchecked.defaultof<'modelType>
               Convert = convert
               Compare = comparer
-              UpdateTarget = fun struct(newValueOpt, target) ->
+              UpdateTarget = fun struct(_, newValueOpt, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v) }
@@ -87,7 +89,7 @@ module XamarinFormsAttributes =
               DefaultWith = fun () -> Unchecked.defaultof<Widget>
               Convert = id
               Compare = XamarinFormsAttributeComparers.widgetComparer
-              UpdateTarget = fun struct(newValueOpt, target) ->
+              UpdateTarget = fun struct(_, newValueOpt, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome widget ->
@@ -99,3 +101,15 @@ module XamarinFormsAttributes =
 
     let inline defineBindable<'T when 'T: equality> bindableProperty =
         defineBindableWithComparer<'T, 'T> bindableProperty id AttributeComparers.equalityComparer
+
+    let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
+        let key = AttributeDefinitionStore.getNextKey()
+        let definition =
+            { Key = key
+              Name = name
+              DefaultWith = fun () -> null
+              Convert = id
+              Compare = AttributeComparers.noCompare
+              UpdateTarget = fun struct (oldValueOpt, newValueOpt: obj voption, target) -> () }
+        AttributeDefinitionStore.set key definition
+        definition

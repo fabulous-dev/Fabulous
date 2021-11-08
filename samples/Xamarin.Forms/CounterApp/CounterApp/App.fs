@@ -5,20 +5,33 @@ open Fabulous.XamarinForms
 open type Fabulous.XamarinForms.View
 
 module App =
-    let view () =
+    type Model =
+        { Count: int }
+
+    type Msg =
+        | Increment
+        | Decrement
+
+    let init () =
+        { Count = 0 }
+
+    let update msg model =
+        match msg with
+        | Increment -> { model with Count = model.Count + 1 }
+        | Decrement -> { model with Count = model.Count - 1 }
+
+    let view model =
         Application(
             ContentPage(
-                VerticalStackLayout(spacing = 30., children = [
-                    Label("Hello Fabulous")
+                VerticalStackLayout([
+                    Label($"Count = {model.Count}")
                         .centerAndExpand()
-                    Label("Test")
-                        .centerHorizontally()
-                    Label("Test2")
-                        .centerHorizontally()
-                    Label("End")
-                        .centerAndExpand()
+
+                    Button("Increment", Increment)
+                    Button("Decrement", Decrement)
+                        .verticalOptions(LayoutOptions.StartAndExpand)
                 ])
             )
         )
 
-    let program = Program.statelessApplication view
+    let program = Program.statefulApplication init update view

@@ -68,6 +68,21 @@ type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
             { Key = key
               Attributes = attributes }
 
+type [<Struct>] ButtonWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.Button>()
+
+    static member inline Create(text: string, onClicked: 'msg) =
+        ButtonWidgetBuilder<'msg>([|
+            Button.Text.WithValue(text)
+            Button.Clicked.WithValue(onClicked)
+        |])
+
+    interface IViewWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+
 [<Extension>]
 type ViewExtensions () =
     [<Extension>]
@@ -86,3 +101,4 @@ type View private () =
     static member inline HorizontalStackLayout<'msg>(children) = StackLayoutWidgetBuilder<'msg>.Create(Xamarin.Forms.StackOrientation.Horizontal, children)
     static member inline HorizontalStackLayout<'msg>(spacing: float, children) = StackLayoutWidgetBuilder<'msg>.Create(Xamarin.Forms.StackOrientation.Horizontal, children, spacing = spacing)
     static member inline Label<'msg>(text) = LabelWidgetBuilder<'msg>.Create(text)
+    static member inline Button<'msg>(text, onClicked) = ButtonWidgetBuilder<'msg>.Create(text, onClicked)
