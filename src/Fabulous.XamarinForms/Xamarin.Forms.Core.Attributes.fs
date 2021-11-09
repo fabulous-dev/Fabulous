@@ -7,13 +7,13 @@ open System.Collections.Generic
 open Fabulous.XamarinForms.Widgets
 
 module Application =
-    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (_, newValueOpt, target) ->
+    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (context, newValueOpt, target) ->
         let app = target :?> Xamarin.Forms.Application
         match newValueOpt with
         | ValueNone -> app.MainPage <- null
         | ValueSome widget ->
             let widgetDefinition = WidgetDefinitionStore.get widget.Key
-            let view = widgetDefinition.CreateView (widget, Unchecked.defaultof<_>)
+            let view = widgetDefinition.CreateView (widget, context)
             app.MainPage <- unbox view
     )
 
@@ -28,7 +28,7 @@ module ContentPage =
     let Content = XamarinFormsAttributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
 
 module LayoutOfView =
-    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (_, newValueOpt, target) ->
+    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (context, newValueOpt, target) ->
         let layout = target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>
         match newValueOpt with
         | ValueNone -> layout.Children.Clear()
@@ -36,7 +36,7 @@ module LayoutOfView =
             layout.Children.Clear()
             for child in v do
                 let widgetDefinition = WidgetDefinitionStore.get child.Key
-                let view = widgetDefinition.CreateView (child, Unchecked.defaultof<_>)
+                let view = widgetDefinition.CreateView (child, context)
                 layout.Children.Add(unbox view)
     )
 

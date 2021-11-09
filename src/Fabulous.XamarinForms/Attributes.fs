@@ -6,16 +6,12 @@ open Xamarin.Forms
 open System
 
 module XamarinFormsAttributeComparers =
-    let widgetComparer (struct (prevOpt: Widget voption, currOpt: Widget voption)) =
-        match prevOpt, currOpt with
-        | ValueNone, ValueNone -> AttributeComparison.Identical
-        | ValueSome prev, ValueSome curr when prev = curr -> AttributeComparison.Identical
-        | _, ValueSome curr -> AttributeComparison.Different (ValueSome (box curr))
-        | _, ValueNone -> AttributeComparison.Different ValueNone
+    let widgetComparer (struct (prev: Widget, curr: Widget)) =
+        AttributeComparison.Different (ValueSome (box curr))
 
 module XamarinFormsAttributes =
     type IXamarinFormsAttributeDefinition =
-        abstract member UpdateTarget: obj voption * obj voption * obj -> unit
+        abstract member UpdateTarget: ViewTreeContext * obj voption * obj -> unit
 
     type XamarinFormsAttributeDefinition<'inputType, 'modelType> =
         {
@@ -23,8 +19,8 @@ module XamarinFormsAttributes =
             Name: string
             DefaultWith: unit -> 'modelType
             Convert: 'inputType -> 'modelType
-            Compare: struct ('modelType voption * 'modelType voption) -> AttributeComparison
-            UpdateTarget: struct ('modelType voption * 'modelType voption * obj) -> unit
+            Compare: struct ('modelType * 'modelType) -> AttributeComparison
+            UpdateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit
         }
 
         member x.WithValue(value) =
@@ -35,17 +31,17 @@ module XamarinFormsAttributes =
               Value = x.Convert(value) }
 
         interface IXamarinFormsAttributeDefinition with
-            member x.UpdateTarget(oldValueOpt, newValueOpt, target) =
-                let oldValueOpt = match oldValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
+            member x.UpdateTarget(context, newValueOpt, target) =
                 let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-                x.UpdateTarget (struct (oldValueOpt, newValueOpt, target))
+                x.UpdateTarget (struct (context, newValueOpt, target))
 
         interface IAttributeDefinition<'inputType, 'modelType> with
             member x.Key = x.Key
             member x.DefaultWith () = x.DefaultWith ()
-            member x.CompareBoxed(a, b) = x.Compare(struct (unbox a, unbox b))
+            member x.CompareBoxed(a, b) =
+                x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
 
-    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType voption * 'modelType voption) -> AttributeComparison) (updateTarget: struct ('modelType voption * 'modelType voption * obj) -> unit) =
+    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) (updateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
             { Key = key
@@ -57,7 +53,7 @@ module XamarinFormsAttributes =
         AttributeDefinitionStore.set key definition
         definition
 
-    let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * 'elementType array voption * obj) -> unit) =
+    let defineCollection<'elementType> name (updateTarget: struct (ViewTreeContext * 'elementType array voption * obj) -> unit) =
         defineWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
 
     let defineWidgetCollection name updateTarget =
@@ -66,7 +62,7 @@ module XamarinFormsAttributes =
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (comparer: struct ('modelType voption * 'modelType voption) -> AttributeComparison) =
+    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (comparer: struct ('modelType * 'modelType) -> AttributeComparison) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
             { Key = key
@@ -89,12 +85,12 @@ module XamarinFormsAttributes =
               DefaultWith = fun () -> Unchecked.defaultof<Widget>
               Convert = id
               Compare = XamarinFormsAttributeComparers.widgetComparer
-              UpdateTarget = fun struct(_, newValueOpt, target) ->
+              UpdateTarget = fun struct(context, newValueOpt, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome widget ->
                     let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                    let view = widgetDefinition.CreateView (widget, Unchecked.defaultof<_>)
+                    let view = widgetDefinition.CreateView (widget, context)
                     (target :?> BindableObject).SetValue(bindableProperty, view) }
         AttributeDefinitionStore.set key definition
         definition
@@ -110,6 +106,23 @@ module XamarinFormsAttributes =
               DefaultWith = fun () -> null
               Convert = id
               Compare = AttributeComparers.noCompare
-              UpdateTarget = fun struct (oldValueOpt, newValueOpt: obj voption, target) -> () }
+              UpdateTarget = fun struct (context, newValueOpt, target) ->
+                let event = getEvent target
+                let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData
+
+                match viewNodeData.TryGetHandler(key) with
+                | None -> ()
+                | Some handler -> event.RemoveHandler handler
+
+                match newValueOpt with
+                | ValueNone ->
+                    viewNodeData.SetHandler(key, ValueNone)
+
+                | ValueSome msg ->
+                    let handler = EventHandler(fun _ _ ->
+                        context.Dispatch msg
+                    )
+                    event.AddHandler handler
+                    viewNodeData.SetHandler(key, ValueSome handler) }
         AttributeDefinitionStore.set key definition
         definition

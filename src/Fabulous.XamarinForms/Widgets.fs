@@ -42,13 +42,13 @@ module Widgets =
             { Key = key
               Name = nameof<'T>
               CreateView = fun (widget, context) ->
-                  let node = ViewNode(key, widget.Attributes, context)
+                  let viewNodeData = ViewNodeData(ViewNode(key, widget.Attributes, context))
                   let view = new 'T()
-                  view.SetValue(ViewNode.ViewNodeProperty, node)
+                  view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
                   for attr in widget.Attributes do
                     let def = (AttributeDefinitionStore.get attr.Key) :?> IXamarinFormsAttributeDefinition
-                    def.UpdateTarget(ValueNone, ValueSome attr.Value, view)
+                    def.UpdateTarget(context, ValueSome attr.Value, view)
 
                   box view }
         
