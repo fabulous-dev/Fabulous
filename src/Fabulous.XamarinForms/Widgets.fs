@@ -1,10 +1,11 @@
 ﻿namespace Fabulous.XamarinForms.Widgets
 
+open System
+open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.Widgets
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XamarinFormsAttributes
-open System.Runtime.CompilerServices
 
 type IWidgetBuilder =
     abstract Attributes: Attribute[]
@@ -33,24 +34,46 @@ type IWidgetExtensions () =
         let result = (^T : (new : Attribute[] -> ^T) attribs2)
         result
 
+type LayoutOfViewViewContainer(ref: WeakReference) =
+    interface IXamarinFormsViewContainer with
+        member this.ChildrenAttributeKey = Fabulous.XamarinForms.Attributes.LayoutOfView.Children.Key
 
+        member this.Children =
+            if ref.IsAlive then
+                (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
+                |> Seq.map box
+                |> Seq.toArray
+            else
+                Array.empty
+
+        member this.UpdateChildren diff =
+            let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
+            let count = children.Count
+
+            while count > diff.ChildrenAfterUpdate.Length do
+                children.RemoveAt(children.Count - 1)
+
+            for i = 0 to count - 1 do
+                children.[i] <- diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
 
 module Widgets =
-    let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> () =
+    let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> (getViewContainer: WeakReference -> IXamarinFormsViewContainer option) =
         let key = WidgetDefinitionStore.getNextKey()
         let definition =
             { Key = key
               Name = nameof<'T>
               CreateView = fun (widget, context) ->
                   let view = new 'T()
-                  let viewNodeData = ViewNodeData(ViewNode(key, widget.Attributes, context, view))
+                  let weakReference = WeakReference(view)
+                  let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference, getViewContainer weakReference))
                   view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
-                  for attr in widget.Attributes do
-                    let def = (AttributeDefinitionStore.get attr.Key) :?> IXamarinFormsAttributeDefinition
-                    def.UpdateTarget(context, ValueSome attr.Value, view)
+                  Reconciler.update ViewNode.getViewNode view widget.Attributes
 
                   box view }
         
         WidgetDefinitionStore.set key definition
         key
+
+    let registerNoChildren<'T when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> () =
+        register<'T> (fun _ -> None)

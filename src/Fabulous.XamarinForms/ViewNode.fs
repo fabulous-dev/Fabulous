@@ -1,39 +1,64 @@
 ﻿namespace Fabulous.XamarinForms
 
+open System
 open Fabulous
 
-type ViewNode(key, attributes, context: ViewTreeContext, target: obj) =
+type IXamarinFormsViewContainer =
+    inherit IViewContainer
+    abstract member ChildrenAttributeKey: AttributeKey
 
-    let mutable _attributes = attributes
+type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewContainerOpt: IXamarinFormsViewContainer option) =
+
+    let mutable _attributes = [||]
 
     member _.Context = context
 
     interface IViewNode with
-        member _.ApplyDiff(diffs) =
-            for change in diffs.Changes do
-                match change with
-                | AttributeChange.Added added ->
-                    let definition = AttributeDefinitionStore.get added.Key :?> IXamarinFormsAttributeDefinition
-                    definition.UpdateTarget(context, ValueSome added.Value, target)
-                    _attributes <- Array.append _attributes [| added |]
-
-                | AttributeChange.Removed removed ->
-                    let definition = AttributeDefinitionStore.get removed.Key :?> IXamarinFormsAttributeDefinition
-                    definition.UpdateTarget(context, ValueNone, target)
-                    _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
-
-                | AttributeChange.Updated struct (prevAttribute, currAttribute, diff) ->
-                    let definition = AttributeDefinitionStore.get currAttribute.Key :?> IXamarinFormsAttributeDefinition
-                    definition.UpdateTarget(context, ValueSome currAttribute.Value, target)
-                    _attributes <- Array.map (fun (a: Attribute) -> if a.Key = currAttribute.Key then currAttribute else a) _attributes
-
-            UpdateResult.Done
-
         member _.Attributes = _attributes
         member _.Origin = key
+        member _.ApplyDiff(diffs) =
+            if not targetRef.IsAlive then
+                UpdateResult.Done
+            else
+                for change in diffs.Changes do
+                    match change with
+                    | AttributeChange.Added added ->
+                        let definition = AttributeDefinitionStore.get added.Key :?> IXamarinFormsAttributeDefinition
+                        definition.UpdateTarget(ValueSome added.Value, targetRef.Target)
+                        _attributes <- Array.append _attributes [| added |]
+
+                    | AttributeChange.Removed removed ->
+                        let definition = AttributeDefinitionStore.get removed.Key :?> IXamarinFormsAttributeDefinition
+                        definition.UpdateTarget(ValueNone, targetRef.Target)
+                        _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
+
+                    | AttributeChange.Updated struct (prevAttribute, currAttribute, diff) ->
+                        let definition = AttributeDefinitionStore.get currAttribute.Key :?> IXamarinFormsAttributeDefinition
+                        definition.UpdateTarget(ValueSome currAttribute.Value, targetRef.Target)
+                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = currAttribute.Key then currAttribute else a) _attributes
+
+                match viewContainerOpt with
+                | None -> UpdateResult.Done
+                | Some viewContainer ->
+                    let needsChildrenUpdate =
+                        diffs.Changes
+                        |> Array.choose (fun change ->
+                            match change with
+                            // If Added or Removed, we don't need to go update children individually
+                            // They already have been bulk created or bulk removed
+                            | AttributeChange.Added _
+                            | AttributeChange.Removed _ -> None
+                            | AttributeChange.Updated struct (_, currAttribute, diff) when currAttribute.Key = viewContainer.ChildrenAttributeKey -> Some (currAttribute.Value :?> Widget[])
+                            | AttributeChange.Updated struct (_, currAttribute, diff) -> None
+                        )
+                        |> Array.tryHead
+
+                    match needsChildrenUpdate with
+                    | None -> UpdateResult.Done
+                    | Some widgets -> UpdateResult.UpdateChildren struct (viewContainer :> IViewContainer, widgets, context)
 
 and IXamarinFormsAttributeDefinition =
-    abstract member UpdateTarget: ViewTreeContext * obj voption * obj -> unit
+    abstract member UpdateTarget: obj voption * obj -> unit
 
 and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
     {
@@ -42,7 +67,7 @@ and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
         DefaultWith: unit -> 'modelType
         Convert: 'inputType -> 'modelType
         Compare: struct ('modelType * 'modelType) -> AttributeComparison
-        UpdateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit
+        UpdateTarget: struct ('modelType voption * obj) -> unit
     }
 
     member x.WithValue(value) =
@@ -53,9 +78,9 @@ and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
           Value = x.Convert(value) }
 
     interface IXamarinFormsAttributeDefinition with
-        member x.UpdateTarget(context, newValueOpt, target) =
+        member x.UpdateTarget(newValueOpt, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-            x.UpdateTarget (struct (context, newValueOpt, target))
+            x.UpdateTarget (struct (newValueOpt, target))
 
     interface IAttributeDefinition<'inputType, 'modelType> with
         member x.Key = x.Key
@@ -80,3 +105,7 @@ type ViewNodeData(viewNode: ViewNode) =
 
 module ViewNode =
     let ViewNodeProperty = Xamarin.Forms.BindableProperty.Create("ViewNode", typeof<ViewNodeData>, typeof<Xamarin.Forms.View>, null)
+
+    let getViewNode (target: obj) =
+        let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNodeProperty) :?> ViewNodeData
+        viewNodeData.ViewNode :> IViewNode

@@ -4,17 +4,19 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 open System.Collections.Generic
-open Fabulous.XamarinForms.Widgets
 
 module Application =
-    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (context, newValueOpt, target) ->
+    let MainPage = XamarinFormsAttributes.define<Widget> "Application_MainPage" (fun () -> Unchecked.defaultof<_>) (fun struct (newValueOpt, target) ->
         let app = target :?> Xamarin.Forms.Application
         match newValueOpt with
         | ValueNone -> app.MainPage <- null
-        | ValueSome widget ->
+        | ValueSome widget when app.MainPage = null ->
+            let viewNode = ViewNode.getViewNode target :?> ViewNode
             let widgetDefinition = WidgetDefinitionStore.get widget.Key
-            let view = widgetDefinition.CreateView (widget, context)
+            let view = widgetDefinition.CreateView (widget, viewNode.Context)
             app.MainPage <- unbox view
+        | ValueSome widget ->
+            Reconciler.update ViewNode.getViewNode app.MainPage widget.Attributes
     )
 
 module Page =
@@ -28,15 +30,16 @@ module ContentPage =
     let Content = XamarinFormsAttributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
 
 module LayoutOfView =
-    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (context, newValueOpt, target) ->
+    let Children = XamarinFormsAttributes.defineWidgetCollection "LayoutOfWidget_Children" (fun struct (newValueOpt, target) ->
         let layout = target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>
         match newValueOpt with
         | ValueNone -> layout.Children.Clear()
         | ValueSome v ->
             layout.Children.Clear()
             for child in v do
+                let viewNode = ViewNode.getViewNode target :?> ViewNode
                 let widgetDefinition = WidgetDefinitionStore.get child.Key
-                let view = widgetDefinition.CreateView (child, context)
+                let view = widgetDefinition.CreateView (child, viewNode.Context)
                 layout.Children.Add(unbox view)
     )
 

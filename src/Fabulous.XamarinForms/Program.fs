@@ -14,12 +14,8 @@ module Program =
           Update = fun (msg, model) -> update msg model
           View = fun model -> (view model).Compile() }
 
-    let getViewNode (target: obj) =
-        let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData
-        viewNodeData.ViewNode :> IViewNode
-
     let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) (arg: 'arg) =
         let runner = Runners.create program
         runner.Start(arg)
-        let adapter = ViewAdapters.create runner getViewNode
+        let adapter = ViewAdapters.create runner ViewNode.getViewNode
         adapter.CreateView() |> unbox

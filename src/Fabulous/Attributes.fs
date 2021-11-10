@@ -49,7 +49,7 @@ module Attributes =
         
         let alwaysDifferent struct (a, b) = AttributeComparison.Different ValueNone
 
-        let collectionComparer struct (a: 'T, b: 'T) = AttributeComparison.Identical //Same
+        let collectionComparer struct (a: 'T, b: 'T) = AttributeComparison.Different (ValueSome (box b))
 
     let defineWithConverter<'inputType, 'modelType>
         name

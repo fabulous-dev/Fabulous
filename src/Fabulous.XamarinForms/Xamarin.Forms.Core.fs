@@ -11,7 +11,7 @@ module Helpers =
         |> Seq.map (fun item -> item.Compile())
 
 type [<Struct>] ApplicationWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Application>()
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.Application>()
 
     static member inline Create(mainPage: #IPageWidgetBuilder<'msg>) =
         ApplicationWidgetBuilder<'msg>([|
@@ -25,7 +25,7 @@ type [<Struct>] ApplicationWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] ContentPageWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.ContentPage>()
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.ContentPage>()
 
     static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentPageWidgetBuilder<'msg>([|
@@ -39,7 +39,7 @@ type [<Struct>] ContentPageWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.StackLayout>()
+    static let key = Widgets.register<Xamarin.Forms.StackLayout> (fun ref -> Some (LayoutOfViewViewContainer(ref) :> IXamarinFormsViewContainer))
 
     static member inline Create(orientation: Xamarin.Forms.StackOrientation, children: seq<#IViewWidgetBuilder<'msg>>, ?spacing: float) =
         StackLayoutWidgetBuilder<'msg>([|
@@ -55,7 +55,7 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Label>()
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.Label>()
 
     static member inline Create(text: string) =
         LabelWidgetBuilder<'msg>([|
@@ -69,7 +69,7 @@ type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] ButtonWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Button>()
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.Button>()
 
     static member inline Create(text: string, onClicked: 'msg) =
         ButtonWidgetBuilder<'msg>([|

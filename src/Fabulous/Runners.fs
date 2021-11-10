@@ -39,7 +39,6 @@ module ViewAdapters =
 
     type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext, getViewNode: obj -> IViewNode) as this =
 
-        //        let mutable _widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
 
         let _stateSubscription =
@@ -48,18 +47,9 @@ module ViewAdapters =
         member _.CreateView() =
             let state = unbox(StateStore.get stateKey)
             let widget = view state
+
             let definition = WidgetDefinitionStore.get widget.Key
-
-            let root = definition.CreateView(widget, context)
-
-            // let diff = Reconciler.diff ValueNone widget
-
-            //            viewNode.SetContext(context)
-            // viewNode.ApplyDiff(diff)
-
-            //            _widget <- widget
-            _root <- root
-
+            _root <- definition.CreateView(widget, context)
             _root
 
         member _.OnStateChanged(args) =
