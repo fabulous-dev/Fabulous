@@ -2,13 +2,66 @@
 
 open Fabulous
 
-type ViewNode(key, attributes, context: ViewTreeContext) =
+type ViewNode(key, attributes, context: ViewTreeContext, target: obj) =
+
+    let mutable _attributes = attributes
+
     member _.Context = context
 
     interface IViewNode with
-        member _.ApplyDiff(diffs) = UpdateResult.Done
-        member _.Attributes = attributes
+        member _.ApplyDiff(diffs) =
+            for change in diffs.Changes do
+                match change with
+                | AttributeChange.Added added ->
+                    let definition = AttributeDefinitionStore.get added.Key :?> IXamarinFormsAttributeDefinition
+                    definition.UpdateTarget(context, ValueSome added.Value, target)
+                    _attributes <- Array.append _attributes [| added |]
+
+                | AttributeChange.Removed removed ->
+                    let definition = AttributeDefinitionStore.get removed.Key :?> IXamarinFormsAttributeDefinition
+                    definition.UpdateTarget(context, ValueNone, target)
+                    _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
+
+                | AttributeChange.Updated struct (prevAttribute, currAttribute, diff) ->
+                    let definition = AttributeDefinitionStore.get currAttribute.Key :?> IXamarinFormsAttributeDefinition
+                    definition.UpdateTarget(context, ValueSome currAttribute.Value, target)
+                    _attributes <- Array.map (fun (a: Attribute) -> if a.Key = currAttribute.Key then currAttribute else a) _attributes
+
+            UpdateResult.Done
+
+        member _.Attributes = _attributes
         member _.Origin = key
+
+and IXamarinFormsAttributeDefinition =
+    abstract member UpdateTarget: ViewTreeContext * obj voption * obj -> unit
+
+and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
+    {
+        Key: AttributeKey
+        Name: string
+        DefaultWith: unit -> 'modelType
+        Convert: 'inputType -> 'modelType
+        Compare: struct ('modelType * 'modelType) -> AttributeComparison
+        UpdateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit
+    }
+
+    member x.WithValue(value) =
+        { Key = x.Key
+#if DEBUG
+          DebugName = x.Name
+#endif
+          Value = x.Convert(value) }
+
+    interface IXamarinFormsAttributeDefinition with
+        member x.UpdateTarget(context, newValueOpt, target) =
+            let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
+            x.UpdateTarget (struct (context, newValueOpt, target))
+
+    interface IAttributeDefinition<'inputType, 'modelType> with
+        member x.Key = x.Key
+        member x.DefaultWith () = x.DefaultWith ()
+        member x.CompareBoxed(a, b) =
+            x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
 
 type ViewNodeData(viewNode: ViewNode) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty

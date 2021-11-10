@@ -42,8 +42,8 @@ module Widgets =
             { Key = key
               Name = nameof<'T>
               CreateView = fun (widget, context) ->
-                  let viewNodeData = ViewNodeData(ViewNode(key, widget.Attributes, context))
                   let view = new 'T()
+                  let viewNodeData = ViewNodeData(ViewNode(key, widget.Attributes, context, view))
                   view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
                   for attr in widget.Attributes do

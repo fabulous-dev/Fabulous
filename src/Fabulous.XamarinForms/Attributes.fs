@@ -10,37 +10,6 @@ module XamarinFormsAttributeComparers =
         AttributeComparison.Different (ValueSome (box curr))
 
 module XamarinFormsAttributes =
-    type IXamarinFormsAttributeDefinition =
-        abstract member UpdateTarget: ViewTreeContext * obj voption * obj -> unit
-
-    type XamarinFormsAttributeDefinition<'inputType, 'modelType> =
-        {
-            Key: AttributeKey
-            Name: string
-            DefaultWith: unit -> 'modelType
-            Convert: 'inputType -> 'modelType
-            Compare: struct ('modelType * 'modelType) -> AttributeComparison
-            UpdateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit
-        }
-
-        member x.WithValue(value) =
-            { Key = x.Key
-#if DEBUG
-              DebugName = x.Name
-#endif
-              Value = x.Convert(value) }
-
-        interface IXamarinFormsAttributeDefinition with
-            member x.UpdateTarget(context, newValueOpt, target) =
-                let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-                x.UpdateTarget (struct (context, newValueOpt, target))
-
-        interface IAttributeDefinition<'inputType, 'modelType> with
-            member x.Key = x.Key
-            member x.DefaultWith () = x.DefaultWith ()
-            member x.CompareBoxed(a, b) =
-                x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
-
     let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) (updateTarget: struct (ViewTreeContext * 'modelType voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
