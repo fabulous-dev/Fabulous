@@ -15,22 +15,18 @@ open System.Runtime.CompilerServices
 module Attributes =
 
     type AttributeDefinition<'inputType, 'modelType> =
-        {
-            Key: AttributeKey
-            Name: string
-            DefaultWith: unit -> 'modelType
-            Convert: 'inputType -> 'modelType
-            Compare: struct ('modelType * 'modelType) -> AttributeComparison
-        }
+        { Key: AttributeKey
+          Name: string
+          DefaultWith: unit -> 'modelType
+          Convert: 'inputType -> 'modelType
+          Compare: struct ('modelType * 'modelType) -> AttributeComparison }
 
         member x.WithValue(value) =
-            {
-                Key = x.Key
+            { Key = x.Key
 #if DEBUG
-                DebugName = x.Name
+              DebugName = x.Name
 #endif
-                Value = x.Convert(value)
-            }
+              Value = x.Convert(value) }
 
         interface IAttributeDefinition<'inputType, 'modelType> with
             member x.Key = x.Key
@@ -60,13 +56,11 @@ module Attributes =
         let key = AttributeDefinitionStore.getNextKey()
 
         let definition =
-            {
-                Key = key
-                Name = name
-                DefaultWith = defaultWith >> convert
-                Convert = convert
-                Compare = compare
-            }
+            { Key = key
+              Name = name
+              DefaultWith = defaultWith >> convert
+              Convert = convert
+              Compare = compare }
 
         AttributeDefinitionStore.set key definition
         definition

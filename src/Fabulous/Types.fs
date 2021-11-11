@@ -28,21 +28,17 @@ type ViewAdapterKey = int
 /// For example, Maui needs to know
 [<Struct>]
 type Attribute =
-    {
-        Key: AttributeKey
+    { Key: AttributeKey
 #if DEBUG
-        DebugName: string
+      DebugName: string
 #endif
-        Value: obj
-    }
+      Value: obj }
 
 /// Represents a virtual UI element such as a Label, a Button, etc.
 [<Struct>]
 type Widget =
-    {
-        Key: WidgetKey
-        Attributes: Attribute []
-    }
+    { Key: WidgetKey
+      Attributes: Attribute [] }
 
 [<Struct; RequireQualifiedAccess>]
 type AttributeChange =
@@ -68,10 +64,8 @@ type AttributeChange =
 //    }
 
 type [<Struct; RequireQualifiedAccess>] WidgetDiff =
-   {
-       Changes: AttributeChange[]
-       NewAttributes: Attribute[]
-   }
+   { Changes: AttributeChange[]
+     NewAttributes: Attribute[] }
 
 
 /// Represents a UI element created from a widget
@@ -79,14 +73,15 @@ type IViewNode =
     abstract ApplyDiff : WidgetDiff -> UpdateResult
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
-and [<Struct>]  ViewTreeContext = { Dispatch: obj -> unit; Ancestors: IViewNode list }
+
+and [<Struct>]  ViewTreeContext =
+    { Dispatch: obj -> unit
+      Ancestors: IViewNode list }
 
 and [<Struct>] ChildrenUpdate =
-    {
-        ChildrenAfterUpdate: obj []
-        Added: obj list voption
-        Removed: obj list voption
-    }
+    { ChildrenAfterUpdate: obj []
+      Added: obj list voption
+      Removed: obj list voption }
 
 // TODO should it be IList? or a simpler custom interface will do?
 and IViewContainer =

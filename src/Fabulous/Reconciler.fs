@@ -2,11 +2,6 @@
 
 open Fabulous
 
-// module Reconciler =
-//    let diff (previousOpt: Widget voption) (current: Widget) =
-//        WidgetDiff.Identical
-
-
 //-----Update sketch------
 module Reconciler =
 

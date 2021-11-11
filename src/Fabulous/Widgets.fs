@@ -11,15 +11,10 @@
 /// attribute-based widgets
 
 module Widgets =
-    [<Struct; RequireQualifiedAccess>]
-    type WidgetComparison =
-        | Identical
-
     type WidgetDefinition =
-        {
-          Key: WidgetKey
+        { Key: WidgetKey
           Name: string
-          CreateView: Widget * ViewTreeContext -> obj
-        }
+          CreateView: Widget * ViewTreeContext -> obj }
+
         interface IWidgetDefinition with
             member x.CreateView (w, tree) = x.CreateView (w, tree)
