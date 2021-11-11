@@ -15,6 +15,7 @@ type IWidgetBuilder<'msg> = inherit IWidgetBuilder
 type IApplicationWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IPageWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IViewWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type ILayoutWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
 type ICellWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 
 [<Extension>]
@@ -47,27 +48,33 @@ type LayoutOfViewViewContainer(ref: WeakReference) =
                 Array.empty
 
         member this.UpdateChildren diff =
-            let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
-            let count = children.Count
+            if not ref.IsAlive then
+                ()
+            else
+                let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
+                let count = children.Count
 
-            while count > diff.ChildrenAfterUpdate.Length do
-                children.RemoveAt(children.Count - 1)
+                while count > diff.ChildrenAfterUpdate.Length do
+                    children.RemoveAt(children.Count - 1)
 
-            for i = 0 to count - 1 do
-                let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
-                match children.IndexOf(child) with
+                for i = 0 to diff.ChildrenAfterUpdate.Length - 1 do
+                    let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
+                    match children.IndexOf(child) with
 
-                // Same index, do nothing
-                | index when index = i -> ()
+                    // Same index, do nothing
+                    | index when index = i -> ()
 
-                // New child, replace the current index
-                | -1 ->
-                    children.[i] <- child
+                    // New child, replace the current index
+                    | -1 ->
+                        if count > i then
+                            children.[i] <- child
+                        else
+                            children.Insert(i, child)
 
-                // Child is moved, remove it and reinsert it at the right place
-                | index ->
-                    children.RemoveAt(index)
-                    children.Insert(i, child)
+                    // Child is moved, remove it and reinsert it at the right place
+                    | index ->
+                        children.RemoveAt(index)
+                        children.Insert(i, child)
 
 module Widgets =
     let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> (getViewContainer: WeakReference -> IXamarinFormsViewContainer option) =

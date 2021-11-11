@@ -4,6 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cmd.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="Stores.fs" />
     <Compile Include="Attributes.fs" />

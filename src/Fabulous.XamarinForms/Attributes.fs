@@ -25,8 +25,8 @@ module XamarinFormsAttributes =
     let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * obj) -> unit) =
         defineWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
 
-    let defineWidgetCollection name updateTarget =
-        defineCollection<Widget> name updateTarget
+    let defineWidgetCollection name =
+        defineCollection<Widget> name ignore
 
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
@@ -102,5 +102,43 @@ module XamarinFormsAttributes =
                     )
                     event.AddHandler handler
                     viewNodeData.SetHandler(key, ValueSome handler) }
+        AttributeDefinitionStore.set key definition
+        definition
+
+    let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
+        let key = AttributeDefinitionStore.getNextKey()
+        let definition =
+            { Key = key
+              Name = name
+              DefaultWith = fun () -> fun _ -> null
+              Convert = id
+              Compare = AttributeComparers.noCompare
+              UpdateTarget = fun struct (newValueOpt: ('args -> obj) voption, target) ->
+
+                let event = getEvent target
+                let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData
+
+                match viewNodeData.TryGetHandler(key) with
+                | None ->
+                    printfn $"No old handler for {name}"
+                | Some handler ->
+                    printfn $"Removed old handler for {name}"
+                    event.RemoveHandler handler
+
+                match newValueOpt with
+                | ValueNone ->
+                    viewNodeData.SetHandler(key, ValueNone)
+
+                | ValueSome fn ->
+                    let handler = EventHandler<'args>(fun sender args ->
+                        printfn $"Handler for {name} triggered"
+                        let viewNodeData = (sender :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData
+                        let r = fn args
+                        viewNodeData.ViewNode.Context.Dispatch r
+                    )
+                    viewNodeData.SetHandler(key, ValueSome handler)
+                    event.AddHandler handler
+                    printfn $"Added new handler for {name}"
+            }
         AttributeDefinitionStore.set key definition
         definition

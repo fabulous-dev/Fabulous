@@ -6,14 +6,20 @@ module Runners =
     // Runner is created for the component itself. No point in reusing a runner for another component
     type Runner<'arg, 'model, 'msg>(key: StateKey, program: Program<'arg, 'model, 'msg>) =
 
-        let processMsg msg =
+        let rec processMsg msg =
             let model = unbox(StateStore.get key)
-            let newModel = program.Update(msg, model)
+            let newModel, cmd = program.Update(msg, model)
             StateStore.set key newModel
 
+            for sub in cmd do
+                sub processMsg
+
         let start arg =
-            let model = program.Init(arg)
+            let model, cmd = program.Init(arg)
             StateStore.set key model
+
+            for sub in cmd do
+                sub processMsg
 
         interface IRunner
 
@@ -55,7 +61,6 @@ module ViewAdapters =
         member _.OnStateChanged(args) =
             if args.Key = stateKey then
                 let state = unbox args.NewState
-                // let previousWidget = _widget
                 let currentWidget = view state
 
                 // TODO handle the case when Type of the widget changes

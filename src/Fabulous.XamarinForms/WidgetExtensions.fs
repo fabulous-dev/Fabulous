@@ -24,3 +24,11 @@ type AdditionalViewExtensions =
             View.HorizontalOptions.WithValue(Xamarin.Forms.LayoutOptions.CenterAndExpand)
             View.VerticalOptions.WithValue(Xamarin.Forms.LayoutOptions.CenterAndExpand)
         |])
+
+    [<Extension>]
+    static member inline centerTextHorizontally(this: LabelWidgetBuilder<_>) =
+        this.AddAttribute(Label.HorizontalTextAlignment.WithValue(Xamarin.Forms.TextAlignment.Center))
+
+    [<Extension>]
+    static member inline padding(this: #ILayoutWidgetBuilder<_>, value: float) =
+        this.AddAttribute(Layout.Padding.WithValue(Xamarin.Forms.Thickness(value)))

@@ -44,12 +44,10 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                         diffs.Changes
                         |> Array.choose (fun change ->
                             match change with
-                            // If Added or Removed, we don't need to go update children individually
-                            // They already have been bulk created or bulk removed
-                            | AttributeChange.Added _
-                            | AttributeChange.Removed _ -> None
+                            | AttributeChange.Added added  when added.Key = viewContainer.ChildrenAttributeKey -> Some (added.Value :?> Widget[])
+                            | AttributeChange.Removed removed when removed.Key = viewContainer.ChildrenAttributeKey -> Some (removed.Value :?> Widget[])
                             | AttributeChange.Updated struct (_, currAttribute, diff) when currAttribute.Key = viewContainer.ChildrenAttributeKey -> Some (currAttribute.Value :?> Widget[])
-                            | AttributeChange.Updated struct (_, currAttribute, diff) -> None
+                            | _ -> None
                         )
                         |> Array.tryHead
 
@@ -58,6 +56,7 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                     | Some widgets -> UpdateResult.UpdateChildren struct (viewContainer :> IViewContainer, widgets, context)
 
 and IXamarinFormsAttributeDefinition =
+    abstract member Name: string
     abstract member UpdateTarget: obj voption * obj -> unit
 
 and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
@@ -78,6 +77,7 @@ and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
           Value = x.Convert(value) }
 
     interface IXamarinFormsAttributeDefinition with
+        member x.Name = x.Name
         member x.UpdateTarget(newValueOpt, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
             x.UpdateTarget (struct (newValueOpt, target))

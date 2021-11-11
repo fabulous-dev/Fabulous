@@ -218,8 +218,6 @@ module Reconciler =
                         Removed = removed
                     }
 
-                ()
-
 
 
 // 1. compare attributes for control and widget

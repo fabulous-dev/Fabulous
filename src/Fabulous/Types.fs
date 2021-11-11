@@ -93,8 +93,8 @@ and [<RequireQualifiedAccess; Struct>] UpdateResult =
     | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)    
 
 type Program<'arg, 'model, 'msg> =
-    { Init : 'arg -> 'model
-      Update : 'msg * 'model -> 'model
+    { Init : 'arg -> 'model * Cmd<'msg>
+      Update : 'msg * 'model -> 'model * Cmd<'msg>
       View : 'model -> Widget }
 
 [<Struct>]
