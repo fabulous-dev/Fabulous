@@ -61,13 +61,13 @@ module XamarinFormsAttributes =
                     let bindableObject = (target :?> BindableObject)
                     let currValue = bindableObject.GetValue(bindableProperty)
 
-                    //if currValue = null then
-                    let viewNode = ViewNode.getViewNode target :?> ViewNode
-                    let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                    let view = widgetDefinition.CreateView (widget, viewNode.Context)
-                    bindableObject.SetValue(bindableProperty, view)
-                    //else
-                    //    Reconciler.update ViewNode.getViewNode currValue widget.Attributes
+                    if currValue = null then
+                        let viewNode = ViewNode.getViewNode target :?> ViewNode
+                        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+                        let view = widgetDefinition.CreateView (widget, viewNode.Context)
+                        bindableObject.SetValue(bindableProperty, view)
+                    else
+                        Reconciler.update ViewNode.getViewNode currValue widget.Attributes
             }
 
         AttributeDefinitionStore.set key definition

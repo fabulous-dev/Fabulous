@@ -54,7 +54,20 @@ type LayoutOfViewViewContainer(ref: WeakReference) =
                 children.RemoveAt(children.Count - 1)
 
             for i = 0 to count - 1 do
-                children.[i] <- diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
+                let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
+                match children.IndexOf(child) with
+
+                // Same index, do nothing
+                | index when index = i -> ()
+
+                // New child, replace the current index
+                | -1 ->
+                    children.[i] <- child
+
+                // Child is moved, remove it and reinsert it at the right place
+                | index ->
+                    children.RemoveAt(index)
+                    children.Insert(i, child)
 
 module Widgets =
     let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> (getViewContainer: WeakReference -> IXamarinFormsViewContainer option) =
