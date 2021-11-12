@@ -25,7 +25,7 @@ type [<Struct>] ApplicationWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] ContentPageWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.ContentPage>()
+    static let key = Widgets.registerNoChildren<Fabulous.XamarinForms.FabulousContentPage>()
 
     static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentPageWidgetBuilder<'msg>([|
@@ -137,6 +137,9 @@ type ViewExtensions () =
     [<Extension>]
     static member inline verticalTextAlignment(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
         this.AddAttribute(Label.VerticalTextAlignment.WithValue(value))
+    [<Extension>]
+    static member inline fontSize(this: LabelWidgetBuilder<_>, value: double) =
+        this.AddAttribute(Label.FontSize.WithValue(value))
     [<Extension>]
     static member inline padding(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddAttribute(Layout.Padding.WithValue(value))
