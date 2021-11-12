@@ -19,13 +19,9 @@ type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
 
-/// Represents a property of a widget.
-/// Can map to a real property (such as Label.Text) or to a fake one.
-/// It will be up to the AttributeDefinition to decide how to apply
-/// the value.
-///
-/// Payload can contains additional data provided by the implementing framework
-/// For example, Maui needs to know
+/// Represents a value for a property of a widget.
+/// Can map to a real property (such as Label.Text) or to a non-existent one.
+/// It will be up to the AttributeDefinition to decide how to apply the value.
 [<Struct>]
 type Attribute =
     { Key: AttributeKey
@@ -45,15 +41,21 @@ type AttributeChange =
     | Added of added: Attribute
     | Removed of removed: Attribute
     | ScalarUpdated of scalarData: Attribute
-    | WidgetUpdated of widgetData: struct (Attribute * WidgetDiff)
+    | WidgetUpdated of widgetData: struct (Attribute * AttributeChange[])
+    | CollectionUpdated of collectionData: struct (Attribute * CollectionChange[])
 
-and [<Struct; RequireQualifiedAccess>] WidgetDiff =
-   { Changes: AttributeChange[]
-     NewAttributes: Attribute[] }
+and [<Struct; RequireQualifiedAccess>] CollectionChange =
+    | Insert of inserted: struct(int * obj)
+    | Replace of replaced: struct(int * obj)
+    | Update of updated: struct(int * obj)
+    | Remove of removed: int
+    | InsertWidget of widgetInserted: struct (int * Widget)
+    | ReplaceWidget of widgetReplaced: struct (int * Widget)
+    | UpdateWidget of widgetUpdated: struct (int * AttributeChange[])
 
 /// Represents a UI element created from a widget
 type IViewNode =
-    abstract ApplyDiff : WidgetDiff -> unit
+    abstract ApplyDiff : AttributeChange[] -> unit
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
 
@@ -69,22 +71,17 @@ and [<Struct>] ChildrenUpdate =
       Added: obj list voption
       Removed: obj list voption }
 
-// TODO should it be IList? or a simpler custom interface will do?
-and IViewContainer =
-    abstract Children : obj []
-    abstract UpdateChildren : ChildrenUpdate -> unit
-
 type Program<'arg, 'model, 'msg> =
     { Init : 'arg -> 'model * Cmd<'msg>
       Update : 'msg * 'model -> 'model * Cmd<'msg>
       View : 'model -> Widget }
 
-[<Struct>]
-[<RequireQualifiedAccess>]
+[<Struct; RequireQualifiedAccess>]
 type AttributeComparison =
     | Identical
     | ReplacedBy of newData: obj
-    | Different of widgetDiff: WidgetDiff
+    | WidgetDifferent of attributeChanges: AttributeChange[]
+    | CollectionDifferent of collectionChanges: CollectionChange[]
 
 type IAttributeDefinition =
     abstract Key: AttributeKey

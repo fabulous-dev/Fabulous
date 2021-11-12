@@ -92,7 +92,7 @@ module Image =
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineCollection<Dimension> "Grid_ColumnDefinitions" (fun struct (newValueOpt, target) ->
+    let ColumnDefinitions = Attributes.defineCollection<Dimension> "Grid_ColumnDefinitions" Helpers.canReuse (fun struct (newValueOpt, target) ->
         let grid = target :?> Xamarin.Forms.Grid
         match newValueOpt with
         | ValueNone -> grid.ColumnDefinitions.Clear()
@@ -111,7 +111,7 @@ module Grid =
                 grid.ColumnDefinitions.Add(Xamarin.Forms.ColumnDefinition(Width = gridLength))
             )
     )
-    let RowDefinitions = Attributes.defineCollection<Dimension> "Grid_RowDefinitions" (fun struct (newValueOpt, target) ->
+    let RowDefinitions = Attributes.defineCollection<Dimension> "Grid_RowDefinitions" Helpers.canReuse (fun struct (newValueOpt, target) ->
         let grid = target :?> Xamarin.Forms.Grid
         match newValueOpt with
         | ValueNone -> grid.RowDefinitions.Clear()

@@ -9,7 +9,11 @@ type IScalarAttributeDefinition =
 
 type IWidgetAttributeDefinition =
     inherit IScalarAttributeDefinition
-    abstract member ApplyDiff: WidgetDiff * obj -> unit
+    abstract member ApplyDiff: AttributeChange[] * obj -> unit
+    
+type ICollectionAttributeDefinition =
+    abstract member Name: string
+    abstract member ApplyDiff: CollectionChange[] * obj -> unit
 
 type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
 
@@ -20,11 +24,11 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
     interface IViewNode with
         member _.Attributes = _attributes
         member _.Origin = key
-        member _.ApplyDiff(diffs) =
+        member _.ApplyDiff(changes) =
             if not targetRef.IsAlive then
                 ()
             else
-                for change in diffs.Changes do
+                for change in changes do
                     match change with
                     | AttributeChange.Added added ->
                         let definition = AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
@@ -45,6 +49,12 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
                         let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetAttributeDefinition
                         definition.ApplyDiff(diff, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
+
+                    | AttributeChange.CollectionUpdated struct (newAttr, diff) ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> ICollectionAttributeDefinition
+                        definition.ApplyDiff(diff, targetRef.Target)
+                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
+
 
 type ViewNodeData(viewNode: ViewNode) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty

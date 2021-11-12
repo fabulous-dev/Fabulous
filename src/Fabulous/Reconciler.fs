@@ -3,7 +3,6 @@
 open Fabulous
 
 module Reconciler =
-
     /// This is insertion sort that is O(n*n) but it performs better
     /// 1. if the array is partially sorted (second sort is cheap)
     /// 2. there are few elements, we expect to have only a handful of them per widget
@@ -20,7 +19,6 @@ module Reconciler =
                     attrs.[j - 1] <- temp
 
         attrs
-
 
     /// Let's imagine that we have the following situation
     /// prev = [|1,2,6,7|] note that it is sorted
@@ -45,7 +43,7 @@ module Reconciler =
     ///         compare values
     ///
     /// break when we reached both ends of the arrays
-    let compareAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange list =
+    let compareAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange[] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
         prev |> sortAttributesInPlace |> ignore
         next |> sortAttributesInPlace |> ignore
@@ -98,63 +96,49 @@ module Reconciler =
                     let definition =
                         AttributeDefinitionStore.get prevAttr.Key
 
-                    match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
+                    let changeOpt =
+                        match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
 
-                    // Previous and next values are identical, we don't need to do anything
-                    | AttributeComparison.Identical -> ()
+                        // Previous and next values are identical, we don't need to do anything
+                        | AttributeComparison.Identical -> ValueNone
 
-                    // New value completely replaces the old value
-                    | AttributeComparison.ReplacedBy value ->
-                        result <-
-                            AttributeChange.ScalarUpdated(nextAttr)
-                            :: result
+                        // New value completely replaces the old value
+                        | AttributeComparison.ReplacedBy value ->
+                            ValueSome (AttributeChange.ScalarUpdated(nextAttr))
 
-                    // Values are widgets and are different, we have the list of attribute changes between the 2 widgets 
-                    | AttributeComparison.Different diff ->
-                        result <-
-                            AttributeChange.WidgetUpdated(nextAttr, diff)
-                            :: result
+                        // Values are widgets and are different, we have the list of attribute changes between the 2 widgets 
+                        | AttributeComparison.WidgetDifferent changes ->
+                            ValueSome(AttributeChange.WidgetUpdated(nextAttr, changes))
 
-        result
+                        | AttributeComparison.CollectionDifferent changes ->
+                            ValueSome (AttributeChange.CollectionUpdated(nextAttr, changes))
 
-    // https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060
-//    function updateElement($parent, newNode, oldNode, index = 0) {
-//  if (!oldNode) {
-//    $parent.appendChild(
-//      createElement(newNode)
-//    );
-//  } else if (!newNode) {
-//    $parent.removeChild(
-//      $parent.childNodes[index]
-//    );
-//  } else if (changed(newNode, oldNode)) {
-//    $parent.replaceChild(
-//      createElement(newNode),
-//      $parent.childNodes[index]
-//    );
-//  } else if (newNode.type) {
-//    const newLength = newNode.children.length;
-//    const oldLength = oldNode.children.length;
-//    for (let i = 0; i < newLength || i < oldLength; i++) {
-//      updateElement(
-//        $parent.childNodes[index],
-//        newNode.children[i],
-//        oldNode.children[i],
-//        i
-//      );
-//    }
-//  }
-//}
+                    match changeOpt with
+                    | ValueNone -> ()
+                    | ValueSome change -> result <- change :: result
 
-    let inline private createViewFromWidget (widget: Widget) (ctx: ViewTreeContext) =
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let view = widgetDefinition.CreateView (widget, ctx)
-        view
+        List.toArray result
 
-    let inline private addItem item maybeList =
-        match maybeList with
-        | ValueSome l -> ValueSome(item :: l)
-        | ValueNone -> ValueSome [ item ]
+    let compareCollections<'elementType> (canReuse: 'elementType -> 'elementType -> bool) (prev: 'elementType array) (next: 'elementType array) : CollectionChange[] =
+        let mutable target = []
+
+        if prev.Length > next.Length then
+            for i = next.Length to prev.Length - 1 do
+                target <- (CollectionChange.Remove i) :: target
+
+        for i = 0 to next.Length - 1 do
+            let currItem = next.[i]
+            let prevItemOpt = Array.tryItem i next
+
+            let change =
+                match prevItemOpt with
+                | None -> CollectionChange.Insert struct (i, box currItem)
+                | Some prevItem when canReuse prevItem currItem -> CollectionChange.Update struct (i, box currItem)
+                | Some prevItem -> CollectionChange.Replace struct (i, box currItem)
+
+            target <- change :: target
+
+        List.toArray target
 
     let rec update (getViewNode: obj -> IViewNode) (target: obj) (attributes: Attribute []) : unit =
 
@@ -164,66 +148,10 @@ module Reconciler =
         let diff =
             compareAttributes prevAttributes attributes
 
-        if List.isEmpty diff then
+        if Array.isEmpty diff then
             ()
         else
-            viewNode.ApplyDiff
-                { Changes = diff |> List.toArray // TODO return Array from comparison
-                  NewAttributes = attributes }
-
-    //let children = container.Children
-
-    //// if the size is the same we can just reuse the same array to avoid allocations
-    //// it is safe to do so because diffing goes only forward, thus safe to do it in place
-    //let target: obj [] =
-    //    if widgets.Length = children.Length then
-    //        children
-    //    else
-    //        Array.zeroCreate(widgets.Length)
-
-    //let mutable added: obj list voption = ValueNone
-
-    //let mutable removed: obj list voption =
-    //    // if we are downsizing then the tail needs to be added to removed
-    //    if children.Length > widgets.Length then
-    //        children
-    //        |> Array.skip widgets.Length
-    //        |> Array.toList
-    //        |> ValueSome
-    //    else
-    //        ValueNone
-
-    //for i = 0 to widgets.Length - 1 do
-    //    let widget = widgets.[i]
-    //    let prev = Array.tryItem i children
-
-    //    match (prev, widget) with
-    //    | None, widget ->
-    //        // view doesn't exist yet
-    //        let viewNode = createViewFromWidget widget ctx
-    //        target.[i] <- viewNode
-    //        added <- addItem viewNode added
-
-    //    | Some p, widget when widget.Key = (getViewNode p).Origin ->
-    //        // same type, just update
-    //        target.[i] <- p
-    //        update getViewNode p widget.Attributes
-
-    //    | Some p, widget ->
-    //        // different type, thus replacement is needed
-    //        let viewNode = createViewFromWidget widget ctx
-    //        target.[i] <- viewNode
-    //        added <- addItem viewNode added
-    //        removed <- addItem p removed
-
-    //container.UpdateChildren
-    //    {
-    //        ChildrenAfterUpdate = target
-    //        Added = added
-    //        Removed = removed
-    //    }
-
-
+            viewNode.ApplyDiff(diff)
 
 // 1. compare attributes for control and widget
 // 2. apply diff (should be a method on control). e.g control.ApplyDiff(diff)
@@ -278,10 +206,9 @@ module AttributeComparers =
             AttributeComparison.Identical
         else
             let diffs = Reconciler.compareAttributes prevWidget.Attributes currWidget.Attributes
-            AttributeComparison.Different
-                { Changes = diffs |> List.toArray
-                  NewAttributes = [||] }
+            AttributeComparison.WidgetDifferent diffs
 
     /// Determine the differences between 2 collections
-    let compareCollections struct (prevColl: 'elementType array, currColl: 'elementType array) =
-        AttributeComparison.ReplacedBy currColl
+    let compareCollections<'elementType> (canReuse: 'elementType -> 'elementType -> bool) struct (prevColl: 'elementType array, currColl: 'elementType array) =
+        let diffs = Reconciler.compareCollections<'elementType> canReuse prevColl currColl
+        AttributeComparison.CollectionDifferent diffs
