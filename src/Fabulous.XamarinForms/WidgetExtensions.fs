@@ -22,12 +22,14 @@ module AdditionalAttributes =
 [<Extension>]
 type AdditionalViewExtensions =
     [<Extension>]
-    static member inline centerHorizontally(this: #IViewWidgetBuilder<_>) =
+    static member inline centerHorizontally(this: #IViewWidgetBuilder<_>, ?expand: bool) =
+        let options = match expand with None | Some false -> LayoutOptions.Center | Some true -> LayoutOptions.CenterAndExpand
         this.AddAttribute(View.HorizontalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline centerVertically(this: #IViewWidgetBuilder<_>) =
-        this.AddAttribute(View.VerticalOptions.WithValue(LayoutOptions.Center))
+    static member inline centerVertically(this: #IViewWidgetBuilder<_>, ?expand: bool) =
+        let options = match expand with None | Some false -> LayoutOptions.Center | Some true -> LayoutOptions.CenterAndExpand
+        this.AddAttribute(View.VerticalOptions.WithValue(options))
 
     [<Extension>]
     static member inline center(this: #IViewWidgetBuilder<_>) =

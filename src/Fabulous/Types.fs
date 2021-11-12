@@ -78,6 +78,9 @@ and [<Struct>]  ViewTreeContext =
     { Dispatch: obj -> unit
       Ancestors: IViewNode list }
 
+and [<Struct>] ChildUpdate =
+    { ChildAfterUpdate: obj }
+
 and [<Struct>] ChildrenUpdate =
     { ChildrenAfterUpdate: obj []
       Added: obj list voption
@@ -90,7 +93,7 @@ and IViewContainer =
 
 and [<RequireQualifiedAccess; Struct>] UpdateResult =
     | Done
-    | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)    
+    | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)
 
 type Program<'arg, 'model, 'msg> =
     { Init : 'arg -> 'model * Cmd<'msg>

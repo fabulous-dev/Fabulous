@@ -31,6 +31,19 @@ module XamarinFormsAttributes =
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
         defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
 
+    let inline defineWidget name get set =
+        define<Widget> name (fun () -> Unchecked.defaultof<_>) (fun struct (newValueOpt, target) ->
+            match newValueOpt with
+            | ValueNone -> set target null
+            | ValueSome widget when get target = null ->
+                let viewNode = ViewNode.getViewNode target :?> ViewNode
+                let widgetDefinition = WidgetDefinitionStore.get widget.Key
+                let view = widgetDefinition.CreateView (widget, viewNode.Context)
+                set target view
+            | ValueSome widget ->
+                Reconciler.update ViewNode.getViewNode (get target) widget.Attributes
+        )
+
     let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (comparer: struct ('modelType * 'modelType) -> AttributeComparison) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =

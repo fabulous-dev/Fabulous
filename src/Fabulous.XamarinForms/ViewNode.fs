@@ -33,6 +33,7 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                         _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
 
                     | AttributeChange.Updated struct (prevAttribute, currAttribute, diff) ->
+                        // TODO: What to do when prevAttribute.Origin <> currAttribute.Origin?
                         let definition = AttributeDefinitionStore.get currAttribute.Key :?> IXamarinFormsAttributeDefinition
                         definition.UpdateTarget(ValueSome currAttribute.Value, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = currAttribute.Key then currAttribute else a) _attributes

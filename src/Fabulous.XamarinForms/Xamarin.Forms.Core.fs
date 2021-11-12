@@ -53,6 +53,22 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
         member _.Compile() =
             { Key = key
               Attributes = attributes }
+              
+type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.Grid> (fun ref -> Some (LayoutOfViewViewContainer(ref) :> IXamarinFormsViewContainer))
+              
+    static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
+        GridWidgetBuilder<'msg>([|
+            LayoutOfView.Children.WithValue(Helpers.compileSeq children)
+            match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
+            match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
+        |])
+              
+    interface ILayoutWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
 
 type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.registerNoChildren<Xamarin.Forms.Label>()
@@ -116,6 +132,79 @@ type [<Struct>] SliderWidgetBuilder<'msg> (attributes: Attribute[]) =
         member _.Compile() =
             { Key = key
               Attributes = attributes }
+              
+type [<Struct>] ActivityIndicatorWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.ActivityIndicator>()
+              
+    static member inline Create(isRunning: bool) =
+        ActivityIndicatorWidgetBuilder<'msg>([|
+            ActivityIndicator.IsRunning.WithValue(isRunning)
+        |])
+                      
+    interface IViewWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+              
+type [<Struct>] ContentViewWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.ContentView>()
+              
+    static member inline Create(content: #IViewWidgetBuilder<'msg>) =
+        ContentViewWidgetBuilder<'msg>([|
+            ContentView.Content.WithValue(content.Compile())
+        |])
+                      
+    interface ILayoutWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+              
+type [<Struct>] RefreshViewWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.RefreshView>()
+              
+    static member inline Create(isRefreshing: bool, onRefreshing: 'msg, content: #IViewWidgetBuilder<'msg>) =
+        RefreshViewWidgetBuilder<'msg>([|
+            RefreshView.IsRefreshing.WithValue(isRefreshing)
+            RefreshView.Refreshing.WithValue(onRefreshing)
+            ContentView.Content.WithValue(content.Compile())
+        |])
+                      
+    interface ILayoutWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+              
+type [<Struct>] ScrollViewWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.ScrollView>()
+              
+    static member inline Create(content: #IViewWidgetBuilder<'msg>) =
+        RefreshViewWidgetBuilder<'msg>([|
+            ScrollView.Content.WithValue(content.Compile())
+        |])
+                      
+    interface ILayoutWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+              
+type [<Struct>] ImageWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.registerNoChildren<Xamarin.Forms.Image>()
+              
+    static member inline Create(path: string, aspect: Xamarin.Forms.Aspect) =
+        ImageWidgetBuilder<'msg>([|
+            Image.Source.WithValue(Xamarin.Forms.ImageSource.FromFile(path))
+            Image.Aspect.WithValue(aspect)
+        |])
+                      
+    interface IViewWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
 
 [<Extension>]
 type ViewExtensions () =
@@ -126,11 +215,17 @@ type ViewExtensions () =
     static member inline isEnabled(this: #IViewWidgetBuilder<_>, value: bool) =
         this.AddAttribute(VisualElement.IsEnabled.WithValue(value))
     [<Extension>]
+    static member inline opacity(this: #IViewWidgetBuilder<_>, value: float) =
+        this.AddAttribute(VisualElement.Opacity.WithValue(value))
+    [<Extension>]
     static member inline horizontalOptions(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.LayoutOptions) =
         this.AddAttribute(View.HorizontalOptions.WithValue(value))
     [<Extension>]
     static member inline verticalOptions(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.LayoutOptions) =
         this.AddAttribute(View.VerticalOptions.WithValue(value))
+    [<Extension>]
+    static member inline margin(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
+        this.AddAttribute(View.Margin.WithValue(value))
     [<Extension>]
     static member inline horizontalTextAlignment(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
         this.AddAttribute(Label.HorizontalTextAlignment.WithValue(value))
@@ -138,11 +233,20 @@ type ViewExtensions () =
     static member inline verticalTextAlignment(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
         this.AddAttribute(Label.VerticalTextAlignment.WithValue(value))
     [<Extension>]
-    static member inline fontSize(this: LabelWidgetBuilder<_>, value: double) =
+    static member inline font(this: LabelWidgetBuilder<_>, value: double) =
         this.AddAttribute(Label.FontSize.WithValue(value))
     [<Extension>]
     static member inline padding(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddAttribute(Layout.Padding.WithValue(value))
+    [<Extension>]
+    static member inline padding(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
+        this.AddAttribute(Label.Padding.WithValue(value))
+    [<Extension>]
+    static member inline gridColumn(this: #IViewWidgetBuilder<_>, value: int) =
+        this.AddAttribute(Grid.Column.WithValue(value))
+    [<Extension>]
+    static member inline gridRow(this: #IViewWidgetBuilder<_>, value: int) =
+        this.AddAttribute(Grid.Row.WithValue(value))
 
 
 [<AbstractClass; Sealed>]
@@ -158,4 +262,11 @@ type View private () =
     static member inline Switch<'msg>(isToggled, onToggled) = SwitchWidgetBuilder<'msg>.Create(isToggled, onToggled)
     static member inline Slider<'msg>(value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged)
     static member inline Slider<'msg>(min, max, value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged, min = min, max = max)
-
+    static member inline Grid<'msg>(children) = GridWidgetBuilder<'msg>.Create(children)
+    static member inline Grid<'msg>(coldefs, rowdefs, children) = GridWidgetBuilder<'msg>.Create(children, coldefs = coldefs, rowdefs = rowdefs)
+    static member inline ActivityIndicator<'msg>(isRunning) = ActivityIndicatorWidgetBuilder<'msg>.Create(isRunning)
+    static member inline ContentView<'msg>(content) = ContentViewWidgetBuilder<'msg>.Create(content)
+    static member inline RefreshView<'msg>(isRefreshing, onRefreshing, content) = RefreshViewWidgetBuilder<'msg>.Create(isRefreshing, onRefreshing, content)
+    static member inline ScrollView<'msg>(content) = ScrollViewWidgetBuilder<'msg>.Create(content)
+    static member inline Image<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.Create(path, aspect)
+    
