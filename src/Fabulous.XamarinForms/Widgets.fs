@@ -5,7 +5,6 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.Widgets
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.XamarinFormsAttributes
 
 type IWidgetBuilder =
     abstract Attributes: Attribute[]
@@ -37,7 +36,7 @@ type IWidgetExtensions () =
 
 type LayoutOfViewViewContainer(ref: WeakReference) =
     interface IXamarinFormsViewContainer with
-        member this.ChildrenAttributeKey = Fabulous.XamarinForms.Attributes.LayoutOfView.Children.Key
+        member this.ChildrenAttributeKey = XFAttributes.LayoutOfView.Children.Key
 
         member this.Children =
             if ref.IsAlive then

@@ -44,29 +44,12 @@ type Widget =
 type AttributeChange =
     | Added of added: Attribute
     | Removed of removed: Attribute
-    | Updated of struct (Attribute * Attribute * obj voption)
+    | ScalarUpdated of scalarData: Attribute
+    | WidgetUpdated of widgetData: struct (Attribute * WidgetDiff)
 
-//
-//    | Identical
-//    | ScalarUpdated of updatedValue: obj
-//    | ScalarWidgetUpdated of updatedWidget: WidgetDiff
-//    | CollectionUpdated of collectionDiffs: CollectionDiff []
-//[<RequireQualifiedAccess>]
-//    type AttributeDiff =
-//        | Different of struct (Attribute * Attribute * obj option)
-//        | Added of Attribute
-//        | Removed of Attribute
-
-//and [<Struct; RequireQualifiedAccess>] AttributeDiffWithKey =
-//    {
-//        Key: AttributeKey
-//        Diff: AttributeChange
-//    }
-
-type [<Struct; RequireQualifiedAccess>] WidgetDiff =
+and [<Struct; RequireQualifiedAccess>] WidgetDiff =
    { Changes: AttributeChange[]
      NewAttributes: Attribute[] }
-
 
 /// Represents a UI element created from a widget
 type IViewNode =
@@ -74,7 +57,7 @@ type IViewNode =
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
 
-and [<Struct>]  ViewTreeContext =
+and [<Struct>] ViewTreeContext =
     { Dispatch: obj -> unit
       Ancestors: IViewNode list }
 
@@ -104,14 +87,15 @@ type Program<'arg, 'model, 'msg> =
 [<RequireQualifiedAccess>]
 type AttributeComparison =
     | Identical
-    | Different of data: obj voption
+    | ReplacedBy of newData: obj
+    | Different of widgetDiff: WidgetDiff
 
 type IAttributeDefinition =
+    abstract Key: AttributeKey
     abstract CompareBoxed : obj * obj -> AttributeComparison
 
 type IAttributeDefinition<'inputType, 'modelType> =
     inherit IAttributeDefinition
-    abstract Key : AttributeKey
     abstract DefaultWith : unit -> 'modelType
 
 type IWidgetDefinition =

@@ -1,7 +1,7 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
-open Fabulous.XamarinForms.Attributes
+open Fabulous.XamarinForms.XFAttributes
 open Fabulous.XamarinForms.Widgets
 open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
@@ -9,7 +9,7 @@ open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 module AdditionalAttributes =
     module iOS =
-        let UseSafeArea = XamarinFormsAttributes.define<bool> "Page_UseSafeArea" (fun () -> true) (fun struct (newValueOpt, target) ->
+        let UseSafeArea = Attributes.define<bool> "Page_UseSafeArea" (fun () -> true) (fun struct (newValueOpt, target) ->
             let page = target :?> Xamarin.Forms.Page
             let value = 
                 match newValueOpt with

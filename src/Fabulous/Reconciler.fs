@@ -2,7 +2,6 @@
 
 open Fabulous
 
-//-----Update sketch------
 module Reconciler =
 
     /// This is insertion sort that is O(n*n) but it performs better
@@ -72,21 +71,21 @@ module Reconciler =
 
             else
                 // we haven't reached either of the ends
-                let prevItem = prev.[prevIndex]
-                let nextItem = next.[nextIndex]
+                let prevAttr = prev.[prevIndex]
+                let nextAttr = next.[nextIndex]
 
-                let prevKey = prevItem.Key
-                let nextKey = nextItem.Key
+                let prevKey = prevAttr.Key
+                let nextKey = nextAttr.Key
 
                 match prevKey.CompareTo nextKey with
                 | c when c < 0 ->
                     // prev key is less than next -> remove prev key
-                    result <- AttributeChange.Removed prevItem :: result
+                    result <- AttributeChange.Removed prevAttr :: result
                     prevIndex <- prevIndex + 1
 
                 | c when c > 0 ->
                     // prev key is more than next -> add next item
-                    result <- AttributeChange.Added nextItem :: result
+                    result <- AttributeChange.Added nextAttr :: result
                     nextIndex <- nextIndex + 1
 
                 | _ ->
@@ -96,14 +95,24 @@ module Reconciler =
                     prevIndex <- prevIndex + 1
                     nextIndex <- nextIndex + 1
 
-                    let attribute =
-                        AttributeDefinitionStore.get prevItem.Key
+                    let definition =
+                        AttributeDefinitionStore.get prevAttr.Key
 
-                    match attribute.CompareBoxed(prevItem.Value, nextItem.Value) with
+                    match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
+
+                    // Previous and next values are identical, we don't need to do anything
                     | AttributeComparison.Identical -> ()
+
+                    // New value completely replaces the old value
+                    | AttributeComparison.ReplacedBy value ->
+                        result <-
+                            AttributeChange.ScalarUpdated(nextAttr)
+                            :: result
+
+                    // Values are widgets and are different, we have the list of attribute changes between the 2 widgets 
                     | AttributeComparison.Different diff ->
                         result <-
-                            AttributeChange.Updated(prevItem, nextItem, diff)
+                            AttributeChange.WidgetUpdated(nextAttr, diff)
                             :: result
 
         result
@@ -147,9 +156,9 @@ module Reconciler =
         | ValueSome l -> ValueSome(item :: l)
         | ValueNone -> ValueSome [ item ]
 
-    let rec update (getViewNode: obj -> IViewNode) (node: obj) (attributes: Attribute []) : unit =
+    let rec update (getViewNode: obj -> IViewNode) (target: obj) (attributes: Attribute []) : unit =
 
-        let viewNode = getViewNode node
+        let viewNode = getViewNode target
         let prevAttributes = viewNode.Attributes
 
         let diff =
@@ -233,25 +242,48 @@ module Reconciler =
 // Meaning that we can fully control creations of new controls via core
 
 // TODO find a better file/home for this logic
-module Runtime =
-    let MapMsg =
-        Attributes.defineWithComparer<obj -> obj>
-            "MapMsg"
-            (fun () -> id )
-            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
-            Attributes.AttributeComparers.alwaysDifferent
+//module Runtime =
+//    let MapMsg =
+//        Attributes.defineWithComparer<obj -> obj>
+//            "MapMsg"
+//            (fun () -> id )
+//            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
+//            Attributes.AttributeComparers.noCompare
 
-    let MapMsgKey = MapMsg.Key
+//    let MapMsgKey = MapMsg.Key
 
-    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
-        let inline mapEv (e: obj) (attributes: Attribute[]) =
-            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
-            | Some attr -> unbox<obj -> obj>attr.Value e
-            | None -> e
+//    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
+//        let inline mapEv (e: obj) (attributes: Attribute[]) =
+//            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
+//            | Some attr -> unbox<obj -> obj>attr.Value e
+//            | None -> e
         
-        let mutable ev = mapEv ev node.Attributes
-        for ancestor in ctx.Ancestors do
-            ev <- mapEv ev ancestor.Attributes
+//        let mutable ev = mapEv ev node.Attributes
+//        for ancestor in ctx.Ancestors do
+//            ev <- mapEv ev ancestor.Attributes
         
-        ctx.Dispatch ev
+//        ctx.Dispatch ev
             
+module AttributeComparers =
+    let equalityComparer struct (a, b) =
+        if a = b then
+            AttributeComparison.Identical
+        else
+            AttributeComparison.ReplacedBy b
+
+    let noCompare struct (a, b) = AttributeComparison.ReplacedBy b
+
+    let collectionComparer struct (a: 'T, b: 'T) = AttributeComparison.ReplacedBy b
+
+    /// Determine the differences between 2 widgets.
+    /// Check also for reusability of the target control
+    let compareWidgets (canReuse: Widget -> Widget -> bool) (prevWidget: Widget) (currWidget: Widget) =
+        if not (canReuse prevWidget currWidget) then
+            AttributeComparison.ReplacedBy currWidget
+        elif prevWidget = currWidget then
+            AttributeComparison.Identical
+        else
+            let diffs = Reconciler.compareAttributes prevWidget.Attributes currWidget.Attributes
+            AttributeComparison.Different
+                { Changes = diffs |> List.toArray
+                  NewAttributes = [||] }

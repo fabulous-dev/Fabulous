@@ -23,20 +23,24 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                 for change in diffs.Changes do
                     match change with
                     | AttributeChange.Added added ->
-                        let definition = AttributeDefinitionStore.get added.Key :?> IXamarinFormsAttributeDefinition
+                        let definition = AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
                         definition.UpdateTarget(ValueSome added.Value, targetRef.Target)
                         _attributes <- Array.append _attributes [| added |]
 
                     | AttributeChange.Removed removed ->
-                        let definition = AttributeDefinitionStore.get removed.Key :?> IXamarinFormsAttributeDefinition
+                        let definition = AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
                         definition.UpdateTarget(ValueNone, targetRef.Target)
                         _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
 
-                    | AttributeChange.Updated struct (prevAttribute, currAttribute, diff) ->
-                        // TODO: What to do when prevAttribute.Origin <> currAttribute.Origin?
-                        let definition = AttributeDefinitionStore.get currAttribute.Key :?> IXamarinFormsAttributeDefinition
-                        definition.UpdateTarget(ValueSome currAttribute.Value, targetRef.Target)
-                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = currAttribute.Key then currAttribute else a) _attributes
+                    | AttributeChange.ScalarUpdated newAttr ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
+                        definition.UpdateTarget(ValueSome newAttr.Value, targetRef.Target)
+                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
+
+                    | AttributeChange.WidgetUpdated struct (newAttr, diff) ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetAttributeDefinition
+                        definition.ApplyDiff(diff, targetRef.Target)
+                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
 
                 match viewContainerOpt with
                 | None -> UpdateResult.Done
@@ -47,7 +51,7 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                             match change with
                             | AttributeChange.Added added  when added.Key = viewContainer.ChildrenAttributeKey -> Some (added.Value :?> Widget[])
                             | AttributeChange.Removed removed when removed.Key = viewContainer.ChildrenAttributeKey -> Some (removed.Value :?> Widget[])
-                            | AttributeChange.Updated struct (_, currAttribute, diff) when currAttribute.Key = viewContainer.ChildrenAttributeKey -> Some (currAttribute.Value :?> Widget[])
+                            | AttributeChange.ScalarUpdated newAttr when newAttr.Key = viewContainer.ChildrenAttributeKey -> Some (newAttr.Value :?> Widget[])
                             | _ -> None
                         )
                         |> Array.tryHead
@@ -56,38 +60,13 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                     | None -> UpdateResult.Done
                     | Some widgets -> UpdateResult.UpdateChildren struct (viewContainer :> IViewContainer, widgets, context)
 
-and IXamarinFormsAttributeDefinition =
+and IScalarAttributeDefinition =
     abstract member Name: string
     abstract member UpdateTarget: obj voption * obj -> unit
 
-and XamarinFormsAttributeDefinition<'inputType, 'modelType> =
-    {
-        Key: AttributeKey
-        Name: string
-        DefaultWith: unit -> 'modelType
-        Convert: 'inputType -> 'modelType
-        Compare: struct ('modelType * 'modelType) -> AttributeComparison
-        UpdateTarget: struct ('modelType voption * obj) -> unit
-    }
-
-    member x.WithValue(value) =
-        { Key = x.Key
-#if DEBUG
-          DebugName = x.Name
-#endif
-          Value = x.Convert(value) }
-
-    interface IXamarinFormsAttributeDefinition with
-        member x.Name = x.Name
-        member x.UpdateTarget(newValueOpt, target) =
-            let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-            x.UpdateTarget (struct (newValueOpt, target))
-
-    interface IAttributeDefinition<'inputType, 'modelType> with
-        member x.Key = x.Key
-        member x.DefaultWith () = x.DefaultWith ()
-        member x.CompareBoxed(a, b) =
-            x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
+and IWidgetAttributeDefinition =
+    inherit IScalarAttributeDefinition
+    abstract member ApplyDiff: WidgetDiff * obj -> unit
 
 type ViewNodeData(viewNode: ViewNode) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty

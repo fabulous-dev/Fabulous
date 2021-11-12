@@ -1,11 +1,11 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
-open Fabulous.XamarinForms.Attributes
+open Fabulous.XamarinForms.XFAttributes
 open Fabulous.XamarinForms.Widgets
 open System.Runtime.CompilerServices
 
-module Helpers =
+module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
         items
         |> Seq.map (fun item -> item.Compile())
@@ -44,7 +44,7 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
     static member inline Create(orientation: Xamarin.Forms.StackOrientation, children: seq<#IViewWidgetBuilder<'msg>>, ?spacing: float) =
         StackLayoutWidgetBuilder<'msg>([|
             StackLayout.Orientation.WithValue(orientation)
-            LayoutOfView.Children.WithValue(Helpers.compileSeq children)
+            LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
             match spacing with None -> () | Some v -> StackLayout.Spacing.WithValue(v)
         |])
 
@@ -59,7 +59,7 @@ type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
               
     static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
         GridWidgetBuilder<'msg>([|
-            LayoutOfView.Children.WithValue(Helpers.compileSeq children)
+            LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
             match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
             match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
         |])

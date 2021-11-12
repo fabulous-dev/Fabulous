@@ -1,16 +1,78 @@
 namespace Fabulous.XamarinForms
 
 open Fabulous
-open Fabulous.Attributes
 open Xamarin.Forms
 open System
 
-module XamarinFormsAttributeComparers =
-    let widgetComparer (struct (prev: Widget, curr: Widget)) =
-        AttributeComparison.Different (ValueSome (box curr))
+module Helpers =
+    let canReuseView (prevWidget: Widget) (currWidget: Widget) =
+        true
 
-module XamarinFormsAttributes =
-    let defineWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) (updateTarget: struct ('modelType voption * obj) -> unit) =
+module AttributeDefinitions =
+    /// Attribute definiton for scalar properties
+    type ScalarAttributeDefinition<'inputType, 'modelType> =
+        { Key: AttributeKey
+          Name: string
+          DefaultWith: unit -> 'modelType
+          Convert: 'inputType -> 'modelType
+          Compare: struct ('modelType * 'modelType) -> AttributeComparison
+          UpdateTarget: struct ('modelType voption * obj) -> unit }
+    
+        member x.WithValue(value) =
+            { Key = x.Key
+    #if DEBUG
+              DebugName = x.Name
+    #endif
+              Value = x.Convert(value) }
+    
+        interface IScalarAttributeDefinition with
+            member x.Name = x.Name
+            member x.UpdateTarget(newValueOpt, target) =
+                let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
+                x.UpdateTarget (struct (newValueOpt, target))
+    
+        interface IAttributeDefinition<'inputType, 'modelType> with
+            member x.Key = x.Key
+            member x.DefaultWith () = x.DefaultWith ()
+            member x.CompareBoxed(a, b) =
+                x.Compare(struct (unbox<'modelType> a, unbox<'modelType> b))
+
+    /// Attribute definition for widget properties
+    type WidgetAttributeDefinition =
+        { Key: AttributeKey
+          Name: string
+          ApplyDiff: struct (WidgetDiff * obj) -> unit
+          UpdateTarget: struct (Widget voption * obj) -> unit }
+
+        member x.WithValue(value) =
+            { Key = x.Key
+#if DEBUG
+              DebugName = x.Name
+#endif
+              Value = value }
+
+        interface IWidgetAttributeDefinition with
+            member x.Name = x.Name
+            member x.ApplyDiff(diff, target) =
+                x.ApplyDiff(struct(diff, target))
+            member x.UpdateTarget(newValueOpt, target) =
+                let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget> v)
+                x.UpdateTarget (struct (newValueOpt, target))
+                
+        interface IAttributeDefinition<Widget, Widget> with
+            member x.Key = x.Key
+            member x.DefaultWith () = Unchecked.defaultof<Widget>
+            member x.CompareBoxed(a, b) =
+                let prevWidget = unbox<Widget> a
+                let currWidget = unbox<Widget> b
+                AttributeComparers.compareWidgets Helpers.canReuseView prevWidget currWidget
+
+
+module Attributes =
+    open AttributeDefinitions
+
+    /// Define a custom attribute storing any value
+    let defineScalarWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) (updateTarget: struct ('modelType voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
             { Key = key
@@ -22,27 +84,54 @@ module XamarinFormsAttributes =
         AttributeDefinitionStore.set key definition
         definition
 
+    /// Define a custom attribute storing a widget
+    let defineWidgetWithConverter name (applyDiff: struct (WidgetDiff * obj) -> unit) (updateTarget: struct (Widget voption * obj) -> unit) =
+        let key = AttributeDefinitionStore.getNextKey()
+        let definition =
+            { Key = key
+              Name = name
+              ApplyDiff = applyDiff
+              UpdateTarget = updateTarget }
+        AttributeDefinitionStore.set key definition
+        definition
+
+    /// Define an attribute storing a Widget for a CLR property
+    let inline defineWidget name set =
+        let inline applyDiff struct (diff, target) =
+            let viewNode = ViewNode.getViewNode target
+            viewNode.ApplyDiff(diff) |> ignore
+
+        let inline updateTarget struct (newValueOpt: Widget voption, target) = 
+            match newValueOpt with
+            | ValueNone -> set target null
+            | ValueSome widget ->
+                let viewNode = ViewNode.getViewNode target :?> ViewNode
+                let widgetDefinition = WidgetDefinitionStore.get widget.Key
+                let view = widgetDefinition.CreateView (widget, viewNode.Context)
+                set target view
+
+        defineWidgetWithConverter name applyDiff updateTarget
+
+    /// Define an attribute storing a Widget for a bindable property
+    let inline defineBindableWidget (bindableProperty: BindableProperty) =
+        defineWidget
+            bindableProperty.PropertyName
+            (fun target value ->
+                let bindableObject = target :?> BindableObject
+                if value = null then
+                    bindableObject.ClearValue(bindableProperty)
+                else
+                    bindableObject.SetValue(bindableProperty, value)
+            )
+
     let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * obj) -> unit) =
-        defineWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
+        defineScalarWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
 
     let defineWidgetCollection name =
         defineCollection<Widget> name ignore
 
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
-        defineWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
-
-    let inline defineWidget name get set =
-        define<Widget> name (fun () -> Unchecked.defaultof<_>) (fun struct (newValueOpt, target) ->
-            match newValueOpt with
-            | ValueNone -> set target null
-            | ValueSome widget when get target = null ->
-                let viewNode = ViewNode.getViewNode target :?> ViewNode
-                let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                let view = widgetDefinition.CreateView (widget, viewNode.Context)
-                set target view
-            | ValueSome widget ->
-                Reconciler.update ViewNode.getViewNode (get target) widget.Attributes
-        )
+        defineScalarWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
 
     let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (comparer: struct ('modelType * 'modelType) -> AttributeComparison) =
         let key = AttributeDefinitionStore.getNextKey()
@@ -56,33 +145,6 @@ module XamarinFormsAttributes =
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v) }
-        AttributeDefinitionStore.set key definition
-        definition
-
-    let inline defineBindableWidget (bindableProperty: Xamarin.Forms.BindableProperty) =
-        let key = AttributeDefinitionStore.getNextKey()
-        let definition =
-            { Key = key
-              Name = bindableProperty.PropertyName
-              DefaultWith = fun () -> Unchecked.defaultof<Widget>
-              Convert = id
-              Compare = XamarinFormsAttributeComparers.widgetComparer
-              UpdateTarget = fun struct(newValueOpt, target) ->
-                match newValueOpt with
-                | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
-                | ValueSome widget ->
-                    let bindableObject = (target :?> BindableObject)
-                    let currValue = bindableObject.GetValue(bindableProperty)
-
-                    if currValue = null then
-                        let viewNode = ViewNode.getViewNode target :?> ViewNode
-                        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                        let view = widgetDefinition.CreateView (widget, viewNode.Context)
-                        bindableObject.SetValue(bindableProperty, view)
-                    else
-                        Reconciler.update ViewNode.getViewNode currValue widget.Attributes
-            }
-
         AttributeDefinitionStore.set key definition
         definition
 
