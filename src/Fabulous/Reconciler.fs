@@ -167,65 +167,61 @@ module Reconciler =
         if List.isEmpty diff then
             ()
         else
-            match viewNode.ApplyDiff
-                      {
-                          // TODO return Array from comparison
-                          Changes = diff |> List.toArray
-                          NewAttributes = attributes
-                      } with
-            | UpdateResult.Done -> ()
-            | UpdateResult.UpdateChildren struct (container, widgets, ctx) ->
-                let children = container.Children
+            viewNode.ApplyDiff
+                { Changes = diff |> List.toArray // TODO return Array from comparison
+                  NewAttributes = attributes }
 
-                // if the size is the same we can just reuse the same array to avoid allocations
-                // it is safe to do so because diffing goes only forward, thus safe to do it in place
-                let target: obj [] =
-                    if widgets.Length = children.Length then
-                        children
-                    else
-                        Array.zeroCreate(widgets.Length)
+    //let children = container.Children
 
-                let mutable added: obj list voption = ValueNone
+    //// if the size is the same we can just reuse the same array to avoid allocations
+    //// it is safe to do so because diffing goes only forward, thus safe to do it in place
+    //let target: obj [] =
+    //    if widgets.Length = children.Length then
+    //        children
+    //    else
+    //        Array.zeroCreate(widgets.Length)
 
-                let mutable removed: obj list voption =
-                    // if we are downsizing then the tail needs to be added to removed
-                    if children.Length > widgets.Length then
-                        children
-                        |> Array.skip widgets.Length
-                        |> Array.toList
-                        |> ValueSome
-                    else
-                        ValueNone
+    //let mutable added: obj list voption = ValueNone
 
-                for i = 0 to widgets.Length - 1 do
-                    let widget = widgets.[i]
-                    let prev = Array.tryItem i children
+    //let mutable removed: obj list voption =
+    //    // if we are downsizing then the tail needs to be added to removed
+    //    if children.Length > widgets.Length then
+    //        children
+    //        |> Array.skip widgets.Length
+    //        |> Array.toList
+    //        |> ValueSome
+    //    else
+    //        ValueNone
 
-                    match (prev, widget) with
-                    | None, widget ->
-                        // view doesn't exist yet
-                        let viewNode = createViewFromWidget widget ctx
-                        target.[i] <- viewNode
-                        added <- addItem viewNode added
+    //for i = 0 to widgets.Length - 1 do
+    //    let widget = widgets.[i]
+    //    let prev = Array.tryItem i children
 
-                    | Some p, widget when widget.Key = (getViewNode p).Origin ->
-                        // same type, just update
-                        target.[i] <- p
-                        update getViewNode p widget.Attributes
+    //    match (prev, widget) with
+    //    | None, widget ->
+    //        // view doesn't exist yet
+    //        let viewNode = createViewFromWidget widget ctx
+    //        target.[i] <- viewNode
+    //        added <- addItem viewNode added
 
-                    | Some p, widget ->
-                        // different type, thus replacement is needed
-                        let viewNode = createViewFromWidget widget ctx
-                        target.[i] <- viewNode
-                        added <- addItem viewNode added
-                        removed <- addItem p removed
+    //    | Some p, widget when widget.Key = (getViewNode p).Origin ->
+    //        // same type, just update
+    //        target.[i] <- p
+    //        update getViewNode p widget.Attributes
 
-                container.UpdateChildren
-                    {
-                        ChildrenAfterUpdate = target
-                        Added = added
-                        Removed = removed
-                    }
+    //    | Some p, widget ->
+    //        // different type, thus replacement is needed
+    //        let viewNode = createViewFromWidget widget ctx
+    //        target.[i] <- viewNode
+    //        added <- addItem viewNode added
+    //        removed <- addItem p removed
+
+    //container.UpdateChildren
+    //    {
+    //        ChildrenAfterUpdate = target
+    //        Added = added
+    //        Removed = removed
+    //    }
 
 
 
@@ -265,19 +261,17 @@ module Reconciler =
 //        ctx.Dispatch ev
             
 module AttributeComparers =
-    let equalityComparer struct (a, b) =
+    let noCompare struct (a, b) = AttributeComparison.ReplacedBy b
+
+    let equalityCompare struct (a, b) =
         if a = b then
             AttributeComparison.Identical
         else
             AttributeComparison.ReplacedBy b
 
-    let noCompare struct (a, b) = AttributeComparison.ReplacedBy b
-
-    let collectionComparer struct (a: 'T, b: 'T) = AttributeComparison.ReplacedBy b
-
-    /// Determine the differences between 2 widgets.
+    /// Determine the differences between 2 widgets
     /// Check also for reusability of the target control
-    let compareWidgets (canReuse: Widget -> Widget -> bool) (prevWidget: Widget) (currWidget: Widget) =
+    let compareWidgets (canReuse: Widget -> Widget -> bool) struct (prevWidget: Widget, currWidget: Widget) =
         if not (canReuse prevWidget currWidget) then
             AttributeComparison.ReplacedBy currWidget
         elif prevWidget = currWidget then
@@ -287,3 +281,7 @@ module AttributeComparers =
             AttributeComparison.Different
                 { Changes = diffs |> List.toArray
                   NewAttributes = [||] }
+
+    /// Determine the differences between 2 collections
+    let compareCollections struct (prevColl: 'elementType array, currColl: 'elementType array) =
+        AttributeComparison.ReplacedBy currColl

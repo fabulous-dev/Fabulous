@@ -3,11 +3,15 @@
 open System
 open Fabulous
 
-type IXamarinFormsViewContainer =
-    inherit IViewContainer
-    abstract member ChildrenAttributeKey: AttributeKey
+type IScalarAttributeDefinition =
+    abstract member Name: string
+    abstract member UpdateTarget: obj voption * obj -> unit
 
-type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewContainerOpt: IXamarinFormsViewContainer option) =
+type IWidgetAttributeDefinition =
+    inherit IScalarAttributeDefinition
+    abstract member ApplyDiff: WidgetDiff * obj -> unit
+
+type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
 
     let mutable _attributes = [||]
 
@@ -18,7 +22,7 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
         member _.Origin = key
         member _.ApplyDiff(diffs) =
             if not targetRef.IsAlive then
-                UpdateResult.Done
+                ()
             else
                 for change in diffs.Changes do
                     match change with
@@ -41,32 +45,6 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference, viewConta
                         let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetAttributeDefinition
                         definition.ApplyDiff(diff, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
-
-                match viewContainerOpt with
-                | None -> UpdateResult.Done
-                | Some viewContainer ->
-                    let needsChildrenUpdate =
-                        diffs.Changes
-                        |> Array.choose (fun change ->
-                            match change with
-                            | AttributeChange.Added added  when added.Key = viewContainer.ChildrenAttributeKey -> Some (added.Value :?> Widget[])
-                            | AttributeChange.Removed removed when removed.Key = viewContainer.ChildrenAttributeKey -> Some (removed.Value :?> Widget[])
-                            | AttributeChange.ScalarUpdated newAttr when newAttr.Key = viewContainer.ChildrenAttributeKey -> Some (newAttr.Value :?> Widget[])
-                            | _ -> None
-                        )
-                        |> Array.tryHead
-
-                    match needsChildrenUpdate with
-                    | None -> UpdateResult.Done
-                    | Some widgets -> UpdateResult.UpdateChildren struct (viewContainer :> IViewContainer, widgets, context)
-
-and IScalarAttributeDefinition =
-    abstract member Name: string
-    abstract member UpdateTarget: obj voption * obj -> unit
-
-and IWidgetAttributeDefinition =
-    inherit IScalarAttributeDefinition
-    abstract member ApplyDiff: WidgetDiff * obj -> unit
 
 type ViewNodeData(viewNode: ViewNode) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty

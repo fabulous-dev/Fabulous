@@ -6,7 +6,7 @@ open Xamarin.Forms
 open System.Collections.Generic
 
 module Application =
-    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
 
 module Page =
     let BackgroundImageSource = Attributes.defineBindable<ImageSource> Xamarin.Forms.Page.BackgroundImageSourceProperty
@@ -22,7 +22,7 @@ module Layout =
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Layout.PaddingProperty
 
 module LayoutOfView =
-    let Children = Attributes.defineWidgetCollection "LayoutOfWidget_Children"
+    let Children = Attributes.defineWidgetCollection "LayoutOfWidget_Children" (fun target -> (target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children)
 
 module StackLayout =
     let Orientation = Attributes.defineBindable<StackOrientation> Xamarin.Forms.StackLayout.OrientationProperty
@@ -85,7 +85,7 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- unbox value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- unbox value)
 
 module Image =
     let Source = Attributes.defineBindable<ImageSource> Xamarin.Forms.Image.SourceProperty

@@ -65,7 +65,7 @@ module AttributeDefinitions =
             member x.CompareBoxed(a, b) =
                 let prevWidget = unbox<Widget> a
                 let currWidget = unbox<Widget> b
-                AttributeComparers.compareWidgets Helpers.canReuseView prevWidget currWidget
+                AttributeComparers.compareWidgets Helpers.canReuseView struct (prevWidget, currWidget)
 
 
 module Attributes =
@@ -96,12 +96,13 @@ module Attributes =
         definition
 
     /// Define an attribute storing a Widget for a CLR property
-    let inline defineWidget name set =
-        let inline applyDiff struct (diff, target) =
+    let defineWidget name get set =
+        let applyDiff struct (diff, parent) =
+            let target = get parent
             let viewNode = ViewNode.getViewNode target
             viewNode.ApplyDiff(diff) |> ignore
 
-        let inline updateTarget struct (newValueOpt: Widget voption, target) = 
+        let updateTarget struct (newValueOpt: Widget voption, target) = 
             match newValueOpt with
             | ValueNone -> set target null
             | ValueSome widget ->
@@ -116,6 +117,7 @@ module Attributes =
     let inline defineBindableWidget (bindableProperty: BindableProperty) =
         defineWidget
             bindableProperty.PropertyName
+            (fun parent -> (parent :?> BindableObject).GetValue(bindableProperty))
             (fun target value ->
                 let bindableObject = target :?> BindableObject
                 if value = null then
@@ -125,31 +127,41 @@ module Attributes =
             )
 
     let defineCollection<'elementType> name (updateTarget: struct ('elementType array voption * obj) -> unit) =
-        defineScalarWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.collectionComparer updateTarget
+        defineScalarWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray AttributeComparers.compareCollections updateTarget
 
-    let defineWidgetCollection name =
-        defineCollection<Widget> name ignore
+    let defineWidgetCollection<'elementType> name (getCollection: obj -> System.Collections.Generic.IList<'elementType>) =
+        defineCollection<Widget> name (fun struct (collOpt, target) ->
+            let targetColl = getCollection target
+            match collOpt with
+            | ValueNone -> targetColl.Clear()
+            | ValueSome coll ->
+                let viewNode = ViewNode.getViewNode target :?> ViewNode
+
+                targetColl.Clear()
+
+                for widget in coll do
+                    let widgetDefinition = WidgetDefinitionStore.get widget.Key
+                    let view = widgetDefinition.CreateView(widget, viewNode.Context) :?> 'elementType
+                    targetColl.Add(view)
+        )
 
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
-        defineScalarWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityComparer updateTarget
+        defineScalarWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityCompare updateTarget
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (comparer: struct ('modelType * 'modelType) -> AttributeComparison) =
-        let key = AttributeDefinitionStore.getNextKey()
-        let definition =
-            { Key = key
-              Name = bindableProperty.PropertyName
-              DefaultWith = fun () -> Unchecked.defaultof<'modelType>
-              Convert = convert
-              Compare = comparer
-              UpdateTarget = fun struct(newValueOpt, target) ->
+    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) =
+        defineScalarWithConverter<'inputType, 'modelType>
+            bindableProperty.PropertyName
+            (fun () -> Unchecked.defaultof<'modelType>)
+            convert
+            compare
+            (fun struct (newValueOpt, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
-                | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v) }
-        AttributeDefinitionStore.set key definition
-        definition
+                | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v)
+            )
 
     let inline defineBindable<'T when 'T: equality> bindableProperty =
-        defineBindableWithComparer<'T, 'T> bindableProperty id AttributeComparers.equalityComparer
+        defineBindableWithComparer<'T, 'T> bindableProperty id AttributeComparers.equalityCompare
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()

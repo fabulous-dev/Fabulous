@@ -34,49 +34,37 @@ type IWidgetExtensions () =
         let result = (^T : (new : Attribute[] -> ^T) attribs2)
         result
 
-type LayoutOfViewViewContainer(ref: WeakReference) =
-    interface IXamarinFormsViewContainer with
-        member this.ChildrenAttributeKey = XFAttributes.LayoutOfView.Children.Key
 
-        member this.Children =
-            if ref.IsAlive then
-                (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
-                |> Seq.map box
-                |> Seq.toArray
-            else
-                Array.empty
+            //if not ref.IsAlive then
+            //    ()
+            //else
+            //    let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
+            //    let count = children.Count
 
-        member this.UpdateChildren diff =
-            if not ref.IsAlive then
-                ()
-            else
-                let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
-                let count = children.Count
+            //    while count > diff.ChildrenAfterUpdate.Length do
+            //        children.RemoveAt(children.Count - 1)
 
-                while count > diff.ChildrenAfterUpdate.Length do
-                    children.RemoveAt(children.Count - 1)
+            //    for i = 0 to diff.ChildrenAfterUpdate.Length - 1 do
+            //        let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
+            //        match children.IndexOf(child) with
 
-                for i = 0 to diff.ChildrenAfterUpdate.Length - 1 do
-                    let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
-                    match children.IndexOf(child) with
+            //        // Same index, do nothing
+            //        | index when index = i -> ()
 
-                    // Same index, do nothing
-                    | index when index = i -> ()
+            //        // New child, replace the current index
+            //        | -1 ->
+            //            if count > i then
+            //                children.[i] <- child
+            //            else
+            //                children.Insert(i, child)
 
-                    // New child, replace the current index
-                    | -1 ->
-                        if count > i then
-                            children.[i] <- child
-                        else
-                            children.Insert(i, child)
-
-                    // Child is moved, remove it and reinsert it at the right place
-                    | index ->
-                        children.RemoveAt(index)
-                        children.Insert(i, child)
+            //        // Child is moved, remove it and reinsert it at the right place
+            //        | index ->
+            //            children.RemoveAt(index)
+            //            children.Insert(i, child)
 
 module Widgets =
-    let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> (getViewContainer: WeakReference -> IXamarinFormsViewContainer option) =
+    let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)>() =
         let key = WidgetDefinitionStore.getNextKey()
         let definition =
             { Key = key
@@ -84,7 +72,7 @@ module Widgets =
               CreateView = fun (widget, context) ->
                   let view = new 'T()
                   let weakReference = WeakReference(view)
-                  let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference, getViewContainer weakReference))
+                  let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
                   view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
                   Reconciler.update ViewNode.getViewNode view widget.Attributes
@@ -93,6 +81,3 @@ module Widgets =
         
         WidgetDefinitionStore.set key definition
         key
-
-    let registerNoChildren<'T when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> () =
-        register<'T> (fun _ -> None)

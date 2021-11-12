@@ -53,7 +53,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetDiff =
 
 /// Represents a UI element created from a widget
 type IViewNode =
-    abstract ApplyDiff : WidgetDiff -> UpdateResult
+    abstract ApplyDiff : WidgetDiff -> unit
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
 
@@ -73,10 +73,6 @@ and [<Struct>] ChildrenUpdate =
 and IViewContainer =
     abstract Children : obj []
     abstract UpdateChildren : ChildrenUpdate -> unit
-
-and [<RequireQualifiedAccess; Struct>] UpdateResult =
-    | Done
-    | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)
 
 type Program<'arg, 'model, 'msg> =
     { Init : 'arg -> 'model * Cmd<'msg>
