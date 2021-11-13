@@ -52,6 +52,10 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline font(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.NamedSize) =
         this.AddAttribute(Label.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Label>)))
+        
+    [<Extension>]
+    static member inline font(this: ButtonWidgetBuilder<_>, value: Xamarin.Forms.NamedSize) =
+        this.AddAttribute(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
 
     [<Extension>]
     static member inline padding(this: #ILayoutWidgetBuilder<_>, value: float) =
@@ -60,3 +64,14 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline ignoreSafeArea(this: #IPageWidgetBuilder<_>) =
         this.AddAttribute(AdditionalAttributes.iOS.UseSafeArea.WithValue(false))
+        
+    [<Extension>]
+    static member inline margin(this: #IViewWidgetBuilder<_>, value: float) =
+        this.AddAttribute(View.Margin.WithValue(Thickness(value)))
+        
+    [<Extension>]
+    static member inline size(this: #IViewWidgetBuilder<_>, ?width: float, ?height: float) =
+        this.AddAttributes([|
+            match width with None -> () | Some v -> VisualElement.Width.WithValue(v)
+            match height with None -> () | Some v -> VisualElement.Height.WithValue(v)
+        |])

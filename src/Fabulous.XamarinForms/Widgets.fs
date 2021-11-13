@@ -30,9 +30,13 @@ type IWidgetExtensions () =
 
     [<Extension>]
     static member inline AddAttributes(this: ^T when ^T :> IWidgetBuilder, attrs: Attribute[]) =
-        let attribs2 = Array.append this.Attributes attrs
-        let result = (^T : (new : Attribute[] -> ^T) attribs2)
-        result
+        match attrs with
+        | [||] ->
+            this
+        | attributes ->
+            let attribs2 = Array.append this.Attributes attributes
+            let result = (^T : (new : Attribute[] -> ^T) attribs2)
+            result
 
 
 

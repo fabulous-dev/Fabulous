@@ -17,6 +17,7 @@ module Page =
 
 module ContentPage =
     let Content = Attributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
+    let SizeAllocated = Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabulousContentPage).SizeAllocated)
 
 module Layout =
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Layout.PaddingProperty
@@ -34,6 +35,9 @@ module Element =
 module VisualElement =
     let IsEnabled = Attributes.defineBindable<bool> Xamarin.Forms.VisualElement.IsEnabledProperty
     let Opacity = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.OpacityProperty
+    let BackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.VisualElement.BackgroundColorProperty
+    let Height = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.HeightRequestProperty
+    let Width = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.WidthRequestProperty
 
 module View =
     let HorizontalOptions = Attributes.defineBindable<LayoutOptions> Xamarin.Forms.View.HorizontalOptionsProperty
@@ -46,31 +50,20 @@ module Label =
     let VerticalTextAlignment = Attributes.defineBindable<TextAlignment> Xamarin.Forms.Label.VerticalTextAlignmentProperty
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Label.FontSizeProperty
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Label.PaddingProperty
+    let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Label.TextColorProperty
 
 module Button =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
     let Clicked = Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)
+    let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Button.TextColorProperty
+    let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Button.FontSizeProperty
 
 module Switch =
     let IsToggled = Attributes.defineBindable<bool> Xamarin.Forms.Switch.IsToggledProperty
     let Toggled = Attributes.defineEvent<ToggledEventArgs> "Switch_Toggled" (fun target -> (target :?> Xamarin.Forms.Switch).Toggled)
 
 module Slider =
-    let MinimumMaximum = Attributes.define<float * float> "Slider_MinimumMaximum" (fun () -> (0., 1.)) (fun struct (newValueOpt, target) ->
-        let slider = target :?> Xamarin.Forms.Slider
-        match newValueOpt with
-        | ValueNone ->
-            slider.ClearValue(Xamarin.Forms.Slider.MinimumProperty)
-            slider.ClearValue(Xamarin.Forms.Slider.MaximumProperty)
-        | ValueSome (min, max) ->
-            let currMax = slider.GetValue(Xamarin.Forms.Slider.MaximumProperty) :?> float
-            if min > currMax then
-                slider.SetValue(Xamarin.Forms.Slider.MaximumProperty, max)
-                slider.SetValue(Xamarin.Forms.Slider.MinimumProperty, min)
-            else
-                slider.SetValue(Xamarin.Forms.Slider.MinimumProperty, min)
-                slider.SetValue(Xamarin.Forms.Slider.MaximumProperty, max)
-    )
+    let MinimumMaximum = Attributes.define<float * float> "Slider_MinimumMaximum" (fun () -> (0., 1.)) ViewUpdaters.updateSliderMinMax
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Slider.ValueProperty
     let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> "Slider_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Slider).ValueChanged)
 
@@ -85,50 +78,26 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value ->
-        let scrollView = (target :?> Xamarin.Forms.ScrollView)
-        let view = value :?> View
-        scrollView.Content <- view
-    )
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- unbox value)
 
 module Image =
     let Source = Attributes.defineBindable<ImageSource> Xamarin.Forms.Image.SourceProperty
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare (fun struct (newValueOpt, target) ->
-        let grid = target :?> Xamarin.Forms.Grid
-        match newValueOpt with
-        | ValueNone -> grid.ColumnDefinitions.Clear()
-        | ValueSome coll ->
-            grid.ColumnDefinitions.Clear()
-
-            for c in coll do
-                let gridLength =
-                    match c with
-                    | Auto -> Xamarin.Forms.GridLength.Auto
-                    | Star -> Xamarin.Forms.GridLength.Star
-                    | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
-                    | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
-
-                grid.ColumnDefinitions.Add(Xamarin.Forms.ColumnDefinition(Width = gridLength))
-    )
-    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare (fun struct (newValueOpt, target) ->
-        let grid = target :?> Xamarin.Forms.Grid
-        match newValueOpt with
-        | ValueNone -> grid.RowDefinitions.Clear()
-        | ValueSome coll ->
-            grid.RowDefinitions.Clear()
-
-            for c in coll do
-                let gridLength =
-                    match c with
-                    | Auto -> Xamarin.Forms.GridLength.Auto
-                    | Star -> Xamarin.Forms.GridLength.Star
-                    | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
-                    | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
-
-                grid.RowDefinitions.Add(Xamarin.Forms.RowDefinition(Height = gridLength))
-    )
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
+    let ColumnSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.ColumnSpacingProperty
+    let RowSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.RowSpacingProperty
+    let ColumnSpan = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnSpanProperty
+    let RowSpan = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowSpanProperty
+
+module BoxView =
+    let Color = Attributes.defineBindable<Color> Xamarin.Forms.BoxView.ColorProperty
+
+module NavigationPage =
+    let Pages = Attributes.defineWidgetCollectionWithConverter "NavigationPage_Pages" ViewUpdaters.applyDiffNavigationPagePages ViewUpdaters.updateNavigationPagePages
+    let BarBackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarBackgroundColorProperty
+    let BarTextColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarTextColorProperty
