@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Description>Fabulous for Xamarin.Forms Template</Description>
+        <Authors>TimLariviere</Authors>
+        <PackageProjectUrl>https://github.com/TimLariviere/Fabulous-new</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageIcon>images\nuget-icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/TimLariviere/Fabulous-new.git</RepositoryUrl>
+        <PackageTags>template;fsharp;fabulous</PackageTags>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageType>Template</PackageType>
+        <NoBuild>true</NoBuild>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- https://github.com/dotnet/templating/issues/2350#issuecomment-610431461 -->
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ExcludeFromPackage>
+Content/*/.fake/**/*;
+Content/*/.ionide/**/*;
+Content/*/.cache/**/*;
+Content/*/**/obj/**/*;
+Content/*/**/bin/**/*;
+        </ExcludeFromPackage>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="Content/**/*.*" Exclude="$(ExcludeFromPackage)" >
+            <PackagePath>Content\</PackagePath>
+        </Content>
+        <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
+    </ItemGroup>
+</Project>

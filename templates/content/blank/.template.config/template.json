@@ -1,0 +1,297 @@
+{
+    "author": "fsprojects",
+    "classifications": [
+      "Fabulous",
+      "Xamarin.Forms",
+      "Mobile",
+      "Elmish",
+      "Cross-platform"
+    ],
+    "name": "Fabulous for Xamarin.Forms App v2.0.0-alpha.1",
+    "groupIdentity": "Fabulous.XamarinForms.App",
+    "identity": "Fabulous.XamarinForms.FSharp",
+    "shortName": "fabulous-xf-app",
+    "tags": {
+      "language": "F#",
+      "type": "project"
+    },
+    "sourceName": "NewApp",
+    "primaryOutputs": [
+      {
+        "path": "NewApp\\NewApp.fs"
+      },
+      {
+        "condition": "Android",
+        "path": "NewApp.Android\\NewApp.Android.fsproj"
+      },
+      {
+        "condition": "GTK",
+        "path": "NewApp.Gtk\\NewApp.Gtk.fsproj"
+      },
+      {
+        "condition": "WPF",
+        "path": "NewApp.WPF\\NewApp.WPF.fsproj"
+      },
+      {
+        "condition": "iOS",
+        "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+      },
+      {
+        "condition": "macOS",
+        "path": "NewApp.macOS\\NewApp.macOS.fsproj"
+      },
+      {
+        "condition": "UWP",
+        "path": "NewApp.UWP\\NewApp.UWP.csproj"
+      }
+    ],
+    "defaultName": "App",
+    "preferNameDirectory": "true",
+    "postActions": [
+    ],
+    "guids": [
+      "99E19497-29A6-4B77-B773-BEC55F9B55DC",
+      "1069F96F-A42B-4CD8-8FA1-7F047C726B88"
+    ],
+    "symbols": {
+      "kind": {
+        "type": "parameter",
+        "datatype": "choice",
+        "defaultValue": "blank",
+        "choices": [
+          {
+            "choice": "blank",
+            "description": "An empty Fabulous Xamarin.Forms app"
+          }
+        ]
+      },
+      "AppIdentifier": {
+        "type": "parameter",
+        "description": "Overrides the Info.plist's CFBundleIdentifier",
+        "datatype": "string",
+        "defaultValue": "com.companyname"
+      },
+      "AndroidAppIdentifier": {
+        "type": "parameter",
+        "description": "Overrides the package name in the AndroidManifest.xml",
+        "datatype": "string"
+      },
+      "iOSAppIdentifier": {
+        "type": "parameter",
+        "description": "Overrides the Info.plist's CFBundleIdentifier",
+        "datatype": "string"
+      },
+      "AndroidAppIdentifierReplacer": {
+        "type": "generated",
+        "generator": "coalesce",
+        "parameters": {
+          "sourceVariableName": "AndroidAppIdentifier",
+          "fallbackVariableName": "AppIdentifier"
+        },
+        "replaces": "com.companyname.NewApp.Android"
+      },
+      "iOSAppIdentifierReplacer": {
+        "type": "generated",
+        "generator": "coalesce",
+        "parameters": {
+          "sourceVariableName": "iOSAppIdentifier",
+          "fallbackVariableName": "AppIdentifier"
+        },
+        "replaces": "com.companyname.NewApp.iOS"
+      },
+      "WindowsSdk": {
+        "type": "parameter",
+        "description": "Windows SDK Target Version. Minimum Version is Fall Creator's Update (10.0.16299).",
+        "dataType": "string",
+        "replaces": "WindowsSdk",
+        "defaultValue": "10.0.17763.0"
+      },
+      "MicrosoftNETCoreUniversalWindowsPlatformPkgVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "MicrosoftNETCoreUniversalWindowsPlatformPkgVersion",
+        "defaultValue": "6.2.10"
+      },
+      "AndroidSDKVersion": {
+        "type": "parameter",
+        "datatype": "string",
+        "replaces": "AndroidSDKVersion",
+        "defaultValue": "v11.0"
+      },
+      "TargetAndroidAPI": {
+        "type": "parameter",
+        "datatype": "string",
+        "replaces": "TargetAndroidAPI",
+        "defaultValue": "30"
+      },
+      "MinAndroidAPI": {
+        "type": "parameter",
+        "datatype": "int",
+        "replaces": "MinAndroidAPI",
+        "defaultValue": "21"
+      },
+      "XamarinEssentialsSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinEssentialsSdk",
+        "defaultValue": "1.7.0"
+      },
+      "SystemNumericsVectorsSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "SystemNumericsVectorsSdk",
+        "defaultValue": "4.5.0"
+      },
+      "XamarinFormsSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinFormsSdk",
+        "defaultValue": "5.0.0.2196"
+      },
+      "FabulousPkgsVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "FabulousPkgsVersion",
+        "defaultValue": "2.0.0-alpha.1"
+      },
+      "FSharpCorePkgVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "FSharpCorePkgVersion",
+        "defaultValue": "6.0.1"
+      },
+      "OpenTKPkgVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "OpenTKPkgVersion",
+        "defaultValue": "3.1.0"
+      },
+      "ProjectID": {
+        "type": "generated",
+        "generator": "guid",
+        "replaces": "Project_ID"
+      },
+      "UserID": {
+        "type": "generated",
+        "generator": "guid",
+        "replaces": "User_ID"
+      },
+      "iOS": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "true"
+      },
+      "macOS": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "false"
+      },
+      "GTK": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "false"
+      },
+      "WPF": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "false"
+      },
+      "Android": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "false"
+      },
+      "UWP": {
+        "type": "parameter",
+        "dataType": "bool",
+        "defaultValue": "false"
+      }
+    },
+    "sources": [
+      {
+        "modifiers": [
+          {
+            "condition": "(!iOS)",
+            "exclude": [
+              "NewApp.iOS/**/*"
+            ]
+          },
+          {
+            "condition": "(!Android)",
+            "exclude": [
+              "NewApp.Android/**/*"
+            ]
+          },
+          {
+            "condition": "(!GTK)",
+            "exclude": [
+              "NewApp.Gtk/**/*"
+            ]
+          },
+          {
+            "condition": "(!WPF)",
+            "exclude": [
+              "NewApp.WPF/**/*"
+            ]
+          },
+          {
+            "condition": "(!macOS)",
+            "exclude": [
+              "NewApp.macOS/**/*"
+            ]
+          },
+          {
+            "condition": "(!UWP)",
+            "exclude": [
+              "NewApp.UWP/**/*"
+            ]
+          }
+        ]
+      },
+      {
+        "source": "./",
+        "condition": "(kind == \"blank\")",
+        "modifiers": [
+          {
+            "condition": "(!iOS)",
+            "exclude": [
+              "NewApp.iOS/**/*"
+            ]
+          },
+          {
+            "condition": "(!Android)",
+            "exclude": [
+              "NewApp.Android/**/*"
+            ]
+          },
+          {
+            "condition": "(!GTK)",
+            "exclude": [
+              "NewApp.Gtk/**/*"
+            ]
+          },
+          {
+            "condition": "(!WPF)",
+            "exclude": [
+              "NewApp.WPF/**/*"
+            ]
+          },
+          {
+            "condition": "(!macOS)",
+            "exclude": [
+              "NewApp.macOS/**/*"
+            ]
+          },
+          {
+            "condition": "(!UWP)",
+            "exclude": [
+              "NewApp.UWP/**/*"
+            ]
+          }
+        ],
+        "copyOnly": [
+          "**/*.targets"
+        ]
+      }
+    ]
+  }
