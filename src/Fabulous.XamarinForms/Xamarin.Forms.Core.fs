@@ -57,11 +57,11 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
 type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.register<Xamarin.Forms.Grid>()
               
-    static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>) = //, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
+    static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
         GridWidgetBuilder<'msg>([|
             LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
-            //match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
-            //match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
+            match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
+            match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
         |])
               
     interface ILayoutWidgetBuilder<'msg> with
@@ -194,9 +194,15 @@ type [<Struct>] ScrollViewWidgetBuilder<'msg> (attributes: Attribute[]) =
 type [<Struct>] ImageWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.register<Xamarin.Forms.Image>()
               
-    static member inline Create(path: string, aspect: Xamarin.Forms.Aspect) =
+    static member inline CreateFromFile(path: string, aspect: Xamarin.Forms.Aspect) =
         ImageWidgetBuilder<'msg>([|
             Image.Source.WithValue(Xamarin.Forms.ImageSource.FromFile(path))
+            Image.Aspect.WithValue(aspect)
+        |])
+        
+    static member inline CreateFromUrl(url: string, aspect: Xamarin.Forms.Aspect) =
+        ImageWidgetBuilder<'msg>([|
+            Image.Source.WithValue(Xamarin.Forms.ImageSource.FromUri(System.Uri(url)))
             Image.Aspect.WithValue(aspect)
         |])
                       
@@ -263,10 +269,11 @@ type View private () =
     static member inline Slider<'msg>(value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged)
     static member inline Slider<'msg>(min, max, value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged, min = min, max = max)
     static member inline Grid<'msg>(children) = GridWidgetBuilder<'msg>.Create(children)
-    //static member inline Grid<'msg>(coldefs, rowdefs, children) = GridWidgetBuilder<'msg>.Create(children, coldefs = coldefs, rowdefs = rowdefs)
+    static member inline Grid<'msg>(coldefs, rowdefs, children) = GridWidgetBuilder<'msg>.Create(children, coldefs = coldefs, rowdefs = rowdefs)
     static member inline ActivityIndicator<'msg>(isRunning) = ActivityIndicatorWidgetBuilder<'msg>.Create(isRunning)
     static member inline ContentView<'msg>(content) = ContentViewWidgetBuilder<'msg>.Create(content)
     static member inline RefreshView<'msg>(isRefreshing, onRefreshing, content) = RefreshViewWidgetBuilder<'msg>.Create(isRefreshing, onRefreshing, content)
     static member inline ScrollView<'msg>(content) = ScrollViewWidgetBuilder<'msg>.Create(content)
-    static member inline Image<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.Create(path, aspect)
+    static member inline FileImage<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.CreateFromFile(path, aspect)
+    static member inline WebImage<'msg>(url, aspect) = ImageWidgetBuilder<'msg>.CreateFromUrl(url, aspect)
     

@@ -96,43 +96,39 @@ module Image =
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    //let ColumnDefinitions = Attributes.define<Dimension list, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) (fun struct (newValueOpt, target) ->
-    //    let grid = target :?> Xamarin.Forms.Grid
-    //    match newValueOpt with
-    //    | ValueNone -> grid.ColumnDefinitions.Clear()
-    //    | ValueSome coll ->
-    //        grid.ColumnDefinitions.Clear()
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare (fun struct (newValueOpt, target) ->
+        let grid = target :?> Xamarin.Forms.Grid
+        match newValueOpt with
+        | ValueNone -> grid.ColumnDefinitions.Clear()
+        | ValueSome coll ->
+            grid.ColumnDefinitions.Clear()
 
-    //        coll
-    //        |> Array.iter (fun c ->
-    //            let gridLength =
-    //                match c with
-    //                | Auto -> Xamarin.Forms.GridLength.Auto
-    //                | Star -> Xamarin.Forms.GridLength.Star
-    //                | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
-    //                | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
+            for c in coll do
+                let gridLength =
+                    match c with
+                    | Auto -> Xamarin.Forms.GridLength.Auto
+                    | Star -> Xamarin.Forms.GridLength.Star
+                    | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
+                    | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
 
-    //            grid.ColumnDefinitions.Add(Xamarin.Forms.ColumnDefinition(Width = gridLength))
-    //        )
-    //)
-    //let RowDefinitions = Attributes.define<Dimension list, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) (fun struct (newValueOpt, target) ->
-    //    let grid = target :?> Xamarin.Forms.Grid
-    //    match newValueOpt with
-    //    | ValueNone -> grid.RowDefinitions.Clear()
-    //    | ValueSome coll ->
-    //        grid.RowDefinitions.Clear()
+                grid.ColumnDefinitions.Add(Xamarin.Forms.ColumnDefinition(Width = gridLength))
+    )
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare (fun struct (newValueOpt, target) ->
+        let grid = target :?> Xamarin.Forms.Grid
+        match newValueOpt with
+        | ValueNone -> grid.RowDefinitions.Clear()
+        | ValueSome coll ->
+            grid.RowDefinitions.Clear()
 
-    //        coll
-    //        |> Array.iter (fun c ->
-    //            let gridLength =
-    //                match c with
-    //                | Auto -> Xamarin.Forms.GridLength.Auto
-    //                | Star -> Xamarin.Forms.GridLength.Star
-    //                | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
-    //                | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
+            for c in coll do
+                let gridLength =
+                    match c with
+                    | Auto -> Xamarin.Forms.GridLength.Auto
+                    | Star -> Xamarin.Forms.GridLength.Star
+                    | Stars x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Star)
+                    | Absolute x -> Xamarin.Forms.GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
 
-    //            grid.RowDefinitions.Add(Xamarin.Forms.RowDefinition(Height = gridLength))
-    //        )
-    //)
+                grid.RowDefinitions.Add(Xamarin.Forms.RowDefinition(Height = gridLength))
+    )
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
