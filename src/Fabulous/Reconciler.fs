@@ -2,9 +2,7 @@
 
 open Fabulous
 
-//-----Update sketch------
 module Reconciler =
-
     /// This is insertion sort that is O(n*n) but it performs better
     /// 1. if the array is partially sorted (second sort is cheap)
     /// 2. there are few elements, we expect to have only a handful of them per widget
@@ -21,7 +19,6 @@ module Reconciler =
                     attrs.[j - 1] <- temp
 
         attrs
-
 
     /// Let's imagine that we have the following situation
     /// prev = [|1,2,6,7|] note that it is sorted
@@ -46,7 +43,7 @@ module Reconciler =
     ///         compare values
     ///
     /// break when we reached both ends of the arrays
-    let compareAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange list =
+    let diffAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange[] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
         prev |> sortAttributesInPlace |> ignore
         next |> sortAttributesInPlace |> ignore
@@ -72,21 +69,21 @@ module Reconciler =
 
             else
                 // we haven't reached either of the ends
-                let prevItem = prev.[prevIndex]
-                let nextItem = next.[nextIndex]
+                let prevAttr = prev.[prevIndex]
+                let nextAttr = next.[nextIndex]
 
-                let prevKey = prevItem.Key
-                let nextKey = nextItem.Key
+                let prevKey = prevAttr.Key
+                let nextKey = nextAttr.Key
 
                 match prevKey.CompareTo nextKey with
                 | c when c < 0 ->
                     // prev key is less than next -> remove prev key
-                    result <- AttributeChange.Removed prevItem :: result
+                    result <- AttributeChange.Removed prevAttr :: result
                     prevIndex <- prevIndex + 1
 
                 | c when c > 0 ->
                     // prev key is more than next -> add next item
-                    result <- AttributeChange.Added nextItem :: result
+                    result <- AttributeChange.Added nextAttr :: result
                     nextIndex <- nextIndex + 1
 
                 | _ ->
@@ -96,129 +93,68 @@ module Reconciler =
                     prevIndex <- prevIndex + 1
                     nextIndex <- nextIndex + 1
 
-                    let attribute =
-                        AttributeDefinitionStore.get prevItem.Key
+                    let definition =
+                        AttributeDefinitionStore.get prevAttr.Key
 
-                    match attribute.CompareBoxed(prevItem.Value, nextItem.Value) with
-                    | AttributeComparison.Identical -> ()
-                    | AttributeComparison.Different diff ->
-                        result <-
-                            AttributeChange.Updated(prevItem, nextItem, diff)
-                            :: result
+                    let changeOpt =
+                        match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
 
-        result
+                        // Previous and next values are identical, we don't need to do anything
+                        | AttributeComparison.Identical -> ValueNone
 
-    // https://medium.com/@deathmood/how-to-write-your-own-virtual-dom-ee74acc13060
-//    function updateElement($parent, newNode, oldNode, index = 0) {
-//  if (!oldNode) {
-//    $parent.appendChild(
-//      createElement(newNode)
-//    );
-//  } else if (!newNode) {
-//    $parent.removeChild(
-//      $parent.childNodes[index]
-//    );
-//  } else if (changed(newNode, oldNode)) {
-//    $parent.replaceChild(
-//      createElement(newNode),
-//      $parent.childNodes[index]
-//    );
-//  } else if (newNode.type) {
-//    const newLength = newNode.children.length;
-//    const oldLength = oldNode.children.length;
-//    for (let i = 0; i < newLength || i < oldLength; i++) {
-//      updateElement(
-//        $parent.childNodes[index],
-//        newNode.children[i],
-//        oldNode.children[i],
-//        i
-//      );
-//    }
-//  }
-//}
+                        // New value completely replaces the old value
+                        | AttributeComparison.ReplacedBy value ->
+                            ValueSome (AttributeChange.ScalarUpdated(nextAttr))
 
-    let inline private createViewFromWidget (widget: Widget) (ctx: ViewTreeContext) =
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let view = widgetDefinition.CreateView (widget, ctx)
-        view
+                        // Values are widgets and are different, we have the list of attribute changes between the 2 widgets 
+                        | AttributeComparison.WidgetDifferent changes ->
+                            ValueSome (AttributeChange.WidgetUpdated(nextAttr, changes))
 
-    let inline private addItem item maybeList =
-        match maybeList with
-        | ValueSome l -> ValueSome(item :: l)
-        | ValueNone -> ValueSome [ item ]
+                        | AttributeComparison.WidgetCollectionDifferent changes ->
+                            ValueSome (AttributeChange.WidgetCollectionUpdated(nextAttr, changes))
 
-    let rec update (getViewNode: obj -> IViewNode) (node: obj) (attributes: Attribute []) : unit =
+                    match changeOpt with
+                    | ValueNone -> ()
+                    | ValueSome change -> result <- change :: result
 
-        let viewNode = getViewNode node
+        List.rev result |> List.toArray
+
+    let diffCollections (canReuse: Widget -> Widget -> bool) (prev: Widget array) (next: Widget array) : WidgetCollectionChange[] =
+        let mutable target = []
+
+        if prev.Length > next.Length then
+            for i = next.Length to prev.Length - 1 do
+                target <- (WidgetCollectionChange.Remove i) :: target
+
+        for i = 0 to next.Length - 1 do
+            let currItem = next.[i]
+            let prevItemOpt = Array.tryItem i prev
+
+            let changeOpt =
+                match prevItemOpt with
+                | None -> ValueSome (WidgetCollectionChange.Insert struct (i, currItem))
+
+                | Some prevItem when canReuse prevItem currItem ->
+                    match diffAttributes prevItem.Attributes currItem.Attributes with
+                    | [||] -> ValueNone
+                    | diffs -> ValueSome (WidgetCollectionChange.Update struct (i, diffs))
+
+                | Some prevItem -> ValueSome (WidgetCollectionChange.Replace struct (i, currItem))
+
+            match changeOpt with
+            | ValueNone -> ()
+            | ValueSome change -> target <- change :: target
+
+        List.rev target |> List.toArray
+
+    /// Diffs changes and applies them on the target
+    let rec update (getViewNode: obj -> IViewNode) (target: obj) (attributes: Attribute []) : unit =
+        let viewNode = getViewNode target
         let prevAttributes = viewNode.Attributes
 
-        let diff =
-            compareAttributes prevAttributes attributes
-
-        if List.isEmpty diff then
-            ()
-        else
-            match viewNode.ApplyDiff
-                      {
-                          // TODO return Array from comparison
-                          Changes = diff |> List.toArray
-                          NewAttributes = attributes
-                      } with
-            | UpdateResult.Done -> ()
-            | UpdateResult.UpdateChildren struct (container, widgets, ctx) ->
-                let children = container.Children
-
-                // if the size is the same we can just reuse the same array to avoid allocations
-                // it is safe to do so because diffing goes only forward, thus safe to do it in place
-                let target: obj [] =
-                    if widgets.Length = children.Length then
-                        children
-                    else
-                        Array.zeroCreate(widgets.Length)
-
-                let mutable added: obj list voption = ValueNone
-
-                let mutable removed: obj list voption =
-                    // if we are downsizing then the tail needs to be added to removed
-                    if children.Length > widgets.Length then
-                        children
-                        |> Array.skip widgets.Length
-                        |> Array.toList
-                        |> ValueSome
-                    else
-                        ValueNone
-
-                for i = 0 to widgets.Length - 1 do
-                    let widget = widgets.[i]
-                    let prev = Array.tryItem i children
-
-                    match (prev, widget) with
-                    | None, widget ->
-                        // view doesn't exist yet
-                        let viewNode = createViewFromWidget widget ctx
-                        target.[i] <- viewNode
-                        added <- addItem viewNode added
-
-                    | Some p, widget when widget.Key = (getViewNode p).Origin ->
-                        // same type, just update
-                        target.[i] <- p
-                        update getViewNode p widget.Attributes
-
-                    | Some p, widget ->
-                        // different type, thus replacement is needed
-                        let viewNode = createViewFromWidget widget ctx
-                        target.[i] <- viewNode
-                        added <- addItem viewNode added
-                        removed <- addItem p removed
-
-                container.UpdateChildren
-                    {
-                        ChildrenAfterUpdate = target
-                        Added = added
-                        Removed = removed
-                    }
-
-
+        match diffAttributes prevAttributes attributes with
+        | [||] -> ()
+        | diffs -> viewNode.ApplyDiff(diffs)
 
 // 1. compare attributes for control and widget
 // 2. apply diff (should be a method on control). e.g control.ApplyDiff(diff)
@@ -233,25 +169,49 @@ module Reconciler =
 // Meaning that we can fully control creations of new controls via core
 
 // TODO find a better file/home for this logic
-module Runtime =
-    let MapMsg =
-        Attributes.defineWithComparer<obj -> obj>
-            "MapMsg"
-            (fun () -> id )
-            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
-            Attributes.AttributeComparers.alwaysDifferent
+//module Runtime =
+//    let MapMsg =
+//        Attributes.defineWithComparer<obj -> obj>
+//            "MapMsg"
+//            (fun () -> id )
+//            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
+//            Attributes.AttributeComparers.noCompare
 
-    let MapMsgKey = MapMsg.Key
+//    let MapMsgKey = MapMsg.Key
 
-    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
-        let inline mapEv (e: obj) (attributes: Attribute[]) =
-            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
-            | Some attr -> unbox<obj -> obj>attr.Value e
-            | None -> e
+//    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
+//        let inline mapEv (e: obj) (attributes: Attribute[]) =
+//            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
+//            | Some attr -> unbox<obj -> obj>attr.Value e
+//            | None -> e
         
-        let mutable ev = mapEv ev node.Attributes
-        for ancestor in ctx.Ancestors do
-            ev <- mapEv ev ancestor.Attributes
+//        let mutable ev = mapEv ev node.Attributes
+//        for ancestor in ctx.Ancestors do
+//            ev <- mapEv ev ancestor.Attributes
         
-        ctx.Dispatch ev
+//        ctx.Dispatch ev
             
+module AttributeComparers =
+    let noCompare struct (a, b) = AttributeComparison.ReplacedBy b
+
+    let equalityCompare struct (a, b) =
+        if a = b then
+            AttributeComparison.Identical
+        else
+            AttributeComparison.ReplacedBy b
+
+    /// Determine the differences between 2 widgets
+    /// Check also for reusability of the target control
+    let compareWidgets (canReuse: Widget -> Widget -> bool) struct (prevWidget: Widget, currWidget: Widget) =
+        if not (canReuse prevWidget currWidget) then
+            AttributeComparison.ReplacedBy currWidget
+        elif prevWidget = currWidget then
+            AttributeComparison.Identical
+        else
+            let diffs = Reconciler.diffAttributes prevWidget.Attributes currWidget.Attributes
+            AttributeComparison.WidgetDifferent diffs
+
+    /// Determine the differences between 2 collections
+    let compareWidgetCollections (canReuse: Widget -> Widget -> bool) struct (prevColl: Widget array, currColl: Widget array) =
+        let diffs = Reconciler.diffCollections canReuse prevColl currColl
+        AttributeComparison.WidgetCollectionDifferent diffs

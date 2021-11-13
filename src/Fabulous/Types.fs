@@ -19,13 +19,9 @@ type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
 
-/// Represents a property of a widget.
-/// Can map to a real property (such as Label.Text) or to a fake one.
-/// It will be up to the AttributeDefinition to decide how to apply
-/// the value.
-///
-/// Payload can contains additional data provided by the implementing framework
-/// For example, Maui needs to know
+/// Represents a value for a property of a widget.
+/// Can map to a real property (such as Label.Text) or to a non-existent one.
+/// It will be up to the AttributeDefinition to decide how to apply the value.
 [<Struct>]
 type Attribute =
     { Key: AttributeKey
@@ -44,37 +40,23 @@ type Widget =
 type AttributeChange =
     | Added of added: Attribute
     | Removed of removed: Attribute
-    | Updated of struct (Attribute * Attribute * obj voption)
+    | ScalarUpdated of scalarData: Attribute
+    | WidgetUpdated of widgetData: struct (Attribute * AttributeChange[])
+    | WidgetCollectionUpdated of collectionData: struct (Attribute * WidgetCollectionChange[])
 
-//
-//    | Identical
-//    | ScalarUpdated of updatedValue: obj
-//    | ScalarWidgetUpdated of updatedWidget: WidgetDiff
-//    | CollectionUpdated of collectionDiffs: CollectionDiff []
-//[<RequireQualifiedAccess>]
-//    type AttributeDiff =
-//        | Different of struct (Attribute * Attribute * obj option)
-//        | Added of Attribute
-//        | Removed of Attribute
-
-//and [<Struct; RequireQualifiedAccess>] AttributeDiffWithKey =
-//    {
-//        Key: AttributeKey
-//        Diff: AttributeChange
-//    }
-
-type [<Struct; RequireQualifiedAccess>] WidgetDiff =
-   { Changes: AttributeChange[]
-     NewAttributes: Attribute[] }
-
+and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
+    | Insert of widgetInserted: struct (int * Widget)
+    | Replace of widgetReplaced: struct (int * Widget)
+    | Update of widgetUpdated: struct (int * AttributeChange[])
+    | Remove of removed: int
 
 /// Represents a UI element created from a widget
 type IViewNode =
-    abstract ApplyDiff : WidgetDiff -> UpdateResult
+    abstract ApplyDiff : AttributeChange[] -> unit
     abstract Attributes : Attribute[]
     abstract Origin: WidgetKey
 
-and [<Struct>]  ViewTreeContext =
+and [<Struct>] ViewTreeContext =
     { Dispatch: obj -> unit
       Ancestors: IViewNode list }
 
@@ -86,32 +68,24 @@ and [<Struct>] ChildrenUpdate =
       Added: obj list voption
       Removed: obj list voption }
 
-// TODO should it be IList? or a simpler custom interface will do?
-and IViewContainer =
-    abstract Children : obj []
-    abstract UpdateChildren : ChildrenUpdate -> unit
-
-and [<RequireQualifiedAccess; Struct>] UpdateResult =
-    | Done
-    | UpdateChildren of struct (IViewContainer * Widget [] * ViewTreeContext)
-
 type Program<'arg, 'model, 'msg> =
     { Init : 'arg -> 'model * Cmd<'msg>
       Update : 'msg * 'model -> 'model * Cmd<'msg>
       View : 'model -> Widget }
 
-[<Struct>]
-[<RequireQualifiedAccess>]
+[<Struct; RequireQualifiedAccess>]
 type AttributeComparison =
     | Identical
-    | Different of data: obj voption
+    | ReplacedBy of newData: obj
+    | WidgetDifferent of attributeChanges: AttributeChange[]
+    | WidgetCollectionDifferent of collectionChanges: WidgetCollectionChange[]
 
 type IAttributeDefinition =
+    abstract Key: AttributeKey
     abstract CompareBoxed : obj * obj -> AttributeComparison
 
 type IAttributeDefinition<'inputType, 'modelType> =
     inherit IAttributeDefinition
-    abstract Key : AttributeKey
     abstract DefaultWith : unit -> 'modelType
 
 type IWidgetDefinition =

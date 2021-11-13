@@ -87,12 +87,15 @@ module App =
                 Button($"< {model.Cities.[model.CurrentCityIndex - 1].Name}", GoToPreviousCity)
                     .horizontalOptions(LayoutOptions.Start)
                     .verticalOptions(LayoutOptions.Start)
+                    .margin(Thickness(20., 0., 0., 0.))
                     
             if model.CurrentCityIndex < model.Cities.Length - 1 then
                 Button($"{model.Cities.[model.CurrentCityIndex + 1].Name} >", GoToNextCity)
                     .horizontalOptions(LayoutOptions.End)
                     .verticalOptions(LayoutOptions.Start)
+                    .margin(Thickness(0., 0., 20., 0.))
         ])
+            .padding(Thickness(0., 35., 0., 0.))
 
     let view model =
         let temperatureOfCurrentCity =

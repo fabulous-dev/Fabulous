@@ -5,7 +5,6 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.Widgets
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.XamarinFormsAttributes
 
 type IWidgetBuilder =
     abstract Attributes: Attribute[]
@@ -35,65 +34,26 @@ type IWidgetExtensions () =
         let result = (^T : (new : Attribute[] -> ^T) attribs2)
         result
 
-type LayoutOfViewViewContainer(ref: WeakReference) =
-    interface IXamarinFormsViewContainer with
-        member this.ChildrenAttributeKey = Fabulous.XamarinForms.Attributes.LayoutOfView.Children.Key
 
-        member this.Children =
-            if ref.IsAlive then
-                (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
-                |> Seq.map box
-                |> Seq.toArray
-            else
-                Array.empty
-
-        member this.UpdateChildren diff =
-            if not ref.IsAlive then
-                ()
-            else
-                let children = (ref.Target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children
-                let count = children.Count
-
-                while count > diff.ChildrenAfterUpdate.Length do
-                    children.RemoveAt(children.Count - 1)
-
-                for i = 0 to diff.ChildrenAfterUpdate.Length - 1 do
-                    let child = diff.ChildrenAfterUpdate.[i] :?> Xamarin.Forms.View
-                    match children.IndexOf(child) with
-
-                    // Same index, do nothing
-                    | index when index = i -> ()
-
-                    // New child, replace the current index
-                    | -1 ->
-                        if count > i then
-                            children.[i] <- child
-                        else
-                            children.Insert(i, child)
-
-                    // Child is moved, remove it and reinsert it at the right place
-                    | index ->
-                        children.RemoveAt(index)
-                        children.Insert(i, child)
 
 module Widgets =
-    let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> (getViewContainer: WeakReference -> IXamarinFormsViewContainer option) =
+    let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)>() =
         let key = WidgetDefinitionStore.getNextKey()
         let definition =
             { Key = key
-              Name = nameof<'T>
+              Name = typeof<'T>.Name
               CreateView = fun (widget, context) ->
-                  let view = new 'T()
-                  let weakReference = WeakReference(view)
-                  let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference, getViewContainer weakReference))
-                  view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
+                let name = typeof<'T>.Name
+                printfn $"Creating view for {name}"
 
-                  Reconciler.update ViewNode.getViewNode view widget.Attributes
+                let view = new 'T()
+                let weakReference = WeakReference(view)
+                let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
+                view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
-                  box view }
+                Reconciler.update ViewNode.getViewNode view widget.Attributes
+
+                box view }
         
         WidgetDefinitionStore.set key definition
         key
-
-    let registerNoChildren<'T when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)> () =
-        register<'T> (fun _ -> None)

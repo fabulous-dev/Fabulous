@@ -7,7 +7,6 @@
     <Compile Include="Cmd.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="Stores.fs" />
-    <Compile Include="Attributes.fs" />
     <Compile Include="Widgets.fs" />
     <Compile Include="Reconciler.fs" />
     <Compile Include="Runners.fs" />

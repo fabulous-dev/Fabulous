@@ -1,17 +1,17 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
-open Fabulous.XamarinForms.Attributes
+open Fabulous.XamarinForms.XFAttributes
 open Fabulous.XamarinForms.Widgets
 open System.Runtime.CompilerServices
 
-module Helpers =
+module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
         items
         |> Seq.map (fun item -> item.Compile())
 
 type [<Struct>] ApplicationWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Application>()
+    static let key = Widgets.register<Xamarin.Forms.Application>()
 
     static member inline Create(mainPage: #IPageWidgetBuilder<'msg>) =
         ApplicationWidgetBuilder<'msg>([|
@@ -25,7 +25,7 @@ type [<Struct>] ApplicationWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] ContentPageWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Fabulous.XamarinForms.FabulousContentPage>()
+    static let key = Widgets.register<Fabulous.XamarinForms.FabulousContentPage>()
 
     static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentPageWidgetBuilder<'msg>([|
@@ -39,12 +39,12 @@ type [<Struct>] ContentPageWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.StackLayout> (fun ref -> Some (LayoutOfViewViewContainer(ref) :> IXamarinFormsViewContainer))
+    static let key = Widgets.register<Xamarin.Forms.StackLayout>()
 
     static member inline Create(orientation: Xamarin.Forms.StackOrientation, children: seq<#IViewWidgetBuilder<'msg>>, ?spacing: float) =
         StackLayoutWidgetBuilder<'msg>([|
             StackLayout.Orientation.WithValue(orientation)
-            LayoutOfView.Children.WithValue(Helpers.compileSeq children)
+            LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
             match spacing with None -> () | Some v -> StackLayout.Spacing.WithValue(v)
         |])
 
@@ -55,11 +55,11 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Grid> (fun ref -> Some (LayoutOfViewViewContainer(ref) :> IXamarinFormsViewContainer))
+    static let key = Widgets.register<Xamarin.Forms.Grid>()
               
     static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
         GridWidgetBuilder<'msg>([|
-            LayoutOfView.Children.WithValue(Helpers.compileSeq children)
+            LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
             match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
             match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
         |])
@@ -71,7 +71,7 @@ type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Label>()
+    static let key = Widgets.register<Xamarin.Forms.Label>()
 
     static member inline Create(text: string) =
         LabelWidgetBuilder<'msg>([|
@@ -85,7 +85,7 @@ type [<Struct>] LabelWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] ButtonWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Button>()
+    static let key = Widgets.register<Xamarin.Forms.Button>()
 
     static member inline Create(text: string, onClicked: 'msg) =
         ButtonWidgetBuilder<'msg>([|
@@ -100,7 +100,7 @@ type [<Struct>] ButtonWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
 
 type [<Struct>] SwitchWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Switch>()
+    static let key = Widgets.register<Xamarin.Forms.Switch>()
 
     static member inline Create(isToggled: bool, onToggled: bool -> 'msg) =
         SwitchWidgetBuilder<'msg>([|
@@ -115,7 +115,7 @@ type [<Struct>] SwitchWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] SliderWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Slider>()
+    static let key = Widgets.register<Xamarin.Forms.Slider>()
               
     static member inline Create(value: float, onValueChanged: float -> 'msg, ?min: float, ?max: float) =
         SliderWidgetBuilder<'msg>([|
@@ -134,7 +134,7 @@ type [<Struct>] SliderWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] ActivityIndicatorWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.ActivityIndicator>()
+    static let key = Widgets.register<Xamarin.Forms.ActivityIndicator>()
               
     static member inline Create(isRunning: bool) =
         ActivityIndicatorWidgetBuilder<'msg>([|
@@ -148,9 +148,9 @@ type [<Struct>] ActivityIndicatorWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] ContentViewWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.ContentView>()
+    static let key = Widgets.register<Xamarin.Forms.ContentView>()
               
-    static member inline Create(content: #IViewWidgetBuilder<'msg>) =
+    static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentViewWidgetBuilder<'msg>([|
             ContentView.Content.WithValue(content.Compile())
         |])
@@ -162,7 +162,7 @@ type [<Struct>] ContentViewWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] RefreshViewWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.RefreshView>()
+    static let key = Widgets.register<Xamarin.Forms.RefreshView>()
               
     static member inline Create(isRefreshing: bool, onRefreshing: 'msg, content: #IViewWidgetBuilder<'msg>) =
         RefreshViewWidgetBuilder<'msg>([|
@@ -178,10 +178,10 @@ type [<Struct>] RefreshViewWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] ScrollViewWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.ScrollView>()
+    static let key = Widgets.register<Xamarin.Forms.ScrollView>()
               
     static member inline Create(content: #IViewWidgetBuilder<'msg>) =
-        RefreshViewWidgetBuilder<'msg>([|
+        ScrollViewWidgetBuilder<'msg>([|
             ScrollView.Content.WithValue(content.Compile())
         |])
                       
@@ -192,11 +192,17 @@ type [<Struct>] ScrollViewWidgetBuilder<'msg> (attributes: Attribute[]) =
               Attributes = attributes }
               
 type [<Struct>] ImageWidgetBuilder<'msg> (attributes: Attribute[]) =
-    static let key = Widgets.registerNoChildren<Xamarin.Forms.Image>()
+    static let key = Widgets.register<Xamarin.Forms.Image>()
               
-    static member inline Create(path: string, aspect: Xamarin.Forms.Aspect) =
+    static member inline CreateFromFile(path: string, aspect: Xamarin.Forms.Aspect) =
         ImageWidgetBuilder<'msg>([|
             Image.Source.WithValue(Xamarin.Forms.ImageSource.FromFile(path))
+            Image.Aspect.WithValue(aspect)
+        |])
+        
+    static member inline CreateFromUrl(url: string, aspect: Xamarin.Forms.Aspect) =
+        ImageWidgetBuilder<'msg>([|
+            Image.Source.WithValue(Xamarin.Forms.ImageSource.FromUri(System.Uri(url)))
             Image.Aspect.WithValue(aspect)
         |])
                       
@@ -268,5 +274,6 @@ type View private () =
     static member inline ContentView<'msg>(content) = ContentViewWidgetBuilder<'msg>.Create(content)
     static member inline RefreshView<'msg>(isRefreshing, onRefreshing, content) = RefreshViewWidgetBuilder<'msg>.Create(isRefreshing, onRefreshing, content)
     static member inline ScrollView<'msg>(content) = ScrollViewWidgetBuilder<'msg>.Create(content)
-    static member inline Image<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.Create(path, aspect)
+    static member inline FileImage<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.CreateFromFile(path, aspect)
+    static member inline WebImage<'msg>(url, aspect) = ImageWidgetBuilder<'msg>.CreateFromUrl(url, aspect)
     
