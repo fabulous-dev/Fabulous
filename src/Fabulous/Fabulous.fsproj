@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Cmd.fs" />
@@ -10,5 +11,6 @@
     <Compile Include="Widgets.fs" />
     <Compile Include="Reconciler.fs" />
     <Compile Include="Runners.fs" />
+    <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
