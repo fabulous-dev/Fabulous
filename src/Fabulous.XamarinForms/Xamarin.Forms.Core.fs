@@ -57,11 +57,11 @@ type [<Struct>] StackLayoutWidgetBuilder<'msg> (attributes: Attribute[]) =
 type [<Struct>] GridWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.register<Xamarin.Forms.Grid>()
               
-    static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
+    static member inline Create(children: seq<#IViewWidgetBuilder<'msg>>) = //, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
         GridWidgetBuilder<'msg>([|
             LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
-            match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
-            match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
+            //match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
+            //match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
         |])
               
     interface ILayoutWidgetBuilder<'msg> with
@@ -150,7 +150,7 @@ type [<Struct>] ActivityIndicatorWidgetBuilder<'msg> (attributes: Attribute[]) =
 type [<Struct>] ContentViewWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.register<Xamarin.Forms.ContentView>()
               
-    static member inline Create(content: #IViewWidgetBuilder<'msg>) =
+    static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentViewWidgetBuilder<'msg>([|
             ContentView.Content.WithValue(content.Compile())
         |])
@@ -181,7 +181,7 @@ type [<Struct>] ScrollViewWidgetBuilder<'msg> (attributes: Attribute[]) =
     static let key = Widgets.register<Xamarin.Forms.ScrollView>()
               
     static member inline Create(content: #IViewWidgetBuilder<'msg>) =
-        RefreshViewWidgetBuilder<'msg>([|
+        ScrollViewWidgetBuilder<'msg>([|
             ScrollView.Content.WithValue(content.Compile())
         |])
                       
@@ -263,7 +263,7 @@ type View private () =
     static member inline Slider<'msg>(value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged)
     static member inline Slider<'msg>(min, max, value, onValueChanged) = SliderWidgetBuilder<'msg>.Create(value, onValueChanged, min = min, max = max)
     static member inline Grid<'msg>(children) = GridWidgetBuilder<'msg>.Create(children)
-    static member inline Grid<'msg>(coldefs, rowdefs, children) = GridWidgetBuilder<'msg>.Create(children, coldefs = coldefs, rowdefs = rowdefs)
+    //static member inline Grid<'msg>(coldefs, rowdefs, children) = GridWidgetBuilder<'msg>.Create(children, coldefs = coldefs, rowdefs = rowdefs)
     static member inline ActivityIndicator<'msg>(isRunning) = ActivityIndicatorWidgetBuilder<'msg>.Create(isRunning)
     static member inline ContentView<'msg>(content) = ContentViewWidgetBuilder<'msg>.Create(content)
     static member inline RefreshView<'msg>(isRefreshing, onRefreshing, content) = RefreshViewWidgetBuilder<'msg>.Create(isRefreshing, onRefreshing, content)

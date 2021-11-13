@@ -4,16 +4,15 @@ open System
 open Fabulous
 
 type IScalarAttributeDefinition =
-    abstract member Name: string
     abstract member UpdateTarget: obj voption * obj -> unit
 
 type IWidgetAttributeDefinition =
     inherit IScalarAttributeDefinition
     abstract member ApplyDiff: AttributeChange[] * obj -> unit
     
-type ICollectionAttributeDefinition =
-    abstract member Name: string
-    abstract member ApplyDiff: CollectionChange[] * obj -> unit
+type IWidgetCollectionAttributeDefinition =
+    inherit IScalarAttributeDefinition
+    abstract member ApplyDiff: WidgetCollectionChange[] * obj -> unit
 
 type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
 
@@ -45,14 +44,14 @@ type ViewNode(key, context: ViewTreeContext, targetRef: WeakReference) =
                         definition.UpdateTarget(ValueSome newAttr.Value, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
 
-                    | AttributeChange.WidgetUpdated struct (newAttr, diff) ->
+                    | AttributeChange.WidgetUpdated struct (newAttr, diffs) ->
                         let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetAttributeDefinition
-                        definition.ApplyDiff(diff, targetRef.Target)
+                        definition.ApplyDiff(diffs, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
 
-                    | AttributeChange.CollectionUpdated struct (newAttr, diff) ->
-                        let definition = AttributeDefinitionStore.get newAttr.Key :?> ICollectionAttributeDefinition
-                        definition.ApplyDiff(diff, targetRef.Target)
+                    | AttributeChange.WidgetCollectionUpdated struct (newAttr, diffs) ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetCollectionAttributeDefinition
+                        definition.ApplyDiff(diffs, targetRef.Target)
                         _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
 
 

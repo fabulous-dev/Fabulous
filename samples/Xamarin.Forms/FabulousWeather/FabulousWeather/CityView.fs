@@ -37,8 +37,8 @@ module CityView =
         RefreshView(isRefreshing, onRefreshing,
             ScrollView(
                 Grid(
-                    coldefs = [ Star ],
-                    rowdefs = [ Auto; Star; Auto; Auto; Auto; Absolute 135. ],
+                    //coldefs = [ Star ],
+                    //rowdefs = [ Auto; Star; Auto; Auto; Auto; Absolute 135. ],
                     children = [
                         Label(cityName.ToUpper())
                             .font(Styles.CityNameFontSize)
@@ -94,15 +94,16 @@ module CityView =
         )
 
     let cityView (index: int) (city: CityData) onRefreshing =
-        (match city.Data with
-         | Some data ->
-             ContentView(
-                 loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing
-             )
-         | None ->
-             ContentView(
-                 loadingView city.Name
-             )
+        (
+            match city.Data with
+            | Some data ->
+                ContentView(
+                    loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing
+                )
+            | None ->
+                ContentView(
+                    loadingView city.Name
+                )
         )
             .padding(
                 if Device.RuntimePlatform = Device.Android then

@@ -7,11 +7,11 @@ open System.Runtime.CompilerServices
 
 [<AutoOpen>]
 module PancakeView =
-    let BackgroundGradientStops = XamarinFormsAttributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection> Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty
-    let Content = XamarinFormsAttributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
+    let BackgroundGradientStops = Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection> Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty
+    let Content = Attributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
 
     type [<Struct>] PancakeViewWidgetBuilder<'msg> (attributes: Attribute[]) =
-        static let key = Widgets.registerNoChildren<Xamarin.Forms.PancakeView.PancakeView>()
+        static let key = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
 
         static member inline Create(backgroundGradientStops: Xamarin.Forms.PancakeView.GradientStopCollection, content: IViewWidgetBuilder<'msg>) =
             PancakeViewWidgetBuilder<'msg>([|

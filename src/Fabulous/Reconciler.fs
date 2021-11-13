@@ -43,7 +43,7 @@ module Reconciler =
     ///         compare values
     ///
     /// break when we reached both ends of the arrays
-    let compareAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange[] =
+    let diffAttributes (prev: Attribute []) (next: Attribute []) : AttributeChange[] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
         prev |> sortAttributesInPlace |> ignore
         next |> sortAttributesInPlace |> ignore
@@ -108,50 +108,53 @@ module Reconciler =
 
                         // Values are widgets and are different, we have the list of attribute changes between the 2 widgets 
                         | AttributeComparison.WidgetDifferent changes ->
-                            ValueSome(AttributeChange.WidgetUpdated(nextAttr, changes))
+                            ValueSome (AttributeChange.WidgetUpdated(nextAttr, changes))
 
-                        | AttributeComparison.CollectionDifferent changes ->
-                            ValueSome (AttributeChange.CollectionUpdated(nextAttr, changes))
+                        | AttributeComparison.WidgetCollectionDifferent changes ->
+                            ValueSome (AttributeChange.WidgetCollectionUpdated(nextAttr, changes))
 
                     match changeOpt with
                     | ValueNone -> ()
                     | ValueSome change -> result <- change :: result
 
-        List.toArray result
+        List.rev result |> List.toArray
 
-    let compareCollections<'elementType> (canReuse: 'elementType -> 'elementType -> bool) (prev: 'elementType array) (next: 'elementType array) : CollectionChange[] =
+    let diffCollections (canReuse: Widget -> Widget -> bool) (prev: Widget array) (next: Widget array) : WidgetCollectionChange[] =
         let mutable target = []
 
         if prev.Length > next.Length then
             for i = next.Length to prev.Length - 1 do
-                target <- (CollectionChange.Remove i) :: target
+                target <- (WidgetCollectionChange.Remove i) :: target
 
         for i = 0 to next.Length - 1 do
             let currItem = next.[i]
-            let prevItemOpt = Array.tryItem i next
+            let prevItemOpt = Array.tryItem i prev
 
-            let change =
+            let changeOpt =
                 match prevItemOpt with
-                | None -> CollectionChange.Insert struct (i, box currItem)
-                | Some prevItem when canReuse prevItem currItem -> CollectionChange.Update struct (i, box currItem)
-                | Some prevItem -> CollectionChange.Replace struct (i, box currItem)
+                | None -> ValueSome (WidgetCollectionChange.Insert struct (i, currItem))
 
-            target <- change :: target
+                | Some prevItem when canReuse prevItem currItem ->
+                    match diffAttributes prevItem.Attributes currItem.Attributes with
+                    | [||] -> ValueNone
+                    | diffs -> ValueSome (WidgetCollectionChange.Update struct (i, diffs))
 
-        List.toArray target
+                | Some prevItem -> ValueSome (WidgetCollectionChange.Replace struct (i, currItem))
 
+            match changeOpt with
+            | ValueNone -> ()
+            | ValueSome change -> target <- change :: target
+
+        List.rev target |> List.toArray
+
+    /// Diffs changes and applies them on the target
     let rec update (getViewNode: obj -> IViewNode) (target: obj) (attributes: Attribute []) : unit =
-
         let viewNode = getViewNode target
         let prevAttributes = viewNode.Attributes
 
-        let diff =
-            compareAttributes prevAttributes attributes
-
-        if Array.isEmpty diff then
-            ()
-        else
-            viewNode.ApplyDiff(diff)
+        match diffAttributes prevAttributes attributes with
+        | [||] -> ()
+        | diffs -> viewNode.ApplyDiff(diffs)
 
 // 1. compare attributes for control and widget
 // 2. apply diff (should be a method on control). e.g control.ApplyDiff(diff)
@@ -205,10 +208,10 @@ module AttributeComparers =
         elif prevWidget = currWidget then
             AttributeComparison.Identical
         else
-            let diffs = Reconciler.compareAttributes prevWidget.Attributes currWidget.Attributes
+            let diffs = Reconciler.diffAttributes prevWidget.Attributes currWidget.Attributes
             AttributeComparison.WidgetDifferent diffs
 
     /// Determine the differences between 2 collections
-    let compareCollections<'elementType> (canReuse: 'elementType -> 'elementType -> bool) struct (prevColl: 'elementType array, currColl: 'elementType array) =
-        let diffs = Reconciler.compareCollections<'elementType> canReuse prevColl currColl
-        AttributeComparison.CollectionDifferent diffs
+    let compareWidgetCollections (canReuse: Widget -> Widget -> bool) struct (prevColl: Widget array, currColl: Widget array) =
+        let diffs = Reconciler.diffCollections canReuse prevColl currColl
+        AttributeComparison.WidgetCollectionDifferent diffs

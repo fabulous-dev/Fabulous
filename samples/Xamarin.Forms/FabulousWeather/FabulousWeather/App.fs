@@ -93,6 +93,7 @@ module App =
                     .horizontalOptions(LayoutOptions.End)
                     .verticalOptions(LayoutOptions.Start)
         ])
+            .padding(Thickness(0.,44.,0.,0.))
 
     let view model =
         let temperatureOfCurrentCity =

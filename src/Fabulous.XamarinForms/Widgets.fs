@@ -41,16 +41,19 @@ module Widgets =
         let key = WidgetDefinitionStore.getNextKey()
         let definition =
             { Key = key
-              Name = nameof<'T>
+              Name = typeof<'T>.Name
               CreateView = fun (widget, context) ->
-                  let view = new 'T()
-                  let weakReference = WeakReference(view)
-                  let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
-                  view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
+                let name = typeof<'T>.Name
+                printfn $"Creating view for {name}"
 
-                  Reconciler.update ViewNode.getViewNode view widget.Attributes
+                let view = new 'T()
+                let weakReference = WeakReference(view)
+                let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
+                view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
-                  box view }
+                Reconciler.update ViewNode.getViewNode view widget.Attributes
+
+                box view }
         
         WidgetDefinitionStore.set key definition
         key

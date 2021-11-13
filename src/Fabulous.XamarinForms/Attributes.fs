@@ -6,10 +6,14 @@ open System
 
 module Helpers =
     let canReuseView (prevWidget: Widget) (currWidget: Widget) =
-        true
+        prevWidget.Key = currWidget.Key
 
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) =
         prev = curr
+
+    let createViewForWidget (context: ViewTreeContext) (widget: Widget) =
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+        widgetDefinition.CreateView (widget, context)
 
 module AttributeDefinitions =
     /// Attribute definiton for scalar properties
@@ -29,7 +33,6 @@ module AttributeDefinitions =
               Value = x.Convert(value) }
     
         interface IScalarAttributeDefinition with
-            member x.Name = x.Name
             member x.UpdateTarget(newValueOpt, target) =
                 let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
                 x.UpdateTarget(struct (newValueOpt, target))
@@ -55,7 +58,6 @@ module AttributeDefinitions =
               Value = value }
 
         interface IWidgetAttributeDefinition with
-            member x.Name = x.Name
             member x.ApplyDiff(diff, target) =
                 x.ApplyDiff(struct(diff, target))
             member x.UpdateTarget(newValueOpt, target) =
@@ -74,7 +76,8 @@ module AttributeDefinitions =
     type WidgetCollectionAttributeDefinition =
         { Key: AttributeKey
           Name: string
-          ApplyDiff: struct (CollectionChange[] * obj) -> unit }
+          ApplyDiff: struct (WidgetCollectionChange[] * obj) -> unit
+          UpdateTarget: struct (Widget[] voption * obj) -> unit }
                 
         member x.WithValue(value: seq<Widget>) =
             { Key = x.Key
@@ -83,10 +86,12 @@ module AttributeDefinitions =
 #endif
               Value = Array.ofSeq value }
                 
-        interface ICollectionAttributeDefinition with
-            member x.Name = x.Name
+        interface IWidgetCollectionAttributeDefinition with
             member x.ApplyDiff(diff, target) =
                 x.ApplyDiff(struct(diff, target))
+            member x.UpdateTarget(newValueOpt, target) =
+                let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget[]> v)
+                x.UpdateTarget(struct (newValueOpt, target))
                                 
         interface IAttributeDefinition<seq<Widget>, Widget array> with
             member x.Key = x.Key
@@ -94,7 +99,7 @@ module AttributeDefinitions =
             member x.CompareBoxed(a, b) =
                 let prevWidget = unbox<Widget array> a
                 let currWidget = unbox<Widget array> b
-                AttributeComparers.compareCollections Helpers.canReuse struct (prevWidget, currWidget)
+                AttributeComparers.compareWidgetCollections Helpers.canReuseView struct (prevWidget, currWidget)
 
 
 module Attributes =
@@ -116,7 +121,7 @@ module Attributes =
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter name (applyDiff: struct (AttributeChange[] * obj) -> unit) (updateTarget: struct (Widget voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
-        let definition =
+        let definition: WidgetAttributeDefinition =
             { Key = key
               Name = name
               ApplyDiff = applyDiff
@@ -125,12 +130,13 @@ module Attributes =
         definition
         
     /// Define a custom attribute storing a widget collection
-    let defineWidgetCollectionWithConverter name (applyDiff: struct (CollectionChange[] * obj) -> unit) =
+    let defineWidgetCollectionWithConverter name (applyDiff: struct (WidgetCollectionChange[] * obj) -> unit) (updateTarget: struct (Widget[] voption * obj) -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
-        let definition =
+        let definition: WidgetCollectionAttributeDefinition =
             { Key = key
               Name = name
-              ApplyDiff = applyDiff }
+              ApplyDiff = applyDiff
+              UpdateTarget = updateTarget }
         AttributeDefinitionStore.set key definition
         definition
 
@@ -146,17 +152,20 @@ module Attributes =
             | ValueNone -> set target null
             | ValueSome widget ->
                 let viewNode = ViewNode.getViewNode target :?> ViewNode
-                let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                let view = widgetDefinition.CreateView (widget, viewNode.Context)
+                let view = Helpers.createViewForWidget viewNode.Context widget
                 set target view
 
         defineWidgetWithConverter name applyDiff updateTarget
 
     /// Define an attribute storing a Widget for a bindable property
-    let inline defineBindableWidget (bindableProperty: BindableProperty) =
+    let defineBindableWidget (bindableProperty: BindableProperty) =
         defineWidget
             bindableProperty.PropertyName
-            (fun parent -> (parent :?> BindableObject).GetValue(bindableProperty))
+            (fun parent ->
+                let p = (parent :?> BindableObject)
+                let x = p.GetValue(bindableProperty)
+                x
+            )
             (fun target value ->
                 let bindableObject = target :?> BindableObject
                 if value = null then
@@ -167,39 +176,46 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff struct(diff: CollectionChange[], target: obj) =
+        let applyDiff struct(diffs: WidgetCollectionChange[], target: obj) =
             let viewNode = ViewNode.getViewNode target :?> ViewNode
             let targetColl = getCollection target
 
-            for change in diff do
-                match change with
-                | CollectionChange.Remove index ->
+            for diff in diffs do
+                match diff with
+                | WidgetCollectionChange.Remove index ->
                     targetColl.RemoveAt(index)
                 | _ -> ()
 
-            for change in diff do
-                match change with
-                | CollectionChange.InsertWidget (index, widget) ->
-                    let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                    let view = widgetDefinition.CreateView (widget, viewNode.Context)
+            for diff in diffs do
+                match diff with
+                | WidgetCollectionChange.Insert (index, widget) ->
+                    let view = Helpers.createViewForWidget viewNode.Context widget
                     targetColl.Insert(index, unbox view)
 
-                | CollectionChange.UpdateWidget (index, changes) ->
+                | WidgetCollectionChange.Update (index, changes) ->
                     let targetItem = targetColl.[index]
                     let viewNode = ViewNode.getViewNode targetItem
                     viewNode.ApplyDiff(changes)
 
-                | CollectionChange.ReplaceWidget (index, widget) ->
-                    let widgetDefinition = WidgetDefinitionStore.get widget.Key
-                    let view = widgetDefinition.CreateView (widget, viewNode.Context)
+                | WidgetCollectionChange.Replace (index, widget) ->
+                    let view = Helpers.createViewForWidget viewNode.Context widget
                     targetColl.[index] <- unbox view
 
                 | _ -> ()
 
-        defineWidgetCollectionWithConverter name applyDiff
+        let updateTarget struct(newValueOpt: Widget[] voption, target: obj) =
+            let viewNode = ViewNode.getViewNode target :?> ViewNode
+            let targetColl = getCollection target
+            targetColl.Clear()
 
-    let defineCollection<'elementType> name (canReuse: 'elementType -> 'elementType -> bool) (updateTarget: struct ('elementType array voption * obj) -> unit) =
-        defineScalarWithConverter<'elementType seq, 'elementType array> name (fun () -> Array.empty) Seq.toArray (AttributeComparers.compareCollections canReuse) updateTarget
+            match newValueOpt with
+            | ValueNone -> ()
+            | ValueSome widgets ->
+                for widget in widgets do
+                    let view = Helpers.createViewForWidget viewNode.Context widget
+                    targetColl.Add(unbox view)
+
+        defineWidgetCollectionWithConverter name applyDiff updateTarget
 
     let inline define<'T when 'T: equality> name defaultValue updateTarget =
         defineScalarWithConverter<'T, 'T> name defaultValue id AttributeComparers.equalityCompare updateTarget

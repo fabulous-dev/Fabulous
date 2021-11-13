@@ -42,16 +42,13 @@ type AttributeChange =
     | Removed of removed: Attribute
     | ScalarUpdated of scalarData: Attribute
     | WidgetUpdated of widgetData: struct (Attribute * AttributeChange[])
-    | CollectionUpdated of collectionData: struct (Attribute * CollectionChange[])
+    | WidgetCollectionUpdated of collectionData: struct (Attribute * WidgetCollectionChange[])
 
-and [<Struct; RequireQualifiedAccess>] CollectionChange =
-    | Insert of inserted: struct(int * obj)
-    | Replace of replaced: struct(int * obj)
-    | Update of updated: struct(int * obj)
+and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
+    | Insert of widgetInserted: struct (int * Widget)
+    | Replace of widgetReplaced: struct (int * Widget)
+    | Update of widgetUpdated: struct (int * AttributeChange[])
     | Remove of removed: int
-    | InsertWidget of widgetInserted: struct (int * Widget)
-    | ReplaceWidget of widgetReplaced: struct (int * Widget)
-    | UpdateWidget of widgetUpdated: struct (int * AttributeChange[])
 
 /// Represents a UI element created from a widget
 type IViewNode =
@@ -81,7 +78,7 @@ type AttributeComparison =
     | Identical
     | ReplacedBy of newData: obj
     | WidgetDifferent of attributeChanges: AttributeChange[]
-    | CollectionDifferent of collectionChanges: CollectionChange[]
+    | WidgetCollectionDifferent of collectionChanges: WidgetCollectionChange[]
 
 type IAttributeDefinition =
     abstract Key: AttributeKey
