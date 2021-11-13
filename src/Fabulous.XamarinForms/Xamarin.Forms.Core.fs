@@ -211,6 +211,34 @@ type [<Struct>] ImageWidgetBuilder<'msg> (attributes: Attribute[]) =
         member _.Compile() =
             { Key = key
               Attributes = attributes }
+              
+type [<Struct>] BoxViewWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.BoxView>()
+              
+    static member inline Create(color: Xamarin.Forms.Color) =
+        BoxViewWidgetBuilder<'msg>([|
+            BoxView.Color.WithValue(color)
+        |])
+                      
+    interface IViewWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
+              
+type [<Struct>] NavigationPageWidgetBuilder<'msg> (attributes: Attribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.NavigationPage>()
+              
+    static member inline Create(pages: seq<IPageWidgetBuilder<'msg>>) =
+        NavigationPageWidgetBuilder<'msg>([|
+            NavigationPage.Pages.WithValue(ViewHelpers.compileSeq pages)
+        |])
+                      
+    interface IPageWidgetBuilder<'msg> with
+        member _.Attributes = attributes
+        member _.Compile() =
+            { Key = key
+              Attributes = attributes }
 
 [<Extension>]
 type ViewExtensions () =
@@ -223,6 +251,9 @@ type ViewExtensions () =
     [<Extension>]
     static member inline opacity(this: #IViewWidgetBuilder<_>, value: float) =
         this.AddAttribute(VisualElement.Opacity.WithValue(value))
+    [<Extension>]
+    static member inline backgroundColor(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddAttribute(VisualElement.BackgroundColor.WithValue(value))
     [<Extension>]
     static member inline horizontalOptions(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.LayoutOptions) =
         this.AddAttribute(View.HorizontalOptions.WithValue(value))
@@ -242,17 +273,53 @@ type ViewExtensions () =
     static member inline font(this: LabelWidgetBuilder<_>, value: double) =
         this.AddAttribute(Label.FontSize.WithValue(value))
     [<Extension>]
-    static member inline padding(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
-        this.AddAttribute(Layout.Padding.WithValue(value))
+    static member inline textColor(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddAttribute(Label.TextColor.WithValue(value))
     [<Extension>]
     static member inline padding(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddAttribute(Label.Padding.WithValue(value))
+    [<Extension>]
+    static member inline textColor(this: ButtonWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddAttribute(Button.TextColor.WithValue(value))
+    [<Extension>]
+    static member inline font(this: ButtonWidgetBuilder<_>, value: double) =
+        this.AddAttribute(Button.FontSize.WithValue(value))
+    [<Extension>]
+    static member inline padding(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
+        this.AddAttribute(Layout.Padding.WithValue(value))
     [<Extension>]
     static member inline gridColumn(this: #IViewWidgetBuilder<_>, value: int) =
         this.AddAttribute(Grid.Column.WithValue(value))
     [<Extension>]
     static member inline gridRow(this: #IViewWidgetBuilder<_>, value: int) =
         this.AddAttribute(Grid.Row.WithValue(value))
+    [<Extension>]
+    static member inline columnSpacing(this: GridWidgetBuilder<_>, value: float) =
+        this.AddAttribute(Grid.ColumnSpacing.WithValue(value))
+    [<Extension>]
+    static member inline rowSpacing(this: GridWidgetBuilder<_>, value: float) =
+        this.AddAttribute(Grid.RowSpacing.WithValue(value))
+    [<Extension>]
+    static member inline gridColumnSpan(this: #IViewWidgetBuilder<_>, value: int) =
+        this.AddAttribute(Grid.ColumnSpan.WithValue(value))
+    [<Extension>]
+    static member inline gridRowSpan(this: #IViewWidgetBuilder<_>, value: int) =
+        this.AddAttribute(Grid.RowSpan.WithValue(value))
+    [<Extension>]
+    static member inline onSizeAllocated(this: ContentPageWidgetBuilder<'msg>, fn: SizeAllocatedEventArgs -> 'msg) =
+        this.AddAttribute(ContentPage.SizeAllocated.WithValue(fn >> box))
+    [<Extension>]
+    static member inline barBackgroundColor(this: NavigationPageWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddAttribute(NavigationPage.BarBackgroundColor.WithValue(value))
+    [<Extension>]
+    static member inline barTextColor(this: NavigationPageWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddAttribute(NavigationPage.BarTextColor.WithValue(value))
+    [<Extension>]
+    static member inline height(this: #IViewWidgetBuilder<_>, value: float) =
+        this.AddAttribute(VisualElement.Height.WithValue(value))
+    [<Extension>]
+    static member inline width(this: #IViewWidgetBuilder<_>, value: float) =
+        this.AddAttribute(VisualElement.Width.WithValue(value))
 
 
 [<AbstractClass; Sealed>]
@@ -276,4 +343,6 @@ type View private () =
     static member inline ScrollView<'msg>(content) = ScrollViewWidgetBuilder<'msg>.Create(content)
     static member inline FileImage<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.CreateFromFile(path, aspect)
     static member inline WebImage<'msg>(url, aspect) = ImageWidgetBuilder<'msg>.CreateFromUrl(url, aspect)
+    static member inline BoxView<'msg>(color) = BoxViewWidgetBuilder<'msg>.Create(color)
+    static member inline NavigationPage<'msg>(pages) = NavigationPageWidgetBuilder<'msg>.Create(pages)
     

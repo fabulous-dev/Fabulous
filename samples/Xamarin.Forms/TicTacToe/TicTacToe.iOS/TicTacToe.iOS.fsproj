@@ -6,12 +6,12 @@
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
         <ProductVersion>8.0.30703</ProductVersion>
         <SchemaVersion>2.0</SchemaVersion>
-        <ProjectGuid>{62C174B1-3D0D-4272-B75D-3C7DF87302C4}</ProjectGuid>
+        <ProjectGuid>{C50FBC00-6DDD-48D0-A0CD-77236E5BAAAF}</ProjectGuid>
         <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
         <OutputType>Exe</OutputType>
-        <RootNamespace>CounterApp.iOS</RootNamespace>
+        <RootNamespace>TicTacToe.iOS</RootNamespace>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-        <AssemblyName>CounterApp.iOS</AssemblyName>
+        <AssemblyName>TicTacToe.iOS</AssemblyName>
         <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -88,6 +88,18 @@
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     </PropertyGroup>
     <ItemGroup>
+        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%403x.png">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Cross.imageset\Contents.json">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross.png">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%402x.png">
+          <Visible>false</Visible>
+        </ImageAsset>
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
           <Visible>false</Visible>
         </ImageAsset>
@@ -107,6 +119,21 @@
           <Visible>false</Visible>
         </ImageAsset>
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Contents.json">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Nought.imageset\Contents.json">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought.png">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%402x.png">
+          <Visible>false</Visible>
+        </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%403x.png">
           <Visible>false</Visible>
         </ImageAsset>
         <Compile Include="Properties\AssemblyInfo.fs" />
@@ -150,16 +177,14 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-            <Project>{32D4933B-3527-4BB9-9DC1-A3D37A16BEE9}</Project>
-            <Name>CounterApp</Name>
-            <ReferenceSourceTarget></ReferenceSourceTarget>
-        </ProjectReference>
         <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
           <Name>Fabulous.XamarinForms</Name>
         </ProjectReference>
         <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
           <Name>Fabulous</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
+          <Name>TicTacToe</Name>
         </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
