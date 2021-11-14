@@ -12,5 +12,7 @@
     <Compile Include="Reconciler.fs" />
     <Compile Include="Runners.fs" />
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
+    <Compile Include="ViewNode.fs" />
+    <Compile Include="Attributes.fs" />
   </ItemGroup>
 </Project>
