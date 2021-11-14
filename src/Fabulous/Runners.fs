@@ -25,7 +25,7 @@ module Runners =
 
         member _.Key = key
         member _.Program = program
-        member _.ViewTreeContext = { Dispatch = unbox >> processMsg; Ancestors = [] }
+        member _.ViewTreeContext = { Dispatch = unbox >> processMsg; CanReuseView = program.CanReuseView }
         member _.Start(arg) = start arg
         member _.Pause() = ()
         member _.Restart() = ()
@@ -43,8 +43,9 @@ module Runners =
 module ViewAdapters =
     open Runners
 
-    type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext, getViewNode: obj -> IViewNode) as this =
+    type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext, getViewNode: obj -> IViewNode, canReuseView: Widget -> Widget -> bool) as this =
 
+        let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
 
         let _stateSubscription =
@@ -53,6 +54,7 @@ module ViewAdapters =
         member _.CreateView() =
             let state = unbox(StateStore.get stateKey)
             let widget = view state
+            _widget <- widget
 
             let definition = WidgetDefinitionStore.get widget.Key
             _root <- definition.CreateView(widget, context)
@@ -64,7 +66,7 @@ module ViewAdapters =
                 let currentWidget = view state
 
                 // TODO handle the case when Type of the widget changes
-                Reconciler.update getViewNode _root currentWidget.Attributes
+                Reconciler.update getViewNode canReuseView (ValueSome _widget) currentWidget _root
 
         member _.Dispose() = _stateSubscription.Dispose()
 
@@ -74,11 +76,11 @@ module ViewAdapters =
             member _.Attach(node) = ()
             member _.Detach(shouldDestroyNode) = ()
 
-    let create<'arg, 'model, 'msg> (runner: Runner<'arg, 'model, 'msg>) getViewNode =
+    let create<'arg, 'model, 'msg> (runner: Runner<'arg, 'model, 'msg>) getViewNode canReuseView =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
-            new ViewAdapter<'model>(key, runner.Key, runner.Program.View, runner.ViewTreeContext, getViewNode)
+            new ViewAdapter<'model>(key, runner.Key, runner.Program.View, runner.ViewTreeContext, getViewNode, canReuseView)
 
         ViewAdapterStore.set key viewAdapter
         viewAdapter

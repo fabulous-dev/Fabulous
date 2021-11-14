@@ -23,30 +23,30 @@ module Attributes =
                     bindableObject.SetValue(bindableProperty, value)
             )
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (compare: struct ('modelType * 'modelType) -> AttributeComparison) =
+    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
         Attributes.defineScalarWithConverter<'inputType, 'modelType>
             bindableProperty.PropertyName
             (fun () -> Unchecked.defaultof<'modelType>)
             convert
             compare
-            (fun struct (newValueOpt, target) ->
+            (fun (newValueOpt, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v)
             )
 
     let inline defineBindable<'T when 'T: equality> bindableProperty =
-        defineBindableWithComparer<'T, 'T> bindableProperty id AttributeComparers.equalityCompare
+        defineBindableWithComparer<'T, 'T> bindableProperty id ScalarAttributeComparers.equalityCompare
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()
-        let definition : AttributeDefinitions.ScalarAttributeDefinition<_,_> =
+        let definition : ScalarAttributeDefinition<_,_> =
             { Key = key
               Name = name
               DefaultWith = fun () -> null
               Convert = id
-              Compare = AttributeComparers.noCompare
-              UpdateTarget = fun struct (newValueOpt, target) ->
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateTarget = fun (newValueOpt, target) ->
                 let event = getEvent target
                 let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData
 
@@ -69,13 +69,13 @@ module Attributes =
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
         let key = AttributeDefinitionStore.getNextKey()
-        let definition : AttributeDefinitions.ScalarAttributeDefinition<_,_> =
+        let definition : ScalarAttributeDefinition<_,_> =
             { Key = key
               Name = name
               DefaultWith = fun () -> fun _ -> null
               Convert = id
-              Compare = AttributeComparers.noCompare
-              UpdateTarget = fun struct (newValueOpt: ('args -> obj) voption, target) ->
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateTarget = fun (newValueOpt: ('args -> obj) voption, target) ->
 
                 let event = getEvent target
                 let viewNodeData = (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNode.ViewNodeProperty) :?> ViewNodeData

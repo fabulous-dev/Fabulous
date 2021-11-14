@@ -22,74 +22,82 @@ type ViewAdapterKey = int
 /// Represents a value for a property of a widget.
 /// Can map to a real property (such as Label.Text) or to a non-existent one.
 /// It will be up to the AttributeDefinition to decide how to apply the value.
-[<Struct>]
-type Attribute =
+type [<Struct>] ScalarAttribute =
     { Key: AttributeKey
 #if DEBUG
       DebugName: string
 #endif
       Value: obj }
 
+and [<Struct>] WidgetAttribute =
+    { Key: AttributeKey
+#if DEBUG
+      DebugName: string
+#endif
+      Value: Widget }
+
+and [<Struct>] WidgetCollectionAttribute =
+    { Key: AttributeKey
+#if DEBUG
+      DebugName: string
+#endif
+      Value: Widget[] }
+
 /// Represents a virtual UI element such as a Label, a Button, etc.
-[<Struct>]
-type Widget =
+and [<Struct>] Widget =
     { Key: WidgetKey
-      Attributes: Attribute [] }
+      ScalarAttributes: ScalarAttribute[]
+      WidgetAttributes: WidgetAttribute[]
+      WidgetCollectionAttributes: WidgetCollectionAttribute[] }
 
-[<Struct; RequireQualifiedAccess>]
-type AttributeChange =
-    | Added of added: Attribute
-    | Removed of removed: Attribute
-    | ScalarUpdated of scalarData: Attribute
-    | WidgetUpdated of widgetData: struct (Attribute * AttributeChange[])
-    | WidgetCollectionUpdated of collectionData: struct (Attribute * WidgetCollectionChange[])
+type [<Struct; RequireQualifiedAccess>] ScalarChange =
+    | Added of added: ScalarAttribute
+    | Removed of removed: ScalarAttribute
+    | Updated of updated: ScalarAttribute
 
+and [<Struct; RequireQualifiedAccess>] WidgetChange =
+    | Added of added: WidgetAttribute
+    | Removed of removed: WidgetAttribute
+    | Updated of updated: struct (WidgetAttribute * WidgetDiff)
+    | ReplacedBy of replacedBy: WidgetAttribute
+    
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
+    | Added of added: WidgetCollectionAttribute
+    | Removed of removed: WidgetCollectionAttribute
+    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionItemChange[])
+
+and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
     | Replace of widgetReplaced: struct (int * Widget)
-    | Update of widgetUpdated: struct (int * AttributeChange[])
+    | Update of widgetUpdated: struct (int * WidgetDiff)
     | Remove of removed: int
 
-/// Represents a UI element created from a widget
-type IViewNode =
-    abstract ApplyDiff : AttributeChange[] -> unit
-    abstract Attributes : Attribute[]
-    abstract Origin: WidgetKey
+and [<Struct>] WidgetDiff =
+    { ScalarChanges: ScalarChange[]
+      WidgetChanges: WidgetChange[]
+      WidgetCollectionChanges: WidgetCollectionChange[] }
 
-and [<Struct>] ViewTreeContext =
-    { Dispatch: obj -> unit
-      Ancestors: IViewNode list }
+[<Struct; RequireQualifiedAccess>]
+type ScalarAttributeComparison =
+    | Identical
+    | Different of newData: obj
 
-and [<Struct>] ChildUpdate =
-    { ChildAfterUpdate: obj }
-
-and [<Struct>] ChildrenUpdate =
-    { ChildrenAfterUpdate: obj []
-      Added: obj list voption
-      Removed: obj list voption }
+type [<Struct>] ViewTreeContext =
+    { CanReuseView: Widget -> Widget -> bool
+      Dispatch: obj -> unit }
 
 type Program<'arg, 'model, 'msg> =
     { Init : 'arg -> 'model * Cmd<'msg>
       Update : 'msg * 'model -> 'model * Cmd<'msg>
-      View : 'model -> Widget }
+      View : 'model -> Widget
+      CanReuseView: Widget -> Widget -> bool }
 
-[<Struct; RequireQualifiedAccess>]
-type AttributeComparison =
-    | Identical
-    | ReplacedBy of newData: obj
-    | WidgetDifferent of attributeChanges: AttributeChange[]
-    | WidgetCollectionDifferent of collectionChanges: WidgetCollectionChange[]
-
-type IAttributeDefinition =
-    abstract Key: AttributeKey
-    abstract CompareBoxed : obj * obj -> AttributeComparison
-
-type IAttributeDefinition<'inputType, 'modelType> =
-    inherit IAttributeDefinition
-    abstract DefaultWith : unit -> 'modelType
-
-type IWidgetDefinition =
-    abstract CreateView : Widget * ViewTreeContext -> obj
+/// Represents a UI element created from a widget
+type IViewNode =
+    abstract Origin: WidgetKey
+    abstract ApplyScalarDiff : ScalarChange[] -> unit
+    abstract ApplyWidgetDiff : WidgetChange[] -> unit
+    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange[] -> unit
 
 type IRunner =
     interface

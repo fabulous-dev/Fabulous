@@ -21,7 +21,7 @@ module AttributeDefinitionStore =
         key
     
 module WidgetDefinitionStore =
-    let private _widgets = Dictionary<WidgetKey, IWidgetDefinition>()
+    let private _widgets = Dictionary<WidgetKey, WidgetDefinition>()
     let mutable private _nextKey = 0
     
     let get key = _widgets.[key]

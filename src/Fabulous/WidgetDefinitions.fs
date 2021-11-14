@@ -10,11 +10,7 @@
 /// if they want to do something differently than the base
 /// attribute-based widgets
 
-module Widgets =
-    type WidgetDefinition =
-        { Key: WidgetKey
-          Name: string
-          CreateView: Widget * ViewTreeContext -> obj }
-
-        interface IWidgetDefinition with
-            member x.CreateView (w, tree) = x.CreateView (w, tree)
+type WidgetDefinition =
+    { Key: WidgetKey
+      Name: string
+      CreateView: Widget * ViewTreeContext -> obj }

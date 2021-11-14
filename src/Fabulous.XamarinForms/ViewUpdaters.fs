@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 module ViewUpdaters =
-    let updateSliderMinMax struct (newValueOpt: (float * float) voption, target: obj) =
+    let updateSliderMinMax (newValueOpt: (float * float) voption, target: obj) =
         let slider = target :?> Slider
         match newValueOpt with
         | ValueNone ->
@@ -19,7 +19,7 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
-    let updateGridColumnDefinitions struct (newValueOpt: Dimension[] voption, target: obj) =
+    let updateGridColumnDefinitions (newValueOpt: Dimension[] voption, target: obj) =
         let grid = target :?> Grid
         match newValueOpt with
         | ValueNone -> grid.ColumnDefinitions.Clear()
@@ -36,7 +36,7 @@ module ViewUpdaters =
 
                 grid.ColumnDefinitions.Add(ColumnDefinition(Width = gridLength))
 
-    let updateGridRowDefinitions struct (newValueOpt: Dimension[] voption, target: obj) =
+    let updateGridRowDefinitions (newValueOpt: Dimension[] voption, target: obj) =
         let grid = target :?> Grid
         match newValueOpt with
         | ValueNone -> grid.RowDefinitions.Clear()
@@ -48,30 +48,32 @@ module ViewUpdaters =
                     match c with
                     | Auto -> GridLength.Auto
                     | Star -> GridLength.Star
-                    | Stars x -> GridLength(x, Xamarin.Forms.GridUnitType.Star)
-                    | Absolute x -> GridLength(x, Xamarin.Forms.GridUnitType.Absolute)
+                    | Stars x -> GridLength(x, GridUnitType.Star)
+                    | Absolute x -> GridLength(x, GridUnitType.Absolute)
 
                 grid.RowDefinitions.Add(RowDefinition(Height = gridLength))
 
-    let applyDiffNavigationPagePages struct (diffs: WidgetCollectionChange[], target: obj) =
+    let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChange[], target: obj) =
         let viewNode = ViewNode.getViewNode target :?> ViewNode
         let navigationPage = target :?> NavigationPage
         let pages = List.ofSeq navigationPage.Pages
 
         for diff in diffs do
             match diff with
-            | WidgetCollectionChange.Insert (index, widget) -> failwith "not implemented"
+            | WidgetCollectionItemChange.Insert (index, widget) -> failwith "not implemented"
 
-            | WidgetCollectionChange.Update (index, changes) ->
+            | WidgetCollectionItemChange.Update (index, diff) ->
                 let targetItem = pages.[index]
                 let viewNode = ViewNode.getViewNode targetItem
-                viewNode.ApplyDiff(changes)
+                if diff.ScalarChanges.Length > 0 then viewNode.ApplyScalarDiff(diff.ScalarChanges)
+                if diff.WidgetChanges.Length > 0 then viewNode.ApplyWidgetDiff(diff.WidgetChanges)
+                if diff.WidgetCollectionChanges.Length > 0 then viewNode.ApplyWidgetCollectionDiff(diff.WidgetCollectionChanges)
 
-            | WidgetCollectionChange.Replace (index, widget) -> failwith "not implemented"
+            | WidgetCollectionItemChange.Replace (index, widget) -> failwith "not implemented"
 
             | _ -> ()
 
-    let updateNavigationPagePages struct (newValueOpt: Widget[] voption, target: obj) =
+    let updateNavigationPagePages (newValueOpt: Widget[] voption, target: obj) =
         let navigationPage = target :?> NavigationPage
         navigationPage.PopToRootAsync(false) |> ignore
 
