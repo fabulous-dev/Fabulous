@@ -63,10 +63,14 @@ module ViewAdapters =
         member _.OnStateChanged(args) =
             if args.Key = stateKey then
                 let state = unbox args.NewState
+
+                let prevWidget = _widget
                 let currentWidget = view state
+                _widget <- currentWidget
 
                 // TODO handle the case when Type of the widget changes
-                Reconciler.update getViewNode canReuseView (ValueSome _widget) currentWidget _root
+                Reconciler.update getViewNode canReuseView (ValueSome prevWidget) currentWidget _root
+                
 
         member _.Dispose() = _stateSubscription.Dispose()
 

@@ -183,7 +183,63 @@ module Reconciler =
         List.rev result |> List.toArray
 
     and diffWidgetCollectionAttributes (canReuseView: Widget -> Widget -> bool) (prev: WidgetCollectionAttribute[]) (next: WidgetCollectionAttribute[]): WidgetCollectionChange[] =
-        [||]
+        // the order of attributes doesn't matter, thus it is safe to mutate array in place
+        prev |> sortAttributesInPlace (fun a -> a.Key) |> ignore
+        next |> sortAttributesInPlace (fun a -> a.Key) |> ignore
+
+        let mutable result: WidgetCollectionChange list = []
+
+        let mutable prevIndex = 0
+        let mutable nextIndex = 0
+
+        let prevLength = prev.Length
+        let nextLength = next.Length
+
+        while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+            if prevIndex = prevLength then
+                // that means we are done with the prev and only need to add next's tail to added
+                result <- WidgetCollectionChange.Added next.[nextIndex] :: result
+                nextIndex <- nextIndex + 1
+
+            elif nextIndex = nextLength then
+                // that means that we are done with new items and only need prev's tail to removed
+                result <- WidgetCollectionChange.Removed prev.[prevIndex] :: result
+                prevIndex <- prevIndex + 1
+
+            else
+                // we haven't reached either of the ends
+                let prevAttr = prev.[prevIndex]
+                let nextAttr = next.[nextIndex]
+
+                let prevKey = prevAttr.Key
+                let nextKey = nextAttr.Key
+                let prevWidgetColl = prevAttr.Value
+                let nextWidgetColl = nextAttr.Value
+
+                match prevKey.CompareTo nextKey with
+                | c when c < 0 ->
+                    // prev key is less than next -> remove prev key
+                    result <- WidgetCollectionChange.Removed prevAttr :: result
+                    prevIndex <- prevIndex + 1
+
+                | c when c > 0 ->
+                    // prev key is more than next -> add next item
+                    result <- WidgetCollectionChange.Added nextAttr :: result
+                    nextIndex <- nextIndex + 1
+
+                | _ ->
+                    // means that we are targeting the same attribute
+
+                    // move both pointers
+                    prevIndex <- prevIndex + 1
+                    nextIndex <- nextIndex + 1
+
+                    let change =
+                        WidgetCollectionChange.Updated struct (nextAttr, diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl)
+
+                    result <- change :: result
+
+        List.rev result |> List.toArray
 
     and diffWidgetCollections (canReuseView: Widget -> Widget -> bool) (prev: Widget array) (next: Widget array) : WidgetCollectionItemChange[] =
         let mutable target = []
