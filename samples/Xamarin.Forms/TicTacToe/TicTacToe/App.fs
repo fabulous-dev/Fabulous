@@ -136,7 +136,7 @@ module App =
             // Return the new model.
             newModel2
         | Restart ->
-            { model with NextUp = X; Board = initialBoard }
+            { model with NextUp = X; Board = initialBoard; GameScore = 0 }
         | VisualBoardSizeChanged args ->
             match model.VisualBoardSize with
             | Some _ -> model
