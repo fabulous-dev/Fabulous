@@ -14,7 +14,7 @@ jobs:
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
-      version: 5.0
+      version: 3.x
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
