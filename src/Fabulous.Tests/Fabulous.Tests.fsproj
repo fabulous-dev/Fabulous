@@ -5,6 +5,7 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Platform.fs" />
         <Compile Include="TestUI.fs" />
         <Compile Include="APISketchTests.fs" />
     </ItemGroup>
