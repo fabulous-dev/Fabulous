@@ -17,6 +17,9 @@ type IPageWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IViewWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type ILayoutWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
 type ICellWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type IGestureRecognizerWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type IMenuItemWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type IToolbarItemWidgetBuilder<'msg> = inherit IMenuItemWidgetBuilder<'msg>
 
 [<Extension>]
 type IWidgetExtensions () =
@@ -38,6 +41,15 @@ type IWidgetExtensions () =
             let attribs2 = Array.append this.ScalarAttributes attributes
             let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
             result
+
+    [<Extension>]
+    static member inline AddWidgetCollectionAttribute(this: ^T when ^T :> IWidgetBuilder, attr: WidgetCollectionAttribute) =
+        let attribs = this.WidgetCollectionAttributes
+        let attribs2 = Array.zeroCreate (attribs.Length + 1)
+        Array.blit attribs 0 attribs2 0 attribs.Length
+        attribs2.[attribs.Length] <- attr
+        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (this.ScalarAttributes, this.WidgetAttributes, attribs2))
+        result
 
 
 

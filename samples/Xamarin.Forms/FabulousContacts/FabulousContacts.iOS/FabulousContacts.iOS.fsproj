@@ -6,12 +6,12 @@
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
         <ProductVersion>8.0.30703</ProductVersion>
         <SchemaVersion>2.0</SchemaVersion>
-        <ProjectGuid>{C50FBC00-6DDD-48D0-A0CD-77236E5BAAAF}</ProjectGuid>
+        <ProjectGuid>{FD577647-C3A6-45CB-BDFE-B8FE2D9E0E50}</ProjectGuid>
         <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
         <OutputType>Exe</OutputType>
-        <RootNamespace>TicTacToe.iOS</RootNamespace>
+        <RootNamespace>FabulousContacts.iOS</RootNamespace>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-        <AssemblyName>TicTacToe.iOS</AssemblyName>
+        <AssemblyName>FabulousContacts.iOS</AssemblyName>
         <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -121,33 +121,24 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%403x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Cross.imageset\Contents.json">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%402x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
         <Visible>false</Visible>
       </ImageAsset>
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
@@ -156,38 +147,22 @@
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Contents.json">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Nought.imageset\Contents.json">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%402x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%403x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
       <Compile Include="Properties\AssemblyInfo.fs" />
       <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
       <Compile Include="AppDelegate.fs" />
       <None Include="Entitlements.plist" />
       <None Include="Info.plist" />
       <None Include="packages.config" />
+      <ProjectReference Include="..\FabulousContacts\FabulousContacts.fsproj">
+        <Project>{D8FA693C-E8F7-4BA4-BF41-41602BA0C88F}</Project>
+        <Name>FabulousContacts</Name>
+        <ReferenceSourceTarget></ReferenceSourceTarget>
+      </ProjectReference>
       <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
         <Name>Fabulous.XamarinForms</Name>
       </ProjectReference>
       <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
         <Name>Fabulous</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
-        <Name>TicTacToe</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />

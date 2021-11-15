@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.XamarinForms.XFAttributes
 open Fabulous.XamarinForms.Widgets
 open System.Runtime.CompilerServices
+open System.IO
 
 module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
@@ -99,6 +100,7 @@ type [<Struct>] GridWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], wi
               WidgetAttributes = widgetAttributes
               WidgetCollectionAttributes = widgetCollectionAttributes }
 
+type ILabelWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
 type [<Struct>] LabelWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
     static let key = Widgets.register<Xamarin.Forms.Label>()
 
@@ -109,7 +111,7 @@ type [<Struct>] LabelWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], w
             [||]
         )
 
-    interface IViewWidgetBuilder<'msg> with
+    interface ILabelWidgetBuilder<'msg> with
         member _.ScalarAttributes = scalarAttributes
         member _.WidgetAttributes = widgetAttributes
         member _.WidgetCollectionAttributes = widgetCollectionAttributes
@@ -298,6 +300,16 @@ type [<Struct>] ImageWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], w
             [||],
             [||]
         )
+        
+    static member inline CreateFromStream(stream: Stream, aspect: Xamarin.Forms.Aspect) =
+        ImageWidgetBuilder<'msg>(
+            [|
+                Image.Source.WithValue(Xamarin.Forms.ImageSource.FromStream(fun () -> stream))
+                Image.Aspect.WithValue(aspect)
+            |],
+            [||],
+            [||]
+        )
                       
     interface IViewWidgetBuilder<'msg> with
         member _.ScalarAttributes = scalarAttributes
@@ -351,6 +363,91 @@ type [<Struct>] NavigationPageWidgetBuilder<'msg> (scalarAttributes: ScalarAttri
               WidgetAttributes = widgetAttributes
               WidgetCollectionAttributes = widgetCollectionAttributes }
 
+type IEntryWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
+type [<Struct>] EntryWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.Entry>()
+                            
+    static member inline Create(text: string, onTextChanged: string -> 'msg) =
+        EntryWidgetBuilder<'msg>(
+            [| Entry.Text.WithValue(text)
+               Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
+            [||],
+            [||]
+        )
+                                    
+    interface IEntryWidgetBuilder<'msg> with
+        member _.ScalarAttributes = scalarAttributes
+        member _.WidgetAttributes = widgetAttributes
+        member _.WidgetCollectionAttributes = widgetCollectionAttributes
+        member _.Compile() =
+            { Key = key
+              ScalarAttributes = scalarAttributes
+              WidgetAttributes = widgetAttributes
+              WidgetCollectionAttributes = widgetCollectionAttributes }
+
+type [<Struct>] TapGestureRecognizerWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.TapGestureRecognizer>()
+              
+    static member inline Create(onTapped: 'msg) =
+        TapGestureRecognizerWidgetBuilder<'msg>(
+            [| TapGestureRecognizer.Tapped.WithValue(onTapped) |],
+            [||],
+            [||]
+        )
+                      
+    interface IGestureRecognizerWidgetBuilder<'msg> with
+        member _.ScalarAttributes = scalarAttributes
+        member _.WidgetAttributes = widgetAttributes
+        member _.WidgetCollectionAttributes = widgetCollectionAttributes
+        member _.Compile() =
+            { Key = key
+              ScalarAttributes = scalarAttributes
+              WidgetAttributes = widgetAttributes
+              WidgetCollectionAttributes = widgetCollectionAttributes }
+              
+type [<Struct>] SearchBarWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.SearchBar>()
+                            
+    static member inline Create(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
+        SearchBarWidgetBuilder<'msg>(
+            [| SearchBar.Text.WithValue(text)
+               InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
+               SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed) |],
+            [||],
+            [||]
+        )
+                                    
+    interface IViewWidgetBuilder<'msg> with
+        member _.ScalarAttributes = scalarAttributes
+        member _.WidgetAttributes = widgetAttributes
+        member _.WidgetCollectionAttributes = widgetCollectionAttributes
+        member _.Compile() =
+            { Key = key
+              ScalarAttributes = scalarAttributes
+              WidgetAttributes = widgetAttributes
+              WidgetCollectionAttributes = widgetCollectionAttributes }
+              
+type [<Struct>] ToolbarItemWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
+    static let key = Widgets.register<Xamarin.Forms.ToolbarItem>()
+                            
+    static member inline Create(text: string, onClicked: 'msg) =
+        ToolbarItemWidgetBuilder<'msg>(
+            [| MenuItem.Text.WithValue(text)
+               MenuItem.Clicked.WithValue(onClicked) |],
+            [||],
+            [||]
+        )
+                                    
+    interface IToolbarItemWidgetBuilder<'msg> with
+        member _.ScalarAttributes = scalarAttributes
+        member _.WidgetAttributes = widgetAttributes
+        member _.WidgetCollectionAttributes = widgetCollectionAttributes
+        member _.Compile() =
+            { Key = key
+              ScalarAttributes = scalarAttributes
+              WidgetAttributes = widgetAttributes
+              WidgetCollectionAttributes = widgetCollectionAttributes }
+
 [<Extension>]
 type ViewExtensions () =
     [<Extension>]
@@ -375,19 +472,22 @@ type ViewExtensions () =
     static member inline margin(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddScalarAttribute(View.Margin.WithValue(value))
     [<Extension>]
-    static member inline horizontalTextAlignment(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
+    static member inline gestureRecognizers(this: #IViewWidgetBuilder<_>, value: #seq<IGestureRecognizerWidgetBuilder<'msg>>) =
+        this.AddWidgetCollectionAttribute(View.GestureRecognizers.WithValue(ViewHelpers.compileSeq value))
+    [<Extension>]
+    static member inline horizontalTextAlignment(this: #ILabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(value))
     [<Extension>]
-    static member inline verticalTextAlignment(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
+    static member inline verticalTextAlignment(this: #ILabelWidgetBuilder<_>, value: Xamarin.Forms.TextAlignment) =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(value))
     [<Extension>]
-    static member inline font(this: LabelWidgetBuilder<_>, value: double) =
+    static member inline font(this: #ILabelWidgetBuilder<_>, value: double) =
         this.AddScalarAttribute(Label.FontSize.WithValue(value))
     [<Extension>]
-    static member inline textColor(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+    static member inline textColor(this: #ILabelWidgetBuilder<_>, value: Xamarin.Forms.Color) =
         this.AddScalarAttribute(Label.TextColor.WithValue(value))
     [<Extension>]
-    static member inline padding(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
+    static member inline padding(this: #ILabelWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddScalarAttribute(Label.Padding.WithValue(value))
     [<Extension>]
     static member inline textColor(this: ButtonWidgetBuilder<_>, value: Xamarin.Forms.Color) =
@@ -396,7 +496,7 @@ type ViewExtensions () =
     static member inline font(this: ButtonWidgetBuilder<_>, value: double) =
         this.AddScalarAttribute(Button.FontSize.WithValue(value))
     [<Extension>]
-    static member inline padding(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
+    static member inline paddingLayout(this: #ILayoutWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddScalarAttribute(Layout.Padding.WithValue(value))
     [<Extension>]
     static member inline gridColumn(this: #IViewWidgetBuilder<_>, value: int) =
@@ -431,6 +531,27 @@ type ViewExtensions () =
     [<Extension>]
     static member inline width(this: #IViewWidgetBuilder<_>, value: float) =
         this.AddScalarAttribute(VisualElement.Width.WithValue(value))
+    [<Extension>]
+    static member inline placeholder(this: #IEntryWidgetBuilder<_>, value: string) =
+        this.AddScalarAttribute(Entry.Placeholder.WithValue(value))
+    [<Extension>]
+    static member inline keyboard(this: #IEntryWidgetBuilder<_>, value: Xamarin.Forms.Keyboard) =
+        this.AddScalarAttribute(Entry.Keyboard.WithValue(value))
+    [<Extension>]
+    static member inline title(this: #IPageWidgetBuilder<_>, value: string) =
+        this.AddScalarAttribute(Page.Title.WithValue(value))
+    [<Extension>]
+    static member inline fileIcon(this: #IPageWidgetBuilder<_>, value: string) =
+        this.AddScalarAttribute(Page.IconImageSource.WithValue(Xamarin.Forms.ImageSource.FromFile(value)))
+    [<Extension>]
+    static member inline onAppearing(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Page.Appearing.WithValue(value))
+    [<Extension>]
+    static member inline cancelButtonColor(this: SearchBarWidgetBuilder<_>, value: Xamarin.Forms.Color) =
+        this.AddScalarAttribute(SearchBar.CancelButtonColor.WithValue(value))
+    [<Extension>]
+    static member inline toolbarItems(this: #IPageWidgetBuilder<'msg>, value: #seq<IToolbarItemWidgetBuilder<'msg>>) =
+        this.AddWidgetCollectionAttribute(Page.ToolbarItems.WithValue(ViewHelpers.compileSeq value))
 
 
 [<AbstractClass; Sealed>]
@@ -454,6 +575,11 @@ type View private () =
     static member inline ScrollView<'msg>(content) = ScrollViewWidgetBuilder<'msg>.Create(content)
     static member inline FileImage<'msg>(path, aspect) = ImageWidgetBuilder<'msg>.CreateFromFile(path, aspect)
     static member inline WebImage<'msg>(url, aspect) = ImageWidgetBuilder<'msg>.CreateFromUrl(url, aspect)
+    static member inline StreamImage<'msg>(bytes, aspect) = ImageWidgetBuilder<'msg>.CreateFromStream(bytes, aspect)
     static member inline BoxView<'msg>(color) = BoxViewWidgetBuilder<'msg>.Create(color)
     static member inline NavigationPage<'msg>(pages) = NavigationPageWidgetBuilder<'msg>.Create(pages)
+    static member inline Entry<'msg>(text, onTextChanged) = EntryWidgetBuilder<'msg>.Create(text, onTextChanged)
+    static member inline TapGestureRecognizer<'msg>(onTapped) = TapGestureRecognizerWidgetBuilder<'msg>.Create(onTapped)
+    static member inline SearchBar<'msg>(text, onTextChanged, onSearchButtonPressed) = SearchBarWidgetBuilder<'msg>.Create(text, onTextChanged, onSearchButtonPressed)
+    static member inline ToolbarItem<'msg>(text, onClicked) = ToolbarItemWidgetBuilder<'msg>.Create(text, onClicked)
     

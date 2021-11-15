@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="Controls\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="Controls\BorderedEntry.fs" />
+      <Compile Include="Controls\UnderlinedLabel.fs" />
+      <Compile Include="Controls\Map.fs" />
+      <Compile Include="Strings.fs" />
+      <Compile Include="Style.fs" />
+      <Compile Include="Helpers.fs" />
+      <Compile Include="Components.fs" />
+      <Compile Include="Models.fs" />
+      <Compile Include="Repository.fs" />
+      <Compile Include="ContactsListPage.fs" />
+      <Compile Include="AboutPage.fs" />
+      <Compile Include="MapPage.fs" />
+      <Compile Include="App.fs" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+      <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+      <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2244">
+        <GeneratePathProperty></GeneratePathProperty>
+      </PackageReference>
+      <PackageReference Include="Plugin.Permissions" Version="6.0.1">
+        <GeneratePathProperty></GeneratePathProperty>
+      </PackageReference>
+      <PackageReference Include="Xam.Plugin.Media" Version="5.0.1">
+        <GeneratePathProperty></GeneratePathProperty>
+      </PackageReference>
+      <PackageReference Include="sqlite-net-pcl" Version="1.8.116">
+        <GeneratePathProperty></GeneratePathProperty>
+      </PackageReference>
+      <PackageReference Include="FSharp.Core" Version="6.0.1" />
+      <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
+    </ItemGroup>
+</Project>

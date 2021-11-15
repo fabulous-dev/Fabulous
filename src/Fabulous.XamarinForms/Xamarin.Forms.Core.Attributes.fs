@@ -14,6 +14,8 @@ module Page =
     let IsBusy = Attributes.defineBindable<bool> Xamarin.Forms.Page.IsBusyProperty
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Page.PaddingProperty
     let Title = Attributes.defineBindable<string> Xamarin.Forms.Page.TitleProperty
+    let ToolbarItems = Attributes.defineWidgetCollection<Xamarin.Forms.ToolbarItem> ViewNode.getViewNode "Page_ToolbarItems" (fun target -> (target :?> Xamarin.Forms.Page).ToolbarItems)
+    let Appearing = Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Xamarin.Forms.Page).Appearing)
 
 module ContentPage =
     let Content = Attributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
@@ -43,6 +45,7 @@ module View =
     let HorizontalOptions = Attributes.defineBindable<LayoutOptions> Xamarin.Forms.View.HorizontalOptionsProperty
     let VerticalOptions = Attributes.defineBindable<LayoutOptions> Xamarin.Forms.View.VerticalOptionsProperty
     let Margin = Attributes.defineBindable<Thickness> Xamarin.Forms.View.MarginProperty
+    let GestureRecognizers = Attributes.defineWidgetCollection<Xamarin.Forms.IGestureRecognizer> ViewNode.getViewNode "View_GestureRecognizers" (fun target -> (target :?> Xamarin.Forms.View).GestureRecognizers)
 
 module Label =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Label.TextProperty
@@ -51,6 +54,7 @@ module Label =
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Label.FontSizeProperty
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Label.PaddingProperty
     let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Label.TextColorProperty
+    let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.Label.FontAttributesProperty
 
 module Button =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
@@ -101,3 +105,24 @@ module NavigationPage =
     let Pages = Attributes.defineWidgetCollectionWithConverter "NavigationPage_Pages" ViewUpdaters.applyDiffNavigationPagePages ViewUpdaters.updateNavigationPagePages
     let BarBackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarBackgroundColorProperty
     let BarTextColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarTextColorProperty
+
+module Entry =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.Entry.TextProperty
+    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> "Entry_TextChanged" (fun target -> (target :?> Xamarin.Forms.Entry).TextChanged)
+    let Placeholder = Attributes.defineBindable<string> Xamarin.Forms.Entry.PlaceholderProperty
+    let Keyboard = Attributes.defineBindable<Keyboard> Xamarin.Forms.Entry.KeyboardProperty
+
+module TapGestureRecognizer =
+    let Tapped = Attributes.defineEventNoArg "TapGestureRecognizer_Tapped" (fun target -> (target :?> Xamarin.Forms.TapGestureRecognizer).Tapped)
+
+module SearchBar =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.SearchBar.TextProperty
+    let CancelButtonColor = Attributes.defineBindable<Color> Xamarin.Forms.SearchBar.CancelButtonColorProperty
+    let SearchButtonPressed = Attributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> Xamarin.Forms.SearchBar).SearchButtonPressed)
+
+module InputView =
+    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> "InputView_TextChanged" (fun target -> (target :?> Xamarin.Forms.InputView).TextChanged)
+
+module MenuItem =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.MenuItem.TextProperty
+    let Clicked = Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)

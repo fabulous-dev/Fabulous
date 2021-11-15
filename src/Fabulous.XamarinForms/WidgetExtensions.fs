@@ -51,15 +51,18 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: LabelWidgetBuilder<_>, value: Xamarin.Forms.NamedSize) =
-        this.AddScalarAttribute(Label.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Label>)))
+    static member inline font(this: LabelWidgetBuilder<_>, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
+        this.AddScalarAttributes([|
+            match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Xamarin.Forms.Label>))
+            match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
+        |])
         
     [<Extension>]
     static member inline font(this: ButtonWidgetBuilder<_>, value: Xamarin.Forms.NamedSize) =
         this.AddScalarAttribute(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
 
     [<Extension>]
-    static member inline padding(this: #ILayoutWidgetBuilder<_>, value: float) =
+    static member inline paddingLayout(this: #ILayoutWidgetBuilder<_>, value: float) =
         this.AddScalarAttribute(Layout.Padding.WithValue(Thickness(value)))
 
     [<Extension>]
