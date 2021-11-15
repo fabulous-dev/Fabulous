@@ -2,15 +2,16 @@ module Test.Platform
 
 open System.Collections.Generic
 
-type Element() =
+type TestViewElement() =
     member val AutomationId: string = "" with get, set
+    member val PropertyBag = Dictionary<string, obj>()
 
 type IText =
     abstract member Text : string with get, set
     abstract member TextColor : string with get, set
 
 type IContainer =
-    abstract member Children : ResizeArray<Element>
+    abstract member Children : ResizeArray<TestViewElement>
 
 type ButtonHandler = unit -> unit
 
@@ -19,21 +20,21 @@ type IButton =
     abstract RemovePressListener : int -> unit
 
 type TestLabel() =
-    inherit Element()
+    inherit TestViewElement()
 
     interface IText with
         member val Text = "" with get, set
         member val TextColor = "" with get, set
 
 type TestStack() =
-    inherit Element()
+    inherit TestViewElement()
 
     interface IContainer with
-        member val Children = ResizeArray<Element>()
+        member val Children = ResizeArray<TestViewElement>()
 
 
 type TestButton() =
-    inherit Element()
+    inherit TestViewElement()
     let mutable counter: int = 1
     let handlers = Dictionary<int, ButtonHandler>()
     
