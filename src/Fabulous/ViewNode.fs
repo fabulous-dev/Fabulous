@@ -1,52 +1,64 @@
 ﻿namespace Fabulous
 
-type IScalarAttributeDefinition =
-    abstract member UpdateTarget: obj voption * obj -> unit
-
-type IWidgetAttributeDefinition =
-    inherit IScalarAttributeDefinition
-    abstract member ApplyDiff: AttributeChange[] * obj -> unit
-    
-type IWidgetCollectionAttributeDefinition =
-    inherit IScalarAttributeDefinition
-    abstract member ApplyDiff: WidgetCollectionChange[] * obj -> unit
 
 type ViewNode(key, context: ViewTreeContext, targetRef: System.WeakReference) =
-
-    let mutable _attributes = [||]
 
     member _.Context = context
 
     interface IViewNode with
-        member _.Attributes = _attributes
         member _.Origin = key
-        member _.ApplyDiff(changes) =
+
+        member _.ApplyScalarDiff(diffs) =
             if not targetRef.IsAlive then
                 ()
             else
-                for change in changes do
-                    match change with
-                    | AttributeChange.Added added ->
+                for diff in diffs do
+                    match diff with
+                    | ScalarChange.Added added ->
                         let definition = AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
                         definition.UpdateTarget(ValueSome added.Value, targetRef.Target)
-                        _attributes <- Array.append _attributes [| added |]
 
-                    | AttributeChange.Removed removed ->
+                    | ScalarChange.Removed removed ->
                         let definition = AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
                         definition.UpdateTarget(ValueNone, targetRef.Target)
-                        _attributes <- Array.filter (fun a -> a.Key <> removed.Key) _attributes
 
-                    | AttributeChange.ScalarUpdated newAttr ->
+                    | ScalarChange.Updated newAttr ->
                         let definition = AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
                         definition.UpdateTarget(ValueSome newAttr.Value, targetRef.Target)
-                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
 
-                    | AttributeChange.WidgetUpdated struct (newAttr, diffs) ->
-                        let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetAttributeDefinition
-                        definition.ApplyDiff(diffs, targetRef.Target)
-                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
+        member _.ApplyWidgetDiff(diffs) =
+            if not targetRef.IsAlive then
+                ()
+            else
+                for diff in diffs do
+                    match diff with
+                    | WidgetChange.Added newWidget
+                    | WidgetChange.ReplacedBy newWidget ->
+                        let definition = AttributeDefinitionStore.get newWidget.Key :?> WidgetAttributeDefinition
+                        definition.UpdateTarget(ValueSome newWidget.Value, targetRef.Target)
 
-                    | AttributeChange.WidgetCollectionUpdated struct (newAttr, diffs) ->
-                        let definition = AttributeDefinitionStore.get newAttr.Key :?> IWidgetCollectionAttributeDefinition
+                    | WidgetChange.Removed removed ->
+                        let definition = AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
+                        definition.UpdateTarget(ValueNone, targetRef.Target)
+
+                    | WidgetChange.Updated struct (newAttr, diffs) ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> WidgetAttributeDefinition
                         definition.ApplyDiff(diffs, targetRef.Target)
-                        _attributes <- Array.map (fun (a: Attribute) -> if a.Key = newAttr.Key then newAttr else a) _attributes
+
+        member _.ApplyWidgetCollectionDiff(diffs) =
+            if not targetRef.IsAlive then
+                ()
+            else
+                for diff in diffs do
+                    match diff with
+                    | WidgetCollectionChange.Added added ->
+                        let definition = AttributeDefinitionStore.get added.Key :?> WidgetCollectionAttributeDefinition
+                        definition.UpdateTarget(ValueSome added.Value, targetRef.Target)
+                        
+                    | WidgetCollectionChange.Removed removed ->
+                        let definition = AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
+                        definition.UpdateTarget(ValueNone, targetRef.Target)
+
+                    | WidgetCollectionChange.Updated struct (newAttr, diffs) ->
+                        let definition = AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
+                        definition.ApplyDiff(diffs, targetRef.Target)

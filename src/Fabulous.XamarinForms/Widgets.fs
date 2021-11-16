@@ -3,11 +3,12 @@
 open System
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.Widgets
 open Fabulous.XamarinForms
 
 type IWidgetBuilder =
-    abstract Attributes: Attribute[]
+    abstract ScalarAttributes: ScalarAttribute[]
+    abstract WidgetAttributes: WidgetAttribute[]
+    abstract WidgetCollectionAttributes: WidgetCollectionAttribute[]
     abstract Compile: unit -> Widget
 
 type IWidgetBuilder<'msg> = inherit IWidgetBuilder
@@ -20,22 +21,22 @@ type ICellWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 [<Extension>]
 type IWidgetExtensions () =
     [<Extension>]
-    static member inline AddAttribute(this: ^T when ^T :> IWidgetBuilder, attr: Attribute) =
-        let attribs = this.Attributes
+    static member inline AddScalarAttribute(this: ^T when ^T :> IWidgetBuilder, attr: ScalarAttribute) =
+        let attribs = this.ScalarAttributes
         let attribs2 = Array.zeroCreate (attribs.Length + 1)
         Array.blit attribs 0 attribs2 0 attribs.Length
         attribs2.[attribs.Length] <- attr
-        let result = (^T : (new : Attribute[] -> ^T) attribs2)
+        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
         result
 
     [<Extension>]
-    static member inline AddAttributes(this: ^T when ^T :> IWidgetBuilder, attrs: Attribute[]) =
+    static member inline AddScalarAttributes(this: ^T when ^T :> IWidgetBuilder, attrs: ScalarAttribute[]) =
         match attrs with
         | [||] ->
             this
         | attributes ->
-            let attribs2 = Array.append this.Attributes attributes
-            let result = (^T : (new : Attribute[] -> ^T) attribs2)
+            let attribs2 = Array.append this.ScalarAttributes attributes
+            let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
             result
 
 
@@ -55,7 +56,7 @@ module Widgets =
                 let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
                 view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
 
-                Reconciler.update ViewNode.getViewNode view widget.Attributes
+                Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
 
                 box view }
         

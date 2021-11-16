@@ -85,8 +85,8 @@ module Image =
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
-    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq AttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
     let ColumnSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.ColumnSpacingProperty
