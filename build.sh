@@ -10,4 +10,4 @@
 #     dotnet fake run build.fsx -t $@
 # fi
 
-echo fsharpc --version
+fsharpc --version
