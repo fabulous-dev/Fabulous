@@ -292,7 +292,7 @@ Target.create "PackFabulousXamarinFormsExtensions" (fun _ ->
 )
 
 Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
-    !! "Fabulous.XamarinForms/samples/**/*.fsproj"
+    !! "Fabulous.XamarinForms/samples/**/*.Gtk.fsproj"
     |> removeIncompatiblePlatformProjects
     |> msbuild
 )
