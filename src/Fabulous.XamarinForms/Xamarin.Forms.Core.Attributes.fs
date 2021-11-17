@@ -40,6 +40,7 @@ module VisualElement =
     let BackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.VisualElement.BackgroundColorProperty
     let Height = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.HeightRequestProperty
     let Width = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.WidthRequestProperty
+    let IsVisible = Attributes.defineBindable<bool> Xamarin.Forms.VisualElement.IsVisibleProperty
 
 module View =
     let HorizontalOptions = Attributes.defineBindable<LayoutOptions> Xamarin.Forms.View.HorizontalOptionsProperty
@@ -55,19 +56,25 @@ module Label =
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Label.PaddingProperty
     let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Label.TextColorProperty
     let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.Label.FontAttributesProperty
+    let LineBreakMode = Attributes.defineBindable<LineBreakMode> Xamarin.Forms.Label.LineBreakModeProperty
 
 module Button =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
     let Clicked = Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)
     let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Button.TextColorProperty
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Button.FontSizeProperty
+    
+module ImageButton =
+    let Source = Attributes.defineBindable<ImageSource> Xamarin.Forms.ImageButton.SourceProperty
+    let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.ImageButton.AspectProperty
+    let Clicked = Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> Xamarin.Forms.ImageButton).Clicked)
 
 module Switch =
     let IsToggled = Attributes.defineBindable<bool> Xamarin.Forms.Switch.IsToggledProperty
     let Toggled = Attributes.defineEvent<ToggledEventArgs> "Switch_Toggled" (fun target -> (target :?> Xamarin.Forms.Switch).Toggled)
 
 module Slider =
-    let MinimumMaximum = Attributes.define<float * float> "Slider_MinimumMaximum" (fun () -> (0., 1.)) ViewUpdaters.updateSliderMinMax
+    let MinimumMaximum = Attributes.define<float * float> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Slider.ValueProperty
     let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> "Slider_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Slider).ValueChanged)
 
@@ -89,8 +96,8 @@ module Image =
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" (fun _ -> Array.empty) Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
-    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" (fun _ -> Array.empty) Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
     let ColumnSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.ColumnSpacingProperty
@@ -126,3 +133,17 @@ module InputView =
 module MenuItem =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.MenuItem.TextProperty
     let Clicked = Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)
+
+module ToolbarItem =
+    let Order = Attributes.define<ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, target) ->
+        let toolbarItem = target :?> Xamarin.Forms.ToolbarItem
+        match newValueOpt with
+        | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default
+        | ValueSome order -> toolbarItem.Order <- order
+    )
+
+module Editor =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
+
+module ViewCell =
+    let View = Attributes.defineWidget ViewNode.getViewNode "ViewCell_View" (fun target -> (target :?> Xamarin.Forms.ViewCell).View) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- unbox value)

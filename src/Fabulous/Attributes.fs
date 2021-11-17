@@ -22,12 +22,11 @@ module ScalarAttributeComparers =
 
 module Attributes =
     /// Define a custom attribute storing any value
-    let defineScalarWithConverter<'inputType, 'modelType> name defaultWith (convert: 'inputType -> 'modelType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) (updateTarget: 'modelType voption * obj -> unit) =
+    let defineScalarWithConverter<'inputType, 'modelType> name (convert: 'inputType -> 'modelType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) (updateTarget: 'modelType voption * obj -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
         let definition =
             { Key = key
               Name = name
-              DefaultWith = defaultWith
               Convert = convert
               Compare = compare
               UpdateTarget = updateTarget }
@@ -120,5 +119,5 @@ module Attributes =
         
         defineWidgetCollectionWithConverter name applyDiff updateTarget
         
-    let inline define<'T when 'T: equality> name defaultValue updateTarget =
-        defineScalarWithConverter<'T, 'T> name defaultValue id ScalarAttributeComparers.equalityCompare updateTarget
+    let inline define<'T when 'T: equality> name updateTarget =
+        defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget

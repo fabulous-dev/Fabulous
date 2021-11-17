@@ -11,10 +11,19 @@ type UnderlinedLabel() =
 
 [<AutoOpen>]
 module FabulousUnderlinedLabel =
-    type [<Struct>] UnderlinedLabel<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
-        static let key = Widgets.register<UnderlinedLabel>()
+    let UnderlineLabelKey = Widgets.register<UnderlinedLabel>()
 
-        static member Create(text: string) =
+    type [<Struct>] UnderlinedLabel<'msg> =
+        val public ScalarAttributes: ScalarAttribute[]
+        val public WidgetAttributes: WidgetAttribute[]
+        val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+    
+        new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
+            { ScalarAttributes = scalars
+              WidgetAttributes = widgets
+              WidgetCollectionAttributes = widgetColls }        
+
+        static member inline Create(text: string) =
             UnderlinedLabel<'msg>(
                 [| Label.Text.WithValue(text) |],
                 [||],
@@ -22,14 +31,11 @@ module FabulousUnderlinedLabel =
             )
 
         interface ILabelWidgetBuilder<'msg> with
-            member _.ScalarAttributes = scalarAttributes
-            member _.WidgetAttributes = widgetAttributes
-            member _.WidgetCollectionAttributes = widgetCollectionAttributes
-            member _.Compile() =
-                { Key = key
-                  ScalarAttributes = scalarAttributes
-                  WidgetAttributes = widgetAttributes
-                  WidgetCollectionAttributes = widgetCollectionAttributes }
+            member x.Compile() =
+                { Key = UnderlineLabelKey
+                  ScalarAttributes = x.ScalarAttributes
+                  WidgetAttributes = x.WidgetAttributes
+                  WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
     type Fabulous.XamarinForms.View with
         static member inline UnderlinedLabel<'msg>(text) = UnderlinedLabel<'msg>.Create(text)

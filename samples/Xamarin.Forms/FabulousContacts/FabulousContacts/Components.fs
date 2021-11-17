@@ -7,12 +7,13 @@ open FabulousContacts.Helpers
 open FabulousContacts.Style
 open Xamarin.Forms
 open type Fabulous.XamarinForms.View
+open System.IO
 
 module Components =
     let centralLabel text =
         Label(text)
-            .centerHorizontally()
-            .centerVertically(expand = true)
+            .centerHorizontal()
+            .centerVertical(expand = true)
 
     let formLabel text =
         View.Label(text)
@@ -24,159 +25,112 @@ module Components =
             .keyboard(keyboard)
             .borderColor(if isValid then Color.Default else Color.Red)
 
-    let formEditor text textChanged =
-        View.Editor(
-            text = text,
-            textChanged = (fun e -> e.NewTextValue |> textChanged),
-            height = 100.
-        )
+    let formEditor text (textChanged: string -> 'msg) =
+        Editor(text, textChanged)
+            .size(height = 100.)
 
-    let destroyButton text command isVisible =
-        View.Button(
-            text = text,
-            command = command,
-            isVisible = isVisible,
-            backgroundColor = Color.Red,
-            textColor = Color.White,
-            margin = Thickness(0., 20., 0., 0.),
-            verticalOptions = LayoutOptions.EndAndExpand
-        )
+    let destroyButton text onClicked isVisible =
+        Button(text, onClicked)
+            .isVisible(isVisible)
+            .backgroundColor(Color.Red)
+            .textColor(Color.White)
+            .margin(0., 20., 0., 0.)
+            .alignEndVertical(expand = true)
 
-    let toolbarButton text command =
-        View.ToolbarItem(
-            order = ToolbarItemOrder.Primary,
-            text = text,
-            command = command
-        )
+    let toolbarButton text onClicked =
+        ToolbarItem(text, onClicked)
+            .order(ToolbarItemOrder.Primary)
 
     let groupView name =
-        View.ViewCell(
-            View.StackLayout(
-                backgroundColor = accentColor,
-                children = [
-                    View.Label(
-                        text = name,
-                        textColor = accentTextColor,
-                        verticalOptions = LayoutOptions.FillAndExpand,
-                        verticalTextAlignment = TextAlignment.Center,
-                        margin = Thickness(20., 5.)
-                    )
-                ]
-            )
+        ViewCell(
+            VerticalStackLayout([
+                Label(name)
+                    .textColor(accentTextColor)
+                    .verticalOptions(LayoutOptions.FillAndExpand)
+                    .verticalTextAlignment(TextAlignment.Center)
+                    .margin(Thickness(20., 5.))
+            ]).backgroundColor(accentColor)
         )
-    let cellView picture name address isFavorite =
-        let source = picture |> getImageValueOrDefault "addphoto.png"
 
-        View.ViewCell(
-            View.StackLayout(
-                orientation = StackOrientation.Horizontal,
-                padding = Thickness 5.,
+    let cellView picture name address isFavorite =
+        ViewCell(
+            HorizontalStackLayout(
                 spacing = 10.,
                 children = [
-                    View.Image(
-                        source = source,
-                        aspect = Aspect.AspectFill,
-                        margin = Thickness(15., 0., 0., 0.),
-                        height = 50.,
-                        width = 50.
-                    )
+                    (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
+                        .margin(15., 0., 0., 0.)
+                        .size(height = 50., width = 50.)
 
-                    View.StackLayout(
+                    VerticalStackLayout(
                         spacing = 5.,
-                        horizontalOptions = LayoutOptions.FillAndExpand,
-                        margin = Thickness(0., 5., 0., 5.),
                         children = [
-                            View.Label(
-                                text = name,
-                                fontSize = FontSize.fromValue 18.,
-                                verticalOptions = LayoutOptions.FillAndExpand,
-                                verticalTextAlignment = TextAlignment.Center)
+                            Label(name)
+                                .font(18.)
+                                .fillVertical(expand = true)
+                                .centerTextVertical()
 
-                            View.Label(
-                                text = address,
-                                fontSize = FontSize.fromValue 12.,
-                                textColor = Color.Gray,
-                                lineBreakMode = LineBreakMode.TailTruncation
-                            )
+                            Label(address)
+                                .font(12.)
+                                .textColor(Color.Gray)
+                                .lineBreakMode(LineBreakMode.TailTruncation)
                         ]
-                    )
+                    ).fillHorizontal(expand = true)
+                     .margin(0., 5., 0., 5.)
 
-                    View.Image(
-                        source = Image.fromPath "star.png",
-                        isVisible = isFavorite,
-                        verticalOptions = LayoutOptions.Center,
-                        margin = Thickness(0., 0., 15., 0.),
-                        height = 25.,
-                        width = 25.
-                    )
+                    FileImage("star.png", Aspect.AspectFit)
+                        .isVisible(isFavorite)
+                        .centerVertical()
+                        .margin(0., 0., 15., 0.)
+                        .size(height = 25., width = 25.)
                 ]
             )
+                .paddingLayout(Thickness 5.)
         )
 
-    let cachedCellView picture name address isFavorite =
-        dependsOn (picture, name, address, isFavorite) (fun _ (p, n, a, i) ->
-            cellView p n a i
-        )
-
-    let detailActionButton imagePath command =
-        View.Button(
-            image = Image.fromPath imagePath,
-            command = command,
-            backgroundColor = accentColor,
-            height = 35.,
-            horizontalOptions = LayoutOptions.FillAndExpand
-        )
+    let detailActionButton imagePath onClicked =
+        ImageButton(imagePath, onClicked, Aspect.AspectFit)
+            .backgroundColor(accentColor)
+            .size(height = 35.)
+            .fillHorizontal(expand = true)
 
     let detailFieldTitle text =
-        View.Label(
-            text = text,
-            fontAttributes = FontAttributes.Bold,
-            margin = Thickness(0., 10., 0., 0.)
-        )
+        Label(text)
+            .font(attributes = FontAttributes.Bold)
+            .margin(0., 10., 0., 0.)
 
     let optionalLabel text =
         match text with
         | "" ->
-            View.Label(
-                text = Strings.Common_NotSpecified,
-                fontAttributes = FontAttributes.Italic
-            )
+            Label(Strings.Common_NotSpecified)
+                .font(attributes = FontAttributes.Italic)
         | _ ->
-            View.Label(text)
+            Label(text)
             
     let favoriteField isFavorite markAsFavorite =
-        View.StackLayout(
-            orientation = StackOrientation.Horizontal,
-            margin = Thickness(0., 20., 0., 0.),
-            children = [
-                View.Label(
-                    text = Strings.EditPage_MarkAsFavoriteField_Label,
-                    verticalOptions = LayoutOptions.Center
-                )
+        HorizontalStackLayout([
+            Label(Strings.EditPage_MarkAsFavoriteField_Label)
+                .centerVertical()
 
-                View.Switch(
-                    isToggled = isFavorite,
-                    toggled = markAsFavorite,
-                    horizontalOptions = LayoutOptions.EndAndExpand,
-                    verticalOptions = LayoutOptions.Center
-                )
-            ]
-        )
+            Switch(isFavorite, markAsFavorite)
+                .alignEndHorizontal(expand = true)
+                .centerVertical()
+        ])
+            .margin(0., 20., 0., 0.)
       
-    let profilePictureButton picture updatePicture =
+    let profilePictureButton (picture: byte[] option) updatePicture =
         match picture with
         | None ->
-            View.Button(
-                image = Image.fromPath "addphoto.png",
-                backgroundColor = Color.White,
-                command = updatePicture
-            ).RowSpan(2)
+            ContentView(
+                ImageButton("addphoto.png", updatePicture, Aspect.AspectFit)
+            )
+                .backgroundColor(Color.White)
+                .gridRowSpan(2)
 
         | Some picture ->
-            View.Image(
-                source = Image.fromBytes picture,
-                aspect = Aspect.AspectFill,
-                gestureRecognizers = [
-                    View.TapGestureRecognizer(command = updatePicture)
-                ]
-            ).RowSpan(2)
+            ContentView(
+                StreamImage(new MemoryStream(picture), Aspect.AspectFill)
+            )
+                .gestureRecognizers([
+                    TapGestureRecognizer(updatePicture)
+                ])
+                .gridRowSpan(2)

@@ -72,10 +72,10 @@ module Helpers =
         return memoryStream.ToArray()
     }
 
-    let getImageValueOrDefault defaultValue value =
+    let getImageValueOrDefault defaultValue aspect (value: byte[] option) =
         match value with
-        | None -> ContentView(FileImage(defaultValue))
-        | Some bytes -> ContentView(StreamImage(bytes))
+        | None -> FileImage(defaultValue, aspect)
+        | Some bytes -> StreamImage(new MemoryStream(bytes), aspect)
         
 module Cmd =
     let performAsync asyncUnit = 

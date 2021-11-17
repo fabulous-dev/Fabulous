@@ -112,12 +112,15 @@ module MapPage =
             Map(
                 requestedRegion = MapSpan.FromCenterAndRadius(getUserPositionOrDefault userPositionOpt, Distance.FromKilometers(25.)),
                 pins = [
-                    for pin in model.Pins do
-                        Pin(
-                           pinType = pin.PinType,
-                           label = pin.Label,
-                           position = pin.Position
-                        ).address(pin.Address)
+                    match model.Pins with
+                    | None -> ()
+                    | Some pins ->
+                        for pin in pins do
+                            Pin(
+                               pinType = pin.PinType,
+                               label = pin.Label,
+                               position = pin.Position
+                            ).address(pin.Address)
                 ]
             )
                 .hasZoomEnabled(true)
@@ -126,9 +129,13 @@ module MapPage =
         ContentPage(
             match model.Pins with
             | None ->
-                centralLabel Strings.MapPage_Loading
+                ContentView(
+                    centralLabel Strings.MapPage_Loading
+                )
             | Some pins ->
-                map model.UserPosition pins
+                ContentView(
+                    map model.UserPosition pins
+                )
         )
             .title(Strings.MapPage_Title)
             .fileIcon("maptab.png")

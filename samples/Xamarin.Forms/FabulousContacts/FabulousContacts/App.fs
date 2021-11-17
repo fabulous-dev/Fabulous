@@ -56,7 +56,7 @@ module App =
                 VerticalStackLayout([
                     Label(string model.Count)
                         .automationId("CountLabel")
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
 
                     Button("Increment", Increment)
                         .automationId("IncrementButton")
@@ -72,23 +72,23 @@ module App =
                             .automationId("TimerSwitch")
                     ])
                         .paddingLayout(20.)
-                        .centerHorizontally()
+                        .centerHorizontal()
 
                     Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
                         .automationId("StepSlider")
-                        .centerHorizontally()
+                        .centerHorizontal()
 
                     Label($"Step size: {model.Step}")
                         .automationId("StepSizeLabel")
-                        .centerHorizontally()
+                        .centerHorizontal()
 
                     Button("Reset", Reset)
                         .automationId("ResetButton")
                         .isEnabled(model <> initModel ())
-                        .centerHorizontally()
+                        .centerHorizontal()
                 ])
                     .paddingLayout(30.)
-                    .centerVertically()
+                    .centerVertical()
             )
         )
 

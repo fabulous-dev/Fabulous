@@ -26,7 +26,6 @@ module Attributes =
     let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
         Attributes.defineScalarWithConverter<'inputType, 'modelType>
             bindableProperty.PropertyName
-            (fun () -> Unchecked.defaultof<'modelType>)
             convert
             compare
             (fun (newValueOpt, target) ->
@@ -43,7 +42,6 @@ module Attributes =
         let definition : ScalarAttributeDefinition<_,_> =
             { Key = key
               Name = name
-              DefaultWith = fun () -> null
               Convert = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateTarget = fun (newValueOpt, target) ->
@@ -72,7 +70,6 @@ module Attributes =
         let definition : ScalarAttributeDefinition<_,_> =
             { Key = key
               Name = name
-              DefaultWith = fun () -> fun _ -> null
               Convert = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateTarget = fun (newValueOpt: ('args -> obj) voption, target) ->

@@ -11,7 +11,7 @@ open Fabulous.XamarinForms.Widgets
 
 module AdditionalAttributes =
     module iOS =
-        let UseSafeArea = Attributes.define<bool> "Page_UseSafeArea" (fun () -> true) (fun (newValueOpt, target) ->
+        let UseSafeArea = Attributes.define<bool> "Page_UseSafeArea" (fun (newValueOpt, target) ->
             let page = target :?> Xamarin.Forms.Page
             let value = 
                 match newValueOpt with
@@ -34,7 +34,7 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline centerHorizontal(this: #IViewWidgetBuilder<_>, ?expand: bool) =
         let options = match expand with None | Some false -> LayoutOptions.Center | Some true -> LayoutOptions.CenterAndExpand
-        this.AddScalarAttribute(View.HorizontalOptions.WithValue(LayoutOptions.Center))
+        this.AddScalarAttribute(View.HorizontalOptions.WithValue(options))
 
     [<Extension>]
     static member inline centerVertical(this: #IViewWidgetBuilder<_>, ?expand: bool) =
@@ -44,7 +44,7 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline alignStartHorizontal(this: #IViewWidgetBuilder<_>, ?expand: bool) =
         let options = match expand with None | Some false -> LayoutOptions.Start | Some true -> LayoutOptions.StartAndExpand
-        this.AddScalarAttribute(View.HorizontalOptions.WithValue(LayoutOptions.Center))
+        this.AddScalarAttribute(View.HorizontalOptions.WithValue(options))
         
     [<Extension>]
     static member inline alignStartVertical(this: #IViewWidgetBuilder<_>, ?expand: bool) =
@@ -54,16 +54,30 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline alignEndHorizontal(this: #IViewWidgetBuilder<_>, ?expand: bool) =
         let options = match expand with None | Some false -> LayoutOptions.End | Some true -> LayoutOptions.EndAndExpand
-        this.AddScalarAttribute(View.HorizontalOptions.WithValue(LayoutOptions.Center))
+        this.AddScalarAttribute(View.HorizontalOptions.WithValue(options))
         
     [<Extension>]
     static member inline alignEndVertical(this: #IViewWidgetBuilder<_>, ?expand: bool) =
         let options = match expand with None | Some false -> LayoutOptions.End | Some true -> LayoutOptions.EndAndExpand
         this.AddScalarAttribute(View.VerticalOptions.WithValue(options))
+        
+    [<Extension>]
+    static member inline fillHorizontal(this: #IViewWidgetBuilder<_>, ?expand: bool) =
+        let options = match expand with None | Some false -> LayoutOptions.Fill | Some true -> LayoutOptions.FillAndExpand
+        this.AddScalarAttribute(View.HorizontalOptions.WithValue(options))
+        
+    [<Extension>]
+    static member inline fillVertical(this: #IViewWidgetBuilder<_>, ?expand: bool) =
+        let options = match expand with None | Some false -> LayoutOptions.Fill | Some true -> LayoutOptions.FillAndExpand
+        this.AddScalarAttribute(View.VerticalOptions.WithValue(options))
 
     [<Extension>]
-    static member inline centerTextHorizontally(this: Label<_>) =
+    static member inline centerTextHorizontal(this: Label<_>) =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
+        
+    [<Extension>]
+    static member inline centerTextVertical(this: Label<_>) =
+        this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
     static member inline font(this: Label<_>, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =

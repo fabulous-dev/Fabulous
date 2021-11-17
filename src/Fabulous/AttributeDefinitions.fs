@@ -6,14 +6,12 @@ type IAttributeDefinition =
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition
-    abstract member DefaultWith: unit -> obj
     abstract member CompareBoxed: a: obj * b: obj -> ScalarAttributeComparison
 
 /// Attribute definiton for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType> =
     { Key: AttributeKey
       Name: string
-      DefaultWith: unit -> 'modelType
       Convert: 'inputType -> 'modelType
       Compare: 'modelType * 'modelType -> ScalarAttributeComparison
       UpdateTarget: 'modelType voption * obj -> unit }
@@ -27,7 +25,6 @@ type ScalarAttributeDefinition<'inputType, 'modelType> =
 
     interface IScalarAttributeDefinition with
         member x.Key = x.Key
-        member x.DefaultWith () = box (x.DefaultWith ())
         member x.CompareBoxed(a, b) = x.Compare (unbox<'modelType> a, unbox<'modelType> b)
         member x.UpdateTarget(newValueOpt, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)

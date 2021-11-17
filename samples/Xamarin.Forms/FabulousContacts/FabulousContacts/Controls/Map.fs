@@ -13,9 +13,10 @@ type IPinWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 module Pin =
     let PinType = Attributes.defineBindable<PinType> Xamarin.Forms.Maps.Pin.TypeProperty
     let Address = Attributes.defineBindable<string> Xamarin.Forms.Maps.Pin.AddressProperty
+    let PinKey = Widgets.register<Xamarin.Forms.Maps.Pin>()
 
 module Map =
-    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun () -> Unchecked.defaultof<MapSpan>) (fun (newValueOpt, target) ->
+    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun (newValueOpt, target) ->
         let map = target :?> Xamarin.Forms.Maps.Map
         match newValueOpt with
         | ValueNone -> ()
@@ -24,9 +25,17 @@ module Map =
     let Pins = Attributes.defineWidgetCollection<Xamarin.Forms.Maps.Pin> ViewNode.getViewNode "Map_Pins" (fun target -> (target :?> Xamarin.Forms.Maps.Map).Pins)
     let HasZoomEnabled = Attributes.defineBindable<bool> Xamarin.Forms.Maps.Map.HasZoomEnabledProperty
     let HasScrollEnabled = Attributes.defineBindable<bool> Xamarin.Forms.Maps.Map.HasScrollEnabledProperty
+    let MapKey = Widgets.register<Xamarin.Forms.Maps.Map>()
 
-type [<Struct>] PinWidgetBuilder<'msg>(scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Maps.Pin>()
+type [<Struct>] PinWidgetBuilder<'msg>=
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+   
+    new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetColls }
 
     static member Create(pinType: PinType, label: string, position: Position) =
         PinWidgetBuilder<'msg>(
@@ -36,17 +45,21 @@ type [<Struct>] PinWidgetBuilder<'msg>(scalarAttributes: ScalarAttribute[], widg
         )
         
     interface IPinWidgetBuilder<'msg> with
-        member _.ScalarAttributes = scalarAttributes
-        member _.WidgetAttributes = widgetAttributes
-        member _.WidgetCollectionAttributes = widgetCollectionAttributes
-        member _.Compile() =
-            { Key = key
-              ScalarAttributes = scalarAttributes
-              WidgetAttributes = widgetAttributes
-              WidgetCollectionAttributes = widgetCollectionAttributes }
+        member x.Compile() =
+            { Key = Pin.PinKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
-type [<Struct>] MapWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
-    static let key = Widgets.register<Xamarin.Forms.Maps.Map>()
+type [<Struct>] MapWidgetBuilder<'msg>=
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+   
+    new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetColls }
 
     static member Create(requestedRegion: MapSpan, pins: #seq<IPinWidgetBuilder<'msg>>) =
         MapWidgetBuilder<'msg>(
@@ -56,14 +69,11 @@ type [<Struct>] MapWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], wid
         )
         
     interface IViewWidgetBuilder<'msg> with
-        member _.ScalarAttributes = scalarAttributes
-        member _.WidgetAttributes = widgetAttributes
-        member _.WidgetCollectionAttributes = widgetCollectionAttributes
-        member _.Compile() =
-            { Key = key
-              ScalarAttributes = scalarAttributes
-              WidgetAttributes = widgetAttributes
-              WidgetCollectionAttributes = widgetCollectionAttributes }
+        member x.Compile() =
+            { Key = Map.MapKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
 module MapView =
     [<Extension>]

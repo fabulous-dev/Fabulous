@@ -23,9 +23,17 @@ type BorderedEntry() =
 [<AutoOpen>]
 module FabulousBorderedEntry =
     let BorderColor = Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
+    let BorderedEntryKey = Widgets.register<BorderedEntry>()
 
-    type [<Struct>] BorderedEntry<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
-        static let key = Widgets.register<BorderedEntry>()
+    type [<Struct>] BorderedEntry<'msg> =
+        val public ScalarAttributes: ScalarAttribute[]
+        val public WidgetAttributes: WidgetAttribute[]
+        val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+    
+        new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
+            { ScalarAttributes = scalars
+              WidgetAttributes = widgets
+              WidgetCollectionAttributes = widgetColls }        
 
         static member Create(text: string, onTextChanged: string -> 'msg) =
             BorderedEntry<'msg>(
@@ -36,14 +44,11 @@ module FabulousBorderedEntry =
             )
 
         interface IEntryWidgetBuilder<'msg> with
-            member _.ScalarAttributes = scalarAttributes
-            member _.WidgetAttributes = widgetAttributes
-            member _.WidgetCollectionAttributes = widgetCollectionAttributes
-            member _.Compile() =
-                { Key = key
-                  ScalarAttributes = scalarAttributes
-                  WidgetAttributes = widgetAttributes
-                  WidgetCollectionAttributes = widgetCollectionAttributes }
+            member x.Compile() =
+                { Key = BorderedEntryKey
+                  ScalarAttributes = x.ScalarAttributes
+                  WidgetAttributes = x.WidgetAttributes
+                  WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
     type Fabulous.XamarinForms.View with
         static member inline BorderedEntry<'msg>(text, onTextChanged) = BorderedEntry<'msg>.Create(text, onTextChanged)

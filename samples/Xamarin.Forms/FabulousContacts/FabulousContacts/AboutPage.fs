@@ -27,7 +27,7 @@ module AboutPage =
         VerticalStackLayout([
             Label(Strings.AboutPage_AboutFabulousContacts_NameAndVersion)
                 .font(attributes = FontAttributes.Bold)
-                .centerHorizontally()
+                .centerHorizontal()
             
             Label(Strings.AboutPage_AboutFabulousContacts_DescriptionTitle)
                 .font(attributes = FontAttributes.Bold)
@@ -50,7 +50,7 @@ module AboutPage =
                         .size(height = 50., width = 50.)
 
                     Label(Strings.AboutPage_AboutFSharp_FSharp)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
                 ]).gestureRecognizers([ TapGestureRecognizer(openBrowser fsharpOrgUrl) ])
             
                 VerticalStackLayout([
@@ -58,7 +58,7 @@ module AboutPage =
                         .size(height = 50., width = 50.)
 
                     Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
                 ]).gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) ])
             ]
         )
@@ -91,7 +91,7 @@ module AboutPage =
                         .size(height = 35., width = 35.)
                 
                     UnderlinedLabel(authorBlogUrl)
-                        .centerVertically()
+                        .centerVertical()
                 ]
             )
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser authorBlogUrl) ])
@@ -106,7 +106,7 @@ module AboutPage =
                         .size(height = 35., width = 35.)
                 
                     UnderlinedLabel(authorGitHubHandle)
-                        .centerVertically()
+                        .centerVertical()
                 ]
             ).gestureRecognizers([ TapGestureRecognizer(openBrowser authorGitHubUrl) ])
             
@@ -118,7 +118,7 @@ module AboutPage =
                             .size(height = 50., width = 50.)
                     
                         Label(authorTwitterHandle)
-                            .centerTextHorizontally()
+                            .centerTextHorizontal()
                     ]).gestureRecognizers([ TapGestureRecognizer(openBrowser authorTwitterUrl) ])
                 
                     VerticalStackLayout([
@@ -126,12 +126,12 @@ module AboutPage =
                             .size(height = 50., width = 50.)
                     
                         Label(authorSlackHandle)
-                            .centerTextHorizontally()
+                            .centerTextHorizontal()
                     ])
                         .gestureRecognizers([ TapGestureRecognizer(openBrowser authorSlackUrl) ])
                 ]
             )
-                .centerHorizontally()
+                .centerHorizontal()
                 .margin(Thickness(0., 10., 0., 0.))
         ]
     )
@@ -155,7 +155,7 @@ module AboutPage =
                         ])
                             .backgroundColor(accentColor)
                             .size(height = 100., width = 100.)
-                            .centerHorizontally()
+                            .centerHorizontal()
                             .paddingLayout(15.)
 
                         aboutFabulousContacts OpenBrowser

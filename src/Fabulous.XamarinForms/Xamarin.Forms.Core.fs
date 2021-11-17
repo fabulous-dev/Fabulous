@@ -33,6 +33,9 @@ module WidgetKeys =
     let EntryKey = Widgets.register<Xamarin.Forms.Entry>()
     let TapGestureRecognizerKey = Widgets.register<Xamarin.Forms.TapGestureRecognizer>()
     let SearchBarKey = Widgets.register<Xamarin.Forms.SearchBar>()
+    let EditorKey = Widgets.register<Xamarin.Forms.Editor>()
+    let ViewCellKey = Widgets.register<Xamarin.Forms.ViewCell>()
+    let ImageButtonKey = Widgets.register<Xamarin.Forms.ImageButton>()
 
 type [<Struct>] Application<'msg> =
     val public ScalarAttributes: ScalarAttribute[]
@@ -536,6 +539,84 @@ type [<Struct>] ToolbarItem<'msg> =
               ScalarAttributes = x.ScalarAttributes
               WidgetAttributes = x.WidgetAttributes
               WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+              
+type [<Struct>] Editor<'msg> =
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+              
+    new (scalars, widgets, widgetCollections) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetCollections }
+                                          
+    static member inline Create(text: string, onTextChanged: string -> 'msg) =
+        Editor<'msg>(
+            [| Editor.Text.WithValue(text)
+               InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
+            [||],
+            [||]
+        )
+                                                  
+    interface IViewWidgetBuilder<'msg> with
+        member x.Compile() =
+            { Key = WidgetKeys.EditorKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+              
+type [<Struct>] ViewCell<'msg> =
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+              
+    new (scalars, widgets, widgetCollections) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetCollections }
+                                          
+    static member inline Create(view: #IViewWidgetBuilder<'msg>) =
+        ViewCell<'msg>(
+            [||],
+            [| ViewCell.View.WithValue(view.Compile()) |],
+            [||]
+        )
+                                                  
+    interface ICellWidgetBuilder<'msg> with
+        member x.Compile() =
+            { Key = WidgetKeys.ViewCellKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+              
+type [<Struct>] ImageButton<'msg> =
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+              
+    new (scalars, widgets, widgetCollections) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetCollections }
+                                          
+    static member inline Create(source: Xamarin.Forms.ImageSource, onClicked: 'msg, aspect: Xamarin.Forms.Aspect) =
+        ImageButton<'msg>(
+            [| ImageButton.Source.WithValue(source)
+               ImageButton.Clicked.WithValue(onClicked)
+               ImageButton.Aspect.WithValue(aspect) |],
+            [||],
+            [||]
+        )
+
+    static member inline Create(path: string, onClicked, aspect) =
+        ImageButton<'msg>.Create(Xamarin.Forms.ImageSource.FromFile(path), onClicked, aspect)
+                                                  
+    interface IViewWidgetBuilder<'msg> with
+        member x.Compile() =
+            { Key = WidgetKeys.ImageButtonKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
 [<Extension>]
 type ViewExtensions () =
@@ -551,6 +632,9 @@ type ViewExtensions () =
     [<Extension>]
     static member inline backgroundColor(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.Color) =
         this.AddScalarAttribute(VisualElement.BackgroundColor.WithValue(value))
+    [<Extension>]
+    static member inline isVisible(this: #IViewWidgetBuilder<_>, value: bool) =
+        this.AddScalarAttribute(VisualElement.IsVisible.WithValue(value))
     [<Extension>]
     static member inline horizontalOptions(this: #IViewWidgetBuilder<_>, value: Xamarin.Forms.LayoutOptions) =
         this.AddScalarAttribute(View.HorizontalOptions.WithValue(value))
@@ -641,6 +725,12 @@ type ViewExtensions () =
     [<Extension>]
     static member inline toolbarItems(this: #IPageWidgetBuilder<'msg>, value: #seq<IToolbarItemWidgetBuilder<'msg>>) =
         this.AddWidgetCollectionAttribute(Page.ToolbarItems.WithValue(ViewHelpers.compileSeq value))
+    [<Extension>]
+    static member inline order(this: ToolbarItem<'msg>, value: Xamarin.Forms.ToolbarItemOrder) =
+        this.AddScalarAttribute(ToolbarItem.Order.WithValue(value))
+    [<Extension>]
+    static member inline lineBreakMode(this: Label<'msg>, value: Xamarin.Forms.LineBreakMode) =
+        this.AddScalarAttribute(Label.LineBreakMode.WithValue(value))
 
 [<AbstractClass; Sealed>]
 type View private () =
@@ -670,4 +760,7 @@ type View private () =
     static member inline TapGestureRecognizer<'msg>(onTapped) = TapGestureRecognizer<'msg>.Create(onTapped)
     static member inline SearchBar<'msg>(text, onTextChanged, onSearchButtonPressed) = SearchBar<'msg>.Create(text, onTextChanged, onSearchButtonPressed)
     static member inline ToolbarItem<'msg>(text, onClicked) = ToolbarItem<'msg>.Create(text, onClicked)
+    static member inline Editor<'msg>(text, onTextChanged) = Editor<'msg>.Create(text, onTextChanged)
+    static member inline ViewCell<'msg>(view) = ViewCell<'msg>.Create(view)
+    static member inline ImageButton<'msg>(path: string, onClicked, aspect) = ImageButton<'msg>.Create(path, onClicked, aspect)
             
