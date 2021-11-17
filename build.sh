@@ -11,3 +11,5 @@
 # fi
 
 msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
+ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v16.0/FSharp/
+ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/
