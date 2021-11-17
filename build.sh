@@ -10,4 +10,7 @@
 #     dotnet fake run build.fsx -t $@
 # fi
 
+sudo apt-get update
+sudo apt-get install fsharp
+
 fsharpc --version
