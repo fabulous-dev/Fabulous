@@ -18,3 +18,4 @@ ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v12.0/FSharp/
 ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v11.0/FSharp/
 ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v10.0/FSharp/
 ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v/FSharp/
+msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
