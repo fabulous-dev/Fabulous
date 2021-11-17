@@ -6,9 +6,6 @@ open Fabulous
 open Fabulous.XamarinForms
 
 type IWidgetBuilder =
-    abstract ScalarAttributes: ScalarAttribute[]
-    abstract WidgetAttributes: WidgetAttribute[]
-    abstract WidgetCollectionAttributes: WidgetCollectionAttribute[]
     abstract Compile: unit -> Widget
 
 type IWidgetBuilder<'msg> = inherit IWidgetBuilder
@@ -24,12 +21,14 @@ type IToolbarItemWidgetBuilder<'msg> = inherit IMenuItemWidgetBuilder<'msg>
 [<Extension>]
 type IWidgetExtensions () =
     [<Extension>]
-    static member inline AddScalarAttribute(this: ^T when ^T :> IWidgetBuilder, attr: ScalarAttribute) =
-        let attribs = this.ScalarAttributes
-        let attribs2 = Array.zeroCreate (attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
+    static member inline AddScalarAttribute(this: ^T, attr: ScalarAttribute) =
+        let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
+        let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
+        let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
+        let attribs2 = Array.zeroCreate (scalars.Length + 1)
+        Array.blit scalars 0 attribs2 0 scalars.Length
+        attribs2.[scalars.Length] <- attr
+        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, widgets, widgetCollections))
         result
 
     [<Extension>]
@@ -38,17 +37,22 @@ type IWidgetExtensions () =
         | [||] ->
             this
         | attributes ->
-            let attribs2 = Array.append this.ScalarAttributes attributes
-            let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
+            let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
+            let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
+            let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
+            let attribs2 = Array.append scalars attributes
+            let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, widgets, widgetCollections))
             result
 
     [<Extension>]
     static member inline AddWidgetCollectionAttribute(this: ^T when ^T :> IWidgetBuilder, attr: WidgetCollectionAttribute) =
-        let attribs = this.WidgetCollectionAttributes
-        let attribs2 = Array.zeroCreate (attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (this.ScalarAttributes, this.WidgetAttributes, attribs2))
+        let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
+        let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
+        let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
+        let attribs2 = Array.zeroCreate (widgetCollections.Length + 1)
+        Array.blit widgetCollections 0 attribs2 0 widgetCollections.Length
+        attribs2.[widgetCollections.Length] <- attr
+        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (scalars, widgets, attribs2))
         result
 
 

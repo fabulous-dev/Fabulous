@@ -2,10 +2,8 @@
 
 open Fabulous
 open Fabulous.XamarinForms
-open Xamarin.Forms
 open System
 open WeatherApi
-open type Fabulous.XamarinForms.View
 
 module CityView =
     type WeatherData =
@@ -22,13 +20,13 @@ module CityView =
     let loadingView (cityName: string) =
         VerticalStackLayout([
             Label(cityName.ToUpper())
-                .font(NamedSize.Title)
+                .font(Xamarin.Forms.NamedSize.Title)
                 .centerTextHorizontally()
-                .padding(Thickness(0., 20., 0., 0.))
+                .padding(0., 20., 0., 0.)
 
             ActivityIndicator(true)
-                .centerHorizontally()
-                .verticalOptions(LayoutOptions.CenterAndExpand)
+                .centerHorizontal()
+                .centerVertical(expand = true)
         ])
 
     let loadedView (index, cityName: string, isRefreshing, data) onRefreshing =
@@ -41,18 +39,18 @@ module CityView =
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontally()
 
-                    FileImage($"{sanitizedCityName}.png", Aspect.AspectFit)
+                    Image($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
                         .opacity(0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
                         .font(Styles.CurrentTemperatureFontSize)
                         .centerTextHorizontally()
-                        .margin(Thickness(30., 0., 0., 0.))
+                        .margin(Xamarin.Forms.Thickness(30., 0., 0., 0.))
 
                     Label(data.WeatherKind.ToString().ToUpper())
                         .font(Styles.CurrentWeatherKindFontSize)
                         .centerTextHorizontally()
-                        .margin(Thickness(0., 10., 0., 0.))
+                        .margin(Xamarin.Forms.Thickness(0., 10., 0., 0.))
 
                     Label(data.Date.ToString("dddd, MMMM dd, yyyy, h:mm tt").ToUpper())
                         .font(Styles.CurrentDateFontSize)
@@ -66,17 +64,17 @@ module CityView =
                                     Label(forecast.Date.ToString("h tt").ToLower())
                                         .centerTextHorizontally()
 
-                                    WebImage($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png", Aspect.AspectFit)
-                                        .centerHorizontally()
-                                        .centerVertically(expand = true)
+                                    Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
+                                        .centerHorizontal()
+                                        .centerVertical(expand = true)
 
                                     Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
                                         .centerTextHorizontally()
                                 ])
                             )
                     ])
-                        .centerHorizontally()
-                        .margin(Thickness(0., 30., 0., 0.))
+                        .centerHorizontal()
+                        .margin(0., 30., 0., 0.)
                 ])
 
             )
@@ -94,9 +92,9 @@ module CityView =
                     loadingView city.Name
                 )
         )
-            .padding(
-                if Device.RuntimePlatform = Device.Android then
-                    Thickness(0., 24., 0., 30.)
+            .paddingLayout(
+                if Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.Android then
+                    Xamarin.Forms.Thickness(0., 24., 0., 30.)
                 else
-                    Thickness(0., 0., 0., 40.)
+                    Xamarin.Forms.Thickness(0., 0., 0., 40.)
             )

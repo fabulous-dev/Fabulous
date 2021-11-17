@@ -10,25 +10,28 @@ module PancakeView =
     let BackgroundGradientStops = Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection> Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty
     let Content = Attributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
 
-    type [<Struct>] PancakeViewWidgetBuilder<'msg> (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
-        static let key = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
+    let PancakeViewKey = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
 
-        static member inline Create(backgroundGradientStops: Xamarin.Forms.PancakeView.GradientStopCollection, content: IViewWidgetBuilder<'msg>) =
-            PancakeViewWidgetBuilder<'msg>(
+    type [<Struct>] PancakeView<'msg> =
+        val public ScalarAttributes: ScalarAttribute[]
+        val public WidgetAttributes: WidgetAttribute[]
+        val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+
+        new (scalars, widgets, widgetColls) =
+            { ScalarAttributes = scalars
+              WidgetAttributes = widgets
+              WidgetCollectionAttributes = widgetColls }
+        
+        new (backgroundGradientStops: Xamarin.Forms.PancakeView.GradientStopCollection, content: IViewWidgetBuilder<'msg>) =
+            PancakeView<'msg>(
                 [| BackgroundGradientStops.WithValue(backgroundGradientStops) |],
                 [| Content.WithValue(content.Compile()) |],
                 [||]
             )
 
         interface IViewWidgetBuilder<'msg> with
-            member _.ScalarAttributes = scalarAttributes
-            member _.WidgetAttributes = widgetAttributes
-            member _.WidgetCollectionAttributes = widgetCollectionAttributes
-            member _.Compile() =
-                { Key = key
-                  ScalarAttributes = scalarAttributes
-                  WidgetAttributes = widgetAttributes
-                  WidgetCollectionAttributes = widgetCollectionAttributes }
-
-    type Fabulous.XamarinForms.View with
-        static member inline PancakeView(backgroundGradientStops, content) = PancakeViewWidgetBuilder.Create(backgroundGradientStops, content)
+            member x.Compile() =
+                { Key = PancakeViewKey
+                  ScalarAttributes = x.ScalarAttributes
+                  WidgetAttributes = x.WidgetAttributes
+                  WidgetCollectionAttributes = x.WidgetCollectionAttributes }

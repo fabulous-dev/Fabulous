@@ -63,7 +63,7 @@ module App =
 
                     Button("Decrement", Decrement)
                         .automationId("DecrementButton")
-                        .verticalOptions(LayoutOptions.StartAndExpand)
+                        .alignStartVertical(expand = true)
 
                     HorizontalStackLayout([
                         Label("Timer")
@@ -71,24 +71,24 @@ module App =
                         Switch(model.TimerOn, TimerToggled)
                             .automationId("TimerSwitch")
                     ])
-                        .padding(20.)
-                        .centerHorizontally()
+                        .paddingLayout(20.)
+                        .centerHorizontal()
 
                     Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
                         .automationId("StepSlider")
-                        .centerHorizontally()
+                        .centerHorizontal()
 
                     Label($"Step size: {model.Step}")
                         .automationId("StepSizeLabel")
-                        .centerHorizontally()
+                        .centerHorizontal()
 
                     Button("Reset", Reset)
                         .automationId("ResetButton")
                         .isEnabled(model <> initModel ())
-                        .centerHorizontally()
+                        .centerHorizontal()
                 ])
-                    .padding(30.)
-                    .centerVertically()
+                    .paddingLayout(30.)
+                    .centerVertical()
             )
         )
 
