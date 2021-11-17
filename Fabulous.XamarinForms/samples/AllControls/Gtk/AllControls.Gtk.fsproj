@@ -173,4 +173,12 @@
       <Name>AllControls</Name>
     </ProjectReference>
   </ItemGroup>
+    <Target Name="Rebuild">
+      <Message Text="Ext = $(MSBuildExtensionsPath)" />
+      <Message Text="Tools = $(MSBuildToolsVersion)" />
+      <Message Text="msb32 = $(MSBuildExtensionsPath32)" />
+      <Message Text="targ = $(TargetFrameworkIdentifier)" />
+      <Message Text="fs = $(FSharpTargetsPath)" />
+      <Message Text="vs = $(VisualStudioVersion)" />
+    </Target>  
 </Project>

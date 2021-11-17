@@ -10,7 +10,4 @@
 #     dotnet fake run build.fsx -t $@
 # fi
 
-sudo apt-get update
-sudo apt-get install fsharp
-
-fsharpc --version
+msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild

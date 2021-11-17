@@ -16,6 +16,8 @@ jobs:
     displayName: 'Install F#'
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
+    inputs:
+      version: 3.1.302
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
