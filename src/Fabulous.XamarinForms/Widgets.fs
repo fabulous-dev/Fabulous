@@ -18,45 +18,6 @@ type IGestureRecognizerWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IMenuItemWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IToolbarItemWidgetBuilder<'msg> = inherit IMenuItemWidgetBuilder<'msg>
 
-[<Extension>]
-type IWidgetExtensions () =
-    [<Extension>]
-    static member inline AddScalarAttribute(this: ^T, attr: ScalarAttribute) =
-        let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
-        let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
-        let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
-        let attribs2 = Array.zeroCreate (scalars.Length + 1)
-        Array.blit scalars 0 attribs2 0 scalars.Length
-        attribs2.[scalars.Length] <- attr
-        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, widgets, widgetCollections))
-        result
-
-    [<Extension>]
-    static member inline AddScalarAttributes(this: ^T when ^T :> IWidgetBuilder, attrs: ScalarAttribute[]) =
-        match attrs with
-        | [||] ->
-            this
-        | attributes ->
-            let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
-            let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
-            let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
-            let attribs2 = Array.append scalars attributes
-            let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, widgets, widgetCollections))
-            result
-
-    [<Extension>]
-    static member inline AddWidgetCollectionAttribute(this: ^T when ^T :> IWidgetBuilder, attr: WidgetCollectionAttribute) =
-        let scalars = (^T : (member ScalarAttributes: ScalarAttribute[]) this)
-        let widgets = (^T : (member WidgetAttributes: WidgetAttribute[]) this)
-        let widgetCollections = (^T : (member WidgetCollectionAttributes: WidgetCollectionAttribute[]) this)
-        let attribs2 = Array.zeroCreate (widgetCollections.Length + 1)
-        Array.blit widgetCollections 0 attribs2 0 widgetCollections.Length
-        attribs2.[widgetCollections.Length] <- attr
-        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (scalars, widgets, attribs2))
-        result
-
-
-
 module Widgets =
     let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)>() =
         let key = WidgetDefinitionStore.getNextKey()

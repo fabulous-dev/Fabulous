@@ -91,9 +91,9 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: Label<_>, ?size: float, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
+    static member inline font(this: Label<_>, ?size: double, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
         this.AddScalarAttributes([|
-            match size with None -> () | Some v -> Label.FontSize.WithValue(size)
+            match size with None -> () | Some v -> Label.FontSize.WithValue(v)
             match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Xamarin.Forms.Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])

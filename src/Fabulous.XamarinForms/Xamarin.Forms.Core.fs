@@ -6,106 +6,65 @@ open Fabulous.XamarinForms.XFAttributes
 open Fabulous.XamarinForms.Widgets
 open System.Runtime.CompilerServices
 open System.IO
+open Fabulous.Attributes
 
 module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
         items
         |> Seq.map (fun item -> item.Compile())
         |> Seq.toArray
-        
-module WidgetKeys =
-    let ApplicationKey = Widgets.register<Xamarin.Forms.Application>()
-    let ToolbarItemKey = Widgets.register<Xamarin.Forms.ToolbarItem>()
-    let ContentPageKey = Widgets.register<Fabulous.XamarinForms.FabulousContentPage>()
-    let StackLayoutKey = Widgets.register<Xamarin.Forms.StackLayout>()
-    let GridKey = Widgets.register<Xamarin.Forms.Grid>()
-    let LabelKey = Widgets.register<Xamarin.Forms.Label>()
-    let ButtonKey = Widgets.register<Xamarin.Forms.Button>()
-    let SwitchKey = Widgets.register<Xamarin.Forms.Switch>()
-    let SliderKey = Widgets.register<Xamarin.Forms.Slider>()
-    let ActivityIndicatorKey = Widgets.register<Xamarin.Forms.ActivityIndicator>()
-    let ContentViewKey = Widgets.register<Xamarin.Forms.ContentView>()
-    let RefreshViewKey = Widgets.register<Xamarin.Forms.RefreshView>()
-    let ScrollViewKey = Widgets.register<Xamarin.Forms.ScrollView>()
-    let ImageKey = Widgets.register<Xamarin.Forms.Image>()
-    let BoxViewKey = Widgets.register<Xamarin.Forms.BoxView>()
-    let NavigationPageKey = Widgets.register<Xamarin.Forms.NavigationPage>()
-    let EntryKey = Widgets.register<Xamarin.Forms.Entry>()
-    let TapGestureRecognizerKey = Widgets.register<Xamarin.Forms.TapGestureRecognizer>()
-    let SearchBarKey = Widgets.register<Xamarin.Forms.SearchBar>()
-    let EditorKey = Widgets.register<Xamarin.Forms.Editor>()
-    let ViewCellKey = Widgets.register<Xamarin.Forms.ViewCell>()
-    let ImageButtonKey = Widgets.register<Xamarin.Forms.ImageButton>()
-    let TabbedPageKey = Widgets.register<Xamarin.Forms.TabbedPage>()
+    
+type ILabelWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
+type IEntryWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
 
-type [<Struct>] Application<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Application<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Application>()
+    member _.Builder = attrs
 
     static member inline Create(mainPage: IPageWidgetBuilder<'msg>) =
         Application<'msg>(
-            [||],
-            [| Application.MainPage.WithValue(mainPage.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [||],
+                [| Application.MainPage.WithValue(mainPage.Compile()) |],
+                [||]
+            )
         )
 
     interface IApplicationWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ApplicationKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type [<Struct>] ContentPage<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-    
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
-    
+type [<Struct>] ContentPage<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Fabulous.XamarinForms.FabulousContentPage>()
+    member _.Builder = attrs
+
     static member inline Create(title: string, content: IViewWidgetBuilder<'msg>) =
         ContentPage<'msg>(
-            [| Page.Title.WithValue(title) |],
-            [| ContentPage.Content.WithValue(content.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [| Page.Title.WithValue(title) |],
+                [| ContentPage.Content.WithValue(content.Compile()) |],
+                [||]
+            )
         )
     
     interface IPageWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ContentPageKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
     
-type [<Struct>] StackLayout<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] StackLayout<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.StackLayout>()
+    member _.Builder = attrs
           
     static member inline Create(orientation: Xamarin.Forms.StackOrientation, children: seq<IViewWidgetBuilder<'msg>>, ?spacing: float) =
         StackLayout<'msg>(
-            [|
-                StackLayout.Orientation.WithValue(orientation)
-                match spacing with None -> () | Some v -> StackLayout.Spacing.WithValue(v)
-            |],
-            [||],
-            [|
-                LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
-            |]
+            AttributesBuilder(
+                [|
+                    StackLayout.Orientation.WithValue(orientation)
+                    match spacing with None -> () | Some v -> StackLayout.Spacing.WithValue(v)
+                |],
+                [||],
+                [|
+                    LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children)
+                |]
+            )
         )
 
     static member inline CreateVertical(children: seq<IViewWidgetBuilder<'msg>>, ?spacing: float) =
@@ -115,263 +74,181 @@ type [<Struct>] StackLayout<'msg> =
         StackLayout<'msg>.Create(Xamarin.Forms.StackOrientation.Horizontal, children, ?spacing = spacing)
 
     interface ILayoutWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.StackLayoutKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] Grid<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Grid<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Grid>()
+    member _.Builder = attrs
                         
     static member inline Create(children: seq<IViewWidgetBuilder<'msg>>, ?coldefs: seq<Dimension>, ?rowdefs: seq<Dimension>) =
         Grid<'msg>(
-            [|
-                match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
-                match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
-            |],
-            [||],
-            [| LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children) |]
+            AttributesBuilder(
+                [|
+                    match coldefs with None -> () | Some v -> Grid.ColumnDefinitions.WithValue(v)
+                    match rowdefs with None -> () | Some v -> Grid.RowDefinitions.WithValue(v)
+                |],
+                [||],
+                [| LayoutOfView.Children.WithValue(ViewHelpers.compileSeq children) |]
+            )
         )
               
     interface ILayoutWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.GridKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type ILabelWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
-type [<Struct>] Label<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
 
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Label<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Label>()
+    member _.Builder = attrs
 
     static member inline Create(text: string) =
-        Label<'msg>([| Label.Text.WithValue(text) |], [||], [||])
+        Label<'msg>(AttributesBuilder([| Label.Text.WithValue(text) |], [||], [||]))
 
     interface ILabelWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.LabelKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type [<Struct>] Button<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Button<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Button>()
+    member _.Builder = attrs
 
     static member inline Create(text: string, onClicked: 'msg) =
         Button<'msg>(
-            [|
-                Button.Text.WithValue(text)
-                Button.Clicked.WithValue(onClicked)
-            |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [|
+                    Button.Text.WithValue(text)
+                    Button.Clicked.WithValue(onClicked)
+                |],
+                [||],
+                [||]
+            )
         )
 
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ButtonKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type [<Struct>] Switch<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Switch<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Switch>()
+    member _.Builder = attrs
 
     static member inline Create(isToggled: bool, onToggled: bool -> 'msg) =
         Switch<'msg>(
-            [|
-                Switch.IsToggled.WithValue(isToggled)
-                Switch.Toggled.WithValue(fun args -> onToggled args.Value |> box)
-            |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [|
+                    Switch.IsToggled.WithValue(isToggled)
+                    Switch.Toggled.WithValue(fun args -> onToggled args.Value |> box)
+                |],
+                [||],
+                [||]
+            )
         )
         
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.SwitchKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] Slider<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Slider<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Slider>()
+    member _.Builder = attrs
               
     static member inline Create(value: float, onValueChanged: float -> 'msg, ?min: float, ?max: float) =
         Slider<'msg>(
-            [|
-                Slider.Value.WithValue(value)
-                Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
+            AttributesBuilder(
+                [|
+                    Slider.Value.WithValue(value)
+                    Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
 
-                match struct (min, max) with
-                | (None, None) -> ()
-                | (Some minV, Some maxV) -> Slider.MinimumMaximum.WithValue(minV, maxV)
-                | _ -> failwith "Both min and max are required"
-            |],
-            [||],
-            [||]
+                    match struct (min, max) with
+                    | (None, None) -> ()
+                    | (Some minV, Some maxV) -> Slider.MinimumMaximum.WithValue(minV, maxV)
+                    | _ -> failwith "Both min and max are required"
+                |],
+                [||],
+                [||]
+            )
         )
                       
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.SliderKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] ActivityIndicator<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] ActivityIndicator<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.ActivityIndicator>()
+    member _.Builder = attrs
               
     static member inline Create(isRunning: bool) =
         ActivityIndicator<'msg>(
-            [| ActivityIndicator.IsRunning.WithValue(isRunning) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| ActivityIndicator.IsRunning.WithValue(isRunning) |],
+                [||],
+                [||]
+            )
         )
                       
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ActivityIndicatorKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] ContentView<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] ContentView<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.ContentView>()
+    member _.Builder = attrs
               
     static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ContentView<'msg>(
-            [||],
-            [| ContentView.Content.WithValue(content.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [||],
+                [| ContentView.Content.WithValue(content.Compile()) |],
+                [||]
+            )
         )
                       
     interface ILayoutWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ContentViewKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] RefreshView<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] RefreshView<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.RefreshView>()
+    member _.Builder = attrs
               
     static member inline Create(isRefreshing: bool, onRefreshing: 'msg, content: IViewWidgetBuilder<'msg>) =
         RefreshView<'msg>(
-            [|
-                RefreshView.IsRefreshing.WithValue(isRefreshing)
-                RefreshView.Refreshing.WithValue(onRefreshing)
-            |],
-            [| ContentView.Content.WithValue(content.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [|
+                    RefreshView.IsRefreshing.WithValue(isRefreshing)
+                    RefreshView.Refreshing.WithValue(onRefreshing)
+                |],
+                [| ContentView.Content.WithValue(content.Compile()) |],
+                [||]
+            )
         )
                       
     interface ILayoutWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.RefreshViewKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] ScrollView<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] ScrollView<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.ScrollView>()
+    member _.Builder = attrs
               
     static member inline Create(content: IViewWidgetBuilder<'msg>) =
         ScrollView<'msg>(
-            [||],
-            [| ScrollView.Content.WithValue(content.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [||],
+                [| ScrollView.Content.WithValue(content.Compile()) |],
+                [||]
+            )
         )
                       
     interface ILayoutWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ScrollViewKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] Image<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Image<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Image>()
+    member _.Builder = attrs
 
     static member inline Create(imageSource: Xamarin.Forms.ImageSource, aspect: Xamarin.Forms.Aspect) =
         Image<'msg>(
-            [|
-                Image.Source.WithValue(imageSource)
-                Image.Aspect.WithValue(aspect)
-            |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [|
+                    Image.Source.WithValue(imageSource)
+                    Image.Aspect.WithValue(aspect)
+                |],
+                [||],
+                [||]
+            )
         )
 
     static member inline Create(path: string, aspect: Xamarin.Forms.Aspect) =
@@ -384,264 +261,179 @@ type [<Struct>] Image<'msg> =
         Image<'msg>.Create(Xamarin.Forms.ImageSource.FromStream(fun () -> stream), aspect)
                       
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ImageKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] BoxView<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] BoxView<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.BoxView>()
+    member _.Builder = attrs
               
     static member inline Create(color: Xamarin.Forms.Color) =
         BoxView<'msg>(
-            [|
-                BoxView.Color.WithValue(color)
-            |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [|
+                    BoxView.Color.WithValue(color)
+                |],
+                [||],
+                [||]
+            )
         )
                       
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.BoxViewKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] NavigationPage<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] NavigationPage<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.NavigationPage>()
+    member _.Builder = attrs
               
     static member inline Create(pages: seq<IPageWidgetBuilder<'msg>>) =
         NavigationPage<'msg>(
-            [||],
-            [||],
-            [| NavigationPage.Pages.WithValue(ViewHelpers.compileSeq pages) |]
+            AttributesBuilder(
+                [||],
+                [||],
+                [| NavigationPage.Pages.WithValue(ViewHelpers.compileSeq pages) |]
+            )
         )
                       
     interface IPageWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.NavigationPageKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type IEntryWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
-type [<Struct>] Entry<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] Entry<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Entry>()
+    member _.Builder = attrs
                             
     static member inline Create(text: string, onTextChanged: string -> 'msg) =
         Entry<'msg>(
-            [| Entry.Text.WithValue(text)
-               Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| Entry.Text.WithValue(text)
+                   Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
+                [||],
+                [||]
+            )
         )
                                     
     interface IEntryWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.EntryKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type [<Struct>] TapGestureRecognizer<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] TapGestureRecognizer<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.TapGestureRecognizer>()
+    member _.Builder = attrs
               
     static member inline Create(onTapped: 'msg) =
         TapGestureRecognizer<'msg>(
-            [| TapGestureRecognizer.Tapped.WithValue(onTapped) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| TapGestureRecognizer.Tapped.WithValue(onTapped) |],
+                [||],
+                [||]
+            )
         )
                       
     interface IGestureRecognizerWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.TapGestureRecognizerKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] SearchBar<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetColls) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetColls }
+type [<Struct>] SearchBar<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.SearchBar>()
+    member _.Builder = attrs
                             
     static member inline Create(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
         SearchBar<'msg>(
-            [| SearchBar.Text.WithValue(text)
-               InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
-               SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| SearchBar.Text.WithValue(text)
+                   InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
+                   SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed) |],
+                [||],
+                [||]
+            )
         )
                                     
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.SearchBarKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
-type [<Struct>] ToolbarItem<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-
-    new (scalars, widgets, widgetCollections) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetCollections }
+type [<Struct>] ToolbarItem<'msg> (attrs: AttributesBuilder)=
+    static let key = Widgets.register<Xamarin.Forms.ToolbarItem>()
+    member _.Builder = attrs
                             
     static member inline Create(text: string, onClicked: 'msg) =
         ToolbarItem<'msg>(
-            [| MenuItem.Text.WithValue(text)
-               MenuItem.Clicked.WithValue(onClicked) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| MenuItem.Text.WithValue(text)
+                   MenuItem.Clicked.WithValue(onClicked) |],
+                [||],
+                [||]
+            )
         )
                                     
     interface IToolbarItemWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ToolbarItemKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] Editor<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-              
-    new (scalars, widgets, widgetCollections) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetCollections }
+type [<Struct>] Editor<'msg> (attrs: AttributesBuilder)=
+    static let key = Widgets.register<Xamarin.Forms.Editor>()
+    member _.Builder = attrs
                                           
     static member inline Create(text: string, onTextChanged: string -> 'msg) =
         Editor<'msg>(
-            [| Editor.Text.WithValue(text)
-               InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| Editor.Text.WithValue(text)
+                   InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
+                [||],
+                [||]
+            )
         )
                                                   
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.EditorKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] ViewCell<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-              
-    new (scalars, widgets, widgetCollections) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetCollections }
+type [<Struct>] ViewCell<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.ViewCell>()
+    member _.Builder = attrs
                                           
     static member inline Create(view: #IViewWidgetBuilder<'msg>) =
         ViewCell<'msg>(
-            [||],
-            [| ViewCell.View.WithValue(view.Compile()) |],
-            [||]
+            AttributesBuilder(
+                [||],
+                [| ViewCell.View.WithValue(view.Compile()) |],
+                [||]
+            )
         )
                                                   
     interface ICellWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ViewCellKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] ImageButton<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-              
-    new (scalars, widgets, widgetCollections) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetCollections }
+type [<Struct>] ImageButton<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.ImageButton>()
+    member _.Builder = attrs
                                           
     static member inline Create(source: Xamarin.Forms.ImageSource, onClicked: 'msg, aspect: Xamarin.Forms.Aspect) =
         ImageButton<'msg>(
-            [| ImageButton.Source.WithValue(source)
-               ImageButton.Clicked.WithValue(onClicked)
-               ImageButton.Aspect.WithValue(aspect) |],
-            [||],
-            [||]
+            AttributesBuilder(
+                [| ImageButton.Source.WithValue(source)
+                   ImageButton.Clicked.WithValue(onClicked)
+                   ImageButton.Aspect.WithValue(aspect) |],
+                [||],
+                [||]
+            )
         )
 
     static member inline Create(path: string, onClicked, aspect) =
         ImageButton<'msg>.Create(Xamarin.Forms.ImageSource.FromFile(path), onClicked, aspect)
                                                   
     interface IViewWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.ImageButtonKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
               
-type [<Struct>] TabbedPage<'msg> =
-    val public ScalarAttributes: ScalarAttribute[]
-    val public WidgetAttributes: WidgetAttribute[]
-    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-              
-    new (scalars, widgets, widgetCollections) =
-        { ScalarAttributes = scalars
-          WidgetAttributes = widgets
-          WidgetCollectionAttributes = widgetCollections }
+type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.TabbedPage>()
+    member _.Builder = attrs
                                           
     static member inline Create(title: string, children: #seq<IPageWidgetBuilder<'msg>>) =
         TabbedPage<'msg>(
-            [| Page.Title.WithValue(title) |],
-            [||],
-            [| MultiPageOfPage.Children.WithValue(ViewHelpers.compileSeq children) |]
+            AttributesBuilder(
+                [| Page.Title.WithValue(title) |],
+                [||],
+                [| MultiPageOfPage.Children.WithValue(ViewHelpers.compileSeq children) |]
+            )
         )
                                                   
     interface IPageWidgetBuilder<'msg> with
-        member x.Compile() =
-            { Key = WidgetKeys.TabbedPageKey
-              ScalarAttributes = x.ScalarAttributes
-              WidgetAttributes = x.WidgetAttributes
-              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+        member x.Compile() = attrs.Build(key)
 
 [<Extension>]
 type ViewExtensions () =

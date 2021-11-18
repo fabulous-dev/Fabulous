@@ -23,32 +23,23 @@ type BorderedEntry() =
 [<AutoOpen>]
 module FabulousBorderedEntry =
     let BorderColor = Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
-    let BorderedEntryKey = Widgets.register<BorderedEntry>()
 
-    type [<Struct>] BorderedEntry<'msg> =
-        val public ScalarAttributes: ScalarAttribute[]
-        val public WidgetAttributes: WidgetAttribute[]
-        val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-    
-        new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
-            { ScalarAttributes = scalars
-              WidgetAttributes = widgets
-              WidgetCollectionAttributes = widgetColls }        
+    type [<Struct>] BorderedEntry<'msg> (attrs: Attributes.AttributesBuilder) =
+        static let key = Widgets.register<BorderedEntry>()
+        member _.Builder = attrs
 
         static member Create(text: string, onTextChanged: string -> 'msg) =
             BorderedEntry<'msg>(
-                [| Entry.Text.WithValue(text)
-                   Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
-                [||],
-                [||]
+                Attributes.AttributesBuilder(
+                    [| Entry.Text.WithValue(text)
+                       Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
+                    [||],
+                    [||]
+                )
             )
 
         interface IEntryWidgetBuilder<'msg> with
-            member x.Compile() =
-                { Key = BorderedEntryKey
-                  ScalarAttributes = x.ScalarAttributes
-                  WidgetAttributes = x.WidgetAttributes
-                  WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+            member x.Compile() = attrs.Build(key)
 
     type Fabulous.XamarinForms.View with
         static member inline BorderedEntry<'msg>(text, onTextChanged) = BorderedEntry<'msg>.Create(text, onTextChanged)

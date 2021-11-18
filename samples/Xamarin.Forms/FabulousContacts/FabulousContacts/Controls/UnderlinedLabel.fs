@@ -11,31 +11,21 @@ type UnderlinedLabel() =
 
 [<AutoOpen>]
 module FabulousUnderlinedLabel =
-    let UnderlineLabelKey = Widgets.register<UnderlinedLabel>()
-
-    type [<Struct>] UnderlinedLabel<'msg> =
-        val public ScalarAttributes: ScalarAttribute[]
-        val public WidgetAttributes: WidgetAttribute[]
-        val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
-    
-        new (scalars: ScalarAttribute[], widgets: WidgetAttribute[], widgetColls: WidgetCollectionAttribute[]) =
-            { ScalarAttributes = scalars
-              WidgetAttributes = widgets
-              WidgetCollectionAttributes = widgetColls }        
+    type [<Struct>] UnderlinedLabel<'msg> (attrs: Attributes.AttributesBuilder) =
+        static let key = Widgets.register<UnderlinedLabel>()
+        member _.Builder = attrs
 
         static member inline Create(text: string) =
             UnderlinedLabel<'msg>(
-                [| Label.Text.WithValue(text) |],
-                [||],
-                [||]
+                Attributes.AttributesBuilder(
+                    [| Label.Text.WithValue(text) |],
+                    [||],
+                    [||]
+                )
             )
 
         interface ILabelWidgetBuilder<'msg> with
-            member x.Compile() =
-                { Key = UnderlineLabelKey
-                  ScalarAttributes = x.ScalarAttributes
-                  WidgetAttributes = x.WidgetAttributes
-                  WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+            member x.Compile() = attrs.Build(key)
 
     type Fabulous.XamarinForms.View with
         static member inline UnderlinedLabel<'msg>(text) = UnderlinedLabel<'msg>.Create(text)

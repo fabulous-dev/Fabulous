@@ -21,7 +21,7 @@ module CityView =
     let loadingView (cityName: string) =
         VerticalStackLayout([
             Label(cityName.ToUpper())
-                .font(Xamarin.Forms.NamedSize.Title)
+                .font(namedSize = Xamarin.Forms.NamedSize.Title)
                 .centerTextHorizontal()
                 .padding(0., 20., 0., 0.)
 

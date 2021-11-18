@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms.Samples.FabulousWeather
 
 open Fabulous
 open Fabulous.XamarinForms
+open type Fabulous.XamarinForms.View
 open System
 open CityView
 
@@ -102,7 +103,7 @@ module App =
             |> Option.defaultValue 0<kelvin>
 
         Application(
-            ContentPage(
+            ContentPage("Weather",
                 PancakeView(
                     Styles.gradientStops temperatureOfCurrentCity,
                     previousNextView model

@@ -1,5 +1,7 @@
 ﻿namespace Fabulous
 
+open System.Runtime.CompilerServices
+
 module Helpers =
     let canReuseView (prevWidget: Widget) (currWidget: Widget) =
         prevWidget.Key = currWidget.Key
@@ -21,6 +23,38 @@ module ScalarAttributeComparers =
             ScalarAttributeComparison.Different b
 
 module Attributes =
+    type [<Struct>] AttributesBuilder (scalarAttributes: ScalarAttribute[], widgetAttributes: WidgetAttribute[], widgetCollectionAttributes: WidgetCollectionAttribute[]) =
+        member x.AddScalar(attr: ScalarAttribute) =
+            let attribs = scalarAttributes
+            let attribs2 = Array.zeroCreate (scalarAttributes.Length + 1)
+            Array.blit scalarAttributes 0 attribs2 0 scalarAttributes.Length
+            attribs2.[scalarAttributes.Length] <- attr
+            AttributesBuilder(attribs2, widgetAttributes, widgetCollectionAttributes)
+
+        member x.AddWidget(attr: WidgetAttribute) =
+            let attribs = widgetAttributes
+            let attribs2 = Array.zeroCreate (widgetAttributes.Length + 1)
+            Array.blit widgetAttributes 0 attribs2 0 widgetAttributes.Length
+            attribs2.[widgetAttributes.Length] <- attr
+            AttributesBuilder(scalarAttributes, attribs2, widgetCollectionAttributes)
+
+        member x.AddWidgetCollection(attr: WidgetCollectionAttribute) =
+            let attribs = widgetCollectionAttributes
+            let attribs2 = Array.zeroCreate (widgetCollectionAttributes.Length + 1)
+            Array.blit widgetCollectionAttributes 0 attribs2 0 widgetCollectionAttributes.Length
+            attribs2.[widgetCollectionAttributes.Length] <- attr
+            AttributesBuilder(scalarAttributes, widgetAttributes, attribs2)
+        
+        member x.AddScalars(attrs: ScalarAttribute[]) = x
+        member x.AddWidgets(attrs: WidgetAttribute[]) = x
+        member x.AddWidgetCollections(attrs: WidgetCollectionAttribute[]) = x
+
+        member x.Build(key) =
+            { Key = key
+              ScalarAttributes = scalarAttributes
+              WidgetAttributes = widgetAttributes
+              WidgetCollectionAttributes = widgetCollectionAttributes }
+
     /// Define a custom attribute storing any value
     let defineScalarWithConverter<'inputType, 'modelType> name (convert: 'inputType -> 'modelType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) (updateTarget: 'modelType voption * obj -> unit) =
         let key = AttributeDefinitionStore.getNextKey()
@@ -121,3 +155,30 @@ module Attributes =
         
     let inline define<'T when 'T: equality> name updateTarget =
         defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
+
+[<Extension>]
+type WidgetExtensions () =
+    [<Extension>]
+    static member inline AddScalarAttribute(this: ^T, attr: ScalarAttribute) =
+        let builder = (^T : (member Builder: Attributes.AttributesBuilder) this)
+        let newBuilder = builder.AddScalar(attr)
+        let result = (^T: (new: Attributes.AttributesBuilder -> ^T) newBuilder)
+        result
+
+    [<Extension>]
+    static member inline AddScalarAttributes(this: ^T, attrs: ScalarAttribute[]) =
+        match attrs with
+        | [||] ->
+            this
+        | attributes ->
+            let builder = (^T : (member Builder: Attributes.AttributesBuilder) this)
+            let newBuilder = builder.AddScalars(attrs)
+            let result = (^T: (new: Attributes.AttributesBuilder -> ^T) newBuilder)
+            result
+
+    [<Extension>]
+    static member inline AddWidgetCollectionAttribute(this: ^T, attr: WidgetCollectionAttribute) =
+        let builder = (^T : (member Builder: Attributes.AttributesBuilder) this)
+        let newBuilder = builder.AddWidgetCollection(attr)
+        let result = (^T: (new: Attributes.AttributesBuilder -> ^T) newBuilder)
+        result

@@ -126,7 +126,7 @@ module MapPage =
                 .hasZoomEnabled(true)
                 .hasScrollEnabled(true)
             
-        ContentPage(
+        ContentPage("Map",
             match model.Pins with
             | None ->
                 ContentView(
