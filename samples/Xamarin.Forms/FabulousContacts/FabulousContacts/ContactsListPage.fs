@@ -82,7 +82,7 @@ module ContactsListPage =
             model, Cmd.none, ExternalMsg.NoOp
 
     let view title model =
-        ContentPage(
+        ContentPage(title,
             VerticalStackLayout(
                 spacing = 0.,
                 children = [
@@ -110,7 +110,6 @@ module ContactsListPage =
                 ]
             )
         )
-            .title(title)
             .toolbarItems([
                 ToolbarItem(Strings.Common_About, AboutTapped)
                 ToolbarItem("+", AddNewContactTapped)

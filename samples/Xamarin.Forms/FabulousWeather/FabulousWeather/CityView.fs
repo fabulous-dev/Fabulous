@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open System
 open WeatherApi
+open type Fabulous.XamarinForms.View
 
 module CityView =
     type WeatherData =
@@ -21,7 +22,7 @@ module CityView =
         VerticalStackLayout([
             Label(cityName.ToUpper())
                 .font(Xamarin.Forms.NamedSize.Title)
-                .centerTextHorizontally()
+                .centerTextHorizontal()
                 .padding(0., 20., 0., 0.)
 
             ActivityIndicator(true)
@@ -37,24 +38,24 @@ module CityView =
                 VerticalStackLayout([
                     Label(cityName.ToUpper())
                         .font(Styles.CityNameFontSize)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
 
                     Image($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
                         .opacity(0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
                         .font(Styles.CurrentTemperatureFontSize)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
                         .margin(Xamarin.Forms.Thickness(30., 0., 0., 0.))
 
                     Label(data.WeatherKind.ToString().ToUpper())
                         .font(Styles.CurrentWeatherKindFontSize)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
                         .margin(Xamarin.Forms.Thickness(0., 10., 0., 0.))
 
                     Label(data.Date.ToString("dddd, MMMM dd, yyyy, h:mm tt").ToUpper())
                         .font(Styles.CurrentDateFontSize)
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
 
                     HorizontalStackLayout([
                         for forecast in data.HourlyForecast ->
@@ -62,14 +63,14 @@ module CityView =
                                 Styles.HourlyForecastGradientStops,
                                 VerticalStackLayout([
                                     Label(forecast.Date.ToString("h tt").ToLower())
-                                        .centerTextHorizontally()
+                                        .centerTextHorizontal()
 
                                     Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
                                         .centerHorizontal()
                                         .centerVertical(expand = true)
 
                                     Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
-                                        .centerTextHorizontally()
+                                        .centerTextHorizontal()
                                 ])
                             )
                     ])
@@ -81,20 +82,18 @@ module CityView =
         )
 
     let cityView (index: int) (city: CityData) onRefreshing =
-        (
-            match city.Data with
-            | Some data ->
-                ContentView(
-                    loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing
-                )
-            | None ->
-                ContentView(
-                    loadingView city.Name
-                )
-        )
-            .paddingLayout(
-                if Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.Android then
-                    Xamarin.Forms.Thickness(0., 24., 0., 30.)
-                else
-                    Xamarin.Forms.Thickness(0., 0., 0., 40.)
-            )
+        let padding = 
+            if Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.Android then
+                Xamarin.Forms.Thickness(0., 24., 0., 30.)
+            else
+                Xamarin.Forms.Thickness(0., 0., 0., 40.)
+
+        match city.Data with
+        | Some data ->
+            ContentView(
+                loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing
+            ).paddingLayout(padding)
+        | None ->
+            ContentView(
+                loadingView city.Name
+            ).paddingLayout(padding)

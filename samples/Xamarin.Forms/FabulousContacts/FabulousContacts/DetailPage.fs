@@ -5,6 +5,7 @@ open Xamarin.Forms
 open Xamarin.Essentials
 open Fabulous
 open Fabulous.XamarinForms
+open type Fabulous.XamarinForms.View
 open FabulousContacts.Components
 open FabulousContacts.Helpers
 open FabulousContacts.Models
@@ -81,63 +82,47 @@ module DetailPage =
         | ContactUpdated contact ->
             { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
 
-    let header contact callContact sendSmsToContact sendEmailToContact =
-        let contactPicture = contact.Picture |> getImageValueOrDefault "addphoto.png"
-            
-        View.StackLayout(
-            backgroundColor = Color.FromHex("#448cb8"),
-            padding = Thickness(20., 10., 20., 10.),
+    let header contact =            
+        VerticalStackLayout(
             spacing = 10.,
             children = [
-                View.Label(
-                    text = contact.FirstName + " " + contact.LastName,
-                    fontSize = FontSize.fromValue 20.,
-                    fontAttributes = FontAttributes.Bold,
-                    textColor = accentTextColor,
-                    horizontalOptions = LayoutOptions.Center
-                )
+                Label(contact.FirstName + " " + contact.LastName)
+                    .font(size = 20., attributes = FontAttributes.Bold)
+                    .textColor(accentTextColor)
+                    .centerHorizontal()
 
-                View.Grid(
-                    width = 125.,
-                    height = 125.,
-                    backgroundColor = Color.White,
-                    horizontalOptions = LayoutOptions.Center,
-                    children = [
-                        View.Image(
-                            source = contactPicture,
-                            aspect = Aspect.AspectFill
-                        )
+                Grid([
+                    getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
                         
-                        View.Image(
-                            source = Image.fromPath "star.png",
-                            isVisible = contact.IsFavorite,
-                            height = 35.,
-                            width = 35.,
-                            horizontalOptions = LayoutOptions.Start,
-                            verticalOptions = LayoutOptions.Start
-                        )
-                    ]
-                )
+                    Image("star.png", Aspect.AspectFit)
+                        .isVisible(contact.IsFavorite)
+                        .size(height = 35., width = 35.)
+                        .alignStartHorizontal()
+                        .alignStartVertical()
+                ])
+                    .size(height = 125., width = 125.)
+                    .backgroundColor(Color.White)
+                    .centerHorizontal()
 
-                View.StackLayout(
-                    horizontalOptions = LayoutOptions.Center,
-                    orientation = StackOrientation.Horizontal,
-                    margin = Thickness(0., 10., 0., 10.),
+                HorizontalStackLayout(
                     spacing = 20.,
                     children = [
                         if hasSetField contact.Phone then
-                            yield detailActionButton "call.png" callContact
-                            yield detailActionButton "sms.png" sendSmsToContact
+                            detailActionButton "call.png" CallTapped
+                            detailActionButton "sms.png" SmsTapped
                         if hasSetField contact.Email then
-                            yield detailActionButton "email.png" sendEmailToContact
+                            detailActionButton "email.png" EmailTapped
                     ]
                 )
+                    .centerHorizontal()
+                    .margin(0., 10., 0., 10.)
             ]
         )
+            .backgroundColor(Color.FromHex("#448cb8"))
+            .paddingLayout(20., 10., 20., 10.)
             
     let body contact =
-        View.StackLayout(
-            padding = Thickness(20., 10., 20., 20.),
+        VerticalStackLayout(
             spacing = 10.,
             children = [
                 detailFieldTitle "Email"
@@ -148,32 +133,21 @@ module DetailPage =
                 optionalLabel contact.Address
             ]
         )
+            .paddingLayout(20., 10., 20., 20.)
 
-    let view model dispatch =
-        dependsOn model.Contact (fun model contact ->
-            // Actions
-            let editContact = fun () -> dispatch EditTapped
-            let callContact = fun () -> dispatch CallTapped
-            let sendSmsToContact = fun () -> dispatch SmsTapped
-            let sendEmailToContact = fun () -> dispatch EmailTapped
-            
-            // View
-            View.ContentPage(
-                toolbarItems = [
-                    View.ToolbarItem(
-                        order = ToolbarItemOrder.Primary,
-                        text = Strings.DetailPage_Toolbar_EditContact,
-                        command = editContact
-                    )
-                ],
-                content = View.ScrollView(
-                    content = View.StackLayout(
-                        spacing = 0.,
-                        children = [
-                            header contact callContact sendSmsToContact sendEmailToContact
-                            body contact
-                        ]
-                    )
+    let view model =
+        ContentPage("Detail page",
+            ScrollView(
+                VerticalStackLayout(
+                    spacing = 0.,
+                    children = [
+                        header model.Contact
+                        body model.Contact
+                    ]
                 )
             )
         )
+            .toolbarItems([
+                ToolbarItem(Strings.DetailPage_Toolbar_EditContact, EditTapped)
+                    .order(ToolbarItemOrder.Primary)
+            ])

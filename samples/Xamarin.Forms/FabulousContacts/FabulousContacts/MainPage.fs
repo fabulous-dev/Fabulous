@@ -7,6 +7,7 @@ open FabulousContacts.Models
 open FabulousContacts.Repository
 open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
+open type Fabulous.XamarinForms.View
 
 module MainPage =
     // Declarations
@@ -129,73 +130,46 @@ module MainPage =
             model, Cmd.none, ExternalMsg.NavigateToNewContact
 
     let loadingView title =
-        dependsOn () (fun model () ->
-            View.ContentPage(
-                title = title,
-                content = View.StackLayout(
-                    children = [
-                        centralLabel Strings.MainPage_Loading
-                    ]
-                )
-            )
+        ContentPage(title,
+            VerticalStackLayout([
+                centralLabel Strings.MainPage_Loading
+            ])
         )
 
     let emptyView title dispatch =
-        dependsOn () (fun model () ->
-            // Actions
-            let goToAbout = fun () -> dispatch NoContactAboutTapped
-            let addNewContact = fun () -> dispatch NoContactAddNewContactTapped
-            
-            // View
-            View.ContentPage(
-                title = title,
-                toolbarItems = [
-                    View.ToolbarItem(
-                        text = Strings.Common_About,
-                        command = goToAbout
-                    )
-
-                    View.ToolbarItem(
-                        text = "+",
-                        command = addNewContact
-                    )
-                ],
-                content = View.StackLayout(
-                    children = [
-                        centralLabel Strings.MainPage_NoContact
-                    ]
-                )
-            )
-        )
-    
-    let regularView title model dispatch =
         // Actions
-        let goToAllTab = TabAllContactsMsg >> dispatch
-        let goToFavoritesTab = TabFavContactsMsg >> dispatch
-        let goToMapTab = TabMapMsg >> dispatch
-        
+        let goToAbout = fun () -> dispatch NoContactAboutTapped
+        let addNewContact = fun () -> dispatch NoContactAddNewContactTapped
+            
+        // View
+        ContentPage(title,
+            VerticalStackLayout([
+                centralLabel Strings.MainPage_NoContact
+            ])
+        )
+            .toolbarItems([
+                ToolbarItem(Strings.Common_About, goToAbout)
+                ToolbarItem("+", addNewContact)
+            ])
+    
+    let regularView title model =        
         // View
         let tabAllContacts =
-            (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel goToAllTab)
-                .IconImageSource(Image.fromPath "alltab.png")
+            (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel)// TabAllContactsMsg)
+                .fileIcon("alltab.png")
                 
         let tabFavContacts =
-            (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel goToFavoritesTab)
-                .IconImageSource(Image.fromPath "favoritetab.png")
+            (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)// TabFavContactsMsg)
+                .fileIcon("favoritetab.png")
             
-        let tabMap = MapPage.view model.TabMapModel goToMapTab
+        let tabMap = MapPage.view model.TabMapModel// TabMapMsg
         
-        dependsOn (tabAllContacts, tabFavContacts, tabMap) (fun model (contacts, favorites, map) ->
-            View.TabbedPage(
-                created = (fun target -> target.On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom) |> ignore),
-                title = title,
-                children = [
-                    contacts
-                    favorites
-                    map
-                ]
-            )
-        )
+        TabbedPage(title, [
+            tabAllContacts
+            tabFavContacts
+            tabMap
+        ])
+            .androidToolbarPlacement(ToolbarPlacement.Bottom)
 
     let view model dispatch =
         let title = Strings.MainPage_Title

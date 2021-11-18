@@ -36,6 +36,7 @@ module WidgetKeys =
     let EditorKey = Widgets.register<Xamarin.Forms.Editor>()
     let ViewCellKey = Widgets.register<Xamarin.Forms.ViewCell>()
     let ImageButtonKey = Widgets.register<Xamarin.Forms.ImageButton>()
+    let TabbedPageKey = Widgets.register<Xamarin.Forms.TabbedPage>()
 
 type [<Struct>] Application<'msg> =
     val public ScalarAttributes: ScalarAttribute[]
@@ -71,9 +72,9 @@ type [<Struct>] ContentPage<'msg> =
           WidgetAttributes = widgets
           WidgetCollectionAttributes = widgetColls }
     
-    static member inline Create(content: IViewWidgetBuilder<'msg>) =
+    static member inline Create(title: string, content: IViewWidgetBuilder<'msg>) =
         ContentPage<'msg>(
-            [||],
+            [| Page.Title.WithValue(title) |],
             [| ContentPage.Content.WithValue(content.Compile()) |],
             [||]
         )
@@ -617,6 +618,30 @@ type [<Struct>] ImageButton<'msg> =
               ScalarAttributes = x.ScalarAttributes
               WidgetAttributes = x.WidgetAttributes
               WidgetCollectionAttributes = x.WidgetCollectionAttributes }
+              
+type [<Struct>] TabbedPage<'msg> =
+    val public ScalarAttributes: ScalarAttribute[]
+    val public WidgetAttributes: WidgetAttribute[]
+    val public WidgetCollectionAttributes: WidgetCollectionAttribute[]
+              
+    new (scalars, widgets, widgetCollections) =
+        { ScalarAttributes = scalars
+          WidgetAttributes = widgets
+          WidgetCollectionAttributes = widgetCollections }
+                                          
+    static member inline Create(title: string, children: #seq<IPageWidgetBuilder<'msg>>) =
+        TabbedPage<'msg>(
+            [| Page.Title.WithValue(title) |],
+            [||],
+            [| MultiPageOfPage.Children.WithValue(ViewHelpers.compileSeq children) |]
+        )
+                                                  
+    interface IPageWidgetBuilder<'msg> with
+        member x.Compile() =
+            { Key = WidgetKeys.TabbedPageKey
+              ScalarAttributes = x.ScalarAttributes
+              WidgetAttributes = x.WidgetAttributes
+              WidgetCollectionAttributes = x.WidgetCollectionAttributes }
 
 [<Extension>]
 type ViewExtensions () =
@@ -735,7 +760,7 @@ type ViewExtensions () =
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg>(mainPage) = Application<'msg>.Create(mainPage)
-    static member inline ContentPage<'msg>(content) = ContentPage<'msg>.Create(content)
+    static member inline ContentPage<'msg>(title, content) = ContentPage<'msg>.Create(title, content)
     static member inline VerticalStackLayout<'msg>(children) = StackLayout<'msg>.CreateVertical(children)
     static member inline VerticalStackLayout<'msg>(spacing: float, children) = StackLayout<'msg>.CreateVertical(children, spacing = spacing)
     static member inline HorizontalStackLayout<'msg>(children) = StackLayout<'msg>.CreateHorizontal(children)
@@ -751,9 +776,9 @@ type View private () =
     static member inline ContentView<'msg>(content) = ContentView<'msg>.Create(content)
     static member inline RefreshView<'msg>(isRefreshing, onRefreshing, content) = RefreshView<'msg>.Create(isRefreshing, onRefreshing, content)
     static member inline ScrollView<'msg>(content) = ScrollView<'msg>.Create(content)
-    static member inline FileImage<'msg>(path: string, aspect) = Image<'msg>.Create(path, aspect)
-    static member inline WebImage<'msg>(uri: System.Uri, aspect) = Image<'msg>.Create(uri, aspect)
-    static member inline StreamImage<'msg>(stream: Stream, aspect) = Image<'msg>.Create(stream, aspect)
+    static member inline Image<'msg>(path: string, aspect) = Image<'msg>.Create(path, aspect)
+    static member inline Image<'msg>(uri: System.Uri, aspect) = Image<'msg>.Create(uri, aspect)
+    static member inline Image<'msg>(stream: Stream, aspect) = Image<'msg>.Create(stream, aspect)
     static member inline BoxView<'msg>(color) = BoxView<'msg>.Create(color)
     static member inline NavigationPage<'msg>(pages) = NavigationPage<'msg>.Create(pages)
     static member inline Entry<'msg>(text, onTextChanged) = Entry<'msg>.Create(text, onTextChanged)
@@ -763,4 +788,5 @@ type View private () =
     static member inline Editor<'msg>(text, onTextChanged) = Editor<'msg>.Create(text, onTextChanged)
     static member inline ViewCell<'msg>(view) = ViewCell<'msg>.Create(view)
     static member inline ImageButton<'msg>(path: string, onClicked, aspect) = ImageButton<'msg>.Create(path, onClicked, aspect)
+    static member inline TabbedPage<'msg>(title, children) = TabbedPage<'msg>.Create(title, children)
             

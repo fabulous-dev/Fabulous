@@ -3,6 +3,7 @@
 open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
@@ -19,6 +20,16 @@ module AdditionalAttributes =
                 | ValueSome v -> v
 
             page.On<iOS>().SetUseSafeArea(value) |> ignore
+        )
+
+    module Android =
+        let ToolbarPlacement = Attributes.define<ToolbarPlacement> "TabbedPage_ToolbarPlacement" (fun (newValueOpt, target) ->
+            let tabbedPage = target :?> Xamarin.Forms.TabbedPage
+            let value =
+                match newValueOpt with
+                | ValueNone -> ToolbarPlacement.Default
+                | ValueSome v -> v
+            tabbedPage.On<Android>().SetToolbarPlacement(value) |> ignore
         )
 
 [<Extension>]
@@ -80,8 +91,9 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: Label<_>, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
+    static member inline font(this: Label<_>, ?size: float, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
         this.AddScalarAttributes([|
+            match size with None -> () | Some v -> Label.FontSize.WithValue(size)
             match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Xamarin.Forms.Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])
@@ -97,6 +109,10 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline ignoreSafeArea(this: #IPageWidgetBuilder<_>) =
         this.AddScalarAttribute(AdditionalAttributes.iOS.UseSafeArea.WithValue(false))
+        
+    [<Extension>]
+    static member inline androidToolbarPlacement(this: TabbedPage<_>, value: ToolbarPlacement) =
+        this.AddScalarAttribute(AdditionalAttributes.Android.ToolbarPlacement.WithValue(value))
         
     [<Extension>]
     static member inline margin(this: #IViewWidgetBuilder<_>, value: float) =

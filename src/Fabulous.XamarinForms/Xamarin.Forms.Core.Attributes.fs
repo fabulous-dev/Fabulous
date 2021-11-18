@@ -147,3 +147,6 @@ module Editor =
 
 module ViewCell =
     let View = Attributes.defineWidget ViewNode.getViewNode "ViewCell_View" (fun target -> (target :?> Xamarin.Forms.ViewCell).View) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- unbox value)
+
+module MultiPageOfPage =
+    let Children = Attributes.defineWidgetCollection ViewNode.getViewNode "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)

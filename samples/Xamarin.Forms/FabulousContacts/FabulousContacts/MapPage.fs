@@ -107,7 +107,7 @@ module MapPage =
         | UserPositionRetrieved location ->
             { model with UserPosition = Some location }, Cmd.none
         
-    let view model dispatch =
+    let view model =
         let map userPositionOpt pins =
             Map(
                 requestedRegion = MapSpan.FromCenterAndRadius(getUserPositionOrDefault userPositionOpt, Distance.FromKilometers(25.)),
