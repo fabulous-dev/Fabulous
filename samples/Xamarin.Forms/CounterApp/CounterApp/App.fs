@@ -52,11 +52,11 @@ module App =
 
     let view model =
         Application(
-            ContentPage(
+            ContentPage("Counter",
                 VerticalStackLayout([
                     Label(string model.Count)
                         .automationId("CountLabel")
-                        .centerTextHorizontally()
+                        .centerTextHorizontal()
 
                     Button("Increment", Increment)
                         .automationId("IncrementButton")

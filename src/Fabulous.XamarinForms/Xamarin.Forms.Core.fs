@@ -756,6 +756,9 @@ type ViewExtensions () =
     [<Extension>]
     static member inline lineBreakMode(this: Label<'msg>, value: Xamarin.Forms.LineBreakMode) =
         this.AddScalarAttribute(Label.LineBreakMode.WithValue(value))
+    [<Extension>]
+    static member inline popped(this: NavigationPage<'msg>, value: 'msg) =
+        this.AddScalarAttribute(NavigationPage.Popped.WithValue(fun _ -> box value))
 
 [<AbstractClass; Sealed>]
 type View private () =

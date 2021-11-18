@@ -136,20 +136,15 @@ module MainPage =
             ])
         )
 
-    let emptyView title dispatch =
-        // Actions
-        let goToAbout = fun () -> dispatch NoContactAboutTapped
-        let addNewContact = fun () -> dispatch NoContactAddNewContactTapped
-            
-        // View
+    let emptyView title =
         ContentPage(title,
             VerticalStackLayout([
                 centralLabel Strings.MainPage_NoContact
             ])
         )
             .toolbarItems([
-                ToolbarItem(Strings.Common_About, goToAbout)
-                ToolbarItem("+", addNewContact)
+                ToolbarItem(Strings.Common_About, NoContactAboutTapped)
+                ToolbarItem("+", NoContactAddNewContactTapped)
             ])
     
     let regularView title model =        
@@ -171,12 +166,12 @@ module MainPage =
         ])
             .androidToolbarPlacement(ToolbarPlacement.Bottom)
 
-    let view model dispatch =
+    let view model =
         let title = Strings.MainPage_Title
         match model.Contacts with
         | None ->
             loadingView title
         | Some [] ->
-            emptyView title dispatch
+            emptyView title
         | Some _ ->
-            regularView title model dispatch
+            regularView title model

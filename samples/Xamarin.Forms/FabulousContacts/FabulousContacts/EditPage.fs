@@ -10,6 +10,7 @@ open FabulousContacts.Repository
 open Plugin.Media
 open Xamarin.Forms
 open Plugin.Permissions
+open type Fabulous.XamarinForms.View
 
 module EditPage =
     // Declarations
@@ -219,69 +220,55 @@ module EditPage =
         | ContactDeleted contact ->
             model, Cmd.none, ExternalMsg.GoBackAfterContactDeleted contact
         
-    let view model dispatch =
-        let getPageTitle contact (fullName: string) =
-            match contact, (fullName.Trim()) with
+    let view model =
+        let title =
+            let fullName = (sprintf "%s %s" model.FirstName model.LastName).Trim()
+            match model.Contact, fullName.Trim() with
             | None, "" -> Strings.EditPage_Title_NewContact
             | _, "" -> Strings.EditPage_Title_EditContactWithNoName
             | _, _ -> fullName
-        
-        dependsOn model (fun model mModel ->
-            let isDeleteButtonVisible =
-                match mModel.Contact with
-                | None -> false
-                | Some x when x.Id = 0 -> false
-                | Some _ -> true
-            
-            // Actions
-            let saveContact = fun () -> dispatch SaveContact
-            let markAsFavorite = fun (e: ToggledEventArgs) -> e.Value |> UpdateIsFavorite |> dispatch
-            let updatePicture = fun () -> dispatch UpdatePicture
-            let updateFirstName = UpdateFirstName >> dispatch
-            let updateLastName = UpdateLastName >> dispatch
-            let updateEmail = UpdateEmail >> dispatch
-            let updatePhone = UpdatePhone >> dispatch
-            let updateAddress = UpdateAddress >> dispatch
-            let deleteContact = fun () -> mModel.Contact.Value |> DeleteContact |> dispatch
-            
-            // View
-            View.ContentPage(
-                title = getPageTitle mModel.Contact (sprintf "%s %s" mModel.FirstName mModel.LastName),
-                toolbarItems = [
-                    toolbarButton Strings.EditPage_Toolbar_SaveContact saveContact
-                ],
-                content = View.ScrollView(
-                    content = View.StackLayout(
-                        padding = Thickness(20.),
-                        children = [
-                            View.Grid(
-                                coldefs = [ Absolute 100.; Star ],
-                                rowdefs = [ Absolute 50.; Absolute 50. ],
-                                columnSpacing = 10.,
-                                rowSpacing = 0.,
-                                children = [
-                                    profilePictureButton mModel.Picture updatePicture
 
-                                    (formEntry Strings.EditPage_FirstNameField_Label mModel.FirstName Keyboard.Text mModel.IsFirstNameValid updateFirstName)
-                                        .VerticalOptions(LayoutOptions.Center)
-                                        .Column(1)
+        ContentPage(title,
+            ScrollView(
+                VerticalStackLayout(
+                    children = [
+                        Grid(
+                            coldefs = [ Absolute 100.; Star ],
+                            rowdefs = [ Absolute 50.; Absolute 50. ],
+                            children = [
+                                profilePictureButton model.Picture UpdatePicture
 
-                                    (formEntry Strings.EditPage_LastNameField_Label mModel.LastName Keyboard.Text mModel.IsLastNameValid updateLastName)
-                                        .VerticalOptions(LayoutOptions.Center)
-                                        .Column(1)
-                                        .Row(1)
-                                ]
-                            )
-                            favoriteField mModel.IsFavorite markAsFavorite
-                            formLabel Strings.EditPage_EmailField_Label
-                            formEntry Strings.EditPage_EmailField_Placeholder mModel.Email Keyboard.Email true updateEmail
-                            formLabel Strings.EditPage_PhoneField_Label
-                            formEntry Strings.EditPage_PhoneField_Placeholder mModel.Phone Keyboard.Telephone true updatePhone
-                            formLabel Strings.EditPage_AddressField_Label
-                            formEditor mModel.Address updateAddress
-                            destroyButton Strings.EditPage_DeleteButtonText deleteContact isDeleteButtonVisible
-                        ]
-                    )
+                                (formEntry Strings.EditPage_FirstNameField_Label model.FirstName Keyboard.Text model.IsFirstNameValid UpdateFirstName)
+                                    .centerVertical()
+                                    .gridColumn(1)
+
+                                (formEntry Strings.EditPage_LastNameField_Label model.LastName Keyboard.Text model.IsLastNameValid UpdateLastName)
+                                    .centerVertical()
+                                    .gridColumn(1)
+                                    .gridRow(1)
+                            ]
+                        )
+                            .columnSpacing(10.)
+                            .rowSpacing(0.)
+
+                        favoriteField model.IsFavorite UpdateIsFavorite
+                        formLabel Strings.EditPage_EmailField_Label
+                        formEntry Strings.EditPage_EmailField_Placeholder model.Email Keyboard.Email true UpdateEmail
+                        formLabel Strings.EditPage_PhoneField_Label
+                        formEntry Strings.EditPage_PhoneField_Placeholder model.Phone Keyboard.Telephone true UpdatePhone
+                        formLabel Strings.EditPage_AddressField_Label
+                        formEditor model.Address UpdateAddress
+
+                        match model.Contact with
+                        | None -> ()
+                        | Some x when x.Id = 0 -> ()
+                        | Some contact ->
+                            destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
+                    ]
                 )
+                    .paddingLayout(Thickness(20.))
             )
         )
+            .toolbarItems([
+                toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact
+            ])

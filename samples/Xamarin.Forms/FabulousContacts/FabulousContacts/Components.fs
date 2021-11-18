@@ -29,9 +29,8 @@ module Components =
         Editor(text, textChanged)
             .size(height = 100.)
 
-    let destroyButton text onClicked isVisible =
+    let destroyButton text onClicked =
         Button(text, onClicked)
-            .isVisible(isVisible)
             .backgroundColor(Color.Red)
             .textColor(Color.White)
             .margin(0., 20., 0., 0.)
@@ -77,7 +76,7 @@ module Components =
                     ).fillHorizontal(expand = true)
                      .margin(0., 5., 0., 5.)
 
-                    FileImage("star.png", Aspect.AspectFit)
+                    Image("star.png", Aspect.AspectFit)
                         .isVisible(isFavorite)
                         .centerVertical()
                         .margin(0., 0., 15., 0.)
@@ -128,7 +127,7 @@ module Components =
 
         | Some picture ->
             ContentView(
-                StreamImage(new MemoryStream(picture), Aspect.AspectFill)
+                Image(new MemoryStream(picture), Aspect.AspectFill)
             )
                 .gestureRecognizers([
                     TapGestureRecognizer(updatePicture)

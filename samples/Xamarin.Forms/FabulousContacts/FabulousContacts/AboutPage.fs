@@ -22,8 +22,17 @@ module AboutPage =
     let authorTwitterHandle = "@Tim_Lariviere"
     let authorSlackUrl = "https://fsharp.org/guides/slack/"
     let authorSlackHandle = "@Timothé Larivière"
+    
+    type Msg =
+        | OpenBrowser of string
+    
+    let init () = ()
+    
+    let update msg model =
+        match msg with
+        | OpenBrowser url -> Browser.OpenAsync(Uri url) |> ignore; model
         
-    let aboutFabulousContacts openBrowser =
+    let aboutFabulousContacts (openBrowser: string -> Msg) =
         VerticalStackLayout([
             Label(Strings.AboutPage_AboutFabulousContacts_NameAndVersion)
                 .font(attributes = FontAttributes.Bold)
@@ -39,14 +48,14 @@ module AboutPage =
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl) ])
         ])
         
-    let aboutFSharp openBrowser =
+    let aboutFSharp (openBrowser: string -> Msg) =
         HorizontalStackLayout(
             spacing = 30.,
             children = [
                 Label(Strings.AboutPage_AboutFSharp_MadeWith)
             
                 VerticalStackLayout([
-                    FileImage("fsharp.png", Aspect.AspectFit)
+                    Image("fsharp.png", Aspect.AspectFit)
                         .size(height = 50., width = 50.)
 
                     Label(Strings.AboutPage_AboutFSharp_FSharp)
@@ -54,7 +63,7 @@ module AboutPage =
                 ]).gestureRecognizers([ TapGestureRecognizer(openBrowser fsharpOrgUrl) ])
             
                 VerticalStackLayout([
-                    FileImage("xamarin.png", Aspect.AspectFit)
+                    Image("xamarin.png", Aspect.AspectFit)
                         .size(height = 50., width = 50.)
 
                     Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
@@ -63,7 +72,7 @@ module AboutPage =
             ]
         )
 
-    let credits openBrowser =
+    let credits (openBrowser: string -> Msg) =
         VerticalStackLayout([
             Label(Strings.AboutPage_Credits_Title)
                 .font(attributes = FontAttributes.Bold)
@@ -76,7 +85,7 @@ module AboutPage =
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser xamarinEssentialsUrl) ])
         ])
         
-    let aboutAuthor openBrowser =
+    let aboutAuthor (openBrowser: string -> Msg) =
         VerticalStackLayout([
             Label(Strings.AboutPage_AboutAuthor_Title)
                 .font(attributes = FontAttributes.Bold)
@@ -87,7 +96,7 @@ module AboutPage =
             HorizontalStackLayout(
                 spacing = 15.,
                 children = [
-                    FileImage("blog.png", Aspect.AspectFit)
+                    Image("blog.png", Aspect.AspectFit)
                         .size(height = 35., width = 35.)
                 
                     UnderlinedLabel(authorBlogUrl)
@@ -102,7 +111,7 @@ module AboutPage =
             HorizontalStackLayout(
                 spacing = 15.,
                 children = [
-                    FileImage("github.png", Aspect.AspectFit)
+                    Image("github.png", Aspect.AspectFit)
                         .size(height = 35., width = 35.)
                 
                     UnderlinedLabel(authorGitHubHandle)
@@ -114,7 +123,7 @@ module AboutPage =
                 spacing = 15.,
                 children = [
                     VerticalStackLayout([
-                        FileImage("twitter.png", Aspect.AspectFit)
+                        Image("twitter.png", Aspect.AspectFit)
                             .size(height = 50., width = 50.)
                     
                         Label(authorTwitterHandle)
@@ -122,7 +131,7 @@ module AboutPage =
                     ]).gestureRecognizers([ TapGestureRecognizer(openBrowser authorTwitterUrl) ])
                 
                     VerticalStackLayout([
-                        FileImage("slack.png", Aspect.AspectFit)
+                        Image("slack.png", Aspect.AspectFit)
                             .size(height = 50., width = 50.)
                     
                         Label(authorSlackHandle)
@@ -135,24 +144,15 @@ module AboutPage =
                 .margin(Thickness(0., 10., 0., 0.))
         ]
     )
-
-    type Msg =
-        | OpenBrowser of string
-
-    let init () = ()
-
-    let update msg model =
-        match msg with
-        | OpenBrowser url -> Browser.OpenAsync(Uri url) |> ignore; ()
         
-    let view model =
-        ContentPage(
+    let view () =
+        ContentPage("About FabulousContacts",
             ScrollView(
                 VerticalStackLayout(
                     children = [
-                        VerticalStackLayout([
-                            FileImage("icon.png", Aspect.AspectFit)
-                        ])
+                        ContentView(
+                            Image("icon.png", Aspect.AspectFit)
+                        )
                             .backgroundColor(accentColor)
                             .size(height = 100., width = 100.)
                             .centerHorizontal()

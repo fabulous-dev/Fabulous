@@ -112,6 +112,7 @@ module NavigationPage =
     let Pages = Attributes.defineWidgetCollectionWithConverter "NavigationPage_Pages" ViewUpdaters.applyDiffNavigationPagePages ViewUpdaters.updateNavigationPagePages
     let BarBackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarBackgroundColorProperty
     let BarTextColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarTextColorProperty
+    let Popped = Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Popped" (fun target -> (target :?> Xamarin.Forms.NavigationPage).Popped)
 
 module Entry =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Entry.TextProperty
