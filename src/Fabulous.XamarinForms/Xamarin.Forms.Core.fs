@@ -3,7 +3,6 @@
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
-open Fabulous.XamarinForms.Widgets
 open System.Runtime.CompilerServices
 open System.IO
 open Fabulous.Attributes
@@ -35,7 +34,17 @@ type [<Struct>] Application<'msg> (attrs: AttributesBuilder) =
 
 type [<Struct>] ContentPage<'msg> (attrs: AttributesBuilder) =
     static let key = Widgets.register<Fabulous.XamarinForms.FabulousContentPage>()
+
     member _.Builder = attrs
+
+    member _.MapMsg<'newMsg>(fn: 'msg -> 'newMsg) =
+        let xFn = 
+            match attrs.TryGetScalar(MapMsg.Key) with
+            | None -> fun msg -> unbox msg |> fn |> box
+            | Some attr -> fun msg -> msg |> (unbox<obj -> obj> attr.Value) |> unbox |> fn |> box
+
+        let newAttrs = attrs.AddScalar(MapMsg.WithValue(xFn))
+        ContentPage<'newMsg>(newAttrs)
 
     static member inline Create(title: string, content: IViewWidgetBuilder<'msg>) =
         ContentPage<'msg>(
@@ -421,7 +430,17 @@ type [<Struct>] ImageButton<'msg> (attrs: AttributesBuilder) =
               
 type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
     static let key = Widgets.register<Xamarin.Forms.TabbedPage>()
+
     member _.Builder = attrs
+    
+    member _.MapMsg<'newMsg>(fn: 'msg -> 'newMsg) =
+        let xFn = 
+            match attrs.TryGetScalar(MapMsg.Key) with
+            | None -> fun msg -> unbox msg |> fn |> box
+            | Some attr -> fun msg -> msg |> (unbox<obj -> obj> attr.Value) |> unbox |> fn |> box
+            
+        let newAttrs = attrs.AddScalar(MapMsg.WithValue(xFn))
+        TabbedPage<'newMsg>(newAttrs)
                                           
     static member inline Create(title: string, children: #seq<IPageWidgetBuilder<'msg>>) =
         TabbedPage<'msg>(

@@ -130,39 +130,42 @@ module MainPage =
             model, Cmd.none, ExternalMsg.NavigateToNewContact
 
     let loadingView title =
-        ContentPage(title,
-            VerticalStackLayout([
-                centralLabel Strings.MainPage_Loading
-            ])
-        )
+        TabbedPage(title, [
+            ContentPage("Loading",
+                VerticalStackLayout([
+                    centralLabel Strings.MainPage_Loading
+                ])
+            )
+        ])
 
     let emptyView title =
-        ContentPage(title,
-            VerticalStackLayout([
-                centralLabel Strings.MainPage_NoContact
-            ])
-        )
-            .toolbarItems([
-                ToolbarItem(Strings.Common_About, NoContactAboutTapped)
-                ToolbarItem("+", NoContactAddNewContactTapped)
-            ])
+        TabbedPage(title,[
+            ContentPage("Empty",
+                VerticalStackLayout([
+                    centralLabel Strings.MainPage_NoContact
+                ])
+            )
+                .toolbarItems([
+                    ToolbarItem(Strings.Common_About, NoContactAboutTapped)
+                    ToolbarItem("+", NoContactAddNewContactTapped)
+                ])
+        ])
     
-    let regularView title model =        
-        // View
+    let regularView title model =
         let tabAllContacts =
-            (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel)// TabAllContactsMsg)
+            (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel)
                 .fileIcon("alltab.png")
                 
         let tabFavContacts =
-            (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)// TabFavContactsMsg)
+            (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)
                 .fileIcon("favoritetab.png")
             
-        let tabMap = MapPage.view model.TabMapModel// TabMapMsg
+        let tabMap = MapPage.view model.TabMapModel
         
         TabbedPage(title, [
-            tabAllContacts
-            tabFavContacts
-            tabMap
+            Widgets.map TabAllContactsMsg tabAllContacts
+            Widgets.map TabAllContactsMsg tabFavContacts
+            Widgets.map TabMapMsg tabMap
         ])
             .androidToolbarPlacement(ToolbarPlacement.Bottom)
 

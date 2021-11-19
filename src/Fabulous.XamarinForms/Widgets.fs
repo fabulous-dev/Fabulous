@@ -1,4 +1,4 @@
-﻿namespace Fabulous.XamarinForms.Widgets
+﻿namespace Fabulous.XamarinForms
 
 open System
 open System.Runtime.CompilerServices
@@ -28,10 +28,12 @@ module Widgets =
                 let name = typeof<'T>.Name
                 printfn $"Creating view for {name}"
 
+                let mapMsg = widget.GetScalarOrDefault<obj -> obj>(Fabulous.Attributes.MapMsg.Key, id)
+
                 let view = new 'T()
                 let weakReference = WeakReference(view)
-                let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
-                view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
+                let viewNode = ViewNode(key, context, mapMsg, weakReference)
+                view.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
                 Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
 
@@ -39,3 +41,6 @@ module Widgets =
         
         WidgetDefinitionStore.set key definition
         key
+
+    let inline map (fn: 'oldMsg -> 'newMsg) (this: ^T when ^T :> IWidgetBuilder<'oldMsg>) : ^U when ^U :> IWidgetBuilder<'newMsg> =
+        (^T: (member MapMsg: ('oldMsg -> 'newMsg) -> 'U) (this, fn))

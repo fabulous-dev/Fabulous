@@ -154,14 +154,25 @@ module App =
             model.AboutPageModel
             |> Option.map (fun aModel -> AboutPage.view aModel)
 
-        NavigationPage(
-            match aboutPage, detailPage, editPage with
-            | None, None, None          -> [ mainPage ]
-            | Some about, None, None    -> [ mainPage; about ]
-            | _, Some detail, None      -> [ mainPage; detail ]
-            | _, Some detail, Some edit -> [ mainPage; detail; edit ]
-            | _, None, Some edit        -> [ mainPage; edit ]
+        Application(
+            NavigationPage([
+                Widgets.map MainPageMsg mainPage
+
+                match aboutPage with
+                | None -> ()
+                | Some about -> Widgets.map AboutPageMsg about
+
+                match detailPage with
+                | None -> ()
+                | Some detail -> Widgets.map DetailPageMsg detail
+            
+                match editPage with
+                | None -> ()
+                | Some edit -> Widgets.map EditPageMsg edit
+            ])
+                .barTextColor(Style.accentTextColor)
+                .barBackgroundColor(Style.accentColor)
+                .popped(NavigationPopped)
         )
-            .barTextColor(Style.accentTextColor)
-            .barBackgroundColor(Style.accentColor)
-            .popped(NavigationPopped)
+
+    let program dbPath = Program.statefulApplicationWithCmd (init dbPath) (update dbPath) view

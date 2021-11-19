@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+open System
 open System.Runtime.CompilerServices
 
 module Helpers =
@@ -48,6 +49,9 @@ module Attributes =
         member x.AddScalars(attrs: ScalarAttribute[]) = x
         member x.AddWidgets(attrs: WidgetAttribute[]) = x
         member x.AddWidgetCollections(attrs: WidgetCollectionAttribute[]) = x
+
+        member x.TryGetScalar(key: AttributeKey) =
+            scalarAttributes |> Array.tryFind (fun attr -> attr.Key = key)
 
         member x.Build(key) =
             { Key = key
@@ -102,7 +106,7 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set target null
             | ValueSome widget ->
-                let viewNode = getViewNode target :?> ViewNode
+                let viewNode = getViewNode target
                 let view = Helpers.createViewForWidget viewNode.Context widget
                 set target view
 
@@ -111,7 +115,7 @@ module Attributes =
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> (getViewNode: obj -> IViewNode) name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
         let applyDiff (diffs: WidgetCollectionItemChange[], target: obj) =
-            let viewNode = getViewNode target :?> ViewNode
+            let viewNode = getViewNode target
             let targetColl = getCollection target
         
             for diff in diffs do
@@ -140,7 +144,7 @@ module Attributes =
                 | _ -> ()
         
         let updateTarget (newValueOpt: Widget[] voption, target: obj) =
-            let viewNode = getViewNode target :?> ViewNode
+            let viewNode = getViewNode target
             let targetColl = getCollection target
             targetColl.Clear()
         
@@ -155,6 +159,73 @@ module Attributes =
         
     let inline define<'T when 'T: equality> name updateTarget =
         defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
+        
+    let defineEventNoArg (getViewNode: obj -> IViewNode) name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
+        let key = AttributeDefinitionStore.getNextKey()
+        let definition : ScalarAttributeDefinition<obj,obj> =
+            { Key = key
+              Name = name
+              Convert = id
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateTarget = fun (newValueOpt, target) ->
+                let event = getEvent target
+                let viewNode = getViewNode target
+        
+                match viewNode.TryGetHandler(key) with
+                | None -> ()
+                | Some handler -> event.RemoveHandler handler
+        
+                match newValueOpt with
+                | ValueNone ->
+                    viewNode.SetHandler(key, ValueNone)
+        
+                | ValueSome msg ->
+                    let handler = EventHandler(fun _ _ ->
+                        viewNode.Context.Dispatch (viewNode.MapMsg msg)
+                    )
+                    event.AddHandler handler
+                    viewNode.SetHandler(key, ValueSome handler) }
+        AttributeDefinitionStore.set key definition
+        definition
+        
+    let defineEvent<'args> (getViewNode: obj -> IViewNode) name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
+        let key = AttributeDefinitionStore.getNextKey()
+        let definition : ScalarAttributeDefinition<_,_> =
+            { Key = key
+              Name = name
+              Convert = id
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateTarget = fun (newValueOpt: ('args -> obj) voption, target) ->
+        
+                let event = getEvent target
+                let viewNode = getViewNode target
+        
+                match viewNode.TryGetHandler(key) with
+                | None ->
+                    printfn $"No old handler for {name}"
+                | Some handler ->
+                    printfn $"Removed old handler for {name}"
+                    event.RemoveHandler handler
+        
+                match newValueOpt with
+                | ValueNone ->
+                    viewNode.SetHandler(key, ValueNone)
+        
+                | ValueSome fn ->
+                    let handler = EventHandler<'args>(fun _ args ->
+                        printfn $"Handler for {name} triggered"
+                        let r = fn args
+                        viewNode.Context.Dispatch (viewNode.MapMsg r)
+                    )
+                    viewNode.SetHandler(key, ValueSome handler)
+                    event.AddHandler handler
+                    printfn $"Added new handler for {name}"
+            }
+        AttributeDefinitionStore.set key definition
+        definition
+
+
+    let MapMsg = defineScalarWithConverter<obj -> obj,_> "Fabulous_MapMsg" id ScalarAttributeComparers.noCompare ignore
 
 [<Extension>]
 type WidgetExtensions () =

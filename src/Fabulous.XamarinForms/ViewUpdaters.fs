@@ -80,7 +80,7 @@ module ViewUpdaters =
         match newValueOpt with
         | ValueNone -> ()
         | ValueSome widgets ->
-            let viewNode = ViewNode.getViewNode target :?> ViewNode
+            let viewNode = ViewNode.getViewNode target
             for widget in widgets do
                 let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
                 navigationPage.PushAsync(page) |> ignore

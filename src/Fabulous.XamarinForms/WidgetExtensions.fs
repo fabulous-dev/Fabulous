@@ -8,7 +8,6 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
-open Fabulous.XamarinForms.Widgets
 
 module AdditionalAttributes =
     module iOS =
