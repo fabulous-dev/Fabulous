@@ -61,7 +61,7 @@ module Label =
 module Button =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
     let Clicked = Attributes.defineEventNoArg ViewNode.getViewNode "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)
-    let TextColor = Attributes.defineBindable<Color> Xamarin.Forms.Button.TextColorProperty
+    let TextColor = Attributes.defineAppThemeBindable<Color> Xamarin.Forms.Button.TextColorProperty
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Button.FontSizeProperty
     
 module ImageButton =

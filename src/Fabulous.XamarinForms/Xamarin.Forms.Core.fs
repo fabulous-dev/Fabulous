@@ -499,8 +499,8 @@ type ViewExtensions () =
     static member inline padding(this: #ILabelWidgetBuilder<_>, value: Xamarin.Forms.Thickness) =
         this.AddScalarAttribute(Label.Padding.WithValue(value))
     [<Extension>]
-    static member inline textColor(this: Button<_>, value: Xamarin.Forms.Color) =
-        this.AddScalarAttribute(Button.TextColor.WithValue(value))
+    static member inline textColor(this: Button<_>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+        this.AddScalarAttribute(Button.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
     [<Extension>]
     static member inline font(this: Button<_>, value: double) =
         this.AddScalarAttribute(Button.FontSize.WithValue(value))

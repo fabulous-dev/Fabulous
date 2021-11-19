@@ -60,6 +60,7 @@ module App =
 
                     Button("Increment", Increment)
                         .automationId("IncrementButton")
+                        .textColor(Color.Red)
 
                     Button("Decrement", Decrement)
                         .automationId("DecrementButton")
