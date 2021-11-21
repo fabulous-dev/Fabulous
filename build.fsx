@@ -36,7 +36,6 @@ let removeIncompatiblePlatformProjects pattern =
         -- "**/*.WPF.fsproj"
         -- "**/*.UWP.fsproj"
         -- "**/*.Droid.fsproj"
-        -- "**/TicTacToe.*"
 
 // JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
 // It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
