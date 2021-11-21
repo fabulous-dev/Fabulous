@@ -12,7 +12,7 @@
 #     dotnet fake run build.fsx -t $@
 # fi
 
-dotnet msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
+dotnet msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
 dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
 
 ls /opt/hostedtoolcache/dotnet/sdk/3.1.302/FSharp
