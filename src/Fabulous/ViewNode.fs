@@ -1,12 +1,22 @@
 ﻿namespace Fabulous
 
-
-type ViewNode(key, context: ViewTreeContext, targetRef: System.WeakReference) =
-
-    member _.Context = context
+type ViewNode(key, context: ViewTreeContext, mapMsg: obj -> obj, targetRef: System.WeakReference) =
+    let mutable _handlers: Map<AttributeKey, obj> = Map.empty
 
     interface IViewNode with
         member _.Origin = key
+        member _.Context = context
+        member _.MapMsg(msg) = mapMsg msg
+
+        member _.TryGetHandler<'T>(key: AttributeKey): 'T option =
+            _handlers
+            |> Map.tryFind key
+            |> Option.map unbox<'T>
+
+        member _.SetHandler<'T>(key: AttributeKey, handlerOpt: 'T voption) =
+            _handlers <-
+                _handlers
+                |> Map.change key (fun _ -> match handlerOpt with ValueNone -> None | ValueSome h -> Some (box h))
 
         member _.ApplyScalarDiff(diffs) =
             if not targetRef.IsAlive then

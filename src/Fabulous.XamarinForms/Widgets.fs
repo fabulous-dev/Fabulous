@@ -1,4 +1,4 @@
-﻿namespace Fabulous.XamarinForms.Widgets
+﻿namespace Fabulous.XamarinForms
 
 open System
 open System.Runtime.CompilerServices
@@ -6,9 +6,6 @@ open Fabulous
 open Fabulous.XamarinForms
 
 type IWidgetBuilder =
-    abstract ScalarAttributes: ScalarAttribute[]
-    abstract WidgetAttributes: WidgetAttribute[]
-    abstract WidgetCollectionAttributes: WidgetCollectionAttribute[]
     abstract Compile: unit -> Widget
 
 type IWidgetBuilder<'msg> = inherit IWidgetBuilder
@@ -17,29 +14,9 @@ type IPageWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type IViewWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
 type ILayoutWidgetBuilder<'msg> = inherit IViewWidgetBuilder<'msg>
 type ICellWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
-
-[<Extension>]
-type IWidgetExtensions () =
-    [<Extension>]
-    static member inline AddScalarAttribute(this: ^T when ^T :> IWidgetBuilder, attr: ScalarAttribute) =
-        let attribs = this.ScalarAttributes
-        let attribs2 = Array.zeroCreate (attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-        let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
-        result
-
-    [<Extension>]
-    static member inline AddScalarAttributes(this: ^T when ^T :> IWidgetBuilder, attrs: ScalarAttribute[]) =
-        match attrs with
-        | [||] ->
-            this
-        | attributes ->
-            let attribs2 = Array.append this.ScalarAttributes attributes
-            let result = (^T : (new : ScalarAttribute[] * WidgetAttribute[] * WidgetCollectionAttribute[] -> ^T) (attribs2, this.WidgetAttributes, this.WidgetCollectionAttributes))
-            result
-
-
+type IGestureRecognizerWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type IMenuItemWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
+type IToolbarItemWidgetBuilder<'msg> = inherit IMenuItemWidgetBuilder<'msg>
 
 module Widgets =
     let register<'T  when 'T :> Xamarin.Forms.BindableObject and 'T : (new: unit -> 'T)>() =
@@ -47,14 +24,20 @@ module Widgets =
         let definition =
             { Key = key
               Name = typeof<'T>.Name
-              CreateView = fun (widget, context) ->
+              CreateView = fun (widget, parentContext) ->
                 let name = typeof<'T>.Name
                 printfn $"Creating view for {name}"
 
+                let mapMsg = widget.GetScalarOrDefault<obj -> obj>(Fabulous.Attributes.MapMsg.Key, id)
+                let context =
+                    { parentContext with
+                        Dispatch = mapMsg >> parentContext.Dispatch
+                        CanReuseView = parentContext.CanReuseView }
+
                 let view = new 'T()
                 let weakReference = WeakReference(view)
-                let viewNodeData = ViewNodeData(ViewNode(key, context, weakReference))
-                view.SetValue(ViewNode.ViewNodeProperty, viewNodeData)
+                let viewNode = ViewNode(key, context, mapMsg, weakReference)
+                view.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
                 Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
 
@@ -62,3 +45,6 @@ module Widgets =
         
         WidgetDefinitionStore.set key definition
         key
+
+    let inline map (fn: 'oldMsg -> 'newMsg) (this: ^T when ^T :> IWidgetBuilder<'oldMsg>) : ^U when ^U :> IWidgetBuilder<'newMsg> =
+        (^T: (member MapMsg: ('oldMsg -> 'newMsg) -> 'U) (this, fn))

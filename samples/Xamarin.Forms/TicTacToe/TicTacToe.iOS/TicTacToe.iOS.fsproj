@@ -88,62 +88,6 @@
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     </PropertyGroup>
     <ItemGroup>
-        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%403x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Cross.imageset\Contents.json">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%402x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Contents.json">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Nought.imageset\Contents.json">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%402x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%403x.png">
-          <Visible>false</Visible>
-        </ImageAsset>
-        <Compile Include="Properties\AssemblyInfo.fs" />
-        <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-        <Compile Include="AppDelegate.fs" />
-        <None Include="Entitlements.plist" />
-        <None Include="Info.plist" />
-        <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
         <Reference Include="FSharp.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>..\..\..\..\packages\FSharp.Core.6.0.1\lib\netstandard2.1\FSharp.Core.dll</HintPath>
           <Private>True</Private>
@@ -177,15 +121,74 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
-          <Name>Fabulous.XamarinForms</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
-          <Name>Fabulous</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
-          <Name>TicTacToe</Name>
-        </ProjectReference>
+      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%403x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Cross.imageset\Contents.json">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross%402x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Contents.json">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Nought.imageset\Contents.json">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%402x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought%403x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <Compile Include="Properties\AssemblyInfo.fs" />
+      <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+      <Compile Include="AppDelegate.fs" />
+      <None Include="Entitlements.plist" />
+      <None Include="Info.plist" />
+      <None Include="packages.config" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+        <Name>Fabulous.XamarinForms</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+        <Name>Fabulous</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
+        <Name>TicTacToe</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

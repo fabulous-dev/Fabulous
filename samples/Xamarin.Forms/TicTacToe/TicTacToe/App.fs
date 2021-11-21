@@ -136,7 +136,7 @@ module App =
             // Return the new model.
             newModel2
         | Restart ->
-            { model with NextUp = X; Board = initialBoard; GameScore = 0 }
+            { model with NextUp = X; Board = initialBoard; GameScore = (0, 0) }
         | VisualBoardSizeChanged args ->
             match model.VisualBoardSize with
             | Some _ -> model
@@ -170,7 +170,7 @@ module App =
         Application(
             NavigationPage([
                 let contentPage =
-                    ContentPage(
+                    ContentPage("TicTacToe",
                         Grid(
                             coldefs = [ Star ],
                             rowdefs = [ Star; Auto; Auto ],
@@ -191,7 +191,7 @@ module App =
                                                     .gridRow(row * 2)
                                                     .gridColumn(col * 2)
                                             else
-                                                FileImage(imageForPos model.Board.[pos], Aspect.AspectFit)
+                                                Image(imageForPos model.Board.[pos], Aspect.AspectFit)
                                                     .center()
                                                     .margin(10.)
                                                     .gridRow(row * 2)
@@ -206,7 +206,7 @@ module App =
 
                                 Label(getMessage model)
                                     .textColor(Color.Black)
-                                    .font(NamedSize.Large)
+                                    .font(namedSize = NamedSize.Large)
                                     .center()
                                     .margin(10.)
                                     .gridRow(1)

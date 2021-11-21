@@ -50,6 +50,11 @@ and [<Struct>] Widget =
       WidgetAttributes: WidgetAttribute[]
       WidgetCollectionAttributes: WidgetCollectionAttribute[] }
 
+    member x.GetScalarOrDefault<'T>(key: AttributeKey, defaultValue: 'T) =
+        match x.ScalarAttributes |> Array.tryFind (fun attr -> attr.Key = key) with
+        | None -> defaultValue
+        | Some attr -> unbox<'T> attr.Value
+
 type [<Struct; RequireQualifiedAccess>] ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
@@ -95,6 +100,10 @@ type Program<'arg, 'model, 'msg> =
 /// Represents a UI element created from a widget
 type IViewNode =
     abstract Origin: WidgetKey
+    abstract Context: ViewTreeContext
+    abstract MapMsg: obj -> obj
+    abstract TryGetHandler<'T> : AttributeKey -> 'T option
+    abstract SetHandler<'T> : AttributeKey * 'T voption -> unit
     abstract ApplyScalarDiff : ScalarChange[] -> unit
     abstract ApplyWidgetDiff : WidgetChange[] -> unit
     abstract ApplyWidgetCollectionDiff : WidgetCollectionChange[] -> unit

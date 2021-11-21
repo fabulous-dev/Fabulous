@@ -130,22 +130,27 @@
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
         <Visible>false</Visible>
       </ImageAsset>
       <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
         <Visible>false</Visible>
       </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
+        <Visible>false</Visible>
+      </ImageAsset>
+      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
         <Visible>false</Visible>
       </ImageAsset>
       <Compile Include="Properties\AssemblyInfo.fs" />
@@ -157,11 +162,11 @@
       <None Include="Entitlements.plist" />
       <None Include="Info.plist" />
       <None Include="packages.config" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
-        <Name>Fabulous.XamarinForms</Name>
-      </ProjectReference>
       <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
         <Name>Fabulous</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+        <Name>Fabulous.XamarinForms</Name>
       </ProjectReference>
       <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
         <Name>FabulousWeather</Name>
