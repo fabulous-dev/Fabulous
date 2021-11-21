@@ -24,11 +24,15 @@ module Widgets =
         let definition =
             { Key = key
               Name = typeof<'T>.Name
-              CreateView = fun (widget, context) ->
+              CreateView = fun (widget, parentContext) ->
                 let name = typeof<'T>.Name
                 printfn $"Creating view for {name}"
 
                 let mapMsg = widget.GetScalarOrDefault<obj -> obj>(Fabulous.Attributes.MapMsg.Key, id)
+                let context =
+                    { parentContext with
+                        Dispatch = mapMsg >> parentContext.Dispatch
+                        CanReuseView = parentContext.CanReuseView }
 
                 let view = new 'T()
                 let weakReference = WeakReference(view)
