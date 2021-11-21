@@ -14,6 +14,12 @@
 
 dotnet msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
 dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
+
+ls /opt/hostedtoolcache/dotnet/sdk/3.1.302
+echo '####'
+ls /opt/hostedtoolcache/dotnet/sdk/3.1.302/Microsoft/
+echo '####'
+ls /opt/hostedtoolcache/dotnet/sdk/3.1.302/Microsoft/VisualStudio/
 # ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v16.0/FSharp/
 # ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v15.0/FSharp/
 # ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v14.0/FSharp/
