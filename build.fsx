@@ -44,12 +44,6 @@ let addJDK properties =
     | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
     | _ -> properties
 
-let dotnetBuild paths =
-    for projectPath in paths do
-        DotNet.build (fun opt ->
-            { opt with
-                Configuration = DotNet.BuildConfiguration.Release }) projectPath
-
 let computeBounds (semVer: SemVerInfo) =
     match semVer.PreRelease with
     | Some _ ->
@@ -85,6 +79,14 @@ let msbuild paths =
         let projectName = Path.GetFileNameWithoutExtension projectPath
         let properties = [ ("Configuration", "Release") ] |> addJDK
         MSBuild.run id "" "Build" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
+
+let dotnetBuild paths =
+    for (projectPath: string) in paths do
+        if projectPath.Contains("Gtk") then msbuild [projectPath]
+        else 
+            DotNet.build (fun opt ->
+                { opt with
+                    Configuration = DotNet.BuildConfiguration.Release }) projectPath
 
 let nugetPack paths =
     for nuspecPath in paths do
