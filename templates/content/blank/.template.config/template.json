@@ -7,7 +7,7 @@
       "Elmish",
       "Cross-platform"
     ],
-    "name": "Fabulous for Xamarin.Forms App v2.0.0-alpha.1",
+    "name": "Fabulous for Xamarin.Forms App v2.0.0-alpha.2",
     "groupIdentity": "Fabulous.XamarinForms.App",
     "identity": "Fabulous.XamarinForms.FSharp",
     "shortName": "fabulous-xf-app",
@@ -152,7 +152,7 @@
         "type": "parameter",
         "dataType": "string",
         "replaces": "FabulousPkgsVersion",
-        "defaultValue": "2.0.0-alpha.1"
+        "defaultValue": "2.0.0-alpha.2"
       },
       "FSharpCorePkgVersion": {
         "type": "parameter",
