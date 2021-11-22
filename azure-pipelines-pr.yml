@@ -17,6 +17,12 @@ jobs:
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
+      packageType: runtime
+      version: 5.x
+  - task: UseDotNet@2
+    displayName: Stick with .NET Core SDK version compatible to Mono toolchain
+    inputs:
+      packageType: sdk
       version: 5.x
   - script: ./build.sh Test
   - task: CopyFiles@1
