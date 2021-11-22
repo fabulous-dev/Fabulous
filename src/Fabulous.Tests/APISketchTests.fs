@@ -4,18 +4,32 @@ open Fabulous.Reconciler
 open NUnit.Framework
 
 open type TestUI.View
+
 open TestUI
+open Test.Platform
 
 
 //System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName
 
-let find<'a when 'a :> IViewNode> (tree: Run.ViewTree) (id: string) =
-    let node =
-        tree.FindByAutomationId id
-        |> Option.defaultWith(fun _ -> failwith "not found")
-        :?> 'a
+let rec findOptional (root: TestViewElement) (id: string) : TestViewElement option =
+    if root.AutomationId = id then
+        Some root
+    else
+        match root with
+        | :? TestStack as stack ->
+            let children = (stack :> IContainer).Children
 
-    node
+            children
+            |> Array.ofSeq
+            |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
+
+        | _ -> None
+
+let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
+    findOptional root id
+    |> Option.defaultWith(fun () -> failwith "not found")
+    :?> 'a
+
 
 module SimpleLabelTests =
     type Msg =
@@ -43,17 +57,17 @@ module SimpleLabelTests =
 
         let instance = Run.Instance program
 
-        let tree = (instance.Start())
+        let el = (instance.Start())
 
-        let label = find<TestLabel> tree "label"
+        let label = find<TestLabel> el "label" :> IText
 
         Assert.AreEqual(label.Text, "hi")
         instance.ProcessMessage(SetText "yo")
         Assert.AreEqual(label.Text, "yo")
 
-        Assert.AreEqual(label.Color, "red")
+        Assert.AreEqual(label.TextColor, "red")
         instance.ProcessMessage(SetColor "blue")
-        Assert.AreEqual(label.Color, "blue")
+        Assert.AreEqual(label.TextColor, "blue")
 
 
 module ButtonTests =
@@ -89,10 +103,11 @@ module ButtonTests =
         let tree = (instance.Start())
 
         let btn = find<TestButton> tree "btn"
+        let btnText = btn :> IText
 
-        Assert.AreEqual(btn.Text, "0")
+        Assert.AreEqual(btnText.Text, "0")
         btn.Press()
-        Assert.AreEqual(btn.Text, "1")
+        Assert.AreEqual(btnText.Text, "1")
 
 
 module SimpleStackTests =
@@ -117,7 +132,11 @@ module SimpleStackTests =
                         (id_, text_))
 
     let view model =
-        Stack( model |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast()) ).automationId("stack")
+        Stack(
+            model
+            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast())
+        )
+            .automationId("stack")
 
 
     let init () = []
