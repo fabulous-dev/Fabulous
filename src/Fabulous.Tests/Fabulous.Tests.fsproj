@@ -5,7 +5,11 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="TestUI.fs" />
+        <Compile Include="TestUI.Platform.fs" />
+        <Compile Include="TestUI.ViewNode.fs" />
+        <Compile Include="TestUI.ViewUpdaters.fs" />
+        <Compile Include="TestUI.Attributes.fs" />
+        <Compile Include="TestUI.Widgets.fs" />
         <Compile Include="APISketchTests.fs" />
     </ItemGroup>
     <ItemGroup>

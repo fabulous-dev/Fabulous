@@ -3,19 +3,34 @@ module Fabulous.Tests
 open Fabulous.Reconciler
 open NUnit.Framework
 
-open type TestUI.View
-open TestUI
+
+open Tests.Platform
+open Tests.TestUI_Widgets
+
+open type View
 
 
 //System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName
 
-let find<'a when 'a :> IViewNode> (tree: Run.ViewTree) (id: string) =
-    let node =
-        tree.FindByAutomationId id
-        |> Option.defaultWith(fun _ -> failwith "not found")
-        :?> 'a
+let rec findOptional (root: TestViewElement) (id: string) : TestViewElement option =
+    if root.AutomationId = id then
+        Some root
+    else
+        match root with
+        | :? TestStack as stack ->
+            let children = (stack :> IContainer).Children
 
-    node
+            children
+            |> Array.ofSeq
+            |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
+
+        | _ -> None
+
+let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
+    findOptional root id
+    |> Option.defaultWith(fun () -> failwith "not found")
+    :?> 'a
+
 
 module SimpleLabelTests =
     type Msg =
@@ -43,17 +58,17 @@ module SimpleLabelTests =
 
         let instance = Run.Instance program
 
-        let tree = (instance.Start())
+        let el = (instance.Start())
 
-        let label = find<TestLabel> tree "label"
+        let label = find<TestLabel> el "label" :> IText
 
         Assert.AreEqual(label.Text, "hi")
         instance.ProcessMessage(SetText "yo")
         Assert.AreEqual(label.Text, "yo")
 
-        Assert.AreEqual(label.Color, "red")
+        Assert.AreEqual(label.TextColor, "red")
         instance.ProcessMessage(SetColor "blue")
-        Assert.AreEqual(label.Color, "blue")
+        Assert.AreEqual(label.TextColor, "blue")
 
 
 module ButtonTests =
@@ -67,16 +82,8 @@ module ButtonTests =
 
 
     let view model =
-        Stack(
-            [
-                Button(model.count.ToString(), Increment)
-                    .automationId("btn")
-
-                Label("hey")
-
-            //                Button(model.count.ToString(), "should be an error")
-            ]
-        )
+        Button(model.count.ToString(), Increment)
+            .automationId("btn")
 
     let init () = { count = 0 }
 
@@ -89,10 +96,11 @@ module ButtonTests =
         let tree = (instance.Start())
 
         let btn = find<TestButton> tree "btn"
+        let btnText = btn :> IText
 
-        Assert.AreEqual(btn.Text, "0")
+        Assert.AreEqual(btnText.Text, "0")
         btn.Press()
-        Assert.AreEqual(btn.Text, "1")
+        Assert.AreEqual(btnText.Text, "1")
 
 
 module SimpleStackTests =
@@ -117,7 +125,11 @@ module SimpleStackTests =
                         (id_, text_))
 
     let view model =
-        Stack( model |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast()) ).automationId("stack")
+        Stack(
+            model
+            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast())
+        )
+            .automationId("stack")
 
 
     let init () = []
@@ -132,105 +144,111 @@ module SimpleStackTests =
         let tree = (instance.Start())
 
         let stack =
-            find<TestStack> tree "stack" :> IViewContainer
+            find<TestStack> tree "stack" :> IContainer
 
-        Assert.AreEqual(stack.Children.Length, 0)
+        Assert.AreEqual(stack.Children.Count, 0)
 
         // add first
         instance.ProcessMessage(AddNew(1, "yo"))
-        Assert.AreEqual(stack.Children.Length, 1)
-        let label = stack.Children.[0] :?> TestLabel
+        Assert.AreEqual(stack.Children.Count, 1)
+
+        let label =
+            stack.Children.[0] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "yo")
 
         // add second in front
         instance.ProcessMessage(AddNew(2, "yo2"))
-        Assert.AreEqual(stack.Children.Length, 2)
-        let label = stack.Children.[0] :?> TestLabel
+        Assert.AreEqual(stack.Children.Count, 2)
+
+        let label =
+            stack.Children.[0] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "yo2")
 
         // modify the initial one
         instance.ProcessMessage(ChangeText(1, "just 1"))
-        let label = stack.Children.[1] :?> TestLabel
+        let label = stack.Children.[1] :?> TestLabel :> IText
         Assert.AreEqual(label.Text, "just 1")
 
         // delete the one in front
         instance.ProcessMessage(Delete 2)
-        Assert.AreEqual(stack.Children.Length, 1)
-        let label = stack.Children.[0] :?> TestLabel
+        Assert.AreEqual(stack.Children.Count, 1)
+        let label = stack.Children.[0] :?> TestLabel :> IText
         Assert.AreEqual(label.Text, "just 1")
 
 
-module ReconcilerTests =
-    let a = Attributes.define<int> "A" (fun () -> 0)
-
-    let b =
-        Attributes.define<string> "B" (fun () -> "")
-
-    let c =
-        Attributes.define<bool> "C" (fun () -> true)
-
-    [<Test>]
-    let CompareAttributes () =
-        let prev = [| a.WithValue(1); b.WithValue("yo") |]
-
-        let next =
-            [|
-                c.WithValue(false)
-                b.WithValue("aha!")
-            |]
-
-        let res = compareAttributes prev next
-        Assert.AreEqual([], res, "this should fail for now, not a real test")
-        ()
-
-module MapViewTests =
-    type ParentMsg = Add of int
-
-    type ChildMsg =
-        | AddOne
-        | RemoveTwo
-
-    type Model = int
-
-    let update msg model =
-        match msg with
-        | Add value -> model + value
-
-    let mapMsg childMsg =
-        match childMsg with
-        | AddOne -> Add 1
-        | RemoveTwo -> Add -2
-
-    let view model =
-        Stack(
-            [
-                View.map mapMsg (Button("+1", AddOne).automationId("add"))
-                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
-                Label(model.ToString()).automationId("label")
-            ]
-        )
-
-    let init () = 0
-
-    [<Test>]
-    let SketchAPI () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
-
-        let instance = Run.Instance program
-        let tree = (instance.Start())
-
-        let addBtn = find<TestButton> tree "add"
-        let removeBtn = find<TestButton> tree "remove"
-        let label = find<TestLabel> tree "label"
-
-        Assert.AreEqual(label.Text, "0")
-
-        addBtn.Press()
-        Assert.AreEqual(label.Text, "1")
-
-        removeBtn.Press()
-        Assert.AreEqual(label.Text, "-1")
+//module ReconcilerTests =
+//    let a = Attributes.define<int> "A" (fun () -> 0)
+//
+//    let b =
+//        Attributes.define<string> "B" (fun () -> "")
+//
+//    let c =
+//        Attributes.define<bool> "C" (fun () -> true)
+//
+//    [<Test>]
+//    let CompareAttributes () =
+//        let prev = [| a.WithValue(1); b.WithValue("yo") |]
+//
+//        let next =
+//            [|
+//                c.WithValue(false)
+//                b.WithValue("aha!")
+//            |]
+//
+//        let res = compareAttributes prev next
+//        Assert.AreEqual([], res, "this should fail for now, not a real test")
+//        ()
+//
+//module MapViewTests =
+//    type ParentMsg = Add of int
+//
+//    type ChildMsg =
+//        | AddOne
+//        | RemoveTwo
+//
+//    type Model = int
+//
+//    let update msg model =
+//        match msg with
+//        | Add value -> model + value
+//
+//    let mapMsg childMsg =
+//        match childMsg with
+//        | AddOne -> Add 1
+//        | RemoveTwo -> Add -2
+//
+//    let view model =
+//        Stack(
+//            [
+//                View.map mapMsg (Button("+1", AddOne).automationId("add"))
+//                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
+//                Label(model.ToString()).automationId("label")
+//            ]
+//        )
+//
+//    let init () = 0
+//
+//    [<Test>]
+//    let SketchAPI () =
+//        let program =
+//            StatefulWidget.mkSimpleView init update view
+//
+//        let instance = Run.Instance program
+//        let tree = (instance.Start())
+//
+//        let addBtn = find<TestButton> tree "add"
+//        let removeBtn = find<TestButton> tree "remove"
+//        let label = find<TestLabel> tree "label"
+//
+//        Assert.AreEqual(label.Text, "0")
+//
+//        addBtn.Press()
+//        Assert.AreEqual(label.Text, "1")
+//
+//        removeBtn.Press()
+//        Assert.AreEqual(label.Text, "-1")
 //
 //
 //
