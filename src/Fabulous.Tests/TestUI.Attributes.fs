@@ -43,26 +43,6 @@ module Attributes =
         AttributeDefinitionStore.set key definition
         definition
 
-    /// Define a custom attribute storing a widget collection
-    let defineWidgetCollectionWithConverter
-        name
-        (applyDiff: WidgetCollectionItemChange [] * obj -> unit)
-        (updateTarget: Widget [] voption * obj -> unit)
-        =
-        let key = AttributeDefinitionStore.getNextKey()
-
-        let definition: WidgetCollectionAttributeDefinition =
-            {
-                Key = key
-                Name = name
-                ApplyDiff = applyDiff
-                UpdateTarget = updateTarget
-            }
-
-        AttributeDefinitionStore.set key definition
-        definition
-
-
     // --------------- Actual Properties ---------------
     //    open Fabulous.Attributes
 
@@ -76,10 +56,11 @@ module Attributes =
 
     module Container =
         let Children =
-            defineWidgetCollectionWithConverter
+            Attributes.defineWidgetCollection
+                TestUI_ViewNode.ViewNode.getViewNode
                 "Container_Children"
-                TestUI_ViewUpdaters.applyDiffContainerChildren
-                TestUI_ViewUpdaters.updateContainerChildren
+                (fun target -> (target :?> IContainer).Children)
+
 
     module Button =
         let Pressed = definePressable "Button_Pressed"

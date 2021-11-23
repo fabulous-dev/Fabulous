@@ -54,14 +54,14 @@ let updateAutomationId (newValueOpt: string voption, target: obj) =
 let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], target: obj) =
     // let el = target :?> TestViewElement
     let container = target :?> IContainer
-    let pages = List.ofSeq container.Children
+    let children = List.ofSeq container.Children
 
     for diff in diffs do
         match diff with
         | WidgetCollectionItemChange.Insert (index, widget) -> failwith "not implemented"
 
         | WidgetCollectionItemChange.Update (index, diff) ->
-            let targetItem = pages.[index]
+            let targetItem = children.[index]
             let viewNode = ViewNode.getViewNode targetItem
 
             if diff.ScalarChanges.Length > 0 then
