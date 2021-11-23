@@ -1,4 +1,4 @@
-module Test.Platform
+module Tests.Platform
 
 open System.Collections.Generic
 
@@ -37,9 +37,9 @@ type TestButton() =
     inherit TestViewElement()
     let mutable counter: int = 1
     let handlers = Dictionary<int, ButtonHandler>()
-    
+
     member _.Press() =
-        for handler in handlers.Values do
+        for handler in Array.ofSeq(handlers.Values) do
             handler()
 
     interface IText with

@@ -1,8 +1,8 @@
-module Fabulous.Tests.TestUI_ViewUpdaters
+module Tests.TestUI_ViewUpdaters
 
 open Fabulous
-open Test.Platform
-open Fabulous.Tests.TestUI_ViewNode
+open Tests.Platform
+open Tests.TestUI_ViewNode
 
 
 //let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChange[], target: obj) =
@@ -83,7 +83,7 @@ let updateContainerChildren (newValueOpt: Widget [] voption, target: obj) =
     match newValueOpt with
     | ValueNone -> container.Children.Clear()
     | ValueSome widgets ->
-        let viewNode = ViewNode.getViewNode target :?> ViewNode
+        let viewNode = ViewNode.getViewNode target
 
         for widget in widgets do
             container.Children.Add(Helpers.createViewForWidget viewNode.Context widget :?> TestViewElement)

@@ -1,7 +1,7 @@
-module Fabulous.Tests.TestUI_ViewNode
+module Tests.TestUI_ViewNode
 
 open Fabulous
-open Test.Platform
+open Tests.Platform
 
 type ViewNodeData(viewNode: ViewNode) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty

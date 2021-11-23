@@ -1,12 +1,12 @@
-module TestUI
+module Tests.TestUI_Widgets
 
 open System
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.Tests
-open Test.Platform
+open Tests
+open Tests.Platform
 open TestUI_Attributes
-open Fabulous.Tests.TestUI_ViewNode
+open Tests.TestUI_ViewNode
 
 
 
@@ -74,7 +74,7 @@ module Widgets =
                         let weakReference = WeakReference(view)
 
                         let viewNodeData =
-                            ViewNodeData(ViewNode(key, context, weakReference))
+                            ViewNodeData(ViewNode(key, context, id, weakReference))
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNodeData)
 
@@ -232,7 +232,12 @@ type View private () =
     static member inline Button<'msg>(text, msg) =
         ButtonWidgetBuilder<'msg>.Create (text, msg)
 
-    static member inline Stack children = StackWidgetBuilder.Create children
+//    static member inline Stack children = StackWidgetBuilder.Create children
+
+    static member inline Stack<'msg, 'a when 'a :> seq<IWidgetBuilder<'msg>>>(children: 'a) =
+        StackWidgetBuilder.Create children
+
+
 
 //    static member inline map (mapFn: 'childMsg -> 'msg) (widget: IWidget<'childMsg>) : IWidget<'msg> =
 //        let compiled = widget.Compile()

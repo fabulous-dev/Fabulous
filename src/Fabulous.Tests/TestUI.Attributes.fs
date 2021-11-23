@@ -1,7 +1,7 @@
-module Fabulous.Tests.TestUI_Attributes
+module Tests.TestUI_Attributes
 
 open Fabulous
-open Test.Platform
+open Tests.Platform
 
 module Attributes =
 
@@ -12,7 +12,6 @@ module Attributes =
             {
                 Key = key
                 Name = name
-                DefaultWith = fun () -> null
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateTarget =
@@ -34,7 +33,8 @@ module Attributes =
 
                         | ValueSome msg ->
                             let handler () =
-                                viewNodeData.ViewNode.Context.Dispatch msg
+                                (viewNodeData.ViewNode :> IViewNode)
+                                    .Context.Dispatch(msg)
 
                             let handlerId = btn.AddPressListener handler
                             viewNodeData.SetHandler<int>(key, ValueSome handlerId)
@@ -68,11 +68,11 @@ module Attributes =
 
     module Text =
         let Text =
-            Attributes.define<string> "Text" (fun () -> "") TestUI_ViewUpdaters.updateText
+            Attributes.define<string> "Text" TestUI_ViewUpdaters.updateText
 
     module TextStyle =
         let TextColor =
-            Attributes.define<string> "TextColor" (fun () -> "") TestUI_ViewUpdaters.updateTextColor
+            Attributes.define<string> "TextColor" TestUI_ViewUpdaters.updateTextColor
 
     module Container =
         let Children =
@@ -87,4 +87,4 @@ module Attributes =
 
     module Automation =
         let AutomationId =
-            Attributes.define<string> "AutomationId" (fun () -> "") TestUI_ViewUpdaters.updateAutomationId
+            Attributes.define<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
