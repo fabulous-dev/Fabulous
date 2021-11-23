@@ -101,7 +101,7 @@ group macosapp
 group gtkapp
   framework: net471
   source https://www.nuget.org/api/v2
-  nuget FSharp.Core
+  nuget FSharp.Core ~> 4.7
   nuget Xamarin.Forms ~> 5.0.0
   nuget Xamarin.Forms.Platform.GTK ~> 5.0.0
   nuget Xamarin.Forms.Maps ~> 5.0.0
