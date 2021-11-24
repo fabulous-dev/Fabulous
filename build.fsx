@@ -310,9 +310,14 @@ Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
 )
 
 Target.create "BuildFabulousStaticViewSamples" (fun _ ->
-    !! "Fabulous.StaticView/samples/**/*.fsproj"
-    |> removeIncompatiblePlatformProjects
-    |> dotnetBuild
+    if Environment.isLinux then 
+        !! "Fabulous.StaticView/samples/**/*.fsproj"
+        |> removeIncompatiblePlatformProjects
+        |> dotnetBuild
+    else
+        !! "Fabulous.StaticView/samples/**/*.fsproj"
+        |> removeIncompatiblePlatformProjects
+        |> msbuild
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
