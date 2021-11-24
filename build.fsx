@@ -294,9 +294,14 @@ Target.create "PackFabulousXamarinFormsExtensions" (fun _ ->
 )
 
 Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
-    !! "Fabulous.XamarinForms/samples/**/*.fsproj"
-    |> removeIncompatiblePlatformProjects
-    |> dotnetBuild
+    if Environment.isLinux then 
+        !! "Fabulous.XamarinForms/samples/**/*.fsproj"
+        |> removeIncompatiblePlatformProjects
+        |> dotnetBuild
+    else 
+        !! "Fabulous.XamarinForms/samples/**/*.fsproj"
+        |> removeIncompatiblePlatformProjects
+        |> msbuild
 )
 
 Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
