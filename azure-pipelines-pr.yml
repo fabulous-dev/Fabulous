@@ -5,30 +5,29 @@ pr:
 - v*
 
 jobs:
-
-- job: Linux
+- job: Windows
   pool:
-    vmImage: 'ubuntu-latest'
+    vmImage: 'windows-2019'
   steps:
-  - script: |
-      sudo apt-get update
-      sudo apt-get install fsharp
-    displayName: 'Install F#'
   - task: UseDotNet@2
-    displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
-      packageType: sdk
-      version: 3.x
+      version: 3.1.302
+  - script: .\build.cmd
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/TestResults/**/*.trx'
+      testRunTitle: '$(Agent.JobName)'
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.15'
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      version: 3.1.302
+  - script: ./azure-pipeline-osx-setup.sh
   - script: ./build.sh Test
-  - task: CopyFiles@1
-    inputs:
-      contents: ./build_output/?(*.nupkg|*.snupkg)
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      flattenFolders: true
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: $(Build.ArtifactStagingDirectory)
-      artifactName: Linux
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'VSTest'

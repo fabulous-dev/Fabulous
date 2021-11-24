@@ -11,6 +11,8 @@ jobs:
       sudo apt-get update
       sudo apt-get install fsharp
     displayName: 'Install F#'
+  - script: ./azure-pipeline-linux-setup.sh
+    displayName: 'Linux Setup'
   - task: UseDotNet@2
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
