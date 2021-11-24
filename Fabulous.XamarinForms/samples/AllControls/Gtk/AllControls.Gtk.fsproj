@@ -79,9 +79,6 @@
     <Reference Include="webkit-sharp">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\webkit-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\gtkapp\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
     </Reference>

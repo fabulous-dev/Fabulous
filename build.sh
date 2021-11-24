@@ -16,14 +16,14 @@ sudo apt install -y mono-xsp4
 sudo apt-get update -y
 sudo apt-get install -y gtk-sharp2
 
-dotnet tool restore
-if [ $# -eq 0 ]; then
-    dotnet fake build
-else
-    dotnet fake run build.fsx -t $@
-fi
+# dotnet tool restore
+# if [ $# -eq 0 ]; then
+#     dotnet fake build
+# else
+#     dotnet fake run build.fsx -t $@
+# fi
 
-# dotnet msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
+msbuild /Users/sergejdick/Projects/Fabulous/test/test.GTK/test.GTK.csproj -target:Build
 
 # dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
 
