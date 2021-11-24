@@ -16,18 +16,9 @@ export DOTNET_ROLL_FORWARD=Major
 sudo apt-get update -y
 sudo apt-get install -y gtk-sharp2
 
-# dotnet tool restore
-# if [ $# -eq 0 ]; then
-#     dotnet fake build
-# else
-#     dotnet fake run build.fsx -t $@
-# fi
-
-msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
-
-# dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
-
-# dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Rebuild
-# ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v14.0/FSharp/
-# ls /usr/lib/mono/xbuild/Microsoft/VisualStudio/v12.0/FSharp/
-# msbuild Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
+dotnet tool restore
+if [ $# -eq 0 ]; then
+    dotnet fake build
+else
+    dotnet fake run build.fsx -t $@
+fi
