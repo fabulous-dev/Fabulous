@@ -3,18 +3,19 @@
 # Allow FAKE to run on .NET Core 3.x
 export DOTNET_ROLL_FORWARD=Major
 
-# sudo apt install -y gnupg ca-certificates
-# sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-# echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-# sudo apt update -y
-# sudo apt install -y mono-devel
-# sudo apt install -y mono-complete
-# sudo apt install -y mono-dbg
-# sudo apt install -y referenceassemblies-pcl
-# sudo apt install -y ca-certificates-mono
-# sudo apt install -y mono-xsp4
+sudo apt install -y gnupg ca-certificates
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+sudo apt update -y
+sudo apt install -y mono-devel
+sudo apt install -y mono-complete
+sudo apt install -y mono-dbg
+sudo apt install -y referenceassemblies-pcl
+sudo apt install -y ca-certificates-mono
+sudo apt install -y mono-xsp4
 sudo apt-get update -y
 sudo apt-get install -y gtk-sharp2
+sudo apt-get install -y fsharp
 
 dotnet tool restore
 if [ $# -eq 0 ]; then
