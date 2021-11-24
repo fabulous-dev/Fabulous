@@ -23,7 +23,7 @@ sudo apt-get install -y gtk-sharp2
 #     dotnet fake run build.fsx -t $@
 # fi
 
-msbuild /Users/sergejdick/Projects/Fabulous/test/test.GTK/test.GTK.csproj -target:Build
+msbuild test/test.GTK/test.GTK.csproj -target:Build
 
 # dotnet build Fabulous.XamarinForms/samples/AllControls/Gtk/AllControls.Gtk.fsproj -target:Build
 
