@@ -41,6 +41,12 @@ module App =
     let init () =
         initModel (), []
 
+    let createStyleFor<'T when 'T :> BindableObject> setters =
+        let style = Style(typeof<'T>)
+        for property, value in setters do
+            style.Setters.Add(Setter(Property = property, Value = value))
+        style
+
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + model.Step }, []
@@ -57,6 +63,10 @@ module App =
                     Label(string model.Count)
                         .automationId("CountLabel")
                         .centerTextHorizontal()
+                        .style (
+                            createStyleFor [ Label.TextColorProperty, box Color.Green
+                                             Label.FontSizeProperty, box 24. ]
+                        )
 
                     Button("Increment", Increment)
                         .automationId("IncrementButton")

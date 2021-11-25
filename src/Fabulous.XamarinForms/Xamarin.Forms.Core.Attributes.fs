@@ -50,6 +50,7 @@ module View =
 
 module Label =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Label.TextProperty
+    let Style = Attributes.defineBindable<Style> Xamarin.Forms.Label.StyleProperty
     let HorizontalTextAlignment = Attributes.defineBindable<TextAlignment> Xamarin.Forms.Label.HorizontalTextAlignmentProperty
     let VerticalTextAlignment = Attributes.defineBindable<TextAlignment> Xamarin.Forms.Label.VerticalTextAlignmentProperty
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Label.FontSizeProperty
