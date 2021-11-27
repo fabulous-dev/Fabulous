@@ -58,52 +58,55 @@ module App =
 
     let view model =
         Application(
-            ContentPage("Counter",
-                VerticalStackLayout([
-                    Label(string model.Count)
-                        .automationId("CountLabel")
-                        .centerTextHorizontal()
-                        .style (
-                            createStyleFor [ Label.TextColorProperty, box Color.Green
-                                             Label.FontSizeProperty, box 24. ]
-                        )
-
-                    Button("Increment", Increment)
-                        .style(
-                            createStyleFor [ Button.BackgroundColorProperty, box Color.Green
-                                             Button.TextColorProperty, box Color.White ]
+            NavigationPage([
+                ContentPage("Counter",
+                    VerticalStackLayout([
+                        Label(string model.Count)
+                            .automationId("CountLabel")
+                            .centerTextHorizontal()
+                            .style (
+                                createStyleFor [ Label.TextColorProperty, box Color.Green
+                                                 Label.FontSizeProperty, box 24. ]
                             )
-                        .automationId("IncrementButton")
 
-                    Button("Decrement", Decrement)
-                        .automationId("DecrementButton")
-                        .alignStartVertical(expand = true)
+                        Button("Increment", Increment)
+                            .style(
+                                createStyleFor [ Button.BackgroundColorProperty, box Color.Green
+                                                 Button.TextColorProperty, box Color.White ]
+                                )
+                            .automationId("IncrementButton")
 
-                    HorizontalStackLayout([
-                        Label("Timer")
+                        Button("Decrement", Decrement)
+                            .automationId("DecrementButton")
+                            .alignStartVertical(expand = true)
 
-                        Switch(model.TimerOn, TimerToggled)
-                            .automationId("TimerSwitch")
+                        HorizontalStackLayout([
+                            Label("Timer")
+
+                            Switch(model.TimerOn, TimerToggled)
+                                .automationId("TimerSwitch")
+                        ])
+                            .paddingLayout(20.)
+                            .centerHorizontal()
+
+                        Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
+                            .automationId("StepSlider")
+                            .centerHorizontal()
+
+                        Label($"Step size: {model.Step}")
+                            .automationId("StepSizeLabel")
+                            .centerHorizontal()
+
+                        Button("Reset", Reset)
+                            .automationId("ResetButton")
+                            .isEnabled(model <> initModel ())
+                            .centerHorizontal()
                     ])
-                        .paddingLayout(20.)
-                        .centerHorizontal()
+                        .paddingLayout(30.)
+                        .centerVertical()
+            ).hasNavigationBar(false)
+            ])
 
-                    Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
-                        .automationId("StepSlider")
-                        .centerHorizontal()
-
-                    Label($"Step size: {model.Step}")
-                        .automationId("StepSizeLabel")
-                        .centerHorizontal()
-
-                    Button("Reset", Reset)
-                        .automationId("ResetButton")
-                        .isEnabled(model <> initModel ())
-                        .centerHorizontal()
-                ])
-                    .paddingLayout(30.)
-                    .centerVertical()
-            )
         )
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd

@@ -571,6 +571,14 @@ type ViewExtensions () =
     static member inline popped(this: NavigationPage<'msg>, value: 'msg) =
         this.AddScalarAttribute(NavigationPage.Popped.WithValue(fun _ -> box value))
 
+    [<Extension>]
+    static member inline hasNavigationBar(this: #IPageWidgetBuilder<'msg>, value: bool) =
+        this.AddScalarAttribute(NavigationPage.HasNavigationBar.WithValue(value))
+
+    [<Extension>]
+    static member inline hasBackButton(this: #IPageWidgetBuilder<'msg>, value: bool) =
+        this.AddScalarAttribute(NavigationPage.HasBackButton.WithValue(value))
+
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg>(mainPage) = Application<'msg>.Create(mainPage)
@@ -603,4 +611,3 @@ type View private () =
     static member inline ViewCell<'msg>(view) = ViewCell<'msg>.Create(view)
     static member inline ImageButton<'msg>(path: string, onClicked, aspect) = ImageButton<'msg>.Create(path, onClicked, aspect)
     static member inline TabbedPage<'msg>(title, children) = TabbedPage<'msg>.Create(title, children)
-            
