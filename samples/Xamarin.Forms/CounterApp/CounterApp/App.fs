@@ -69,8 +69,11 @@ module App =
                         )
 
                     Button("Increment", Increment)
+                        .style(
+                            createStyleFor [ Button.BackgroundColorProperty, box Color.Green
+                                             Button.TextColorProperty, box Color.White ]
+                            )
                         .automationId("IncrementButton")
-                        .textColor(Color.Red)
 
                     Button("Decrement", Decrement)
                         .automationId("DecrementButton")
