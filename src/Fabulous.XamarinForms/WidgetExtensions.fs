@@ -84,7 +84,11 @@ type AdditionalViewExtensions =
     [<Extension>]
     static member inline centerTextHorizontal(this: Label<_>) =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
-        
+
+    [<Extension>]
+    static member inline style(this: #IViewWidgetBuilder<'msg>, style: Xamarin.Forms.Style) =
+        this.AddScalarAttribute(NavigableElement.Style.WithValue(style))
+
     [<Extension>]
     static member inline centerTextVertical(this: Label<_>) =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))

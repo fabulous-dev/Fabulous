@@ -3,7 +3,6 @@
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
-open System.Collections.Generic
 
 module Application =
     let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
@@ -41,6 +40,9 @@ module VisualElement =
     let Height = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.HeightRequestProperty
     let Width = Attributes.defineBindable<float> Xamarin.Forms.VisualElement.WidthRequestProperty
     let IsVisible = Attributes.defineBindable<bool> Xamarin.Forms.VisualElement.IsVisibleProperty
+
+module NavigableElement =
+    let Style = Attributes.defineBindable<Style> Xamarin.Forms.NavigableElement.StyleProperty
 
 module View =
     let HorizontalOptions = Attributes.defineBindable<LayoutOptions> Xamarin.Forms.View.HorizontalOptionsProperty
