@@ -114,6 +114,8 @@ module NavigationPage =
     let Pages = Attributes.defineWidgetCollectionWithConverter "NavigationPage_Pages" ViewUpdaters.applyDiffNavigationPagePages ViewUpdaters.updateNavigationPagePages
     let BarBackgroundColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarBackgroundColorProperty
     let BarTextColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarTextColorProperty
+    let HasNavigationBar = Attributes.defineBindable<bool> Xamarin.Forms.NavigationPage.HasNavigationBarProperty
+    let HasBackButton = Attributes.defineBindable<bool> Xamarin.Forms.NavigationPage.HasBackButtonProperty
     let Popped = Attributes.defineEvent<NavigationEventArgs> ViewNode.getViewNode "NavigationPage_Popped" (fun target -> (target :?> Xamarin.Forms.NavigationPage).Popped)
 
 module Entry =
