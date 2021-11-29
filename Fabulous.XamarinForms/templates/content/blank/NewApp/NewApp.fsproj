@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
+    <PackageReference Include="Fabulous" Version="FabulousPkgsVersion" />
     <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
     <PackageReference Include="Fabulous.XamarinForms.LiveUpdate" Version="FabulousPkgsVersion" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
