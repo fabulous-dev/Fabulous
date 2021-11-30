@@ -6,6 +6,7 @@ open Fabulous.XamarinForms.XFAttributes
 open System.Runtime.CompilerServices
 open System.IO
 open Fabulous.Attributes
+open Xamarin.Forms
 
 module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
@@ -457,6 +458,15 @@ type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
 [<Extension>]
 type ViewExtensions () =
     [<Extension>]
+    static member inline onRequestedThemeChanged(this: #IApplicationWidgetBuilder<_>, fn: AppThemeChangedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.RequestedThemeChanged.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onPageAppearing(this: #IApplicationWidgetBuilder<_>, fn: Page -> 'msg) =
+        this.AddScalarAttribute(Application.PageAppearing.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onPageDisappearing(this: #IApplicationWidgetBuilder<_>, fn: Page -> 'msg) =
+        this.AddScalarAttribute(Application.PageDisappearing.WithValue(fn >> box))
+    [<Extension>]
     static member inline automationId(this: #IViewWidgetBuilder<_>, value: string) =
         this.AddScalarAttribute(Element.AutomationId.WithValue(value))
     [<Extension>]
@@ -555,6 +565,12 @@ type ViewExtensions () =
     [<Extension>]
     static member inline onAppearing(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
         this.AddScalarAttribute(Page.Appearing.WithValue(value))
+    [<Extension>]
+    static member inline onDisappearing(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Page.Disappearing.WithValue(value))
+    [<Extension>]
+    static member inline onLayoutChanged(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Page.LayoutChanged.WithValue(value))
     [<Extension>]
     static member inline cancelButtonColor(this: SearchBar<_>, value: Xamarin.Forms.Color) =
         this.AddScalarAttribute(SearchBar.CancelButtonColor.WithValue(value))

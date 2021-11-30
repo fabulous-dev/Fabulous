@@ -18,6 +18,8 @@ module App =
         | StepChanged of double
         | TimerToggled of bool
         | TimedTick
+        | OsThemeChanged of OSAppTheme
+        | PageAppearing of Page
 
     type CmdMsg =
         | TickTimer
@@ -55,6 +57,12 @@ module App =
         | StepChanged n -> { model with Step = int (n + 0.5) }, []
         | TimerToggled on -> { model with TimerOn = on }, [ if on then TickTimer ]
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, [ TickTimer ] else model, []
+        | OsThemeChanged osAppTheme ->
+            printfn $"{osAppTheme}"
+            model, []
+        | PageAppearing page ->
+            printfn $"{page.Title}"
+            model, []
 
     let view model =
         Application(
@@ -107,6 +115,7 @@ module App =
             ).hasNavigationBar(false)
             ])
 
-        )
+        ).onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)
+         .onPageAppearing(PageAppearing)
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd
