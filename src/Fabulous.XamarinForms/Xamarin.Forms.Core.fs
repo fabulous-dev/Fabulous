@@ -457,6 +457,15 @@ type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
 
 [<Extension>]
 type ViewExtensions () =
+
+    [<Extension>]
+    static member inline userAppTheme(this: #IApplicationWidgetBuilder<_>, value: OSAppTheme) =
+        this.AddScalarAttribute(Application.UserAppTheme.WithValue(value))
+
+    [<Extension>]
+    static member inline resources(this: #IApplicationWidgetBuilder<_>, value: ResourceDictionary) =
+        this.AddScalarAttribute(Application.Resources.WithValue(value))
+
     [<Extension>]
     static member inline onRequestedThemeChanged(this: #IApplicationWidgetBuilder<_>, fn: AppThemeChangedEventArgs -> 'msg) =
         this.AddScalarAttribute(Application.RequestedThemeChanged.WithValue(fn >> box))
@@ -469,6 +478,7 @@ type ViewExtensions () =
     [<Extension>]
     static member inline automationId(this: #IViewWidgetBuilder<_>, value: string) =
         this.AddScalarAttribute(Element.AutomationId.WithValue(value))
+
     [<Extension>]
     static member inline isEnabled(this: #IViewWidgetBuilder<_>, value: bool) =
         this.AddScalarAttribute(VisualElement.IsEnabled.WithValue(value))

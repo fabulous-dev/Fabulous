@@ -49,6 +49,15 @@ module App =
             style.Setters.Add(Setter(Property = property, Value = value))
         style
 
+    let private resources =
+        let resources = ResourceDictionary()
+        resources.Add(
+            // make sure you define the Element type for the Style so the global style can be applied
+            createStyleFor<Label>
+                [ Label.TextColorProperty, box Color.Green
+                  Label.FontSizeProperty, box 24. ])
+        resources
+
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + model.Step }, []
@@ -115,7 +124,8 @@ module App =
             ).hasNavigationBar(false)
             ])
 
-        ).onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)
+        )
+         .resources(resources)
          .onPageAppearing(PageAppearing)
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd

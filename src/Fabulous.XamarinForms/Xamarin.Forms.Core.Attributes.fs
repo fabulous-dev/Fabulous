@@ -6,7 +6,14 @@ open Xamarin.Forms
 
 module Application =
     let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
-    let Resources = Attributes.defineWidget ViewNode.getViewNode "Application_Resources" (fun target -> (target :?> Xamarin.Forms.Application).Resources) (fun target value -> (target :?> Xamarin.Forms.Application).Resources <- unbox value)
+    let Resources = Attributes.define<ResourceDictionary> "Application_Resources" (fun (newValueOpt, target) ->
+        let application = target :?> Xamarin.Forms.Application
+        let value =
+            match newValueOpt with
+            | ValueNone -> application.Resources
+            | ValueSome v -> v
+        application.Resources <- value)
+
     let UserAppTheme = Attributes.define<OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, target) ->
         let application = target :?> Xamarin.Forms.Application
         let value =
