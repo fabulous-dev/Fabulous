@@ -461,20 +461,24 @@ type ViewExtensions () =
     [<Extension>]
     static member inline userAppTheme(this: #IApplicationWidgetBuilder<_>, value: OSAppTheme) =
         this.AddScalarAttribute(Application.UserAppTheme.WithValue(value))
-
     [<Extension>]
     static member inline resources(this: #IApplicationWidgetBuilder<_>, value: ResourceDictionary) =
         this.AddScalarAttribute(Application.Resources.WithValue(value))
-
     [<Extension>]
     static member inline onRequestedThemeChanged(this: #IApplicationWidgetBuilder<_>, fn: AppThemeChangedEventArgs -> 'msg) =
         this.AddScalarAttribute(Application.RequestedThemeChanged.WithValue(fn >> box))
     [<Extension>]
-    static member inline onPageAppearing(this: #IApplicationWidgetBuilder<_>, fn: Page -> 'msg) =
-        this.AddScalarAttribute(Application.PageAppearing.WithValue(fn >> box))
+    static member inline onModalPopped(this: #IApplicationWidgetBuilder<_>, fn: ModalPoppedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPopped.WithValue(fn >> box))
     [<Extension>]
-    static member inline onPageDisappearing(this: #IApplicationWidgetBuilder<_>, fn: Page -> 'msg) =
-        this.AddScalarAttribute(Application.PageDisappearing.WithValue(fn >> box))
+    static member inline onModalPopping(this: #IApplicationWidgetBuilder<_>, fn: ModalPoppingEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPopping.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPushed(this: #IApplicationWidgetBuilder<_>, fn: ModalPushedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPushed.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPushing(this: #IApplicationWidgetBuilder<_>, fn: ModalPushingEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPushing.WithValue(fn >> box))
     [<Extension>]
     static member inline automationId(this: #IViewWidgetBuilder<_>, value: string) =
         this.AddScalarAttribute(Element.AutomationId.WithValue(value))

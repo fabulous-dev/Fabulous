@@ -13,7 +13,6 @@ module Application =
             | ValueNone -> application.Resources
             | ValueSome v -> v
         application.Resources <- value)
-
     let UserAppTheme = Attributes.define<OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, target) ->
         let application = target :?> Xamarin.Forms.Application
         let value =
@@ -21,14 +20,11 @@ module Application =
             | ValueNone -> OSAppTheme.Unspecified
             | ValueSome v -> v
         application.UserAppTheme <- value)
-
+    let RequestedThemeChanged = Attributes.defineEvent<AppThemeChangedEventArgs> ViewNode.getViewNode "Application_RequestedThemeChanged" (fun target -> (target :?> Xamarin.Forms.Application).RequestedThemeChanged)
     let ModalPopped = Attributes.defineEvent<ModalPoppedEventArgs> ViewNode.getViewNode "Application_ModalPopped" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopped)
     let ModalPopping = Attributes.defineEvent<ModalPoppingEventArgs> ViewNode.getViewNode "Application_ModalPopping" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopping)
     let ModalPushed = Attributes.defineEvent<ModalPushedEventArgs> ViewNode.getViewNode "Application_ModalPushed" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushed)
     let ModalPushing = Attributes.defineEvent<ModalPushingEventArgs> ViewNode.getViewNode "Application_ModalPushing" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushing)
-    let PageAppearing = Attributes.defineEvent<Page> ViewNode.getViewNode "Application_PageAppearing" (fun target -> (target :?> Xamarin.Forms.Application).PageAppearing)
-    let PageDisappearing = Attributes.defineEvent<Page> ViewNode.getViewNode "Application_PageDisappearing" (fun target -> (target :?> Xamarin.Forms.Application).PageDisappearing)
-    let RequestedThemeChanged = Attributes.defineEvent<AppThemeChangedEventArgs> ViewNode.getViewNode "Application_RequestedThemeChanged" (fun target -> (target :?> Xamarin.Forms.Application).RequestedThemeChanged)
 
 module Page =
     let BackgroundImageSource = Attributes.defineBindable<ImageSource> Xamarin.Forms.Page.BackgroundImageSourceProperty
