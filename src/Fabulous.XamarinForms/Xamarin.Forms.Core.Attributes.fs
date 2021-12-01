@@ -7,7 +7,14 @@ open Xamarin.Forms
 module Application =
     let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
     let Resources = Attributes.defineWidget ViewNode.getViewNode "Application_Resources" (fun target -> (target :?> Xamarin.Forms.Application).Resources) (fun target value -> (target :?> Xamarin.Forms.Application).Resources <- unbox value)
-    let UserAppTheme = Attributes.defineWidget ViewNode.getViewNode "Application_UserAppTheme" (fun target -> (target :?> Xamarin.Forms.Application).UserAppTheme) (fun target value -> (target :?> Xamarin.Forms.Application).UserAppTheme <- unbox value)
+    let UserAppTheme = Attributes.define<OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, target) ->
+        let application = target :?> Xamarin.Forms.Application
+        let value =
+            match newValueOpt with
+            | ValueNone -> OSAppTheme.Unspecified
+            | ValueSome v -> v
+        application.UserAppTheme <- value)
+
     let ModalPopped = Attributes.defineEvent<ModalPoppedEventArgs> ViewNode.getViewNode "Application_ModalPopped" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopped)
     let ModalPopping = Attributes.defineEvent<ModalPoppingEventArgs> ViewNode.getViewNode "Application_ModalPopping" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopping)
     let ModalPushed = Attributes.defineEvent<ModalPushedEventArgs> ViewNode.getViewNode "Application_ModalPushed" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushed)
