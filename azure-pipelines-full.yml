@@ -5,7 +5,7 @@ trigger:
 jobs:
 - job: Linux
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - script: |
       sudo apt-get update
@@ -15,6 +15,8 @@ jobs:
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
       version: 3.1.302
+  - script: ./azure-pipeline-linux-setup.sh
+    displayName: 'Linux Setup'
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
