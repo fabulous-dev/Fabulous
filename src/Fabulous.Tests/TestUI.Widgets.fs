@@ -36,6 +36,21 @@ type IWidgetExtensions() =
 
         result
 
+
+    [<Extension>]
+    static member inline AddScalar_(this: ^T :> IWidgetBuilder, attr: ScalarAttribute) =
+        let attribs = this.ScalarAttributes
+        let attribs2 = Array.zeroCreate(attribs.Length + 1)
+        Array.blit attribs 0 attribs2 0 attribs.Length
+        attribs2.[attribs.Length] <- attr
+
+        let result =
+            (^T: (new : ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute [] -> ^T) (attribs2,
+                                                                                                       this.WidgetAttributes,
+                                                                                                       this.WidgetCollectionAttributes))
+
+        result
+
     [<Extension>]
     static member inline AddScalarAttributes(this: ^T :> IWidgetBuilder, attrs: ScalarAttribute []) =
         match attrs with
@@ -74,7 +89,7 @@ module Widgets =
                         let weakReference = WeakReference(view)
 
                         let viewNodeData =
-                            ViewNodeData(ViewNode(key, context, id, weakReference))
+                            ViewNodeData(ViewNode(key, context, weakReference))
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNodeData)
 
@@ -232,7 +247,7 @@ type View private () =
     static member inline Button<'msg>(text, msg) =
         ButtonWidgetBuilder<'msg>.Create (text, msg)
 
-//    static member inline Stack children = StackWidgetBuilder.Create children
+    //    static member inline Stack children = StackWidgetBuilder.Create children
 
     static member inline Stack<'msg, 'a when 'a :> seq<IWidgetBuilder<'msg>>>(children: 'a) =
         StackWidgetBuilder.Create children
@@ -289,7 +304,7 @@ module Run =
             {
                 CanReuseView = fun a b -> a.Key = b.Key
                 Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-            //                Ancestors = []
+                Ancestors = []
             }
 
         member x.ProcessMessage(msg: 'msg) =
@@ -326,3 +341,7 @@ module Run =
             state <- Some(model, view)
 
             view :?> TestViewElement
+
+module View =
+    let inline map (fn: 'oldMsg -> 'newMsg) (this: ^T :> IWidgetBuilder<'oldMsg>) : ^U :> IWidgetBuilder<'newMsg> =
+        (^T: (member MapMsg : ('oldMsg -> 'newMsg) -> 'U) (this, fn))

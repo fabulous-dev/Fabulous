@@ -168,13 +168,19 @@ module SimpleStackTests =
 
         // modify the initial one
         instance.ProcessMessage(ChangeText(1, "just 1"))
-        let label = stack.Children.[1] :?> TestLabel :> IText
+
+        let label =
+            stack.Children.[1] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "just 1")
 
         // delete the one in front
         instance.ProcessMessage(Delete 2)
         Assert.AreEqual(stack.Children.Count, 1)
-        let label = stack.Children.[0] :?> TestLabel :> IText
+
+        let label =
+            stack.Children.[0] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "just 1")
 
 
@@ -201,56 +207,56 @@ module SimpleStackTests =
 //        Assert.AreEqual([], res, "this should fail for now, not a real test")
 //        ()
 //
-//module MapViewTests =
-//    type ParentMsg = Add of int
-//
-//    type ChildMsg =
-//        | AddOne
-//        | RemoveTwo
-//
-//    type Model = int
-//
-//    let update msg model =
-//        match msg with
-//        | Add value -> model + value
-//
-//    let mapMsg childMsg =
-//        match childMsg with
-//        | AddOne -> Add 1
-//        | RemoveTwo -> Add -2
-//
-//    let view model =
-//        Stack(
-//            [
-//                View.map mapMsg (Button("+1", AddOne).automationId("add"))
-//                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
-//                Label(model.ToString()).automationId("label")
-//            ]
-//        )
-//
-//    let init () = 0
-//
-//    [<Test>]
-//    let SketchAPI () =
-//        let program =
-//            StatefulWidget.mkSimpleView init update view
-//
-//        let instance = Run.Instance program
-//        let tree = (instance.Start())
-//
-//        let addBtn = find<TestButton> tree "add"
-//        let removeBtn = find<TestButton> tree "remove"
-//        let label = find<TestLabel> tree "label"
-//
-//        Assert.AreEqual(label.Text, "0")
-//
-//        addBtn.Press()
-//        Assert.AreEqual(label.Text, "1")
-//
-//        removeBtn.Press()
-//        Assert.AreEqual(label.Text, "-1")
-//
-//
+module MapViewTests =
+    type ParentMsg = Add of int
+
+    type ChildMsg =
+        | AddOne
+        | RemoveTwo
+
+    type Model = int
+
+    let update msg model =
+        match msg with
+        | Add value -> model + value
+
+    let mapMsg childMsg =
+        match childMsg with
+        | AddOne -> Add 1
+        | RemoveTwo -> Add -2
+
+    let view model =
+        Stack(
+            [
+                Widget.map mapMsg (Button("+1", AddOne).automationId("add"))
+                Widget.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
+                Label(model.ToString()).automationId("label")
+            ]
+        )
+
+    let init () = 0
+
+    [<Test>]
+    let SketchAPI () =
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = (instance.Start())
+
+        let addBtn = find<TestButton> tree "add"
+        let removeBtn = find<TestButton> tree "remove"
+        let label = find<TestLabel> tree "label"
+
+        Assert.AreEqual(label.Text, "0")
+
+        addBtn.Press()
+        Assert.AreEqual(label.Text, "1")
+
+        removeBtn.Press()
+        Assert.AreEqual(label.Text, "-1")
+
+
 //
 //
 //    [<Test>]

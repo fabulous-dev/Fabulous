@@ -15,7 +15,7 @@ module Attributes =
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateTarget =
-                    fun (newValueOpt, target) ->
+                    fun (newValueOpt, _viewNode, target) ->
 
                         let viewNodeData =
                             (target :?> TestViewElement)

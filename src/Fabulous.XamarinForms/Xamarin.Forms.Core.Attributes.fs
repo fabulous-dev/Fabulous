@@ -14,11 +14,11 @@ module Page =
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Page.PaddingProperty
     let Title = Attributes.defineBindable<string> Xamarin.Forms.Page.TitleProperty
     let ToolbarItems = Attributes.defineWidgetCollection<Xamarin.Forms.ToolbarItem> ViewNode.getViewNode "Page_ToolbarItems" (fun target -> (target :?> Xamarin.Forms.Page).ToolbarItems)
-    let Appearing = Attributes.defineEventNoArg ViewNode.getViewNode "Page_Appearing" (fun target -> (target :?> Xamarin.Forms.Page).Appearing)
+    let Appearing = Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Xamarin.Forms.Page).Appearing)
 
 module ContentPage =
     let Content = Attributes.defineBindableWidget Xamarin.Forms.ContentPage.ContentProperty
-    let SizeAllocated = Attributes.defineEvent<SizeAllocatedEventArgs> ViewNode.getViewNode "ContentPage_SizeAllocated" (fun target -> (target :?> FabulousContentPage).SizeAllocated)
+    let SizeAllocated = Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabulousContentPage).SizeAllocated)
 
 module Layout =
     let Padding = Attributes.defineBindable<Thickness> Xamarin.Forms.Layout.PaddingProperty
@@ -62,23 +62,23 @@ module Label =
 
 module Button =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Button.TextProperty
-    let Clicked = Attributes.defineEventNoArg ViewNode.getViewNode "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)
+    let Clicked = Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Xamarin.Forms.Button).Clicked)
     let TextColor = Attributes.defineAppThemeBindable<Color> Xamarin.Forms.Button.TextColorProperty
     let FontSize = Attributes.defineBindable<double> Xamarin.Forms.Button.FontSizeProperty
     
 module ImageButton =
     let Source = Attributes.defineBindable<ImageSource> Xamarin.Forms.ImageButton.SourceProperty
     let Aspect = Attributes.defineBindable<Aspect> Xamarin.Forms.ImageButton.AspectProperty
-    let Clicked = Attributes.defineEventNoArg ViewNode.getViewNode "ImageButton_Clicked" (fun target -> (target :?> Xamarin.Forms.ImageButton).Clicked)
+    let Clicked = Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> Xamarin.Forms.ImageButton).Clicked)
 
 module Switch =
     let IsToggled = Attributes.defineBindable<bool> Xamarin.Forms.Switch.IsToggledProperty
-    let Toggled = Attributes.defineEvent<ToggledEventArgs> ViewNode.getViewNode "Switch_Toggled" (fun target -> (target :?> Xamarin.Forms.Switch).Toggled)
+    let Toggled = Attributes.defineEvent<ToggledEventArgs> "Switch_Toggled" (fun target -> (target :?> Xamarin.Forms.Switch).Toggled)
 
 module Slider =
     let MinimumMaximum = Attributes.define<float * float> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Slider.ValueProperty
-    let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> ViewNode.getViewNode "Slider_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Slider).ValueChanged)
+    let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> "Slider_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Slider).ValueChanged)
 
 module ActivityIndicator =
     let IsRunning = Attributes.defineBindable<bool> Xamarin.Forms.ActivityIndicator.IsRunningProperty
@@ -88,7 +88,7 @@ module ContentView =
 
 module RefreshView =
     let IsRefreshing = Attributes.defineBindable<bool> Xamarin.Forms.RefreshView.IsRefreshingProperty
-    let Refreshing = Attributes.defineEventNoArg ViewNode.getViewNode "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
+    let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
     let Content = Attributes.defineWidget ViewNode.getViewNode "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- unbox value)
@@ -116,31 +116,31 @@ module NavigationPage =
     let BarTextColor = Attributes.defineBindable<Color> Xamarin.Forms.NavigationPage.BarTextColorProperty
     let HasNavigationBar = Attributes.defineBindable<bool> Xamarin.Forms.NavigationPage.HasNavigationBarProperty
     let HasBackButton = Attributes.defineBindable<bool> Xamarin.Forms.NavigationPage.HasBackButtonProperty
-    let Popped = Attributes.defineEvent<NavigationEventArgs> ViewNode.getViewNode "NavigationPage_Popped" (fun target -> (target :?> Xamarin.Forms.NavigationPage).Popped)
+    let Popped = Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Popped" (fun target -> (target :?> Xamarin.Forms.NavigationPage).Popped)
 
 module Entry =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Entry.TextProperty
-    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> ViewNode.getViewNode "Entry_TextChanged" (fun target -> (target :?> Xamarin.Forms.Entry).TextChanged)
+    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> "Entry_TextChanged" (fun target -> (target :?> Xamarin.Forms.Entry).TextChanged)
     let Placeholder = Attributes.defineBindable<string> Xamarin.Forms.Entry.PlaceholderProperty
     let Keyboard = Attributes.defineBindable<Keyboard> Xamarin.Forms.Entry.KeyboardProperty
 
 module TapGestureRecognizer =
-    let Tapped = Attributes.defineEventNoArg ViewNode.getViewNode "TapGestureRecognizer_Tapped" (fun target -> (target :?> Xamarin.Forms.TapGestureRecognizer).Tapped)
+    let Tapped = Attributes.defineEventNoArg "TapGestureRecognizer_Tapped" (fun target -> (target :?> Xamarin.Forms.TapGestureRecognizer).Tapped)
 
 module SearchBar =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.SearchBar.TextProperty
     let CancelButtonColor = Attributes.defineBindable<Color> Xamarin.Forms.SearchBar.CancelButtonColorProperty
-    let SearchButtonPressed = Attributes.defineEventNoArg ViewNode.getViewNode "SearchBar_SearchButtonPressed" (fun target -> (target :?> Xamarin.Forms.SearchBar).SearchButtonPressed)
+    let SearchButtonPressed = Attributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> Xamarin.Forms.SearchBar).SearchButtonPressed)
 
 module InputView =
-    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> ViewNode.getViewNode "InputView_TextChanged" (fun target -> (target :?> Xamarin.Forms.InputView).TextChanged)
+    let TextChanged = Attributes.defineEvent<TextChangedEventArgs> "InputView_TextChanged" (fun target -> (target :?> Xamarin.Forms.InputView).TextChanged)
 
 module MenuItem =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.MenuItem.TextProperty
-    let Clicked = Attributes.defineEventNoArg ViewNode.getViewNode "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)
+    let Clicked = Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)
 
 module ToolbarItem =
-    let Order = Attributes.define<ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, target) ->
+    let Order = Attributes.define<ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, _viewNode, target) ->
         let toolbarItem = target :?> Xamarin.Forms.ToolbarItem
         match newValueOpt with
         | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default

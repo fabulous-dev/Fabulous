@@ -25,7 +25,14 @@ module Runners =
 
         member _.Key = key
         member _.Program = program
-        member _.ViewTreeContext = { Dispatch = unbox >> processMsg; CanReuseView = program.CanReuseView }
+
+        member _.ViewTreeContext =
+            {
+                Dispatch = unbox >> processMsg
+                CanReuseView = program.CanReuseView
+                Ancestors = []
+            }
+
         member _.Start(arg) = start arg
         member _.Pause() = ()
         member _.Restart() = ()
@@ -43,7 +50,15 @@ module Runners =
 module ViewAdapters =
     open Runners
 
-    type ViewAdapter<'model>(key: ViewAdapterKey, stateKey: StateKey, view: 'model -> Widget, context: ViewTreeContext, getViewNode: obj -> IViewNode, canReuseView: Widget -> Widget -> bool) as this =
+    type ViewAdapter<'model>
+        (
+            key: ViewAdapterKey,
+            stateKey: StateKey,
+            view: 'model -> Widget,
+            context: ViewTreeContext,
+            getViewNode: obj -> IViewNode,
+            canReuseView: Widget -> Widget -> bool
+        ) as this =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
@@ -70,7 +85,7 @@ module ViewAdapters =
 
                 // TODO handle the case when Type of the widget changes
                 Reconciler.update getViewNode canReuseView (ValueSome prevWidget) currentWidget _root
-                
+
 
         member _.Dispose() = _stateSubscription.Dispose()
 
@@ -84,7 +99,14 @@ module ViewAdapters =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
-            new ViewAdapter<'model>(key, runner.Key, runner.Program.View, runner.ViewTreeContext, getViewNode, canReuseView)
+            new ViewAdapter<'model>(
+                key,
+                runner.Key,
+                runner.Program.View,
+                runner.ViewTreeContext,
+                getViewNode,
+                canReuseView
+            )
 
         ViewAdapterStore.set key viewAdapter
         viewAdapter

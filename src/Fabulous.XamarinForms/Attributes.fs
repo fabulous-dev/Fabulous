@@ -32,7 +32,7 @@ module Attributes =
             bindableProperty.PropertyName
             convert
             compare
-            (fun (newValueOpt, target) ->
+            (fun (newValueOpt, _node, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v)
@@ -46,7 +46,7 @@ module Attributes =
             bindableProperty.PropertyName
             id
             ScalarAttributeComparers.equalityCompare
-            (fun (newValueOpt, target) ->
+            (fun (newValueOpt, _node, target) ->
                 match newValueOpt with
                 | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
                 | ValueSome { Light = light; Dark = ValueNone } -> (target :?> BindableObject).SetValue(bindableProperty, light)
