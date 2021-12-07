@@ -1,7 +1,6 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
-open Fabulous.XamarinForms.Widgets
 
 module Program =
     let private define<'arg, 'model, 'msg, 'view when 'view :> IWidgetBuilder<'msg>> (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> 'view) =
