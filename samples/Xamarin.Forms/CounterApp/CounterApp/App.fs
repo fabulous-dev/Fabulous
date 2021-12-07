@@ -18,6 +18,7 @@ module App =
         | StepChanged of double
         | TimerToggled of bool
         | TimedTick
+        | OsThemeChanged of OSAppTheme
 
     type CmdMsg =
         | TickTimer
@@ -47,6 +48,15 @@ module App =
             style.Setters.Add(Setter(Property = property, Value = value))
         style
 
+    let private resources =
+        let resources = ResourceDictionary()
+        resources.Add(
+            // make sure you define the Element type for the Style so the global style can be applied
+            createStyleFor<Label>
+                [ Label.TextColorProperty, box Color.Green
+                  Label.FontSizeProperty, box 24. ])
+        resources
+
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + model.Step }, []
@@ -55,6 +65,9 @@ module App =
         | StepChanged n -> { model with Step = int (n + 0.5) }, []
         | TimerToggled on -> { model with TimerOn = on }, [ if on then TickTimer ]
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, [ TickTimer ] else model, []
+        | OsThemeChanged osAppTheme ->
+            printfn $"{osAppTheme}"
+            model, []
 
     let view model =
         Application(
@@ -106,7 +119,8 @@ module App =
                         .centerVertical()
             ).hasNavigationBar(false)
             ])
-
         )
+         .onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)
+         .resources(resources)
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd

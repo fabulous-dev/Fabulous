@@ -110,6 +110,18 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Layout.Padding.WithValue(Thickness(value)))
 
     [<Extension>]
+    static member inline cascadeInputTransparent(this: #ILayoutWidgetBuilder<_>, value: bool) =
+        this.AddScalarAttribute(Layout.CascadeInputTransparent.WithValue(value))
+
+    [<Extension>]
+    static member inline isClippedToBounds(this: #ILayoutWidgetBuilder<_>, value: bool) =
+        this.AddScalarAttribute(Layout.IsClippedToBounds.WithValue(value))
+
+    [<Extension>]
+    static member inline onLayoutChanged(this: #ILayoutWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Layout.LayoutChanged.WithValue(value))
+
+    [<Extension>]
     static member inline ignoreSafeArea(this: #IPageWidgetBuilder<_>) =
         this.AddScalarAttribute(AdditionalAttributes.iOS.UseSafeArea.WithValue(false))
         
@@ -127,7 +139,6 @@ type AdditionalViewExtensions =
             match width with None -> () | Some v -> VisualElement.Width.WithValue(v)
             match height with None -> () | Some v -> VisualElement.Height.WithValue(v)
         |])
-
     
     [<Extension>]
     static member inline padding(this: #ILabelWidgetBuilder<_>, left: float, top: float, right: float, bottom: float) =

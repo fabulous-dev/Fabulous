@@ -6,6 +6,7 @@ open Fabulous.XamarinForms.XFAttributes
 open System.Runtime.CompilerServices
 open System.IO
 open Fabulous.Attributes
+open Xamarin.Forms
 
 module ViewHelpers =
     let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
@@ -456,9 +457,32 @@ type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
 
 [<Extension>]
 type ViewExtensions () =
+
+    [<Extension>]
+    static member inline userAppTheme(this: #IApplicationWidgetBuilder<_>, value: OSAppTheme) =
+        this.AddScalarAttribute(Application.UserAppTheme.WithValue(value))
+    [<Extension>]
+    static member inline resources(this: #IApplicationWidgetBuilder<_>, value: ResourceDictionary) =
+        this.AddScalarAttribute(Application.Resources.WithValue(value))
+    [<Extension>]
+    static member inline onRequestedThemeChanged(this: #IApplicationWidgetBuilder<_>, fn: AppThemeChangedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.RequestedThemeChanged.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPopped(this: #IApplicationWidgetBuilder<_>, fn: ModalPoppedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPopped.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPopping(this: #IApplicationWidgetBuilder<_>, fn: ModalPoppingEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPopping.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPushed(this: #IApplicationWidgetBuilder<_>, fn: ModalPushedEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPushed.WithValue(fn >> box))
+    [<Extension>]
+    static member inline onModalPushing(this: #IApplicationWidgetBuilder<_>, fn: ModalPushingEventArgs -> 'msg) =
+        this.AddScalarAttribute(Application.ModalPushing.WithValue(fn >> box))
     [<Extension>]
     static member inline automationId(this: #IViewWidgetBuilder<_>, value: string) =
         this.AddScalarAttribute(Element.AutomationId.WithValue(value))
+
     [<Extension>]
     static member inline isEnabled(this: #IViewWidgetBuilder<_>, value: bool) =
         this.AddScalarAttribute(VisualElement.IsEnabled.WithValue(value))
@@ -555,6 +579,12 @@ type ViewExtensions () =
     [<Extension>]
     static member inline onAppearing(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
         this.AddScalarAttribute(Page.Appearing.WithValue(value))
+    [<Extension>]
+    static member inline onDisappearing(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Page.Disappearing.WithValue(value))
+    [<Extension>]
+    static member inline onLayoutChanged(this: #IPageWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Page.LayoutChanged.WithValue(value))
     [<Extension>]
     static member inline cancelButtonColor(this: SearchBar<_>, value: Xamarin.Forms.Color) =
         this.AddScalarAttribute(SearchBar.CancelButtonColor.WithValue(value))
