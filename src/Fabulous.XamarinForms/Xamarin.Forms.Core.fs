@@ -34,7 +34,7 @@ type [<Struct>] Application<'msg> (attrs: AttributesBuilder) =
         member x.Compile() = attrs.Build(key)
 
 type [<Struct>] ContentPage<'msg> (attrs: AttributesBuilder) =
-    static let key = Widgets.register<Fabulous.XamarinForms.FabulousContentPage>()
+    static let key = Widgets.register<FabulousContentPage>()
 
     member _.Builder = attrs
 
@@ -166,8 +166,8 @@ type [<Struct>] Slider<'msg> (attrs: AttributesBuilder) =
                     Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
 
                     match struct (min, max) with
-                    | (None, None) -> ()
-                    | (Some minV, Some maxV) -> Slider.MinimumMaximum.WithValue(minV, maxV)
+                    | None, None -> ()
+                    | Some minV, Some maxV -> Slider.MinimumMaximum.WithValue(minV, maxV)
                     | _ -> failwith "Both min and max are required"
                 |],
                 [||],

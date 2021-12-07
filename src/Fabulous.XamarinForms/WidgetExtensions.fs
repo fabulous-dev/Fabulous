@@ -86,7 +86,7 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
 
     [<Extension>]
-    static member inline style(this: #IViewWidgetBuilder<'msg>, style: Xamarin.Forms.Style) =
+    static member inline style(this: #IViewWidgetBuilder<'msg>, style: Style) =
         this.AddScalarAttribute(NavigableElement.Style.WithValue(style))
 
     [<Extension>]
@@ -94,15 +94,15 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: Label<_>, ?size: double, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
+    static member inline font(this: Label<_>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
         this.AddScalarAttributes([|
             match size with None -> () | Some v -> Label.FontSize.WithValue(v)
-            match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Xamarin.Forms.Label>))
+            match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])
         
     [<Extension>]
-    static member inline font(this: Button<_>, value: Xamarin.Forms.NamedSize) =
+    static member inline font(this: Button<_>, value: NamedSize) =
         this.AddScalarAttribute(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
 
     [<Extension>]
