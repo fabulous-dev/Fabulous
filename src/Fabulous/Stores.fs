@@ -1,9 +1,5 @@
 ﻿namespace Fabulous
 
-/// Dev notes:
-///
-/// This file contains all the instances Fabulous needs to keep in memory
-
 open System.Collections.Generic
 open Fabulous
 

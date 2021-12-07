@@ -10,7 +10,7 @@ type IScalarAttributeDefinition =
     inherit IAttributeDefinition
     abstract member CompareBoxed: a: obj * b: obj -> ScalarAttributeComparison
 
-/// Attribute definiton for scalar properties
+/// Attribute definition for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType> =
     { Key: AttributeKey
       Name: string

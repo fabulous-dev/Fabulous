@@ -86,7 +86,7 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
 
     [<Extension>]
-    static member inline style(this: #IViewWidgetBuilder<'msg>, style: Xamarin.Forms.Style) =
+    static member inline style(this: #IViewWidgetBuilder<'msg>, style: Style) =
         this.AddScalarAttribute(NavigableElement.Style.WithValue(style))
 
     [<Extension>]
@@ -94,20 +94,32 @@ type AdditionalViewExtensions =
         this.AddScalarAttribute(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: Label<_>, ?size: double, ?namedSize: Xamarin.Forms.NamedSize, ?attributes: FontAttributes) =
+    static member inline font(this: Label<_>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
         this.AddScalarAttributes([|
             match size with None -> () | Some v -> Label.FontSize.WithValue(v)
-            match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Xamarin.Forms.Label>))
+            match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])
         
     [<Extension>]
-    static member inline font(this: Button<_>, value: Xamarin.Forms.NamedSize) =
+    static member inline font(this: Button<_>, value: NamedSize) =
         this.AddScalarAttribute(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
 
     [<Extension>]
     static member inline paddingLayout(this: #ILayoutWidgetBuilder<_>, value: float) =
         this.AddScalarAttribute(Layout.Padding.WithValue(Thickness(value)))
+
+    [<Extension>]
+    static member inline cascadeInputTransparent(this: #ILayoutWidgetBuilder<_>, value: bool) =
+        this.AddScalarAttribute(Layout.CascadeInputTransparent.WithValue(value))
+
+    [<Extension>]
+    static member inline isClippedToBounds(this: #ILayoutWidgetBuilder<_>, value: bool) =
+        this.AddScalarAttribute(Layout.IsClippedToBounds.WithValue(value))
+
+    [<Extension>]
+    static member inline onLayoutChanged(this: #ILayoutWidgetBuilder<'msg>, value: 'msg) =
+        this.AddScalarAttribute(Layout.LayoutChanged.WithValue(value))
 
     [<Extension>]
     static member inline ignoreSafeArea(this: #IPageWidgetBuilder<_>) =
@@ -127,7 +139,6 @@ type AdditionalViewExtensions =
             match width with None -> () | Some v -> VisualElement.Width.WithValue(v)
             match height with None -> () | Some v -> VisualElement.Height.WithValue(v)
         |])
-
     
     [<Extension>]
     static member inline padding(this: #ILabelWidgetBuilder<_>, left: float, top: float, right: float, bottom: float) =
