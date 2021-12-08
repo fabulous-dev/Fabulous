@@ -178,3 +178,15 @@ module ViewCell =
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection ViewNode.getViewNode "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
+module DatePicker =
+    let CharacterSpacing = Attributes.defineBindable<float> Xamarin.Forms.DatePicker.CharacterSpacingProperty
+    let Date = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.DateProperty
+    let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.DatePicker.FontAttributesProperty
+    let FontFamily = Attributes.defineBindable<string> Xamarin.Forms.DatePicker.FontFamilyProperty
+    let FontSize = Attributes.defineBindable<float> Xamarin.Forms.DatePicker.FontSizeProperty
+    let Format = Attributes.defineBindable<string> Xamarin.Forms.DatePicker.FormatProperty
+    let MaximumDate = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.MaximumDateProperty
+    let MinimumDate = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.MinimumDateProperty
+    let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.DatePicker.TextColorProperty
+    let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.DatePicker.TextTransformProperty
+    let DateSelected = Attributes.defineEvent<DateChangedEventArgs> ViewNode.getViewNode "DatePicker_DateSelected" (fun target -> (target :?> Xamarin.Forms.DatePicker).DateSelected)

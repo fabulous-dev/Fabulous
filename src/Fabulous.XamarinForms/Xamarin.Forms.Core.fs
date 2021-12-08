@@ -1,5 +1,6 @@
 ﻿namespace Fabulous.XamarinForms
 
+open System
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
@@ -451,10 +452,27 @@ type [<Struct>] TabbedPage<'msg> (attrs: AttributesBuilder) =
                 [| MultiPageOfPage.Children.WithValue(ViewHelpers.compileSeq children) |]
             )
         )
-                                                  
+
     interface IPageWidgetBuilder<'msg> with
         member x.Compile() = attrs.Build(key)
 
+type [<Struct>] DatePicker<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.DatePicker>()
+
+    member _.Builder = attrs
+
+    static member inline Create(date: DateTime, onDateSelected: DateTime -> 'msg) =
+        DatePicker<'msg>(
+            AttributesBuilder(
+                [| DatePicker.Date.WithValue(date)
+                   DatePicker.DateSelected.WithValue(fun args -> onDateSelected args.NewDate |> box) |],
+                [||],
+                [||]
+            )
+        )
+
+    interface IViewWidgetBuilder<'msg> with
+        member x.Compile() = attrs.Build(key)
 [<Extension>]
 type ViewExtensions () =
 
@@ -600,14 +618,39 @@ type ViewExtensions () =
     [<Extension>]
     static member inline popped(this: NavigationPage<'msg>, value: 'msg) =
         this.AddScalarAttribute(NavigationPage.Popped.WithValue(fun _ -> box value))
-
     [<Extension>]
     static member inline hasNavigationBar(this: #IPageWidgetBuilder<'msg>, value: bool) =
         this.AddScalarAttribute(NavigationPage.HasNavigationBar.WithValue(value))
-
     [<Extension>]
     static member inline hasBackButton(this: #IPageWidgetBuilder<'msg>, value: bool) =
         this.AddScalarAttribute(NavigationPage.HasBackButton.WithValue(value))
+    [<Extension>]
+    static member inline characterSpacing(this: DatePicker<'msg>, value: float) =
+        this.AddScalarAttribute(DatePicker.CharacterSpacing.WithValue(value))
+    [<Extension>]
+    static member inline fontAttributes(this: DatePicker<'msg>, value: FontAttributes) =
+        this.AddScalarAttribute(DatePicker.FontAttributes.WithValue(value))
+    [<Extension>]
+    static member inline fontFamily(this: DatePicker<'msg>, value: string) =
+        this.AddScalarAttribute(DatePicker.FontFamily.WithValue(value))
+    [<Extension>]
+    static member inline fontSize(this: DatePicker<'msg>, value: float) =
+        this.AddScalarAttribute(DatePicker.FontSize.WithValue(value))
+    [<Extension>]
+    static member inline format(this: DatePicker<'msg>, value: string)=
+        this.AddScalarAttribute(DatePicker.Format.WithValue(value))
+    [<Extension>]
+    static member inline minimumDate(this: DatePicker<'msg>, value: DateTime) =
+        this.AddScalarAttribute(DatePicker.MinimumDate.WithValue(value))
+    [<Extension>]
+    static member inline maximumDate(this: DatePicker<'msg>, value: DateTime) =
+        this.AddScalarAttribute(DatePicker.MaximumDate.WithValue(value))
+    [<Extension>]
+    static member inline textColor(this: DatePicker<'msg>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+        this.AddScalarAttribute(DatePicker.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
+    [<Extension>]
+    static member inline textTransform(this: DatePicker<'msg>, value: TextTransform) =
+        this.AddScalarAttribute(DatePicker.TextTransform.WithValue(value))
 
 [<AbstractClass; Sealed>]
 type View private () =
@@ -641,3 +684,4 @@ type View private () =
     static member inline ViewCell<'msg>(view) = ViewCell<'msg>.Create(view)
     static member inline ImageButton<'msg>(path: string, onClicked, aspect) = ImageButton<'msg>.Create(path, onClicked, aspect)
     static member inline TabbedPage<'msg>(title, children) = TabbedPage<'msg>.Create(title, children)
+    static member inline DatePicker<'msg>(date, onDateChanged) = DatePicker<'msg>.Create(date, onDateChanged)

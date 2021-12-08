@@ -100,10 +100,22 @@ type AdditionalViewExtensions =
             match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])
+
+    [<Extension>]
+    static member inline font(this: DatePicker<_>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
+        this.AddScalarAttributes([|
+            match size with None -> () | Some v -> DatePicker.FontSize.WithValue(v)
+            match namedSize with None -> () | Some v -> DatePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<DatePicker>))
+            match attributes with None -> () | Some v -> DatePicker.FontAttributes.WithValue(v)
+        |])
         
     [<Extension>]
     static member inline font(this: Button<_>, value: NamedSize) =
         this.AddScalarAttribute(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
+
+    [<Extension>]
+    static member inline font(this: DatePicker<_>, value: NamedSize) =
+        this.AddScalarAttribute(DatePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.DatePicker>)))
 
     [<Extension>]
     static member inline paddingLayout(this: #ILayoutWidgetBuilder<_>, value: float) =
