@@ -473,6 +473,23 @@ type [<Struct>] DatePicker<'msg> (attrs: AttributesBuilder) =
 
     interface IViewWidgetBuilder<'msg> with
         member x.Compile() = attrs.Build(key)
+
+type [<Struct>] TimePicker<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.TimePicker>()
+
+    member _.Builder = attrs
+
+    static member inline Create(time: TimeSpan) =
+        TimePicker<'msg>(
+            AttributesBuilder(
+                [| TimePicker.Time.WithValue(time) |],
+                [||],
+                [||]
+            )
+        )
+
+    interface IViewWidgetBuilder<'msg> with
+        member x.Compile() = attrs.Build(key)
 [<Extension>]
 type ViewExtensions () =
 
@@ -651,7 +668,27 @@ type ViewExtensions () =
     [<Extension>]
     static member inline textTransform(this: DatePicker<'msg>, value: TextTransform) =
         this.AddScalarAttribute(DatePicker.TextTransform.WithValue(value))
-
+    [<Extension>]
+    static member inline characterSpacing(this: TimePicker<'msg>, value: float) =
+        this.AddScalarAttribute(TimePicker.CharacterSpacing.WithValue(value))
+    [<Extension>]
+    static member inline fontAttributes(this: TimePicker<'msg>, value: FontAttributes) =
+        this.AddScalarAttribute(TimePicker.FontAttributes.WithValue(value))
+    [<Extension>]
+    static member inline fontFamily(this: TimePicker<'msg>, value: string) =
+        this.AddScalarAttribute(TimePicker.FontFamily.WithValue(value))
+    [<Extension>]
+    static member inline fontSize(this: TimePicker<'msg>, value: float) =
+        this.AddScalarAttribute(TimePicker.FontSize.WithValue(value))
+    [<Extension>]
+    static member inline format(this: TimePicker<'msg>, value: string)=
+        this.AddScalarAttribute(TimePicker.Format.WithValue(value))
+    [<Extension>]
+    static member inline textColor(this: TimePicker<'msg>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+        this.AddScalarAttribute(TimePicker.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
+    [<Extension>]
+    static member inline textTransform(this: TimePicker<'msg>, value: TextTransform) =
+        this.AddScalarAttribute(TimePicker.TextTransform.WithValue(value))
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg>(mainPage) = Application<'msg>.Create(mainPage)
@@ -685,3 +722,4 @@ type View private () =
     static member inline ImageButton<'msg>(path: string, onClicked, aspect) = ImageButton<'msg>.Create(path, onClicked, aspect)
     static member inline TabbedPage<'msg>(title, children) = TabbedPage<'msg>.Create(title, children)
     static member inline DatePicker<'msg>(date, onDateChanged) = DatePicker<'msg>.Create(date, onDateChanged)
+    static member inline TimePicker<'msg>(time) = TimePicker<'msg>.Create(time)

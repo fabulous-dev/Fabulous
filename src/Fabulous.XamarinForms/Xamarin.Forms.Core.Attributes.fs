@@ -1,7 +1,9 @@
 ﻿namespace Fabulous.XamarinForms.XFAttributes
 
+open System
 open Fabulous
 open Fabulous.XamarinForms
+open Xamarin.Forms
 
 module Application =
     let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
@@ -190,3 +192,13 @@ module DatePicker =
     let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.DatePicker.TextColorProperty
     let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.DatePicker.TextTransformProperty
     let DateSelected = Attributes.defineEvent<DateChangedEventArgs> ViewNode.getViewNode "DatePicker_DateSelected" (fun target -> (target :?> Xamarin.Forms.DatePicker).DateSelected)
+
+module TimePicker =
+    let CharacterSpacing = Attributes.defineBindable<float> Xamarin.Forms.TimePicker.CharacterSpacingProperty
+    let Time = Attributes.defineBindable<TimeSpan> Xamarin.Forms.TimePicker.TimeProperty
+    let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.TimePicker.FontAttributesProperty
+    let FontFamily = Attributes.defineBindable<string> Xamarin.Forms.TimePicker.FontFamilyProperty
+    let FontSize = Attributes.defineBindable<float> Xamarin.Forms.TimePicker.FontSizeProperty
+    let Format = Attributes.defineBindable<string> Xamarin.Forms.TimePicker.FormatProperty
+    let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.TimePicker.TextColorProperty
+    let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.TimePicker.TextTransformProperty
