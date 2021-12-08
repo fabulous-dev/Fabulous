@@ -19,6 +19,21 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
+    let updateStepperMinMax (newValueOpt: (float * float) voption, target: obj) =
+        let stepper = target :?> Stepper
+        match newValueOpt with
+        | ValueNone ->
+            stepper.ClearValue(Stepper.MinimumProperty)
+            stepper.ClearValue(Stepper.MaximumProperty)
+        | ValueSome (min, max) ->
+            let currMax = stepper.GetValue(Stepper.MaximumProperty) :?> float
+            if min > currMax then
+                stepper.SetValue(Stepper.MaximumProperty, max)
+                stepper.SetValue(Stepper.MinimumProperty, min)
+            else
+                stepper.SetValue(Stepper.MinimumProperty, min)
+                stepper.SetValue(Stepper.MaximumProperty, max)
+
     let updateGridColumnDefinitions (newValueOpt: Dimension[] voption, target: obj) =
         let grid = target :?> Grid
         match newValueOpt with

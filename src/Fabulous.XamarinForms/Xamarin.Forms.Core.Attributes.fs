@@ -1,7 +1,9 @@
 ﻿namespace Fabulous.XamarinForms.XFAttributes
 
+open System
 open Fabulous
 open Fabulous.XamarinForms
+open Xamarin.Forms
 
 module Application =
     let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
@@ -178,3 +180,31 @@ module ViewCell =
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection ViewNode.getViewNode "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
+module DatePicker =
+    let CharacterSpacing = Attributes.defineBindable<float> Xamarin.Forms.DatePicker.CharacterSpacingProperty
+    let Date = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.DateProperty
+    let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.DatePicker.FontAttributesProperty
+    let FontFamily = Attributes.defineBindable<string> Xamarin.Forms.DatePicker.FontFamilyProperty
+    let FontSize = Attributes.defineBindable<float> Xamarin.Forms.DatePicker.FontSizeProperty
+    let Format = Attributes.defineBindable<string> Xamarin.Forms.DatePicker.FormatProperty
+    let MaximumDate = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.MaximumDateProperty
+    let MinimumDate = Attributes.defineBindable<DateTime> Xamarin.Forms.DatePicker.MinimumDateProperty
+    let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.DatePicker.TextColorProperty
+    let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.DatePicker.TextTransformProperty
+    let DateSelected = Attributes.defineEvent<DateChangedEventArgs> ViewNode.getViewNode "DatePicker_DateSelected" (fun target -> (target :?> Xamarin.Forms.DatePicker).DateSelected)
+
+module TimePicker =
+    let CharacterSpacing = Attributes.defineBindable<float> Xamarin.Forms.TimePicker.CharacterSpacingProperty
+    let Time = Attributes.defineBindable<TimeSpan> Xamarin.Forms.TimePicker.TimeProperty
+    let FontAttributes = Attributes.defineBindable<FontAttributes> Xamarin.Forms.TimePicker.FontAttributesProperty
+    let FontFamily = Attributes.defineBindable<string> Xamarin.Forms.TimePicker.FontFamilyProperty
+    let FontSize = Attributes.defineBindable<float> Xamarin.Forms.TimePicker.FontSizeProperty
+    let Format = Attributes.defineBindable<string> Xamarin.Forms.TimePicker.FormatProperty
+    let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.TimePicker.TextColorProperty
+    let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.TimePicker.TextTransformProperty
+
+module Stepper =
+    let Increment = Attributes.defineBindable<float> Xamarin.Forms.Stepper.IncrementProperty
+    let MinimumMaximum = Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+    let Value = Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
+    let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> ViewNode.getViewNode "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
