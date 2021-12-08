@@ -490,6 +490,30 @@ type [<Struct>] TimePicker<'msg> (attrs: AttributesBuilder) =
 
     interface IViewWidgetBuilder<'msg> with
         member x.Compile() = attrs.Build(key)
+
+type [<Struct>] Stepper<'msg> (attrs: AttributesBuilder) =
+    static let key = Widgets.register<Xamarin.Forms.Stepper>()
+
+    member _.Builder = attrs
+
+    static member inline Create(value: float, onValueChanged: float -> 'msg, ?min: float, ?max: float) =
+        Stepper<'msg>(
+            AttributesBuilder(
+                [|
+                   Stepper.Value.WithValue(value)
+                   Stepper.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
+                   match struct (min, max) with
+                    | None, None -> ()
+                    | Some minV, Some maxV -> Stepper.MinimumMaximum.WithValue(minV, maxV)
+                    | _ -> failwith "Both min and max are required" |],
+                [||],
+                [||]
+            )
+        )
+
+    interface IViewWidgetBuilder<'msg> with
+        member x.Compile() = attrs.Build(key)
+
 [<Extension>]
 type ViewExtensions () =
 
@@ -689,6 +713,10 @@ type ViewExtensions () =
     [<Extension>]
     static member inline textTransform(this: TimePicker<'msg>, value: TextTransform) =
         this.AddScalarAttribute(TimePicker.TextTransform.WithValue(value))
+    [<Extension>]
+    static member inline increment(this: Stepper<'msg>, value: float) =
+        this.AddScalarAttribute(Stepper.Increment.WithValue(value))
+
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg>(mainPage) = Application<'msg>.Create(mainPage)
@@ -723,3 +751,5 @@ type View private () =
     static member inline TabbedPage<'msg>(title, children) = TabbedPage<'msg>.Create(title, children)
     static member inline DatePicker<'msg>(date, onDateChanged) = DatePicker<'msg>.Create(date, onDateChanged)
     static member inline TimePicker<'msg>(time) = TimePicker<'msg>.Create(time)
+    static member inline Stepper<'msg>(value, onValueChanged) = Stepper<'msg>.Create(value, onValueChanged)
+    static member inline Stepper<'msg>(min, max, value, onValueChanged) = Stepper<'msg>.Create(value, onValueChanged, min = min, max = max)

@@ -202,3 +202,9 @@ module TimePicker =
     let Format = Attributes.defineBindable<string> Xamarin.Forms.TimePicker.FormatProperty
     let TextColor = Attributes.defineAppThemeBindable<Xamarin.Forms.Color> Xamarin.Forms.TimePicker.TextColorProperty
     let TextTransform = Attributes.defineBindable<TextTransform> Xamarin.Forms.TimePicker.TextTransformProperty
+
+module Stepper =
+    let Increment = Attributes.defineBindable<float> Xamarin.Forms.Stepper.IncrementProperty
+    let MinimumMaximum = Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+    let Value = Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
+    let ValueChanged = Attributes.defineEvent<ValueChangedEventArgs> ViewNode.getViewNode "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
