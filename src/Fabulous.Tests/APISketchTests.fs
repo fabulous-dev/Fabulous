@@ -227,9 +227,17 @@ module MapViewTests =
     let view model =
         Stack(
             [
-                View.map mapMsg (Button("+1", AddOne).automationId("add"))
+                View.map
+                    mapMsg
+                    (Button("+1", AddOne)
+                        .automationId("add")
+                        .textColor("red"))
+
+                Label(model.ToString())
+                    .automationId("label")
+                    .textColor("blue")
+
                 View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
-                Label(model.ToString()).automationId("label")
             ]
         )
 

@@ -108,13 +108,15 @@ module ViewHelpers =
 
 
 //-----MARKERS-----------
-type TestLabelMarker =
-    class
+type TextMarker =
+    interface
     end
 
+type TestLabelMarker =
+    inherit TextMarker
+
 type TestButtonMarker =
-    class
-    end
+    inherit TextMarker
 
 type TestStackMarker =
     class
@@ -128,15 +130,12 @@ type WidgetExtensions() =
     static member inline automationId(this: WidgetBuilder<'msg, 'marker>, value: string) =
         this.AddScalarAttribute(Attributes.Automation.AutomationId.WithValue(value))
 
-    //    [<Extension>]
-//    static member inline cast<'msg>(this: IWidgetBuilder<'msg>) = this
-
     [<Extension>]
-    static member inline textColor<'msg>(this: WidgetBuilder<'msg, TestLabelMarker>, value: string) =
-        this.AddScalarAttribute(Attributes.TextStyle.TextColor.WithValue(value))
-
-    [<Extension>]
-    static member inline textColor<'msg>(this: WidgetBuilder<'msg, TestButtonMarker>, value: string) =
+    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: string
+        ) =
         this.AddScalarAttribute(Attributes.TextStyle.TextColor.WithValue(value))
 
 
