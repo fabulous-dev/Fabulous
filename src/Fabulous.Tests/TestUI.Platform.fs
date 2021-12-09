@@ -50,6 +50,6 @@ type TestButton() =
         member this.AddPressListener(handler) =
             handlers.Add(counter, handler)
             counter <- counter + 1
-            counter
+            counter - 1
 
         member this.RemovePressListener(id) = handlers.Remove(id) |> ignore

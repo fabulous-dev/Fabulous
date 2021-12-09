@@ -1,6 +1,5 @@
 module Fabulous.Tests
 
-open Fabulous.Reconciler
 open NUnit.Framework
 
 
@@ -127,7 +126,7 @@ module SimpleStackTests =
     let view model =
         Stack(
             model
-            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast())
+            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
         )
             .automationId("stack")
 
@@ -228,8 +227,8 @@ module MapViewTests =
     let view model =
         Stack(
             [
-                Widget.map mapMsg (Button("+1", AddOne).automationId("add"))
-                Widget.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
+                View.map mapMsg (Button("+1", AddOne).automationId("add"))
+                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
                 Label(model.ToString()).automationId("label")
             ]
         )
@@ -246,19 +245,12 @@ module MapViewTests =
 
         let addBtn = find<TestButton> tree "add"
         let removeBtn = find<TestButton> tree "remove"
-        let label = find<TestLabel> tree "label"
+        let label = find<TestLabel> tree "label" :> IText
 
-        Assert.AreEqual(label.Text, "0")
+        Assert.AreEqual("0", label.Text)
 
         addBtn.Press()
-        Assert.AreEqual(label.Text, "1")
+        Assert.AreEqual("1", label.Text)
 
         removeBtn.Press()
-        Assert.AreEqual(label.Text, "-1")
-
-
-//
-//
-//    [<Test>]
-//    let dependsOnTests ()= ()
-//
+        Assert.AreEqual("-1", label.Text)

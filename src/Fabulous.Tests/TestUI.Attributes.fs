@@ -8,7 +8,7 @@ module Attributes =
     let definePressable name =
         let key = AttributeDefinitionStore.getNextKey()
 
-        let definition: ScalarAttributeDefinition<_, _> =
+        let definition: ScalarAttributeDefinition<obj, obj> =
             {
                 Key = key
                 Name = name
@@ -33,8 +33,8 @@ module Attributes =
 
                         | ValueSome msg ->
                             let handler () =
-                                (viewNodeData.ViewNode :> IViewNode)
-                                    .Context.Dispatch(msg)
+                                let node = (viewNodeData.ViewNode :> IViewNode)
+                                Attributes.dispatchMsgOnViewNode node msg
 
                             let handlerId = btn.AddPressListener handler
                             viewNodeData.SetHandler<int>(key, ValueSome handlerId)
