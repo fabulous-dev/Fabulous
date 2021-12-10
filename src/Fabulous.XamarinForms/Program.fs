@@ -3,28 +3,29 @@
 open Fabulous
 
 module Program =
-    let private define<'arg, 'model, 'msg, 'view when 'view :> IWidgetBuilder<'msg>> (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> 'view) =
+    let inline private define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> WidgetBuilder<'msg, #IMarker>) =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
           View = fun model -> (view model).Compile()
-          CanReuseView = Helpers.canReuseView }
+          CanReuseView = Helpers.canReuseView
+          GetViewNode = ViewNode.getViewNode }
 
-    let statelessApplication (view: unit -> #IApplicationWidgetBuilder<unit>) =
+    let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplicationMarker>) =
         define
             (fun () -> (), Cmd.none)
             (fun () () -> (), Cmd.none)
             view
 
-    let statefulApplication<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidgetBuilder<'msg>> (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> 'view) =
+    let statefulApplication (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> WidgetBuilder<'msg, #IApplicationMarker>) =
         define
             (fun arg -> init arg, Cmd.none)
             (fun msg model -> update msg model, Cmd.none)
             view
             
-    let statefulApplicationWithCmd<'arg, 'model, 'msg, 'view when 'view :> IApplicationWidgetBuilder<'msg>> (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> 'view) =
+    let statefulApplicationWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) (view: 'model -> WidgetBuilder<'msg, #IApplicationMarker>) =
         define init update view
         
-    let statefulApplicationWithCmdMsg<'arg, 'model, 'msg, 'view, 'cmdMsg when 'view :> IApplicationWidgetBuilder<'msg>> (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'model -> 'view) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
+    let statefulApplicationWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'model -> WidgetBuilder<'msg, #IApplicationMarker>) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
         define
             (fun arg -> let m, c = init arg in m, mapCmds c)
@@ -36,3 +37,4 @@ module Program =
         runner.Start(arg)
         let adapter = ViewAdapters.create runner ViewNode.getViewNode program.CanReuseView
         adapter.CreateView() |> unbox
+        

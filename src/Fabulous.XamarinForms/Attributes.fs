@@ -12,7 +12,6 @@ module Attributes =
     /// Define an attribute storing a Widget for a bindable property
     let defineBindableWidget (bindableProperty: BindableProperty) =
         Attributes.defineWidget
-            ViewNode.getViewNode
             bindableProperty.PropertyName
             (fun parent ->
                 let p = (parent :?> BindableObject)
@@ -27,7 +26,7 @@ module Attributes =
                     bindableObject.SetValue(bindableProperty, value)
             )
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: Xamarin.Forms.BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
+    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
         Attributes.defineScalarWithConverter<'inputType, 'modelType>
             bindableProperty.PropertyName
             convert
@@ -41,7 +40,7 @@ module Attributes =
     let inline defineBindable<'T when 'T: equality> bindableProperty =
         defineBindableWithComparer<'T, 'T> bindableProperty id ScalarAttributeComparers.equalityCompare
 
-    let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: Xamarin.Forms.BindableProperty) =
+    let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
         Attributes.defineScalarWithConverter<AppThemeValues<'T>, AppThemeValues<'T>>
             bindableProperty.PropertyName
             id

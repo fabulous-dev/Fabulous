@@ -86,7 +86,7 @@ module App =
                             .style(
                                 createStyleFor [ Button.BackgroundColorProperty, box Color.Green
                                                  Button.TextColorProperty, box Color.White ]
-                                )
+                            )
                             .automationId("IncrementButton")
 
                         Button("Decrement", Decrement)
@@ -117,7 +117,7 @@ module App =
                     ])
                         .paddingLayout(30.)
                         .centerVertical()
-            ).hasNavigationBar(false)
+                ).hasNavigationBar(false)
             ])
         )
          .onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)

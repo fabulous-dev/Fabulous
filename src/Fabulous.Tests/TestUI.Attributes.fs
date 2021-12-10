@@ -15,29 +15,25 @@ module Attributes =
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateTarget =
-                    fun (newValueOpt, _viewNode, target) ->
+                    fun (newValueOpt, context, target) ->
 
-                        let viewNodeData =
-                            (target :?> TestViewElement)
-                                .PropertyBag.Item TestUI_ViewNode.ViewNode.ViewNodeProperty
-                            :?> TestUI_ViewNode.ViewNodeData
+                        let viewNode = context.ViewTreeContext.GetViewNode(target)
 
                         let btn = target :?> IButton
 
-                        match viewNodeData.TryGetHandler<int>(key) with
-                        | None -> ()
-                        | Some handlerId -> btn.RemovePressListener handlerId
+                        match viewNode.TryGetHandler<int>(key) with
+                        | ValueNone -> ()
+                        | ValueSome handlerId -> btn.RemovePressListener handlerId
 
                         match newValueOpt with
-                        | ValueNone -> viewNodeData.SetHandler(key, ValueNone)
+                        | ValueNone -> viewNode.SetHandler(key, ValueNone)
 
                         | ValueSome msg ->
                             let handler () =
-                                let node = (viewNodeData.ViewNode :> IViewNode)
-                                Attributes.dispatchMsgOnViewNode node msg
+                                Attributes.dispatchMsgOnViewNode context msg
 
                             let handlerId = btn.AddPressListener handler
-                            viewNodeData.SetHandler<int>(key, ValueSome handlerId)
+                            viewNode.SetHandler<int>(key, ValueSome handlerId)
             }
 
         AttributeDefinitionStore.set key definition
@@ -57,7 +53,6 @@ module Attributes =
     module Container =
         let Children =
             Attributes.defineWidgetCollection
-                TestUI_ViewNode.ViewNode.getViewNode
                 "Container_Children"
                 (fun target -> (target :?> IContainer).Children)
 

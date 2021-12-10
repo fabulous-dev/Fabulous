@@ -1,39 +1,18 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
-open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 
-type IWidgetBuilder =
-    abstract Compile : unit -> Widget
-
-type IWidgetBuilder<'msg> =
-    inherit IWidgetBuilder
-
-type IApplicationWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type IPageWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type IViewWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type ILayoutWidgetBuilder<'msg> =
-    inherit IViewWidgetBuilder<'msg>
-
-type ICellWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type IGestureRecognizerWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type IMenuItemWidgetBuilder<'msg> =
-    inherit IWidgetBuilder<'msg>
-
-type IToolbarItemWidgetBuilder<'msg> =
-    inherit IMenuItemWidgetBuilder<'msg>
+type IMarker = interface end
+type IApplicationMarker = inherit IMarker
+type IPageMarker = inherit IMarker
+type IViewMarker = inherit IMarker
+type ICellMarker = inherit IMarker
+type IMenuItemMarker = inherit IMarker
+type IGestureRecognizerMarker = inherit IMarker
+type ILayoutMarker = inherit IViewMarker
+type IToolbarItemMarker = inherit IMenuItemMarker
 
 module Widgets =
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
@@ -50,13 +29,13 @@ module Widgets =
 
                         let view = new 'T()
                         let weakReference = WeakReference(view)
-
+                        
                         let viewNode =
-                            ViewNode(key, context, weakReference)
+                            ViewNode(context, weakReference)
 
                         view.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
+                        Reconciler.update context.ViewTreeContext.GetViewNode context.ViewTreeContext.CanReuseView ValueNone widget view
 
                         box view
             }

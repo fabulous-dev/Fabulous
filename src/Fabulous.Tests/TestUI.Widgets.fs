@@ -8,63 +8,7 @@ open Tests.Platform
 open TestUI_Attributes
 open Tests.TestUI_ViewNode
 
-
-
-
-
-type IBuilder<'msg> =
-    abstract BoxedCompile : unit -> Widget
-
-[<Struct>]
-type WidgetBuilder<'msg, 'marker>
-    (
-        key: WidgetKey,
-        attributes: struct (ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute [])
-    ) =
-
-
-    member _.Compile() : Widget =
-        let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = attributes
-
-        {
-            Key = key
-            ScalarAttributes = scalarAttributes
-            WidgetAttributes = widgetAttributes
-            WidgetCollectionAttributes = widgetCollectionAttributes
-        }
-
-    member _.AddScalarAttribute(attr: ScalarAttribute) : WidgetBuilder<'msg, 'output> =
-        let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = attributes
-        let attribs = scalarAttributes
-        let attribs2 = Array.zeroCreate(attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-
-        WidgetBuilder(key, struct (attribs2, widgetAttributes, widgetCollectionAttributes))
-
-    member private x.Attr = attributes
-
-    member x.MapMsg(fn: 'msg -> 'newMsg) =
-        let fnWithBoxing =
-            fun (msg: obj) -> msg |> unbox<'msg> |> fn |> box
-
-        let builder =
-            x.AddScalarAttribute(Fabulous.Attributes.MapMsg.WithValue fnWithBoxing)
-
-        WidgetBuilder<'newMsg, 'marker>(key, builder.Attr)
-
-    interface IBuilder<'msg> with
-        member x.BoxedCompile() = x.Compile()
-
-
-
-
-
-
-
 //-------Widgets
-
-
 
 module Widgets =
     let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
@@ -82,12 +26,11 @@ module Widgets =
                         let view = new 'T()
                         let weakReference = WeakReference(view)
 
-                        let viewNodeData =
-                            ViewNodeData(ViewNode(key, context, weakReference))
+                        let viewNode = ViewNode(context, weakReference)
 
-                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNodeData)
+                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
+                        Reconciler.update context.ViewTreeContext.GetViewNode context.ViewTreeContext.CanReuseView ValueNone widget view
 
                         box view
             }
@@ -98,19 +41,14 @@ module Widgets =
 
 
 
-///----Stack----
-
-module ViewHelpers =
-    let inline compileSeq (items: seq<#IBuilder<'msg>>) =
-        items
-        |> Seq.map(fun item -> item.BoxedCompile())
-        |> Seq.toArray
-
 
 //-----MARKERS-----------
-type TextMarker =
+type IMarker =
     interface
     end
+
+type TextMarker =
+    inherit IMarker
 
 type TestLabelMarker =
     inherit TextMarker
@@ -119,24 +57,28 @@ type TestButtonMarker =
     inherit TextMarker
 
 type TestStackMarker =
-    class
+    interface
     end
 //----------------
+
+///----Stack----
+
+module ViewHelpers =
+    let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
+        items
+        |> Seq.map(fun item -> item.Compile())
+        |> Seq.toArray
 
 /// ------------ Extenstions
 [<Extension>]
 type WidgetExtensions() =
     [<Extension>]
-    static member inline automationId(this: WidgetBuilder<'msg, 'marker>, value: string) =
-        this.AddScalarAttribute(Attributes.Automation.AutomationId.WithValue(value))
+    static member inline automationId<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+        this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
     [<Extension>]
-    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>
-        (
-            this: WidgetBuilder<'msg, 'marker>,
-            value: string
-        ) =
-        this.AddScalarAttribute(Attributes.TextStyle.TextColor.WithValue(value))
+    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+        this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
 
 let inline private scalars
@@ -163,7 +105,7 @@ type View private () =
         )
 
 
-    static member Stack<'msg, 'a when 'a :> seq<IBuilder<'msg>>>(children: 'a) =
+    static member Stack<'msg>(children: seq<WidgetBuilder<'msg, IMarker>>) =
         WidgetBuilder<'msg, TestStackMarker>(
             TestStackKey,
             struct ([||],
@@ -199,7 +141,7 @@ module Run =
             {
                 CanReuseView = fun a b -> a.Key = b.Key
                 Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-                Ancestors = []
+                GetViewNode = ViewNode.getViewNode
             }
 
         member x.ProcessMessage(msg: 'msg) =
@@ -217,7 +159,7 @@ module Run =
 
                 let viewNode = ViewNode.getViewNode target
 
-                if newWidget.Key <> viewNode.Origin then
+                if newWidget.Key <> viewNode.Context.Key then
                     failwith "type mismatch!"
 
                 state <- Some(newModel, target, newWidget)
@@ -229,9 +171,15 @@ module Run =
             let model = (program.Init(arg))
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
+            
+            let context =
+                { Key = widget.Key
+                  ViewTreeContext = x.viewContext
+                  Ancestors = []
+                  MapMsg = id }
 
             let view =
-                widgetDef.CreateView(widget, x.viewContext)
+                widgetDef.CreateView(widget, context)
 
             state <- Some(model, view, widget)
 

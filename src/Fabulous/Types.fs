@@ -101,34 +101,38 @@ type ScalarAttributeComparison =
     | Identical
     | Different of newData: obj
 
+/// DEV NOTES: This interface can be removed by reorganizing the types of this file
+type IViewNode =
+    abstract Context : ViewNodeContext
+    abstract SetContext : ViewNodeContext -> unit
+    abstract TryGetHandler<'T> : AttributeKey -> 'T voption
+    abstract SetHandler : AttributeKey * 'T voption -> unit
+    abstract ApplyScalarDiff : ScalarChange [] -> unit
+    abstract ApplyWidgetDiff : WidgetChange [] -> unit
+    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange [] -> unit
+    
+/// Context of the whole view tree
+and [<Struct>] ViewTreeContext =
+    { CanReuseView: Widget -> Widget -> bool
+      GetViewNode: obj -> IViewNode
+      Dispatch: obj -> unit }
 
+/// Context for a specific view node
+and [<Struct>] ViewNodeContext =
+    { Key: WidgetKey
+      ViewTreeContext: ViewTreeContext
+      Ancestors: ViewNodeContext list
+      MapMsg: obj -> obj }
+    
 type Program<'arg, 'model, 'msg> =
     {
         Init: 'arg -> 'model * Cmd<'msg>
         Update: 'msg * 'model -> 'model * Cmd<'msg>
         View: 'model -> Widget
         CanReuseView: Widget -> Widget -> bool
+        GetViewNode: obj -> IViewNode
     }
-
-/// Represents a UI element created from a widget
-type IViewNode =
-    abstract Origin : WidgetKey
-    abstract Context : ViewTreeContext
-    abstract MapMsg : (obj -> obj) voption with get, set
-    abstract TryGetHandler<'T> : AttributeKey -> 'T option
-    abstract SetHandler<'T> : AttributeKey * 'T voption -> unit
-    abstract ApplyScalarDiff : ScalarChange [] -> unit
-    abstract ApplyWidgetDiff : WidgetChange [] -> unit
-    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange [] -> unit
-
-and [<Struct>] ViewTreeContext =
-    {
-        CanReuseView: Widget -> Widget -> bool
-        Dispatch: obj -> unit
-        // the last ancestor, e.g. closest to leaf, comes first
-        Ancestors: IViewNode list
-    }
-
+    
 type IRunner =
     interface
     end

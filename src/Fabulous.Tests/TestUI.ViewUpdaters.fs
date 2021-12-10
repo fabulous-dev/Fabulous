@@ -38,20 +38,20 @@ open Tests.TestUI_ViewNode
 //            navigationPage.PushAsync(page) |> ignore
 
 
-let updateText (newValueOpt: string voption, _viewNode, target: obj) =
+let updateText (newValueOpt: string voption, _context, target: obj) =
     let textElement = target :?> IText
     textElement.Text <- ValueOption.defaultValue "" newValueOpt
 
-let updateTextColor (newValueOpt: string voption, _viewNode, target: obj) =
+let updateTextColor (newValueOpt: string voption, _context, target: obj) =
     let textElement = target :?> IText
     textElement.TextColor <- ValueOption.defaultValue "" newValueOpt
 
-let updateAutomationId (newValueOpt: string voption, _viewNode, target: obj) =
+let updateAutomationId (newValueOpt: string voption, _context, target: obj) =
     let el = target :?> TestViewElement
     el.AutomationId <- ValueOption.defaultValue "" newValueOpt
 
 
-let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], target: obj) =
+let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], context: ViewNodeContext, target: obj) =
     // let el = target :?> TestViewElement
     let container = target :?> IContainer
     let children = List.ofSeq container.Children
@@ -62,7 +62,7 @@ let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], target: ob
 
         | WidgetCollectionItemChange.Update (index, diff) ->
             let targetItem = children.[index]
-            let viewNode = ViewNode.getViewNode targetItem
+            let viewNode = context.ViewTreeContext.GetViewNode(targetItem)
 
             if diff.ScalarChanges.Length > 0 then
                 viewNode.ApplyScalarDiff(diff.ScalarChanges)
@@ -77,13 +77,11 @@ let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], target: ob
 
         | _ -> ()
 
-let updateContainerChildren (newValueOpt: Widget [] voption, target: obj) =
+let updateContainerChildren (newValueOpt: Widget [] voption, context: ViewNodeContext, target: obj) =
     let container = target :?> IContainer
 
     match newValueOpt with
     | ValueNone -> container.Children.Clear()
     | ValueSome widgets ->
-        let viewNode = ViewNode.getViewNode target
-
         for widget in widgets do
-            container.Children.Add(Helpers.createViewForWidget viewNode widget :?> TestViewElement)
+            container.Children.Add(Helpers.createViewForWidget context widget :?> TestViewElement)

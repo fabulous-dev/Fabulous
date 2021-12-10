@@ -4,26 +4,26 @@ open Fabulous
 open Fabulous.XamarinForms
 
 module Application =
-    let MainPage = Attributes.defineWidget ViewNode.getViewNode "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- unbox value)
-    let Resources = Attributes.define<ResourceDictionary> "Application_Resources" (fun (newValueOpt, target) ->
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
+    let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, _context, target) ->
         let application = target :?> Xamarin.Forms.Application
         let value =
             match newValueOpt with
             | ValueNone -> application.Resources
             | ValueSome v -> v
         application.Resources <- value)
-    let UserAppTheme = Attributes.define<OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, target) ->
+    let UserAppTheme = Attributes.define<Xamarin.Forms.OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, _context, target) ->
         let application = target :?> Xamarin.Forms.Application
         let value =
             match newValueOpt with
-            | ValueNone -> OSAppTheme.Unspecified
+            | ValueNone -> Xamarin.Forms.OSAppTheme.Unspecified
             | ValueSome v -> v
         application.UserAppTheme <- value)
-    let RequestedThemeChanged = Attributes.defineEvent<AppThemeChangedEventArgs> ViewNode.getViewNode "Application_RequestedThemeChanged" (fun target -> (target :?> Xamarin.Forms.Application).RequestedThemeChanged)
-    let ModalPopped = Attributes.defineEvent<ModalPoppedEventArgs> ViewNode.getViewNode "Application_ModalPopped" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopped)
-    let ModalPopping = Attributes.defineEvent<ModalPoppingEventArgs> ViewNode.getViewNode "Application_ModalPopping" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopping)
-    let ModalPushed = Attributes.defineEvent<ModalPushedEventArgs> ViewNode.getViewNode "Application_ModalPushed" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushed)
-    let ModalPushing = Attributes.defineEvent<ModalPushingEventArgs> ViewNode.getViewNode "Application_ModalPushing" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushing)
+    let RequestedThemeChanged = Attributes.defineEvent<Xamarin.Forms.AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Xamarin.Forms.Application).RequestedThemeChanged)
+    let ModalPopped = Attributes.defineEvent<Xamarin.Forms.ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopped)
+    let ModalPopping = Attributes.defineEvent<Xamarin.Forms.ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Xamarin.Forms.Application).ModalPopping)
+    let ModalPushed = Attributes.defineEvent<Xamarin.Forms.ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushed)
+    let ModalPushing = Attributes.defineEvent<Xamarin.Forms.ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Xamarin.Forms.Application).ModalPushing)
 
 module Page =
     let BackgroundImageSource = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Page.BackgroundImageSourceProperty
@@ -31,7 +31,7 @@ module Page =
     let IsBusy = Attributes.defineBindable<bool> Xamarin.Forms.Page.IsBusyProperty
     let Padding = Attributes.defineBindable<Xamarin.Forms.Thickness> Xamarin.Forms.Page.PaddingProperty
     let Title = Attributes.defineBindable<string> Xamarin.Forms.Page.TitleProperty
-    let ToolbarItems = Attributes.defineWidgetCollection<Xamarin.Forms.ToolbarItem> ViewNode.getViewNode "Page_ToolbarItems" (fun target -> (target :?> Xamarin.Forms.Page).ToolbarItems)
+    let ToolbarItems = Attributes.defineWidgetCollection<Xamarin.Forms.ToolbarItem> "Page_ToolbarItems" (fun target -> (target :?> Xamarin.Forms.Page).ToolbarItems)
     let Appearing = Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Xamarin.Forms.Page).Appearing)
     let Disappearing = Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Xamarin.Forms.Page).Disappearing)
     let LayoutChanged = Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Xamarin.Forms.Page).LayoutChanged)
@@ -44,10 +44,10 @@ module Layout =
     let Padding = Attributes.defineBindable<Xamarin.Forms.Thickness> Xamarin.Forms.Layout.PaddingProperty
     let CascadeInputTransparent = Attributes.defineBindable<bool> Xamarin.Forms.Layout.CascadeInputTransparentProperty
     let IsClippedToBounds = Attributes.defineBindable<bool> Xamarin.Forms.Layout.IsClippedToBoundsProperty
-    let LayoutChanged = Attributes.defineEventNoArg ViewNode.getViewNode "Layout_LayoutChanged" (fun target -> (target :?> Xamarin.Forms.Layout).LayoutChanged)
+    let LayoutChanged = Attributes.defineEventNoArg "Layout_LayoutChanged" (fun target -> (target :?> Xamarin.Forms.Layout).LayoutChanged)
 
 module LayoutOfView =
-    let Children = Attributes.defineWidgetCollection ViewNode.getViewNode "LayoutOfWidget_Children" (fun target -> (target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children)
+    let Children = Attributes.defineWidgetCollection "LayoutOfWidget_Children" (fun target -> (target :?> Xamarin.Forms.Layout<Xamarin.Forms.View>).Children)
 
 module StackLayout =
     let Orientation = Attributes.defineBindable<Xamarin.Forms.StackOrientation> Xamarin.Forms.StackLayout.OrientationProperty
@@ -71,7 +71,7 @@ module View =
     let HorizontalOptions = Attributes.defineBindable<Xamarin.Forms.LayoutOptions> Xamarin.Forms.View.HorizontalOptionsProperty
     let VerticalOptions = Attributes.defineBindable<Xamarin.Forms.LayoutOptions> Xamarin.Forms.View.VerticalOptionsProperty
     let Margin = Attributes.defineBindable<Xamarin.Forms.Thickness> Xamarin.Forms.View.MarginProperty
-    let GestureRecognizers = Attributes.defineWidgetCollection<Xamarin.Forms.IGestureRecognizer> ViewNode.getViewNode "View_GestureRecognizers" (fun target -> (target :?> Xamarin.Forms.View).GestureRecognizers)
+    let GestureRecognizers = Attributes.defineWidgetCollection<Xamarin.Forms.IGestureRecognizer> "View_GestureRecognizers" (fun target -> (target :?> Xamarin.Forms.View).GestureRecognizers)
 
 module Label =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Label.TextProperty
@@ -114,7 +114,7 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget ViewNode.getViewNode "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- unbox value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
 
 module Image =
     let Source = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Image.SourceProperty
@@ -163,7 +163,7 @@ module MenuItem =
     let Clicked = Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)
 
 module ToolbarItem =
-    let Order = Attributes.define<Xamarin.Forms.ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, _viewNode, target) ->
+    let Order = Attributes.define<Xamarin.Forms.ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, _context, target) ->
         let toolbarItem = target :?> Xamarin.Forms.ToolbarItem
         match newValueOpt with
         | ValueNone -> toolbarItem.Order <- Xamarin.Forms.ToolbarItemOrder.Default
@@ -174,7 +174,7 @@ module Editor =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
 
 module ViewCell =
-    let View = Attributes.defineWidget ViewNode.getViewNode "ViewCell_View" (fun target -> (target :?> Xamarin.Forms.ViewCell).View) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- unbox value)
+    let View = Attributes.defineWidget "ViewCell_View" (fun target -> (target :?> Xamarin.Forms.ViewCell).View) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
 
 module MultiPageOfPage =
-    let Children = Attributes.defineWidgetCollection ViewNode.getViewNode "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
+    let Children = Attributes.defineWidgetCollection "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)

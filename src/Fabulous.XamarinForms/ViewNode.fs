@@ -1,6 +1,5 @@
 ﻿namespace Fabulous.XamarinForms
 
-open System
 open Fabulous
 
 module ViewNode =

@@ -30,7 +30,7 @@ module Runners =
             {
                 Dispatch = unbox >> processMsg
                 CanReuseView = program.CanReuseView
-                Ancestors = []
+                GetViewNode = program.GetViewNode
             }
 
         member _.Start(arg) = start arg
@@ -70,9 +70,15 @@ module ViewAdapters =
             let state = unbox(StateStore.get stateKey)
             let widget = view state
             _widget <- widget
+            
+            let viewNodeContext : ViewNodeContext =
+                { Key = widget.Key
+                  ViewTreeContext = context
+                  Ancestors = []
+                  MapMsg = id }
 
             let definition = WidgetDefinitionStore.get widget.Key
-            _root <- definition.CreateView(widget, context)
+            _root <- definition.CreateView(widget, viewNodeContext)
             _root
 
         member _.OnStateChanged(args) =

@@ -4,7 +4,7 @@ open Fabulous
 
 type IAttributeDefinition =
     abstract member Key: AttributeKey
-    abstract member UpdateTarget: newValueOpt: obj voption * viewNode: IViewNode * target: obj -> unit
+    abstract member UpdateTarget: newValueOpt: obj voption * context: ViewNodeContext * target: obj -> unit
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition
@@ -16,7 +16,7 @@ type ScalarAttributeDefinition<'inputType, 'modelType> =
       Name: string
       Convert: 'inputType -> 'modelType
       Compare: 'modelType * 'modelType -> ScalarAttributeComparison
-      UpdateTarget: 'modelType voption * IViewNode * obj -> unit }
+      UpdateTarget: 'modelType voption * ViewNodeContext * obj -> unit }
 
     member x.WithValue(value): ScalarAttribute =
         { Key = x.Key
@@ -28,16 +28,16 @@ type ScalarAttributeDefinition<'inputType, 'modelType> =
     interface IScalarAttributeDefinition with
         member x.Key = x.Key
         member x.CompareBoxed(a, b) = x.Compare (unbox<'modelType> a, unbox<'modelType> b)
-        member x.UpdateTarget(newValueOpt, viewNode, target) =
+        member x.UpdateTarget(newValueOpt, context, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
-            x.UpdateTarget(newValueOpt, viewNode, target)
+            x.UpdateTarget(newValueOpt, context, target)
 
 /// Attribute definition for widget properties
 type WidgetAttributeDefinition =
     { Key: AttributeKey
       Name: string
-      ApplyDiff: WidgetDiff * obj -> unit
-      UpdateTarget: Widget voption * IViewNode * obj -> unit }
+      ApplyDiff: WidgetDiff * ViewNodeContext * obj -> unit
+      UpdateTarget: Widget voption * ViewNodeContext * obj -> unit }
 
     member x.WithValue(value: Widget): WidgetAttribute =
         { Key = x.Key
@@ -48,16 +48,16 @@ type WidgetAttributeDefinition =
 
     interface IAttributeDefinition with
         member x.Key = x.Key
-        member x.UpdateTarget(newValueOpt, viewNode, target) =
+        member x.UpdateTarget(newValueOpt, context, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget> v)
-            x.UpdateTarget(newValueOpt, viewNode, target)
+            x.UpdateTarget(newValueOpt, context, target)
             
 /// Attribute definition for collection properties
 type WidgetCollectionAttributeDefinition =
     { Key: AttributeKey
       Name: string
-      ApplyDiff: WidgetCollectionItemChange[] * obj -> unit
-      UpdateTarget: Widget[] voption * IViewNode * obj -> unit }
+      ApplyDiff: WidgetCollectionItemChange[] * ViewNodeContext * obj -> unit
+      UpdateTarget: Widget[] voption * ViewNodeContext * obj -> unit }
             
     member x.WithValue(value: Widget[]): WidgetCollectionAttribute =
         { Key = x.Key
@@ -68,6 +68,6 @@ type WidgetCollectionAttributeDefinition =
             
     interface IAttributeDefinition with
         member x.Key = x.Key
-        member x.UpdateTarget(newValueOpt, viewNode, target) =
+        member x.UpdateTarget(newValueOpt, context, target) =
             let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget[]> v)
-            x.UpdateTarget(newValueOpt, viewNode, target)
+            x.UpdateTarget(newValueOpt, context, target)
