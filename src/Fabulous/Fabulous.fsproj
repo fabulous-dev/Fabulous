@@ -17,4 +17,7 @@
     <Compile Include="Widgets.fs" />
     <Compile Include="Runners.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.1" />
+  </ItemGroup>
 </Project>

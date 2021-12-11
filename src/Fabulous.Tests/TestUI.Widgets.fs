@@ -12,38 +12,7 @@ open Tests.TestUI_ViewNode
 //----WidgetsBuilderCE---
 
 
-[<Struct>]
-type Content<'msg> = { Widgets: Widget list }
 
-[<Struct>]
-type CollectionBuilder<'msg, 'output>
-    (
-        widgetKey: WidgetKey,
-        scalars: ScalarAttribute [] voption,
-        attr: WidgetCollectionAttributeDefinition
-    ) =
-
-    member _.Run(c: Content<'msg>) =
-        WidgetBuilder<'msg, 'output>(
-            widgetKey,
-            struct (match scalars with
-                    | ValueNone -> [||]
-                    | ValueSome s -> s // add spacing attribute here
-                    , [||]
-                    , [|
-                        attr.WithValue(List.toArray c.Widgets)
-                    |])
-        )
-
-    member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> = { Widgets = a.Widgets @ b.Widgets }
-    member inline _.Yield(x: WidgetBuilder<'msg, _>) : Content<'msg> = { Widgets = [ x.Compile() ] }
-
-    member inline _.YieldFrom(x: WidgetBuilder<'msg, _> seq) : Content<'msg> =
-        {
-            Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toList
-        }
-
-    member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
 
 //-------Widgets
 
@@ -147,7 +116,13 @@ type View private () =
         )
 
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
-        CollectionBuilder<'msg, TestStackMarker>(TestStackKey, ValueNone, Attributes.Container.Children)
+        CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, ValueNone, Attributes.Container.Children)
+        
+[<Extension>]
+type CollectionBuilderExtensions =
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>(_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker>) =
+        { Widgets = [x.Compile()] }
 
 
 

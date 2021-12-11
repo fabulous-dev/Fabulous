@@ -104,7 +104,8 @@ type ScalarAttributeComparison =
 /// DEV NOTES: This interface can be removed by reorganizing the types of this file
 type IViewNode =
     abstract Context : ViewNodeContext
-    abstract SetContext : ViewNodeContext -> unit
+    abstract MapMsg : obj -> obj
+    abstract SetMapMsg : (obj -> obj) -> unit
     abstract TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract SetHandler : AttributeKey * 'T voption -> unit
     abstract ApplyScalarDiff : ScalarChange [] -> unit
@@ -121,8 +122,7 @@ and [<Struct>] ViewTreeContext =
 and [<Struct>] ViewNodeContext =
     { Key: WidgetKey
       ViewTreeContext: ViewTreeContext
-      Ancestors: ViewNodeContext list
-      MapMsg: obj -> obj }
+      Ancestors: IViewNode list }
     
 type Program<'arg, 'model, 'msg> =
     {

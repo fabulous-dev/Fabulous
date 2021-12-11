@@ -5,14 +5,14 @@ open Fabulous
 open Fabulous.XamarinForms
 
 type IMarker = interface end
-type IApplicationMarker = inherit IMarker
-type IPageMarker = inherit IMarker
-type IViewMarker = inherit IMarker
-type ICellMarker = inherit IMarker
-type IMenuItemMarker = inherit IMarker
-type IGestureRecognizerMarker = inherit IMarker
-type ILayoutMarker = inherit IViewMarker
-type IToolbarItemMarker = inherit IMenuItemMarker
+type IApplication = inherit IMarker
+type IPage = inherit IMarker
+type IView = inherit IMarker
+type ICell = inherit IMarker
+type IMenuItem = inherit IMarker
+type IGestureRecognizer = inherit IMarker
+type ILayout = inherit IView
+type IToolbarItem = inherit IMenuItem
 
 module Widgets =
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
@@ -42,6 +42,3 @@ module Widgets =
 
         WidgetDefinitionStore.set key definition
         key
-
-    let inline map (fn: 'oldMsg -> 'newMsg) (this: ^T :> IWidgetBuilder<'oldMsg>) : ^U :> IWidgetBuilder<'newMsg> =
-        (^T: (member MapMsg : ('oldMsg -> 'newMsg) -> 'U) (this, fn))

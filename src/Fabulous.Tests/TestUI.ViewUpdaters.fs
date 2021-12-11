@@ -62,7 +62,7 @@ let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], context: V
 
         | WidgetCollectionItemChange.Update (index, diff) ->
             let targetItem = children.[index]
-            let viewNode = context.ViewTreeContext.GetViewNode(targetItem)
+            let viewNode = context.ViewTreeContext.GetViewNode(box targetItem)
 
             if diff.ScalarChanges.Length > 0 then
                 viewNode.ApplyScalarDiff(diff.ScalarChanges)

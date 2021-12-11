@@ -19,7 +19,7 @@ module CityView =
           IsRefreshing: bool }
 
     let loadingView (cityName: string) =
-        VerticalStackLayout([
+        VerticalStackLayout() {
             Label(cityName.ToUpper())
                 .font(namedSize = Xamarin.Forms.NamedSize.Title)
                 .centerTextHorizontal()
@@ -28,19 +28,19 @@ module CityView =
             ActivityIndicator(true)
                 .centerHorizontal()
                 .centerVertical(expand = true)
-        ])
+        }
 
     let loadedView (index, cityName: string, isRefreshing, data) onRefreshing =
         let sanitizedCityName = cityName.Replace(" ", "_").ToLower()
 
         RefreshView(isRefreshing, onRefreshing,
             ScrollView(
-                VerticalStackLayout([
+                VerticalStackLayout() {
                     Label(cityName.ToUpper())
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontal()
 
-                    Image($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
+                    FileImage($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
                         .opacity(0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
@@ -57,27 +57,27 @@ module CityView =
                         .font(Styles.CurrentDateFontSize)
                         .centerTextHorizontal()
 
-                    HorizontalStackLayout([
-                        for forecast in data.HourlyForecast ->
-                            PancakeView(
-                                Styles.HourlyForecastGradientStops,
-                                VerticalStackLayout([
-                                    Label(forecast.Date.ToString("h tt").ToLower())
-                                        .centerTextHorizontal()
-
-                                    Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
-                                        .centerHorizontal()
-                                        .centerVertical(expand = true)
-
-                                    Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
-                                        .centerTextHorizontal()
-                                ])
-                            )
-                    ])
+                    (HorizontalStackLayout() {
+                        Label("")
+//                        for forecast in data.HourlyForecast ->
+//                            PancakeView(
+//                                Styles.HourlyForecastGradientStops,
+//                                VerticalStackLayout() {
+//                                    Label(forecast.Date.ToString("h tt").ToLower())
+//                                        .centerTextHorizontal()
+//
+//                                    Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
+//                                        .centerHorizontal()
+//                                        .centerVertical(expand = true)
+//
+//                                    Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
+//                                        .centerTextHorizontal()
+//                                }
+//                            )
+                    })
                         .centerHorizontal()
                         .margin(0., 30., 0., 0.)
-                ])
-
+                }
             )
         )
 

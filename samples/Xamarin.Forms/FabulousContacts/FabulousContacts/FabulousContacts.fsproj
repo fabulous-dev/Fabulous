@@ -4,9 +4,6 @@
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     </PropertyGroup>
     <ItemGroup>
-      <Folder Include="Controls\" />
-    </ItemGroup>
-    <ItemGroup>
       <Compile Include="Controls\BorderedEntry.fs" />
       <Compile Include="Controls\UnderlinedLabel.fs" />
       <Compile Include="Controls\Map.fs" />

@@ -83,32 +83,29 @@ module ContactsListPage =
 
     let view title model =
         ContentPage(title,
-            VerticalStackLayout(
-                spacing = 0.,
-                children = [
-                    SearchBar(model.FilterText, UpdateFilterText, Search)
-                        .backgroundColor(accentColor)
-                        .cancelButtonColor(accentTextColor)
-                        
-                    //ListViewGrouped(groupedContacts, fun (groupName, items) ->
-                        
-                    //)
-                    //    .rowHeight(60)
-                    //    .showJumpList(model.Contacts.Length > 10)
-                    //    .selectionMode(ListViewSelectionMode.None)
-                    //    .itemTapped(ContactSelected)
-                    //    .verticalOptions(LayoutOptions.FillAndExpand)
+            (VerticalStackLayout(spacing = 0.) {
+                SearchBar(model.FilterText, UpdateFilterText, Search)
+                    .backgroundColor(accentColor)
+                    .cancelButtonColor(accentTextColor)
+                    
+                //ListViewGrouped(groupedContacts, fun (groupName, items) ->
+                    
+                //)
+                //    .rowHeight(60)
+                //    .showJumpList(model.Contacts.Length > 10)
+                //    .selectionMode(ListViewSelectionMode.None)
+                //    .itemTapped(ContactSelected)
+                //    .verticalOptions(LayoutOptions.FillAndExpand)
 
-                        //items = [
-                        //    for (groupName, items) in groupedContacts do
-                        //        yield groupName, groupView groupName, [
-                        //            for contact in items do
-                        //                let address = contact.Address.Replace("\n", " ")
-                        //                yield cachedCell contact address
-                        //            ]
-                        //]
-                ]
-            )
+                    //items = [
+                    //    for (groupName, items) in groupedContacts do
+                    //        yield groupName, groupView groupName, [
+                    //            for contact in items do
+                    //                let address = contact.Address.Replace("\n", " ")
+                    //                yield cachedCell contact address
+                    //            ]
+                    //]
+            })
         )
             .toolbarItems([
                 ToolbarItem(Strings.Common_About, AboutTapped)

@@ -8,14 +8,13 @@ module Helpers =
 
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
-    let inline createViewForWidget (parentContext: ViewNodeContext) (widget: Widget) =
+    let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
         let context =
             { Key = widget.Key
-              ViewTreeContext = parentContext.ViewTreeContext
-              Ancestors = parentContext :: parentContext.Ancestors
-              MapMsg = id }
+              ViewTreeContext = parent.Context.ViewTreeContext
+              Ancestors = parent :: parent.Context.Ancestors }
 
         widgetDefinition.CreateView(widget, context)
 
@@ -107,7 +106,8 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set target null
             | ValueSome widget ->
-                let view = Helpers.createViewForWidget context widget |> unbox
+                let viewNode = context.ViewTreeContext.GetViewNode(target)
+                let view = Helpers.createViewForWidget viewNode widget |> unbox
                 set target view
 
         defineWidgetWithConverter name applyDiff updateTarget
@@ -118,6 +118,7 @@ module Attributes =
         (getCollection: obj -> System.Collections.Generic.IList<'itemType>)
         =
         let applyDiff (diffs: WidgetCollectionItemChange [], context: ViewNodeContext, target: obj) =
+            let viewNode = context.ViewTreeContext.GetViewNode(target)
             let targetColl = getCollection target
 
             for diff in diffs do
@@ -128,9 +129,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let view =
-                        Helpers.createViewForWidget context widget
-
+                    let view = Helpers.createViewForWidget viewNode widget
                     targetColl.Insert(index, unbox view)
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
@@ -146,10 +145,8 @@ module Attributes =
                     if widgetDiff.WidgetCollectionChanges.Length > 0 then
                         viewNode.ApplyWidgetCollectionDiff(widgetDiff.WidgetCollectionChanges)
 
-                | WidgetCollectionItemChange.Replace (index, widget) ->                        
-                    let view =
-                        Helpers.createViewForWidget context widget
-
+                | WidgetCollectionItemChange.Replace (index, widget) ->                      
+                    let view = Helpers.createViewForWidget viewNode widget
                     targetColl.[index] <- unbox view
 
                 | _ -> ()
@@ -161,10 +158,10 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> ()
             | ValueSome widgets ->
+                let viewNode = context.ViewTreeContext.GetViewNode(target)
+                
                 for widget in widgets do
-                    let view =
-                        Helpers.createViewForWidget context widget
-
+                    let view = Helpers.createViewForWidget viewNode widget
                     targetColl.Add(unbox view)
 
         defineWidgetCollectionWithConverter name applyDiff updateTarget
@@ -172,13 +169,13 @@ module Attributes =
     let inline define<'T when 'T: equality> name updateTarget =
         defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
 
-    let dispatchMsgOnViewNode (context: ViewNodeContext) msg =
-        let mutable mapMsg = context.MapMsg
+    let dispatchMsgOnViewNode (viewNode: IViewNode) msg =
+        let mutable mapMsg = viewNode.MapMsg
 
-        for ancestor in context.Ancestors do
+        for ancestor in viewNode.Context.Ancestors do
             mapMsg <- ancestor.MapMsg >> mapMsg
 
-        context.ViewTreeContext.Dispatch(mapMsg msg)
+        viewNode.Context.ViewTreeContext.Dispatch(mapMsg msg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()
@@ -203,7 +200,7 @@ module Attributes =
 
                         | ValueSome msg ->
                             let handler =
-                                EventHandler(fun _ _ -> dispatchMsgOnViewNode context msg)
+                                EventHandler(fun _ _ -> dispatchMsgOnViewNode viewNode msg)
 
                             event.AddHandler handler
                             viewNode.SetHandler(key, ValueSome handler)
@@ -241,7 +238,7 @@ module Attributes =
                                     (fun _ args ->
                                         printfn $"Handler for {name} triggered"
                                         let r = fn args
-                                        dispatchMsgOnViewNode context r)
+                                        dispatchMsgOnViewNode viewNode r)
 
                             viewNode.SetHandler(key, ValueSome handler)
                             event.AddHandler handler
@@ -254,12 +251,7 @@ module Attributes =
 
     let MapMsg =
         defineScalarWithConverter<obj -> obj, _> "Fabulous_MapMsg" id ScalarAttributeComparers.noCompare (fun (value, context, target) ->
+            let mapMsg = match value with ValueNone -> id | ValueSome fn -> fn
             let viewNode = context.ViewTreeContext.GetViewNode(target)
-            let newContext =
-                { context with
-                    MapMsg =
-                        match value with
-                        | ValueNone -> id
-                        | ValueSome fn -> fn }
-            viewNode.SetContext(newContext)
+            viewNode.SetMapMsg(mapMsg)
         )

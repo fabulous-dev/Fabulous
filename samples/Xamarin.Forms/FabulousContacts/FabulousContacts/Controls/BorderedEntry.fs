@@ -2,8 +2,6 @@
 
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.Attributes
-open Fabulous.XamarinForms.Widgets
 open Fabulous.XamarinForms.XFAttributes
 open Xamarin.Forms
 open System.Runtime.CompilerServices
@@ -23,30 +21,18 @@ type BorderedEntry() =
 [<AutoOpen>]
 module FabulousBorderedEntry =
     let BorderColor = Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
-
-    type [<Struct>] BorderedEntry<'msg> (attrs: Attributes.AttributesBuilder) =
-        static let key = Widgets.register<BorderedEntry>()
-        member _.Builder = attrs
-
-        static member Create(text: string, onTextChanged: string -> 'msg) =
-            BorderedEntry<'msg>(
-                Attributes.AttributesBuilder(
-                    [| Entry.Text.WithValue(text)
-                       Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |],
-                    [||],
-                    [||]
-                )
-            )
-
-        interface IEntryWidgetBuilder<'msg> with
-            member x.Compile() = attrs.Build(key)
+    let BorderedEntryKey = Widgets.register<BorderedEntry>()
+    
+    type IBorderedEntry = inherit IEntry
 
     type Fabulous.XamarinForms.View with
-        static member inline BorderedEntry<'msg>(text, onTextChanged) = BorderedEntry<'msg>.Create(text, onTextChanged)
-
+        static member inline BorderedEntry<'msg>(text, onTextChanged) =
+            ViewHelpers.buildScalars<'msg, IBorderedEntry> BorderedEntryKey
+                [| Entry.Text.WithValue(text)
+                   Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |]
 
     [<Extension>]
     type BorderedEntryExtensions =
         [<Extension>]
-        static member inline borderColor(this: BorderedEntry<_>, value: Color) =
-            this.AddScalarAttribute(BorderColor.WithValue(value))
+        static member inline borderColor(this: WidgetBuilder<'msg, #IBorderedEntry>, value: Color) =
+            this.AddScalar(BorderColor.WithValue(value))

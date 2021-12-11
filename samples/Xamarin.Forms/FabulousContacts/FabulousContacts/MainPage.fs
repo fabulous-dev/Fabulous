@@ -130,26 +130,26 @@ module MainPage =
             model, Cmd.none, ExternalMsg.NavigateToNewContact
 
     let loadingView title =
-        TabbedPage(title, [
+        TabbedPage(title) {
             ContentPage("Loading",
-                VerticalStackLayout([
+                VerticalStackLayout() {
                     centralLabel Strings.MainPage_Loading
-                ])
+                }
             )
-        ])
+        }
 
     let emptyView title =
-        TabbedPage(title,[
+        TabbedPage(title) {
             ContentPage("Empty",
-                VerticalStackLayout([
+                VerticalStackLayout() {
                     centralLabel Strings.MainPage_NoContact
-                ])
+                }
             )
                 .toolbarItems([
                     ToolbarItem(Strings.Common_About, NoContactAboutTapped)
                     ToolbarItem("+", NoContactAddNewContactTapped)
                 ])
-        ])
+        }
     
     let regularView title model =
         let tabAllContacts =
@@ -162,11 +162,11 @@ module MainPage =
             
         let tabMap = MapPage.view model.TabMapModel
         
-        TabbedPage(title, [
-            Widgets.map TabAllContactsMsg tabAllContacts
-            Widgets.map TabAllContactsMsg tabFavContacts
-            Widgets.map TabMapMsg tabMap
-        ])
+        (TabbedPage(title) {
+            View.map TabAllContactsMsg tabAllContacts
+            View.map TabAllContactsMsg tabFavContacts
+            View.map TabMapMsg tabMap
+        })
             .androidToolbarPlacement(ToolbarPlacement.Bottom)
 
     let view model =

@@ -11,7 +11,7 @@ type IText =
     abstract member TextColor : string with get, set
 
 type IContainer =
-    abstract member Children : ResizeArray<TestViewElement>
+    abstract member Children : List<TestViewElement>
 
 type ButtonHandler = unit -> unit
 
@@ -30,7 +30,7 @@ type TestStack() =
     inherit TestViewElement()
 
     interface IContainer with
-        member val Children = ResizeArray<TestViewElement>()
+        member val Children = List<TestViewElement>()
 
 
 type TestButton() =

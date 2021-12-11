@@ -168,56 +168,54 @@ module App =
     /// The dynamic 'view' function giving the updated content for the view
     let view model =
         Application(
-            NavigationPage([
+            (NavigationPage() {
                 let contentPage =
                     ContentPage("TicTacToe",
                         Grid(
                             coldefs = [ Star ],
-                            rowdefs = [ Star; Auto; Auto ],
-                            children = [
-                                Grid(
-                                    coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
-                                    rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
-                                    children = [
-                                        BoxView(Color.Black).gridRow(1).gridColumnSpan(5)
-                                        BoxView(Color.Black).gridRow(3).gridColumnSpan(5)
-                                        BoxView(Color.Black).gridColumn(1).gridRowSpan(5)
-                                        BoxView(Color.Black).gridColumn(3).gridRowSpan(5)
+                            rowdefs = [ Star; Auto; Auto ]
+                        ) {
+                            (Grid(
+                                coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
+                                rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]
+                            ) {
+                                BoxView(Color.Black).gridRow(1).gridColumnSpan(5)
+                                BoxView(Color.Black).gridRow(3).gridColumnSpan(5)
+                                BoxView(Color.Black).gridColumn(1).gridRowSpan(5)
+                                BoxView(Color.Black).gridColumn(3).gridRowSpan(5)
 
-                                        for ((row,col) as pos) in positions do
-                                            if canPlay model model.Board.[pos] then
-                                                Button("", Play pos)
-                                                    .backgroundColor(Color.LightBlue)
-                                                    .gridRow(row * 2)
-                                                    .gridColumn(col * 2)
-                                            else
-                                                Image(imageForPos model.Board.[pos], Aspect.AspectFit)
-                                                    .center()
-                                                    .margin(10.)
-                                                    .gridRow(row * 2)
-                                                    .gridColumn(col * 2)
-                                    ]
-                                )
-                                    .rowSpacing(0.)
-                                    .columnSpacing(0.)
-                                    .center()
-                                    .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
-                                    .gridRow(0)
+//                                for ((row,col) as pos) in positions do
+//                                    if canPlay model model.Board.[pos] then
+//                                        Button("", Play pos)
+//                                            .backgroundColor(Color.LightBlue)
+//                                            .gridRow(row * 2)
+//                                            .gridColumn(col * 2)
+//                                    else
+//                                        Image(imageForPos model.Board.[pos], Aspect.AspectFit)
+//                                            .center()
+//                                            .margin(10.)
+//                                            .gridRow(row * 2)
+//                                            .gridColumn(col * 2)
+                            })
+                                .rowSpacing(0.)
+                                .columnSpacing(0.)
+                                .center()
+                                .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
+                                .gridRow(0)
 
-                                Label(getMessage model)
-                                    .textColor(Color.Black)
-                                    .font(namedSize = NamedSize.Large)
-                                    .center()
-                                    .margin(10.)
-                                    .gridRow(1)
+                            Label(getMessage model)
+                                .textColor(Color.Black)
+                                .font(namedSize = NamedSize.Large)
+                                .center()
+                                .margin(10.)
+                                .gridRow(1)
 
-                                Button("Restart game", Restart)
-                                    .textColor(Color.Black)
-                                    .backgroundColor(Color.LightBlue)
-                                    .font(NamedSize.Large)
-                                    .gridRow(2)
-                            ]
-                        )
+                            Button("Restart game", Restart)
+                                .textColor(Color.Black)
+                                .backgroundColor(Color.LightBlue)
+                                .font(NamedSize.Large)
+                                .gridRow(2)
+                        }
                     )
 
                 match model.VisualBoardSize with
@@ -226,7 +224,7 @@ module App =
                         .onSizeAllocated(VisualBoardSizeChanged)
                 | Some _ ->
                     contentPage
-            ])
+            })
                 .barBackgroundColor(Color.LightBlue)
                 .barTextColor(Color.Black)
         )

@@ -5,14 +5,14 @@ open Fabulous
 /// Define the logic to apply diffs and store event handlers of its target control
 type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty
-
-    member val private Context = context with get, set
+    let mutable _mapMsg: obj -> obj = id
     
     interface IViewNode with
-        member x.Context = x.Context 
+        member x.Context = context
         
-        member x.SetContext(newContext) =
-            x.Context <- newContext
+        member x.MapMsg(msg) = _mapMsg msg
+        
+        member x.SetMapMsg(fn) = _mapMsg <- fn
 
         member _.TryGetHandler<'T>(key: AttributeKey) =
             match Map.tryFind key _handlers with

@@ -74,8 +74,7 @@ module ViewAdapters =
             let viewNodeContext : ViewNodeContext =
                 { Key = widget.Key
                   ViewTreeContext = context
-                  Ancestors = []
-                  MapMsg = id }
+                  Ancestors = [] }
 
             let definition = WidgetDefinitionStore.get widget.Key
             _root <- definition.CreateView(widget, viewNodeContext)
