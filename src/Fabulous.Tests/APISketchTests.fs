@@ -1,7 +1,6 @@
-module Fabulous.Tests
+module Fabulous.Tests.Run
 
 open NUnit.Framework
-
 
 open Tests.Platform
 open Tests.TestUI_Widgets
@@ -124,10 +123,11 @@ module SimpleStackTests =
                         (id_, text_))
 
     let view model =
-        Stack(
-            model
-            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
-        )
+        (Stack() {
+            yield!
+                model
+                |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
+         })
             .automationId("stack")
 
 
@@ -206,6 +206,8 @@ module SimpleStackTests =
 //        Assert.AreEqual([], res, "this should fail for now, not a real test")
 //        ()
 //
+
+
 module MapViewTests =
     type ParentMsg = Add of int
 
@@ -225,21 +227,20 @@ module MapViewTests =
         | RemoveTwo -> Add -2
 
     let view model =
-        Stack(
-            [
-                View.map
-                    mapMsg
-                    (Button("+1", AddOne)
-                        .automationId("add")
-                        .textColor("red"))
+        Stack() {
+            Label(model.ToString())
+                .automationId("label")
+                .textColor("blue")
 
-                Label(model.ToString())
-                    .automationId("label")
-                    .textColor("blue")
+            View.map
+                mapMsg
+                (Button("+1", AddOne)
+                    .automationId("add")
+                    .textColor("red"))
 
-                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
-            ]
-        )
+            View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
+        }
+
 
     let init () = 0
 

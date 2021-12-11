@@ -8,6 +8,43 @@ open Tests.Platform
 open TestUI_Attributes
 open Tests.TestUI_ViewNode
 
+
+//----WidgetsBuilderCE---
+
+
+[<Struct>]
+type Content<'msg> = { Widgets: Widget list }
+
+[<Struct>]
+type CollectionBuilder<'msg, 'output>
+    (
+        widgetKey: WidgetKey,
+        scalars: ScalarAttribute [] voption,
+        attr: WidgetCollectionAttributeDefinition
+    ) =
+
+    member _.Run(c: Content<'msg>) =
+        WidgetBuilder<'msg, 'output>(
+            widgetKey,
+            struct (match scalars with
+                    | ValueNone -> [||]
+                    | ValueSome s -> s // add spacing attribute here
+                    , [||]
+                    , [|
+                        attr.WithValue(List.toArray c.Widgets)
+                    |])
+        )
+
+    member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> = { Widgets = a.Widgets @ b.Widgets }
+    member inline _.Yield(x: WidgetBuilder<'msg, _>) : Content<'msg> = { Widgets = [ x.Compile() ] }
+
+    member inline _.YieldFrom(x: WidgetBuilder<'msg, _> seq) : Content<'msg> =
+        {
+            Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toList
+        }
+
+    member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
+
 //-------Widgets
 
 module Widgets =
@@ -30,7 +67,12 @@ module Widgets =
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update context.ViewTreeContext.GetViewNode context.ViewTreeContext.CanReuseView ValueNone widget view
+                        Reconciler.update
+                            context.ViewTreeContext.GetViewNode
+                            context.ViewTreeContext.CanReuseView
+                            ValueNone
+                            widget
+                            view
 
                         box view
             }
@@ -57,27 +99,26 @@ type TestButtonMarker =
     inherit TextMarker
 
 type TestStackMarker =
-    interface
-    end
+    inherit IMarker
 //----------------
-
-///----Stack----
-
-module ViewHelpers =
-    let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
-        items
-        |> Seq.map(fun item -> item.Compile())
-        |> Seq.toArray
 
 /// ------------ Extenstions
 [<Extension>]
 type WidgetExtensions() =
     [<Extension>]
-    static member inline automationId<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+    static member inline automationId<'msg, 'marker when 'marker :> IMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: string
+        ) =
         this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
     [<Extension>]
-    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: string
+        ) =
         this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
 
@@ -87,6 +128,7 @@ let inline private scalars
     struct (value, [||], [||])
 
 ///----------------
+
 [<AbstractClass; Sealed>]
 type View private () =
     static let TestLabelKey = Widgets.register<TestLabel>()
@@ -104,16 +146,9 @@ type View private () =
                        Attributes.Button.Pressed.WithValue(onClicked) |]
         )
 
+    static member Stack<'msg, 'marker when 'marker :> IMarker>() =
+        CollectionBuilder<'msg, TestStackMarker>(TestStackKey, ValueNone, Attributes.Container.Children)
 
-    static member Stack<'msg>(children: seq<WidgetBuilder<'msg, IMarker>>) =
-        WidgetBuilder<'msg, TestStackMarker>(
-            TestStackKey,
-            struct ([||],
-                    [||],
-                    [|
-                        Attributes.Container.Children.WithValue(ViewHelpers.compileSeq children)
-                    |])
-        )
 
 
 ///------------------
@@ -171,15 +206,16 @@ module Run =
             let model = (program.Init(arg))
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
-            
-            let context =
-                { Key = widget.Key
-                  ViewTreeContext = x.viewContext
-                  Ancestors = []
-                  MapMsg = id }
 
-            let view =
-                widgetDef.CreateView(widget, context)
+            let context =
+                {
+                    Key = widget.Key
+                    ViewTreeContext = x.viewContext
+                    Ancestors = []
+                    MapMsg = id
+                }
+
+            let view = widgetDef.CreateView(widget, context)
 
             state <- Some(model, view, widget)
 
