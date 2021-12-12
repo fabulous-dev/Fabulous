@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 module ViewUpdaters =
-    let updateSliderMinMax (newValueOpt: (float * float) voption, target: obj) =
+    let updateSliderMinMax (newValueOpt: (float * float) voption, _viewNode, target: obj) =
         let slider = target :?> Slider
         match newValueOpt with
         | ValueNone ->
@@ -19,7 +19,7 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
-    let updateStepperMinMax (newValueOpt: (float * float) voption, target: obj) =
+    let updateStepperMinMax (newValueOpt: (float * float) voption, _viewNode, target: obj) =
         let stepper = target :?> Stepper
         match newValueOpt with
         | ValueNone ->
@@ -34,7 +34,7 @@ module ViewUpdaters =
                 stepper.SetValue(Stepper.MinimumProperty, min)
                 stepper.SetValue(Stepper.MaximumProperty, max)
 
-    let updateGridColumnDefinitions (newValueOpt: Dimension[] voption, target: obj) =
+    let updateGridColumnDefinitions (newValueOpt: Dimension[] voption, _viewNode, target: obj) =
         let grid = target :?> Grid
         match newValueOpt with
         | ValueNone -> grid.ColumnDefinitions.Clear()
@@ -51,7 +51,7 @@ module ViewUpdaters =
 
                 grid.ColumnDefinitions.Add(ColumnDefinition(Width = gridLength))
 
-    let updateGridRowDefinitions (newValueOpt: Dimension[] voption, target: obj) =
+    let updateGridRowDefinitions (newValueOpt: Dimension[] voption, _viewNode, target: obj) =
         let grid = target :?> Grid
         match newValueOpt with
         | ValueNone -> grid.RowDefinitions.Clear()
@@ -70,8 +70,8 @@ module ViewUpdaters =
 
     /// NOTE: Would be better to have a custom diff logic for Navigation
     /// because it's a Stack and not a random access collection
-    let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChange[], target: obj) =
-        let viewNode = ViewNode.getViewNode target
+    let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChange[], context: ViewNodeContext, target: obj) =
+        let viewNode = context.ViewTreeContext.GetViewNode(target)
         let navigationPage = target :?> NavigationPage
         let pages = List.ofSeq navigationPage.Pages
 
@@ -79,16 +79,16 @@ module ViewUpdaters =
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
                 if index >= pages.Length then
-                    let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
+                    let page = Helpers.createViewForWidget viewNode widget :?> Page
                     navigationPage.PushAsync(page) |> ignore
                 else
-                    let temp = System.Collections.Generic.Stack<Xamarin.Forms.Page>()
+                    let temp = System.Collections.Generic.Stack<Page>()
                     
                     for i = pages.Length - 1 to index do
                         temp.Push(pages.[i])
                         navigationPage.PopAsync() |> ignore
                     
-                    let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
+                    let page = Helpers.createViewForWidget viewNode widget :?> Page
                     navigationPage.PushAsync(page, false) |> ignore
                     
                     while temp.Count > 0  do
@@ -104,26 +104,28 @@ module ViewUpdaters =
             | WidgetCollectionItemChange.Replace (index, widget) ->
                 if index = pages.Length - 1 then
                     navigationPage.PopAsync() |> ignore
-                    let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
+                    let page = Helpers.createViewForWidget viewNode widget :?> Page
                     navigationPage.PushAsync(page) |> ignore
                 else
-                    let temp = System.Collections.Generic.Stack<Xamarin.Forms.Page>()
+                    let temp = System.Collections.Generic.Stack<Page>()
                     
                     for i = pages.Length - 1 to index do
                         temp.Push(pages.[i])
                         navigationPage.PopAsync() |> ignore
                     
-                    let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
+                    let page = Helpers.createViewForWidget viewNode widget :?> Page
                     navigationPage.PushAsync(page, false) |> ignore
                     
                     while temp.Count > 1 do
                         navigationPage.PushAsync(temp.Pop(), false) |> ignore
                         
             | WidgetCollectionItemChange.Remove index ->
-                if index = pages.Length - 1 then
+                if index > pages.Length - 1 then
+                    () // Do nothing, page has already been popped
+                elif index = pages.Length - 1 then
                    navigationPage.PopAsync() |> ignore
                 else
-                    let temp = System.Collections.Generic.Stack<Xamarin.Forms.Page>()
+                    let temp = System.Collections.Generic.Stack<Page>()
                     
                     for i = pages.Length - 1 to index do
                         temp.Push(pages.[i])
@@ -132,14 +134,14 @@ module ViewUpdaters =
                     while temp.Count > 1 do
                         navigationPage.PushAsync(temp.Pop(), false) |> ignore
 
-    let updateNavigationPagePages (newValueOpt: Widget[] voption, target: obj) =
+    let updateNavigationPagePages (newValueOpt: Widget[] voption, context: ViewNodeContext, target: obj) =
+        let viewNode = context.ViewTreeContext.GetViewNode(target)
         let navigationPage = target :?> NavigationPage
         navigationPage.PopToRootAsync(false) |> ignore
 
         match newValueOpt with
         | ValueNone -> ()
         | ValueSome widgets ->
-            let viewNode = ViewNode.getViewNode target
             for widget in widgets do
-                let page = Helpers.createViewForWidget viewNode.Context widget :?> Page
+                let page = Helpers.createViewForWidget viewNode widget :?> Page
                 navigationPage.PushAsync(page) |> ignore

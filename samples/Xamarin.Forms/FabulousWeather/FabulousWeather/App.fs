@@ -79,7 +79,7 @@ module App =
             { model with Cities = updatedCities }, Cmd.none
 
     let previousNextView model =
-        Grid([
+        (Grid() {
             cityView model.CurrentCityIndex model.Cities.[model.CurrentCityIndex] (RequestRefresh model.CurrentCityIndex)
 
             if model.CurrentCityIndex > 0 then
@@ -93,7 +93,7 @@ module App =
                     .alignEndHorizontal()
                     .alignStartVertical()
                     .margin(0., 0., 20., 0.)
-        ])
+        })
             .paddingLayout(0., 35., 0., 0.)
 
     let view model =

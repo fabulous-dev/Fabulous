@@ -13,4 +13,4 @@
 type WidgetDefinition =
     { Key: WidgetKey
       Name: string
-      CreateView: Widget * ViewTreeContext -> obj }
+      CreateView: Widget * ViewNodeContext -> obj }

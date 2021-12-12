@@ -262,7 +262,7 @@ module Reconciler =
                     | ValueNone -> ValueNone
                     | ValueSome diffs -> ValueSome (WidgetCollectionItemChange.Update struct (i, diffs))
 
-                | Some prevItem -> ValueSome (WidgetCollectionItemChange.Replace struct (i, currItem))
+                | Some _ -> ValueSome (WidgetCollectionItemChange.Replace struct (i, currItem))
 
             match changeOpt with
             | ValueNone -> ()
@@ -289,47 +289,12 @@ module Reconciler =
 
     /// Diffs changes and applies them on the target
     let rec update (getViewNode: obj -> IViewNode) (canReuseView: Widget -> Widget -> bool) (prevOpt: Widget voption) (next: Widget) (target: obj) : unit =
-        let viewNode = getViewNode target
-        let diffOpt = diffWidget canReuseView prevOpt next
-
-        match diffOpt with
+        match diffWidget canReuseView prevOpt next with
         | ValueNone -> ()
         | ValueSome diff ->
+            let viewNode = getViewNode target
+            viewNode.CanPropagateEvents <- false
             if diff.ScalarChanges.Length > 0 then viewNode.ApplyScalarDiff(diff.ScalarChanges)
             if diff.WidgetChanges.Length > 0 then viewNode.ApplyWidgetDiff(diff.WidgetChanges)
             if diff.WidgetCollectionChanges.Length > 0 then viewNode.ApplyWidgetCollectionDiff(diff.WidgetCollectionChanges)
-
-// 1. compare attributes for control and widget
-// 2. apply diff (should be a method on control). e.g control.ApplyDiff(diff)
-// 3. apply returns UpdateResult
-// 4. if we have 'Done' then exit
-// 5. if we have 'UpdateNext' go through the list and recursively call update on each element
-
-// Questions
-// 1. should adding/removing children should be done here as well?
-// 2. Should 'mounting' views done by core framework or should be part of MAUI? I think the latter is fine
-// 3. Should widgets have 1st class parent -> child relationships like in react?
-// Meaning that we can fully control creations of new controls via core
-
-// TODO find a better file/home for this logic
-//module Runtime =
-//    let MapMsg =
-//        Attributes.defineWithComparer<obj -> obj>
-//            "MapMsg"
-//            (fun () -> id )
-//            // TODO should this be a type check? E.g. what "dependsOn" uses internally?
-//            Attributes.AttributeComparers.noCompare
-
-//    let MapMsgKey = MapMsg.Key
-
-//    let inline dispatchOnNode (node: IViewNode) (ctx: ViewTreeContext) (ev: obj): unit =
-//        let inline mapEv (e: obj) (attributes: Attribute[]) =
-//            match (Array.tryFind (fun (a: Attribute) -> a.Key = MapMsgKey) attributes) with
-//            | Some attr -> unbox<obj -> obj>attr.Value e
-//            | None -> e
-        
-//        let mutable ev = mapEv ev node.Attributes
-//        for ancestor in ctx.Ancestors do
-//            ev <- mapEv ev ancestor.Attributes
-        
-//        ctx.Dispatch ev
+            viewNode.CanPropagateEvents <- true

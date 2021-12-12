@@ -11,9 +11,13 @@
     <Compile Include="AttributeDefinitions.fs" />
     <Compile Include="WidgetDefinitions.fs" />
     <Compile Include="Stores.fs" />
-    <Compile Include="Reconciler.fs" />
     <Compile Include="ViewNode.fs" />
+    <Compile Include="Reconciler.fs" />
     <Compile Include="Attributes.fs" />
+    <Compile Include="Widgets.fs" />
     <Compile Include="Runners.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.1" />
   </ItemGroup>
 </Project>

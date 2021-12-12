@@ -83,68 +83,56 @@ module DetailPage =
             { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
 
     let header contact =            
-        VerticalStackLayout(
-            spacing = 10.,
-            children = [
-                Label(contact.FirstName + " " + contact.LastName)
-                    .font(size = 20., attributes = FontAttributes.Bold)
-                    .textColor(accentTextColor)
-                    .centerHorizontal()
+        (VerticalStackLayout(spacing = 10.) {
+            Label(contact.FirstName + " " + contact.LastName)
+                .font(size = 20., attributes = FontAttributes.Bold)
+                .textColor(accentTextColor)
+                .centerHorizontal()
 
-                Grid([
-                    getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
-                        
-                    Image("star.png", Aspect.AspectFit)
-                        .isVisible(contact.IsFavorite)
-                        .size(height = 35., width = 35.)
-                        .alignStartHorizontal()
-                        .alignStartVertical()
-                ])
-                    .size(height = 125., width = 125.)
-                    .backgroundColor(Color.White)
-                    .centerHorizontal()
+            (Grid() {
+                getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
+                    
+                Image("star.png", Aspect.AspectFit)
+                    .isVisible(contact.IsFavorite)
+                    .size(height = 35., width = 35.)
+                    .alignStartHorizontal()
+                    .alignStartVertical()
+            })
+                .size(height = 125., width = 125.)
+                .backgroundColor(Color.White)
+                .centerHorizontal()
 
-                HorizontalStackLayout(
-                    spacing = 20.,
-                    children = [
-                        if hasSetField contact.Phone then
-                            detailActionButton "call.png" CallTapped
-                            detailActionButton "sms.png" SmsTapped
-                        if hasSetField contact.Email then
-                            detailActionButton "email.png" EmailTapped
-                    ]
-                )
-                    .centerHorizontal()
-                    .margin(0., 10., 0., 10.)
-            ]
-        )
+            (HorizontalStackLayout(spacing = 20.) {
+                if hasSetField contact.Phone then
+                    detailActionButton "call.png" CallTapped
+                    detailActionButton "sms.png" SmsTapped
+                if hasSetField contact.Email then
+                    detailActionButton "email.png" EmailTapped
+            })
+                .centerHorizontal()
+                .margin(0., 10., 0., 10.)
+        })
             .backgroundColor(Color.FromHex("#448cb8"))
             .paddingLayout(20., 10., 20., 10.)
             
     let body contact =
-        VerticalStackLayout(
-            spacing = 10.,
-            children = [
-                detailFieldTitle "Email"
-                optionalLabel contact.Email
-                detailFieldTitle "Phone"
-                optionalLabel contact.Phone
-                detailFieldTitle "Address"
-                optionalLabel contact.Address
-            ]
-        )
+        (VerticalStackLayout(spacing = 10.) {
+            detailFieldTitle "Email"
+            optionalLabel contact.Email
+            detailFieldTitle "Phone"
+            optionalLabel contact.Phone
+            detailFieldTitle "Address"
+            optionalLabel contact.Address
+        })
             .paddingLayout(20., 10., 20., 20.)
 
     let view model =
         ContentPage("Detail page",
             ScrollView(
-                VerticalStackLayout(
-                    spacing = 0.,
-                    children = [
-                        header model.Contact
-                        body model.Contact
-                    ]
-                )
+                VerticalStackLayout(spacing = 0.) {
+                    header model.Contact
+                    body model.Contact
+                }
             )
         )
             .toolbarItems([

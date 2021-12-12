@@ -1,6 +1,7 @@
 ﻿namespace Fabulous
 
 open System
+open Fabulous
 
 /// Dev notes:
 ///
@@ -22,40 +23,54 @@ type ViewAdapterKey = int
 /// Represents a value for a property of a widget.
 /// Can map to a real property (such as Label.Text) or to a non-existent one.
 /// It will be up to the AttributeDefinition to decide how to apply the value.
-type [<Struct>] ScalarAttribute =
-    { Key: AttributeKey
+[<Struct>]
+type ScalarAttribute =
+    {
+        Key: AttributeKey
 #if DEBUG
-      DebugName: string
+        DebugName: string
 #endif
-      Value: obj }
+        Value: obj
+    }
 
 and [<Struct>] WidgetAttribute =
-    { Key: AttributeKey
+    {
+        Key: AttributeKey
 #if DEBUG
-      DebugName: string
+        DebugName: string
 #endif
-      Value: Widget }
+        Value: Widget
+    }
 
 and [<Struct>] WidgetCollectionAttribute =
-    { Key: AttributeKey
+    {
+        Key: AttributeKey
 #if DEBUG
-      DebugName: string
+        DebugName: string
 #endif
-      Value: Widget[] }
+        Value: Widget []
+    }
 
 /// Represents a virtual UI element such as a Label, a Button, etc.
 and [<Struct>] Widget =
-    { Key: WidgetKey
-      ScalarAttributes: ScalarAttribute[]
-      WidgetAttributes: WidgetAttribute[]
-      WidgetCollectionAttributes: WidgetCollectionAttribute[] }
+    {
+        Key: WidgetKey
+#if DEBUG
+        DebugName: string
+#endif
+        ScalarAttributes: ScalarAttribute []
+        WidgetAttributes: WidgetAttribute []
+        WidgetCollectionAttributes: WidgetCollectionAttribute []
+    }
 
     member x.GetScalarOrDefault<'T>(key: AttributeKey, defaultValue: 'T) =
-        match x.ScalarAttributes |> Array.tryFind (fun attr -> attr.Key = key) with
+        match x.ScalarAttributes
+              |> Array.tryFind(fun attr -> attr.Key = key) with
         | None -> defaultValue
         | Some attr -> unbox<'T> attr.Value
 
-type [<Struct; RequireQualifiedAccess>] ScalarChange =
+[<Struct; RequireQualifiedAccess>]
+type ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
     | Updated of updated: ScalarAttribute
@@ -65,11 +80,11 @@ and [<Struct; RequireQualifiedAccess>] WidgetChange =
     | Removed of removed: WidgetAttribute
     | Updated of updated: struct (WidgetAttribute * WidgetDiff)
     | ReplacedBy of replacedBy: WidgetAttribute
-    
+
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
     | Added of added: WidgetCollectionAttribute
     | Removed of removed: WidgetCollectionAttribute
-    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionItemChange[])
+    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionItemChange [])
 
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
@@ -78,36 +93,50 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Remove of removed: int
 
 and [<Struct>] WidgetDiff =
-    { ScalarChanges: ScalarChange[]
-      WidgetChanges: WidgetChange[]
-      WidgetCollectionChanges: WidgetCollectionChange[] }
+    {
+        ScalarChanges: ScalarChange []
+        WidgetChanges: WidgetChange []
+        WidgetCollectionChanges: WidgetCollectionChange []
+    }
 
 [<Struct; RequireQualifiedAccess>]
 type ScalarAttributeComparison =
     | Identical
     | Different of newData: obj
 
-type [<Struct>] ViewTreeContext =
+/// DEV NOTES: This interface can be removed by reorganizing the types of this file
+type IViewNode =
+    abstract Context : ViewNodeContext
+    abstract CanPropagateEvents: bool with get, set
+    abstract MapMsg : obj -> obj
+    abstract SetMapMsg : (obj -> obj) -> unit
+    abstract TryGetHandler<'T> : AttributeKey -> 'T voption
+    abstract SetHandler : AttributeKey * 'T voption -> unit
+    abstract ApplyScalarDiff : ScalarChange [] -> unit
+    abstract ApplyWidgetDiff : WidgetChange [] -> unit
+    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange [] -> unit
+    
+/// Context of the whole view tree
+and [<Struct>] ViewTreeContext =
     { CanReuseView: Widget -> Widget -> bool
+      GetViewNode: obj -> IViewNode
       Dispatch: obj -> unit }
 
+/// Context for a specific view node
+and [<Struct>] ViewNodeContext =
+    { Key: WidgetKey
+      ViewTreeContext: ViewTreeContext
+      Ancestors: IViewNode list }
+    
 type Program<'arg, 'model, 'msg> =
-    { Init : 'arg -> 'model * Cmd<'msg>
-      Update : 'msg * 'model -> 'model * Cmd<'msg>
-      View : 'model -> Widget
-      CanReuseView: Widget -> Widget -> bool }
-
-/// Represents a UI element created from a widget
-type IViewNode =
-    abstract Origin: WidgetKey
-    abstract Context: ViewTreeContext
-    abstract MapMsg: obj -> obj
-    abstract TryGetHandler<'T> : AttributeKey -> 'T option
-    abstract SetHandler<'T> : AttributeKey * 'T voption -> unit
-    abstract ApplyScalarDiff : ScalarChange[] -> unit
-    abstract ApplyWidgetDiff : WidgetChange[] -> unit
-    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange[] -> unit
-
+    {
+        Init: 'arg -> 'model * Cmd<'msg>
+        Update: 'msg * 'model -> 'model * Cmd<'msg>
+        View: 'model -> Widget
+        CanReuseView: Widget -> Widget -> bool
+        GetViewNode: obj -> IViewNode
+    }
+    
 type IRunner =
     interface
     end

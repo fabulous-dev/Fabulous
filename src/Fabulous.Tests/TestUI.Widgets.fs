@@ -9,53 +9,12 @@ open TestUI_Attributes
 open Tests.TestUI_ViewNode
 
 
+//----WidgetsBuilderCE---
 
-type IWidgetBuilder =
-    abstract ScalarAttributes : ScalarAttribute []
-    abstract WidgetAttributes : WidgetAttribute []
-    abstract WidgetCollectionAttributes : WidgetCollectionAttribute []
-    abstract Compile : unit -> Widget
-
-type IWidgetBuilder<'msg> =
-    inherit IWidgetBuilder
-
-
-[<Extension>]
-type IWidgetExtensions() =
-    [<Extension>]
-    static member inline AddScalarAttribute(this: ^T :> IWidgetBuilder, attr: ScalarAttribute) =
-        let attribs = this.ScalarAttributes
-        let attribs2 = Array.zeroCreate(attribs.Length + 1)
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        attribs2.[attribs.Length] <- attr
-
-        let result =
-            (^T: (new : ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute [] -> ^T) (attribs2,
-                                                                                                       this.WidgetAttributes,
-                                                                                                       this.WidgetCollectionAttributes))
-
-        result
-
-    [<Extension>]
-    static member inline AddScalarAttributes(this: ^T :> IWidgetBuilder, attrs: ScalarAttribute []) =
-        match attrs with
-        | [||] -> this
-        | attributes ->
-            let attribs2 =
-                Array.append this.ScalarAttributes attributes
-
-            let result =
-                (^T: (new : ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute [] -> ^T) (attribs2,
-                                                                                                           this.WidgetAttributes,
-                                                                                                           this.WidgetCollectionAttributes))
-
-            result
 
 
 
 //-------Widgets
-
-
 
 module Widgets =
     let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
@@ -73,12 +32,16 @@ module Widgets =
                         let view = new 'T()
                         let weakReference = WeakReference(view)
 
-                        let viewNodeData =
-                            ViewNodeData(ViewNode(key, context, id, weakReference))
+                        let viewNode = ViewNode(context, weakReference)
 
-                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNodeData)
+                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update ViewNode.getViewNode context.CanReuseView ValueNone widget view
+                        Reconciler.update
+                            context.ViewTreeContext.GetViewNode
+                            context.ViewTreeContext.CanReuseView
+                            ValueNone
+                            widget
+                            view
 
                         box view
             }
@@ -88,185 +51,103 @@ module Widgets =
 
 
 
-[<Struct>]
-type LabelWidgetBuilder<'msg>
-    (
-        scalarAttributes: ScalarAttribute [],
-        widgetAttributes: WidgetAttribute [],
-        widgetCollectionAttributes: WidgetCollectionAttribute []
-    ) =
-    static let key = Widgets.register<TestLabel>()
-
-    static member inline Create(text: string) =
-        LabelWidgetBuilder<'msg>(
-            [|
-                Attributes.Text.Text.WithValue(text)
-            |],
-            [||],
-            [||]
-        )
-
-    interface IWidgetBuilder<'msg> with
-        member _.ScalarAttributes = scalarAttributes
-        member _.WidgetAttributes = widgetAttributes
-        member _.WidgetCollectionAttributes = widgetCollectionAttributes
-
-        member _.Compile() =
-            {
-                Key = key
-                ScalarAttributes = scalarAttributes
-                WidgetAttributes = widgetAttributes
-                WidgetCollectionAttributes = widgetCollectionAttributes
-            }
-
-[<Struct>]
-type ButtonWidgetBuilder<'msg>
-    (
-        scalarAttributes: ScalarAttribute [],
-        widgetAttributes: WidgetAttribute [],
-        widgetCollectionAttributes: WidgetCollectionAttribute []
-    ) =
-    static let key = Widgets.register<TestButton>()
-
-    static member inline Create(text: string, onClicked: 'msg) =
-        ButtonWidgetBuilder<'msg>(
-            [|
-                Attributes.Text.Text.WithValue(text)
-                Attributes.Button.Pressed.WithValue(onClicked)
-            |],
-            [||],
-            [||]
-        )
-
-    interface IWidgetBuilder<'msg> with
-        member _.ScalarAttributes = scalarAttributes
-        member _.WidgetAttributes = widgetAttributes
-        member _.WidgetCollectionAttributes = widgetCollectionAttributes
-
-        member _.Compile() =
-            {
-                Key = key
-                ScalarAttributes = scalarAttributes
-                WidgetAttributes = widgetAttributes
-                WidgetCollectionAttributes = widgetCollectionAttributes
-            }
 
 
-///----Stack----
+//-----MARKERS-----------
+type IMarker =
+    interface
+    end
 
-module ViewHelpers =
-    let inline compileSeq (items: seq<#IWidgetBuilder<'msg>>) =
-        items
-        |> Seq.map(fun item -> item.Compile())
-        |> Seq.toArray
+type TextMarker =
+    inherit IMarker
 
+type TestLabelMarker =
+    inherit TextMarker
 
-[<Struct>]
-type StackWidgetBuilder<'msg>
-    (
-        scalarAttributes: ScalarAttribute [],
-        widgetAttributes: WidgetAttribute [],
-        widgetCollectionAttributes: WidgetCollectionAttribute []
-    ) =
-    static let key = Widgets.register<TestStack>()
+type TestButtonMarker =
+    inherit TextMarker
 
-    static member inline Create(children: seq<#IWidgetBuilder<'msg>>) =
-        StackWidgetBuilder<'msg>(
-            [||],
-            [||],
-            [|
-                Attributes.Container.Children.WithValue(ViewHelpers.compileSeq children)
-            |]
-        )
-
-    interface IWidgetBuilder<'msg> with
-        member _.ScalarAttributes = scalarAttributes
-        member _.WidgetAttributes = widgetAttributes
-        member _.WidgetCollectionAttributes = widgetCollectionAttributes
-
-        member _.Compile() =
-            {
-                Key = key
-                ScalarAttributes = scalarAttributes
-                WidgetAttributes = widgetAttributes
-                WidgetCollectionAttributes = widgetCollectionAttributes
-            }
-
-
-
-//[<Struct>]
-//type WrappedWidget<'msg>(childWidget: Widget) =
-//    interface IWidget<'msg> with
-//        member x.Compile() = childWidget
-//        member this.Attributes = childWidget.Attributes
-//
-
+type TestStackMarker =
+    inherit IMarker
+//----------------
 
 /// ------------ Extenstions
 [<Extension>]
 type WidgetExtensions() =
     [<Extension>]
-    static member inline automationId(this: #IWidgetBuilder, value: string) =
-        this.AddScalarAttribute(Attributes.Automation.AutomationId.WithValue(value))
+    static member inline automationId<'msg, 'marker when 'marker :> IMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: string
+        ) =
+        this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
     [<Extension>]
-    static member inline cast<'msg>(this: IWidgetBuilder<'msg>) = this
+    static member inline textColor<'msg, 'marker when 'marker :> TextMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: string
+        ) =
+        this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
-    [<Extension>]
-    static member inline textColor<'msg>(this: LabelWidgetBuilder<'msg>, value: string) =
-        this.AddScalarAttribute(Attributes.TextStyle.TextColor.WithValue(value))
 
-    [<Extension>]
-    static member inline textColor<'msg>(this: ButtonWidgetBuilder<'msg>, value: string) =
-        this.AddScalarAttribute(Attributes.TextStyle.TextColor.WithValue(value))
-
+let inline private scalars
+    (value: ScalarAttribute [])
+    : struct (ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute []) =
+    struct (value, [||], [||])
 
 ///----------------
 
-
-///----------------
 [<AbstractClass; Sealed>]
 type View private () =
-    static member inline Label<'msg>(text) = LabelWidgetBuilder<'msg>.Create text
+    static let TestLabelKey = Widgets.register<TestLabel>()
+    static let TestButtonKey = Widgets.register<TestButton>()
+    static let TestStackKey = Widgets.register<TestStack>()
 
-    static member inline Button<'msg>(text, msg) =
-        ButtonWidgetBuilder<'msg>.Create (text, msg)
-
-//    static member inline Stack children = StackWidgetBuilder.Create children
-
-    static member inline Stack<'msg, 'a when 'a :> seq<IWidgetBuilder<'msg>>>(children: 'a) =
-        StackWidgetBuilder.Create children
+    static member Label<'msg>(text: string) =
+        WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, scalars [| Attributes.Text.Text.WithValue(text) |])
 
 
+    static member Button<'msg>(text: string, onClicked: 'msg) =
+        WidgetBuilder<'msg, TestButtonMarker>(
+            TestButtonKey,
+            scalars [| Attributes.Text.Text.WithValue(text)
+                       Attributes.Button.Pressed.WithValue(onClicked) |]
+        )
 
-//    static member inline map (mapFn: 'childMsg -> 'msg) (widget: IWidget<'childMsg>) : IWidget<'msg> =
-//        let compiled = widget.Compile()
-//
-//        let attributes =
-//            Array.append
-//                // TODO make it efficient
-//                [|
-//                    Runtime.MapMsg.WithValue(fun m -> unbox<'childMsg> m |> mapFn |> box)
-//                |]
-//                compiled.Attributes
-//
-//        WrappedWidget<'msg>(
-//            {
-//                Key = compiled.Key
-//                Attributes = attributes
-//            }
-//        )
-//        :> IWidget<'msg>
+    static member Stack<'msg, 'marker when 'marker :> IMarker>() =
+        CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, ValueNone, Attributes.Container.Children)
+
+[<Extension>]
+type CollectionBuilderExtensions =
+    [<Extension>]
+    static member Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, 'itemMarker>
+        ) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+
+
+    [<Extension>]
+    static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, 'itemMarker> seq
+        ) : Content<'msg> =
+        {
+            Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toList
+        }
 
 
 
 
 ///------------------
-type StatefulView<'arg, 'model, 'msg, 'view when 'view :> IWidgetBuilder> =
+type StatefulView<'arg, 'model, 'msg, 'marker> =
     {
         Init: 'arg -> 'model
         Update: 'msg -> 'model -> 'model
-        View: 'model -> 'view
+        View: 'model -> WidgetBuilder<'msg, 'marker>
     }
 
 module StatefulWidget =
@@ -279,23 +160,20 @@ module StatefulWidget =
 
 
 module Run =
-    type Instance<'arg, 'model, 'msg, 'widget when 'widget :> IWidgetBuilder>
-        (
-            program: StatefulView<'arg, 'model, 'msg, 'widget>
-        ) =
-        let mutable state: ('model * obj) option = None
+    type Instance<'arg, 'model, 'msg, 'marker>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
+        let mutable state: ('model * obj * Widget) option = None
 
         member private x.viewContext: ViewTreeContext =
             {
                 CanReuseView = fun a b -> a.Key = b.Key
                 Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-            //                Ancestors = []
+                GetViewNode = ViewNode.getViewNode
             }
 
         member x.ProcessMessage(msg: 'msg) =
             match state with
             | None -> ()
-            | Some (m, target) ->
+            | Some (m, target, oldWidget) ->
                 let newModel = program.Update msg m
                 let newWidget = program.View(newModel).Compile()
 
@@ -307,12 +185,12 @@ module Run =
 
                 let viewNode = ViewNode.getViewNode target
 
-                if newWidget.Key <> viewNode.Origin then
+                if newWidget.Key <> viewNode.Context.Key then
                     failwith "type mismatch!"
 
-                state <- Some(newModel, target)
+                state <- Some(newModel, target, newWidget)
 
-                Reconciler.update ViewNode.getViewNode x.viewContext.CanReuseView ValueNone newWidget target
+                Reconciler.update ViewNode.getViewNode x.viewContext.CanReuseView (ValueSome oldWidget) newWidget target
                 ()
 
         member x.Start(arg: 'arg) =
@@ -320,9 +198,19 @@ module Run =
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
-            let view =
-                widgetDef.CreateView(widget, x.viewContext)
+            let context =
+                {
+                    Key = widget.Key
+                    ViewTreeContext = x.viewContext
+                    Ancestors = []
+                }
 
-            state <- Some(model, view)
+            let view = widgetDef.CreateView(widget, context)
+
+            state <- Some(model, view, widget)
 
             view :?> TestViewElement
+
+//module View =
+//    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+//        this.MapMsg fn

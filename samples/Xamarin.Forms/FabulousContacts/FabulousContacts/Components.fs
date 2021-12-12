@@ -25,7 +25,7 @@ module Components =
             .keyboard(keyboard)
             .borderColor(if isValid then Color.Default else Color.Red)
 
-    let formEditor text (textChanged: string -> 'msg) =
+    let formEditor text textChanged =
         Editor(text, textChanged)
             .size(height = 100.)
 
@@ -42,51 +42,45 @@ module Components =
 
     let groupView name =
         ViewCell(
-            VerticalStackLayout([
+            (VerticalStackLayout() {
                 Label(name)
                     .textColor(accentTextColor)
                     .verticalOptions(LayoutOptions.FillAndExpand)
                     .verticalTextAlignment(TextAlignment.Center)
                     .margin(Thickness(20., 5.))
-            ]).backgroundColor(accentColor)
+            }).backgroundColor(accentColor)
         )
 
     let cellView picture name address isFavorite =
         ViewCell(
-            HorizontalStackLayout(
-                spacing = 10.,
-                children = [
-                    (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
-                        .margin(15., 0., 0., 0.)
-                        .size(height = 50., width = 50.)
+            (HorizontalStackLayout(spacing = 10.) {
+                (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
+                    .margin(15., 0., 0., 0.)
+                    .size(height = 50., width = 50.)
 
-                    VerticalStackLayout(
-                        spacing = 5.,
-                        children = [
-                            Label(name)
-                                .font(18.)
-                                .fillVertical(expand = true)
-                                .centerTextVertical()
+                (VerticalStackLayout(spacing = 5.) {
+                    Label(name)
+                        .font(18.)
+                        .fillVertical(expand = true)
+                        .centerTextVertical()
 
-                            Label(address)
-                                .font(12.)
-                                .textColor(Color.Gray)
-                                .lineBreakMode(LineBreakMode.TailTruncation)
-                        ]
-                    ).fillHorizontal(expand = true)
-                     .margin(0., 5., 0., 5.)
+                    Label(address)
+                        .font(12.)
+                        .textColor(Color.Gray)
+                        .lineBreakMode(LineBreakMode.TailTruncation)
+                }).fillHorizontal(expand = true)
+                 .margin(0., 5., 0., 5.)
 
-                    Image("star.png", Aspect.AspectFit)
-                        .isVisible(isFavorite)
-                        .centerVertical()
-                        .margin(0., 0., 15., 0.)
-                        .size(height = 25., width = 25.)
-                ]
-            )
+                Image("star.png", Aspect.AspectFit)
+                    .isVisible(isFavorite)
+                    .centerVertical()
+                    .margin(0., 0., 15., 0.)
+                    .size(height = 25., width = 25.)
+            })
                 .paddingLayout(Thickness 5.)
         )
 
-    let detailActionButton imagePath onClicked =
+    let detailActionButton (imagePath: string) onClicked =
         ImageButton(imagePath, onClicked, Aspect.AspectFit)
             .backgroundColor(accentColor)
             .size(height = 35.)
@@ -106,14 +100,14 @@ module Components =
             Label(text)
             
     let favoriteField isFavorite markAsFavorite =
-        HorizontalStackLayout([
+        (HorizontalStackLayout() {
             Label(Strings.EditPage_MarkAsFavoriteField_Label)
                 .centerVertical()
 
             Switch(isFavorite, markAsFavorite)
                 .alignEndHorizontal(expand = true)
                 .centerVertical()
-        ])
+        })
             .margin(0., 20., 0., 0.)
       
     let profilePictureButton (picture: byte[] option) updatePicture =

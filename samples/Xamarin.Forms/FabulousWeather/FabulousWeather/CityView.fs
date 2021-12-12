@@ -19,7 +19,7 @@ module CityView =
           IsRefreshing: bool }
 
     let loadingView (cityName: string) =
-        VerticalStackLayout([
+        VerticalStackLayout() {
             Label(cityName.ToUpper())
                 .font(namedSize = Xamarin.Forms.NamedSize.Title)
                 .centerTextHorizontal()
@@ -28,14 +28,14 @@ module CityView =
             ActivityIndicator(true)
                 .centerHorizontal()
                 .centerVertical(expand = true)
-        ])
+        }
 
     let loadedView (index, cityName: string, isRefreshing, data) onRefreshing =
         let sanitizedCityName = cityName.Replace(" ", "_").ToLower()
 
         RefreshView(isRefreshing, onRefreshing,
             ScrollView(
-                VerticalStackLayout([
+                VerticalStackLayout() {
                     Label(cityName.ToUpper())
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontal()
@@ -57,11 +57,11 @@ module CityView =
                         .font(Styles.CurrentDateFontSize)
                         .centerTextHorizontal()
 
-                    HorizontalStackLayout([
-                        for forecast in data.HourlyForecast ->
+                    (HorizontalStackLayout() {                        
+                        for forecast in data.HourlyForecast do
                             PancakeView(
                                 Styles.HourlyForecastGradientStops,
-                                VerticalStackLayout([
+                                VerticalStackLayout() {
                                     Label(forecast.Date.ToString("h tt").ToLower())
                                         .centerTextHorizontal()
 
@@ -71,13 +71,12 @@ module CityView =
 
                                     Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
                                         .centerTextHorizontal()
-                                ])
+                                }
                             )
-                    ])
+                    })
                         .centerHorizontal()
                         .margin(0., 30., 0., 0.)
-                ])
-
+                }
             )
         )
 

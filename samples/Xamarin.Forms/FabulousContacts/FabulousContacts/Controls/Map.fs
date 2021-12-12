@@ -2,74 +2,57 @@
 
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.Widgets
-open Fabulous.XamarinForms.XFAttributes
-open Xamarin.Forms
 open Xamarin.Forms.Maps
 open System.Runtime.CompilerServices
 
-type IPinWidgetBuilder<'msg> = inherit IWidgetBuilder<'msg>
-
 module Pin =
-    let PinType = Attributes.defineBindable<PinType> Xamarin.Forms.Maps.Pin.TypeProperty
-    let Address = Attributes.defineBindable<string> Xamarin.Forms.Maps.Pin.AddressProperty
+    let PinType = Attributes.defineBindable<PinType> Pin.TypeProperty
+    let Label = Attributes.defineBindable<string> Pin.LabelProperty
+    let Position = Attributes.defineBindable<Position> Pin.PositionProperty
+    let Address = Attributes.defineBindable<string> Pin.AddressProperty
+    let PinKey = Widgets.register<Pin>()
 
 module Map =
-    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun (newValueOpt, target) ->
-        let map = target :?> Xamarin.Forms.Maps.Map
+    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun (newValueOpt, _context, target) ->
+        let map = target :?> Map
         match newValueOpt with
         | ValueNone -> ()
         | ValueSome mapSpan -> map.MoveToRegion(mapSpan)
     )
-    let Pins = Attributes.defineWidgetCollection<Xamarin.Forms.Maps.Pin> ViewNode.getViewNode "Map_Pins" (fun target -> (target :?> Xamarin.Forms.Maps.Map).Pins)
-    let HasZoomEnabled = Attributes.defineBindable<bool> Xamarin.Forms.Maps.Map.HasZoomEnabledProperty
-    let HasScrollEnabled = Attributes.defineBindable<bool> Xamarin.Forms.Maps.Map.HasScrollEnabledProperty
-
-type [<Struct>] PinWidgetBuilder<'msg> (attrs: Attributes.AttributesBuilder) =
-    static let key = Widgets.register<Xamarin.Forms.Maps.Pin>()
-    member _.Builder = attrs
-
-    static member Create(pinType: PinType, label: string, position: Position) =
-        PinWidgetBuilder<'msg>(
-            Attributes.AttributesBuilder(
-                [| Pin.PinType.WithValue(pinType) |],
-                [||],
-                [||]
-            )
-        )
-        
-    interface IPinWidgetBuilder<'msg> with
-        member x.Compile() = attrs.Build(key)
-
-type [<Struct>] MapWidgetBuilder<'msg> (attrs: Attributes.AttributesBuilder) =
-    static let key = Widgets.register<Xamarin.Forms.Maps.Map>()
-    member _.Builder = attrs
-
-    static member Create(requestedRegion: MapSpan, pins: #seq<IPinWidgetBuilder<'msg>>) =
-        MapWidgetBuilder<'msg>(
-            Attributes.AttributesBuilder(
-                [| Map.RequestedRegion.WithValue(requestedRegion) |],
-                [||],
-                [| Map.Pins.WithValue(ViewHelpers.compileSeq pins) |]
-            )
-        )
-        
-    interface IViewWidgetBuilder<'msg> with
-        member x.Compile() = attrs.Build(key)
+    let Pins = Attributes.defineWidgetCollection<Pin> "Map_Pins" (fun target -> (target :?> Xamarin.Forms.Maps.Map).Pins)
+    let HasZoomEnabled = Attributes.defineBindable<bool> Map.HasZoomEnabledProperty
+    let HasScrollEnabled = Attributes.defineBindable<bool> Map.HasScrollEnabledProperty
+    let MapKey = Widgets.register<Map>()
 
 module MapView =
+    type IPin = inherit IMarker
+    type IMap = inherit IView
+
+    type Fabulous.XamarinForms.View with
+        static member inline Pin<'msg>(pinType, label, position) =
+            ViewHelpers.buildScalars<'msg, IPin> Pin.PinKey
+                [| Pin.PinType.WithValue(pinType)
+                   Pin.Label.WithValue(label)
+                   Pin.Position.WithValue(position) |]
+                
+        static member inline Map<'msg>(requestedRegion) =
+            ViewHelpers.buildCollection<'msg, IMap, IPin> Map.MapKey Map.Pins
+                [| Map.RequestedRegion.WithValue(requestedRegion) |]
+    
     [<Extension>]
     type MapExtensions =
         [<Extension>]
-        static member inline address(this: #IPinWidgetBuilder<_>, value: string) =
-            this.AddScalarAttribute(Pin.Address.WithValue(value))
+        static member inline address(this: WidgetBuilder<'msg, #IPin>, value: string) =
+            this.AddScalar(Pin.Address.WithValue(value))
         [<Extension>]
-        static member inline hasZoomEnabled(this: MapWidgetBuilder<_>, value: bool) =
-            this.AddScalarAttribute(Map.HasZoomEnabled.WithValue(value))
+        static member inline hasZoomEnabled(this: WidgetBuilder<'msg, #IMap>, value: bool) =
+            this.AddScalar(Map.HasZoomEnabled.WithValue(value))
         [<Extension>]
-        static member inline hasScrollEnabled(this: MapWidgetBuilder<_>, value: bool) =
-            this.AddScalarAttribute(Map.HasScrollEnabled.WithValue(value))
-
-    type Fabulous.XamarinForms.View with
-        static member inline Pin<'msg>(pinType, label, position) = PinWidgetBuilder<'msg>.Create(pinType, label, position)
-        static member inline Map<'msg>(requestedRegion, pins) = MapWidgetBuilder<'msg>.Create(requestedRegion, pins)
+        static member inline hasScrollEnabled(this: WidgetBuilder<'msg, #IMap>, value: bool) =
+            this.AddScalar(Map.HasScrollEnabled.WithValue(value))
+            
+    [<Extension>]
+    type CollectionBuilderExtensions =
+        [<Extension>]
+        static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPin>(_: CollectionBuilder<'msg, 'marker, IPin>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
+            { Widgets = [ x.Compile() ] }

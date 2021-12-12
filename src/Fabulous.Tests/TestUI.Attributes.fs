@@ -8,36 +8,33 @@ module Attributes =
     let definePressable name =
         let key = AttributeDefinitionStore.getNextKey()
 
-        let definition: ScalarAttributeDefinition<_, _> =
+        let definition: ScalarAttributeDefinition<obj, obj> =
             {
                 Key = key
                 Name = name
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateTarget =
-                    fun (newValueOpt, target) ->
+                    fun (newValueOpt, context, target) ->
 
-                        let viewNodeData =
-                            (target :?> TestViewElement)
-                                .PropertyBag.Item TestUI_ViewNode.ViewNode.ViewNodeProperty
-                            :?> TestUI_ViewNode.ViewNodeData
+                        let viewNode =
+                            context.ViewTreeContext.GetViewNode(target)
 
                         let btn = target :?> IButton
 
-                        match viewNodeData.TryGetHandler<int>(key) with
-                        | None -> ()
-                        | Some handlerId -> btn.RemovePressListener handlerId
+                        match viewNode.TryGetHandler<int>(key) with
+                        | ValueNone -> ()
+                        | ValueSome handlerId -> btn.RemovePressListener handlerId
 
                         match newValueOpt with
-                        | ValueNone -> viewNodeData.SetHandler(key, ValueNone)
+                        | ValueNone -> viewNode.SetHandler(key, ValueNone)
 
                         | ValueSome msg ->
                             let handler () =
-                                (viewNodeData.ViewNode :> IViewNode)
-                                    .Context.Dispatch(msg)
+                                Attributes.dispatchMsgOnViewNode viewNode msg
 
                             let handlerId = btn.AddPressListener handler
-                            viewNodeData.SetHandler<int>(key, ValueSome handlerId)
+                            viewNode.SetHandler<int>(key, ValueSome handlerId)
             }
 
         AttributeDefinitionStore.set key definition
@@ -56,10 +53,7 @@ module Attributes =
 
     module Container =
         let Children =
-            Attributes.defineWidgetCollection
-                TestUI_ViewNode.ViewNode.getViewNode
-                "Container_Children"
-                (fun target -> (target :?> IContainer).Children)
+            Attributes.defineWidgetCollection "Container_Children" (fun target -> (target :?> IContainer).Children)
 
 
     module Button =

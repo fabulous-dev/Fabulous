@@ -109,20 +109,17 @@ module MapPage =
         
     let view model =
         let map userPositionOpt pins =
-            Map(
-                requestedRegion = MapSpan.FromCenterAndRadius(getUserPositionOrDefault userPositionOpt, Distance.FromKilometers(25.)),
-                pins = [
-                    match model.Pins with
-                    | None -> ()
-                    | Some pins ->
-                        for pin in pins do
-                            Pin(
-                               pinType = pin.PinType,
-                               label = pin.Label,
-                               position = pin.Position
-                            ).address(pin.Address)
-                ]
-            )
+            (Map(requestedRegion = MapSpan.FromCenterAndRadius(getUserPositionOrDefault userPositionOpt, Distance.FromKilometers(25.))) {
+                match model.Pins with
+                | None -> ()
+                | Some pins ->
+                    for pin in pins do
+                        Pin(
+                           pinType = pin.PinType,
+                           label = pin.Label,
+                           position = pin.Position
+                        ).address(pin.Address)
+            })
                 .hasZoomEnabled(true)
                 .hasScrollEnabled(true)
             

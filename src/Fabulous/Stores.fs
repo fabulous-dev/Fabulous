@@ -1,7 +1,6 @@
 ﻿namespace Fabulous
 
 open System.Collections.Generic
-open Fabulous
 
 module AttributeDefinitionStore =
     let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
@@ -15,7 +14,7 @@ module AttributeDefinitionStore =
         let key = _nextKey
         _nextKey <- _nextKey + 1
         key
-    
+
 module WidgetDefinitionStore =
     let private _widgets = Dictionary<WidgetKey, WidgetDefinition>()
     let mutable private _nextKey = 0
@@ -35,7 +34,7 @@ module StateStore =
           NewState: obj }
 
     let private _states = Dictionary<StateKey, obj>()
-    let private _stateChangedEvent = new Event<StateChangedEventArgs>()
+    let private _stateChangedEvent = Event<StateChangedEventArgs>()
     let mutable private _nextKey = 0
 
     let StateChanged = _stateChangedEvent.Publish

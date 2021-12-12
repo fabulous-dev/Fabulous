@@ -1,11 +1,10 @@
-module Fabulous.Tests
+module Fabulous.Tests.Run
 
-open Fabulous.Reconciler
 open NUnit.Framework
-
 
 open Tests.Platform
 open Tests.TestUI_Widgets
+open Fabulous
 
 open type View
 
@@ -125,10 +124,11 @@ module SimpleStackTests =
                         (id_, text_))
 
     let view model =
-        Stack(
-            model
-            |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())).cast())
-        )
+        (Stack() {
+            yield!
+                model
+                |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
+         })
             .automationId("stack")
 
 
@@ -168,14 +168,140 @@ module SimpleStackTests =
 
         // modify the initial one
         instance.ProcessMessage(ChangeText(1, "just 1"))
-        let label = stack.Children.[1] :?> TestLabel :> IText
+
+        let label =
+            stack.Children.[1] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "just 1")
 
         // delete the one in front
         instance.ProcessMessage(Delete 2)
         Assert.AreEqual(stack.Children.Count, 1)
-        let label = stack.Children.[0] :?> TestLabel :> IText
+
+        let label =
+            stack.Children.[0] :?> TestLabel :> IText
+
         Assert.AreEqual(label.Text, "just 1")
+
+
+
+module ComputationExpressionTest =
+    type Msg = | Inc
+
+    type Model = int
+
+    let update msg model =
+        match msg with
+        | Inc -> model + 1
+
+    [<Test>]
+    let JustValue () =
+        let view model =
+            // requires implemented "Yield"
+            Stack() { Button("inc", Inc).automationId("inc") }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        let btn = find<TestButton> tree "inc" :> IText
+
+        Assert.AreEqual(btn.Text, "inc")
+
+
+    [<Test>]
+    let Condition () =
+        let view model =
+            // requires implemented "Zero"
+            (Stack() {
+                if (model % 2 = 0) then
+                    Label("label").automationId("label")
+                else
+                    Button("btn", Inc).automationId("btn")
+             })
+                .automationId("stack")
+
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        let stack =
+            find<TestStack> tree "stack" :> IContainer
+
+        Assert.AreEqual(1, stack.Children.Count)
+
+        // we start with zero, thus label should be present
+        let label = find<TestLabel> tree "label" :> IText
+
+        Assert.AreEqual(label.Text, "label")
+
+        instance.ProcessMessage(Inc)
+
+        // still one child
+        Assert.AreEqual(1, stack.Children.Count)
+
+        // but now Button should be present
+        let btn = find<TestButton> tree "btn" :> IText
+
+        Assert.AreEqual(btn.Text, "btn")
+
+    [<Test>]
+    let YieldCollection () =
+
+        let count = 4
+
+        let view model =
+            Stack() {
+                // requires implemented "YieldFrom"
+                yield!
+                    [ for i in 0 .. model -> i.ToString() ]
+                    |> List.map(fun i -> Label(i).automationId(i))
+            }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> count) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        for i in 0 .. count do
+            let label =
+                find<TestLabel> tree (i.ToString()) :> IText
+
+            Assert.AreEqual(label.Text, i.ToString())
+
+
+    [<Test>]
+    let ForExpression () =
+
+        let count = 4
+
+        let view model =
+            Stack() {
+                // requires implemented "For"
+                for i in 0 .. model -> Label(i.ToString()).automationId(i.ToString())
+            }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> count) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        for i in 0 .. count do
+            let label =
+                find<TestLabel> tree (i.ToString()) :> IText
+
+            Assert.AreEqual(label.Text, i.ToString())
+
+
+
+
 
 
 //module ReconcilerTests =
@@ -201,58 +327,60 @@ module SimpleStackTests =
 //        Assert.AreEqual([], res, "this should fail for now, not a real test")
 //        ()
 //
-//module MapViewTests =
-//    type ParentMsg = Add of int
-//
-//    type ChildMsg =
-//        | AddOne
-//        | RemoveTwo
-//
-//    type Model = int
-//
-//    let update msg model =
-//        match msg with
-//        | Add value -> model + value
-//
-//    let mapMsg childMsg =
-//        match childMsg with
-//        | AddOne -> Add 1
-//        | RemoveTwo -> Add -2
-//
-//    let view model =
-//        Stack(
-//            [
-//                View.map mapMsg (Button("+1", AddOne).automationId("add"))
-//                View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
-//                Label(model.ToString()).automationId("label")
-//            ]
-//        )
-//
-//    let init () = 0
-//
-//    [<Test>]
-//    let SketchAPI () =
-//        let program =
-//            StatefulWidget.mkSimpleView init update view
-//
-//        let instance = Run.Instance program
-//        let tree = (instance.Start())
-//
-//        let addBtn = find<TestButton> tree "add"
-//        let removeBtn = find<TestButton> tree "remove"
-//        let label = find<TestLabel> tree "label"
-//
-//        Assert.AreEqual(label.Text, "0")
-//
-//        addBtn.Press()
-//        Assert.AreEqual(label.Text, "1")
-//
-//        removeBtn.Press()
-//        Assert.AreEqual(label.Text, "-1")
-//
-//
-//
-//
-//    [<Test>]
-//    let dependsOnTests ()= ()
-//
+
+
+module MapViewTests =
+    type ParentMsg = Add of int
+
+    type ChildMsg =
+        | AddOne
+        | RemoveTwo
+
+    type Model = int
+
+    let update msg model =
+        match msg with
+        | Add value -> model + value
+
+    let mapMsg childMsg =
+        match childMsg with
+        | AddOne -> Add 1
+        | RemoveTwo -> Add -2
+
+    let view model =
+        Stack() {
+            View.map
+                mapMsg
+                (Button("+1", AddOne)
+                    .automationId("add")
+                    .textColor("red"))
+
+            Label(model.ToString())
+                .automationId("label")
+                .textColor("blue")
+
+            View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
+        }
+
+
+    let init () = 0
+
+    [<Test>]
+    let SketchAPI () =
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = (instance.Start())
+
+        let addBtn = find<TestButton> tree "add"
+        let removeBtn = find<TestButton> tree "remove"
+        let label = find<TestLabel> tree "label" :> IText
+
+        Assert.AreEqual("0", label.Text)
+
+        addBtn.Press()
+        Assert.AreEqual("1", label.Text)
+
+        removeBtn.Press()
+        Assert.AreEqual("-1", label.Text)
