@@ -9,11 +9,11 @@ module PancakeView =
     let Content = Attributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
     let PancakeViewKey = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
     
-    type IPancakeViewMarker = inherit IViewMarker
+    type IPancakeView = inherit IView
 
     type Fabulous.XamarinForms.View with
-        static member inline PancakeView<'msg, 'marker when 'marker :> IViewMarker>(backgroundGradientStops, content: WidgetBuilder<'msg, 'marker>) =
-            ViewHelpers.build<'msg, IPancakeViewMarker> PancakeViewKey
+        static member inline PancakeView<'msg, 'marker when 'marker :> IView>(backgroundGradientStops, content: WidgetBuilder<'msg, 'marker>) =
+            ViewHelpers.build<'msg, IPancakeView> PancakeViewKey
                 [| BackgroundGradientStops.WithValue(backgroundGradientStops) |]
                 [| Content.WithValue(content.Compile()) |]
                 [||]

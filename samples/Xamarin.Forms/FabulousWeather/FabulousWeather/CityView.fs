@@ -40,7 +40,7 @@ module CityView =
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontal()
 
-                    FileImage($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
+                    Image($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
                         .opacity(0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
@@ -57,23 +57,22 @@ module CityView =
                         .font(Styles.CurrentDateFontSize)
                         .centerTextHorizontal()
 
-                    (HorizontalStackLayout() {
-                        Label("")
-//                        for forecast in data.HourlyForecast ->
-//                            PancakeView(
-//                                Styles.HourlyForecastGradientStops,
-//                                VerticalStackLayout() {
-//                                    Label(forecast.Date.ToString("h tt").ToLower())
-//                                        .centerTextHorizontal()
-//
-//                                    Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
-//                                        .centerHorizontal()
-//                                        .centerVertical(expand = true)
-//
-//                                    Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
-//                                        .centerTextHorizontal()
-//                                }
-//                            )
+                    (HorizontalStackLayout() {                        
+                        for forecast in data.HourlyForecast do
+                            PancakeView(
+                                Styles.HourlyForecastGradientStops,
+                                VerticalStackLayout() {
+                                    Label(forecast.Date.ToString("h tt").ToLower())
+                                        .centerTextHorizontal()
+
+                                    Image(Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"), Xamarin.Forms.Aspect.AspectFit)
+                                        .centerHorizontal()
+                                        .centerVertical(expand = true)
+
+                                    Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
+                                        .centerTextHorizontal()
+                                }
+                            )
                     })
                         .centerHorizontal()
                         .margin(0., 30., 0., 0.)

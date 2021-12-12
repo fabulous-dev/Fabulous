@@ -82,17 +82,17 @@ module App =
         (Grid() {
             cityView model.CurrentCityIndex model.Cities.[model.CurrentCityIndex] (RequestRefresh model.CurrentCityIndex)
 
-//            if model.CurrentCityIndex > 0 then
-//                Button($"< {model.Cities.[model.CurrentCityIndex - 1].Name}", GoToPreviousCity)
-//                    .alignStartHorizontal()
-//                    .alignStartVertical()
-//                    .margin(20., 0., 0., 0.)
-//                    
-//            if model.CurrentCityIndex < model.Cities.Length - 1 then
-//                Button($"{model.Cities.[model.CurrentCityIndex + 1].Name} >", GoToNextCity)
-//                    .alignEndHorizontal()
-//                    .alignStartVertical()
-//                    .margin(0., 0., 20., 0.)
+            if model.CurrentCityIndex > 0 then
+                Button($"< {model.Cities.[model.CurrentCityIndex - 1].Name}", GoToPreviousCity)
+                    .alignStartHorizontal()
+                    .alignStartVertical()
+                    .margin(20., 0., 0., 0.)
+                    
+            if model.CurrentCityIndex < model.Cities.Length - 1 then
+                Button($"{model.Cities.[model.CurrentCityIndex + 1].Name} >", GoToNextCity)
+                    .alignEndHorizontal()
+                    .alignStartVertical()
+                    .margin(0., 0., 20., 0.)
         })
             .paddingLayout(0., 35., 0., 0.)
 
