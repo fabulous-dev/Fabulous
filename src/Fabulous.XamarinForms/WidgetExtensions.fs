@@ -94,19 +94,43 @@ type AdditionalViewExtensions =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
         
     [<Extension>]
-    static member inline font(this: WidgetBuilder<_, #ILabel>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
+    static member inline font(this: WidgetBuilder<'msg, ILabel>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
         this.AddScalars([|
             match size with None -> () | Some v -> Label.FontSize.WithValue(v)
             match namedSize with None -> () | Some v -> Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>))
             match attributes with None -> () | Some v -> Label.FontAttributes.WithValue(v)
         |])
+
+    [<Extension>]
+    static member inline font(this: WidgetBuilder<'msg, IDatePicker>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
+        this.AddScalars([|
+            match size with None -> () | Some v -> DatePicker.FontSize.WithValue(v)
+            match namedSize with None -> () | Some v -> DatePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<DatePicker>))
+            match attributes with None -> () | Some v -> DatePicker.FontAttributes.WithValue(v)
+        |])
+
+    [<Extension>]
+    static member inline font(this: WidgetBuilder<'msg, ITimePicker>, ?size: double, ?namedSize: NamedSize, ?attributes: FontAttributes) =
+        this.AddScalars([|
+            match size with None -> () | Some v -> TimePicker.FontSize.WithValue(v)
+            match namedSize with None -> () | Some v -> TimePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<TimePicker>))
+            match attributes with None -> () | Some v -> TimePicker.FontAttributes.WithValue(v)
+        |])
         
     [<Extension>]
-    static member inline font(this: WidgetBuilder<_, #IButton>, value: NamedSize) =
+    static member inline font(this: WidgetBuilder<'msg, IButton>, value: NamedSize) =
         this.AddScalar(Button.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.Button>)))
 
     [<Extension>]
-    static member inline paddingLayout(this: WidgetBuilder<_, #ILayout>, value: float) =
+    static member inline font(this: WidgetBuilder<'msg, IDatePicker>, value: NamedSize) =
+        this.AddScalar(DatePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.DatePicker>)))
+
+    [<Extension>]
+    static member inline font(this: WidgetBuilder<'msg, ITimePicker>, value: NamedSize) =
+        this.AddScalar(TimePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<Xamarin.Forms.TimePicker>)))
+
+    [<Extension>]
+    static member inline paddingLayout(this: WidgetBuilder<'msg, #ILayout>, value: float) =
         this.AddScalar(Layout.Padding.WithValue(Thickness(value)))
 
     [<Extension>]

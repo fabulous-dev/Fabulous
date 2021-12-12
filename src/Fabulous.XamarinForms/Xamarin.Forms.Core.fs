@@ -1,32 +1,37 @@
-﻿namespace Fabulous.XamarinForms
+namespace Fabulous.XamarinForms
 
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
 open System.Runtime.CompilerServices
+open System
 open System.IO
 open Microsoft.FSharp.Core
-
-module ViewHelpers =
-    let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
-        items
-        |> Seq.map (fun item -> item.Compile())
-        |> Seq.toArray
-        
-    let inline buildScalars<'msg, 'marker> (key: WidgetKey) (attrs: ScalarAttribute[]) =
-        WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
-        
-    let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute[]) =
-        WidgetBuilder<'msg, 'marker>(key, struct ([||], attrs, [||]))
-        
-    let inline build<'msg, 'marker> (key: WidgetKey) (scalars: ScalarAttribute[]) (widgets: WidgetAttribute[]) (widgetColls: WidgetCollectionAttribute[]) =
-        WidgetBuilder<'msg, 'marker>(key, struct (scalars, widgets, widgetColls))
-        
-    let inline buildCollectionNoScalar<'msg, 'marker, 'item> (key: WidgetKey) (collectionAttributeDefinition: WidgetCollectionAttributeDefinition) =
-        CollectionBuilder<'msg, 'marker, 'item>(key, ValueNone, collectionAttributeDefinition)
-        
-    let inline buildCollection<'msg, 'marker, 'item> (key: WidgetKey) (collectionAttributeDefinition: WidgetCollectionAttributeDefinition) (scalars: ScalarAttribute[]) =
-        CollectionBuilder<'msg, 'marker, 'item>(key, ValueSome scalars, collectionAttributeDefinition)
+    
+type IContentPage = inherit IPage
+type IStackLayout = inherit ILayout
+type IGrid = inherit ILayout
+type ILabel = inherit IView
+type IButton = inherit IView
+type ISwitch = inherit IView
+type ISlider = inherit IView
+type IActivityIndicator = inherit IView
+type IContentView = inherit ILayout
+type IRefreshView = inherit IView
+type IScrollView = inherit IView
+type IImage = inherit IView
+type IBoxView = inherit IView
+type INavigationPage = inherit IPage
+type IEntry = inherit IView
+type ITapGestureRecognizer = inherit IGestureRecognizer
+type ISearchBar = inherit IView
+type IEditor = inherit IView
+type IViewCell = inherit ICell
+type IImageButton = inherit IView
+type ITabbedPage = inherit IPage
+type IDatePicker = inherit IView
+type ITimePicker = inherit IView
+type IStepper = inherit IView
         
 module ViewKeys =
     let Application = Widgets.register<Xamarin.Forms.Application>()
@@ -52,144 +57,123 @@ module ViewKeys =
     let ViewCell = Widgets.register<Xamarin.Forms.ViewCell>()
     let ImageButton = Widgets.register<Xamarin.Forms.ImageButton>()
     let TabbedPage = Widgets.register<Xamarin.Forms.TabbedPage>()
-    
-type IContentPage = inherit IPage
-type IStackLayout = inherit ILayout
-type IGrid = inherit ILayout
-type ILabel = inherit IView
-type IButton = inherit IView
-type ISwitch = inherit IView
-type ISlider = inherit IView
-type IActivityIndicator = inherit IView
-type IContentView = inherit ILayout
-type IRefreshView = inherit IView
-type IScrollView = inherit IView
-type IImage = inherit IView
-type IBoxView = inherit IView
-type INavigationPage = inherit IPage
-type IEntry = inherit IView
-type ITapGestureRecognizer = inherit IGestureRecognizer
-type ISearchBar = inherit IView
-type IEditor = inherit IView
-type IViewCell = inherit ICell
-type IImageButton = inherit IView
-type ITabbedPage = inherit IPage
-    
-open ViewHelpers
+    let DatePicker = Widgets.register<Xamarin.Forms.DatePicker>()
+    let TimePicker = Widgets.register<FabulousTimePicker>()
+    let Stepper = Widgets.register<Xamarin.Forms.Stepper>()
 
 [<AbstractClass; Sealed>]
 type ViewBuilders private () =
     static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
-        buildWidgets<'msg, IApplication> ViewKeys.Application
+        ViewHelpers.buildWidgets<'msg, IApplication> ViewKeys.Application
             [| Application.MainPage.WithValue(mainPage.Compile()) |]
             
     static member inline ContentPage<'msg, 'marker when 'marker :> IView>(title: string, content: WidgetBuilder<'msg, 'marker>) =
-        build<'msg, IContentPage> ViewKeys.ContentPage
+        ViewHelpers.build<'msg, IContentPage> ViewKeys.ContentPage
             [| Page.Title.WithValue(title) |]
             [| ContentPage.Content.WithValue(content.Compile()) |]
             [||]
             
     static member inline StackLayout<'msg>(orientation: Xamarin.Forms.StackOrientation, ?spacing: float) =
-        buildCollection<'msg, IStackLayout, IView> ViewKeys.StackLayout LayoutOfView.Children
+        ViewHelpers.buildCollection<'msg, IStackLayout, IView> ViewKeys.StackLayout LayoutOfView.Children
             [| StackLayout.Orientation.WithValue(orientation)
                match spacing with None -> () | Some v -> StackLayout.Spacing.WithValue(v) |]
             
     static member inline Grid<'msg>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
-        buildCollection<'msg, IGrid, IView> ViewKeys.Grid LayoutOfView.Children
+        ViewHelpers.buildCollection<'msg, IGrid, IView> ViewKeys.Grid LayoutOfView.Children
             [| Grid.ColumnDefinitions.WithValue(coldefs)
                Grid.RowDefinitions.WithValue(rowdefs) |]
             
     static member inline Label<'msg>(text: string) =
-        buildScalars<'msg, ILabel> ViewKeys.Label
+        ViewHelpers.buildScalars<'msg, ILabel> ViewKeys.Label
             [| Label.Text.WithValue(text) |]
             
     static member inline Button<'msg>(text: string, onClicked: 'msg) =
-        buildScalars<'msg, IButton> ViewKeys.Button
+        ViewHelpers.buildScalars<'msg, IButton> ViewKeys.Button
             [| Button.Text.WithValue(text)
                Button.Clicked.WithValue(onClicked) |]
             
     static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
-        buildScalars<'msg, ISwitch> ViewKeys.Switch
+        ViewHelpers.buildScalars<'msg, ISwitch> ViewKeys.Switch
             [| Switch.IsToggled.WithValue(isToggled)
                Switch.Toggled.WithValue(fun args -> onToggled args.Value |> box) |]
             
     static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
-        buildScalars<'msg, ISlider> ViewKeys.Slider
+        ViewHelpers.buildScalars<'msg, ISlider> ViewKeys.Slider
             [| Slider.Value.WithValue(value)
                Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
                Slider.MinimumMaximum.WithValue(min, max) |]
             
     static member inline ActivityIndicator<'msg>(isRunning: bool) =
-        buildScalars<'msg, IActivityIndicator> ViewKeys.ActivityIndicator
+        ViewHelpers.buildScalars<'msg, IActivityIndicator> ViewKeys.ActivityIndicator
             [| ActivityIndicator.IsRunning.WithValue(isRunning) |]
             
     static member inline ContentView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
-        buildWidgets<'msg, IContentView> ViewKeys.ContentView
+        ViewHelpers.buildWidgets<'msg, IContentView> ViewKeys.ContentView
             [| ContentView.Content.WithValue(content.Compile()) |]
     
     static member inline RefreshView<'msg, 'marker when 'marker :> IView>(isRefreshing: bool, onRefreshing: 'msg, content: WidgetBuilder<'msg, 'marker>) =
-        build<'msg, IRefreshView> ViewKeys.RefreshView
+        ViewHelpers.build<'msg, IRefreshView> ViewKeys.RefreshView
             [| RefreshView.IsRefreshing.WithValue(isRefreshing)
                RefreshView.Refreshing.WithValue(onRefreshing) |]
             [| ContentView.Content.WithValue(content.Compile()) |]
             [||]
             
     static member inline ScrollView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
-        buildWidgets<'msg, IScrollView> ViewKeys.ScrollView
+        ViewHelpers.buildWidgets<'msg, IScrollView> ViewKeys.ScrollView
             [| ScrollView.Content.WithValue(content.Compile()) |]
             
     static member inline SourceImage<'msg>(imageSource: Xamarin.Forms.ImageSource, aspect: Xamarin.Forms.Aspect) =
-        buildScalars<'msg, IImage> ViewKeys.Image
+        ViewHelpers.buildScalars<'msg, IImage> ViewKeys.Image
             [| Image.Source.WithValue(imageSource)
                Image.Aspect.WithValue(aspect) |]
             
     static member inline FileImage<'msg>(path: string, aspect: Xamarin.Forms.Aspect) =
         ViewBuilders.SourceImage<'msg>(Xamarin.Forms.ImageSource.FromFile(path), aspect)
         
-    static member inline WebImage<'msg>(uri: System.Uri, aspect: Xamarin.Forms.Aspect) =
+    static member inline WebImage<'msg>(uri: Uri, aspect: Xamarin.Forms.Aspect) =
         ViewBuilders.SourceImage<'msg>(Xamarin.Forms.ImageSource.FromUri(uri), aspect)
         
     static member inline StreamImage<'msg>(stream: Stream, aspect: Xamarin.Forms.Aspect) =
         ViewBuilders.SourceImage<'msg>(Xamarin.Forms.ImageSource.FromStream(fun () -> stream), aspect)
         
     static member inline BoxView<'msg>(color: Xamarin.Forms.Color) =
-        buildScalars<'msg, IBoxView> ViewKeys.BoxView 
+        ViewHelpers.buildScalars<'msg, IBoxView> ViewKeys.BoxView 
             [| BoxView.Color.WithValue(color) |]
               
     static member inline NavigationPage<'msg>() =
-        buildCollectionNoScalar<'msg, INavigationPage, IPage> ViewKeys.NavigationPage NavigationPage.Pages
+        ViewHelpers.buildCollectionNoScalar<'msg, INavigationPage, IPage> ViewKeys.NavigationPage NavigationPage.Pages
     
     static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
-        buildScalars<'msg, IEntry> ViewKeys.Entry
+        ViewHelpers.buildScalars<'msg, IEntry> ViewKeys.Entry
             [| Entry.Text.WithValue(text)
                Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |]
                                     
     static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =
-        buildScalars<'msg, IGestureRecognizer> ViewKeys.TapGestureRecognizer
+        ViewHelpers.buildScalars<'msg, IGestureRecognizer> ViewKeys.TapGestureRecognizer
             [| TapGestureRecognizer.Tapped.WithValue(onTapped) |]
                       
     static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
-        buildScalars<'msg, ISearchBar> ViewKeys.SearchBar
+        ViewHelpers.buildScalars<'msg, ISearchBar> ViewKeys.SearchBar
             [| SearchBar.Text.WithValue(text)
                InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
                SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed) |]
                                     
     static member inline ToolbarItem<'msg>(text: string, onClicked: 'msg) =
-        buildScalars<'msg, IToolbarItem> ViewKeys.ToolbarItem
+        ViewHelpers.buildScalars<'msg, IToolbarItem> ViewKeys.ToolbarItem
             [| MenuItem.Text.WithValue(text)
                MenuItem.Clicked.WithValue(onClicked) |]
                                     
     static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
-        buildScalars<'msg, IEditor> ViewKeys.Editor
+        ViewHelpers.buildScalars<'msg, IEditor> ViewKeys.Editor
             [| Editor.Text.WithValue(text)
                InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |]
                                                   
     static member inline ViewCell<'msg, 'marker when 'marker :> IView>(view: WidgetBuilder<'msg, 'marker>) =
-        buildWidgets<'msg, IViewCell> ViewKeys.ViewCell
+        ViewHelpers.buildWidgets<'msg, IViewCell> ViewKeys.ViewCell
             [| ViewCell.View.WithValue(view.Compile()) |]
                                                   
     static member inline SourceImageButton<'msg>(source: Xamarin.Forms.ImageSource, onClicked: 'msg, aspect: Xamarin.Forms.Aspect) =
-        buildScalars<'msg, IImageButton> ViewKeys.ImageButton
+        ViewHelpers.buildScalars<'msg, IImageButton> ViewKeys.ImageButton
             [| ImageButton.Source.WithValue(source)
                ImageButton.Clicked.WithValue(onClicked)
                ImageButton.Aspect.WithValue(aspect) |]
@@ -197,15 +181,31 @@ type ViewBuilders private () =
     static member inline FileImageButton<'msg>(path: string, onClicked, aspect) =
         ViewBuilders.SourceImageButton<'msg>(Xamarin.Forms.ImageSource.FromFile(path), onClicked, aspect)
         
-    static member inline WebImageButton<'msg>(uri: System.Uri, onClicked, aspect) =
+    static member inline WebImageButton<'msg>(uri: Uri, onClicked, aspect) =
         ViewBuilders.SourceImageButton<'msg>(Xamarin.Forms.ImageSource.FromUri(uri), onClicked, aspect)
         
     static member inline StreamImageButton<'msg>(stream: Stream, onClicked, aspect) =
         ViewBuilders.SourceImageButton<'msg>(Xamarin.Forms.ImageSource.FromStream(fun () -> stream), onClicked, aspect)
                                                   
     static member inline TabbedPage<'msg>(title: string) =
-        buildCollection<'msg, ITabbedPage, IPage> ViewKeys.TabbedPage MultiPageOfPage.Children
+        ViewHelpers.buildCollection<'msg, ITabbedPage, IPage> ViewKeys.TabbedPage MultiPageOfPage.Children
             [| Page.Title.WithValue(title) |]
+            
+    static member inline DatePicker<'msg>(date: DateTime, onDateSelected: DateTime -> 'msg) =
+        ViewHelpers.buildScalars<'msg, IDatePicker> ViewKeys.DatePicker
+            [| DatePicker.Date.WithValue(date)
+               DatePicker.DateSelected.WithValue(fun args -> onDateSelected args.NewDate |> box) |]
+            
+    static member inline TimePicker<'msg>(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) =
+        ViewHelpers.build<'msg, ITimePicker> ViewKeys.TimePicker
+            [| TimePicker.Time.WithValue(time)
+               TimePicker.TimeSelected.WithValue(fun args -> onTimeSelected args.NewTime |> box) |]
+            
+    static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
+        ViewHelpers.build<'msg, IStepper> ViewKeys.Stepper
+            [| Stepper.Value.WithValue(value)
+               Stepper.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box)
+               Stepper.MinimumMaximum.WithValue((min, max)) |]
     
 [<AbstractClass; Sealed>]
 type View private () =    
@@ -240,138 +240,131 @@ type View private () =
     static member inline ImageButton<'msg>(uri, onClicked, aspect) = ViewBuilders.WebImageButton<'msg>(uri, onClicked, aspect)
     static member inline ImageButton<'msg>(stream, onClicked, aspect) = ViewBuilders.StreamImageButton<'msg>(stream, onClicked, aspect)
     static member inline TabbedPage<'msg>(title) = ViewBuilders.TabbedPage<'msg>(title)
-    
-[<Extension>]
-type CollectionBuilderExtensions =
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>(_: CollectionBuilder<'msg, 'marker, IPage>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>(_: CollectionBuilder<'msg, 'marker, IView>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
-        
+    static member inline DatePicker<'msg>(date, onDateSelected) = ViewBuilders.DatePicker<'msg>(date, onDateSelected)
+    static member inline TimePicker<'msg>(time, onTimeSelected) = ViewBuilders.TimePicker<'msg>(time, onTimeSelected)
+    static member inline Stepper<'msg>(min, max, value, onValueChanged) = ViewBuilders.Stepper<'msg>(min, max, value, onValueChanged)        
 
 [<Extension; AbstractClass; Sealed>]
 type ViewExtensions private () =
     [<Extension>]
-    static member inline userAppTheme(this: WidgetBuilder<_, #IApplication>, value: Xamarin.Forms.OSAppTheme) =
+    static member inline userAppTheme(this: WidgetBuilder<'msg, #IApplication>, value: Xamarin.Forms.OSAppTheme) =
         this.AddScalar(Application.UserAppTheme.WithValue(value))
     [<Extension>]
-    static member inline resources(this: WidgetBuilder<_, #IApplication>, value: Xamarin.Forms.ResourceDictionary) =
+    static member inline resources(this: WidgetBuilder<'msg, #IApplication>, value: Xamarin.Forms.ResourceDictionary) =
         this.AddScalar(Application.Resources.WithValue(value))
     [<Extension>]
-    static member inline onRequestedThemeChanged(this: WidgetBuilder<_, #IApplication>, fn: Xamarin.Forms.AppThemeChangedEventArgs -> 'msg) =
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.AppThemeChangedEventArgs -> 'msg) =
         this.AddScalar(Application.RequestedThemeChanged.WithValue(fn >> box))
     [<Extension>]
-    static member inline onModalPopped(this: WidgetBuilder<_, #IApplication>, fn: Xamarin.Forms.ModalPoppedEventArgs -> 'msg) =
+    static member inline onModalPopped(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.ModalPoppedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopped.WithValue(fn >> box))
     [<Extension>]
-    static member inline onModalPopping(this: WidgetBuilder<_, #IApplication>, fn: Xamarin.Forms.ModalPoppingEventArgs -> 'msg) =
+    static member inline onModalPopping(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.ModalPoppingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPopping.WithValue(fn >> box))
     [<Extension>]
-    static member inline onModalPushed(this: WidgetBuilder<_, #IApplication>, fn: Xamarin.Forms.ModalPushedEventArgs -> 'msg) =
+    static member inline onModalPushed(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.ModalPushedEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushed.WithValue(fn >> box))
     [<Extension>]
-    static member inline onModalPushing(this: WidgetBuilder<_, #IApplication>, fn: Xamarin.Forms.ModalPushingEventArgs -> 'msg) =
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.ModalPushingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
     [<Extension>]
-    static member inline automationId(this: WidgetBuilder<_, #IView>, value: string) =
+    static member inline automationId(this: WidgetBuilder<'msg, #IView>, value: string) =
         this.AddScalar(Element.AutomationId.WithValue(value))
     [<Extension>]
-    static member inline isEnabled(this: WidgetBuilder<_, #IView>, value: bool) =
+    static member inline isEnabled(this: WidgetBuilder<'msg, #IView>, value: bool) =
         this.AddScalar(VisualElement.IsEnabled.WithValue(value))
     [<Extension>]
-    static member inline opacity(this: WidgetBuilder<_, #IView>, value: float) =
+    static member inline opacity(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(VisualElement.Opacity.WithValue(value))
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<_, #IView>, value: Xamarin.Forms.Color) =
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.Color) =
         this.AddScalar(VisualElement.BackgroundColor.WithValue(value))
     [<Extension>]
-    static member inline isVisible(this: WidgetBuilder<_, #IView>, value: bool) =
+    static member inline isVisible(this: WidgetBuilder<'msg, #IView>, value: bool) =
         this.AddScalar(VisualElement.IsVisible.WithValue(value))
     [<Extension>]
-    static member inline horizontalOptions(this: WidgetBuilder<_, #IView>, value: Xamarin.Forms.LayoutOptions) =
+    static member inline horizontalOptions(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.LayoutOptions) =
         this.AddScalar(View.HorizontalOptions.WithValue(value))
     [<Extension>]
-    static member inline verticalOptions(this: WidgetBuilder<_, #IView>, value: Xamarin.Forms.LayoutOptions) =
+    static member inline verticalOptions(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.LayoutOptions) =
         this.AddScalar(View.VerticalOptions.WithValue(value))
     [<Extension>]
-    static member inline margin(this: WidgetBuilder<_, #IView>, value: Xamarin.Forms.Thickness) =
+    static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.Thickness) =
         this.AddScalar(View.Margin.WithValue(value))
     [<Extension>]
-    static member inline gestureRecognizers(this: WidgetBuilder<_, #IView>, value: seq<WidgetBuilder<'msg, #IGestureRecognizer>>) =
-        this.AddWidgetCollection(View.GestureRecognizers.WithValue(compileSeq value))
+    static member inline gestureRecognizers(this: WidgetBuilder<'msg, #IView>, value: seq<WidgetBuilder<'msg, #IGestureRecognizer>>) =
+        this.AddWidgetCollection(View.GestureRecognizers.WithValue(ViewHelpers.compileSeq value))
     [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<_, #ILabel>, value: Xamarin.Forms.TextAlignment) =
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: Xamarin.Forms.TextAlignment) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<_, #ILabel>, value: Xamarin.Forms.TextAlignment) =
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: Xamarin.Forms.TextAlignment) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(value))
     [<Extension>]
-    static member inline font(this: WidgetBuilder<_, #ILabel>, value: double) =
+    static member inline font(this: WidgetBuilder<'msg, #ILabel>, value: double) =
         this.AddScalar(Label.FontSize.WithValue(value))
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<_, #ILabel>, value: Xamarin.Forms.Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, value: Xamarin.Forms.Color) =
         this.AddScalar(Label.TextColor.WithValue(value))
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<_, #IView>, value: Xamarin.Forms.Thickness) =
+    static member inline padding(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.Thickness) =
         this.AddScalar(Label.Padding.WithValue(value))
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<_, #IButton>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, IButton>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
         this.AddScalar(Button.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
     [<Extension>]
-    static member inline font<'marker when 'marker :> IButton>(this: WidgetBuilder<_, 'marker>, value: double) =
+    static member inline font(this: WidgetBuilder<'msg, IButton>, value: double) =
         this.AddScalar(Button.FontSize.WithValue(value))
     [<Extension>]
-    static member inline paddingLayout(this: WidgetBuilder<_, #ILayout>, value: Xamarin.Forms.Thickness) =
+    static member inline paddingLayout(this: WidgetBuilder<'msg, #ILayout>, value: Xamarin.Forms.Thickness) =
         this.AddScalar(Layout.Padding.WithValue(value))
     [<Extension>]
-    static member inline gridColumn(this: WidgetBuilder<_, #IView>, value: int) =
+    static member inline gridColumn(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.Column.WithValue(value))
     [<Extension>]
-    static member inline gridRow(this: WidgetBuilder<_, #IView>, value: int) =
+    static member inline gridRow(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.Row.WithValue(value))
     [<Extension>]
-    static member inline columnSpacing(this: WidgetBuilder<_, #IGrid>, value: float) =
+    static member inline columnSpacing(this: WidgetBuilder<'msg, #IGrid>, value: float) =
         this.AddScalar(Grid.ColumnSpacing.WithValue(value))
     [<Extension>]
-    static member inline rowSpacing(this: WidgetBuilder<_, #IGrid>, value: float) =
+    static member inline rowSpacing(this: WidgetBuilder<'msg, #IGrid>, value: float) =
         this.AddScalar(Grid.RowSpacing.WithValue(value))
     [<Extension>]
-    static member inline gridColumnSpan(this: WidgetBuilder<_, #IView>, value: int) =
+    static member inline gridColumnSpan(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.ColumnSpan.WithValue(value))
     [<Extension>]
-    static member inline gridRowSpan(this: WidgetBuilder<_, #IView>, value: int) =
+    static member inline gridRowSpan(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.RowSpan.WithValue(value))
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
         this.AddScalar(ContentPage.SizeAllocated.WithValue(fn >> box))
     [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<_, #INavigationPage>, value: Xamarin.Forms.Color) =
+    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #INavigationPage>, value: Xamarin.Forms.Color) =
         this.AddScalar(NavigationPage.BarBackgroundColor.WithValue(value))
     [<Extension>]
     static member inline popped(this: WidgetBuilder<'msg, #INavigationPage>, value: 'msg) =
         this.AddScalar(NavigationPage.Popped.WithValue(fun _ -> box value))
     [<Extension>]
-    static member inline barTextColor(this: WidgetBuilder<_, #INavigationPage>, value: Xamarin.Forms.Color) =
+    static member inline barTextColor(this: WidgetBuilder<'msg, #INavigationPage>, value: Xamarin.Forms.Color) =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(value))
     [<Extension>]
-    static member inline height(this: WidgetBuilder<_, #IView>, value: float) =
+    static member inline height(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(VisualElement.Height.WithValue(value))
     [<Extension>]
-    static member inline width(this: WidgetBuilder<_, #IView>, value: float) =
+    static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(VisualElement.Width.WithValue(value))
     [<Extension>]
-    static member inline placeholder(this: WidgetBuilder<_, #IEntry>, value: string) =
+    static member inline placeholder(this: WidgetBuilder<'msg, #IEntry>, value: string) =
         this.AddScalar(Entry.Placeholder.WithValue(value))
     [<Extension>]
-    static member inline keyboard(this: WidgetBuilder<_, #IEntry>, value: Xamarin.Forms.Keyboard) =
+    static member inline keyboard(this: WidgetBuilder<'msg, #IEntry>, value: Xamarin.Forms.Keyboard) =
         this.AddScalar(Entry.Keyboard.WithValue(value))
     [<Extension>]
-    static member inline title(this: WidgetBuilder<_, #IPage>, value: string) =
+    static member inline title(this: WidgetBuilder<'msg, #IPage>, value: string) =
         this.AddScalar(Page.Title.WithValue(value))
     [<Extension>]
-    static member inline fileIcon(this: WidgetBuilder<_, #IPage>, value: string) =
+    static member inline fileIcon(this: WidgetBuilder<'msg, #IPage>, value: string) =
         this.AddScalar(Page.IconImageSource.WithValue(Xamarin.Forms.ImageSource.FromFile(value)))
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #IPage>, value: 'msg) =
@@ -383,11 +376,11 @@ type ViewExtensions private () =
     static member inline onLayoutChanged(this: WidgetBuilder<'msg, #IPage>, value: 'msg) =
         this.AddScalar(Page.LayoutChanged.WithValue(value))
     [<Extension>]
-    static member inline cancelButtonColor(this: WidgetBuilder<_, #ISearchBar>, value: Xamarin.Forms.Color) =
+    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, value: Xamarin.Forms.Color) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(value))
     [<Extension>]
     static member inline toolbarItems(this: WidgetBuilder<'msg, #IPage>, value: seq<WidgetBuilder<'msg, #IToolbarItem>>) =
-        this.AddWidgetCollection(Page.ToolbarItems.WithValue(compileSeq value))
+        this.AddWidgetCollection(Page.ToolbarItems.WithValue(ViewHelpers.compileSeq value))
     [<Extension>]
     static member inline order(this: WidgetBuilder<'msg, #IToolbarItem>, value: Xamarin.Forms.ToolbarItemOrder) =
         this.AddScalar(ToolbarItem.Order.WithValue(value))
@@ -400,4 +393,54 @@ type ViewExtensions private () =
     [<Extension>]
     static member inline hasBackButton(this: WidgetBuilder<'msg, #IPage>, value: bool) =
         this.AddScalar(NavigationPage.HasBackButton.WithValue(value))
-        
+    [<Extension>]
+    static member inline characterSpacing(this: WidgetBuilder<'msg, IDatePicker>, value: float) =
+        this.AddScalar(DatePicker.CharacterSpacing.WithValue(value))
+    [<Extension>]
+    static member inline fontAttributes(this: WidgetBuilder<'msg, IDatePicker>, value: Xamarin.Forms.FontAttributes) =
+        this.AddScalar(DatePicker.FontAttributes.WithValue(value))
+    [<Extension>]
+    static member inline fontFamily(this: WidgetBuilder<'msg, IDatePicker>, value: string) =
+        this.AddScalar(DatePicker.FontFamily.WithValue(value))
+    [<Extension>]
+    static member inline fontSize(this: WidgetBuilder<'msg, IDatePicker>, value: float) =
+        this.AddScalar(DatePicker.FontSize.WithValue(value))
+    [<Extension>]
+    static member inline format(this: WidgetBuilder<'msg, IDatePicker>, value: string)=
+        this.AddScalar(DatePicker.Format.WithValue(value))
+    [<Extension>]
+    static member inline minimumDate(this: WidgetBuilder<'msg, IDatePicker>, value: DateTime) =
+        this.AddScalar(DatePicker.MinimumDate.WithValue(value))
+    [<Extension>]
+    static member inline maximumDate(this: WidgetBuilder<'msg, IDatePicker>, value: DateTime) =
+        this.AddScalar(DatePicker.MaximumDate.WithValue(value))
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, IDatePicker>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+        this.AddScalar(DatePicker.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, IDatePicker>, value: Xamarin.Forms.TextTransform) =
+        this.AddScalar(DatePicker.TextTransform.WithValue(value))
+    [<Extension>]
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #ITimePicker>, value: float) =
+        this.AddScalar(TimePicker.CharacterSpacing.WithValue(value))
+    [<Extension>]
+    static member inline fontAttributes(this: WidgetBuilder<'msg, #ITimePicker>, value: Xamarin.Forms.FontAttributes) =
+        this.AddScalar(TimePicker.FontAttributes.WithValue(value))
+    [<Extension>]
+    static member inline fontFamily(this: WidgetBuilder<'msg, #ITimePicker>, value: string) =
+        this.AddScalar(TimePicker.FontFamily.WithValue(value))
+    [<Extension>]
+    static member inline fontSize(this: WidgetBuilder<'msg, #ITimePicker>, value: float) =
+        this.AddScalar(TimePicker.FontSize.WithValue(value))
+    [<Extension>]
+    static member inline format(this: WidgetBuilder<'msg, #ITimePicker>, value: string)=
+        this.AddScalar(TimePicker.Format.WithValue(value))
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: Xamarin.Forms.Color, ?dark: Xamarin.Forms.Color) =
+        this.AddScalar(TimePicker.TextColor.WithValue({ Light = light; Dark = match dark with None -> ValueNone | Some v -> ValueSome v }))
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, #ITimePicker>, value: Xamarin.Forms.TextTransform) =
+        this.AddScalar(TimePicker.TextTransform.WithValue(value))
+    [<Extension>]
+    static member inline increment(this: WidgetBuilder<'msg, #IStepper>, value: float) =
+        this.AddScalar(Stepper.Increment.WithValue(value))

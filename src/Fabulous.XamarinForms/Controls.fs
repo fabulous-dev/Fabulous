@@ -3,7 +3,6 @@
 open System
 open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
-open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 /// Represents a dimension for either the row or column definition of a Grid
 type Dimension =
@@ -23,7 +22,7 @@ type SizeAllocatedEventArgs =
 /// Set UseSafeArea to true by default because View DSL only shows `ignoreSafeArea`
 type FabulousContentPage() as this =
     inherit ContentPage()
-    do this.On<iOS>().SetUseSafeArea(true) |> ignore
+    do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true)
 
     let sizeAllocated = Event<EventHandler<SizeAllocatedEventArgs>, _>()
 
@@ -32,3 +31,19 @@ type FabulousContentPage() as this =
     override this.OnSizeAllocated(width, height) =
         base.OnSizeAllocated(width, height)
         sizeAllocated.Trigger(this, { Width = width; Height = height })
+        
+type TimeSelectedEventArgs(newTime: TimeSpan) =
+    inherit EventArgs()
+    member _.NewTime = newTime
+        
+/// Xamarin.Forms doesn't provide an event for selecting the time on a TimePicker, so we implement it
+type FabulousTimePicker() =
+    inherit TimePicker()
+    
+    let timeSelected = Event<EventHandler<TimeSelectedEventArgs>, _>()
+    
+    [<CLIEvent>] member _.TimeSelected = timeSelected.Publish
+    
+    override this.OnPropertyChanged(propertyName) =
+        if propertyName = TimePicker.TimeProperty.PropertyName then
+            timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
