@@ -52,6 +52,12 @@ type CollectionBuilderExtensions =
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>(_: CollectionBuilder<'msg, 'marker, IView>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
         { Widgets = [ x.Compile() ] }
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>(_: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>(_: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
         
 module ViewHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
@@ -73,3 +79,6 @@ module ViewHelpers =
         
     let inline buildCollection<'msg, 'marker, 'item> (key: WidgetKey) (collectionAttributeDefinition: WidgetCollectionAttributeDefinition) (scalars: ScalarAttribute[]) =
         CollectionBuilder<'msg, 'marker, 'item>(key, ValueSome scalars, collectionAttributeDefinition)
+        
+    let inline buildAttributeCollection<'msg, 'marker, 'item> (collectionAttributeDefinition: WidgetCollectionAttributeDefinition) (widget: WidgetBuilder<'msg, 'marker>) =
+        AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)

@@ -292,8 +292,8 @@ type ViewExtensions private () =
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Xamarin.Forms.Thickness) =
         this.AddScalar(View.Margin.WithValue(value))
     [<Extension>]
-    static member inline gestureRecognizers(this: WidgetBuilder<'msg, #IView>, value: seq<WidgetBuilder<'msg, #IGestureRecognizer>>) =
-        this.AddWidgetCollection(View.GestureRecognizers.WithValue(ViewHelpers.compileSeq value))
+    static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =
+        ViewHelpers.buildAttributeCollection<'msg, 'marker, IGestureRecognizer> View.GestureRecognizers this
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: Xamarin.Forms.TextAlignment) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
@@ -379,8 +379,8 @@ type ViewExtensions private () =
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, value: Xamarin.Forms.Color) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(value))
     [<Extension>]
-    static member inline toolbarItems(this: WidgetBuilder<'msg, #IPage>, value: seq<WidgetBuilder<'msg, #IToolbarItem>>) =
-        this.AddWidgetCollection(Page.ToolbarItems.WithValue(ViewHelpers.compileSeq value))
+    static member inline toolbarItems<'msg, 'marker when 'marker :> IPage>(this: WidgetBuilder<'msg, 'marker>) =
+        ViewHelpers.buildAttributeCollection<'msg, 'marker, IToolbarItem> Page.ToolbarItems this
     [<Extension>]
     static member inline order(this: WidgetBuilder<'msg, #IToolbarItem>, value: Xamarin.Forms.ToolbarItemOrder) =
         this.AddScalar(ToolbarItem.Order.WithValue(value))

@@ -2,10 +2,8 @@
 
 open Fabulous
 open Fabulous.XamarinForms
-open FabulousContacts.Components
 open FabulousContacts.Models
 open FabulousContacts.Style
-open Xamarin.Forms
 open type Fabulous.XamarinForms.View
 
 module ContactsListPage =
@@ -107,7 +105,7 @@ module ContactsListPage =
                     //]
             })
         )
-            .toolbarItems([
+            .toolbarItems() {
                 ToolbarItem(Strings.Common_About, AboutTapped)
                 ToolbarItem("+", AddNewContactTapped)
-            ])
+            }

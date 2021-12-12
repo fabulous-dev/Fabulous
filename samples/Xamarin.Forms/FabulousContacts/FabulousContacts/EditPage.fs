@@ -266,6 +266,6 @@ module EditPage =
                     .paddingLayout(Thickness(20.))
             )
         )
-            .toolbarItems([
+            .toolbarItems() {
                 toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact
-            ])
+            }
