@@ -144,11 +144,10 @@ module MainPage =
                 VerticalStackLayout() {
                     centralLabel Strings.MainPage_NoContact
                 }
-            )
-                .toolbarItems([
-                    ToolbarItem(Strings.Common_About, NoContactAboutTapped)
-                    ToolbarItem("+", NoContactAddNewContactTapped)
-                ])
+            ).toolbarItems() {
+                ToolbarItem(Strings.Common_About, NoContactAboutTapped)
+                ToolbarItem("+", NoContactAddNewContactTapped)
+            }
         }
     
     let regularView title model =

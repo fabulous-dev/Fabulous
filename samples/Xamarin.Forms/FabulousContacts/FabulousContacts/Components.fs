@@ -123,7 +123,7 @@ module Components =
             ContentView(
                 Image(new MemoryStream(picture), Aspect.AspectFill)
             )
-                .gestureRecognizers([
-                    TapGestureRecognizer(updatePicture)
-                ])
                 .gridRowSpan(2)
+                .gestureRecognizers() {
+                    TapGestureRecognizer(updatePicture)
+                }

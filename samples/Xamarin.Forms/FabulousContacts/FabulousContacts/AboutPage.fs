@@ -45,7 +45,9 @@ module AboutPage =
             Label(Strings.AboutPage_AboutFabulousContacts_Description)
             
             UnderlinedLabel(fabulousContactsRepositoryUrl)
-                .gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl) ])
+                .gestureRecognizers() {
+                    TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl)
+                }
         }
         
     let aboutFSharp (openBrowser: string -> Msg) =
@@ -58,7 +60,9 @@ module AboutPage =
 
                 Label(Strings.AboutPage_AboutFSharp_FSharp)
                     .centerTextHorizontal()
-            }).gestureRecognizers([ TapGestureRecognizer(openBrowser fsharpOrgUrl) ])
+            }).gestureRecognizers() {
+                TapGestureRecognizer(openBrowser fsharpOrgUrl)
+            }
         
             (VerticalStackLayout() {
                 Image("xamarin.png", Aspect.AspectFit)
@@ -66,7 +70,9 @@ module AboutPage =
 
                 Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
                     .centerTextHorizontal()
-            }).gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) ])
+            }).gestureRecognizers() {
+                TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl)
+            }
         }
 
     let credits (openBrowser: string -> Msg) =
@@ -76,10 +82,14 @@ module AboutPage =
                 .margin(Thickness(0., 20., 0., 0.))
             
             UnderlinedLabel(Strings.AboutPage_Credits_Freepik)
-                .gestureRecognizers([ TapGestureRecognizer(openBrowser freepikUrl) ])
+                .gestureRecognizers() {
+                    TapGestureRecognizer(openBrowser freepikUrl)
+                }
             
             UnderlinedLabel(Strings.AboutPage_Credits_XamarinEssentials)
-                .gestureRecognizers([ TapGestureRecognizer(openBrowser xamarinEssentialsUrl) ])
+                .gestureRecognizers() {
+                    TapGestureRecognizer(openBrowser xamarinEssentialsUrl)
+                }
         }
         
     let aboutAuthor (openBrowser: string -> Msg) =
@@ -97,7 +107,9 @@ module AboutPage =
                 UnderlinedLabel(authorBlogUrl)
                     .centerVertical()
             })
-                .gestureRecognizers([ TapGestureRecognizer(openBrowser authorBlogUrl) ])
+                .gestureRecognizers() {
+                    TapGestureRecognizer(openBrowser authorBlogUrl)
+                }
             
             Label(Strings.AboutPage_AboutAuthor_ReachOut)
                 .margin(Thickness (0., 10., 0., 0.))
@@ -108,7 +120,9 @@ module AboutPage =
             
                 UnderlinedLabel(authorGitHubHandle)
                     .centerVertical()
-            }).gestureRecognizers([ TapGestureRecognizer(openBrowser authorGitHubUrl) ])
+            }).gestureRecognizers() {
+                TapGestureRecognizer(openBrowser authorGitHubUrl)
+            }
             
             (HorizontalStackLayout(spacing = 15.) {
                 (VerticalStackLayout() {
@@ -117,7 +131,9 @@ module AboutPage =
                 
                     Label(authorTwitterHandle)
                         .centerTextHorizontal()
-                }).gestureRecognizers([ TapGestureRecognizer(openBrowser authorTwitterUrl) ])
+                }).gestureRecognizers() {
+                    TapGestureRecognizer(openBrowser authorTwitterUrl)
+                }
             
                 (VerticalStackLayout() {
                     Image("slack.png", Aspect.AspectFit)
@@ -126,7 +142,9 @@ module AboutPage =
                     Label(authorSlackHandle)
                         .centerTextHorizontal()
                 })
-                    .gestureRecognizers([ TapGestureRecognizer(openBrowser authorSlackUrl) ])
+                    .gestureRecognizers() {
+                        TapGestureRecognizer(openBrowser authorSlackUrl)
+                    }
             })
                 .centerHorizontal()
                 .margin(Thickness(0., 10., 0., 0.))

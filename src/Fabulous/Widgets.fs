@@ -121,6 +121,32 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker>
             res <- x.Combine(res, f t)
 
         res
+        
+[<Struct>]
+type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker>
+    (
+        widget: WidgetBuilder<'msg, 'marker>,
+        attr: WidgetCollectionAttributeDefinition
+    ) =
+
+    member _.Run(c: Content<'msg>) =
+        widget.AddWidgetCollection(attr.WithValue(List.toArray c.Widgets))
+
+    member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> = { Widgets = a.Widgets @ b.Widgets }
+
+    member inline _.Zero() : Content<'msg> = { Widgets = [] }
+
+    member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
+
+    member inline x.For<'t>(sequence: 't seq, [<InlineIfLambda>] f: 't -> Content<'msg>) : Content<'msg> =
+        let mutable res: Content<'msg> = x.Zero()
+
+        // this is essentially Fold, not sure what is more optimal
+        // handwritten version of via Seq.Fold
+        for t in sequence do
+            res <- x.Combine(res, f t)
+
+        res
 
 module View =
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =

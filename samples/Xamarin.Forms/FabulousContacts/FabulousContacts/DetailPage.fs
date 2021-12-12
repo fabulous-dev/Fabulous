@@ -5,7 +5,7 @@ open Xamarin.Forms
 open Xamarin.Essentials
 open Fabulous
 open Fabulous.XamarinForms
-open type Fabulous.XamarinForms.View
+open type View
 open FabulousContacts.Components
 open FabulousContacts.Helpers
 open FabulousContacts.Models
@@ -135,7 +135,7 @@ module DetailPage =
                 }
             )
         )
-            .toolbarItems([
+            .toolbarItems() {
                 ToolbarItem(Strings.DetailPage_Toolbar_EditContact, EditTapped)
                     .order(ToolbarItemOrder.Primary)
-            ])
+            }
