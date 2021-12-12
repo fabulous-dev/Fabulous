@@ -17,6 +17,9 @@ type WidgetBuilder<'msg, 'marker>
 
         {
             Key = key
+#if DEBUG
+            DebugName = $"{typeof<'marker>.Name}<{typeof<'msg>.Name}>"
+#endif
             ScalarAttributes = scalarAttributes
             WidgetAttributes = widgetAttributes
             WidgetCollectionAttributes = widgetCollectionAttributes
@@ -53,17 +56,20 @@ type WidgetBuilder<'msg, 'marker>
         WidgetBuilder<'msg, 'marker>(key, struct (scalarAttributes, widgetAttributes, attribs2))
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    member _.AddScalars(attrs: ScalarAttribute []) =
-        let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = attributes
-        let attribs = scalarAttributes
+    member x.AddScalars(attrs: ScalarAttribute []) =
+        if attrs.Length = 0 then
+            x
+        else
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = attributes
+            let attribs = scalarAttributes
 
-        let attribs2 =
-            Array.zeroCreate(attribs.Length + attrs.Length)
+            let attribs2 =
+                Array.zeroCreate(attribs.Length + attrs.Length)
 
-        Array.blit attribs 0 attribs2 0 attribs.Length
-        Array.blit attrs 0 attribs2 (attribs.Length - 1) attrs.Length
+            Array.blit attribs 0 attribs2 0 attribs.Length
+            Array.blit attrs 0 attribs2 attribs.Length attrs.Length
 
-        WidgetBuilder<'msg, 'marker>(key, struct (attribs2, widgetAttributes, widgetCollectionAttributes))
+            WidgetBuilder<'msg, 'marker>(key, struct (attribs2, widgetAttributes, widgetCollectionAttributes))
 
     member private _.Attrs = attributes
 

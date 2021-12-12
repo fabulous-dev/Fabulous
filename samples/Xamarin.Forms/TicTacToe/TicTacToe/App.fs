@@ -54,7 +54,7 @@ type Model =
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
       /// updates telling us the overall allocated size.
-      VisualBoardSize: double option
+      VisualBoardSize: double
     }
 
 /// The model, update and view content of the app. This is placed in an
@@ -72,7 +72,7 @@ module App =
         { NextUp = X
           Board = initialBoard
           GameScore = (0,0)
-          VisualBoardSize = None }
+          VisualBoardSize = 0 }
 
     /// Check if there are any more moves available in the game
     let anyMoreMoves m = m.Board |> Map.exists (fun _ c -> c = Empty)
@@ -138,11 +138,8 @@ module App =
         | Restart ->
             { model with NextUp = X; Board = initialBoard; GameScore = (0, 0) }
         | VisualBoardSizeChanged args ->
-            match model.VisualBoardSize with
-            | Some _ -> model
-            | None ->
                 let size = min args.Width args.Height - 80.
-                { model with VisualBoardSize = Some size }
+                { model with VisualBoardSize = size }
 
     /// A helper used in the 'view' function to get the name
     /// of the Xaml resource for the image for a player
@@ -184,23 +181,23 @@ module App =
                                 BoxView(Color.Black).gridColumn(1).gridRowSpan(5)
                                 BoxView(Color.Black).gridColumn(3).gridRowSpan(5)
 
-//                                for ((row,col) as pos) in positions do
-//                                    if canPlay model model.Board.[pos] then
-//                                        Button("", Play pos)
-//                                            .backgroundColor(Color.LightBlue)
-//                                            .gridRow(row * 2)
-//                                            .gridColumn(col * 2)
-//                                    else
-//                                        Image(imageForPos model.Board.[pos], Aspect.AspectFit)
-//                                            .center()
-//                                            .margin(10.)
-//                                            .gridRow(row * 2)
-//                                            .gridColumn(col * 2)
+                                for ((row,col) as pos) in positions do
+                                    if canPlay model model.Board.[pos] then
+                                        Button("", Play pos)
+                                            .backgroundColor(Color.LightBlue)
+                                            .gridRow(row * 2)
+                                            .gridColumn(col * 2)
+                                    else
+                                        Image(imageForPos model.Board.[pos], Aspect.AspectFit)
+                                            .center()
+                                            .margin(10.)
+                                            .gridRow(row * 2)
+                                            .gridColumn(col * 2)
                             })
                                 .rowSpacing(0.)
                                 .columnSpacing(0.)
                                 .center()
-                                .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
+                                .size(width = model.VisualBoardSize, height = model.VisualBoardSize)
                                 .gridRow(0)
 
                             Label(getMessage model)
@@ -218,11 +215,10 @@ module App =
                         }
                     )
 
-                match model.VisualBoardSize with
-                | None ->
+                if model.VisualBoardSize = 0 then
                     contentPage
                         .onSizeAllocated(VisualBoardSizeChanged)
-                | Some _ ->
+                else
                     contentPage
             })
                 .barBackgroundColor(Color.LightBlue)

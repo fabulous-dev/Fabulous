@@ -55,6 +55,9 @@ and [<Struct>] WidgetCollectionAttribute =
 and [<Struct>] Widget =
     {
         Key: WidgetKey
+#if DEBUG
+        DebugName: string
+#endif
         ScalarAttributes: ScalarAttribute []
         WidgetAttributes: WidgetAttribute []
         WidgetCollectionAttributes: WidgetCollectionAttribute []

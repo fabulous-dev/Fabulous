@@ -153,7 +153,7 @@ type ViewBuilders private () =
         ViewBuilders.SourceImage<'msg>(Xamarin.Forms.ImageSource.FromStream(fun () -> stream), aspect)
         
     static member inline BoxView<'msg>(color: Xamarin.Forms.Color) =
-        buildScalars<'msg, IView> ViewKeys.BoxView 
+        buildScalars<'msg, IBoxView> ViewKeys.BoxView 
             [| BoxView.Color.WithValue(color) |]
               
     static member inline NavigationPage<'msg>() =

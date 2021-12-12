@@ -134,10 +134,10 @@ type AdditionalViewExtensions =
         this.AddScalar(View.Margin.WithValue(Thickness(value)))
         
     [<Extension>]
-    static member inline size(this: WidgetBuilder<'msg, #IView>, ?width: float, ?height: float) =
+    static member size(this: WidgetBuilder<'msg, #IView>, width: float, height: float) =
         this.AddScalars([|
-            match width with None -> () | Some v -> VisualElement.Width.WithValue(v)
-            match height with None -> () | Some v -> VisualElement.Height.WithValue(v)
+            VisualElement.Width.WithValue(width)
+            VisualElement.Height.WithValue(height)
         |])
     
     [<Extension>]
