@@ -17,7 +17,8 @@ module Attributes =
                 UpdateTarget =
                     fun (newValueOpt, context, target) ->
 
-                        let viewNode = context.ViewTreeContext.GetViewNode(target)
+                        let viewNode =
+                            context.ViewTreeContext.GetViewNode(target)
 
                         let btn = target :?> IButton
 
@@ -30,7 +31,7 @@ module Attributes =
 
                         | ValueSome msg ->
                             let handler () =
-                                Attributes.dispatchMsgOnViewNode context msg
+                                Attributes.dispatchMsgOnViewNode viewNode msg
 
                             let handlerId = btn.AddPressListener handler
                             viewNode.SetHandler<int>(key, ValueSome handlerId)
@@ -52,9 +53,7 @@ module Attributes =
 
     module Container =
         let Children =
-            Attributes.defineWidgetCollection
-                "Container_Children"
-                (fun target -> (target :?> IContainer).Children)
+            Attributes.defineWidgetCollection "Container_Children" (fun target -> (target :?> IContainer).Children)
 
 
     module Button =

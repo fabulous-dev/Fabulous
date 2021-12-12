@@ -51,17 +51,20 @@ type WidgetBuilder<'msg, 'marker>
         attribs2.[attribs.Length] <- attr
 
         WidgetBuilder<'msg, 'marker>(key, struct (scalarAttributes, widgetAttributes, attribs2))
-       
-    [<EditorBrowsable(EditorBrowsableState.Never)>] 
-    member _.AddScalars(attrs: ScalarAttribute[]) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member _.AddScalars(attrs: ScalarAttribute []) =
         let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = attributes
         let attribs = scalarAttributes
-        let attribs2 = Array.zeroCreate(attribs.Length + attrs.Length)
+
+        let attribs2 =
+            Array.zeroCreate(attribs.Length + attrs.Length)
+
         Array.blit attribs 0 attribs2 0 attribs.Length
         Array.blit attrs 0 attribs2 (attribs.Length - 1) attrs.Length
 
         WidgetBuilder<'msg, 'marker>(key, struct (attribs2, widgetAttributes, widgetCollectionAttributes))
-        
+
     member private _.Attrs = attributes
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -69,9 +72,11 @@ type WidgetBuilder<'msg, 'marker>
         let fnWithBoxing =
             fun (msg: obj) -> msg |> unbox<'msg> |> fn |> box
 
-        let builder = x.AddScalar(Attributes.MapMsg.WithValue fnWithBoxing)
+        let builder =
+            x.AddScalar(Attributes.MapMsg.WithValue fnWithBoxing)
+
         WidgetBuilder<'newMsg, 'marker>(key, builder.Attrs)
-        
+
 [<Struct>]
 type Content<'msg> = { Widgets: Widget list }
 
@@ -97,8 +102,20 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker>
 
     member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> = { Widgets = a.Widgets @ b.Widgets }
 
+    member inline _.Zero() : Content<'msg> = { Widgets = [] }
+
     member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
-    
+
+    member inline x.For<'t>(sequence: 't seq, [<InlineIfLambda>] f: 't -> Content<'msg>) : Content<'msg> =
+        let mutable res: Content<'msg> = x.Zero()
+
+        // this is essentially Fold, not sure what is more optimal
+        // handwritten version of via Seq.Fold
+        for t in sequence do
+            res <- x.Combine(res, f t)
+
+        res
+
 module View =
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
         x.MapMsg fn

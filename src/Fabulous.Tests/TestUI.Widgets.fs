@@ -117,12 +117,28 @@ type View private () =
 
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, ValueNone, Attributes.Container.Children)
-        
+
 [<Extension>]
 type CollectionBuilderExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>(_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker>) =
-        { Widgets = [x.Compile()] }
+    static member Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, 'itemMarker>
+        ) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+
+
+    [<Extension>]
+    static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, 'itemMarker> seq
+        ) : Content<'msg> =
+        {
+            Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toList
+        }
+
 
 
 
@@ -187,7 +203,6 @@ module Run =
                     Key = widget.Key
                     ViewTreeContext = x.viewContext
                     Ancestors = []
-                    MapMsg = id
                 }
 
             let view = widgetDef.CreateView(widget, context)
@@ -196,6 +211,6 @@ module Run =
 
             view :?> TestViewElement
 
-module View =
-    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
-        this.MapMsg fn
+//module View =
+//    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+//        this.MapMsg fn

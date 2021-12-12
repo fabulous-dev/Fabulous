@@ -4,6 +4,7 @@ open NUnit.Framework
 
 open Tests.Platform
 open Tests.TestUI_Widgets
+open Fabulous
 
 open type View
 
@@ -183,6 +184,126 @@ module SimpleStackTests =
         Assert.AreEqual(label.Text, "just 1")
 
 
+
+module ComputationExpressionTest =
+    type Msg = | Inc
+
+    type Model = int
+
+    let update msg model =
+        match msg with
+        | Inc -> model + 1
+
+    [<Test>]
+    let JustValue () =
+        let view model =
+            // requires implemented "Yield"
+            Stack() { Button("inc", Inc).automationId("inc") }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        let btn = find<TestButton> tree "inc" :> IText
+
+        Assert.AreEqual(btn.Text, "inc")
+
+
+    [<Test>]
+    let Condition () =
+        let view model =
+            // requires implemented "Zero"
+            (Stack() {
+                if (model % 2 = 0) then
+                    Label("label").automationId("label")
+                else
+                    Button("btn", Inc).automationId("btn")
+             })
+                .automationId("stack")
+
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        let stack =
+            find<TestStack> tree "stack" :> IContainer
+
+        Assert.AreEqual(1, stack.Children.Count)
+
+        // we start with zero, thus label should be present
+        let label = find<TestLabel> tree "label" :> IText
+
+        Assert.AreEqual(label.Text, "label")
+
+        instance.ProcessMessage(Inc)
+
+        // still one child
+        Assert.AreEqual(1, stack.Children.Count)
+
+        // but now Button should be present
+        let btn = find<TestButton> tree "btn" :> IText
+
+        Assert.AreEqual(btn.Text, "btn")
+
+    [<Test>]
+    let YieldCollection () =
+
+        let count = 4
+
+        let view model =
+            Stack() {
+                // requires implemented "YieldFrom"
+                yield!
+                    [ for i in 0 .. model -> i.ToString() ]
+                    |> List.map(fun i -> Label(i).automationId(i))
+            }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> count) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        for i in 0 .. count do
+            let label =
+                find<TestLabel> tree (i.ToString()) :> IText
+
+            Assert.AreEqual(label.Text, i.ToString())
+
+
+    [<Test>]
+    let ForExpression () =
+
+        let count = 4
+
+        let view model =
+            Stack() {
+                // requires implemented "For"
+                for i in 0 .. model -> Label(i.ToString()).automationId(i.ToString())
+            }
+
+        let instance =
+            StatefulWidget.mkSimpleView(fun () -> count) update view
+            |> Run.Instance
+
+        let tree = (instance.Start())
+
+        for i in 0 .. count do
+            let label =
+                find<TestLabel> tree (i.ToString()) :> IText
+
+            Assert.AreEqual(label.Text, i.ToString())
+
+
+
+
+
+
 //module ReconcilerTests =
 //    let a = Attributes.define<int> "A" (fun () -> 0)
 //
@@ -228,15 +349,15 @@ module MapViewTests =
 
     let view model =
         Stack() {
-            Label(model.ToString())
-                .automationId("label")
-                .textColor("blue")
-
             View.map
                 mapMsg
                 (Button("+1", AddOne)
                     .automationId("add")
                     .textColor("red"))
+
+            Label(model.ToString())
+                .automationId("label")
+                .textColor("blue")
 
             View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
         }

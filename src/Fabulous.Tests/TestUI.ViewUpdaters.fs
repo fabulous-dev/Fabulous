@@ -2,7 +2,6 @@ module Tests.TestUI_ViewUpdaters
 
 open Fabulous
 open Tests.Platform
-open Tests.TestUI_ViewNode
 
 
 //let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChange[], target: obj) =
@@ -62,7 +61,9 @@ let applyDiffContainerChildren (diffs: WidgetCollectionItemChange [], context: V
 
         | WidgetCollectionItemChange.Update (index, diff) ->
             let targetItem = children.[index]
-            let viewNode = context.ViewTreeContext.GetViewNode(box targetItem)
+
+            let viewNode =
+                context.ViewTreeContext.GetViewNode(box targetItem)
 
             if diff.ScalarChanges.Length > 0 then
                 viewNode.ApplyScalarDiff(diff.ScalarChanges)
@@ -84,4 +85,6 @@ let updateContainerChildren (newValueOpt: Widget [] voption, context: ViewNodeCo
     | ValueNone -> container.Children.Clear()
     | ValueSome widgets ->
         for widget in widgets do
-            container.Children.Add(Helpers.createViewForWidget context widget :?> TestViewElement)
+            container.Children.Add(
+                Helpers.createViewForWidget(context.ViewTreeContext.GetViewNode target) widget :?> TestViewElement
+            )
