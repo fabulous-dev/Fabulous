@@ -230,42 +230,39 @@ module EditPage =
 
         ContentPage(title,
             ScrollView(
-                VerticalStackLayout(
-                    children = [
-                        Grid(
-                            coldefs = [ Absolute 100.; Star ],
-                            rowdefs = [ Absolute 50.; Absolute 50. ],
-                            children = [
-                                profilePictureButton model.Picture UpdatePicture
+                (VerticalStackLayout() {
+                    (Grid(
+                        coldefs = [ Absolute 100.; Star ],
+                        rowdefs = [ Absolute 50.; Absolute 50. ]
+                    ) {
+                        profilePictureButton model.Picture UpdatePicture
 
-                                (formEntry Strings.EditPage_FirstNameField_Label model.FirstName Keyboard.Text model.IsFirstNameValid UpdateFirstName)
-                                    .centerVertical()
-                                    .gridColumn(1)
+                        (formEntry Strings.EditPage_FirstNameField_Label model.FirstName Keyboard.Text model.IsFirstNameValid UpdateFirstName)
+                            .centerVertical()
+                            .gridColumn(1)
 
-                                (formEntry Strings.EditPage_LastNameField_Label model.LastName Keyboard.Text model.IsLastNameValid UpdateLastName)
-                                    .centerVertical()
-                                    .gridColumn(1)
-                                    .gridRow(1)
-                            ]
-                        )
-                            .columnSpacing(10.)
-                            .rowSpacing(0.)
+                        (formEntry Strings.EditPage_LastNameField_Label model.LastName Keyboard.Text model.IsLastNameValid UpdateLastName)
+                            .centerVertical()
+                            .gridColumn(1)
+                            .gridRow(1)
+                    })
+                        .columnSpacing(10.)
+                        .rowSpacing(0.)
 
-                        favoriteField model.IsFavorite UpdateIsFavorite
-                        formLabel Strings.EditPage_EmailField_Label
-                        formEntry Strings.EditPage_EmailField_Placeholder model.Email Keyboard.Email true UpdateEmail
-                        formLabel Strings.EditPage_PhoneField_Label
-                        formEntry Strings.EditPage_PhoneField_Placeholder model.Phone Keyboard.Telephone true UpdatePhone
-                        formLabel Strings.EditPage_AddressField_Label
-                        formEditor model.Address UpdateAddress
+                    favoriteField model.IsFavorite UpdateIsFavorite
+                    formLabel Strings.EditPage_EmailField_Label
+                    formEntry Strings.EditPage_EmailField_Placeholder model.Email Keyboard.Email true UpdateEmail
+                    formLabel Strings.EditPage_PhoneField_Label
+                    formEntry Strings.EditPage_PhoneField_Placeholder model.Phone Keyboard.Telephone true UpdatePhone
+                    formLabel Strings.EditPage_AddressField_Label
+                    formEditor model.Address UpdateAddress
 
-                        match model.Contact with
-                        | None -> ()
-                        | Some x when x.Id = 0 -> ()
-                        | Some contact ->
-                            destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
-                    ]
-                )
+                    match model.Contact with
+                    | None -> ()
+                    | Some x when x.Id = 0 -> ()
+                    | Some contact ->
+                        destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
+                })
                     .paddingLayout(Thickness(20.))
             )
         )

@@ -10,6 +10,8 @@ type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
     interface IViewNode with
         member x.Context = context
         
+        member val CanPropagateEvents = true with get, set
+        
         member x.MapMsg(msg) = _mapMsg msg
         
         member x.SetMapMsg(fn) = _mapMsg <- fn

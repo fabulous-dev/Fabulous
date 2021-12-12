@@ -105,7 +105,9 @@ module ViewUpdaters =
                         navigationPage.PushAsync(temp.Pop(), false) |> ignore
                         
             | WidgetCollectionItemChange.Remove index ->
-                if index = pages.Length - 1 then
+                if index > pages.Length - 1 then
+                    () // Do nothing, page has already been popped
+                elif index = pages.Length - 1 then
                    navigationPage.PopAsync() |> ignore
                 else
                     let temp = System.Collections.Generic.Stack<Page>()

@@ -54,7 +54,7 @@ type Model =
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
       /// updates telling us the overall allocated size.
-      VisualBoardSize: double
+      VisualBoardSize: double option
     }
 
 /// The model, update and view content of the app. This is placed in an
@@ -72,7 +72,7 @@ module App =
         { NextUp = X
           Board = initialBoard
           GameScore = (0,0)
-          VisualBoardSize = 0 }
+          VisualBoardSize = None }
 
     /// Check if there are any more moves available in the game
     let anyMoreMoves m = m.Board |> Map.exists (fun _ c -> c = Empty)
@@ -138,8 +138,8 @@ module App =
         | Restart ->
             { model with NextUp = X; Board = initialBoard; GameScore = (0, 0) }
         | VisualBoardSizeChanged args ->
-                let size = min args.Width args.Height - 80.
-                { model with VisualBoardSize = size }
+            let size = min args.Width args.Height - 80.
+            { model with VisualBoardSize = Some size }
 
     /// A helper used in the 'view' function to get the name
     /// of the Xaml resource for the image for a player
@@ -197,7 +197,7 @@ module App =
                                 .rowSpacing(0.)
                                 .columnSpacing(0.)
                                 .center()
-                                .size(width = model.VisualBoardSize, height = model.VisualBoardSize)
+                                .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
                                 .gridRow(0)
 
                             Label(getMessage model)
@@ -215,10 +215,11 @@ module App =
                         }
                     )
 
-                if model.VisualBoardSize = 0 then
+                match model.VisualBoardSize with
+                | ValueSome _ ->
                     contentPage
                         .onSizeAllocated(VisualBoardSizeChanged)
-                else
+                | ValueNone ->
                     contentPage
             })
                 .barBackgroundColor(Color.LightBlue)

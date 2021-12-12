@@ -26,7 +26,7 @@ module FabulousBorderedEntry =
     type IBorderedEntry = inherit IEntry
 
     type Fabulous.XamarinForms.View with
-        static member inline BorderedEntry<'msg>(text, onTextChanged) =
+        static member inline BorderedEntry<'msg>(text, onTextChanged: string -> 'msg) =
             ViewHelpers.buildScalars<'msg, IBorderedEntry> BorderedEntryKey
                 [| Entry.Text.WithValue(text)
                    Entry.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box) |]

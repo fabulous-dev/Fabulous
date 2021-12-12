@@ -144,32 +144,32 @@ module App =
 
         let detailPage =
             model.DetailPageModel
-            |> Option.map (fun dModel -> DetailPage.view dModel)
+            |> Option.map DetailPage.view
 
         let editPage =
             model.EditPageModel
-            |> Option.map (fun eModel -> EditPage.view eModel)
+            |> Option.map EditPage.view
             
         let aboutPage =
             model.AboutPageModel
-            |> Option.map (fun aModel -> AboutPage.view aModel)
+            |> Option.map AboutPage.view
 
         Application(
-            NavigationPage([
-                Widgets.map MainPageMsg mainPage
+            (NavigationPage() {
+                View.map MainPageMsg mainPage
 
                 match aboutPage with
                 | None -> ()
-                | Some about -> Widgets.map AboutPageMsg about
+                | Some about -> View.map AboutPageMsg about
 
                 match detailPage with
                 | None -> ()
-                | Some detail -> Widgets.map DetailPageMsg detail
+                | Some detail -> View.map DetailPageMsg detail
             
                 match editPage with
                 | None -> ()
-                | Some edit -> Widgets.map EditPageMsg edit
-            ])
+                | Some edit -> View.map EditPageMsg edit
+            })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
                 .popped(NavigationPopped)

@@ -107,6 +107,7 @@ type ScalarAttributeComparison =
 /// DEV NOTES: This interface can be removed by reorganizing the types of this file
 type IViewNode =
     abstract Context : ViewNodeContext
+    abstract CanPropagateEvents: bool with get, set
     abstract MapMsg : obj -> obj
     abstract SetMapMsg : (obj -> obj) -> unit
     abstract TryGetHandler<'T> : AttributeKey -> 'T voption

@@ -25,7 +25,7 @@ module Components =
             .keyboard(keyboard)
             .borderColor(if isValid then Color.Default else Color.Red)
 
-    let formEditor text (textChanged: string -> 'msg) =
+    let formEditor text textChanged =
         Editor(text, textChanged)
             .size(height = 100.)
 

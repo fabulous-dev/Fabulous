@@ -33,7 +33,7 @@ module AboutPage =
         | OpenBrowser url -> Browser.OpenAsync(Uri url) |> ignore; model
         
     let aboutFabulousContacts (openBrowser: string -> Msg) =
-        VerticalStackLayout([
+        VerticalStackLayout() {
             Label(Strings.AboutPage_AboutFabulousContacts_NameAndVersion)
                 .font(attributes = FontAttributes.Bold)
                 .centerHorizontal()
@@ -46,34 +46,31 @@ module AboutPage =
             
             UnderlinedLabel(fabulousContactsRepositoryUrl)
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl) ])
-        ])
+        }
         
     let aboutFSharp (openBrowser: string -> Msg) =
-        HorizontalStackLayout(
-            spacing = 30.,
-            children = [
-                Label(Strings.AboutPage_AboutFSharp_MadeWith)
-            
-                VerticalStackLayout([
-                    Image("fsharp.png", Aspect.AspectFit)
-                        .size(height = 50., width = 50.)
+        HorizontalStackLayout(spacing = 30.) {
+            Label(Strings.AboutPage_AboutFSharp_MadeWith)
+        
+            (VerticalStackLayout() {
+                Image("fsharp.png", Aspect.AspectFit)
+                    .size(height = 50., width = 50.)
 
-                    Label(Strings.AboutPage_AboutFSharp_FSharp)
-                        .centerTextHorizontal()
-                ]).gestureRecognizers([ TapGestureRecognizer(openBrowser fsharpOrgUrl) ])
-            
-                VerticalStackLayout([
-                    Image("xamarin.png", Aspect.AspectFit)
-                        .size(height = 50., width = 50.)
+                Label(Strings.AboutPage_AboutFSharp_FSharp)
+                    .centerTextHorizontal()
+            }).gestureRecognizers([ TapGestureRecognizer(openBrowser fsharpOrgUrl) ])
+        
+            (VerticalStackLayout() {
+                Image("xamarin.png", Aspect.AspectFit)
+                    .size(height = 50., width = 50.)
 
-                    Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
-                        .centerTextHorizontal()
-                ]).gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) ])
-            ]
-        )
+                Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
+                    .centerTextHorizontal()
+            }).gestureRecognizers([ TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) ])
+        }
 
     let credits (openBrowser: string -> Msg) =
-        VerticalStackLayout([
+        VerticalStackLayout() {
             Label(Strings.AboutPage_Credits_Title)
                 .font(attributes = FontAttributes.Bold)
                 .margin(Thickness(0., 20., 0., 0.))
@@ -83,87 +80,75 @@ module AboutPage =
             
             UnderlinedLabel(Strings.AboutPage_Credits_XamarinEssentials)
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser xamarinEssentialsUrl) ])
-        ])
+        }
         
     let aboutAuthor (openBrowser: string -> Msg) =
-        VerticalStackLayout([
+        VerticalStackLayout() {
             Label(Strings.AboutPage_AboutAuthor_Title)
                 .font(attributes = FontAttributes.Bold)
                 .margin(Thickness(0., 20., 0., 0.))
             
             Label(Strings.AboutPage_AboutAuthor_AuthorName)
             
-            HorizontalStackLayout(
-                spacing = 15.,
-                children = [
-                    Image("blog.png", Aspect.AspectFit)
-                        .size(height = 35., width = 35.)
-                
-                    UnderlinedLabel(authorBlogUrl)
-                        .centerVertical()
-                ]
-            )
+            (HorizontalStackLayout(spacing = 15.) {
+                Image("blog.png", Aspect.AspectFit)
+                    .size(height = 35., width = 35.)
+            
+                UnderlinedLabel(authorBlogUrl)
+                    .centerVertical()
+            })
                 .gestureRecognizers([ TapGestureRecognizer(openBrowser authorBlogUrl) ])
             
             Label(Strings.AboutPage_AboutAuthor_ReachOut)
                 .margin(Thickness (0., 10., 0., 0.))
                         
-            HorizontalStackLayout(
-                spacing = 15.,
-                children = [
-                    Image("github.png", Aspect.AspectFit)
-                        .size(height = 35., width = 35.)
-                
-                    UnderlinedLabel(authorGitHubHandle)
-                        .centerVertical()
-                ]
-            ).gestureRecognizers([ TapGestureRecognizer(openBrowser authorGitHubUrl) ])
+            (HorizontalStackLayout(spacing = 15.) {
+                Image("github.png", Aspect.AspectFit)
+                    .size(height = 35., width = 35.)
             
-            HorizontalStackLayout(
-                spacing = 15.,
-                children = [
-                    VerticalStackLayout([
-                        Image("twitter.png", Aspect.AspectFit)
-                            .size(height = 50., width = 50.)
-                    
-                        Label(authorTwitterHandle)
-                            .centerTextHorizontal()
-                    ]).gestureRecognizers([ TapGestureRecognizer(openBrowser authorTwitterUrl) ])
+                UnderlinedLabel(authorGitHubHandle)
+                    .centerVertical()
+            }).gestureRecognizers([ TapGestureRecognizer(openBrowser authorGitHubUrl) ])
+            
+            (HorizontalStackLayout(spacing = 15.) {
+                (VerticalStackLayout() {
+                    Image("twitter.png", Aspect.AspectFit)
+                        .size(height = 50., width = 50.)
                 
-                    VerticalStackLayout([
-                        Image("slack.png", Aspect.AspectFit)
-                            .size(height = 50., width = 50.)
-                    
-                        Label(authorSlackHandle)
-                            .centerTextHorizontal()
-                    ])
-                        .gestureRecognizers([ TapGestureRecognizer(openBrowser authorSlackUrl) ])
-                ]
-            )
+                    Label(authorTwitterHandle)
+                        .centerTextHorizontal()
+                }).gestureRecognizers([ TapGestureRecognizer(openBrowser authorTwitterUrl) ])
+            
+                (VerticalStackLayout() {
+                    Image("slack.png", Aspect.AspectFit)
+                        .size(height = 50., width = 50.)
+                
+                    Label(authorSlackHandle)
+                        .centerTextHorizontal()
+                })
+                    .gestureRecognizers([ TapGestureRecognizer(openBrowser authorSlackUrl) ])
+            })
                 .centerHorizontal()
                 .margin(Thickness(0., 10., 0., 0.))
-        ]
-    )
+        }
         
     let view () =
         ContentPage("About FabulousContacts",
             ScrollView(
-                VerticalStackLayout(
-                    children = [
-                        ContentView(
-                            Image("icon.png", Aspect.AspectFit)
-                        )
-                            .backgroundColor(accentColor)
-                            .size(height = 100., width = 100.)
-                            .centerHorizontal()
-                            .paddingLayout(15.)
+                (VerticalStackLayout() {
+                    ContentView(
+                        Image("icon.png", Aspect.AspectFit)
+                    )
+                        .backgroundColor(accentColor)
+                        .size(height = 100., width = 100.)
+                        .centerHorizontal()
+                        .paddingLayout(15.)
 
-                        aboutFabulousContacts OpenBrowser
-                        aboutFSharp OpenBrowser
-                        credits OpenBrowser
-                        aboutAuthor OpenBrowser
-                    ]
-                )
+                    aboutFabulousContacts OpenBrowser
+                    aboutFSharp OpenBrowser
+                    credits OpenBrowser
+                    aboutAuthor OpenBrowser
+                })
                     .paddingLayout(Thickness(20., 10., 20., 20.))
             )
         )

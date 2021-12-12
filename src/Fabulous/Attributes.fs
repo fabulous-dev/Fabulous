@@ -171,11 +171,14 @@ module Attributes =
 
     let dispatchMsgOnViewNode (viewNode: IViewNode) msg =
         let mutable mapMsg = viewNode.MapMsg
+        let mutable canPropagate = viewNode.CanPropagateEvents
 
         for ancestor in viewNode.Context.Ancestors do
             mapMsg <- ancestor.MapMsg >> mapMsg
+            canPropagate <- ancestor.CanPropagateEvents && canPropagate
 
-        viewNode.Context.ViewTreeContext.Dispatch(mapMsg msg)
+        if canPropagate then
+            viewNode.Context.ViewTreeContext.Dispatch(mapMsg msg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()
