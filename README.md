@@ -36,13 +36,15 @@ let update msg model =
 
 let view model =
     Application(
-        ContentPage(
-            VerticalStackLayout([
-                FileImage("fabulous.png")
-                Label(model.Text)
-                Button("Click me", ButtonClicked)
-            ])
-        )
+        NavigationPage() {                
+            ContentPage("Counter",
+                VerticalStackLayout() {
+                    Image("fabulous.png", Aspect.AspectFit)
+                    Label(model.Text)
+                    Button("Click me", ButtonClicked)
+                }
+            )
+        }
     )
 ```
 
