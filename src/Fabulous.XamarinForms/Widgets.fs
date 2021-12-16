@@ -36,7 +36,7 @@ module Widgets =
 
                         view.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update context.ViewTreeContext.GetViewNode context.ViewTreeContext.CanReuseView ValueNone widget view
+                        Reconciler.update context.ViewTreeContext.CanReuseView ValueNone widget viewNode
 
                         box view
             }

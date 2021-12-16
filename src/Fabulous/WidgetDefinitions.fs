@@ -1,16 +1,23 @@
-﻿namespace Fabulous
+namespace Fabulous
 
-/// Dev notes:
-///
-/// This file contains all the definitions that for a given key
-/// will tell us how to work with a widget or an attribute.
-///
-/// This is how Fabulous will allow for extensibility. Any framework
-/// like Fabulous.Maui, Fabulous.XF can add they're own definitions
-/// if they want to do something differently than the base
-/// attribute-based widgets
+open System.Collections.Generic
+open Fabulous
 
+/// Widget definition to create a control
 type WidgetDefinition =
     { Key: WidgetKey
       Name: string
-      CreateView: Widget * ViewNodeContext -> obj }
+      CreateView: Widget * ViewTreeContext * IViewNode list -> obj }
+    
+module WidgetDefinitionStore =
+    let private _widgets = Dictionary<WidgetKey, WidgetDefinition>()
+    let mutable private _nextKey = 0
+    
+    let get key = _widgets.[key]
+    let set key value = _widgets.[key] <- value
+    let remove key = _widgets.Remove(key) |> ignore
+    
+    let getNextKey () : WidgetKey =
+        let key = _nextKey
+        _nextKey <- _nextKey + 1
+        key

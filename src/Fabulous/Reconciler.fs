@@ -288,13 +288,10 @@ module Reconciler =
                   WidgetCollectionChanges = collectionDiffs }
 
     /// Diffs changes and applies them on the target
-    let rec update (getViewNode: obj -> IViewNode) (canReuseView: Widget -> Widget -> bool) (prevOpt: Widget voption) (next: Widget) (target: obj) : unit =
+    let rec update (canReuseView: Widget -> Widget -> bool) (prevOpt: Widget voption) (next: Widget) (node: IViewNode) : unit =
         match diffWidget canReuseView prevOpt next with
         | ValueNone -> ()
         | ValueSome diff ->
-            let viewNode = getViewNode target
-            viewNode.CanPropagateEvents <- false
-            if diff.ScalarChanges.Length > 0 then viewNode.ApplyScalarDiff(diff.ScalarChanges)
-            if diff.WidgetChanges.Length > 0 then viewNode.ApplyWidgetDiff(diff.WidgetChanges)
-            if diff.WidgetCollectionChanges.Length > 0 then viewNode.ApplyWidgetCollectionDiff(diff.WidgetCollectionChanges)
-            viewNode.CanPropagateEvents <- true
+            if diff.ScalarChanges.Length > 0 then node.ApplyScalarDiffs(diff.ScalarChanges)
+            if diff.WidgetChanges.Length > 0 then node.ApplyWidgetDiffs(diff.WidgetChanges)
+            if diff.WidgetCollectionChanges.Length > 0 then node.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)

@@ -1,5 +1,52 @@
 namespace Fabulous
 
+open System
+open System.Collections.Generic
+open Fabulous
+
+type Program<'arg, 'model, 'msg> =
+    {
+        Init: 'arg -> 'model * Cmd<'msg>
+        Update: 'msg * 'model -> 'model * Cmd<'msg>
+        View: 'model -> Widget
+        CanReuseView: Widget -> Widget -> bool
+    }
+    
+type IRunner =
+    interface
+    end
+
+type IViewAdapter =
+    inherit IDisposable
+    abstract CreateView : unit -> obj
+    abstract Attach : obj -> unit
+    abstract Detach : bool -> unit
+    
+module RunnerStore =
+    let private _runners = Dictionary<StateKey, IRunner>()
+
+    let get key = _runners.[key]
+    let set key value = _runners.[key] <- value
+    let remove key = _runners.Remove(key) |> ignore
+
+module ViewAdapterStore =
+    let private _viewAdapters = Dictionary<ViewAdapterKey, IViewAdapter>()
+    let mutable private _nextKey = 0
+    
+    let get key = _viewAdapters.[key]
+    let set key value = _viewAdapters.[key] <- value
+    let remove key =
+        match _viewAdapters.TryGetValue(key) with
+        | false, _ -> ()
+        | true, value ->
+            value.Dispose()
+            _viewAdapters.Remove(key) |> ignore
+            
+    let getNextKey () : ViewAdapterKey =
+        let key = _nextKey
+        _nextKey <- _nextKey + 1
+        key
+        
 /// Runners are responsible for the Model-Update part of MVU.
 /// They read from and update StateStore.
 module Runners =
@@ -25,13 +72,9 @@ module Runners =
 
         member _.Key = key
         member _.Program = program
-
-        member _.ViewTreeContext =
-            {
-                Dispatch = unbox >> processMsg
-                CanReuseView = program.CanReuseView
-                GetViewNode = program.GetViewNode
-            }
+            
+        member _.Dispatch(msg) = processMsg msg
+        
 
         member _.Start(arg) = start arg
         member _.Pause() = ()
@@ -50,18 +93,19 @@ module Runners =
 module ViewAdapters =
     open Runners
 
-    type ViewAdapter<'model>
+    type ViewAdapter<'model, 'msg>
         (
             key: ViewAdapterKey,
             stateKey: StateKey,
             view: 'model -> Widget,
-            context: ViewTreeContext,
-            getViewNode: obj -> IViewNode,
-            canReuseView: Widget -> Widget -> bool
+            canReuseView: Widget -> Widget -> bool,
+            dispatch: 'msg -> unit,
+            getViewNode: obj -> IViewNode
         ) as this =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
+        let mutable _allowDispatch = false
 
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
@@ -71,26 +115,31 @@ module ViewAdapters =
             let widget = view state
             _widget <- widget
             
-            let viewNodeContext : ViewNodeContext =
-                { Key = widget.Key
-                  ViewTreeContext = context
-                  Ancestors = [] }
-
+            let treeContext =
+                {  CanReuseView = canReuseView
+                   GetViewNode = getViewNode
+                   Dispatch = fun msg ->
+                    if _allowDispatch then
+                        dispatch(unbox msg) }
+                
             let definition = WidgetDefinitionStore.get widget.Key
-            _root <- definition.CreateView(widget, viewNodeContext)
+            _root <- definition.CreateView(widget, treeContext, [])
             _root
 
         member _.OnStateChanged(args) =
             if args.Key = stateKey then
+                _allowDispatch <- false
                 let state = unbox args.NewState
 
                 let prevWidget = _widget
                 let currentWidget = view state
                 _widget <- currentWidget
+                
+                let node = getViewNode _root
 
                 // TODO handle the case when Type of the widget changes
-                Reconciler.update getViewNode canReuseView (ValueSome prevWidget) currentWidget _root
-
+                Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
+                _allowDispatch <- true
 
         member _.Dispose() = _stateSubscription.Dispose()
 
@@ -100,18 +149,19 @@ module ViewAdapters =
             member _.Attach(node) = ()
             member _.Detach(shouldDestroyNode) = ()
 
-    let create<'arg, 'model, 'msg> (runner: Runner<'arg, 'model, 'msg>) getViewNode canReuseView =
+    let create<'arg, 'model, 'msg> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg>) =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
-            new ViewAdapter<'model>(
+            new ViewAdapter<'model, 'msg>(
                 key,
                 runner.Key,
                 runner.Program.View,
-                runner.ViewTreeContext,
-                getViewNode,
-                canReuseView
+                runner.Program.CanReuseView,
+                runner.Dispatch,
+                getViewNode
             )
 
         ViewAdapterStore.set key viewAdapter
         viewAdapter
+

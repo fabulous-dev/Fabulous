@@ -10,6 +10,9 @@ type WidgetBuilder<'msg, 'marker>
         key: WidgetKey,
         attributes: struct (ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute [])
     ) =
+    
+    member _.Key = key
+    member _.Attributes = attributes
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     member _.Compile() : Widget =
@@ -71,18 +74,6 @@ type WidgetBuilder<'msg, 'marker>
 
             WidgetBuilder<'msg, 'marker>(key, struct (attribs2, widgetAttributes, widgetCollectionAttributes))
 
-    member private _.Attrs = attributes
-
-    [<EditorBrowsable(EditorBrowsableState.Never)>]
-    member x.MapMsg(fn: 'msg -> 'newMsg) =
-        let fnWithBoxing =
-            fun (msg: obj) -> msg |> unbox<'msg> |> fn |> box
-
-        let builder =
-            x.AddScalar(Attributes.MapMsg.WithValue fnWithBoxing)
-
-        WidgetBuilder<'newMsg, 'marker>(key, builder.Attrs)
-
 [<Struct>]
 type Content<'msg> = { Widgets: Widget list }
 
@@ -99,7 +90,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker>
             widgetKey,
             struct (match scalars with
                     | ValueNone -> [||]
-                    | ValueSome s -> s // add spacing attribute here
+                    | ValueSome s -> s
                     , [||]
                     , [|
                         attr.WithValue(List.toArray c.Widgets)
@@ -147,7 +138,3 @@ type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker>
             res <- x.Combine(res, f t)
 
         res
-
-module View =
-    let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
-        x.MapMsg fn
