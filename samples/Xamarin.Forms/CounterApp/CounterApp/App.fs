@@ -63,6 +63,7 @@ module Configuration =
 module App =
     type Model =
         { Count: int
+          Data: int list
           Configuration: Configuration.Model }
 
     type Msg =
@@ -89,6 +90,7 @@ module App =
 
     let initModel () =
         { Count = 0
+          Data = [ 1; 2; 3 ]
           Configuration = Configuration.init () }
         
     let init () =
@@ -110,7 +112,7 @@ module App =
             model, []
             
     type OtherMsg = Test
-
+    
     let view model =
         Application(
             NavigationPage() {                
@@ -147,6 +149,10 @@ module App =
                             .automationId("ResetButton")
                             .isEnabled(model <> initModel ())
                             .centerHorizontal()
+                            
+                        ListView(model.Data) (fun item -> 
+                            TextCell(item.ToString())
+                        )
                     })
                         .paddingLayout(30.)
                         .centerVertical()

@@ -2,8 +2,10 @@
 
 open Fabulous
 open Fabulous.XamarinForms
+open FabulousContacts.Components
 open FabulousContacts.Models
 open FabulousContacts.Style
+open Xamarin.Forms
 open type Fabulous.XamarinForms.View
 
 module ContactsListPage =
@@ -14,7 +16,7 @@ module ContactsListPage =
         | UpdateFilterText of string
         | Search
         | ContactsLoaded of Contact list
-        | ContactSelected of Contact
+        | ContactSelected of int
 
     type ExternalMsg =
         | NoOp
@@ -73,8 +75,8 @@ module ContactsListPage =
             let m = { model with Contacts = contacts; FilteredContacts = filteredContacts }
             m, Cmd.none, ExternalMsg.NoOp
 
-        | ContactSelected contact ->
-            model, Cmd.none, ExternalMsg.NavigateToDetail contact
+        | ContactSelected index ->
+            model, Cmd.none, ExternalMsg.NavigateToDetail (model.Contacts[index])
 
         | Search ->
             model, Cmd.none, ExternalMsg.NoOp
@@ -86,14 +88,18 @@ module ContactsListPage =
                     .backgroundColor(accentColor)
                     .cancelButtonColor(accentTextColor)
                     
-                //ListViewGrouped(groupedContacts, fun (groupName, items) ->
-                    
-                //)
-                //    .rowHeight(60)
-                //    .showJumpList(model.Contacts.Length > 10)
-                //    .selectionMode(ListViewSelectionMode.None)
-                //    .itemTapped(ContactSelected)
-                //    .verticalOptions(LayoutOptions.FillAndExpand)
+                (ListView(model.Contacts) (fun contact ->
+                    cellView
+                        contact.Picture
+                        $"{contact.FirstName} {contact.LastName}"
+                        contact.Address
+                        contact.IsFavorite
+                ))
+                    .rowHeight(60)
+                    //.showJumpList(model.Contacts.Length > 10)
+                    .selectionMode(ListViewSelectionMode.None)
+                    .itemTapped(ContactSelected)
+                    .fillVertical(expand = true)
 
                     //items = [
                     //    for (groupName, items) in groupedContacts do

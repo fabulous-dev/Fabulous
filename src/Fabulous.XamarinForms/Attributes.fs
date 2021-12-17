@@ -24,7 +24,7 @@ module Attributes =
                     bindableObject.SetValue(bindableProperty, value)
             )
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
+    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) =
         Attributes.defineScalarWithConverter<'inputType, 'modelType>
             bindableProperty.PropertyName
             convert

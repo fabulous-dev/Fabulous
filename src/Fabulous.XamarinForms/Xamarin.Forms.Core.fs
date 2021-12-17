@@ -81,6 +81,12 @@ type ITimePicker =
 
 type IStepper =
     inherit IView
+    
+type IListView =
+    inherit IView
+
+type ITextCell =
+    inherit ICell
 
 module ViewKeys =
     let Application =
@@ -146,6 +152,9 @@ module ViewKeys =
 
     let Stepper =
         Widgets.register<Xamarin.Forms.Stepper>()
+        
+    let ListView = Widgets.register<Xamarin.Forms.ListView>()
+    let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
 
 [<AbstractClass; Sealed>]
 type ViewBuilders private () =
@@ -368,6 +377,14 @@ type ViewBuilders private () =
             Stepper.MinimumMaximum.WithValue((min, max))
         )
 
+    static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
+        ViewHelpers.buildItem<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemTemplate
+            [| ItemsViewOfCell.ItemsSource.WithValue(items |> Seq.map box) |]
+            
+    static member inline TextCell<'msg>(text: string) =
+        ViewHelpers.buildScalars<'msg, ITextCell> ViewKeys.TextCell
+            [| TextCell.Text.WithValue(text) |]
+    
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage) =
@@ -466,6 +483,9 @@ type View private () =
 
     static member inline Stepper<'msg>(min, max, value, onValueChanged) =
         ViewBuilders.Stepper<'msg>(min, max, value, onValueChanged)
+        
+    static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items) = ViewBuilders.ListView<'msg, 'itemData, 'itemMarker>(items)
+    static member inline TextCell<'msg>(text) = ViewBuilders.TextCell<'msg>(text)
 
 [<Extension; AbstractClass; Sealed>]
 type ViewExtensions private () =
@@ -801,3 +821,13 @@ type ViewExtensions private () =
     [<Extension>]
     static member inline increment(this: WidgetBuilder<'msg, #IStepper>, value: float) =
         this.AddScalar(Stepper.Increment.WithValue(value))
+
+    [<Extension>]
+    static member inline rowHeight(this: WidgetBuilder<'msg, #IListView>, value: int) =
+        this.AddScalar(ListView.RowHeight.WithValue(value))
+    [<Extension>]
+    static member inline selectionMode(this: WidgetBuilder<'msg, #IListView>, value: Xamarin.Forms.ListViewSelectionMode) =
+        this.AddScalar(ListView.SelectionMode.WithValue(value))
+    [<Extension>]
+    static member inline itemTapped(this: WidgetBuilder<'msg, #IListView>, fn: int -> 'msg) =
+        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))

@@ -209,3 +209,28 @@ module Stepper =
     let MinimumMaximum = Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
     let ValueChanged = Attributes.defineEvent<Xamarin.Forms.ValueChangedEventArgs> "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
+
+module ItemsViewOfCell =
+    let ItemsSource = Attributes.defineBindable<seq<obj>> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
+    let ItemTemplate =
+        let bindableProperty = Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemTemplateProperty
+        Attributes.defineScalarWithConverter<obj -> Widget, obj -> Widget>
+            bindableProperty.PropertyName
+            id
+            ScalarAttributeComparers.noCompare
+            (fun (newValueOpt, node) ->
+                let target = node.Target :?> Xamarin.Forms.BindableObject
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome fn ->
+                    let dataTemplateSelector = WidgetDataTemplateSelector(fn, node)
+                    target.SetValue(bindableProperty, dataTemplateSelector)
+            )
+    
+module ListView =
+    let RowHeight = Attributes.defineBindable<int> Xamarin.Forms.ListView.RowHeightProperty
+    let SelectionMode = Attributes.defineBindable<Xamarin.Forms.ListViewSelectionMode> Xamarin.Forms.ListView.SelectionModeProperty
+    let ItemTapped = Attributes.defineEvent "ListView_ItemTapped" (fun target -> (target :?> Xamarin.Forms.ListView).ItemTapped)
+    
+module TextCell =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.TextCell.TextProperty

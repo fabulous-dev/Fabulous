@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
+open Fabulous
 open Xamarin.Forms
 
 /// Represents a dimension for either the row or column definition of a Grid
@@ -13,6 +14,14 @@ type Dimension =
     | Stars of float
     /// Use the associated value as the number of device-specific units.
     | Absolute of float
+
+type WidgetDataTemplateSelector(fn: obj -> Widget, parent: IViewNode) =
+    inherit DataTemplateSelector()
+
+    override this.OnSelectTemplate(item, _) =
+        let widget = fn item
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+        DataTemplate(fun () -> widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent))
 
 type SizeAllocatedEventArgs =
     { Width: float
