@@ -12,6 +12,10 @@ module Attributes =
     let defineBindableWidget (bindableProperty: BindableProperty) =
         Attributes.defineWidget
             bindableProperty.PropertyName
+            (fun target ->
+                let childTarget = (target :?> BindableObject).GetValue(bindableProperty)
+                ViewNode.getViewNode childTarget
+            )
             (fun target value ->
                 let bindableObject = target :?> BindableObject
                 if value = null then

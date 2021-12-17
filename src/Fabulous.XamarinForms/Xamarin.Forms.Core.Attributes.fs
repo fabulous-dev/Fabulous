@@ -5,7 +5,7 @@ open Fabulous
 open Fabulous.XamarinForms
 
 module Application =
-    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
     let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, node) ->
         let application = node.Target :?> Xamarin.Forms.Application
         let value =
@@ -115,7 +115,7 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
 
 module Image =
     let Source = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Image.SourceProperty
@@ -175,7 +175,7 @@ module Editor =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
 
 module ViewCell =
-    let View = Attributes.defineWidget "ViewCell_View" (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
+    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)

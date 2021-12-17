@@ -86,16 +86,18 @@ module Attributes =
         definition
 
     /// Define an attribute storing a Widget for a CLR property
-    let defineWidget<'T when 'T : null> (name: string) (set: obj -> 'T -> unit) =
+    let defineWidget<'T when 'T : null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
         let applyDiff (diff: WidgetDiff, node: IViewNode) =
+            let childNode = get node.Target
+            
             if diff.ScalarChanges.Length > 0 then
-                node.ApplyScalarDiffs(diff.ScalarChanges)
+                childNode.ApplyScalarDiffs(diff.ScalarChanges)
 
             if diff.WidgetChanges.Length > 0 then
-                node.ApplyWidgetDiffs(diff.WidgetChanges)
+                childNode.ApplyWidgetDiffs(diff.WidgetChanges)
 
             if diff.WidgetCollectionChanges.Length > 0 then
-                node.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
+                childNode.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with

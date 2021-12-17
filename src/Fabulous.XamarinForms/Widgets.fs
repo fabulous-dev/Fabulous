@@ -31,12 +31,12 @@ module Widgets =
                         let view = new 'T()
                         let weakReference = WeakReference(view)
                         
-                        let viewNode =
+                        let node =
                             ViewNode(treeContext, ancestors, weakReference)
 
-                        view.SetValue(ViewNode.ViewNodeProperty, viewNode)
+                        view.SetValue(ViewNode.ViewNodeProperty, node)
 
-                        Reconciler.update treeContext.CanReuseView ValueNone widget viewNode
+                        Reconciler.update treeContext.CanReuseView ValueNone widget node
 
                         box view
             }

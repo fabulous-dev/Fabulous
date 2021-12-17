@@ -105,12 +105,16 @@ module ViewAdapters =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
-        let mutable _allowDispatch = false
+        let mutable _allowDispatch = true
 
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
+            
+        member private _.Dispatch(msg) =
+            if _allowDispatch then
+                dispatch(unbox msg)
 
-        member _.CreateView() =
+        member this.CreateView() =
             let state = unbox(StateStore.get stateKey)
             let widget = view state
             _widget <- widget
@@ -118,9 +122,7 @@ module ViewAdapters =
             let treeContext =
                 {  CanReuseView = canReuseView
                    GetViewNode = getViewNode
-                   Dispatch = fun msg ->
-                    if _allowDispatch then
-                        dispatch(unbox msg) }
+                   Dispatch = this.Dispatch }
                 
             let definition = WidgetDefinitionStore.get widget.Key
             _root <- definition.CreateView(widget, treeContext, [])

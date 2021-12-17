@@ -5,7 +5,8 @@ Things to talk about
 	- VDOM tree
 		- Widget
 		- Attributes (Scalar, Widget, WidgetColl)
-- Definitions + Builders + Stores
+- Definitions + Builders
 - Reconciler
+- State
 - ViewNode
 - Runner + ViewAdapter
