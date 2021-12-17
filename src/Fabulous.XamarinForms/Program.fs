@@ -7,8 +7,7 @@ module Program =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
           View = fun model -> (view model).Compile()
-          CanReuseView = Helpers.canReuseView
-          GetViewNode = ViewNode.getViewNode }
+          CanReuseView = Helpers.canReuseView }
 
     let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
         define
@@ -35,6 +34,6 @@ module Program =
     let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) (arg: 'arg) =
         let runner = Runners.create program
         runner.Start(arg)
-        let adapter = ViewAdapters.create runner ViewNode.getViewNode program.CanReuseView
+        let adapter = ViewAdapters.create ViewNode.getViewNode runner
         adapter.CreateView() |> unbox
         

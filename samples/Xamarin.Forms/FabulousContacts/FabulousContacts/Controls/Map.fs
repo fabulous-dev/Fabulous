@@ -13,13 +13,13 @@ module Pin =
     let PinKey = Widgets.register<Pin>()
 
 module Map =
-    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun (newValueOpt, _context, target) ->
-        let map = target :?> Map
+    let RequestedRegion = Attributes.define<MapSpan> "Map_RequestedRegion" (fun (newValueOpt, node) ->
+        let map = node.Target :?> Map
         match newValueOpt with
         | ValueNone -> ()
         | ValueSome mapSpan -> map.MoveToRegion(mapSpan)
     )
-    let Pins = Attributes.defineWidgetCollection<Pin> "Map_Pins" (fun target -> (target :?> Xamarin.Forms.Maps.Map).Pins)
+    let Pins = Attributes.defineWidgetCollection<Pin> "Map_Pins" (fun target -> (target :?> Map).Pins)
     let HasZoomEnabled = Attributes.defineBindable<bool> Map.HasZoomEnabledProperty
     let HasScrollEnabled = Attributes.defineBindable<bool> Map.HasScrollEnabledProperty
     let MapKey = Widgets.register<Map>()

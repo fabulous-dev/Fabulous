@@ -24,7 +24,7 @@ module Widgets =
                 Key = key
                 Name = typeof<'T>.Name
                 CreateView =
-                    fun (widget, context) ->
+                    fun (widget, treeContext, ancestors) ->
                         let name = typeof<'T>.Name
                         printfn $"Creating view for {name}"
 
@@ -32,11 +32,11 @@ module Widgets =
                         let weakReference = WeakReference(view)
                         
                         let viewNode =
-                            ViewNode(context, weakReference)
+                            ViewNode(treeContext, ancestors, weakReference)
 
                         view.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
-                        Reconciler.update context.ViewTreeContext.CanReuseView ValueNone widget viewNode
+                        Reconciler.update treeContext.CanReuseView ValueNone widget viewNode
 
                         box view
             }

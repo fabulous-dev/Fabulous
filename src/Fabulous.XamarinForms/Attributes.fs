@@ -2,7 +2,6 @@ namespace Fabulous.XamarinForms
 
 open Fabulous
 open Xamarin.Forms
-open System
 
 type [<Struct>] AppThemeValues<'T> =
     { Light: 'T
@@ -13,11 +12,6 @@ module Attributes =
     let defineBindableWidget (bindableProperty: BindableProperty) =
         Attributes.defineWidget
             bindableProperty.PropertyName
-            (fun parent ->
-                let p = (parent :?> BindableObject)
-                let x = p.GetValue(bindableProperty)
-                x
-            )
             (fun target value ->
                 let bindableObject = target :?> BindableObject
                 if value = null then
@@ -31,10 +25,11 @@ module Attributes =
             bindableProperty.PropertyName
             convert
             compare
-            (fun (newValueOpt, _node, target) ->
+            (fun (newValueOpt, node) ->
+                let target = node.Target :?> BindableObject
                 match newValueOpt with
-                | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
-                | ValueSome v -> (target :?> BindableObject).SetValue(bindableProperty, v)
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v)
             )
 
     let inline defineBindable<'T when 'T: equality> bindableProperty =
@@ -45,9 +40,10 @@ module Attributes =
             bindableProperty.PropertyName
             id
             ScalarAttributeComparers.equalityCompare
-            (fun (newValueOpt, _node, target) ->
+            (fun (newValueOpt, node) ->
+                let target = node.Target :?> BindableObject
                 match newValueOpt with
-                | ValueNone -> (target :?> BindableObject).ClearValue(bindableProperty)
-                | ValueSome { Light = light; Dark = ValueNone } -> (target :?> BindableObject).SetValue(bindableProperty, light)
-                | ValueSome { Light = light; Dark = ValueSome dark } -> (target :?> BindableObject).SetOnAppTheme(bindableProperty, light, dark)
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
+                | ValueSome { Light = light; Dark = ValueSome dark } -> target.SetOnAppTheme(bindableProperty, light, dark)
             )
