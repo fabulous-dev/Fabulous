@@ -11,12 +11,7 @@ module Helpers =
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
-        let context =
-            { Key = widget.Key
-              ViewTreeContext = parent.Context.ViewTreeContext
-              Ancestors = parent :: parent.Context.Ancestors }
-
-        widgetDefinition.CreateView(widget, context)
+        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
     let noCompare (_, b) = ScalarAttributeComparison.Different b
@@ -33,7 +28,7 @@ module Attributes =
         name
         (convert: 'inputType -> 'modelType)
         (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
-        (updateTarget: 'modelType voption * ViewNodeContext * obj -> unit)
+        (updateNode: 'modelType voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -43,7 +38,7 @@ module Attributes =
                 Name = name
                 Convert = convert
                 Compare = compare
-                UpdateTarget = updateTarget
+                UpdateNode = updateNode
             }
 
         AttributeDefinitionStore.set key definition
@@ -52,8 +47,8 @@ module Attributes =
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter
         name
-        (applyDiff: WidgetDiff * ViewNodeContext * obj -> unit)
-        (updateTarget: Widget voption * ViewNodeContext * obj -> unit)
+        (applyDiff: WidgetDiff * IViewNode -> unit)
+        (updateNode: Widget voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -62,7 +57,7 @@ module Attributes =
                 Key = key
                 Name = name
                 ApplyDiff = applyDiff
-                UpdateTarget = updateTarget
+                UpdateNode = updateNode
             }
 
         AttributeDefinitionStore.set key definition
@@ -71,8 +66,8 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: WidgetCollectionItemChange [] * ViewNodeContext * obj -> unit)
-        (updateTarget: Widget [] voption * ViewNodeContext * obj -> unit)
+        (applyDiff: WidgetCollectionItemChange[] * IViewNode -> unit)
+        (updateNode: Widget[] voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -81,45 +76,42 @@ module Attributes =
                 Key = key
                 Name = name
                 ApplyDiff = applyDiff
-                UpdateTarget = updateTarget
+                UpdateNode = updateNode
             }
 
         AttributeDefinitionStore.set key definition
         definition
 
     /// Define an attribute storing a Widget for a CLR property
-    let defineWidget<'T when 'T : null> (name: string) (get: obj -> 'T) (set: obj -> 'T -> unit) =
-        let applyDiff (diff: WidgetDiff, context: ViewNodeContext, parent) =
-            let target = get parent
-            let viewNode = context.ViewTreeContext.GetViewNode(box target)
-
+    let defineWidget<'T when 'T : null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
+        let applyDiff (diff: WidgetDiff, node: IViewNode) =
+            let childNode = get node.Target
+            
             if diff.ScalarChanges.Length > 0 then
-                viewNode.ApplyScalarDiff(diff.ScalarChanges)
+                childNode.ApplyScalarDiffs(diff.ScalarChanges)
 
             if diff.WidgetChanges.Length > 0 then
-                viewNode.ApplyWidgetDiff(diff.WidgetChanges)
+                childNode.ApplyWidgetDiffs(diff.WidgetChanges)
 
             if diff.WidgetCollectionChanges.Length > 0 then
-                viewNode.ApplyWidgetCollectionDiff(diff.WidgetCollectionChanges)
+                childNode.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
 
-        let updateTarget (newValueOpt: Widget voption, context, target) =
+        let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with
-            | ValueNone -> set target null
+            | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let viewNode = context.ViewTreeContext.GetViewNode(target)
-                let view = Helpers.createViewForWidget viewNode widget |> unbox
-                set target view
+                let view = Helpers.createViewForWidget node widget |> unbox
+                set node.Target view
 
-        defineWidgetWithConverter name applyDiff updateTarget
+        defineWidgetWithConverter name applyDiff updateNode
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType>
         name
         (getCollection: obj -> System.Collections.Generic.IList<'itemType>)
         =
-        let applyDiff (diffs: WidgetCollectionItemChange [], context: ViewNodeContext, target: obj) =
-            let viewNode = context.ViewTreeContext.GetViewNode(target)
-            let targetColl = getCollection target
+        let applyDiff (diffs: WidgetCollectionItemChange [], node: IViewNode) =
+            let targetColl = getCollection node.Target
 
             for diff in diffs do
                 match diff with
@@ -129,56 +121,60 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let view = Helpers.createViewForWidget viewNode widget
+                    let view = Helpers.createViewForWidget node widget
                     targetColl.Insert(index, unbox view)
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
-                    let targetItem = targetColl.[index]
-                    let viewNode = context.ViewTreeContext.GetViewNode(box targetItem)
-
+                    let childNode = node.GetViewNodeForChild(targetColl[index])
+                    
                     if widgetDiff.ScalarChanges.Length > 0 then
-                        viewNode.ApplyScalarDiff(widgetDiff.ScalarChanges)
+                        childNode.ApplyScalarDiffs(widgetDiff.ScalarChanges)
 
                     if widgetDiff.WidgetChanges.Length > 0 then
-                        viewNode.ApplyWidgetDiff(widgetDiff.WidgetChanges)
+                        childNode.ApplyWidgetDiffs(widgetDiff.WidgetChanges)
 
                     if widgetDiff.WidgetCollectionChanges.Length > 0 then
-                        viewNode.ApplyWidgetCollectionDiff(widgetDiff.WidgetCollectionChanges)
+                        childNode.ApplyWidgetCollectionDiffs(widgetDiff.WidgetCollectionChanges)
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->                      
-                    let view = Helpers.createViewForWidget viewNode widget
-                    targetColl.[index] <- unbox view
+                    let view = Helpers.createViewForWidget node widget
+                    targetColl[index] <- unbox view
 
                 | _ -> ()
 
-        let updateTarget (newValueOpt: Widget [] voption, context: ViewNodeContext, target: obj) =
-            let targetColl = getCollection target
+        let updateNode (newValueOpt: Widget [] voption, node: IViewNode) =
+            let targetColl = getCollection node.Target
             targetColl.Clear()
 
             match newValueOpt with
             | ValueNone -> ()
             | ValueSome widgets ->
-                let viewNode = context.ViewTreeContext.GetViewNode(target)
-                
                 for widget in widgets do
-                    let view = Helpers.createViewForWidget viewNode widget
+                    let view = Helpers.createViewForWidget node widget
                     targetColl.Add(unbox view)
 
-        defineWidgetCollectionWithConverter name applyDiff updateTarget
+        defineWidgetCollectionWithConverter name applyDiff updateNode
 
     let inline define<'T when 'T: equality> name updateTarget =
         defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
 
-    let dispatchMsgOnViewNode (viewNode: IViewNode) msg =
-        let mutable mapMsg = viewNode.MapMsg
-        let mutable canPropagate = viewNode.CanPropagateEvents
+    let dispatchMsgOnViewNode (node: IViewNode) msg =
+        let mutable parentOpt = node.Parent
+        let mutable mapMsg =
+            match node.MapMsg with
+            | ValueNone -> id
+            | ValueSome fn -> fn            
 
-        for ancestor in viewNode.Context.Ancestors do
-            mapMsg <- ancestor.MapMsg >> mapMsg
-            canPropagate <- ancestor.CanPropagateEvents && canPropagate
+        while parentOpt.IsSome do
+            let parent = parentOpt.Value
+            parentOpt <- parent.Parent
+            mapMsg <-
+                match parent.MapMsg with
+                | ValueNone -> mapMsg
+                | ValueSome fn -> mapMsg >> fn
 
-        if canPropagate then
-            viewNode.Context.ViewTreeContext.Dispatch(mapMsg msg)
+        let newMsg = mapMsg msg
+        node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()
@@ -189,24 +185,23 @@ module Attributes =
                 Name = name
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
-                UpdateTarget =
-                    fun (newValueOpt, context, target) ->
-                        let event = getEvent target
-                        let viewNode = context.ViewTreeContext.GetViewNode(target)
+                UpdateNode =
+                    fun (newValueOpt, node) ->
+                        let event = getEvent node.Target
                         
-                        match viewNode.TryGetHandler(key) with
+                        match node.TryGetHandler(key) with
                         | ValueNone -> ()
                         | ValueSome handler -> event.RemoveHandler handler
 
                         match newValueOpt with
-                        | ValueNone -> viewNode.SetHandler(key, ValueNone)
+                        | ValueNone -> node.SetHandler(key, ValueNone)
 
                         | ValueSome msg ->
                             let handler =
-                                EventHandler(fun _ _ -> dispatchMsgOnViewNode viewNode msg)
+                                EventHandler(fun _ _ -> dispatchMsgOnViewNode node msg)
 
                             event.AddHandler handler
-                            viewNode.SetHandler(key, ValueSome handler)
+                            node.SetHandler(key, ValueSome handler)
             }
 
         AttributeDefinitionStore.set key definition
@@ -221,19 +216,18 @@ module Attributes =
                 Name = name
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
-                UpdateTarget =
-                    fun (newValueOpt: ('args -> obj) voption, context, target) ->
-                        let event = getEvent target
-                        let viewNode = context.ViewTreeContext.GetViewNode(target)
+                UpdateNode =
+                    fun (newValueOpt: ('args -> obj) voption, node: IViewNode) ->
+                        let event = getEvent node.Target
 
-                        match viewNode.TryGetHandler(key) with
+                        match node.TryGetHandler(key) with
                         | ValueNone -> printfn $"No old handler for {name}"
                         | ValueSome handler ->
                             printfn $"Removed old handler for {name}"
                             event.RemoveHandler handler
 
                         match newValueOpt with
-                        | ValueNone -> viewNode.SetHandler(key, ValueNone)
+                        | ValueNone -> node.SetHandler(key, ValueNone)
 
                         | ValueSome fn ->
                             let handler =
@@ -241,20 +235,12 @@ module Attributes =
                                     (fun _ args ->
                                         printfn $"Handler for {name} triggered"
                                         let r = fn args
-                                        dispatchMsgOnViewNode viewNode r)
+                                        dispatchMsgOnViewNode node r)
 
-                            viewNode.SetHandler(key, ValueSome handler)
+                            node.SetHandler(key, ValueSome handler)
                             event.AddHandler handler
                             printfn $"Added new handler for {name}"
             }
 
         AttributeDefinitionStore.set key definition
         definition
-
-
-    let MapMsg =
-        defineScalarWithConverter<obj -> obj, _> "Fabulous_MapMsg" id ScalarAttributeComparers.noCompare (fun (value, context, target) ->
-            let mapMsg = match value with ValueNone -> id | ValueSome fn -> fn
-            let viewNode = context.ViewTreeContext.GetViewNode(target)
-            viewNode.SetMapMsg(mapMsg)
-        )

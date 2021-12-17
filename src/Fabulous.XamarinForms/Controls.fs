@@ -2,7 +2,6 @@
 
 open System
 open Xamarin.Forms
-open Xamarin.Forms.PlatformConfiguration
 
 /// Represents a dimension for either the row or column definition of a Grid
 type Dimension =

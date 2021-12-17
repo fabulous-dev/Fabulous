@@ -3,18 +3,18 @@
 open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
-type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
+type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty
-    let mutable _mapMsg: obj -> obj = id
+    let mutable _mapMsg: (obj -> obj) voption = ValueNone
     
     interface IViewNode with
-        member x.Context = context
+        member _.Target = targetRef.Target
+        member _.TreeContext = treeContext
+        member _.Parent = parentNode
+        member val MapMsg = _mapMsg with get, set
         
-        member val CanPropagateEvents = true with get, set
-        
-        member x.MapMsg(msg) = _mapMsg msg
-        
-        member x.SetMapMsg(fn) = _mapMsg <- fn
+        member _.GetViewNodeForChild(child) =
+            treeContext.GetViewNode(child)
 
         member _.TryGetHandler<'T>(key: AttributeKey) =
             match Map.tryFind key _handlers with
@@ -31,7 +31,7 @@ type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
                         | ValueNone -> None
                         | ValueSome h -> Some(box h))
 
-        member x.ApplyScalarDiff(diffs) =
+        member this.ApplyScalarDiffs(diffs) =
             if not targetRef.IsAlive then
                 ()
             else
@@ -41,21 +41,21 @@ type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
                         let definition =
                             AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
 
-                        definition.UpdateTarget(ValueSome added.Value, context, targetRef.Target)
+                        definition.UpdateNode(ValueSome added.Value, this)
 
                     | ScalarChange.Removed removed ->
                         let definition =
                             AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
 
-                        definition.UpdateTarget(ValueNone, context, targetRef.Target)
+                        definition.UpdateNode(ValueNone, this)
 
                     | ScalarChange.Updated newAttr ->
                         let definition =
                             AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
 
-                        definition.UpdateTarget(ValueSome newAttr.Value, context, targetRef.Target)
+                        definition.UpdateNode(ValueSome newAttr.Value, this)
 
-        member x.ApplyWidgetDiff(diffs) =
+        member this.ApplyWidgetDiffs(diffs) =
             if not targetRef.IsAlive then
                 ()
             else
@@ -66,21 +66,21 @@ type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
                         let definition =
                             AttributeDefinitionStore.get newWidget.Key :?> WidgetAttributeDefinition
 
-                        definition.UpdateTarget(ValueSome newWidget.Value, context, targetRef.Target)
+                        definition.UpdateNode(ValueSome newWidget.Value, this)
 
                     | WidgetChange.Removed removed ->
                         let definition =
                             AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
 
-                        definition.UpdateTarget(ValueNone, context, targetRef.Target)
+                        definition.UpdateNode(ValueNone, this)
 
                     | WidgetChange.Updated struct (newAttr, diffs) ->
                         let definition =
                             AttributeDefinitionStore.get newAttr.Key :?> WidgetAttributeDefinition
 
-                        definition.ApplyDiff(diffs, context, targetRef.Target)
+                        definition.ApplyDiff(diffs, this)
 
-        member x.ApplyWidgetCollectionDiff(diffs) =
+        member this.ApplyWidgetCollectionDiffs(diffs) =
             if not targetRef.IsAlive then
                 ()
             else
@@ -90,16 +90,16 @@ type ViewNode(context: ViewNodeContext, targetRef: System.WeakReference) =
                         let definition =
                             AttributeDefinitionStore.get added.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.UpdateTarget(ValueSome added.Value, context, targetRef.Target)
+                        definition.UpdateNode(ValueSome added.Value, this)
 
                     | WidgetCollectionChange.Removed removed ->
                         let definition =
                             AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.UpdateTarget(ValueNone, context, targetRef.Target)
+                        definition.UpdateNode(ValueNone, this)
 
                     | WidgetCollectionChange.Updated struct (newAttr, diffs) ->
                         let definition =
                             AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.ApplyDiff(diffs, context, targetRef.Target)
+                        definition.ApplyDiff(diffs, this)

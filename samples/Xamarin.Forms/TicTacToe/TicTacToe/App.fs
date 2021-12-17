@@ -216,10 +216,10 @@ module App =
                     )
 
                 match model.VisualBoardSize with
-                | ValueSome _ ->
+                | None ->
                     contentPage
                         .onSizeAllocated(VisualBoardSizeChanged)
-                | ValueNone ->
+                | Some _ ->
                     contentPage
             })
                 .barBackgroundColor(Color.LightBlue)

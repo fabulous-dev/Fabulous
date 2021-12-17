@@ -6,16 +6,17 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
-    <Compile Include="Cmd.fs" />
-    <Compile Include="Types.fs" />
+    <Compile Include="Core.fs" />
     <Compile Include="AttributeDefinitions.fs" />
     <Compile Include="WidgetDefinitions.fs" />
-    <Compile Include="Stores.fs" />
-    <Compile Include="ViewNode.fs" />
+    <Compile Include="Builders.fs" />
     <Compile Include="Reconciler.fs" />
-    <Compile Include="Attributes.fs" />
-    <Compile Include="Widgets.fs" />
+    <Compile Include="ViewNode.fs" />
+    <Compile Include="State.fs" />
+    <Compile Include="Cmd.fs" />
     <Compile Include="Runners.fs" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="MapMsg.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.1" />

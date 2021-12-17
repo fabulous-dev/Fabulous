@@ -1,8 +1,5 @@
 ﻿namespace Fabulous
 
-open System
-open Fabulous
-
 /// Dev notes:
 ///
 /// The types in this file will be the ones used the most internally by Fabulous.
@@ -63,14 +60,7 @@ and [<Struct>] Widget =
         WidgetCollectionAttributes: WidgetCollectionAttribute []
     }
 
-    member x.GetScalarOrDefault<'T>(key: AttributeKey, defaultValue: 'T) =
-        match x.ScalarAttributes
-              |> Array.tryFind(fun attr -> attr.Key = key) with
-        | None -> defaultValue
-        | Some attr -> unbox<'T> attr.Value
-
-[<Struct; RequireQualifiedAccess>]
-type ScalarChange =
+type [<Struct; RequireQualifiedAccess>] ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
     | Updated of updated: ScalarAttribute
@@ -98,51 +88,21 @@ and [<Struct>] WidgetDiff =
         WidgetChanges: WidgetChange []
         WidgetCollectionChanges: WidgetCollectionChange []
     }
-
-[<Struct; RequireQualifiedAccess>]
-type ScalarAttributeComparison =
-    | Identical
-    | Different of newData: obj
-
-/// DEV NOTES: This interface can be removed by reorganizing the types of this file
-type IViewNode =
-    abstract Context : ViewNodeContext
-    abstract CanPropagateEvents: bool with get, set
-    abstract MapMsg : obj -> obj
-    abstract SetMapMsg : (obj -> obj) -> unit
-    abstract TryGetHandler<'T> : AttributeKey -> 'T voption
-    abstract SetHandler : AttributeKey * 'T voption -> unit
-    abstract ApplyScalarDiff : ScalarChange [] -> unit
-    abstract ApplyWidgetDiff : WidgetChange [] -> unit
-    abstract ApplyWidgetCollectionDiff : WidgetCollectionChange [] -> unit
     
 /// Context of the whole view tree
-and [<Struct>] ViewTreeContext =
+type [<Struct>] ViewTreeContext =
     { CanReuseView: Widget -> Widget -> bool
       GetViewNode: obj -> IViewNode
       Dispatch: obj -> unit }
-
-/// Context for a specific view node
-and [<Struct>] ViewNodeContext =
-    { Key: WidgetKey
-      ViewTreeContext: ViewTreeContext
-      Ancestors: IViewNode list }
     
-type Program<'arg, 'model, 'msg> =
-    {
-        Init: 'arg -> 'model * Cmd<'msg>
-        Update: 'msg * 'model -> 'model * Cmd<'msg>
-        View: 'model -> Widget
-        CanReuseView: Widget -> Widget -> bool
-        GetViewNode: obj -> IViewNode
-    }
-    
-type IRunner =
-    interface
-    end
-
-type IViewAdapter =
-    inherit IDisposable
-    abstract CreateView : unit -> obj
-    abstract Attach : obj -> unit
-    abstract Detach : bool -> unit
+and IViewNode =
+    abstract member Target : obj
+    abstract member Parent : IViewNode voption
+    abstract member TreeContext : ViewTreeContext
+    abstract member MapMsg : (obj -> obj) voption with get, set
+    abstract member GetViewNodeForChild: obj -> IViewNode
+    abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
+    abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
+    abstract member ApplyScalarDiffs : ScalarChange[] -> unit
+    abstract member ApplyWidgetDiffs : WidgetChange[] -> unit
+    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange[] -> unit

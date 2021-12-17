@@ -5,16 +5,16 @@ open Fabulous
 open Fabulous.XamarinForms
 
 module Application =
-    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> (target :?> Xamarin.Forms.Application).MainPage) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
-    let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, _context, target) ->
-        let application = target :?> Xamarin.Forms.Application
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
+    let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, node) ->
+        let application = node.Target :?> Xamarin.Forms.Application
         let value =
             match newValueOpt with
             | ValueNone -> application.Resources
             | ValueSome v -> v
         application.Resources <- value)
-    let UserAppTheme = Attributes.define<Xamarin.Forms.OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, _context, target) ->
-        let application = target :?> Xamarin.Forms.Application
+    let UserAppTheme = Attributes.define<Xamarin.Forms.OSAppTheme> "Application_UserAppTheme" (fun (newValueOpt, node) ->
+        let application = node.Target :?> Xamarin.Forms.Application
         let value =
             match newValueOpt with
             | ValueNone -> Xamarin.Forms.OSAppTheme.Unspecified
@@ -115,7 +115,7 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> (target :?> Xamarin.Forms.ScrollView).Content) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
 
 module Image =
     let Source = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Image.SourceProperty
@@ -164,8 +164,8 @@ module MenuItem =
     let Clicked = Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> Xamarin.Forms.MenuItem).Clicked)
 
 module ToolbarItem =
-    let Order = Attributes.define<Xamarin.Forms.ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, _context, target) ->
-        let toolbarItem = target :?> Xamarin.Forms.ToolbarItem
+    let Order = Attributes.define<Xamarin.Forms.ToolbarItemOrder> "ToolbarItem_Order" (fun (newValueOpt, node) ->
+        let toolbarItem = node.Target :?> Xamarin.Forms.ToolbarItem
         match newValueOpt with
         | ValueNone -> toolbarItem.Order <- Xamarin.Forms.ToolbarItemOrder.Default
         | ValueSome order -> toolbarItem.Order <- order
@@ -175,7 +175,7 @@ module Editor =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
 
 module ViewCell =
-    let View = Attributes.defineWidget "ViewCell_View" (fun target -> (target :?> Xamarin.Forms.ViewCell).View) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
+    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
