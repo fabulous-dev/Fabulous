@@ -97,11 +97,10 @@ type [<Struct>] ViewTreeContext =
     
 and IViewNode =
     abstract member Target : obj
-    abstract member Ancestors : IViewNode list
+    abstract member Parent : IViewNode voption
     abstract member TreeContext : ViewTreeContext
+    abstract member MapMsg : (obj -> obj) voption with get, set
     abstract member GetViewNodeForChild: obj -> IViewNode
-    abstract member MapMsg : obj -> obj
-    abstract member SetMapMsg: (obj -> obj) -> unit
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
     abstract member ApplyScalarDiffs : ScalarChange[] -> unit

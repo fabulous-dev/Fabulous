@@ -10,11 +10,8 @@ module Helpers =
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-            
-        let ancestors =
-            parent :: parent.Ancestors
 
-        widgetDefinition.CreateView(widget, parent.TreeContext, ancestors)
+        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
     let noCompare (_, b) = ScalarAttributeComparison.Different b
@@ -162,12 +159,22 @@ module Attributes =
         defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
 
     let dispatchMsgOnViewNode (node: IViewNode) msg =
-        let mutable mapMsg = node.MapMsg
+        let mutable parentOpt = node.Parent
+        let mutable mapMsg =
+            match node.MapMsg with
+            | ValueNone -> id
+            | ValueSome fn -> fn            
 
-        for ancestor in node.Ancestors do
-            mapMsg <- ancestor.MapMsg >> mapMsg
+        while parentOpt.IsSome do
+            let parent = parentOpt.Value
+            parentOpt <- parent.Parent
+            mapMsg <-
+                match parent.MapMsg with
+                | ValueNone -> mapMsg
+                | ValueSome fn -> mapMsg >> fn
 
-        node.TreeContext.Dispatch(mapMsg msg)
+        let newMsg = mapMsg msg
+        node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()

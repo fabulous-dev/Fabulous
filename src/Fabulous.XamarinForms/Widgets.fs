@@ -24,7 +24,7 @@ module Widgets =
                 Key = key
                 Name = typeof<'T>.Name
                 CreateView =
-                    fun (widget, treeContext, ancestors) ->
+                    fun (widget, treeContext, parentNode) ->
                         let name = typeof<'T>.Name
                         printfn $"Creating view for {name}"
 
@@ -32,7 +32,7 @@ module Widgets =
                         let weakReference = WeakReference(view)
                         
                         let node =
-                            ViewNode(treeContext, ancestors, weakReference)
+                            ViewNode(parentNode, treeContext, weakReference)
 
                         view.SetValue(ViewNode.ViewNodeProperty, node)
 

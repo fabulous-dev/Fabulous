@@ -7,7 +7,7 @@ open Fabulous
 type WidgetDefinition =
     { Key: WidgetKey
       Name: string
-      CreateView: Widget * ViewTreeContext * IViewNode list -> obj }
+      CreateView: Widget * ViewTreeContext * IViewNode voption -> obj }
     
 module WidgetDefinitionStore =
     let private _widgets = Dictionary<WidgetKey, WidgetDefinition>()

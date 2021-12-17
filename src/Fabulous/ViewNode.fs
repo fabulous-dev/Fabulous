@@ -3,23 +3,18 @@
 open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
-type ViewNode(treeContext: ViewTreeContext, ancestors: IViewNode list, targetRef: System.WeakReference) =
+type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty
-    let mutable _mapMsg: obj -> obj = id
+    let mutable _mapMsg: (obj -> obj) voption = ValueNone
     
     interface IViewNode with
         member _.Target = targetRef.Target
         member _.TreeContext = treeContext
-        member _.Ancestors = ancestors
+        member _.Parent = parentNode
+        member val MapMsg = _mapMsg with get, set
         
         member _.GetViewNodeForChild(child) =
             treeContext.GetViewNode(child)
-        
-        member x.MapMsg(msg) =
-            _mapMsg msg
-        
-        member x.SetMapMsg(fn) =
-            _mapMsg <- fn
 
         member _.TryGetHandler<'T>(key: AttributeKey) =
             match Map.tryFind key _handlers with
