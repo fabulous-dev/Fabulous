@@ -88,7 +88,7 @@ module ContactsListPage =
                     .backgroundColor(accentColor)
                     .cancelButtonColor(accentTextColor)
                     
-                (ListView(model.Contacts) (fun contact ->
+                (ListView(model.FilteredContacts) (fun contact ->
                     cellView
                         contact.Picture
                         $"{contact.FirstName} {contact.LastName}"

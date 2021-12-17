@@ -10,3 +10,11 @@ Things to talk about
 - State
 - ViewNode
 - Runner + ViewAdapter
+
+
+Xamarin.Forms
+- Builders
+	- Markers
+	- ViewBuilders
+	- Extensions
+- Virtualized collections
