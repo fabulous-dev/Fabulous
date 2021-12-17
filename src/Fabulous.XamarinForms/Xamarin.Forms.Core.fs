@@ -153,7 +153,7 @@ module ViewKeys =
     let Stepper =
         Widgets.register<Xamarin.Forms.Stepper>()
         
-    let ListView = Widgets.register<Xamarin.Forms.ListView>()
+    let ListView = Widgets.register<FabulousListView>()
     let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
 
 [<AbstractClass; Sealed>]

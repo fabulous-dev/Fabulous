@@ -3,7 +3,7 @@ namespace Fabulous.XamarinForms.Samples.CounterApp
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
-open type View
+open type Fabulous.XamarinForms.View
 
 module Style =
     let createStyleFor<'T when 'T :> BindableObject> setters =
@@ -90,7 +90,7 @@ module App =
 
     let initModel () =
         { Count = 0
-          Data = [ 1; 2; 3 ]
+          Data = [ for i in 0 .. 100 do i ]
           Configuration = Configuration.init () }
         
     let init () =
@@ -115,7 +115,7 @@ module App =
     
     let view model =
         Application(
-            NavigationPage() {                
+            NavigationPage() {
                 ContentPage("Counter",
                     (VerticalStackLayout() {
                         Label(string model.Count)
@@ -151,7 +151,10 @@ module App =
                             .centerHorizontal()
                             
                         ListView(model.Data) (fun item -> 
-                            TextCell(item.ToString())
+                            ViewCell(
+                                Label(item.ToString())
+                                    .textColor(Color.Yellow)
+                            )
                         )
                     })
                         .paddingLayout(30.)

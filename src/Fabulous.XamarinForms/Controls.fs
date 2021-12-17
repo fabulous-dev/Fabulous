@@ -2,6 +2,7 @@
 
 open System
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 /// Represents a dimension for either the row or column definition of a Grid
@@ -14,14 +15,6 @@ type Dimension =
     | Stars of float
     /// Use the associated value as the number of device-specific units.
     | Absolute of float
-
-type WidgetDataTemplateSelector(fn: obj -> Widget, parent: IViewNode) =
-    inherit DataTemplateSelector()
-
-    override this.OnSelectTemplate(item, _) =
-        let widget = fn item
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        DataTemplate(fun () -> widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent))
 
 type SizeAllocatedEventArgs =
     { Width: float
@@ -55,3 +48,24 @@ type FabulousTimePicker() =
     override this.OnPropertyChanged(propertyName) =
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
+
+type WidgetItem(widget: Widget) =
+    member _.Widget = widget
+
+type WidgetDataTemplateSelector() =
+    inherit DataTemplateSelector()
+    
+    let mutable _parentNode = Unchecked.defaultof<IViewNode>
+    let mutable _itemWidgetTemplate = fun _ -> Unchecked.defaultof<Widget>
+    
+    member _.Setup(fn, parent) =
+        _parentNode <- parent
+        _itemWidgetTemplate <- fn
+    
+    override _.OnSelectTemplate(item, _) =
+        let widget = _itemWidgetTemplate(item)
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+        DataTemplate(fun () -> widgetDefinition.CreateView(widget, _parentNode.TreeContext, ValueSome _parentNode))
+        
+type FabulousListView() =
+    inherit ListView(ItemTemplate = WidgetDataTemplateSelector())

@@ -120,11 +120,10 @@ module ViewHelpers =
         
     let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemTemplateDefinition: ScalarAttributeDefinition<obj -> Widget, obj -> Widget>) (attrs: ScalarAttribute[]) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
         let itemTemplate (item: obj) =
-            let x = (itemTemplate (unbox<'itemData> item)).Compile()
-            x
+            (itemTemplate (unbox<'itemData> item)).Compile()
         
         let newAttrs = Array.zeroCreate (attrs.Length + 1)
-        Array.blit attrs 0 newAttrs 0 attrs.Length
-        newAttrs[newAttrs.Length - 1] <- itemTemplateDefinition.WithValue(itemTemplate)
+        newAttrs[0] <- itemTemplateDefinition.WithValue(itemTemplate)
+        Array.blit attrs 0 newAttrs 1 attrs.Length
         
-        WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
+        WidgetBuilder<'msg, 'marker>(key, struct (newAttrs, [||], [||]))

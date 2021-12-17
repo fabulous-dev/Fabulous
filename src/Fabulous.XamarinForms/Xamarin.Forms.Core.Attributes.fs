@@ -213,18 +213,16 @@ module Stepper =
 module ItemsViewOfCell =
     let ItemsSource = Attributes.defineBindable<seq<obj>> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
     let ItemTemplate =
-        let bindableProperty = Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemTemplateProperty
         Attributes.defineScalarWithConverter<obj -> Widget, obj -> Widget>
-            bindableProperty.PropertyName
+            "ItemsViewOfCell_ItemTemplate"
             id
             ScalarAttributeComparers.noCompare
             (fun (newValueOpt, node) ->
-                let target = node.Target :?> Xamarin.Forms.BindableObject
+                let target = node.Target :?> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>
+                let dataTemplateSelector = target.ItemTemplate :?> WidgetDataTemplateSelector
                 match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome fn ->
-                    let dataTemplateSelector = WidgetDataTemplateSelector(fn, node)
-                    target.SetValue(bindableProperty, dataTemplateSelector)
+                | ValueNone -> failwith "ItemsView requires an item template"
+                | ValueSome fn -> dataTemplateSelector.Setup(fn, node)
             )
     
 module ListView =
