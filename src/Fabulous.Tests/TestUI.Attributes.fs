@@ -14,13 +14,10 @@ module Attributes =
                 Name = name
                 Convert = id
                 Compare = ScalarAttributeComparers.noCompare
-                UpdateTarget =
-                    fun (newValueOpt, context, target) ->
+                UpdateNode =
+                    fun (newValueOpt, viewNode) ->
 
-                        let viewNode =
-                            context.ViewTreeContext.GetViewNode(target)
-
-                        let btn = target :?> IButton
+                        let btn = viewNode.Target :?> IButton
 
                         match viewNode.TryGetHandler<int>(key) with
                         | ValueNone -> ()

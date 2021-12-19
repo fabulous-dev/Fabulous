@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Fabulous.Tests.Benchmarks.DiffingAttributes.Benchmarks-20211218-230238</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=macOS Big Sur 11.5.1 (20G80) [Darwin 20.6.0]
+Apple M1, 1 CPU, 8 logical and 8 physical cores
+.NET SDK=6.0.100
+  [Host]   : .NET 6.0.0 (6.0.21.52210), Arm64 RyuJIT DEBUG
+  .NET 6.0 : .NET 6.0.0 (6.0.21.52210), Arm64 RyuJIT
+</code></pre>
+<pre><code>Job=.NET 6.0  Runtime=.NET 6.0  
+</code></pre>
+
+<table>
+<thead><tr><th>   Method</th><th>depth</th><th> Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>ProcessMessages</td><td>100</td><td>61.72 ms</td><td>0.560 ms</td><td>0.468 ms</td>
+</tr><tr><td>ProcessMessages</td><td>1000</td><td>1,438.17 ms</td><td>23.754 ms</td><td>21.057 ms</td>
+</tr></tbody></table>
+</body>
+</html>

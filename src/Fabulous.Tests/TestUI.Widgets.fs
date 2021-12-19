@@ -25,23 +25,24 @@ module Widgets =
                 Key = key
                 Name = typeof<'T>.Name
                 CreateView =
-                    fun (widget, context) ->
-                        let name = typeof<'T>.Name
-                        printfn $"Creating view for {name}"
+                    fun (widget, context, parentNode) ->
+                        //                        let name = typeof<'T>.Name
+                        //                        printfn $"Creating view for {name}"
 
                         let view = new 'T()
                         let weakReference = WeakReference(view)
 
-                        let viewNode = ViewNode(context, weakReference)
+                        let viewNode =
+                            ViewNode(parentNode, context, weakReference)
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
                         Reconciler.update
-                            context.ViewTreeContext.GetViewNode
-                            context.ViewTreeContext.CanReuseView
+                            //                            context.ViewTreeContext.GetViewNode
+                            context.CanReuseView
                             ValueNone
                             widget
-                            view
+                            viewNode
 
                         box view
             }
@@ -185,12 +186,13 @@ module Run =
 
                 let viewNode = ViewNode.getViewNode target
 
-                if newWidget.Key <> viewNode.Context.Key then
-                    failwith "type mismatch!"
+                //                if newWidget.Key <> viewNode. then
+//                    failwith "type mismatch!"
 
                 state <- Some(newModel, target, newWidget)
 
-                Reconciler.update ViewNode.getViewNode x.viewContext.CanReuseView (ValueSome oldWidget) newWidget target
+                // ViewNode.getViewNode
+                Reconciler.update x.viewContext.CanReuseView (ValueSome oldWidget) newWidget viewNode
                 ()
 
         member x.Start(arg: 'arg) =
@@ -198,14 +200,8 @@ module Run =
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
-            let context =
-                {
-                    Key = widget.Key
-                    ViewTreeContext = x.viewContext
-                    Ancestors = []
-                }
-
-            let view = widgetDef.CreateView(widget, context)
+            let view =
+                widgetDef.CreateView(widget, x.viewContext, ValueNone)
 
             state <- Some(model, view, widget)
 
