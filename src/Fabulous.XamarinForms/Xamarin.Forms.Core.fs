@@ -378,8 +378,7 @@ type ViewBuilders private () =
         )
 
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
-        ViewHelpers.buildItem<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemTemplate
-            [| ItemsViewOfCell.ItemsSource.WithValue(items |> Seq.map box) |]
+        ViewHelpers.buildItem<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemsSource items
             
     static member inline TextCell<'msg>(text: string) =
         ViewHelpers.buildScalars<'msg, ITextCell> ViewKeys.TextCell

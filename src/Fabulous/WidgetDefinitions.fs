@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open System.Collections.Generic
 open Fabulous
 
@@ -8,6 +9,7 @@ type WidgetDefinition =
     {
         Key: WidgetKey
         Name: string
+        TargetType: Type
         CreateView: Widget * ViewTreeContext * IViewNode voption -> struct (IViewNode * obj)
     }
 

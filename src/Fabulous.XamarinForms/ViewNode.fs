@@ -1,9 +1,13 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
+open Xamarin.Forms
 
 module ViewNode =
-    let ViewNodeProperty = Xamarin.Forms.BindableProperty.Create("ViewNode", typeof<ViewNode>, typeof<Xamarin.Forms.View>, null)
+    let ViewNodeProperty = BindableProperty.Create("ViewNode", typeof<ViewNode>, typeof<View>, null)
 
-    let getViewNode (target: obj) =
-        (target :?> Xamarin.Forms.BindableObject).GetValue(ViewNodeProperty) :?> IViewNode
+    let get (target: obj) =
+        (target :?> BindableObject).GetValue(ViewNodeProperty) :?> IViewNode
+        
+    let set (node: IViewNode) (target: obj) =
+        (target :?> BindableObject).SetValue(ViewNodeProperty, node)

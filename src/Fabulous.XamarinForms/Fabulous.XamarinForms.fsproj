@@ -10,6 +10,7 @@
     <Compile Include="ViewNode.fs" />
     <Compile Include="Attributes.fs" />
     <Compile Include="Controls.fs" />
+    <Compile Include="VirtualizedCollection.fs" />
     <Compile Include="Widgets.fs" />
     <Compile Include="ViewUpdaters.fs" />
     <Compile Include="Program.fs" />

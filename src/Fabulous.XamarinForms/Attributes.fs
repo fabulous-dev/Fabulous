@@ -14,7 +14,7 @@ module Attributes =
             bindableProperty.PropertyName
             (fun target ->
                 let childTarget = (target :?> BindableObject).GetValue(bindableProperty)
-                ViewNode.getViewNode childTarget
+                ViewNode.get childTarget
             )
             (fun target value ->
                 let bindableObject = target :?> BindableObject
@@ -35,7 +35,7 @@ module Attributes =
                 | ValueNone -> target.ClearValue(bindableProperty)
                 | ValueSome v -> target.SetValue(bindableProperty, v)
             )
-
+    
     let inline defineBindable<'T when 'T: equality> bindableProperty =
         defineBindableWithComparer<'T, 'T> bindableProperty id ScalarAttributeComparers.equalityCompare
 

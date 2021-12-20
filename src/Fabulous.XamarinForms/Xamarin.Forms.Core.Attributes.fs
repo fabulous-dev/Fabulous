@@ -5,7 +5,7 @@ open Fabulous
 open Fabulous.XamarinForms
 
 module Application =
-    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.get((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
     let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, node) ->
         let application = node.Target :?> Xamarin.Forms.Application
         let value =
@@ -115,7 +115,7 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.get((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
 
 module Image =
     let Source = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Image.SourceProperty
@@ -175,7 +175,7 @@ module Editor =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
 
 module ViewCell =
-    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
+    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.get((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
@@ -211,24 +211,30 @@ module Stepper =
     let ValueChanged = Attributes.defineEvent<Xamarin.Forms.ValueChangedEventArgs> "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
 
 module ItemsViewOfCell =
-    let ItemsSource = Attributes.defineBindable<seq<obj>> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
-    let ItemTemplate =
-        Attributes.defineScalarWithConverter<obj -> Widget, obj -> Widget>
-            "ItemsViewOfCell_ItemTemplate"
+    let ItemsSource =
+        let bindableProperty = Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
+        Attributes.defineScalarWithConverter<WidgetItems, WidgetItems>
+            bindableProperty.PropertyName
             id
-            ScalarAttributeComparers.noCompare
+            (fun (oldValue, newValue) ->
+                if oldValue.Items = newValue.Items then // TODO: compare template functions
+                    ScalarAttributeComparison.Identical
+                else
+                    ScalarAttributeComparison.Different newValue
+            )
             (fun (newValueOpt, node) ->
                 let target = node.Target :?> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>
-                let dataTemplateSelector = target.ItemTemplate :?> WidgetDataTemplateSelector
+                if target.ItemTemplate = null then target.ItemTemplate <- WidgetDataTemplateSelector(node)
                 match newValueOpt with
-                | ValueNone -> failwith "ItemsView requires an item template"
-                | ValueSome fn -> dataTemplateSelector.Setup(fn, node)
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, seq { for x in v.Items do v.Template x })
             )
     
 module ListView =
     let RowHeight = Attributes.defineBindable<int> Xamarin.Forms.ListView.RowHeightProperty
     let SelectionMode = Attributes.defineBindable<Xamarin.Forms.ListViewSelectionMode> Xamarin.Forms.ListView.SelectionModeProperty
     let ItemTapped = Attributes.defineEvent "ListView_ItemTapped" (fun target -> (target :?> Xamarin.Forms.ListView).ItemTapped)
+        
     
 module TextCell =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.TextCell.TextProperty

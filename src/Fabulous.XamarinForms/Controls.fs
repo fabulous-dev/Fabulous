@@ -1,8 +1,6 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
-open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
 
 /// Represents a dimension for either the row or column definition of a Grid
@@ -49,23 +47,5 @@ type FabulousTimePicker() =
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
-type WidgetItem(widget: Widget) =
-    member _.Widget = widget
-
-type WidgetDataTemplateSelector() =
-    inherit DataTemplateSelector()
-    
-    let mutable _parentNode = Unchecked.defaultof<IViewNode>
-    let mutable _itemWidgetTemplate = fun _ -> Unchecked.defaultof<Widget>
-    
-    member _.Setup(fn, parent) =
-        _parentNode <- parent
-        _itemWidgetTemplate <- fn
-    
-    override _.OnSelectTemplate(item, _) =
-        let widget = _itemWidgetTemplate(item)
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        DataTemplate(fun () -> widgetDefinition.CreateView(widget, _parentNode.TreeContext, ValueSome _parentNode))
-        
 type FabulousListView() =
-    inherit ListView(ItemTemplate = WidgetDataTemplateSelector())
+    inherit ListView(ListViewCachingStrategy.RecycleElement)

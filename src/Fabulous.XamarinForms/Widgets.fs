@@ -25,6 +25,7 @@ module Widgets =
             {
                 Key = key
                 Name = typeof<'T>.Name
+                TargetType = typeof<'T>
                 CreateView =
                     fun (widget, treeContext, parentNode) ->
                         let name = typeof<'T>.Name
@@ -33,10 +34,8 @@ module Widgets =
                         let view = new 'T()
                         let weakReference = WeakReference(view)
                         
-                        let node =
-                            ViewNode(parentNode, treeContext, weakReference)
-
-                        view.SetValue(ViewNode.ViewNodeProperty, node)
+                        let node = ViewNode(parentNode, treeContext, weakReference)
+                        ViewNode.set node view
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
 
@@ -118,12 +117,11 @@ module ViewHelpers =
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
         
-    let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemTemplateDefinition: ScalarAttributeDefinition<obj -> Widget, obj -> Widget>) (attrs: ScalarAttribute[]) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
+    let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemsAttributeDefinition: ScalarAttributeDefinition<WidgetItems, WidgetItems>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
         let itemTemplate (item: obj) =
             (itemTemplate (unbox<'itemData> item)).Compile()
         
-        let newAttrs = Array.zeroCreate (attrs.Length + 1)
-        newAttrs[0] <- itemTemplateDefinition.WithValue(itemTemplate)
-        Array.blit attrs 0 newAttrs 1 attrs.Length
+        let attrs =
+            [| itemsAttributeDefinition.WithValue({ Items = items; Template = box >> itemTemplate }) |]
         
-        WidgetBuilder<'msg, 'marker>(key, struct (newAttrs, [||], [||]))
+        WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
