@@ -1,9 +1,9 @@
 module Fabulous.Tests.Benchmarks
 
 open BenchmarkDotNet.Attributes
-open BenchmarkDotNet.Running
 open BenchmarkDotNet.Jobs
 
+open BenchmarkDotNet.Running
 open Tests.TestUI_Widgets
 
 open type View
@@ -14,8 +14,19 @@ module NestedTreeCreation =
 
     type Msg = Depth of int
 
-    let rec view (depth: int) =
+    //    let cond d =
+//        let r = d > 0
+//
+//        printfn $"cond %A{r}"
+//        r
+
+
+    let rec viewInner (depth: int) =
+        //        printfn $"view on {depth}"
+
         Stack() {
+            if (depth > 0) then viewInner(depth - 1)
+
             Label($"label1:{depth}")
                 .textColor("red")
                 .automationId($"label1:{depth}")
@@ -26,12 +37,18 @@ module NestedTreeCreation =
 
             Button($"btn: {depth}", Depth depth)
 
-            if (depth > 0) then view(depth - 1)
+            if (depth > 0) then viewInner(depth - 2)
         }
 
+    let view d = viewInner d
+
+    //    [<NativeMemoryProfiler>]
+    [<MemoryDiagnoser>]
     [<SimpleJob(RuntimeMoniker.Net60)>]
+    //    [<SimpleJob(RuntimeMoniker.Mono)>]
+    //    [<SimpleJob(RuntimeMoniker.MonoAOTLLVM, warmupCount = 1)>]
     type Benchmarks() =
-        [<Params(100, 1000)>]
+        [<Params(10, 20)>]
         member val depth = 0 with get, set
 
         [<Benchmark>]
@@ -64,13 +81,17 @@ module DiffingAttributes =
 
             if (depth > 0) then
                 viewInner(depth - 1) counter
+
+            if (depth > 0) then
+                viewInner(depth - 2) counter
         }
 
     let view model = viewInner model.depth model.counter
 
+    [<MemoryDiagnoser>]
     [<SimpleJob(RuntimeMoniker.Net60)>]
     type Benchmarks() =
-        [<Params(100, 1000)>]
+        [<Params(10, 15)>]
         member val depth = 0 with get, set
 
         [<Benchmark>]
@@ -85,6 +106,7 @@ module DiffingAttributes =
             for i in 1 .. 100 do
                 instance.ProcessMessage(IncBy i)
 
+
 [<EntryPoint>]
 let main argv =
     BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
@@ -94,3 +116,15 @@ let main argv =
     |> ignore
 
     0 // return an integer exit code
+
+//[<EntryPoint>]
+//let mainProfile argv =
+//
+//    let b = NestedTreeCreation.Benchmarks()
+//    b.depth <- 25
+//
+//    for _ in 0 .. 10 do
+//        let widgets = b.CreateWidgets()
+//        ()
+//
+//    0 // return an integer exit code
