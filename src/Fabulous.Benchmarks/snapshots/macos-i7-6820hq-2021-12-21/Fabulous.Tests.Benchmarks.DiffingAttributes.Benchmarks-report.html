@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Fabulous.Tests.Benchmarks.DiffingAttributes.Benchmarks-20211221-145122</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=macOS Monterey 12.1 (21C52) [Darwin 21.2.0]
+Intel Core i7-6820HQ CPU 2.70GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
+.NET SDK=6.0.101
+  [Host]   : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT DEBUG
+  .NET 6.0 : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
+</code></pre>
+<pre><code>Job=.NET 6.0  Runtime=.NET 6.0  
+</code></pre>
+
+<table>
+<thead><tr><th>   Method</th><th>depth</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>ProcessMessages</td><td>10</td><td>257.5 ms</td><td>3.79 ms</td><td>3.36 ms</td><td>46000.0000</td><td>14000.0000</td><td>2000.0000</td><td>222 MB</td>
+</tr><tr><td>ProcessMessages</td><td>15</td><td>7,457.8 ms</td><td>33.21 ms</td><td>31.06 ms</td><td>605000.0000</td><td>196000.0000</td><td>96000.0000</td><td>2,470 MB</td>
+</tr></tbody></table>
+</body>
+</html>
