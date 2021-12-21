@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Fabulous.Tests.Benchmarks.NestedTreeCreation.Benchmarks-20211221-143315</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
+Intel Core i5-9600KF CPU 3.70GHz (Coffee Lake), 1 CPU, 6 logical and 6 physical cores
+.NET SDK=6.0.101
+  [Host]   : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT DEBUG
+  .NET 6.0 : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
+</code></pre>
+<pre><code>Job=.NET 6.0  Runtime=.NET 6.0  
+</code></pre>
+
+<table>
+<thead><tr><th> Method</th><th>depth</th><th>  Mean</th><th>Error</th><th>StdDev</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>CreateWidgets</td><td>10</td><td>323.7 &mu;s</td><td>1.85 &mu;s</td><td>1.54 &mu;s</td><td>106.4453</td><td>38.5742</td><td>-</td><td>551 KB</td>
+</tr><tr><td>CreateWidgets</td><td>20</td><td>101,939.1 &mu;s</td><td>1,878.27 &mu;s</td><td>1,756.94 &mu;s</td><td>11600.0000</td><td>2800.0000</td><td>800.0000</td><td>68,072 KB</td>
+</tr></tbody></table>
+</body>
+</html>

@@ -5,6 +5,7 @@
     <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="StackAllocatedCollections.fs" />
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
     <Compile Include="Core.fs" />
     <Compile Include="AttributeDefinitions.fs" />
