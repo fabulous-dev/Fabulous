@@ -5,6 +5,7 @@ module MapMsg =
         Attributes.defineScalarWithConverter<obj -> obj, _>
             "Fabulous_MapMsg"
             id
+            id
             ScalarAttributeComparers.noCompare
             (fun (value, node) ->
                 match value with

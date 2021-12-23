@@ -149,12 +149,11 @@ module ViewKeys =
         Widgets.register<Xamarin.Forms.DatePicker>()
 
     let TimePicker = Widgets.register<FabulousTimePicker>()
-
-    let Stepper =
-        Widgets.register<Xamarin.Forms.Stepper>()
-        
-    let ListView = Widgets.register<FabulousListView>()
+    let Stepper = Widgets.register<Xamarin.Forms.Stepper>()
     let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
+    let ListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
+        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+    )
 
 [<AbstractClass; Sealed>]
 type ViewBuilders private () =

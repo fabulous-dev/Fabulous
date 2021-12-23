@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.XamarinForms.XFAttributes
 
 open System
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 
@@ -122,8 +123,8 @@ module Image =
     let Aspect = Attributes.defineBindable<Xamarin.Forms.Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
-    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array> "Grid_ColumnDefinitions" Array.ofSeq id ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array> "Grid_RowDefinitions" Array.ofSeq id ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
     let ColumnSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.ColumnSpacingProperty
@@ -212,23 +213,11 @@ module Stepper =
 
 module ItemsViewOfCell =
     let ItemsSource =
-        let bindableProperty = Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
-        Attributes.defineScalarWithConverter<WidgetItems, WidgetItems>
-            bindableProperty.PropertyName
+        Attributes.defineBindableWithComparer<WidgetItems, _, _>
+            Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
             id
-            (fun (oldValue, newValue) ->
-                if oldValue.Items = newValue.Items then // TODO: compare template functions
-                    ScalarAttributeComparison.Identical
-                else
-                    ScalarAttributeComparison.Different newValue
-            )
-            (fun (newValueOpt, node) ->
-                let target = node.Target :?> Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>
-                if target.ItemTemplate = null then target.ItemTemplate <- WidgetDataTemplateSelector(node)
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, seq { for x in v.Items do v.Template x })
-            )
+            (fun modelValue -> seq { for x in modelValue.Items do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.Items, b.Items))
     
 module ListView =
     let RowHeight = Attributes.defineBindable<int> Xamarin.Forms.ListView.RowHeightProperty

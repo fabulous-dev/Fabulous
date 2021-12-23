@@ -24,10 +24,11 @@ module Attributes =
                     bindableObject.SetValue(bindableProperty, value)
             )
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) =
-        Attributes.defineScalarWithConverter<'inputType, 'modelType>
+    let defineBindableWithComparer<'inputType, 'modelType, 'valueType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (convertValue: 'modelType -> 'valueType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) =
+        Attributes.defineScalarWithConverter<'inputType, 'modelType, 'valueType>
             bindableProperty.PropertyName
             convert
+            convertValue
             compare
             (fun (newValueOpt, node) ->
                 let target = node.Target :?> BindableObject
@@ -37,11 +38,12 @@ module Attributes =
             )
     
     let inline defineBindable<'T when 'T: equality> bindableProperty =
-        defineBindableWithComparer<'T, 'T> bindableProperty id ScalarAttributeComparers.equalityCompare
+        defineBindableWithComparer<'T, 'T, 'T> bindableProperty id id ScalarAttributeComparers.equalityCompare
 
     let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineScalarWithConverter<AppThemeValues<'T>, AppThemeValues<'T>>
+        Attributes.defineScalarWithConverter<AppThemeValues<'T>, AppThemeValues<'T>, AppThemeValues<'T>>
             bindableProperty.PropertyName
+            id
             id
             ScalarAttributeComparers.equalityCompare
             (fun (newValueOpt, node) ->

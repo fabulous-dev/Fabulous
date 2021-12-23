@@ -25,11 +25,12 @@ module ScalarAttributeComparers =
 
 module Attributes =
     /// Define a custom attribute storing any value
-    let defineScalarWithConverter<'inputType, 'modelType>
+    let defineScalarWithConverter<'inputType, 'modelType, 'valueType>
         name
         (convert: 'inputType -> 'modelType)
+        (convertValue: 'modelType -> 'valueType)
         (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
-        (updateNode: 'modelType voption * IViewNode -> unit)
+        (updateNode: 'valueType voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -38,6 +39,7 @@ module Attributes =
                 Key = key
                 Name = name
                 Convert = convert
+                ConvertValue = convertValue
                 Compare = compare
                 UpdateNode = updateNode
             }
@@ -163,7 +165,7 @@ module Attributes =
         defineWidgetCollectionWithConverter name applyDiff updateNode
 
     let inline define<'T when 'T: equality> name updateTarget =
-        defineScalarWithConverter<'T, 'T> name id ScalarAttributeComparers.equalityCompare updateTarget
+        defineScalarWithConverter<'T, 'T, 'T> name id id ScalarAttributeComparers.equalityCompare updateTarget
 
     let dispatchMsgOnViewNode (node: IViewNode) msg =
         let mutable parentOpt = node.Parent
@@ -188,11 +190,12 @@ module Attributes =
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey()
 
-        let definition: ScalarAttributeDefinition<obj, obj> =
+        let definition: ScalarAttributeDefinition<obj, obj, obj> =
             {
                 Key = key
                 Name = name
                 Convert = id
+                ConvertValue = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateNode =
                     fun (newValueOpt, node) ->
@@ -219,11 +222,12 @@ module Attributes =
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
         let key = AttributeDefinitionStore.getNextKey()
 
-        let definition: ScalarAttributeDefinition<_, _> =
+        let definition: ScalarAttributeDefinition<_, _, _> =
             {
                 Key = key
                 Name = name
                 Convert = id
+                ConvertValue = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateNode =
                     fun (newValueOpt: ('args -> obj) voption, node: IViewNode) ->

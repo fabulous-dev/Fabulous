@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
@@ -18,7 +19,7 @@ type ILayout = inherit IView
 type IToolbarItem = inherit IMenuItem
 
 module Widgets =
-    let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
+    let registerWithAdditionalSetup<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> (additionalSetup: 'T -> IViewNode -> unit) =
         let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
@@ -36,6 +37,8 @@ module Widgets =
                         
                         let node = ViewNode(parentNode, treeContext, weakReference)
                         ViewNode.set node view
+                        
+                        additionalSetup view node
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
 
@@ -44,6 +47,9 @@ module Widgets =
 
         WidgetDefinitionStore.set key definition
         key
+        
+    let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
+        registerWithAdditionalSetup<'T> (fun _ _ -> ())
     
 [<Extension>]
 type CollectionBuilderExtensions =
@@ -117,7 +123,7 @@ module ViewHelpers =
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
         
-    let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemsAttributeDefinition: ScalarAttributeDefinition<WidgetItems, WidgetItems>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
+    let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemsAttributeDefinition: ScalarAttributeDefinition<WidgetItems, WidgetItems, IEnumerable<Widget>>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
         let itemTemplate (item: obj) =
             (itemTemplate (unbox<'itemData> item)).Compile()
         
