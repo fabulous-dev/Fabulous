@@ -18,6 +18,8 @@
     <Compile Include="Runners.fs" />
     <Compile Include="Attributes.fs" />
     <Compile Include="MapMsg.fs" />
+    <Compile Include="Memo.fs" />
+    <Compile Include="ViewNamespace.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.1" />

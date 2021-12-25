@@ -384,3 +384,69 @@ module MapViewTests =
 
         removeBtn.Press()
         Assert.AreEqual("-1", label.Text)
+
+
+module MemoTests =
+    type Model =
+        {
+            notMemoized: string
+            memoTrigger: int
+        }
+
+    type Msg =
+        | SetNotMemoPart of string
+        | SetMemoPart of int
+
+    let update msg model =
+        match msg with
+        | SetMemoPart i -> { model with memoTrigger = i }
+        | SetNotMemoPart s -> { model with notMemoized = s }
+
+    let mutable renderCount = 0
+
+    let view model =
+        Stack() {
+            Label<Msg>(model.notMemoized)
+                .automationId("not_memo")
+
+            View.memo
+                model.memoTrigger
+                (fun i ->
+                    renderCount <- renderCount + 1
+                    Label(string i).automationId("memo"))
+        }
+
+    [<Test>]
+    let MemoizedCorrectly () =
+
+        let init () =
+            {
+                notMemoized = "initial"
+                memoTrigger = 0
+            }
+
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = (instance.Start())
+
+        // executed just once to construct the tree
+        Assert.AreEqual(1, renderCount)
+
+        let notMemoLabel = find<TestLabel> tree "not_memo" :> IText
+        let memoLabel = find<TestLabel> tree "memo" :> IText
+
+        Assert.AreEqual("0", memoLabel.Text)
+
+        instance.ProcessMessage(SetNotMemoPart "hey")
+        Assert.AreEqual("hey", notMemoLabel.Text)
+
+        // hasn't been rerendered
+        Assert.AreEqual(1, renderCount)
+
+        instance.ProcessMessage(SetMemoPart 99)
+
+        // rerendered because of memo key changed
+        Assert.AreEqual(2, renderCount)
+        Assert.AreEqual("99", memoLabel.Text)

@@ -122,13 +122,20 @@ type View private () =
 [<Extension>]
 type CollectionBuilderExtensions =
     [<Extension>]
-    static member Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
         (
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker>
         ) : Content<'msg> =
         { Widgets = [ x.Compile() ] }
 
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
+        ) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
 
     [<Extension>]
     static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
