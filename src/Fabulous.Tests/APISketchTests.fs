@@ -521,14 +521,14 @@ module MemoTests =
                 | Label1 ->
                     View.memo
                         model
-                        (fun i ->
+                        (fun _ ->
                             Label("one")
                                 .textColor("blue")
                                 .automationId("label"))
                 | Label2 ->
                     View.memo
-                        model
-                        (fun i ->
+                        (string model)
+                        (fun _ ->
                             Label("two")
                                 .textColor("blue")
                                 .automationId("label"))

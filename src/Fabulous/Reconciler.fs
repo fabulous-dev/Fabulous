@@ -8,13 +8,14 @@ module Reconciler =
     /// 2. there are few elements, we expect to have only a handful of them per widget
     /// 3. stable, which is handy for duplicate attributes, e.g. we can choose which one to pick
     /// https://en.wikipedia.org/wiki/Insertion_sort
-    let inline private sortAttributesInPlace (getKey: 'T -> AttributeKey) (attrs: 'T[]) : 'T[] =
+    let inline private sortAttributesInPlace (getKey: 'T -> AttributeKey) (attrs: 'T []) : 'T [] =
         let N = attrs.GetLength(0)
 
         for i in [ 1 .. N - 1 ] do
             for j = i downto 1 do
                 let key = getKey attrs.[j]
-                let prevKey = getKey (attrs.[j - 1])
+                let prevKey = getKey(attrs.[j - 1])
+
                 if key < prevKey then
                     let temp = attrs.[j]
                     attrs.[j] <- attrs.[j - 1]
@@ -45,10 +46,15 @@ module Reconciler =
     ///         compare values
     ///
     /// break when we reached both ends of the arrays
-    let rec diffScalarAttributes (prev: ScalarAttribute []) (next: ScalarAttribute []) : ScalarChange[] =
+    let rec diffScalarAttributes (prev: ScalarAttribute []) (next: ScalarAttribute []) : ScalarChange [] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
-        prev |> sortAttributesInPlace (fun a -> a.Key) |> ignore
-        next |> sortAttributesInPlace (fun a -> a.Key) |> ignore
+        prev
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
+
+        next
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
 
         let mutable result: ScalarChange list = []
 
@@ -105,8 +111,7 @@ module Reconciler =
                         | ScalarAttributeComparison.Identical -> ValueNone
 
                         // New value completely replaces the old value
-                        | ScalarAttributeComparison.Different value ->
-                            ValueSome (ScalarChange.Updated(nextAttr))
+                        | ScalarAttributeComparison.Different value -> ValueSome(ScalarChange.Updated nextAttr)
 
                     match changeOpt with
                     | ValueNone -> ()
@@ -114,10 +119,19 @@ module Reconciler =
 
         List.rev result |> List.toArray
 
-    and diffWidgetAttributes (canReuseView: Widget -> Widget -> bool) (prev: WidgetAttribute []) (next: WidgetAttribute []) : WidgetChange[] =
+    and diffWidgetAttributes
+        (canReuseView: Widget -> Widget -> bool)
+        (prev: WidgetAttribute [])
+        (next: WidgetAttribute [])
+        : WidgetChange [] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
-        prev |> sortAttributesInPlace (fun a -> a.Key) |> ignore
-        next |> sortAttributesInPlace (fun a -> a.Key) |> ignore
+        prev
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
+
+        next
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
 
         let mutable result: WidgetChange list = []
 
@@ -172,9 +186,9 @@ module Reconciler =
                         elif canReuseView prevWidget nextWidget then
                             match diffWidget canReuseView (ValueSome prevWidget) nextWidget with
                             | ValueNone -> ValueNone
-                            | ValueSome diffs -> ValueSome (WidgetChange.Updated struct (nextAttr, diffs))
+                            | ValueSome diffs -> ValueSome(WidgetChange.Updated struct (nextAttr, diffs))
                         else
-                            ValueSome (WidgetChange.ReplacedBy nextAttr)
+                            ValueSome(WidgetChange.ReplacedBy nextAttr)
 
                     match changeOpt with
                     | ValueNone -> ()
@@ -182,10 +196,19 @@ module Reconciler =
 
         List.rev result |> List.toArray
 
-    and diffWidgetCollectionAttributes (canReuseView: Widget -> Widget -> bool) (prev: WidgetCollectionAttribute[]) (next: WidgetCollectionAttribute[]): WidgetCollectionChange[] =
+    and diffWidgetCollectionAttributes
+        (canReuseView: Widget -> Widget -> bool)
+        (prev: WidgetCollectionAttribute [])
+        (next: WidgetCollectionAttribute [])
+        : WidgetCollectionChange [] =
         // the order of attributes doesn't matter, thus it is safe to mutate array in place
-        prev |> sortAttributesInPlace (fun a -> a.Key) |> ignore
-        next |> sortAttributesInPlace (fun a -> a.Key) |> ignore
+        prev
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
+
+        next
+        |> sortAttributesInPlace(fun a -> a.Key)
+        |> ignore
 
         let mutable result: WidgetCollectionChange list = []
 
@@ -198,12 +221,18 @@ module Reconciler =
         while not(prevIndex >= prevLength && nextIndex >= nextLength) do
             if prevIndex = prevLength then
                 // that means we are done with the prev and only need to add next's tail to added
-                result <- WidgetCollectionChange.Added next.[nextIndex] :: result
+                result <-
+                    WidgetCollectionChange.Added next.[nextIndex]
+                    :: result
+
                 nextIndex <- nextIndex + 1
 
             elif nextIndex = nextLength then
                 // that means that we are done with new items and only need prev's tail to removed
-                result <- WidgetCollectionChange.Removed prev.[prevIndex] :: result
+                result <-
+                    WidgetCollectionChange.Removed prev.[prevIndex]
+                    :: result
+
                 prevIndex <- prevIndex + 1
 
             else
@@ -235,13 +264,18 @@ module Reconciler =
                     nextIndex <- nextIndex + 1
 
                     let change =
-                        WidgetCollectionChange.Updated struct (nextAttr, diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl)
+                        WidgetCollectionChange.Updated
+                            struct (nextAttr, diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl)
 
                     result <- change :: result
 
         List.rev result |> List.toArray
 
-    and diffWidgetCollections (canReuseView: Widget -> Widget -> bool) (prev: Widget array) (next: Widget array) : WidgetCollectionItemChange[] =
+    and diffWidgetCollections
+        (canReuseView: Widget -> Widget -> bool)
+        (prev: Widget array)
+        (next: Widget array)
+        : WidgetCollectionItemChange [] =
         let mutable target = []
 
         if prev.Length > next.Length then
@@ -254,15 +288,15 @@ module Reconciler =
 
             let changeOpt =
                 match prevItemOpt with
-                | None -> ValueSome (WidgetCollectionItemChange.Insert struct (i, currItem))
+                | None -> ValueSome(WidgetCollectionItemChange.Insert struct (i, currItem))
 
                 | Some prevItem when canReuseView prevItem currItem ->
-                    
+
                     match diffWidget canReuseView (ValueSome prevItem) currItem with
                     | ValueNone -> ValueNone
-                    | ValueSome diffs -> ValueSome (WidgetCollectionItemChange.Update struct (i, diffs))
+                    | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
 
-                | Some _ -> ValueSome (WidgetCollectionItemChange.Replace struct (i, currItem))
+                | Some _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
 
             match changeOpt with
             | ValueNone -> ()
@@ -270,28 +304,62 @@ module Reconciler =
 
         List.rev target |> List.toArray
 
-    and diffWidget (canReuseView: Widget -> Widget -> bool) (prevOpt: Widget voption) (next: Widget): WidgetDiff voption =
-        let prevScalarAttributes = match prevOpt with ValueNone -> Array.empty | ValueSome widget -> widget.ScalarAttributes
-        let prevWidgetAttributes = match prevOpt with ValueNone -> Array.empty | ValueSome widget -> widget.WidgetAttributes
-        let prevWidgetCollectionAttributes = match prevOpt with ValueNone -> Array.empty | ValueSome widget -> widget.WidgetCollectionAttributes
+    and diffWidget
+        (canReuseView: Widget -> Widget -> bool)
+        (prevOpt: Widget voption)
+        (next: Widget)
+        : WidgetDiff voption =
+        let prevScalarAttributes =
+            match prevOpt with
+            | ValueNone -> Array.empty
+            | ValueSome widget -> widget.ScalarAttributes
 
-        let scalarDiffs = diffScalarAttributes prevScalarAttributes next.ScalarAttributes
-        let widgetDiffs = diffWidgetAttributes canReuseView prevWidgetAttributes next.WidgetAttributes
-        let collectionDiffs = diffWidgetCollectionAttributes canReuseView prevWidgetCollectionAttributes next.WidgetCollectionAttributes
+        let prevWidgetAttributes =
+            match prevOpt with
+            | ValueNone -> Array.empty
+            | ValueSome widget -> widget.WidgetAttributes
 
-        if scalarDiffs.Length = 0 && widgetDiffs.Length = 0 && collectionDiffs.Length = 0 then
+        let prevWidgetCollectionAttributes =
+            match prevOpt with
+            | ValueNone -> Array.empty
+            | ValueSome widget -> widget.WidgetCollectionAttributes
+
+        let scalarDiffs =
+            diffScalarAttributes prevScalarAttributes next.ScalarAttributes
+
+        let widgetDiffs =
+            diffWidgetAttributes canReuseView prevWidgetAttributes next.WidgetAttributes
+
+        let collectionDiffs =
+            diffWidgetCollectionAttributes canReuseView prevWidgetCollectionAttributes next.WidgetCollectionAttributes
+
+        if scalarDiffs.Length = 0
+           && widgetDiffs.Length = 0
+           && collectionDiffs.Length = 0 then
             ValueNone
         else
             ValueSome
-                { ScalarChanges = scalarDiffs
-                  WidgetChanges = widgetDiffs
-                  WidgetCollectionChanges = collectionDiffs }
+                {
+                    ScalarChanges = scalarDiffs
+                    WidgetChanges = widgetDiffs
+                    WidgetCollectionChanges = collectionDiffs
+                }
 
     /// Diffs changes and applies them on the target
-    let rec update (canReuseView: Widget -> Widget -> bool) (prevOpt: Widget voption) (next: Widget) (node: IViewNode) : unit =
+    let rec update
+        (canReuseView: Widget -> Widget -> bool)
+        (prevOpt: Widget voption)
+        (next: Widget)
+        (node: IViewNode)
+        : unit =
         match diffWidget canReuseView prevOpt next with
         | ValueNone -> ()
         | ValueSome diff ->
-            if diff.ScalarChanges.Length > 0 then node.ApplyScalarDiffs(diff.ScalarChanges)
-            if diff.WidgetChanges.Length > 0 then node.ApplyWidgetDiffs(diff.WidgetChanges)
-            if diff.WidgetCollectionChanges.Length > 0 then node.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
+            if diff.ScalarChanges.Length > 0 then
+                node.ApplyScalarDiffs(diff.ScalarChanges)
+
+            if diff.WidgetChanges.Length > 0 then
+                node.ApplyWidgetDiffs(diff.WidgetChanges)
+
+            if diff.WidgetCollectionChanges.Length > 0 then
+                node.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)

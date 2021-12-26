@@ -44,7 +44,7 @@ module Widgets =
                             widget
                             viewNode
 
-                        box view
+                        struct (viewNode, box view)
             }
 
         WidgetDefinitionStore.set key definition
@@ -207,7 +207,7 @@ module Run =
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
-            let view =
+            let struct (_node, view) =
                 widgetDef.CreateView(widget, x.viewContext, ValueNone)
 
             state <- Some(model, view, widget)

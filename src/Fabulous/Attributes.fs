@@ -20,7 +20,10 @@ module Helpers =
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
-        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
+        let struct (_node, view) =
+            widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
+
+        view
 
 module ScalarAttributeComparers =
     let noCompare (_, b) = ScalarAttributeComparison.Different b

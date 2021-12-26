@@ -1,6 +1,7 @@
 namespace Fabulous
 
 
+
 module View =
     let memo<'msg, 'key, 'marker when 'key: equality>
         (key: 'key)
@@ -12,8 +13,8 @@ module View =
                 KeyData = box key
                 KeyComparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
                 CreateWidget = fun k -> (fn(unbox<'key> k)).Compile()
-                KeyType = typeof<'key>
-                MarkerType = typeof<'marker>
+                KeyTypeHash = typeof<'key>.GetHashCode ()
+                MarkerTypeHash = typeof<'marker>.GetHashCode ()
             }
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(

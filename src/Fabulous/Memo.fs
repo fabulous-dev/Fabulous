@@ -1,6 +1,5 @@
 namespace Fabulous
 
-open System
 open Fabulous
 
 module Memo =
@@ -16,16 +15,17 @@ module Memo =
             /// Lambda that users provide
             CreateWidget: obj -> Widget
 
-            /// Captures type of data that memoization depends on
-            KeyType: Type
+            /// Captures type hash of data that memoization depends on
+            KeyTypeHash: int
 
-            /// Captures position of a function that produces a widget
-            MarkerType: Type
+            /// Captures type hash of the marker memoized function produces
+            MarkerTypeHash: int
         }
 
     type Memoized<'t> = { phantom: 't }
 
-    let internal MemoAttributeKey = AttributeDefinitionStore.getNextKey()
+    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey()
+    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
         (widget.ScalarAttributes
@@ -34,10 +34,10 @@ module Memo =
         :?> MemoData
 
     let internal canReuseMemoizedViewNode prev next =
-        (getMemoData prev).MarkerType = (getMemoData next).MarkerType
+        (getMemoData prev).MarkerTypeHash = (getMemoData next).MarkerTypeHash
 
-    let internal compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
-        match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
+    let private compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
+        match (prev.KeyTypeHash = next.KeyTypeHash, prev.MarkerTypeHash = next.MarkerTypeHash) with
         | (true, true) ->
             match next.KeyComparer next.KeyData prev.KeyData with
             | true -> ScalarAttributeComparison.Identical
@@ -48,10 +48,16 @@ module Memo =
         match data with
         | ValueSome memoData ->
             let memoizedWidget = memoData.CreateWidget memoData.KeyData
+            let propBag = node.PropertyBag
 
-            // TODO how to get prev widget?!?
+            let prevWidget =
+                match propBag.TryGetValue MemoWidgetKey with
+                | true, value -> ValueSome(unbox<Widget> value)
+                | _ -> ValueNone
 
-            Reconciler.update node.TreeContext.CanReuseView ValueNone memoizedWidget node
+            propBag.[MemoWidgetKey] <- memoizedWidget
+
+            Reconciler.update node.TreeContext.CanReuseView prevWidget memoizedWidget node
 
         | ValueNone -> ()
 
@@ -67,7 +73,7 @@ module Memo =
     AttributeDefinitionStore.set MemoAttributeKey MemoAttribute
 
 
-    let MemoWidgetKey = WidgetDefinitionStore.getNextKey()
+
 
     let private widgetDefinition: WidgetDefinition =
         {
@@ -83,7 +89,13 @@ module Memo =
                     let memoizedDef =
                         WidgetDefinitionStore.get memoizedWidget.Key
 
-                    memoizedDef.CreateView(memoizedWidget, context, parentNode)
+                    let struct (node, view) =
+                        memoizedDef.CreateView(memoizedWidget, context, parentNode)
+
+                    // store widget that was used to produce this node
+                    // to pass it to reconciler later on
+                    node.PropertyBag.Add(MemoWidgetKey, memoizedWidget)
+                    struct (node, view)
         }
 
     WidgetDefinitionStore.set MemoWidgetKey widgetDefinition

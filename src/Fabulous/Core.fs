@@ -1,5 +1,7 @@
 ﻿namespace Fabulous
 
+open System.Collections.Generic
+
 /// Dev notes:
 ///
 /// The types in this file will be the ones used the most internally by Fabulous.
@@ -60,7 +62,8 @@ and [<Struct>] Widget =
         WidgetCollectionAttributes: WidgetCollectionAttribute []
     }
 
-type [<Struct; RequireQualifiedAccess>] ScalarChange =
+[<Struct; RequireQualifiedAccess>]
+type ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
     | Updated of updated: ScalarAttribute
@@ -88,21 +91,29 @@ and [<Struct>] WidgetDiff =
         WidgetChanges: WidgetChange []
         WidgetCollectionChanges: WidgetCollectionChange []
     }
-    
+
 /// Context of the whole view tree
-type [<Struct>] ViewTreeContext =
-    { CanReuseView: Widget -> Widget -> bool
-      GetViewNode: obj -> IViewNode
-      Dispatch: obj -> unit }
-    
+[<Struct>]
+type ViewTreeContext =
+    {
+        CanReuseView: Widget -> Widget -> bool
+        GetViewNode: obj -> IViewNode
+        Dispatch: obj -> unit
+    }
+
 and IViewNode =
     abstract member Target : obj
     abstract member Parent : IViewNode voption
     abstract member TreeContext : ViewTreeContext
     abstract member MapMsg : (obj -> obj) voption with get, set
-    abstract member GetViewNodeForChild: obj -> IViewNode
+
+    // whatever we need to attach to ViewNode in Core
+    // TODO if it is for internal use only it is possible that we should strongly type
+    // values we can expect in here
+    abstract member PropertyBag : Dictionary<int, obj>
+    abstract member GetViewNodeForChild : obj -> IViewNode
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
-    abstract member ApplyScalarDiffs : ScalarChange[] -> unit
-    abstract member ApplyWidgetDiffs : WidgetChange[] -> unit
-    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange[] -> unit
+    abstract member ApplyScalarDiffs : ScalarChange [] -> unit
+    abstract member ApplyWidgetDiffs : WidgetChange [] -> unit
+    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange [] -> unit
