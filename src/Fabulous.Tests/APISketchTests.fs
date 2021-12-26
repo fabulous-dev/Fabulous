@@ -560,7 +560,7 @@ module MemoTests =
                 [
                     TextSet "one"
                     ColorSet "blue"
-                    TextSet "one"
+                    TextSet "two"
                 ],
                 label.changeList
             )
