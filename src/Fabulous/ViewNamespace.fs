@@ -9,10 +9,11 @@ module View =
 
         let memo: Memo.MemoData =
             {
-                Data = box key
-                Comparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
+                KeyData = box key
+                KeyComparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
                 CreateWidget = fun k -> (fn(unbox<'key> k)).Compile()
                 KeyType = typeof<'key>
+                MarkerType = typeof<'marker>
             }
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(

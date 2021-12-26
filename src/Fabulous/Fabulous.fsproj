@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="StackAllocatedCollections.fs" />
-    <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
-    <Compile Include="Core.fs" />
-    <Compile Include="AttributeDefinitions.fs" />
-    <Compile Include="WidgetDefinitions.fs" />
-    <Compile Include="Builders.fs" />
-    <Compile Include="Reconciler.fs" />
-    <Compile Include="ViewNode.fs" />
-    <Compile Include="State.fs" />
-    <Compile Include="Cmd.fs" />
-    <Compile Include="Runners.fs" />
-    <Compile Include="Attributes.fs" />
-    <Compile Include="MapMsg.fs" />
-    <Compile Include="Memo.fs" />
-    <Compile Include="ViewNamespace.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="6.0.1" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="StackAllocatedCollections.fs"/>
+        <None Include="PackageREADME.md" Pack="true" PackagePath="\"/>
+        <Compile Include="Core.fs"/>
+        <Compile Include="AttributeDefinitions.fs"/>
+        <Compile Include="WidgetDefinitions.fs"/>
+        <Compile Include="Builders.fs"/>
+        <Compile Include="Reconciler.fs"/>
+        <Compile Include="ViewNode.fs"/>
+        <Compile Include="State.fs"/>
+        <Compile Include="Cmd.fs"/>
+        <Compile Include="Runners.fs"/>
+        <Compile Include="Memo.fs"/>
+        <Compile Include="Attributes.fs"/>
+        <Compile Include="MapMsg.fs"/>
+        <Compile Include="ViewNamespace.fs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="6.0.1"/>
+    </ItemGroup>
 </Project>
