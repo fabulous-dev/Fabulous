@@ -99,14 +99,17 @@ module Attributes =
         let applyDiff (diff: WidgetDiff, node: IViewNode) =
             let childNode = get node.Target
 
-            if diff.ScalarChanges.Length > 0 then
-                childNode.ApplyScalarDiffs(diff.ScalarChanges)
+            match diff.ScalarChanges with
+            | Some changes -> childNode.ApplyScalarDiffs(changes)
+            | None -> ()
 
-            if diff.WidgetChanges.Length > 0 then
-                childNode.ApplyWidgetDiffs(diff.WidgetChanges)
+            match diff.WidgetChanges with
+            | Some changes -> childNode.ApplyWidgetDiffs(changes)
+            | None -> ()
 
-            if diff.WidgetCollectionChanges.Length > 0 then
-                childNode.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
+            match diff.WidgetCollectionChanges with
+            | Some changes -> childNode.ApplyWidgetCollectionDiffs(changes)
+            | None -> ()
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with
@@ -139,14 +142,18 @@ module Attributes =
                     let childNode =
                         node.GetViewNodeForChild(targetColl.[index])
 
-                    if widgetDiff.ScalarChanges.Length > 0 then
-                        childNode.ApplyScalarDiffs(widgetDiff.ScalarChanges)
+                    match widgetDiff.ScalarChanges with
+                    | Some changes -> childNode.ApplyScalarDiffs(changes)
+                    | None -> ()
 
-                    if widgetDiff.WidgetChanges.Length > 0 then
-                        childNode.ApplyWidgetDiffs(widgetDiff.WidgetChanges)
+                    match widgetDiff.WidgetChanges with
+                    | Some changes -> childNode.ApplyWidgetDiffs(changes)
+                    | None -> ()
 
-                    if widgetDiff.WidgetCollectionChanges.Length > 0 then
-                        childNode.ApplyWidgetCollectionDiffs(widgetDiff.WidgetCollectionChanges)
+                    match widgetDiff.WidgetCollectionChanges with
+                    | Some changes -> childNode.ApplyWidgetCollectionDiffs(changes)
+                    | None -> ()
+
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget

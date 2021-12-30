@@ -1,5 +1,7 @@
 namespace Fabulous
 
+open Fabulous.StackAllocatedCollections
+
 
 
 module View =
@@ -19,7 +21,7 @@ module View =
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(
             Memo.MemoWidgetKey,
-            struct ([| Memo.MemoAttribute.WithValue(memo) |], [||], [||])
+            struct (StackArray3.one(Memo.MemoAttribute.WithValue(memo)), None, None)
         )
 
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =

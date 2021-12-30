@@ -135,7 +135,7 @@ module SimpleStackTests =
     let init () = []
 
     [<Test>]
-    let SketchAPI () =
+    let Test () =
         let program =
             StatefulWidget.mkSimpleView init update view
 
@@ -159,7 +159,7 @@ module SimpleStackTests =
 
         // add second in front
         instance.ProcessMessage(AddNew(2, "yo2"))
-        Assert.AreEqual(stack.Children.Count, 2)
+        Assert.AreEqual(2, stack.Children.Count)
 
         let label =
             stack.Children.[0] :?> TestLabel :> IText
@@ -523,6 +523,7 @@ module MemoTests =
                         model
                         (fun _ ->
                             Label("one")
+                                .record(true)
                                 .textColor("blue")
                                 .automationId("label"))
                 | Label2 ->
@@ -530,6 +531,7 @@ module MemoTests =
                         (string model)
                         (fun _ ->
                             Label("two")
+                                .record(true)
                                 .textColor("blue")
                                 .automationId("label"))
             }

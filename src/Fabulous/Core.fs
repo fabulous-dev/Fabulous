@@ -57,9 +57,9 @@ and [<Struct>] Widget =
 #if DEBUG
         DebugName: string
 #endif
-        ScalarAttributes: ScalarAttribute []
-        WidgetAttributes: WidgetAttribute []
-        WidgetCollectionAttributes: WidgetCollectionAttribute []
+        ScalarAttributes: ScalarAttribute [] option
+        WidgetAttributes: WidgetAttribute [] option
+        WidgetCollectionAttributes: WidgetCollectionAttribute [] option
     }
 
 [<Struct; RequireQualifiedAccess>]
@@ -87,9 +87,9 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
 
 and [<Struct>] WidgetDiff =
     {
-        ScalarChanges: ScalarChange []
-        WidgetChanges: WidgetChange []
-        WidgetCollectionChanges: WidgetCollectionChange []
+        ScalarChanges: ScalarChange [] option
+        WidgetChanges: WidgetChange [] option
+        WidgetCollectionChanges: WidgetCollectionChange [] option
     }
 
 /// Context of the whole view tree

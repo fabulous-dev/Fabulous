@@ -30,6 +30,7 @@ type TestLabel() =
 
     let mutable text = ""
     let mutable textColor = ""
+    member val record = false with get, set
 
     member val changeList = [] with get, set
 
@@ -37,13 +38,17 @@ type TestLabel() =
         member x.Text
             with get () = text
             and set (value) =
-                x.changeList <- List.append x.changeList [ TextSet value ]
+                if x.record then
+                    x.changeList <- List.append x.changeList [ TextSet value ]
+
                 text <- value
 
         member x.TextColor
             with get () = textColor
             and set (value) =
-                x.changeList <- List.append x.changeList [ ColorSet value ]
+                if x.record then
+                    x.changeList <- List.append x.changeList [ ColorSet value ]
+
                 textColor <- value
 
 type TestStack() =
