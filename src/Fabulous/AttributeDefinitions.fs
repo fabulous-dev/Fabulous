@@ -4,8 +4,8 @@ open Fabulous
 open System.Collections.Generic
 
 type IAttributeDefinition =
-    abstract member Key: AttributeKey
-    abstract member UpdateNode: newValueOpt: obj voption * node: IViewNode -> unit
+    abstract member Key : AttributeKey
+    abstract member UpdateNode : newValueOpt: obj voption * node: IViewNode -> unit
 
 [<Struct; RequireQualifiedAccess>]
 type ScalarAttributeComparison =
@@ -14,74 +14,105 @@ type ScalarAttributeComparison =
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition
-    abstract member CompareBoxed: a: obj * b: obj -> ScalarAttributeComparison
+    abstract member CompareBoxed : a: obj * b: obj -> ScalarAttributeComparison
 
 /// Attribute definition for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType> =
-    { Key: AttributeKey
-      Name: string
-      Convert: 'inputType -> 'modelType
-      Compare: 'modelType * 'modelType -> ScalarAttributeComparison
-      UpdateNode: 'modelType voption * IViewNode -> unit }
+    {
+        Key: AttributeKey
+        Name: string
+        Convert: 'inputType -> 'modelType
+        Compare: 'modelType * 'modelType -> ScalarAttributeComparison
+        UpdateNode: 'modelType voption * IViewNode -> unit
+    }
 
-    member x.WithValue(value): ScalarAttribute =
-        { Key = x.Key
+    member x.WithValue(value) : ScalarAttribute =
+        {
+            Key = x.Key
 #if DEBUG
-          DebugName = x.Name
+            DebugName = x.Name
 #endif
-          Value = x.Convert(value) }
+            Value = x.Convert(value)
+        }
 
     interface IScalarAttributeDefinition with
         member x.Key = x.Key
-        member x.CompareBoxed(a, b) = x.Compare (unbox<'modelType> a, unbox<'modelType> b)
+
+        member x.CompareBoxed(a, b) =
+            x.Compare(unbox<'modelType> a, unbox<'modelType> b)
+
         member x.UpdateNode(newValueOpt, node) =
-            let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<'modelType> v)
+            let newValueOpt =
+                match newValueOpt with
+                | ValueNone -> ValueNone
+                | ValueSome v -> ValueSome(unbox<'modelType> v)
+
             x.UpdateNode(newValueOpt, node)
 
 /// Attribute definition for widget properties
 type WidgetAttributeDefinition =
-    { Key: AttributeKey
-      Name: string
-      ApplyDiff: WidgetDiff * IViewNode -> unit
-      UpdateNode: Widget voption * IViewNode -> unit }
+    {
+        Key: AttributeKey
+        Name: string
+        ApplyDiff: WidgetDiff * IViewNode -> unit
+        UpdateNode: Widget voption * IViewNode -> unit
+    }
 
-    member x.WithValue(value: Widget): WidgetAttribute =
-        { Key = x.Key
+    member x.WithValue(value: Widget) : WidgetAttribute =
+        {
+            Key = x.Key
 #if DEBUG
-          DebugName = x.Name
+            DebugName = x.Name
 #endif
-          Value = value }
+            Value = value
+        }
 
     interface IAttributeDefinition with
         member x.Key = x.Key
+
         member x.UpdateNode(newValueOpt, node) =
-            let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget> v)
+            let newValueOpt =
+                match newValueOpt with
+                | ValueNone -> ValueNone
+                | ValueSome v -> ValueSome(unbox<Widget> v)
+
             x.UpdateNode(newValueOpt, node)
-            
+
 /// Attribute definition for collection properties
 type WidgetCollectionAttributeDefinition =
-    { Key: AttributeKey
-      Name: string
-      ApplyDiff: WidgetCollectionItemChange[] * IViewNode -> unit
-      UpdateNode: Widget[] voption * IViewNode -> unit }
-            
-    member x.WithValue(value: Widget[]): WidgetCollectionAttribute =
-        { Key = x.Key
+    {
+        Key: AttributeKey
+        Name: string
+        ApplyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit
+        UpdateNode: Widget [] voption * IViewNode -> unit
+    }
+
+    member x.WithValue(value: Widget []) : WidgetCollectionAttribute =
+        {
+            Key = x.Key
 #if DEBUG
-          DebugName = x.Name
+            DebugName = x.Name
 #endif
-          Value = value }
-            
+            Value = value
+        }
+
     interface IAttributeDefinition with
         member x.Key = x.Key
+
         member x.UpdateNode(newValueOpt, node) =
-            let newValueOpt = match newValueOpt with ValueNone -> ValueNone | ValueSome v -> ValueSome (unbox<Widget[]> v)
+            let newValueOpt =
+                match newValueOpt with
+                | ValueNone -> ValueNone
+                | ValueSome v -> ValueSome(unbox<Widget []> v)
+
             x.UpdateNode(newValueOpt, node)
-    
+
 module AttributeDefinitionStore =
-    let private _attributes = Dictionary<AttributeKey, IAttributeDefinition>()
+    let private _attributes =
+        Dictionary<AttributeKey, IAttributeDefinition>()
+
     let mutable private _nextKey = 0
-    
+
     let get key = _attributes.[key]
     let set key value = _attributes.[key] <- value
     let remove key = _attributes.Remove(key) |> ignore

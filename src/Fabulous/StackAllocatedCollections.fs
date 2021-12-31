@@ -73,12 +73,12 @@ module StackArray3 =
         match arr with
         | Few (struct (size, v0, v1, v2)) ->
             match (size, test v0, test v1, test v2) with
-            | (Size.One, true, _, _)
-            | (Size.Two, true, _, _)
-            | (Size.Three, true, _, _) -> v0
-            | (Size.Two, false, true, _)
-            | (Size.Three, false, true, _) -> v1
-            | (Size.Three, false, false, true) -> v2
+            | Size.One, true, _, _
+            | Size.Two, true, _, _
+            | Size.Three, true, _, _ -> v0
+            | Size.Two, false, true, _
+            | Size.Three, false, true, _ -> v1
+            | Size.Three, false, false, true -> v2
             | _ -> KeyNotFoundException() |> raise
         | Many arr -> Array.find test arr
 
@@ -105,19 +105,19 @@ module StackArray3 =
                 // abc acb bac bca cba cab
 
                 //  a, c, b
-                | (a, b, c) when a <= c && c <= b -> three(v0, v2, v1)
+                | a, b, c when a <= c && c <= b -> three(v0, v2, v1)
 
                 //  b, a, c
-                | (a, b, c) when b <= a && a <= c -> three(v1, v0, v2)
+                | a, b, c when b <= a && a <= c -> three(v1, v0, v2)
 
                 //  b, c, a
-                | (a, b, c) when b <= c && c <= a -> three(v1, v2, v0)
+                | a, b, c when b <= c && c <= a -> three(v1, v2, v0)
 
                 //  c, b, a
-                | (a, b, c) when c <= b && b <= a -> three(v2, v1, v0)
+                | a, b, c when c <= b && b <= a -> three(v2, v1, v0)
 
                 //  c, a, b
-                | (a, b, c) when c <= a && a <= b -> three(v2, v0, v1)
+                | a, b, c when c <= a && a <= b -> three(v2, v0, v1)
 
                 // a, b, c left, thus already sorted
                 | _ -> arr
@@ -213,6 +213,12 @@ module MutStackArray1 =
         | Empty -> Array.empty
         | One v -> [| v |]
         | Many (struct (count, arr)) -> Array.take(int count) arr
+
+    let toArraySlice (arr: T<'v> inref) : ArraySlice<'v> voption =
+        match arr with
+        | Empty -> ValueNone
+        | One v -> ValueSome(1us, [| v |])
+        | Many slice -> ValueSome slice
 
     let inline length (arr: T<'v> inref) : int =
         match arr with

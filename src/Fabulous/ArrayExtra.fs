@@ -1,8 +1,30 @@
 namespace Fabulous
 
+open Microsoft.FSharp.Core
+
+// TODO try to use it to optimize ArraySlice<'t> voption type
+// that is, potentially save on padding + optimize readability
+//
+//[<Struct; RequireQualifiedAccess; NoComparison>]
+//type PartialArray<'v> =
+//    | Empty
+//    | Filled of ArraySlice<'v>
+//
+//module PartialArray =
+//    let inline isEmpty (arr: PartialArray<'v>) : bool =
+//        match arr with
+//        | PartialArray.Empty -> true
+//        | PartialArray.Filled (used, _) -> used > 0us
+//
+//    let inline fromArray (arr: 'v []) : PartialArray<'v> =
+//        match arr.Length with
+//        | 0 -> PartialArray.Empty
+//        | len -> PartialArray.Filled(uint16 len, arr)
+
+
 module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
-        let res = Array.zeroCreate (arr.Length + 1)
+        let res = Array.zeroCreate(arr.Length + 1)
         Array.blit arr 0 res 0 arr.Length
         res.[arr.Length] <- v
         res
@@ -18,7 +40,7 @@ module Array =
         for i in [ 1 .. N - 1 ] do
             for j = i downto 1 do
                 let key = getKey attrs.[j]
-                let prevKey = getKey (attrs.[j - 1])
+                let prevKey = getKey(attrs.[j - 1])
 
                 if key < prevKey then
                     let temp = attrs.[j]

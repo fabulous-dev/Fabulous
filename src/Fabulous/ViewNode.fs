@@ -64,7 +64,7 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
             if not targetRef.IsAlive then
                 ()
             else
-                for diff in diffs do
+                for diff in ArraySlice.toSpan diffs do
                     match diff with
                     | WidgetChange.Added newWidget
                     | WidgetChange.ReplacedBy newWidget ->
@@ -89,7 +89,7 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
             if not targetRef.IsAlive then
                 ()
             else
-                for diff in diffs do
+                for diff in ArraySlice.toSpan diffs do
                     match diff with
                     | WidgetCollectionChange.Added added ->
                         let definition =

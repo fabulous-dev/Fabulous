@@ -78,7 +78,7 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: WidgetCollectionItemChange [] * IViewNode -> unit)
+        (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
         (updateNode: Widget [] voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
@@ -104,12 +104,12 @@ module Attributes =
             | None -> ()
 
             match diff.WidgetChanges with
-            | Some changes -> childNode.ApplyWidgetDiffs(changes)
-            | None -> ()
+            | ValueSome slice -> childNode.ApplyWidgetDiffs(slice)
+            | ValueNone -> ()
 
             match diff.WidgetCollectionChanges with
-            | Some changes -> childNode.ApplyWidgetCollectionDiffs(changes)
-            | None -> ()
+            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(slice)
+            | ValueNone -> ()
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with
@@ -124,15 +124,15 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff (diffs: WidgetCollectionItemChange [], node: IViewNode) =
+        let applyDiff (diffs: ArraySlice<WidgetCollectionItemChange>, node: IViewNode) =
             let targetColl = getCollection node.Target
 
-            for diff in diffs do
+            for diff in ArraySlice.toSpan diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove index -> targetColl.RemoveAt(index)
                 | _ -> ()
 
-            for diff in diffs do
+            for diff in ArraySlice.toSpan diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -147,13 +147,12 @@ module Attributes =
                     | None -> ()
 
                     match widgetDiff.WidgetChanges with
-                    | Some changes -> childNode.ApplyWidgetDiffs(changes)
-                    | None -> ()
+                    | ValueSome slice -> childNode.ApplyWidgetDiffs(slice)
+                    | ValueNone -> ()
 
                     match widgetDiff.WidgetCollectionChanges with
-                    | Some changes -> childNode.ApplyWidgetCollectionDiffs(changes)
-                    | None -> ()
-
+                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(slice)
+                    | ValueNone -> ()
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget

@@ -117,14 +117,22 @@ module Reconciler =
         (canReuseView: Widget -> Widget -> bool)
         (prev: WidgetAttribute [] option)
         (next: WidgetAttribute [] option)
-        : WidgetChange [] option =
+        : ArraySlice<WidgetChange> voption =
 
         match (prev, next) with
-        | None, None -> None
+        | None, None -> ValueNone
 
         // all were deleted
-        | Some prev, None -> prev |> Array.map WidgetChange.Removed |> Some
-        | None, Some next -> next |> Array.map WidgetChange.Added |> Some
+        | Some prev, None ->
+            prev
+            |> Array.map WidgetChange.Removed
+            |> ArraySlice.fromArray
+
+        | None, Some next ->
+            next
+            |> Array.map WidgetChange.Added
+            |> ArraySlice.fromArray
+
         | Some prev, Some next ->
 
             let mutable result = MutStackArray1.Empty
@@ -188,28 +196,27 @@ module Reconciler =
                         | ValueNone -> ()
                         | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
 
-            match MutStackArray1.length &result with
-            | 0 -> None
-            | _ -> Some(MutStackArray1.toArray &result)
+            MutStackArray1.toArraySlice &result
+
 
     and diffWidgetCollectionAttributes
         (canReuseView: Widget -> Widget -> bool)
         (prev: WidgetCollectionAttribute [] option)
         (next: WidgetCollectionAttribute [] option)
-        : WidgetCollectionChange [] option =
+        : ArraySlice<WidgetCollectionChange> voption =
 
         match (prev, next) with
-        | None, None -> None
+        | None, None -> ValueNone
 
         // all were deleted
         | Some prev, None ->
             prev
             |> Array.map WidgetCollectionChange.Removed
-            |> Some
+            |> ArraySlice.fromArray
         | None, Some next ->
             next
             |> Array.map WidgetCollectionChange.Added
-            |> Some
+            |> ArraySlice.fromArray
         | Some prev, Some next ->
 
             let mutable result = MutStackArray1.Empty
@@ -267,21 +274,24 @@ module Reconciler =
                         prevIndex <- prevIndex + 1
                         nextIndex <- nextIndex + 1
 
-                        let change =
-                            WidgetCollectionChange.Updated
-                                struct (nextAttr, diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl)
+                        let diff =
+                            diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl
 
-                        result <- MutStackArray1.addMut(&result, change)
+                        match diff with
+                        | ValueNone -> ()
+                        | ValueSome slice ->
+                            let change =
+                                WidgetCollectionChange.Updated struct (nextAttr, slice)
 
-            match MutStackArray1.length &result with
-            | 0 -> None
-            | _ -> Some(MutStackArray1.toArray &result)
+                            result <- MutStackArray1.addMut(&result, change)
+
+            MutStackArray1.toArraySlice &result
 
     and diffWidgetCollections
         (canReuseView: Widget -> Widget -> bool)
         (prev: Widget array)
         (next: Widget array)
-        : WidgetCollectionItemChange [] =
+        : ArraySlice<WidgetCollectionItemChange> voption =
         let mutable result = MutStackArray1.Empty
 
         if prev.Length > next.Length then
@@ -308,7 +318,7 @@ module Reconciler =
             | ValueNone -> ()
             | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
 
-        MutStackArray1.toArray &result
+        MutStackArray1.toArraySlice &result
 
     and diffWidget
         (canReuseView: Widget -> Widget -> bool)
@@ -341,7 +351,7 @@ module Reconciler =
 
 
         match (scalarDiffs, widgetDiffs, collectionDiffs) with
-        | None, None, None -> ValueNone
+        | None, ValueNone, ValueNone -> ValueNone
         | _ ->
             ValueSome
                 {
@@ -365,9 +375,9 @@ module Reconciler =
             | None -> ()
 
             match diff.WidgetChanges with
-            | Some changes -> node.ApplyWidgetDiffs(changes)
-            | None -> ()
+            | ValueSome slice -> node.ApplyWidgetDiffs(slice)
+            | ValueNone -> ()
 
             match diff.WidgetCollectionChanges with
-            | Some changes -> node.ApplyWidgetCollectionDiffs(changes)
-            | None -> ()
+            | ValueSome slice -> node.ApplyWidgetCollectionDiffs(slice)
+            | ValueNone -> ()
