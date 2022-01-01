@@ -140,10 +140,12 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
             }
 
         member inline x.Run(c: Content<'msg>) =
-            WidgetBuilder<'msg, 'marker>(
-                x.WidgetKey,
-                struct (x.Scalars, None, Some [| x.Attr.WithValue(MutStackArray1.toArray &c.Widgets) |])
-            )
+            let attrValue =
+                match MutStackArray1.toArraySlice &c.Widgets with
+                | ValueNone -> ArraySlice.emptyWithNull()
+                | ValueSome slice -> slice
+
+            WidgetBuilder<'msg, 'marker>(x.WidgetKey, struct (x.Scalars, None, Some [| x.Attr.WithValue(attrValue) |]))
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
             let res =
@@ -176,7 +178,12 @@ type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
             { Widget = widget; Attr = attr }
 
         member inline x.Run(c: Content<'msg>) =
-            x.Widget.AddWidgetCollection(x.Attr.WithValue(MutStackArray1.toArray &c.Widgets))
+            let attrValue =
+                match MutStackArray1.toArraySlice &c.Widgets with
+                | ValueNone -> ArraySlice.emptyWithNull()
+                | ValueSome slice -> slice
+
+            x.Widget.AddWidgetCollection(x.Attr.WithValue(attrValue))
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
             {

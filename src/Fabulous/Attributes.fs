@@ -79,7 +79,7 @@ module Attributes =
     let defineWidgetCollectionWithConverter
         name
         (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
-        (updateNode: Widget [] voption * IViewNode -> unit)
+        (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -160,14 +160,14 @@ module Attributes =
 
                 | _ -> ()
 
-        let updateNode (newValueOpt: Widget [] voption, node: IViewNode) =
+        let updateNode (newValueOpt: ArraySlice<Widget> voption, node: IViewNode) =
             let targetColl = getCollection node.Target
             targetColl.Clear()
 
             match newValueOpt with
             | ValueNone -> ()
             | ValueSome widgets ->
-                for widget in widgets do
+                for widget in ArraySlice.toSpan widgets do
                     let view = Helpers.createViewForWidget node widget
                     targetColl.Add(unbox view)
 

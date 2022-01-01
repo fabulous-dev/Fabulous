@@ -291,10 +291,13 @@ module Reconciler =
 
     and diffWidgetCollections
         (canReuseView: Widget -> Widget -> bool)
-        (prev: Widget array)
-        (next: Widget array)
+        (prev: ArraySlice<Widget>)
+        (next: ArraySlice<Widget>)
         : ArraySlice<WidgetCollectionItemChange> voption =
         let mutable result = MutStackArray1.Empty
+
+        let prev = ArraySlice.toSpan prev
+        let next = ArraySlice.toSpan next
 
         if prev.Length > next.Length then
             for i = next.Length to prev.Length - 1 do
@@ -302,19 +305,24 @@ module Reconciler =
 
         for i = 0 to next.Length - 1 do
             let currItem = next.[i]
-            let prevItemOpt = Array.tryItem i prev
+            //            index < 0 || index >= array.Length ? (FSharpOption<T>) null : FSharpOption<T>.Some(array[index]);
+            let prevItemOpt =
+                if (i >= prev.Length) then
+                    ValueNone
+                else
+                    ValueSome prev.[i]
 
             let changeOpt =
                 match prevItemOpt with
-                | None -> ValueSome(WidgetCollectionItemChange.Insert struct (i, currItem))
+                | ValueNone -> ValueSome(WidgetCollectionItemChange.Insert struct (i, currItem))
 
-                | Some prevItem when canReuseView prevItem currItem ->
+                | ValueSome prevItem when canReuseView prevItem currItem ->
 
                     match diffWidget canReuseView (ValueSome prevItem) currItem with
                     | ValueNone -> ValueNone
                     | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
 
-                | Some _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
+                | ValueSome _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
 
             match changeOpt with
             | ValueNone -> ()

@@ -7,7 +7,12 @@ type ArraySlice<'v> = (struct (uint16 * 'v array))
 module ArraySlice =
     let inline toSpan (a: ArraySlice<'v>) =
         let struct (size, arr) = a
-        Span(arr, 0, int size)
+
+        match size with
+        | 0us -> Span.Empty
+        | size -> Span(arr, 0, int size)
+
+    let inline emptyWithNull () : ArraySlice<'v> = (0us, null) // note null in here
 
     let inline fromArrayOpt (arr: 'v [] option) : ArraySlice<'v> voption =
         match arr with

@@ -49,7 +49,7 @@ and [<Struct>] WidgetCollectionAttribute =
 #if DEBUG
         DebugName: string
 #endif
-        Value: Widget []
+        Value: ArraySlice<Widget>
     }
 
 /// Represents a virtual UI element such as a Label, a Button, etc.

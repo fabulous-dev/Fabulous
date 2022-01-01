@@ -84,10 +84,10 @@ type WidgetCollectionAttributeDefinition =
         Key: AttributeKey
         Name: string
         ApplyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit
-        UpdateNode: Widget [] voption * IViewNode -> unit
+        UpdateNode: ArraySlice<Widget> voption * IViewNode -> unit
     }
 
-    member x.WithValue(value: Widget []) : WidgetCollectionAttribute =
+    member x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =
         {
             Key = x.Key
 #if DEBUG
@@ -103,7 +103,7 @@ type WidgetCollectionAttributeDefinition =
             let newValueOpt =
                 match newValueOpt with
                 | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<Widget []> v)
+                | ValueSome v -> ValueSome(unbox<ArraySlice<Widget>> v)
 
             x.UpdateNode(newValueOpt, node)
 
