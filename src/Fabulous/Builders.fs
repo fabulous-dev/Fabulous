@@ -20,19 +20,19 @@ type WidgetBuilder<'msg, 'marker> =
         new(key: WidgetKey, scalar: ScalarAttribute) =
             {
                 Key = key
-                Attributes = struct (StackArray3.one scalar, None, None)
+                Attributes = AttributesBundle(StackArray3.one scalar, None, None)
             }
 
         new(key: WidgetKey, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
             {
                 Key = key
-                Attributes = struct (StackArray3.two(scalarA, scalarB), None, None)
+                Attributes = AttributesBundle(StackArray3.two(scalarA, scalarB), None, None)
             }
 
         new(key: WidgetKey, scalar1: ScalarAttribute, scalar2: ScalarAttribute, scalar3: ScalarAttribute) =
             {
                 Key = key
-                Attributes = struct (StackArray3.three(scalar1, scalar2, scalar3), None, None)
+                Attributes = AttributesBundle(StackArray3.three(scalar1, scalar2, scalar3), None, None)
             }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -62,10 +62,6 @@ type WidgetBuilder<'msg, 'marker> =
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
-            //        let attribs = scalarAttributes
-            //        let attribs2 = Array.zeroCreate(attribs.Length + 1)
-            //        Array.blit attribs 0 attribs2 0 attribs.Length
-            //        attribs2.[attribs.Length] <- attr
 
             WidgetBuilder<'msg, 'marker>(
                 x.Key,
@@ -105,28 +101,19 @@ type WidgetBuilder<'msg, 'marker> =
             WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, Some res))
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
-        member x.AddScalars(attrs: ScalarAttribute []) : WidgetBuilder<'msg, 'marker> =
+        member inline x.AddScalars(scalars: StackArray3<ScalarAttribute>) : WidgetBuilder<'msg, 'marker> =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
-            //        if attrs.Length = 0 then
-            //            x
-            //        else
-            //            let attribs = scalarAttributes
-            //
-            //            let attribs2 =
-            //                Array.zeroCreate(attribs.Length + attrs.Length)
-            //
-            //            Array.blit attribs 0 attribs2 0 attribs.Length
-            //            Array.blit attrs 0 attribs2 attribs.Length attrs.Length
-            // TODO
-            failwith "TODO"
+
+            WidgetBuilder<'msg, 'marker>(
+                x.Key,
+                AttributesBundle(
+                    StackArray3.combine scalarAttributes scalars,
+                    widgetAttributes,
+                    widgetCollectionAttributes
+                )
+            )
     end
 
-//        let t = (StackArray3.fromArray attrs)
-//
-//        let newScalars =
-//            StackArray3.combine(&scalarAttributes, &t)
-//
-//        WidgetBuilder<'msg, 'marker>(key, struct (newScalars, widgetAttributes, widgetCollectionAttributes))
 
 [<Struct>]
 type Content<'msg> = { Widgets: MutStackArray1.T<Widget> }
@@ -175,7 +162,10 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
                 | ValueNone -> ArraySlice.emptyWithNull()
                 | ValueSome slice -> slice
 
-            WidgetBuilder<'msg, 'marker>(x.WidgetKey, struct (x.Scalars, None, Some [| x.Attr.WithValue(attrValue) |]))
+            WidgetBuilder<'msg, 'marker>(
+                x.WidgetKey,
+                AttributesBundle(x.Scalars, None, Some [| x.Attr.WithValue(attrValue) |])
+            )
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
             let res =
