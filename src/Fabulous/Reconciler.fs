@@ -213,10 +213,12 @@ module Reconciler =
             prev
             |> Array.map WidgetCollectionChange.Removed
             |> ArraySlice.fromArray
+
         | None, Some next ->
             next
             |> Array.map WidgetCollectionChange.Added
             |> ArraySlice.fromArray
+
         | Some prev, Some next ->
 
             let mutable result = MutStackArray1.Empty

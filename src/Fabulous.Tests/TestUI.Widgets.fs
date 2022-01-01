@@ -104,8 +104,6 @@ type WidgetExtensions() =
         this.AddScalar(Attributes.Text.Record.WithValue(value))
 
 
-let inline private scalars (value: StackArray3<ScalarAttribute>) : AttributesInFlight = struct (value, None, None)
-
 ///----------------
 
 [<AbstractClass; Sealed>]
@@ -115,20 +113,14 @@ type View private () =
     static let TestStackKey = Widgets.register<TestStack>()
 
     static member Label<'msg>(text: string) =
-        WidgetBuilder<'msg, TestLabelMarker>(
-            TestLabelKey,
-            scalars(StackArray3.one(Attributes.Text.Text.WithValue(text)))
-        )
+        WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
 
 
     static member Button<'msg>(text: string, onClicked: 'msg) =
         WidgetBuilder<'msg, TestButtonMarker>(
             TestButtonKey,
-            scalars(
-                StackArray3.two(Attributes.Text.Text.WithValue(text), Attributes.Button.Pressed.WithValue(onClicked))
-            )
-        //            scalars [| Attributes.Text.Text.WithValue(text)
-//                       Attributes.Button.Pressed.WithValue(onClicked) |]
+            Attributes.Text.Text.WithValue(text),
+            Attributes.Button.Pressed.WithValue(onClicked)
         )
 
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
@@ -147,7 +139,7 @@ type CollectionBuilderExtensions =
             x: WidgetBuilder<'msg, 'itemMarker>
         ) : Content<'msg> =
         {
-            Widgets = StackArray3.one(x.Compile())
+            Widgets = MutStackArray1.One(x.Compile())
         }
 
     [<Extension>]
@@ -157,21 +149,22 @@ type CollectionBuilderExtensions =
             x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
         ) : Content<'msg> =
         {
-            Widgets = StackArray3.one(x.Compile())
+            Widgets = MutStackArray1.One(x.Compile())
         }
 
     [<Extension>]
-    static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+    static member YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
         (
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker> seq
         ) : Content<'msg> =
+        // TODO optimize this one with addMut
         {
             Widgets =
                 x
                 |> Seq.map(fun wb -> wb.Compile())
                 |> Seq.toArray
-                |> StackArray3.many
+                |> MutStackArray1.fromArray
         }
 
 

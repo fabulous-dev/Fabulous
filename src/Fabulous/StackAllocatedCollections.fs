@@ -17,7 +17,7 @@ type Size =
     | Three = 3uy
 
 
-[<Struct; NoComparison>]
+[<Struct; NoComparison; NoEquality>]
 type StackArray3<'v> =
     | Few of data: struct (Size * 'v * 'v * 'v)
     | Many of arr: 'v array
@@ -170,12 +170,13 @@ module StackArray3 =
 
 
 module MutStackArray1 =
-
-    [<IsByRefLike; Struct>]
+    [<Struct; NoComparison; NoEquality>]
     type T<'v> =
         | Empty
         | One of one: 'v
-        | Many of struct (uint16 * 'v [])
+        | Many of ArraySlice<'v>
+
+    let inline private grow size = max((size * 3) / 2) size + 1
 
     let addMut (arr: T<'v> inref, value: 'v) : T<'v> =
         match arr with
@@ -202,19 +203,25 @@ module MutStackArray1 =
                     // count is at least 2
                     // thus it is either going to grow at least by 1
                     // note that the growth rate is slower than ResizeArray
-                    Array.zeroCreate(max((countInt * 2) / 3) countInt + 1)
+                    Array.zeroCreate(grow mutArr.Length)
 
                 Array.blit mutArr 0 res 0 mutArr.Length
                 res.[countInt] <- value
                 Many(count + 1us, res)
 
-    let toArray (arr: T<'v> inref) : 'v array =
+    let inline toArray (arr: T<'v> inref) : 'v array =
         match arr with
         | Empty -> Array.empty
         | One v -> [| v |]
         | Many (struct (count, arr)) -> Array.take(int count) arr
 
-    let toArraySlice (arr: T<'v> inref) : ArraySlice<'v> voption =
+    let inline fromArray (arr: 'v array) : T<'v> =
+        match arr.Length with
+        | 0 -> Empty
+        | 1 -> One arr.[0]
+        | size -> Many(uint16 size, arr)
+
+    let inline toArraySlice (arr: T<'v> inref) : ArraySlice<'v> voption =
         match arr with
         | Empty -> ValueNone
         | One v -> ValueSome(1us, [| v |])
@@ -225,6 +232,111 @@ module MutStackArray1 =
         | Empty -> 0
         | One v -> 1
         | Many (struct (count, _)) -> int count
+
+    let combineMut (a: T<'v> inref, b: T<'v>) : T<'v> =
+        match b with
+        | Empty -> a
+        | One bv -> addMut(&a, bv)
+        | Many sliceB ->
+            match a with
+            | Empty -> b
+            | One av ->
+                let struct (used, arr) = sliceB
+
+                if arr.Length >= (int used) + 1 then
+                    // it means that arr can fit one more element
+                    let arr = ArraySlice.shiftByMut &sliceB 1us
+                    arr.[0] <- av
+                    Many(used + 1us, arr)
+                else
+                    // we need to allocate a new one more
+                    // Note very scientific formula of growth
+                    let newArr = Array.zeroCreate(grow(arr.Length))
+
+                    Array.blit arr 0 newArr 1 (int used)
+                    newArr.[0] <- av
+                    Many(used + 1us, newArr)
+
+            | Many sliceA ->
+                let struct (usedA, arrA) = sliceA
+                let struct (usedB, arrB) = sliceB
+
+                let newSize = usedA + usedB
+                let usedA = int usedA
+                let usedB = int usedB
+
+                if arrA.Length >= usedB + usedA then
+                    // a can fit both
+                    Array.blit arrB 0 arrA usedA usedB
+                    Many(newSize, arrA)
+                elif arrB.Length >= usedB + usedA then
+                    // b can fit both
+                    let arr =
+                        ArraySlice.shiftByMut &sliceB (uint16 usedA)
+
+                    Array.blit arrA 0 arr 0 usedA
+                    Many(newSize, arrA)
+                else
+                    // None of them can fit the result
+                    // thus allocate a new one
+                    let newArr = Array.zeroCreate(grow(usedA + usedB))
+
+                    Array.blit arrA 0 newArr 0 usedA
+                    Array.blit arrB 0 newArr usedA usedB
+
+                    Many(newSize, newArr)
+
+
+//        match (a, b) with
+//        | Empty, _ -> b
+//        | _, Empty -> a
+//        | _, One bv -> addMut(&a, bv)
+//        | One av, Many slice ->
+//            let struct (used, arr) = slice
+//
+//            if arr.Length >= (int used) + 1 then
+//                // it means that arr can fit one more element
+//                let arr = ArraySlice.shiftByMut &slice 1us
+//                arr.[0] <- av
+//                Many(used + 1us, arr)
+//            else
+//                // we need to allocate a new one more
+//                // Note very scientific formula of growth
+//                let newArr = Array.zeroCreate(grow(arr.Length + 1))
+//
+//                Array.blit arr 0 newArr 1 (int used)
+//                newArr.[0] <- av
+//                Many(used + 1us, newArr)
+//
+//        | Many sliceA, Many sliceB ->
+//            let struct (usedA, arrA) = sliceA
+//            let struct (usedB, arrB) = sliceB
+//
+//            let newSize = usedA + usedB
+//            let usedA = int usedA
+//            let usedB = int usedB
+//
+//            if arrA.Length >= usedB + usedA then
+//                // a can fit both
+//                Array.blit arrB 0 arrA usedA usedB
+//                Many(newSize, arrA)
+//            elif arrB.Length >= usedB + usedA then
+//                // b can fit both
+//                let arr =
+//                    ArraySlice.shiftByMut &sliceB (uint16 usedA)
+//
+//                Array.blit arrA 0 arr 0 usedA
+//                Many(newSize, arrA)
+//            else
+//                // None of them can fit the result
+//                // thus allocate a new one
+//                let newArr = Array.zeroCreate(grow(usedA + usedB))
+//
+//                Array.blit arrA 0 newArr 0 usedA
+//                Array.blit arrB 0 newArr usedA usedB
+//
+//                Many(newSize, newArr)
+
 
 open FSharp.NativeInterop
 
@@ -253,7 +365,6 @@ type DiffBuilder =
                 rest = null
             }
     end
-
 
 
 

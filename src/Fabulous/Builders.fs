@@ -17,6 +17,17 @@ type WidgetBuilder<'msg, 'marker> =
 
         new(key: WidgetKey, attributes: AttributesInFlight) = { Key = key; Attributes = attributes }
 
+        new(key: WidgetKey, scalar: ScalarAttribute) =
+            {
+                Key = key
+                Attributes = struct (StackArray3.one scalar, None, None)
+            }
+
+        new(key: WidgetKey, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
+            {
+                Key = key
+                Attributes = struct (StackArray3.two(scalarA, scalarB), None, None)
+            }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.Compile() : Widget =
@@ -112,9 +123,9 @@ type WidgetBuilder<'msg, 'marker> =
 //        WidgetBuilder<'msg, 'marker>(key, struct (newScalars, widgetAttributes, widgetCollectionAttributes))
 
 [<Struct>]
-type Content<'msg> = { Widgets: StackArray3<Widget> }
+type Content<'msg> = { Widgets: MutStackArray1.T<Widget> }
 
-[<Struct>]
+[<Struct; NoComparison; NoEquality>]
 type CollectionBuilder<'msg, 'marker, 'itemMarker> =
     struct
         val WidgetKey: WidgetKey
@@ -131,19 +142,20 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         member inline x.Run(c: Content<'msg>) =
             WidgetBuilder<'msg, 'marker>(
                 x.WidgetKey,
-                struct (x.Scalars, None, Some [| x.Attr.WithValue(StackArray3.toArray &c.Widgets) |])
+                struct (x.Scalars, None, Some [| x.Attr.WithValue(MutStackArray1.toArray &c.Widgets) |])
             )
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
-            {
-                Widgets = StackArray3.combine a.Widgets b.Widgets
-            }
+            let res =
+                MutStackArray1.combineMut(&a.Widgets, b.Widgets)
 
-        member inline _.Zero() : Content<'msg> = { Widgets = StackArray3.empty() }
+            { Widgets = res }
+
+        member inline _.Zero() : Content<'msg> = { Widgets = MutStackArray1.Empty }
 
         member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
 
-        member inline x.For<'t>(sequence: 't seq, [<InlineIfLambda>] f: 't -> Content<'msg>) : Content<'msg> =
+        member inline x.For<'t>(sequence: 't seq, f: 't -> Content<'msg>) : Content<'msg> =
             let mutable res: Content<'msg> = x.Zero()
 
             // this is essentially Fold, not sure what is more optimal
@@ -164,14 +176,14 @@ type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
             { Widget = widget; Attr = attr }
 
         member inline x.Run(c: Content<'msg>) =
-            x.Widget.AddWidgetCollection(x.Attr.WithValue(StackArray3.toArray &c.Widgets))
+            x.Widget.AddWidgetCollection(x.Attr.WithValue(MutStackArray1.toArray &c.Widgets))
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
             {
-                Widgets = StackArray3.combine a.Widgets b.Widgets
+                Widgets = MutStackArray1.combineMut(&a.Widgets, b.Widgets)
             }
 
-        member inline _.Zero() : Content<'msg> = { Widgets = StackArray3.empty() }
+        member inline _.Zero() : Content<'msg> = { Widgets = MutStackArray1.Empty }
 
         member inline _.Delay([<InlineIfLambda>] f) : Content<'msg> = f()
 
