@@ -105,7 +105,7 @@ type WidgetBuilder<'msg, 'marker> =
             WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, Some res))
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
-        member x.AddScalars(attrs: ScalarAttribute []) =
+        member x.AddScalars(attrs: ScalarAttribute []) : WidgetBuilder<'msg, 'marker> =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
             //        if attrs.Length = 0 then
             //            x
