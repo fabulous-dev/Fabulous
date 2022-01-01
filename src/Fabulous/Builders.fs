@@ -6,16 +6,16 @@ open Fabulous.StackAllocatedCollections
 open Microsoft.FSharp.Core
 
 
-type AttributesInFlight =
+type AttributesBundle =
     (struct (StackArray3<ScalarAttribute> * WidgetAttribute [] option * WidgetCollectionAttribute [] option))
 
-[<Struct>]
+[<Struct; NoComparison; NoEquality>]
 type WidgetBuilder<'msg, 'marker> =
     struct
         val Key: WidgetKey
-        val Attributes: AttributesInFlight
+        val Attributes: AttributesBundle
 
-        new(key: WidgetKey, attributes: AttributesInFlight) = { Key = key; Attributes = attributes }
+        new(key: WidgetKey, attributes: AttributesBundle) = { Key = key; Attributes = attributes }
 
         new(key: WidgetKey, scalar: ScalarAttribute) =
             {
@@ -27,6 +27,12 @@ type WidgetBuilder<'msg, 'marker> =
             {
                 Key = key
                 Attributes = struct (StackArray3.two(scalarA, scalarB), None, None)
+            }
+
+        new(key: WidgetKey, scalar1: ScalarAttribute, scalar2: ScalarAttribute, scalar3: ScalarAttribute) =
+            {
+                Key = key
+                Attributes = struct (StackArray3.three(scalar1, scalar2, scalar3), None, None)
             }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -136,6 +142,30 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
             {
                 WidgetKey = widgetKey
                 Scalars = scalars
+                Attr = attr
+            }
+
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition) =
+            {
+                WidgetKey = widgetKey
+                Scalars = StackArray3.empty()
+                Attr = attr
+            }
+
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalar: ScalarAttribute) =
+            {
+                WidgetKey = widgetKey
+                Scalars = StackArray3.one scalar
+                Attr = attr
+            }
+
+        new(widgetKey: WidgetKey,
+            attr: WidgetCollectionAttributeDefinition,
+            scalarA: ScalarAttribute,
+            scalarB: ScalarAttribute) =
+            {
+                WidgetKey = widgetKey
+                Scalars = StackArray3.two(scalarA, scalarB)
                 Attr = attr
             }
 

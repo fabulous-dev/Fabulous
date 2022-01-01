@@ -3,6 +3,7 @@
 open System
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
 open Fabulous.XamarinForms
 
 type IMarker =
@@ -69,7 +70,9 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IPage>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
@@ -77,7 +80,9 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IView>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
@@ -85,7 +90,9 @@ type CollectionBuilderExtensions =
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
@@ -93,7 +100,9 @@ type CollectionBuilderExtensions =
             _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
 module ViewHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
@@ -101,32 +110,8 @@ module ViewHelpers =
         |> Seq.map(fun item -> item.Compile())
         |> Seq.toArray
 
-    let inline buildScalars<'msg, 'marker> (key: WidgetKey) (attrs: ScalarAttribute []) =
-        WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
-
     let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =
-        WidgetBuilder<'msg, 'marker>(key, struct ([||], attrs, [||]))
-
-    let inline build<'msg, 'marker>
-        (key: WidgetKey)
-        (scalars: ScalarAttribute [])
-        (widgets: WidgetAttribute [])
-        (widgetColls: WidgetCollectionAttribute [])
-        =
-        WidgetBuilder<'msg, 'marker>(key, struct (scalars, widgets, widgetColls))
-
-    let inline buildCollectionNoScalar<'msg, 'marker, 'item>
-        (key: WidgetKey)
-        (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)
-        =
-        CollectionBuilder<'msg, 'marker, 'item>(key, ValueNone, collectionAttributeDefinition)
-
-    let inline buildCollection<'msg, 'marker, 'item>
-        (key: WidgetKey)
-        (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)
-        (scalars: ScalarAttribute [])
-        =
-        CollectionBuilder<'msg, 'marker, 'item>(key, ValueSome scalars, collectionAttributeDefinition)
+        WidgetBuilder<'msg, 'marker>(key, struct (StackArray3.empty(), Some attrs, None))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)
