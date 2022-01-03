@@ -3,11 +3,12 @@ namespace Fabulous
 open System.ComponentModel
 open Fabulous
 open Fabulous.StackAllocatedCollections
+open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.FSharp.Core
 
 
 type AttributesBundle =
-    (struct (StackArray3<ScalarAttribute> * WidgetAttribute [] option * WidgetCollectionAttribute [] option))
+    (struct (StackList<ScalarAttribute> * WidgetAttribute [] option * WidgetCollectionAttribute [] option))
 
 [<Struct; NoComparison; NoEquality>]
 type WidgetBuilder<'msg, 'marker> =
@@ -20,19 +21,19 @@ type WidgetBuilder<'msg, 'marker> =
         new(key: WidgetKey, scalar: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackArray3.one scalar, None, None)
+                Attributes = AttributesBundle(StackList.one scalar, None, None)
             }
 
         new(key: WidgetKey, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackArray3.two(scalarA, scalarB), None, None)
+                Attributes = AttributesBundle(StackList.two(scalarA, scalarB), None, None)
             }
 
         new(key: WidgetKey, scalar1: ScalarAttribute, scalar2: ScalarAttribute, scalar3: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackArray3.three(scalar1, scalar2, scalar3), None, None)
+                Attributes = AttributesBundle(StackList.three(scalar1, scalar2, scalar3), None, None)
             }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -45,9 +46,9 @@ type WidgetBuilder<'msg, 'marker> =
                 DebugName = $"{typeof<'marker>.Name}<{typeof<'msg>.Name}>"
 #endif
                 ScalarAttributes =
-                    match StackArray3.length &scalarAttributes with
-                    | 0 -> None
-                    | _ -> Some(Array.sortInPlace(fun a -> a.Key) (StackArray3.toArray &scalarAttributes))
+                    match StackList.length &scalarAttributes with
+                    | 0us -> None
+                    | _ -> Some(Array.sortInPlace(fun a -> a.Key) (StackList.toArray &scalarAttributes))
 
                 WidgetAttributes =
                     widgetAttributes
@@ -65,8 +66,23 @@ type WidgetBuilder<'msg, 'marker> =
 
             WidgetBuilder<'msg, 'marker>(
                 x.Key,
-                struct (StackArray3.add(&scalarAttributes, attr), widgetAttributes, widgetCollectionAttributes)
+                struct (StackList.add(&scalarAttributes, attr), widgetAttributes, widgetCollectionAttributes)
             )
+
+
+        //        [<EditorBrowsable(EditorBrowsableState.Never)>]
+//        member inline x.AddScalars(scalars: StackArray3<ScalarAttribute>) : WidgetBuilder<'msg, 'marker> =
+//            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+//
+//            WidgetBuilder<'msg, 'marker>(
+//                x.Key,
+//                AttributesBundle(
+//                    StackArray3.combine scalarAttributes scalars,
+//                    widgetAttributes,
+//                    widgetCollectionAttributes
+//                )
+//            )
+
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidget(attr: WidgetAttribute) =
@@ -99,20 +115,8 @@ type WidgetBuilder<'msg, 'marker> =
                     attribs2
 
             WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, Some res))
-
-        [<EditorBrowsable(EditorBrowsableState.Never)>]
-        member inline x.AddScalars(scalars: StackArray3<ScalarAttribute>) : WidgetBuilder<'msg, 'marker> =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
-
-            WidgetBuilder<'msg, 'marker>(
-                x.Key,
-                AttributesBundle(
-                    StackArray3.combine scalarAttributes scalars,
-                    widgetAttributes,
-                    widgetCollectionAttributes
-                )
-            )
     end
+
 
 
 [<Struct>]
@@ -122,10 +126,10 @@ type Content<'msg> = { Widgets: MutStackArray1.T<Widget> }
 type CollectionBuilder<'msg, 'marker, 'itemMarker> =
     struct
         val WidgetKey: WidgetKey
-        val Scalars: StackArray3<ScalarAttribute>
+        val Scalars: StackList<ScalarAttribute>
         val Attr: WidgetCollectionAttributeDefinition
 
-        new(widgetKey: WidgetKey, scalars: StackArray3<ScalarAttribute>, attr: WidgetCollectionAttributeDefinition) =
+        new(widgetKey: WidgetKey, scalars: StackList<ScalarAttribute>, attr: WidgetCollectionAttributeDefinition) =
             {
                 WidgetKey = widgetKey
                 Scalars = scalars
@@ -135,14 +139,14 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition) =
             {
                 WidgetKey = widgetKey
-                Scalars = StackArray3.empty()
+                Scalars = StackList.empty()
                 Attr = attr
             }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalar: ScalarAttribute) =
             {
                 WidgetKey = widgetKey
-                Scalars = StackArray3.one scalar
+                Scalars = StackList.one scalar
                 Attr = attr
             }
 
@@ -152,7 +156,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
             scalarB: ScalarAttribute) =
             {
                 WidgetKey = widgetKey
-                Scalars = StackArray3.two(scalarA, scalarB)
+                Scalars = StackList.two(scalarA, scalarB)
                 Attr = attr
             }
 

@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open Fabulous
 open Fabulous.StackAllocatedCollections
+open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
 open System.Runtime.CompilerServices
@@ -163,7 +164,7 @@ type ViewBuilders private () =
         WidgetBuilder<'msg, IContentPage>(
             ViewKeys.ContentPage,
             AttributesBundle(
-                StackArray3.one(Page.Title.WithValue(title)),
+                StackList.one(Page.Title.WithValue(title)),
                 Some [| ContentPage.Content.WithValue(content.Compile()) |],
                 None
             )
@@ -240,7 +241,7 @@ type ViewBuilders private () =
             ViewKeys.RefreshView,
 
             AttributesBundle(
-                StackArray3.two(
+                StackList.two(
                     RefreshView.IsRefreshing.WithValue(isRefreshing),
                     RefreshView.Refreshing.WithValue(onRefreshing)
                 ),

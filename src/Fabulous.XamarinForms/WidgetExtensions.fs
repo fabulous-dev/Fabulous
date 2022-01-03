@@ -1,6 +1,5 @@
 ﻿namespace Fabulous.XamarinForms
 
-open Fabulous.StackAllocatedCollections
 open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
@@ -52,9 +51,10 @@ type AdditionalViewExtensions =
             | Some false -> LayoutOptions.Center
             | Some true -> LayoutOptions.CenterAndExpand
 
-        this.AddScalars(
-            StackArray3.two(View.HorizontalOptions.WithValue(options), View.VerticalOptions.WithValue(options))
-        )
+        this
+            .AddScalar(View.HorizontalOptions.WithValue(options))
+            .AddScalar(View.VerticalOptions.WithValue(options))
+
 
     [<Extension>]
     static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
@@ -157,22 +157,21 @@ type AdditionalViewExtensions =
             ?attributes: FontAttributes
         ) =
 
-        let mutable res = StackArray3.empty()
+        let mutable res = this
 
         match size with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, Label.FontSize.WithValue(v))
+        | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(v))
 
         match namedSize with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>)))
+        | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>)))
 
         match attributes with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, Label.FontAttributes.WithValue(v))
+        | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
 
-
-        this.AddScalars(res)
+        res
 
     [<Extension>]
     static member inline font
@@ -183,22 +182,21 @@ type AdditionalViewExtensions =
             ?attributes: FontAttributes
         ) =
 
-        let mutable res = StackArray3.empty()
+        let mutable res = this
 
         match size with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, DatePicker.FontSize.WithValue(v))
+        | Some v -> res <- res.AddScalar(DatePicker.FontSize.WithValue(v))
 
         match namedSize with
         | None -> ()
-        | Some v ->
-            res <- StackArray3.add(&res, DatePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<DatePicker>)))
+        | Some v -> res <- res.AddScalar(DatePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<DatePicker>)))
 
         match attributes with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, DatePicker.FontAttributes.WithValue(v))
+        | Some v -> res <- res.AddScalar(DatePicker.FontAttributes.WithValue(v))
 
-        this.AddScalars(res)
+        res
 
 
 
@@ -211,22 +209,21 @@ type AdditionalViewExtensions =
             ?attributes: FontAttributes
         ) =
 
-        let mutable res = StackArray3.empty()
+        let mutable res = this
 
         match size with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, TimePicker.FontSize.WithValue(v))
+        | Some v -> res <- res.AddScalar(TimePicker.FontSize.WithValue(v))
 
         match namedSize with
         | None -> ()
-        | Some v ->
-            res <- StackArray3.add(&res, TimePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<TimePicker>)))
+        | Some v -> res <- res.AddScalar(TimePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<TimePicker>)))
 
         match attributes with
         | None -> ()
-        | Some v -> res <- StackArray3.add(&res, TimePicker.FontAttributes.WithValue(v))
+        | Some v -> res <- res.AddScalar(TimePicker.FontAttributes.WithValue(v))
 
-        this.AddScalars(res)
+        res
 
 
     [<Extension>]
@@ -276,7 +273,9 @@ type AdditionalViewExtensions =
         | Some w, None -> this.AddScalar(VisualElement.Width.WithValue(w))
         | None, Some h -> this.AddScalar(VisualElement.Height.WithValue(h))
         | Some w, Some h ->
-            this.AddScalars(StackArray3.two(VisualElement.Width.WithValue(w), VisualElement.Height.WithValue(h)))
+            this
+                .AddScalar(VisualElement.Width.WithValue(w))
+                .AddScalar(VisualElement.Height.WithValue(h))
 
     [<Extension>]
     static member inline padding(this: WidgetBuilder<_, #IView>, left: float, top: float, right: float, bottom: float) =

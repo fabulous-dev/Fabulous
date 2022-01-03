@@ -4,6 +4,7 @@ open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections
+open Fabulous.StackAllocatedCollections.StackList
 open Tests
 open Tests.Platform
 open TestUI_Attributes
@@ -126,7 +127,7 @@ type View private () =
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(
             TestStackKey,
-            StackArray3.empty(),
+            StackList.empty(),
             Attributes.Container.Children
         )
 

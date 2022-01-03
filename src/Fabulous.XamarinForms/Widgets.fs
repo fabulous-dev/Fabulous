@@ -3,6 +3,7 @@
 open System
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
 open Fabulous.XamarinForms
 
@@ -111,7 +112,7 @@ module ViewHelpers =
         |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =
-        WidgetBuilder<'msg, 'marker>(key, struct (StackArray3.empty(), Some attrs, None))
+        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), Some attrs, None))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)

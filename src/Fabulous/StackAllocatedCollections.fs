@@ -10,6 +10,146 @@ open System.Runtime.CompilerServices
 //[<System.Runtime.CompilerServices.IsReadOnly>]
 
 
+module StackList =
+    type private Items<'v> = (struct ('v * 'v * 'v))
+
+    module private Items =
+        let inline one<'v> (v: 'v) =
+            Items(v, Unchecked.defaultof<'v>, Unchecked.defaultof<'v>)
+
+        let inline two<'v> (v1: 'v, v2: 'v) = Items(v1, v2, Unchecked.defaultof<'v>)
+
+    /// reference type that holds the chain of tuples that come before Data
+    /// this is basically List
+    [<NoComparison; NoEquality>]
+    type private Part<'v> =
+        | Empty
+        | Filled of struct (Items<'v> * Part<'v>)
+
+    module private Part =
+        let inline combine (before: Part<'v>, after: Part<'v>) : Part<'v> = Empty
+
+
+    [<Struct; NoComparison; NoEquality>]
+    type StackList<'v> =
+        struct
+            val private size: uint16
+            val private items: Items<'v>
+            val private before: Part<'v>
+
+            private new(size, items, before) =
+                {
+                    size = size
+                    items = items
+                    before = before
+                }
+
+            static member empty() =
+                StackList(0us, Unchecked.defaultof<Items<'v>>, Empty)
+
+            static member one(v: 'v) = StackList(1us, Items.one v, Empty)
+
+            static member two(v1: 'v, v2: 'v) =
+                StackList(2us, Items.two(v1, v2), Empty)
+
+            static member three(v1: 'v, v2: 'v, v3: 'v) =
+                StackList(3us, Items(v1, v2, v3), Empty)
+
+            static member length(data: StackList<'v> inref) = data.size
+
+            static member toArray(data: StackList<'v> inref) : 'v array =
+                if data.size = 0us then
+                    Array.empty
+                else
+                    let size = int data.size
+                    let arr = Array.zeroCreate(size)
+                    let struct (v0, v1, v2) = data.items
+
+                    let used =
+                        match data.size % 3us with
+                        | 0us -> // copy 3 items
+                            arr.[size - 1] <- v2
+                            arr.[size - 2] <- v1
+                            arr.[size - 3] <- v0
+                            3
+                        | 1us ->
+                            // copy 1 item
+                            arr.[size - 1] <- v0
+                            1
+                        | 2us ->
+                            // copy 2 item
+                            arr.[size - 1] <- v1
+                            arr.[size - 2] <- v0
+                            2
+                        | _ -> 0
+
+                    let mutable i = size - used - 1
+                    let mutable leftToCopy = data.before
+
+                    while i >= 2 do
+                        match leftToCopy with
+                        | Empty -> i <- -1
+                        | Filled ((v0, v1, v2), before) ->
+                            arr.[i] <- v2
+                            arr.[i - 1] <- v1
+                            arr.[i - 2] <- v0
+                            i <- i - 3
+                            leftToCopy <- before
+
+                    arr
+
+            static member add(data: StackList<'v> inref, v: 'v) =
+                let lenght = data.size
+                let struct (v0, v1, _) = data.items
+
+                match lenght with
+                | 0us -> StackList.one v
+                | 1us -> StackList.two(v0, v)
+                | 2us -> StackList.three(v0, v1, v)
+                | size when size % 3us = 0us -> StackList(size + 1us, Items.one v, Filled(data.items, data.before))
+                // still filling up the stack allocated part
+                | size when size % 3us = 1us -> StackList(size + 1us, Items.two(v0, v), data.before)
+                | size when size % 3us = 2us -> StackList(size + 1us, Items(v0, v1, v), data.before)
+                | _ -> data // should never happen but let's not throw there
+        end
+
+
+//            static member combine (a: Data<'v>) (b: Data<'v>) : Data<'v> =
+//                let lenghtA = a.length
+//                let lenghtB = a.length
+//                let struct (a0, a1, _) = a.items
+//                let struct (b0, b1, _) = b.items
+//
+//                match lenghtA, lenghtB with
+//                | 0us, _ -> b
+//                | _, 0us -> a
+//                | 1us, 1us -> Data.two(a0, b0)
+//                | 2us, 1us -> Data.three(a0, a1, b0)
+//                | 1us, 2us -> Data.three(a0, b0, b1)
+//                | la, lb ->
+//                    let leftOverA = lenghtA % 3us
+//                    let leftOverB = lenghtB % 3us
+//
+//                    // note that lenghtA and lenghtB are >= 3 each
+//                    match leftOverA, leftOverB with
+//                    | 0us, _ ->
+//                        // means that "a" items are filled
+//                        Data(lenghtA + lenghtB, b.items, Part.combine(Filled(a.items, a.before), b.before))
+//
+//                    | _, 0us -> a
+//
+//                    | 1us, 1us -> Data.two(a0, b0)
+//                    | 2us, 1us -> Data.three(a0, a1, b0)
+//                    | 1us, 2us -> Data.three(a0, b0, b1)
+
+
+//                | size when size % 3us = 0us -> Data(size + 1us, Items.one v, Some(Chunk(data.items, data.before)))
+//                | size when size % 3us = 1us -> Data(size + 1us, Items.two(v0, v), Some(Chunk(data.items, data.before)))
+//                | size when size % 3us = 2us -> Data(size + 1us, Items(v0, v1, v), Some(Chunk(data.items, data.before)))
+//                | _ -> data // should never happen but let's not throw there
+
+
+
 type Size =
     | Zero = 0uy
     | One = 1uy

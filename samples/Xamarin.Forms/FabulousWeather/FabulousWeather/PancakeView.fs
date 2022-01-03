@@ -3,6 +3,7 @@
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.StackAllocatedCollections
+open Fabulous.StackAllocatedCollections.StackList
 
 [<AutoOpen>]
 module PancakeView =
@@ -29,7 +30,7 @@ module PancakeView =
                 PancakeViewKey,
 
                 AttributesBundle(
-                    StackArray3.one(BackgroundGradientStops.WithValue(backgroundGradientStops)),
+                    StackList.one(BackgroundGradientStops.WithValue(backgroundGradientStops)),
                     Some [| Content.WithValue(content.Compile()) |],
                     None
                 )
