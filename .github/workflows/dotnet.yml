@@ -24,6 +24,6 @@ jobs:
     - name: Build Fabulous.XamarinForms
       run: dotnet build --no-restore src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj
     - name: Build Fabulous.Tests
-      run: dotnet build --no-build --verbosity normal src/Fabulous.Tests
+      run: dotnet build --no-restore src/Fabulous.Tests/Fabulous.Tests.fsproj
     - name: Test Fabulous.Tests
-      run: dotnet test --no-build --verbosity normal src/Fabulous.Tests
+      run: dotnet test --no-build --verbosity normal src/Fabulous.Tests/Fabulous.Tests.fsproj
