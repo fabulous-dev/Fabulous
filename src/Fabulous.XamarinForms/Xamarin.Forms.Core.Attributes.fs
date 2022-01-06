@@ -211,6 +211,14 @@ module Stepper =
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
     let ValueChanged = Attributes.defineEvent<Xamarin.Forms.ValueChangedEventArgs> "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
 
+module ItemsView =
+    let ItemsSource =
+        Attributes.defineBindableWithComparer<WidgetItems, _, _>
+            Xamarin.Forms.ItemsView.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.Items do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.Items, b.Items))
+
 module ItemsViewOfCell =
     let ItemsSource =
         Attributes.defineBindableWithComparer<WidgetItems, _, _>
@@ -227,3 +235,8 @@ module ListView =
     
 module TextCell =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.TextCell.TextProperty
+    let TextColor = Attributes.defineBindable<Xamarin.Forms.Color> Xamarin.Forms.TextCell.TextColorProperty
+    
+module CollectionView =
+    let RemainingItemsThreshold = Attributes.defineBindable<int> Xamarin.Forms.CollectionView.RemainingItemsThresholdProperty
+    let RemainingItemsThresholdReached = Attributes.defineEventNoArg "CollectionView_RemainingItemsThresholdReached" (fun target -> (target :?> Xamarin.Forms.CollectionView).RemainingItemsThresholdReached)

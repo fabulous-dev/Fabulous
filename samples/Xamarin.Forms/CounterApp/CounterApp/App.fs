@@ -73,6 +73,7 @@ module App =
         | Reset
         | TimedTick
         | OsThemeChanged of OSAppTheme
+        | ItemsThresholdReached
 
     type CmdMsg =
         | TickTimer
@@ -110,6 +111,8 @@ module App =
         | OsThemeChanged osAppTheme ->
             printfn $"{osAppTheme}"
             model, []
+        | ItemsThresholdReached ->
+            { model with Data = List.append model.Data [ for i = model.Data.Length to model.Data.Length + 100 do i ] }, []
             
     type OtherMsg = Test
     
@@ -117,52 +120,23 @@ module App =
         Application(
             NavigationPage() {
                 ContentPage("Counter",
-                    (VerticalStackLayout() {
-                        Label(string model.Count)
-                            .automationId("CountLabel")
-                            .centerTextHorizontal()
-                            .style (
-                                Style.createStyleFor [
-                                    Label.TextColorProperty, box Color.Blue
-                                    Label.FontSizeProperty, box 24.
-                                ]
-                            )
-
-                        Button("Increment", Increment)
-                            .style(
-                                Style.createStyleFor [
-                                    Button.BackgroundColorProperty, box Color.Green
-                                    Button.TextColorProperty, box Color.White
-                                ]
-                            )
-                            .automationId("IncrementButton")
-
-                        Button("Decrement", Decrement)
-                            .automationId("DecrementButton")
-                            .alignStartVertical(expand = true)
-
-                        (View.map ConfigurationMsg (Configuration.view model.Configuration))
-                            .paddingLayout(20.)
-                            .centerHorizontal()
-
-                        Button("Reset", Reset)
-                            .automationId("ResetButton")
-                            .isEnabled(model <> initModel ())
-                            .centerHorizontal()
-                            
-                        ListView(model.Data) (fun item -> 
-                            ViewCell(
-                                Label(item.ToString())
-                                    .textColor(Color.Yellow)
-                            )
+                    VerticalStackLayout() {
+                        ListView(model.Data) (fun item ->
+                            TextCell(item.ToString())
+                                .textColor(Color.Blue)
                         )
-                    })
-                        .paddingLayout(30.)
-                        .centerVertical()
+                        
+                        (GroupedListView(model.Data, fun group ->
+                            TextCell(group.Name)
+                        ) (fun item ->
+                            TextCell(item.Name)
+                        ))
+                            .showJumpList(true, fun group -> group.ShortName)
+                    }
                 ).hasNavigationBar(false)
             }
         )
-         .onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)
+         .onRequestedThemeChanged(OsThemeChanged)
          .resources(Style.resources)
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd

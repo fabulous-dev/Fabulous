@@ -47,5 +47,4 @@ type FabulousTimePicker() =
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
-type FabulousListView() =
-    inherit ListView(ListViewCachingStrategy.RecycleElement)
+type FabulousListView() = inherit ListView(ListViewCachingStrategy.RecycleElement)

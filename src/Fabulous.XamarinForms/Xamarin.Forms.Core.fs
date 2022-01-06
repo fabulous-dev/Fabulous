@@ -8,6 +8,7 @@ open Fabulous.XamarinForms.XFAttributes
 open System.Runtime.CompilerServices
 open System
 open System.IO
+open System.Collections.Generic
 open Microsoft.FSharp.Core
 
 type IContentPage =
@@ -87,6 +88,9 @@ type IListView =
 
 type ITextCell =
     inherit ICell
+    
+type ICollectionView =
+    inherit IView
 
 module ViewKeys =
     let Application =
@@ -152,6 +156,9 @@ module ViewKeys =
     let Stepper = Widgets.register<Xamarin.Forms.Stepper>()
     let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
     let ListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
+        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+    )
+    let CollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
         target.ItemTemplate <- WidgetDataTemplateSelector(node)
     )
 
@@ -378,10 +385,16 @@ type ViewBuilders private () =
 
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
         ViewHelpers.buildItem<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemsSource items
+        
+    static member inline GroupedListView<'msg, 'groupData, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupData :> IEnumerable<'itemData>>(items: seq<'groupData>, groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'itemMarker>) =
+        ()
             
     static member inline TextCell<'msg>(text: string) =
         ViewHelpers.buildScalars<'msg, ITextCell> ViewKeys.TextCell
             [| TextCell.Text.WithValue(text) |]
+            
+    static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
+        ViewHelpers.buildItem<'msg, ICollectionView, 'itemData, 'itemMarker> ViewKeys.CollectionView ItemsView.ItemsSource items
     
 [<AbstractClass; Sealed>]
 type View private () =
@@ -484,6 +497,8 @@ type View private () =
         
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items) = ViewBuilders.ListView<'msg, 'itemData, 'itemMarker>(items)
     static member inline TextCell<'msg>(text) = ViewBuilders.TextCell<'msg>(text)
+    static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items) = ViewBuilders.CollectionView<'msg, 'itemData, 'itemMarker>(items)
+
 
 [<Extension; AbstractClass; Sealed>]
 type ViewExtensions private () =
@@ -496,13 +511,8 @@ type ViewExtensions private () =
         this.AddScalar(Application.Resources.WithValue(value))
 
     [<Extension>]
-    static member inline onRequestedThemeChanged
-        (
-            this: WidgetBuilder<'msg, #IApplication>,
-            fn: Xamarin.Forms.AppThemeChangedEventArgs -> 'msg
-        ) =
-        this.AddScalar(Application.RequestedThemeChanged.WithValue(fn >> box))
-
+    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.OSAppTheme -> 'msg) =
+        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
     [<Extension>]
     static member inline onModalPopped
         (
@@ -829,3 +839,12 @@ type ViewExtensions private () =
     [<Extension>]
     static member inline itemTapped(this: WidgetBuilder<'msg, #IListView>, fn: int -> 'msg) =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
+    [<Extension>]
+    static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #ICollectionView>, value: int, msg: 'msg) =
+        this.AddScalars([|
+            CollectionView.RemainingItemsThreshold.WithValue(value)
+            CollectionView.RemainingItemsThresholdReached.WithValue(msg)
+        |])
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, ITextCell>, value: Xamarin.Forms.Color) =
+        this.AddScalar(TextCell.TextColor.WithValue(value))
