@@ -26,23 +26,22 @@ module Widgets =
             {
                 Key = key
                 Name = typeof<'T>.Name
+                TargetType = typeof<'T>
                 CreateView =
                     fun (widget, context, parentNode) ->
-                        //                        let name = typeof<'T>.Name
-                        //                        printfn $"Creating view for {name}"
+                        let name = typeof<'T>.Name
+                        printfn $"Creating view for {name}"
 
                         let view = new 'T()
                         let weakReference = WeakReference(view)
 
-                        let viewNode =
-                            ViewNode(parentNode, context, weakReference)
+                        let viewNode = ViewNode(parentNode, context, weakReference)
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
                         let oldWidget: Widget voption = ValueNone
 
                         Reconciler.update
-                            //                            context.ViewTreeContext.GetViewNode
                             context.CanReuseView
                             oldWidget
                             widget
@@ -76,7 +75,7 @@ type TestStackMarker =
     inherit IMarker
 //----------------
 
-/// ------------ Extenstions
+/// ------------ Extensions
 [<Extension>]
 type WidgetExtensions() =
     [<Extension>]
@@ -214,14 +213,12 @@ module Run =
 
                 let viewNode = ViewNode.getViewNode target
 
-                //                if newWidget.Key <> viewNode. then
-//                    failwith "type mismatch!"
+                if newWidget.Key <> oldWidget.Key then
+                    failwith "type mismatch!"
 
                 state <- Some(newModel, target, newWidget)
 
-                // ViewNode.getViewNode
-                let oldWidget = (ValueSome oldWidget)
-                Reconciler.update x.viewContext.CanReuseView oldWidget newWidget viewNode
+                Reconciler.update x.viewContext.CanReuseView (ValueSome oldWidget) newWidget viewNode
                 ()
 
         member x.Start(arg: 'arg) =
