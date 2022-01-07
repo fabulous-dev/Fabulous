@@ -39,14 +39,17 @@ module Configuration =
         | StepChanged n -> { model with Step = int (n + 0.5) }
         | TimerToggled on -> { model with TimerOn = on }
         
+    let timerView timerOn =
+        HorizontalStackLayout() {
+            Label($"Timer - {System.DateTime.Now}")
+
+            Switch(timerOn, TimerToggled)
+                .automationId("TimerSwitch")
+        }
+        
     let view model =
         VerticalStackLayout() {
-            HorizontalStackLayout() {
-                Label("Timer")
-
-                Switch(model.TimerOn, TimerToggled)
-                    .automationId("TimerSwitch")
-            }
+            View.memo model.TimerOn timerView
             
             Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
                 .automationId("StepSlider")
