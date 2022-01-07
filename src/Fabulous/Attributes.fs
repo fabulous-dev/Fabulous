@@ -4,17 +4,6 @@ open System
 open Fabulous
 
 module Helpers =
-    let canReuseView (prevWidget: Widget) (currWidget: Widget) =
-        let prevKey = prevWidget.Key
-
-        if not(prevKey = currWidget.Key) then
-            false
-        else if (prevKey = Memo.MemoWidgetKey) then
-            Memo.canReuseMemoizedViewNode prevWidget currWidget
-        else
-            true
-
-
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =

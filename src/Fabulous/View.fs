@@ -1,6 +1,15 @@
 namespace Fabulous
 
+module ViewHelpers =
+    let canReuseView (prevWidget: Widget) (currWidget: Widget) =
+        let prevKey = prevWidget.Key
 
+        if not(prevKey = currWidget.Key) then
+            false
+        else if (prevKey = Memo.MemoWidgetKey) then
+            Memo.canReuseMemoizedViewNode prevWidget currWidget
+        else
+            true
 
 module View =
     let memo<'msg, 'key, 'marker when 'key: equality>

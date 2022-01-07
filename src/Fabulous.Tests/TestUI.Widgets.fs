@@ -173,7 +173,7 @@ module Run =
 
         member private x.viewContext: ViewTreeContext =
             {
-                CanReuseView = Helpers.canReuseView
+                CanReuseView = ViewHelpers.canReuseView
                 Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
                 GetViewNode = ViewNode.getViewNode
             }
