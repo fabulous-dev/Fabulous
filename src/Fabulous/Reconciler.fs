@@ -95,7 +95,7 @@ module Reconciler =
                         | ScalarAttributeComparison.Identical -> ()
 
                         // New value completely replaces the old value
-                        | ScalarAttributeComparison.Different value ->
+                        | ScalarAttributeComparison.Different ->
                             DiffBuilder.addOpMut &result DiffBuilder.Change (uint16 nextIndex)
 
                         // move both pointers

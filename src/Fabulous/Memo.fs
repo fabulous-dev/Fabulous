@@ -29,10 +29,9 @@ module Memo =
     let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
-        match widget.ScalarAttributes.Length with
-        | 1 -> widget.ScalarAttributes.[0].Value :?> MemoData
+        match widget.ScalarAttributes with
+        | ValueSome attrs when attrs.Length = 1 -> attrs.[0].Value :?> MemoData
         | _ -> failwith "Memo widget cannot have extra attributes"
-
 
     let internal canReuseMemoizedWidget prev next =
         (getMemoData prev).MarkerType = (getMemoData next).MarkerType

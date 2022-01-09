@@ -446,6 +446,7 @@ module MutStackArray1 =
 
 open FSharp.NativeInterop
 
+#nowarn "9"
 let inline stackalloc<'a when 'a: unmanaged> (length: int) : Span<'a> =
     let p =
         NativePtr.stackalloc<'a> length
