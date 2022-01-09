@@ -1,6 +1,5 @@
 ﻿namespace Fabulous
 
-open System.Collections.Generic
 
 /// Dev notes:
 ///
@@ -107,10 +106,11 @@ and IViewNode =
     abstract member TreeContext : ViewTreeContext
     abstract member MapMsg : (obj -> obj) voption with get, set
 
-    // whatever we need to attach to ViewNode in Core
-    // TODO if it is for internal use only it is possible that we should strongly type
-    // values we can expect in here
-    abstract member PropertyBag : Dictionary<int, obj>
+    // note that Widget is struct type, thus we have boxing via option
+    // we don't have MemoizedWidget set for 99.9% of the cases
+    // thus makes sense to have overhead of boxing
+    // in order to save space
+    abstract member MemoizedWidget : Widget option with get, set
     abstract member GetViewNodeForChild : obj -> IViewNode
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit

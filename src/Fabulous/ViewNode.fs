@@ -1,6 +1,5 @@
 ﻿namespace Fabulous
 
-open System.Collections.Generic
 open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
@@ -10,14 +9,13 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
     // also we can probably use just Dictionary instead of Map because
     // ViewNode is supposed to be mutable, stateful and persistent object
     let mutable _handlers: Map<AttributeKey, obj> = Map.empty
-    let mutable _mapMsg: (obj -> obj) voption = ValueNone
 
     interface IViewNode with
         member _.Target = targetRef.Target
         member _.TreeContext = treeContext
         member _.Parent = parentNode
-        member val MapMsg = _mapMsg with get, set
-        member val PropertyBag = Dictionary()
+        member val MapMsg: (obj -> obj) voption = ValueNone with get, set
+        member val MemoizedWidget: Widget option = None with get, set
 
         member _.GetViewNodeForChild(child) = treeContext.GetViewNode(child)
 

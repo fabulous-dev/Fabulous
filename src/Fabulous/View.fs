@@ -22,8 +22,8 @@ module View =
                 KeyData = box key
                 KeyComparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
                 CreateWidget = fun k -> (fn(unbox<'key> k)).Compile()
-                KeyTypeHash = typeof<'key>.GetHashCode ()
-                MarkerTypeHash = typeof<'marker>.GetHashCode ()
+                KeyType = typeof<'key>
+                MarkerType = typeof<'marker>
             }
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(

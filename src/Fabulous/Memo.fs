@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open Fabulous
 
 module Memo =
@@ -15,11 +16,11 @@ module Memo =
             /// Lambda that users provide
             CreateWidget: obj -> Widget
 
-            /// Captures type hash of data that memoization depends on
-            KeyTypeHash: int
+            /// Captures type of data that memoization depends on
+            KeyType: Type
 
-            /// Captures type hash of the marker memoized function produces
-            MarkerTypeHash: int
+            /// Captures type of the marker memoized function produces
+            MarkerType: Type
         }
 
     type Memoized<'t> = { phantom: 't }
@@ -28,16 +29,16 @@ module Memo =
     let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
-        (widget.ScalarAttributes
-         |> Array.find(fun a -> a.Key = MemoAttributeKey))
-            .Value
-        :?> MemoData
+        match widget.ScalarAttributes.Length with
+        | 1 -> widget.ScalarAttributes.[0].Value :?> MemoData
+        | _ -> failwith "Memo widget cannot have extra attributes"
+
 
     let internal canReuseMemoizedViewNode prev next =
-        (getMemoData prev).MarkerTypeHash = (getMemoData next).MarkerTypeHash
+        (getMemoData prev).MarkerType = (getMemoData next).MarkerType
 
     let private compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
-        match (prev.KeyTypeHash = next.KeyTypeHash, prev.MarkerTypeHash = next.MarkerTypeHash) with
+        match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
         | (true, true) ->
             match next.KeyComparer next.KeyData prev.KeyData with
             | true -> ScalarAttributeComparison.Identical
@@ -48,14 +49,13 @@ module Memo =
         match data with
         | ValueSome memoData ->
             let memoizedWidget = memoData.CreateWidget memoData.KeyData
-            let propBag = node.PropertyBag
 
             let prevWidget =
-                match propBag.TryGetValue MemoWidgetKey with
-                | true, value -> ValueSome(unbox<Widget> value)
+                match node.MemoizedWidget with
+                | Some widget -> ValueSome(widget)
                 | _ -> ValueNone
 
-            propBag.[MemoWidgetKey] <- memoizedWidget
+            node.MemoizedWidget <- Some memoizedWidget
 
             Reconciler.update node.TreeContext.CanReuseView prevWidget memoizedWidget node
 
@@ -94,7 +94,7 @@ module Memo =
 
                     // store widget that was used to produce this node
                     // to pass it to reconciler later on
-                    node.PropertyBag.Add(MemoWidgetKey, memoizedWidget)
+                    node.MemoizedWidget <- Some memoizedWidget
                     struct (node, view)
         }
 
