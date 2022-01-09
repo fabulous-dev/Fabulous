@@ -100,15 +100,15 @@ module Attributes =
             let childNode = get node.Target
 
             match diff.ScalarChanges with
-            | Some changes -> childNode.ApplyScalarDiffs(changes)
-            | None -> ()
+            | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
+            | ValueNone -> ()
 
             match diff.WidgetChanges with
-            | ValueSome slice -> childNode.ApplyWidgetDiffs(slice)
+            | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
             | ValueNone -> ()
 
             match diff.WidgetCollectionChanges with
-            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(slice)
+            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
             | ValueNone -> ()
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
@@ -143,15 +143,15 @@ module Attributes =
                         node.GetViewNodeForChild(targetColl.[index])
 
                     match widgetDiff.ScalarChanges with
-                    | Some changes -> childNode.ApplyScalarDiffs(changes)
-                    | None -> ()
+                    | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
+                    | ValueNone -> ()
 
                     match widgetDiff.WidgetChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetDiffs(slice)
+                    | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
                     | ValueNone -> ()
 
                     match widgetDiff.WidgetCollectionChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(slice)
+                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
                     | ValueNone -> ()
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->

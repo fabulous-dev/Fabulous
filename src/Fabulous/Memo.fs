@@ -28,7 +28,7 @@ module Memo =
     let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
-        (Array.find(fun (a: ScalarAttribute) -> a.Key = MemoAttributeKey) (Option.get widget.ScalarAttributes))
+        (Array.find(fun (a: ScalarAttribute) -> a.Key = MemoAttributeKey) (ValueOption.get widget.ScalarAttributes))
             .Value
         :?> MemoData
 

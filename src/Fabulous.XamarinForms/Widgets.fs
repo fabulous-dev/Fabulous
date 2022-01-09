@@ -112,7 +112,7 @@ module ViewHelpers =
         |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =
-        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), Some attrs, None))
+        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)

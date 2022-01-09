@@ -22,7 +22,7 @@ module View =
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(
             Memo.MemoWidgetKey,
-            struct (StackList.one(Memo.MemoAttribute.WithValue(memo)), None, None)
+            struct (StackList.one(Memo.MemoAttribute.WithValue(memo)), ValueNone, ValueNone)
         )
 
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =

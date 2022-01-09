@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+open System
 open System.Collections.Generic
 
 /// Dev notes:
@@ -59,9 +60,9 @@ and [<Struct>] Widget =
 #if DEBUG
         DebugName: string
 #endif
-        ScalarAttributes: ScalarAttribute [] option
-        WidgetAttributes: WidgetAttribute [] option
-        WidgetCollectionAttributes: WidgetCollectionAttribute [] option
+        ScalarAttributes: ScalarAttribute [] voption
+        WidgetAttributes: WidgetAttribute [] voption
+        WidgetCollectionAttributes: WidgetCollectionAttribute [] voption
     }
 
 [<Struct; RequireQualifiedAccess>]
@@ -89,7 +90,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
 
 and [<Struct; NoComparison; NoEquality>] WidgetDiff =
     {
-        ScalarChanges: ScalarChange [] option
+        ScalarChanges: ScalarChange [] voption
         WidgetChanges: ArraySlice<WidgetChange> voption
         WidgetCollectionChanges: ArraySlice<WidgetCollectionChange> voption
     }
@@ -117,5 +118,5 @@ and IViewNode =
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
     abstract member ApplyScalarDiffs : ScalarChange [] -> unit
-    abstract member ApplyWidgetDiffs : ArraySlice<WidgetChange> -> unit
-    abstract member ApplyWidgetCollectionDiffs : ArraySlice<WidgetCollectionChange> -> unit
+    abstract member ApplyWidgetDiffs : Span<WidgetChange> -> unit
+    abstract member ApplyWidgetCollectionDiffs : Span<WidgetCollectionChange> -> unit

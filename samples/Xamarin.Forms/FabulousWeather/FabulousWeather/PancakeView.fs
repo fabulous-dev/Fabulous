@@ -31,7 +31,7 @@ module PancakeView =
 
                 AttributesBundle(
                     StackList.one(BackgroundGradientStops.WithValue(backgroundGradientStops)),
-                    Some [| Content.WithValue(content.Compile()) |],
-                    None
+                    ValueSome [| Content.WithValue(content.Compile()) |],
+                    ValueNone
                 )
             )

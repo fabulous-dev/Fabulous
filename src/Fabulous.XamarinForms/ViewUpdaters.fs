@@ -110,15 +110,15 @@ module ViewUpdaters =
                 let childNode = node.GetViewNodeForChild(pages.[index])
 
                 match diff.ScalarChanges with
-                | Some changes -> childNode.ApplyScalarDiffs(changes)
-                | None -> ()
+                | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
+                | ValueNone -> ()
 
                 match diff.WidgetChanges with
-                | ValueSome slice -> childNode.ApplyWidgetDiffs slice
+                | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
                 | ValueNone -> ()
 
                 match diff.WidgetCollectionChanges with
-                | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs slice
+                | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
                 | ValueNone -> ()
 
 

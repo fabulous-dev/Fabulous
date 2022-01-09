@@ -165,8 +165,8 @@ type ViewBuilders private () =
             ViewKeys.ContentPage,
             AttributesBundle(
                 StackList.one(Page.Title.WithValue(title)),
-                Some [| ContentPage.Content.WithValue(content.Compile()) |],
-                None
+                ValueSome [| ContentPage.Content.WithValue(content.Compile()) |],
+                ValueNone
             )
         )
 
@@ -245,8 +245,8 @@ type ViewBuilders private () =
                     RefreshView.IsRefreshing.WithValue(isRefreshing),
                     RefreshView.Refreshing.WithValue(onRefreshing)
                 ),
-                Some [| ContentView.Content.WithValue(content.Compile()) |],
-                None
+                ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
+                ValueNone
             )
         )
 

@@ -8,7 +8,7 @@ open Microsoft.FSharp.Core
 
 
 type AttributesBundle =
-    (struct (StackList<ScalarAttribute> * WidgetAttribute [] option * WidgetCollectionAttribute [] option))
+    (struct (StackList<ScalarAttribute> * WidgetAttribute [] voption * WidgetCollectionAttribute [] voption))
 
 [<Struct; NoComparison; NoEquality>]
 type WidgetBuilder<'msg, 'marker> =
@@ -21,19 +21,19 @@ type WidgetBuilder<'msg, 'marker> =
         new(key: WidgetKey, scalar: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackList.one scalar, None, None)
+                Attributes = AttributesBundle(StackList.one scalar, ValueNone, ValueNone)
             }
 
         new(key: WidgetKey, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackList.two(scalarA, scalarB), None, None)
+                Attributes = AttributesBundle(StackList.two(scalarA, scalarB), ValueNone, ValueNone)
             }
 
         new(key: WidgetKey, scalar1: ScalarAttribute, scalar2: ScalarAttribute, scalar3: ScalarAttribute) =
             {
                 Key = key
-                Attributes = AttributesBundle(StackList.three(scalar1, scalar2, scalar3), None, None)
+                Attributes = AttributesBundle(StackList.three(scalar1, scalar2, scalar3), ValueNone, ValueNone)
             }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -47,17 +47,15 @@ type WidgetBuilder<'msg, 'marker> =
 #endif
                 ScalarAttributes =
                     match StackList.length &scalarAttributes with
-                    | 0us -> None
-                    | _ -> Some(Array.sortInPlace(fun a -> a.Key) (StackList.toArray &scalarAttributes))
+                    | 0us -> ValueNone
+                    | _ -> ValueSome(Array.sortInPlace(fun a -> a.Key) (StackList.toArray &scalarAttributes))
 
-                WidgetAttributes =
-                    widgetAttributes
-                    |> Option.map(Array.sortInPlace(fun a -> a.Key))
+                WidgetAttributes = ValueOption.map(Array.sortInPlace(fun a -> a.Key)) widgetAttributes
 
 
                 WidgetCollectionAttributes =
                     widgetCollectionAttributes
-                    |> Option.map(Array.sortInPlace(fun a -> a.Key))
+                    |> ValueOption.map(Array.sortInPlace(fun a -> a.Key))
             }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -91,14 +89,14 @@ type WidgetBuilder<'msg, 'marker> =
 
             let res =
                 match attribs with
-                | None -> [| attr |]
-                | Some attribs ->
+                | ValueNone -> [| attr |]
+                | ValueSome attribs ->
                     let attribs2 = Array.zeroCreate(attribs.Length + 1)
                     Array.blit attribs 0 attribs2 0 attribs.Length
                     attribs2.[attribs.Length] <- attr
                     attribs2
 
-            WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, Some res, widgetCollectionAttributes))
+            WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, ValueSome res, widgetCollectionAttributes))
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidgetCollection(attr: WidgetCollectionAttribute) =
@@ -107,14 +105,14 @@ type WidgetBuilder<'msg, 'marker> =
 
             let res =
                 match attribs with
-                | None -> [| attr |]
-                | Some attribs ->
+                | ValueNone -> [| attr |]
+                | ValueSome attribs ->
                     let attribs2 = Array.zeroCreate(attribs.Length + 1)
                     Array.blit attribs 0 attribs2 0 attribs.Length
                     attribs2.[attribs.Length] <- attr
                     attribs2
 
-            WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, Some res))
+            WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, ValueSome res))
     end
 
 
@@ -168,7 +166,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
 
             WidgetBuilder<'msg, 'marker>(
                 x.WidgetKey,
-                AttributesBundle(x.Scalars, None, Some [| x.Attr.WithValue(attrValue) |])
+                AttributesBundle(x.Scalars, ValueNone, ValueSome [| x.Attr.WithValue(attrValue) |])
             )
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =

@@ -28,16 +28,19 @@ module Reconciler =
     ///
     /// break when we reached both ends of the arrays
     let rec diffScalarAttributes
-        (prev: ScalarAttribute [] option)
-        (next: ScalarAttribute [] option)
-        : ScalarChange [] option =
+        (prev: ScalarAttribute [] voption)
+        (next: ScalarAttribute [] voption)
+        : ScalarChange [] voption =
         match (prev, next) with
-        | None, None -> None
+        | ValueNone, ValueNone -> ValueNone
 
         // all were deleted
-        | Some prev, None -> prev |> Array.map ScalarChange.Removed |> Some
-        | None, Some next -> next |> Array.map ScalarChange.Added |> Some
-        | Some prev, Some next ->
+        | ValueSome prev, ValueNone ->
+            prev
+            |> Array.map ScalarChange.Removed
+            |> ValueSome
+        | ValueNone, ValueSome next -> next |> Array.map ScalarChange.Added |> ValueSome
+        | ValueSome prev, ValueSome next ->
 
             let mutable result = DiffBuilder.create()
 
@@ -101,9 +104,9 @@ module Reconciler =
 
 
             match DiffBuilder.lenght &result with
-            | 0 -> None
+            | 0 -> ValueNone
             | _ ->
-                Some(
+                ValueSome(
                     DiffBuilder.toArray
                         &result
                         (fun op ->
@@ -115,25 +118,25 @@ module Reconciler =
 
     and diffWidgetAttributes
         (canReuseView: Widget -> Widget -> bool)
-        (prev: WidgetAttribute [] option)
-        (next: WidgetAttribute [] option)
+        (prev: WidgetAttribute [] voption)
+        (next: WidgetAttribute [] voption)
         : ArraySlice<WidgetChange> voption =
 
         match (prev, next) with
-        | None, None -> ValueNone
+        | ValueNone, ValueNone -> ValueNone
 
         // all were deleted
-        | Some prev, None ->
+        | ValueSome prev, ValueNone ->
             prev
             |> Array.map WidgetChange.Removed
             |> ArraySlice.fromArray
 
-        | None, Some next ->
+        | ValueNone, ValueSome next ->
             next
             |> Array.map WidgetChange.Added
             |> ArraySlice.fromArray
 
-        | Some prev, Some next ->
+        | ValueSome prev, ValueSome next ->
 
             let mutable result = MutStackArray1.Empty
 
@@ -201,25 +204,25 @@ module Reconciler =
 
     and diffWidgetCollectionAttributes
         (canReuseView: Widget -> Widget -> bool)
-        (prev: WidgetCollectionAttribute [] option)
-        (next: WidgetCollectionAttribute [] option)
+        (prev: WidgetCollectionAttribute [] voption)
+        (next: WidgetCollectionAttribute [] voption)
         : ArraySlice<WidgetCollectionChange> voption =
 
         match (prev, next) with
-        | None, None -> ValueNone
+        | ValueNone, ValueNone -> ValueNone
 
         // all were deleted
-        | Some prev, None ->
+        | ValueSome prev, ValueNone ->
             prev
             |> Array.map WidgetCollectionChange.Removed
             |> ArraySlice.fromArray
 
-        | None, Some next ->
+        | ValueNone, ValueSome next ->
             next
             |> Array.map WidgetCollectionChange.Added
             |> ArraySlice.fromArray
 
-        | Some prev, Some next ->
+        | ValueSome prev, ValueSome next ->
 
             let mutable result = MutStackArray1.Empty
 
@@ -337,17 +340,17 @@ module Reconciler =
         : WidgetDiff voption =
         let prevScalarAttributes =
             match prevOpt with
-            | ValueNone -> None
+            | ValueNone -> ValueNone
             | ValueSome widget -> widget.ScalarAttributes
 
         let prevWidgetAttributes =
             match prevOpt with
-            | ValueNone -> None
+            | ValueNone -> ValueNone
             | ValueSome widget -> widget.WidgetAttributes
 
         let prevWidgetCollectionAttributes =
             match prevOpt with
-            | ValueNone -> None
+            | ValueNone -> ValueNone
             | ValueSome widget -> widget.WidgetCollectionAttributes
 
         let scalarDiffs =
@@ -361,7 +364,7 @@ module Reconciler =
 
 
         match (scalarDiffs, widgetDiffs, collectionDiffs) with
-        | None, ValueNone, ValueNone -> ValueNone
+        | ValueNone, ValueNone, ValueNone -> ValueNone
         | _ ->
             ValueSome
                 {
@@ -381,13 +384,13 @@ module Reconciler =
         | ValueNone -> ()
         | ValueSome diff ->
             match diff.ScalarChanges with
-            | Some changes -> node.ApplyScalarDiffs(changes)
-            | None -> ()
+            | ValueSome changes -> node.ApplyScalarDiffs(changes)
+            | ValueNone -> ()
 
             match diff.WidgetChanges with
-            | ValueSome slice -> node.ApplyWidgetDiffs(slice)
+            | ValueSome slice -> node.ApplyWidgetDiffs(ArraySlice.toSpan slice)
             | ValueNone -> ()
 
             match diff.WidgetCollectionChanges with
-            | ValueSome slice -> node.ApplyWidgetCollectionDiffs(slice)
+            | ValueSome slice -> node.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
             | ValueNone -> ()
