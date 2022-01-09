@@ -42,8 +42,8 @@ module Memo =
         | (true, true) ->
             match next.KeyComparer next.KeyData prev.KeyData with
             | true -> ScalarAttributeComparison.Identical
-            | false -> ScalarAttributeComparison.Different null
-        | _ -> ScalarAttributeComparison.Different null
+            | false -> ScalarAttributeComparison.Different
+        | _ -> ScalarAttributeComparison.Different
 
     let private updateNode (data: MemoData voption, node: IViewNode) : unit =
         match data with

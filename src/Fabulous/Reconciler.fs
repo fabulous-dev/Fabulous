@@ -105,7 +105,7 @@ module Reconciler =
                         | ScalarAttributeComparison.Identical -> ValueNone
 
                         // New value completely replaces the old value
-                        | ScalarAttributeComparison.Different value ->
+                        | ScalarAttributeComparison.Different ->
                             ValueSome (ScalarChange.Updated(nextAttr))
 
                     match changeOpt with

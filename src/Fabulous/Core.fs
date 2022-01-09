@@ -111,7 +111,6 @@ and IViewNode =
     // thus makes sense to have overhead of boxing
     // in order to save space
     abstract member MemoizedWidget : Widget option with get, set
-    abstract member GetViewNodeForChild : obj -> IViewNode
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
     abstract member ApplyScalarDiffs : ScalarChange [] -> unit

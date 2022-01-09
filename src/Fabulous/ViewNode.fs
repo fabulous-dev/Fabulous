@@ -17,8 +17,6 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
         member val MapMsg: (obj -> obj) voption = ValueNone with get, set
         member val MemoizedWidget: Widget option = None with get, set
 
-        member _.GetViewNodeForChild(child) = treeContext.GetViewNode(child)
-
         member _.TryGetHandler<'T>(key: AttributeKey) =
             match Map.tryFind key _handlers with
             | None -> ValueNone
