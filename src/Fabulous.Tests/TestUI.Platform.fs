@@ -2,6 +2,7 @@ module Tests.Platform
 
 open System.Collections.Generic
 
+
 type TestViewElement() =
     member val AutomationId: string = "" with get, set
     member val PropertyBag = Dictionary<string, obj>()
@@ -19,12 +20,31 @@ type IButton =
     abstract AddPressListener : ButtonHandler -> int
     abstract RemovePressListener : int -> unit
 
+type LabelChangeList =
+    | TextSet of string
+    | ColorSet of string
+
+
 type TestLabel() =
     inherit TestViewElement()
 
+    let mutable text = ""
+    let mutable textColor = ""
+
+    member val changeList = [] with get, set
+
     interface IText with
-        member val Text = "" with get, set
-        member val TextColor = "" with get, set
+        member x.Text
+            with get () = text
+            and set (value) =
+                x.changeList <- List.append x.changeList [ TextSet value ]
+                text <- value
+
+        member x.TextColor
+            with get () = textColor
+            and set (value) =
+                x.changeList <- List.append x.changeList [ ColorSet value ]
+                textColor <- value
 
 type TestStack() =
     inherit TestViewElement()

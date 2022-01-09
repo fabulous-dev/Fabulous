@@ -4,23 +4,24 @@ open System
 open Fabulous
 
 module Helpers =
-    let canReuseView (prevWidget: Widget) (currWidget: Widget) = prevWidget.Key = currWidget.Key
-
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
-        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
+        let struct (_node, view) =
+            widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
+
+        view
 
 module ScalarAttributeComparers =
-    let noCompare (_, b) = ScalarAttributeComparison.Different b
+    let noCompare (_, _) = ScalarAttributeComparison.Different
 
     let equalityCompare (a, b) =
         if a = b then
             ScalarAttributeComparison.Identical
         else
-            ScalarAttributeComparison.Different b
+            ScalarAttributeComparison.Different
 
 module Attributes =
     /// Define a custom attribute storing any value
@@ -66,8 +67,8 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: WidgetCollectionItemChange[] * IViewNode -> unit)
-        (updateNode: Widget[] voption * IViewNode -> unit)
+        (applyDiff: WidgetCollectionItemChange [] * IViewNode -> unit)
+        (updateNode: Widget [] voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -83,10 +84,10 @@ module Attributes =
         definition
 
     /// Define an attribute storing a Widget for a CLR property
-    let defineWidget<'T when 'T : null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
+    let defineWidget<'T when 'T: null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
         let applyDiff (diff: WidgetDiff, node: IViewNode) =
             let childNode = get node.Target
-            
+
             if diff.ScalarChanges.Length > 0 then
                 childNode.ApplyScalarDiffs(diff.ScalarChanges)
 
@@ -100,16 +101,15 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let view = Helpers.createViewForWidget node widget |> unbox
+                let view =
+                    Helpers.createViewForWidget node widget |> unbox
+
                 set node.Target view
 
         defineWidgetWithConverter name applyDiff updateNode
 
     /// Define an attribute storing a collection of Widget
-    let defineWidgetCollection<'itemType>
-        name
-        (getCollection: obj -> System.Collections.Generic.IList<'itemType>)
-        =
+    let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
         let applyDiff (diffs: WidgetCollectionItemChange [], node: IViewNode) =
             let targetColl = getCollection node.Target
 
@@ -125,8 +125,9 @@ module Attributes =
                     targetColl.Insert(index, unbox view)
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
-                    let childNode = node.GetViewNodeForChild(targetColl[index])
-                    
+                    let childNode =
+                        node.TreeContext.GetViewNode(targetColl.[index])
+
                     if widgetDiff.ScalarChanges.Length > 0 then
                         childNode.ApplyScalarDiffs(widgetDiff.ScalarChanges)
 
@@ -136,9 +137,9 @@ module Attributes =
                     if widgetDiff.WidgetCollectionChanges.Length > 0 then
                         childNode.ApplyWidgetCollectionDiffs(widgetDiff.WidgetCollectionChanges)
 
-                | WidgetCollectionItemChange.Replace (index, widget) ->                      
+                | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
-                    targetColl[index] <- unbox view
+                    targetColl.[index] <- unbox view
 
                 | _ -> ()
 
@@ -160,14 +161,16 @@ module Attributes =
 
     let dispatchMsgOnViewNode (node: IViewNode) msg =
         let mutable parentOpt = node.Parent
+
         let mutable mapMsg =
             match node.MapMsg with
             | ValueNone -> id
-            | ValueSome fn -> fn            
+            | ValueSome fn -> fn
 
         while parentOpt.IsSome do
             let parent = parentOpt.Value
             parentOpt <- parent.Parent
+
             mapMsg <-
                 match parent.MapMsg with
                 | ValueNone -> mapMsg
@@ -188,7 +191,7 @@ module Attributes =
                 UpdateNode =
                     fun (newValueOpt, node) ->
                         let event = getEvent node.Target
-                        
+
                         match node.TryGetHandler(key) with
                         | ValueNone -> ()
                         | ValueSome handler -> event.RemoveHandler handler

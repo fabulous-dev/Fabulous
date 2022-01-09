@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+
 /// Dev notes:
 ///
 /// The types in this file will be the ones used the most internally by Fabulous.
@@ -60,7 +61,8 @@ and [<Struct>] Widget =
         WidgetCollectionAttributes: WidgetCollectionAttribute []
     }
 
-type [<Struct; RequireQualifiedAccess>] ScalarChange =
+[<Struct; RequireQualifiedAccess>]
+type ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
     | Updated of updated: ScalarAttribute
@@ -88,21 +90,29 @@ and [<Struct>] WidgetDiff =
         WidgetChanges: WidgetChange []
         WidgetCollectionChanges: WidgetCollectionChange []
     }
-    
+
 /// Context of the whole view tree
-type [<Struct>] ViewTreeContext =
-    { CanReuseView: Widget -> Widget -> bool
-      GetViewNode: obj -> IViewNode
-      Dispatch: obj -> unit }
-    
+[<Struct>]
+type ViewTreeContext =
+    {
+        CanReuseView: Widget -> Widget -> bool
+        GetViewNode: obj -> IViewNode
+        Dispatch: obj -> unit
+    }
+
 and IViewNode =
     abstract member Target : obj
     abstract member Parent : IViewNode voption
     abstract member TreeContext : ViewTreeContext
     abstract member MapMsg : (obj -> obj) voption with get, set
-    abstract member GetViewNodeForChild: obj -> IViewNode
+
+    // note that Widget is struct type, thus we have boxing via option
+    // we don't have MemoizedWidget set for 99.9% of the cases
+    // thus makes sense to have overhead of boxing
+    // in order to save space
+    abstract member MemoizedWidget : Widget option with get, set
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
-    abstract member ApplyScalarDiffs : ScalarChange[] -> unit
-    abstract member ApplyWidgetDiffs : WidgetChange[] -> unit
-    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange[] -> unit
+    abstract member ApplyScalarDiffs : ScalarChange [] -> unit
+    abstract member ApplyWidgetDiffs : WidgetChange [] -> unit
+    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange [] -> unit

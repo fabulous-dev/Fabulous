@@ -44,7 +44,7 @@ module Widgets =
                             widget
                             viewNode
 
-                        box view
+                        struct (viewNode, box view)
             }
 
         WidgetDefinitionStore.set key definition
@@ -122,13 +122,20 @@ type View private () =
 [<Extension>]
 type CollectionBuilderExtensions =
     [<Extension>]
-    static member Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
         (
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker>
         ) : Content<'msg> =
         { Widgets = [ x.Compile() ] }
 
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        (
+            _: CollectionBuilder<'msg, 'marker, IMarker>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
+        ) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
 
     [<Extension>]
     static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -166,7 +173,7 @@ module Run =
 
         member private x.viewContext: ViewTreeContext =
             {
-                CanReuseView = fun a b -> a.Key = b.Key
+                CanReuseView = ViewHelpers.canReuseView
                 Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
                 GetViewNode = ViewNode.getViewNode
             }
@@ -200,7 +207,7 @@ module Run =
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
-            let view =
+            let struct (_node, view) =
                 widgetDef.CreateView(widget, x.viewContext, ValueNone)
 
             state <- Some(model, view, widget)

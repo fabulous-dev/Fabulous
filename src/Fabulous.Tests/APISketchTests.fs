@@ -384,3 +384,183 @@ module MapViewTests =
 
         removeBtn.Press()
         Assert.AreEqual("-1", label.Text)
+
+
+module MemoTests =
+    module BasicCase =
+        type Model =
+            {
+                notMemoized: string
+                memoTrigger: int
+            }
+
+        type Msg =
+            | SetNotMemoPart of string
+            | SetMemoPart of int
+
+        let update msg model =
+            match msg with
+            | SetMemoPart i -> { model with memoTrigger = i }
+            | SetNotMemoPart s -> { model with notMemoized = s }
+
+        let mutable renderCount = 0
+
+        let view model =
+            Stack() {
+                Label<Msg>(model.notMemoized)
+                    .automationId("not_memo")
+
+                View.memo
+                    model.memoTrigger
+                    (fun i ->
+                        renderCount <- renderCount + 1
+                        Label(string i).automationId("memo"))
+            }
+
+        [<Test>]
+        let Test () =
+
+            let init () =
+                {
+                    notMemoized = "initial"
+                    memoTrigger = 0
+                }
+
+            let program =
+                StatefulWidget.mkSimpleView init update view
+
+            let instance = Run.Instance program
+            let tree = (instance.Start())
+
+            // executed just once to construct the tree
+            Assert.AreEqual(1, renderCount)
+
+            let notMemoLabel = find<TestLabel> tree "not_memo" :> IText
+            let memoLabel = find<TestLabel> tree "memo" :> IText
+
+            Assert.AreEqual("0", memoLabel.Text)
+
+            instance.ProcessMessage(SetNotMemoPart "hey")
+            Assert.AreEqual("hey", notMemoLabel.Text)
+
+            // hasn't been rerendered
+            Assert.AreEqual(1, renderCount)
+
+            instance.ProcessMessage(SetMemoPart 99)
+
+            // rerendered because of memo key changed
+            Assert.AreEqual(2, renderCount)
+            Assert.AreEqual("99", memoLabel.Text)
+
+    module MemoizedWidgetTypeChange =
+        type Model =
+            | Btn
+            | Lbl
+
+        type Msg = Change
+
+        let update msg model =
+            match msg with
+            | Change ->
+                match model with
+                | Btn -> Lbl
+                | Lbl -> Btn
+
+        let view model =
+            (Stack() {
+                match model with
+                | Btn -> View.memo model (fun i -> Button(string i, Change).automationId("btn"))
+                | Lbl -> View.memo model (fun i -> Label(string i).automationId("label"))
+             })
+                .automationId("stack")
+
+        [<Test>]
+        let Test () =
+
+            let init () = Btn
+
+            let program =
+                StatefulWidget.mkSimpleView init update view
+
+            let instance = Run.Instance program
+            let tree = (instance.Start())
+
+            let stack =
+                find<TestStack> tree "stack" :> IContainer
+
+            Assert.AreEqual(1, stack.Children.Count)
+
+
+            let btn = find<TestButton> tree "btn"
+            btn.Press()
+
+            // still one child
+            Assert.AreEqual(1, stack.Children.Count)
+
+            // but it is label now
+            let label = find<TestLabel> tree "label" :> IText
+            Assert.AreEqual(string Lbl, label.Text)
+
+    module ViewNodeInstanceCanBeReused =
+        type Model =
+            | Label1
+            | Label2
+
+        type Msg = Change
+
+        let update msg model =
+            match msg with
+            | Change ->
+                match model with
+                | Label1 -> Label2
+                | Label2 -> Label1
+
+        let view model =
+            Stack() {
+                match model with
+                | Label1 ->
+                    View.memo
+                        model
+                        (fun _ ->
+                            Label("one")
+                                .textColor("blue")
+                                .automationId("label"))
+                | Label2 ->
+                    View.memo
+                        (string model)
+                        (fun _ ->
+                            Label("two")
+                                .textColor("blue")
+                                .automationId("label"))
+            }
+
+        [<Test>]
+        let Test () =
+
+            let init () = Label1
+
+            let program =
+                StatefulWidget.mkSimpleView init update view
+
+            let instance = Run.Instance program
+            let tree = (instance.Start())
+
+            let label = find<TestLabel> tree "label"
+            Assert.AreEqual([ TextSet "one"; ColorSet "blue" ], label.changeList)
+
+            instance.ProcessMessage(Change)
+
+            let labelAgain = find<TestLabel> tree "label"
+
+            // same instance
+            Assert.AreSame(label, labelAgain)
+
+            // just changes text but kept the same color
+            Assert.AreEqual(
+                [
+                    TextSet "one"
+                    ColorSet "blue"
+                    TextSet "two"
+                ],
+                label.changeList
+            )

@@ -125,7 +125,11 @@ module ViewAdapters =
                    Dispatch = this.Dispatch }
                 
             let definition = WidgetDefinitionStore.get widget.Key
-            _root <- definition.CreateView(widget, treeContext, ValueNone)
+            
+            let struct (_node, root) =
+                 definition.CreateView(widget, treeContext, ValueNone)
+
+            _root <- root
             _root
 
         member _.OnStateChanged(args) =

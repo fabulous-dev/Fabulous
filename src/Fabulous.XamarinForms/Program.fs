@@ -7,7 +7,7 @@ module Program =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
           View = fun model -> (view model).Compile()
-          CanReuseView = Helpers.canReuseView }
+          CanReuseView = ViewHelpers.canReuseView }
 
     let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
         define

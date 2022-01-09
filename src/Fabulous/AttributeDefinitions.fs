@@ -10,7 +10,7 @@ type IAttributeDefinition =
 [<Struct; RequireQualifiedAccess>]
 type ScalarAttributeComparison =
     | Identical
-    | Different of newData: obj
+    | Different
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition

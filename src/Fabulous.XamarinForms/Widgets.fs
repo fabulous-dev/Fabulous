@@ -38,7 +38,7 @@ module Widgets =
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
 
-                        box view
+                        struct (node, box view)
             }
 
         WidgetDefinitionStore.set key definition
@@ -57,6 +57,20 @@ type CollectionBuilderExtensions =
         { Widgets = [ x.Compile() ] }
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>(_: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>, x: WidgetBuilder<'msg, 'itemType>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+        
+        
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>(_: CollectionBuilder<'msg, 'marker, IPage>, x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>(_: CollectionBuilder<'msg, 'marker, IView>, x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>(_: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>, x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>) : Content<'msg> =
+        { Widgets = [ x.Compile() ] }
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>(_: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>, x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>) : Content<'msg> =
         { Widgets = [ x.Compile() ] }
         
 module ViewHelpers =

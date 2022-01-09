@@ -94,7 +94,7 @@ module ViewUpdaters =
                         navigationPage.PushAsync(temp.Pop(), false) |> ignore
                         
             | WidgetCollectionItemChange.Update (index, diff) ->
-                let childNode = node.GetViewNodeForChild(pages[index])
+                let childNode = node.TreeContext.GetViewNode(pages[index])
                 if diff.ScalarChanges.Length > 0 then childNode.ApplyScalarDiffs(diff.ScalarChanges)
                 if diff.WidgetChanges.Length > 0 then childNode.ApplyWidgetDiffs(diff.WidgetChanges)
                 if diff.WidgetCollectionChanges.Length > 0 then childNode.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
