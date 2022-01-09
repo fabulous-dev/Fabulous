@@ -15,13 +15,13 @@ module Helpers =
         view
 
 module ScalarAttributeComparers =
-    let noCompare (_, b) = ScalarAttributeComparison.Different b
+    let noCompare (_, _) = ScalarAttributeComparison.Different
 
     let equalityCompare (a, b) =
         if a = b then
             ScalarAttributeComparison.Identical
         else
-            ScalarAttributeComparison.Different b
+            ScalarAttributeComparison.Different
 
 module Attributes =
     /// Define a custom attribute storing any value

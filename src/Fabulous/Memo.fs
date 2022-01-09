@@ -34,7 +34,7 @@ module Memo =
         | _ -> failwith "Memo widget cannot have extra attributes"
 
 
-    let internal canReuseMemoizedViewNode prev next =
+    let internal canReuseMemoizedWidget prev next =
         (getMemoData prev).MarkerType = (getMemoData next).MarkerType
 
     let private compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =

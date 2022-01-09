@@ -7,7 +7,7 @@ module ViewHelpers =
         if not(prevKey = currWidget.Key) then
             false
         else if (prevKey = Memo.MemoWidgetKey) then
-            Memo.canReuseMemoizedViewNode prevWidget currWidget
+            Memo.canReuseMemoizedWidget prevWidget currWidget
         else
             true
 
