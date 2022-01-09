@@ -11,7 +11,7 @@ type Program<'arg, 'model, 'msg> =
         View: 'model -> Widget
         CanReuseView: Widget -> Widget -> bool
     }
-
+    
 type IRunner =
     interface
     end
@@ -21,7 +21,7 @@ type IViewAdapter =
     abstract CreateView : unit -> obj
     abstract Attach : obj -> unit
     abstract Detach : bool -> unit
-
+    
 module RunnerStore =
     let private _runners = Dictionary<StateKey, IRunner>()
 
@@ -30,26 +30,23 @@ module RunnerStore =
     let remove key = _runners.Remove(key) |> ignore
 
 module ViewAdapterStore =
-    let private _viewAdapters =
-        Dictionary<ViewAdapterKey, IViewAdapter>()
-
+    let private _viewAdapters = Dictionary<ViewAdapterKey, IViewAdapter>()
     let mutable private _nextKey = 0
-
+    
     let get key = _viewAdapters.[key]
     let set key value = _viewAdapters.[key] <- value
-
     let remove key =
         match _viewAdapters.TryGetValue(key) with
         | false, _ -> ()
         | true, value ->
             value.Dispose()
             _viewAdapters.Remove(key) |> ignore
-
+            
     let getNextKey () : ViewAdapterKey =
         let key = _nextKey
         _nextKey <- _nextKey + 1
         key
-
+        
 /// Runners are responsible for the Model-Update part of MVU.
 /// They read from and update StateStore.
 module Runners =
@@ -75,9 +72,9 @@ module Runners =
 
         member _.Key = key
         member _.Program = program
-
+            
         member _.Dispatch(msg) = processMsg msg
-
+        
 
         member _.Start(arg) = start arg
         member _.Pause() = ()
@@ -112,7 +109,7 @@ module ViewAdapters =
 
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
-
+            
         member private _.Dispatch(msg) =
             if _allowDispatch then
                 dispatch(unbox msg)
@@ -121,18 +118,16 @@ module ViewAdapters =
             let state = unbox(StateStore.get stateKey)
             let widget = view state
             _widget <- widget
-
+            
             let treeContext =
-                {
-                    CanReuseView = canReuseView
-                    GetViewNode = getViewNode
-                    Dispatch = this.Dispatch
-                }
-
+                {  CanReuseView = canReuseView
+                   GetViewNode = getViewNode
+                   Dispatch = this.Dispatch }
+                
             let definition = WidgetDefinitionStore.get widget.Key
-
+            
             let struct (_node, root) =
-                definition.CreateView(widget, treeContext, ValueNone)
+                 definition.CreateView(widget, treeContext, ValueNone)
 
             _root <- root
             _root
@@ -145,7 +140,7 @@ module ViewAdapters =
                 let prevWidget = _widget
                 let currentWidget = view state
                 _widget <- currentWidget
-
+                
                 let node = getViewNode _root
 
                 // TODO handle the case when Type of the widget changes
@@ -175,3 +170,4 @@ module ViewAdapters =
 
         ViewAdapterStore.set key viewAdapter
         viewAdapter
+

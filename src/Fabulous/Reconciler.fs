@@ -323,7 +323,7 @@ module Reconciler =
 
                     match diffWidget canReuseView (ValueSome prevItem) currItem with
                     | ValueNone -> ValueNone
-                    | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
+                    | ValueSome diffs -> ValueSome (WidgetCollectionItemChange.Update struct (i, diffs))
 
                 | ValueSome _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
 
@@ -367,11 +367,9 @@ module Reconciler =
         | ValueNone, ValueNone, ValueNone -> ValueNone
         | _ ->
             ValueSome
-                {
-                    ScalarChanges = scalarDiffs
-                    WidgetChanges = widgetDiffs
-                    WidgetCollectionChanges = collectionDiffs
-                }
+                { ScalarChanges = scalarDiffs
+                  WidgetChanges = widgetDiffs
+                  WidgetCollectionChanges = collectionDiffs }
 
     /// Diffs changes and applies them on the target
     let update

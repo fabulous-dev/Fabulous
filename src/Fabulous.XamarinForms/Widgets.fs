@@ -7,33 +7,15 @@ open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
 open Fabulous.XamarinForms
 
-type IMarker =
-    interface
-    end
-
-type IApplication =
-    inherit IMarker
-
-type IPage =
-    inherit IMarker
-
-type IView =
-    inherit IMarker
-
-type ICell =
-    inherit IMarker
-
-type IMenuItem =
-    inherit IMarker
-
-type IGestureRecognizer =
-    inherit IMarker
-
-type ILayout =
-    inherit IView
-
-type IToolbarItem =
-    inherit IMenuItem
+type IMarker = interface end
+type IApplication = inherit IMarker
+type IPage = inherit IMarker
+type IView = inherit IMarker
+type ICell = inherit IMarker
+type IMenuItem = inherit IMarker
+type IGestureRecognizer = inherit IMarker
+type ILayout = inherit IView
+type IToolbarItem = inherit IMenuItem
 
 module Widgets =
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
@@ -50,19 +32,20 @@ module Widgets =
 
                         let view = new 'T()
                         let weakReference = WeakReference(view)
-
+                        
                         let node =
                             ViewNode(parentNode, treeContext, weakReference)
 
                         view.SetValue(ViewNode.ViewNodeProperty, node)
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
+
                         struct (node, box view)
             }
 
         WidgetDefinitionStore.set key definition
         key
-
+    
 [<Extension>]
 type CollectionBuilderExtensions =
     [<Extension>]
@@ -108,7 +91,7 @@ type CollectionBuilderExtensions =
 module ViewHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
         items
-        |> Seq.map(fun item -> item.Compile())
+        |> Seq.map (fun item -> item.Compile())
         |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =

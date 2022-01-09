@@ -4,17 +4,6 @@ open System
 open Fabulous
 
 module Helpers =
-    let canReuseView (prevWidget: Widget) (currWidget: Widget) =
-        let prevKey = prevWidget.Key
-
-        if not(prevKey = currWidget.Key) then
-            false
-        else if (prevKey = Memo.MemoWidgetKey) then
-            Memo.canReuseMemoizedViewNode prevWidget currWidget
-        else
-            true
-
-
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
@@ -26,13 +15,13 @@ module Helpers =
         view
 
 module ScalarAttributeComparers =
-    let noCompare (_, b) = ScalarAttributeComparison.Different b
+    let noCompare (_, _) = ScalarAttributeComparison.Different
 
     let equalityCompare (a, b) =
         if a = b then
             ScalarAttributeComparison.Identical
         else
-            ScalarAttributeComparison.Different b
+            ScalarAttributeComparison.Different
 
 module Attributes =
     /// Define a custom attribute storing any value
@@ -140,7 +129,7 @@ module Attributes =
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
                     let childNode =
-                        node.GetViewNodeForChild(targetColl.[index])
+                        node.TreeContext.GetViewNode(targetColl.[index])
 
                     match widgetDiff.ScalarChanges with
                     | ValueSome changes -> childNode.ApplyScalarDiffs(changes)

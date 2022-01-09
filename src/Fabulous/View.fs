@@ -1,9 +1,15 @@
 namespace Fabulous
 
-open Fabulous.StackAllocatedCollections
-open Fabulous.StackAllocatedCollections.StackList
+module ViewHelpers =
+    let canReuseView (prevWidget: Widget) (currWidget: Widget) =
+        let prevKey = prevWidget.Key
 
-
+        if not(prevKey = currWidget.Key) then
+            false
+        else if (prevKey = Memo.MemoWidgetKey) then
+            Memo.canReuseMemoizedWidget prevWidget currWidget
+        else
+            true
 
 module View =
     let memo<'msg, 'key, 'marker when 'key: equality>
@@ -16,13 +22,13 @@ module View =
                 KeyData = box key
                 KeyComparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
                 CreateWidget = fun k -> (fn(unbox<'key> k)).Compile()
-                KeyTypeHash = typeof<'key>.GetHashCode ()
-                MarkerTypeHash = typeof<'marker>.GetHashCode ()
+                KeyType = typeof<'key>
+                MarkerType = typeof<'marker>
             }
 
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(
             Memo.MemoWidgetKey,
-            struct (StackList.one(Memo.MemoAttribute.WithValue(memo)), ValueNone, ValueNone)
+            struct ([| Memo.MemoAttribute.WithValue(memo) |], [||], [||])
         )
 
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =

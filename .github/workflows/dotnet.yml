@@ -1,0 +1,29 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Fabulous
+      run: dotnet build --no-restore src/Fabulous/Fabulous.fsproj
+    - name: Build Fabulous.XamarinForms
+      run: dotnet build --no-restore src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj
+    - name: Build Fabulous.Tests
+      run: dotnet build --no-restore src/Fabulous.Tests/Fabulous.Tests.fsproj
+    - name: Test Fabulous.Tests
+      run: dotnet test --no-build --verbosity normal src/Fabulous.Tests/Fabulous.Tests.fsproj
