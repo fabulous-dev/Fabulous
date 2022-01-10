@@ -65,6 +65,7 @@ module Memo =
             Key = MemoAttributeKey
             Name = "MemoAttribute"
             Convert = id
+            ConvertValue = id
             Compare = compareAttributes
             UpdateNode = updateNode
         }
@@ -78,6 +79,7 @@ module Memo =
         {
             Key = MemoWidgetKey
             Name = "Memo"
+            TargetType = typeof<bool> // TODO: Change it
             CreateView =
                 fun (widget, context, parentNode) ->
 

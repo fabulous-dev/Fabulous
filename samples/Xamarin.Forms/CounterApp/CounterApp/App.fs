@@ -126,12 +126,12 @@ module App =
                                 .textColor(Color.Blue)
                         )
                         
-                        (GroupedListView(model.Data, fun group ->
-                            TextCell(group.Name)
-                        ) (fun item ->
-                            TextCell(item.Name)
-                        ))
-                            .showJumpList(true, fun group -> group.ShortName)
+//                        (GroupedListView(model.Data, fun group ->
+//                            TextCell(group.Name)
+//                        ) (fun item ->
+//                            TextCell(item.Name)
+//                        ))
+//                            .showJumpList(true, fun group -> group.ShortName)
                     }
                 ).hasNavigationBar(false)
             }
