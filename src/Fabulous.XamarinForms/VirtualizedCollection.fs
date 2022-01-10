@@ -6,15 +6,16 @@ open System.Collections.Generic
 open Fabulous
 open Xamarin.Forms
 
-type GroupItem(header: Widget, source: IEnumerable<Widget>) =
+type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =
     member _.Header = header
+    member _.Footer = footer
     interface IEnumerable<Widget> with
         member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
         member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
 
 module BindableHelpers =
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
-    let createOnBindingContextChanged canReuseView (target: BindableObject) =
+    let createOnBindingContextChanged canReuseView isHeader (target: BindableObject) =
         let mutable prevWidgetOpt: Widget voption = ValueNone
         
         let onBindingContextChanged () =
@@ -28,7 +29,8 @@ module BindableHelpers =
                 let currWidget =
                     match value with
                     | :? Widget as widget -> widget
-                    | :? GroupItem as groupItem -> groupItem.Header
+                    | :? GroupItem as groupItem when isHeader = true -> groupItem.Header
+                    | :? GroupItem as groupItem when isHeader = false -> groupItem.Footer
                     | v -> failwith $"Unexpected {v.GetType().FullName} in BindingContext"
                     
                 let node = ViewNode.get target
@@ -39,21 +41,21 @@ module BindableHelpers =
 
 /// Create a DataTemplate for a specific root type (TextCell, ViewCell, etc.)
 /// that listen for BindingContext change to apply the Widget content to the cell
-type WidgetDataTemplate(``type``, parent: IViewNode) =
+type WidgetDataTemplate(``type``, isHeader, parent: IViewNode) =
     inherit DataTemplate(fun () ->
         let bindableObject = Activator.CreateInstance ``type`` :?> BindableObject
         
         let viewNode = ViewNode(ValueSome parent, parent.TreeContext, WeakReference(bindableObject))
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
         
-        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView bindableObject
+        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView isHeader bindableObject
         bindableObject.BindingContextChanged.Add (fun _ -> onBindingContextChanged ())
         
         bindableObject :> obj
     )
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
-type WidgetDataTemplateSelector internal (node: IViewNode, getWidget: obj -> Widget) =
+type WidgetDataTemplateSelector internal (node: IViewNode, isHeader: bool, getWidget: obj -> Widget) =
     inherit DataTemplateSelector()
     
     /// Reuse data template for already known widget target type
@@ -66,15 +68,18 @@ type WidgetDataTemplateSelector internal (node: IViewNode, getWidget: obj -> Wid
         match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->
-            let dataTemplate = WidgetDataTemplate(targetType, node)
+            let dataTemplate = WidgetDataTemplate(targetType, isHeader, node)
             cache.Add(targetType, dataTemplate)
             dataTemplate
 
 type SimpleWidgetDataTemplateSelector(node: IViewNode) =
-    inherit WidgetDataTemplateSelector(node, fun item -> item :?> Widget)
+    inherit WidgetDataTemplateSelector(node, false, fun item -> item :?> Widget)
         
-type GroupedWidgetDataTemplateSelector(node: IViewNode) =
-    inherit WidgetDataTemplateSelector(node, fun item -> (item :?> GroupItem).Header)
+type GroupedWidgetDataTemplateSelector(node: IViewNode, isHeader: bool) =
+    inherit WidgetDataTemplateSelector(node, isHeader, fun item ->
+        let groupItem = item :?> GroupItem
+        if isHeader then groupItem.Header else groupItem.Footer
+    )
         
 type WidgetItems =
     { OriginalItems: IEnumerable

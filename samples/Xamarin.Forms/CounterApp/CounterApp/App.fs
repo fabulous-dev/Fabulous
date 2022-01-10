@@ -139,9 +139,10 @@ module App =
                         //        .textColor(Color.Blue)
                         //)
                         
-                        GroupedListView(model.GroupedData)
-                            (fun group -> TextCell(group.Letter))
-                            (fun item -> TextCell(item.Name))
+                        GroupedCollectionView(model.GroupedData)
+                            (fun group -> Label($"Header: {group.Letter}"))
+                            (fun item -> Label(item.Name))
+                            (fun group -> Label($"Footer: {group.Letter}"))
                     }
                 ).hasNavigationBar(false)
             }

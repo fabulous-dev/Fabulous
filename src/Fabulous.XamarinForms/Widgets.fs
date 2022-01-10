@@ -140,11 +140,15 @@ module ViewHelpers =
             
         buildVirtualizedList<'msg, 'marker, 'itemData> key attrDef items template
         
-    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef (items: seq<'groupData>) (groupTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
+    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef (items: seq<'groupData>) (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) =
         let template (group: obj): obj =
             let group = unbox<'groupData> group
-            let header = (groupTemplate group).Compile()
+            let header = (groupHeaderTemplate group).Compile()
+            let footer = (groupFooterTemplate group).Compile()
             let items = group |> Seq.map (fun item -> (itemTemplate item).Compile())
-            GroupItem(header, items)
+            GroupItem(header, footer, items)
             
         buildVirtualizedList<'msg, 'marker, 'groupData> key attrDef items template
+        
+    let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef items groupHeaderTemplate itemTemplate =
+        buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker> key attrDef items groupHeaderTemplate itemTemplate (fun _ -> Unchecked.defaultof<_>)
