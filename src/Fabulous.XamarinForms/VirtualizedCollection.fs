@@ -51,11 +51,12 @@ type WidgetDataTemplateSelector(node: IViewNode) =
     override _.OnSelectTemplate(item, _) =
         let widget = item :?> Widget
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        match cache.TryGetValue(widgetDefinition.TargetType) with
+        let targetType = widgetDefinition.GetTargetType(widget)
+        match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->
-            let dataTemplate = WidgetDataTemplate(widgetDefinition.TargetType, node)
-            cache.Add(widgetDefinition.TargetType, dataTemplate)
+            let dataTemplate = WidgetDataTemplate(targetType, node)
+            cache.Add(targetType, dataTemplate)
             dataTemplate
             
 type WidgetItems =

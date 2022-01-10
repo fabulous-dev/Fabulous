@@ -79,7 +79,13 @@ module Memo =
         {
             Key = MemoWidgetKey
             Name = "Memo"
-            TargetType = typeof<bool> // TODO: Change it
+            GetTargetType =
+                fun widget ->
+                    let memoData = getMemoData widget
+                    let memoizedWidget = memoData.CreateWidget memoData.KeyData
+                    let memoizedDef = WidgetDefinitionStore.get memoizedWidget.Key
+                    memoizedDef.GetTargetType(memoizedWidget)
+                    
             CreateView =
                 fun (widget, context, parentNode) ->
 

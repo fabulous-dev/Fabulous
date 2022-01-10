@@ -26,7 +26,7 @@ module Widgets =
             {
                 Key = key
                 Name = typeof<'T>.Name
-                TargetType = typeof<'T>
+                GetTargetType = fun _ -> typeof<'T>
                 CreateView =
                     fun (widget, treeContext, parentNode) ->
                         let name = typeof<'T>.Name
