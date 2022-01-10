@@ -30,7 +30,7 @@ module Attributes =
         (convert: 'inputType -> 'modelType)
         (convertValue: 'modelType -> 'valueType)
         (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
-        (updateNode: 'valueType voption * IViewNode -> unit)
+        (updateNode: 'modelType voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 

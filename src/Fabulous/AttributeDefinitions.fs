@@ -23,7 +23,7 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
       Convert: 'inputType -> 'modelType
       ConvertValue: 'modelType -> 'valueType
       Compare: 'modelType * 'modelType -> ScalarAttributeComparison
-      UpdateNode: 'valueType voption * IViewNode -> unit }
+      UpdateNode: 'modelType voption * IViewNode -> unit }
 
     member x.WithValue(value) : ScalarAttribute =
         {
@@ -44,7 +44,7 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
             let newValueOpt =
                 match newValueOpt with
                 | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome (x.ConvertValue(unbox<'modelType> v))
+                | ValueSome v -> ValueSome (unbox<'modelType> v)
             x.UpdateNode(newValueOpt, node)
 
 /// Attribute definition for widget properties

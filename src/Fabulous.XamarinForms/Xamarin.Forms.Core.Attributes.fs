@@ -213,19 +213,19 @@ module Stepper =
 
 module ItemsView =
     let ItemsSource =
-        Attributes.defineBindableWithComparer<WidgetItems, _, _>
+        Attributes.defineBindableWithComparer<WidgetItems, WidgetItems, IEnumerable<obj>>
             Xamarin.Forms.ItemsView.ItemsSourceProperty
             id
-            (fun modelValue -> seq { for x in modelValue.Items do modelValue.Template x })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.Items, b.Items))
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
 
 module ItemsViewOfCell =
     let ItemsSource =
-        Attributes.defineBindableWithComparer<WidgetItems, _, _>
+        Attributes.defineBindableWithComparer<WidgetItems, WidgetItems, IEnumerable<obj>>
             Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
             id
-            (fun modelValue -> seq { for x in modelValue.Items do modelValue.Template x })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.Items, b.Items))
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
     
 module ListView =
     let RowHeight = Attributes.defineBindable<int> Xamarin.Forms.ListView.RowHeightProperty

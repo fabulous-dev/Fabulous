@@ -161,6 +161,11 @@ module ViewKeys =
     let CollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
         target.ItemTemplate <- WidgetDataTemplateSelector(node)
     )
+    let GroupedListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
+        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node)
+        target.IsGroupingEnabled <- true
+    )
 
 [<AbstractClass; Sealed>]
 type ViewBuilders private () =
@@ -384,17 +389,17 @@ type ViewBuilders private () =
         )
 
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
-        ViewHelpers.buildItem<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemsSource items
+        ViewHelpers.buildItems<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemsSource items
         
-    static member inline GroupedListView<'msg, 'groupData, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupData :> IEnumerable<'itemData>>(items: seq<'groupData>, groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'itemMarker>) =
-        ()
+    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> IEnumerable<'itemData>>(items: seq<'groupData>) =
+        ViewHelpers.buildGroupItems<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker> ViewKeys.GroupedListView ItemsViewOfCell.ItemsSource items
             
     static member inline TextCell<'msg>(text: string) =
         ViewHelpers.buildScalars<'msg, ITextCell> ViewKeys.TextCell
             [| TextCell.Text.WithValue(text) |]
             
     static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
-        ViewHelpers.buildItem<'msg, ICollectionView, 'itemData, 'itemMarker> ViewKeys.CollectionView ItemsView.ItemsSource items
+        ViewHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker> ViewKeys.CollectionView ItemsView.ItemsSource items
     
 [<AbstractClass; Sealed>]
 type View private () =
@@ -496,6 +501,7 @@ type View private () =
         ViewBuilders.Stepper<'msg>(min, max, value, onValueChanged)
         
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items) = ViewBuilders.ListView<'msg, 'itemData, 'itemMarker>(items)
+    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> seq<'itemData>>(items) = ViewBuilders.GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker>(items)
     static member inline TextCell<'msg>(text) = ViewBuilders.TextCell<'msg>(text)
     static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items) = ViewBuilders.CollectionView<'msg, 'itemData, 'itemMarker>(items)
 

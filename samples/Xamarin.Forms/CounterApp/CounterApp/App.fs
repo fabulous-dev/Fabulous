@@ -1,5 +1,7 @@
 namespace Fabulous.XamarinForms.Samples.CounterApp
 
+open System.Collections
+open System.Collections.Generic
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
@@ -61,9 +63,19 @@ module Configuration =
         }
 
 module App =
+    type Person =
+        { Name: string }
+        
+    type Group(letter: string, items: IEnumerable<Person>) =
+        member _.Letter = letter
+        interface IEnumerable<Person> with
+            member _.GetEnumerator() : IEnumerator<Person> = items.GetEnumerator()
+            member _.GetEnumerator() : IEnumerator = items.GetEnumerator()
+    
     type Model =
         { Count: int
           Data: int list
+          GroupedData: Group list
           Configuration: Configuration.Model }
 
     type Msg =
@@ -92,6 +104,7 @@ module App =
     let initModel () =
         { Count = 0
           Data = [ for i in 0 .. 100 do i ]
+          GroupedData = [ for i in 0 .. 100 do Group(i.ToString(), [ for j in 0 .. 10 do { Name = $"Person {i} - {j}" } ]) ]
           Configuration = Configuration.init () }
         
     let init () =
@@ -121,17 +134,14 @@ module App =
             NavigationPage() {
                 ContentPage("Counter",
                     VerticalStackLayout() {
-                        ListView(model.Data) (fun item ->
-                            TextCell(item.ToString())
-                                .textColor(Color.Blue)
-                        )
+                        //ListView(model.Data) (fun item ->
+                        //    TextCell(item.ToString())
+                        //        .textColor(Color.Blue)
+                        //)
                         
-//                        (GroupedListView(model.Data, fun group ->
-//                            TextCell(group.Name)
-//                        ) (fun item ->
-//                            TextCell(item.Name)
-//                        ))
-//                            .showJumpList(true, fun group -> group.ShortName)
+                        GroupedListView(model.GroupedData)
+                            (fun group -> TextCell(group.Letter))
+                            (fun item -> TextCell(item.Name))
                     }
                 ).hasNavigationBar(false)
             }

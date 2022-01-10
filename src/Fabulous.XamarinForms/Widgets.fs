@@ -123,11 +123,28 @@ module ViewHelpers =
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
         
-    let buildItem<'msg, 'marker, 'itemData, 'itemMarker> (key: WidgetKey) (itemsAttributeDefinition: ScalarAttributeDefinition<WidgetItems, WidgetItems, IEnumerable<Widget>>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
-        let itemTemplate (item: obj) =
-            (itemTemplate (unbox<'itemData> item)).Compile()
+    let inline buildVirtualizedList<'msg, 'marker, 'itemData> (key: WidgetKey) (attrDef: ScalarAttributeDefinition<WidgetItems, WidgetItems, IEnumerable<obj>>) (items: seq<'itemData>) (template: obj -> obj) =
+        let data =
+            { OriginalItems = items
+              Template = template }
         
         let attrs =
-            [| itemsAttributeDefinition.WithValue({ Items = items; Template = box >> itemTemplate }) |]
+            [| attrDef.WithValue(data) |]
         
         WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
+        
+    let buildItems<'msg, 'marker, 'itemData, 'itemMarker> key attrDef (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =            
+        let template (item: obj) : obj =
+            let item = unbox<'itemData> item
+            (itemTemplate item).Compile()
+            
+        buildVirtualizedList<'msg, 'marker, 'itemData> key attrDef items template
+        
+    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef (items: seq<'groupData>) (groupTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =
+        let template (group: obj): obj =
+            let group = unbox<'groupData> group
+            let header = (groupTemplate group).Compile()
+            let items = group |> Seq.map (fun item -> (itemTemplate item).Compile())
+            GroupItem(header, items)
+            
+        buildVirtualizedList<'msg, 'marker, 'groupData> key attrDef items template

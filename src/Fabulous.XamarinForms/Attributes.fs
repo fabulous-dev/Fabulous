@@ -1,6 +1,7 @@
 namespace Fabulous.XamarinForms
 
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type [<Struct>] AppThemeValues<'T> =

@@ -58,7 +58,32 @@ type WidgetDataTemplateSelector(node: IViewNode) =
             let dataTemplate = WidgetDataTemplate(targetType, node)
             cache.Add(targetType, dataTemplate)
             dataTemplate
-            
+
+type GroupItem(header: Widget, source: IEnumerable<Widget>) =
+    member _.Header = header
+    interface IEnumerable<Widget> with
+        member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
+        member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
+        
+/// Redirect to the right type of DataTemplate based on the target type of the current widget cell
+type GroupedWidgetDataTemplateSelector(node: IViewNode) =
+    inherit DataTemplateSelector()
+    
+    /// Reuse data template for already known widget target type
+    let cache = Dictionary<Type, WidgetDataTemplate>()
+    
+    override _.OnSelectTemplate(item, _) =
+        let groupItem = item :?> GroupItem
+        let widget = groupItem.Header
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+        let targetType = widgetDefinition.GetTargetType(widget)
+        match cache.TryGetValue(targetType) with
+        | true, dataTemplate -> dataTemplate
+        | false, _ ->
+            let dataTemplate = WidgetDataTemplate(targetType, node)
+            cache.Add(targetType, dataTemplate)
+            dataTemplate
+        
 type WidgetItems =
-    { Items: IEnumerable
-      Template: obj -> Widget }
+    { OriginalItems: IEnumerable
+      Template: obj -> obj }
