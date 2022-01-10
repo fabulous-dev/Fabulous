@@ -156,13 +156,13 @@ module ViewKeys =
     let Stepper = Widgets.register<Xamarin.Forms.Stepper>()
     let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
     let ListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
-        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
     )
     let CollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
-        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
     )
     let GroupedListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
-        target.ItemTemplate <- WidgetDataTemplateSelector(node)
+        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
         target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node)
         target.IsGroupingEnabled <- true
     )

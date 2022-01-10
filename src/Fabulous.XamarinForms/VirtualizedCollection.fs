@@ -6,6 +6,12 @@ open System.Collections.Generic
 open Fabulous
 open Xamarin.Forms
 
+type GroupItem(header: Widget, source: IEnumerable<Widget>) =
+    member _.Header = header
+    interface IEnumerable<Widget> with
+        member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
+        member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
+
 module BindableHelpers =
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
     let createOnBindingContextChanged canReuseView (target: BindableObject) =
@@ -19,7 +25,12 @@ module BindableHelpers =
                 | ValueNone -> printfn "Create new cell instance"
                 | ValueSome _ -> printfn "Reuse cell instance"
                 
-                let currWidget = value :?> Widget
+                let currWidget =
+                    match value with
+                    | :? Widget as widget -> widget
+                    | :? GroupItem as groupItem -> groupItem.Header
+                    | v -> failwith $"Unexpected {v.GetType().FullName} in BindingContext"
+                    
                 let node = ViewNode.get target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
                 prevWidgetOpt <- ValueSome currWidget
@@ -42,14 +53,14 @@ type WidgetDataTemplate(``type``, parent: IViewNode) =
     )
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
-type WidgetDataTemplateSelector(node: IViewNode) =
+type WidgetDataTemplateSelector internal (node: IViewNode, getWidget: obj -> Widget) =
     inherit DataTemplateSelector()
     
     /// Reuse data template for already known widget target type
     let cache = Dictionary<Type, WidgetDataTemplate>()
     
     override _.OnSelectTemplate(item, _) =
-        let widget = item :?> Widget
+        let widget = getWidget item
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let targetType = widgetDefinition.GetTargetType(widget)
         match cache.TryGetValue(targetType) with
@@ -59,30 +70,11 @@ type WidgetDataTemplateSelector(node: IViewNode) =
             cache.Add(targetType, dataTemplate)
             dataTemplate
 
-type GroupItem(header: Widget, source: IEnumerable<Widget>) =
-    member _.Header = header
-    interface IEnumerable<Widget> with
-        member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
-        member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
+type SimpleWidgetDataTemplateSelector(node: IViewNode) =
+    inherit WidgetDataTemplateSelector(node, fun item -> item :?> Widget)
         
-/// Redirect to the right type of DataTemplate based on the target type of the current widget cell
 type GroupedWidgetDataTemplateSelector(node: IViewNode) =
-    inherit DataTemplateSelector()
-    
-    /// Reuse data template for already known widget target type
-    let cache = Dictionary<Type, WidgetDataTemplate>()
-    
-    override _.OnSelectTemplate(item, _) =
-        let groupItem = item :?> GroupItem
-        let widget = groupItem.Header
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let targetType = widgetDefinition.GetTargetType(widget)
-        match cache.TryGetValue(targetType) with
-        | true, dataTemplate -> dataTemplate
-        | false, _ ->
-            let dataTemplate = WidgetDataTemplate(targetType, node)
-            cache.Add(targetType, dataTemplate)
-            dataTemplate
+    inherit WidgetDataTemplateSelector(node, fun item -> (item :?> GroupItem).Header)
         
 type WidgetItems =
     { OriginalItems: IEnumerable
