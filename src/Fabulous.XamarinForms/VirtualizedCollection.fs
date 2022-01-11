@@ -22,10 +22,6 @@ module BindableHelpers =
             match target.BindingContext with
             | null -> ()
             | value ->
-                match prevWidgetOpt with
-                | ValueNone -> printfn "Create new cell instance"
-                | ValueSome _ -> printfn "Reuse cell instance"
-                
                 let currWidget =
                     match value with
                     | :? Widget as widget -> widget
