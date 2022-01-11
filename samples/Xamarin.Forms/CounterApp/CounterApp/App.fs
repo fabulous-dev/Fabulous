@@ -133,16 +133,47 @@ module App =
         Application(
             NavigationPage() {
                 ContentPage("Counter",
-                    VerticalStackLayout() {
-                        //ListView(model.Data) (fun item ->
-                        //    TextCell(item.ToString())
-                        //        .textColor(Color.Blue)
-                        //)
-                        
-                        GroupedCollectionView(model.GroupedData)
-                            (fun group -> Label($"Header: {group.Letter}"))
-                            (fun item -> Label(item.Name))
-                            (fun group -> Label($"Footer: {group.Letter}"))
+                    VerticalStackLayout() {(VerticalStackLayout() {
+                         Label(string model.Count)
+                             .automationId("CountLabel")
+                             .centerTextHorizontal()
+                             .style (
+                                 Style.createStyleFor [
+                                     Label.TextColorProperty, box Color.Blue
+                                     Label.FontSizeProperty, box 24.
+                                 ]
+                             )
+
+                         Button("Increment", Increment)
+                             .style(
+                                 Style.createStyleFor [
+                                     Button.BackgroundColorProperty, box Color.Green
+                                     Button.TextColorProperty, box Color.White
+                                 ]
+                             )
+                             .automationId("IncrementButton")
+
+                         Button("Decrement", Decrement)
+                             .automationId("DecrementButton")
+                             .alignStartVertical(expand = true)
+
+                         (View.map ConfigurationMsg (Configuration.view model.Configuration))
+                             .paddingLayout(20.)
+                             .centerHorizontal()
+
+                         Button("Reset", Reset)
+                             .automationId("ResetButton")
+                             .isEnabled(model <> initModel ())
+                             .centerHorizontal()
+                             
+                         (CollectionView(model.Data) (fun item ->
+                             Label(item.ToString())
+                                 .textColor(Color.Blue)
+                         ))
+                            .remainingItemsThreshold(10, ItemsThresholdReached)
+                     })
+                         .paddingLayout(30.)
+                         .centerVertical()
                     }
                 ).hasNavigationBar(false)
             }
