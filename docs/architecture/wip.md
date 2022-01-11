@@ -17,4 +17,3 @@ Xamarin.Forms
 	- Markers
 	- ViewBuilders
 	- Extensions
-- Virtualized collections
