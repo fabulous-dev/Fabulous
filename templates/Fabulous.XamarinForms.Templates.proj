@@ -11,21 +11,22 @@
         <PackageType>Template</PackageType>
         <NoBuild>true</NoBuild>
         <IncludeBuildOutput>false</IncludeBuildOutput>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <!-- https://github.com/dotnet/templating/issues/2350#issuecomment-610431461 -->
         <NoDefaultExcludes>true</NoDefaultExcludes>
+        <VersionPrefix>2.0.0</VersionPrefix>
     </PropertyGroup>
     <PropertyGroup>
         <ExcludeFromPackage>
-Content/*/.fake/**/*;
-Content/*/.ionide/**/*;
-Content/*/.cache/**/*;
-Content/*/**/obj/**/*;
-Content/*/**/bin/**/*;
+content/*/.fake/**/*;
+content/*/.ionide/**/*;
+content/*/.cache/**/*;
+content/*/**/obj/**/*;
+content/*/**/bin/**/*;
         </ExcludeFromPackage>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="Content/**/*.*" Exclude="$(ExcludeFromPackage)" >
+        <Content Include="content/**/*.*" Exclude="$(ExcludeFromPackage)" >
             <PackagePath>Content\</PackagePath>
         </Content>
         <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
