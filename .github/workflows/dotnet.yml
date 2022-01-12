@@ -1,29 +1,31 @@
 name: .NET
-
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+   push:
+     branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    env:
+      SLN_FILE: Fabulous-NoSamples.sln
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build Fabulous
-      run: dotnet build --no-restore src/Fabulous/Fabulous.fsproj
-    - name: Build Fabulous.XamarinForms
-      run: dotnet build --no-restore src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj
-    - name: Build Fabulous.Tests
-      run: dotnet build --no-restore src/Fabulous.Tests/Fabulous.Tests.fsproj
-    - name: Test Fabulous.Tests
-      run: dotnet test --no-build --verbosity normal src/Fabulous.Tests/Fabulous.Tests.fsproj
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build --no-restore --configuration Release ${SLN_FILE}
+    - name: Test
+      run: dotnet test --no-build --configuration Release ${SLN_FILE}
+    - name: Pack
+      run: |
+        sed -i 's/FABULOUS_PKG_VERSION/2.0.0-nightly-${GITHUB_RUN_ID}/g' "templates/content/blank/.template.config/template.json"
+        dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" ${SLN_FILE}
+        dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
+    - name: Push
+      run: |
+        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name github
+        dotnet nuget push "nupkgs/*.nupkg" --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

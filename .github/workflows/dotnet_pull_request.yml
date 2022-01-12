@@ -1,0 +1,21 @@
+name: .NET
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SLN_FILE: Fabulous-NoSamples.sln
+      PUSH_PACKAGES: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build --no-restore --configuration Release ${SLN_FILE}
+    - name: Test
+      run: dotnet test --no-build --configuration Release ${SLN_FILE}
