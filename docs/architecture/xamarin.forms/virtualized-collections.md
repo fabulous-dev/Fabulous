@@ -91,14 +91,13 @@ No need to go create all widgets on each view update.
 
 To support that, the following type has been created:
 ```fs
-type WidgetItems =
+type WidgetItems<'T> =
     {
         // The raw list of data provided by the user
-        OriginalItems: IEnumerable
+        OriginalItems: IEnumerable<'T>
        
         // Function to convert one item to a widget
-        // Returns obj to support grouping as well
-        Template: obj -> obj
+        Template: 'T -> Widget
     }
 ```
 
@@ -153,14 +152,14 @@ To make it work, we need 2 things:
 
 ```fs
 // IsHeader is only for grouping
-type WidgetDataTemplateSelector internal (node: IViewNode, isHeader: bool, getWidget: obj -> Widget) =
+type WidgetDataTemplateSelector internal (node: IViewNode, itemType: VirtualizedItemType) =
     inherit DataTemplateSelector()
     
     /// Reuse data template for already known widget target type
     let cache = Dictionary<Type, WidgetDataTemplate>()
     
     override _.OnSelectTemplate(item, _) =
-        let widget = getWidget item
+        let widget = BindableHelpers.getWidgetFromBindingContext itemType item
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let targetType = widgetDefinition.GetTargetType(widget)
         match cache.TryGetValue(targetType) with
@@ -184,20 +183,20 @@ fun item ->
 ```
 will have a target type of `ViewCell` and we create an empty `ViewCell`.
 
-_Side note:_ to make it compatible with `View.Memo`, the target type is a function that can return the memoized widget target type.
+_Side note:_ Given the potential high cost of instantiate a lot of `View.lazy'`, its use is not allowed in virtualized collections.
 
 This DataTemplateSelector instantiates a `WidgetDataTemplate` that will create the appropriate XF control and listen to `BindingContextChanged`.
 ```fs
 /// Create a DataTemplate for a specific root type (TextCell, ViewCell, etc.)
 /// that listen for BindingContext change to apply the Widget content to the cell
-type WidgetDataTemplate(``type``, isHeader, parent: IViewNode) =
+type WidgetDataTemplate(``type``, itemType, parent: IViewNode) =
     inherit DataTemplate(fun () ->
         let bindableObject = Activator.CreateInstance ``type`` :?> BindableObject
         
         let viewNode = ViewNode(ValueSome parent, parent.TreeContext, WeakReference(bindableObject))
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
         
-        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView isHeader bindableObject
+        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView itemType bindableObject
         bindableObject.BindingContextChanged.Add (fun _ -> onBindingContextChanged ())
         
         bindableObject :> obj
@@ -252,13 +251,13 @@ And when registering the ListView/CollectionView types, we enable the `IsGrouped
 ```fs
 let GroupedListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
     target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-    target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, true)
+    target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
     target.IsGroupingEnabled <- true
 )
 let GroupedCollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
     target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-    target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, true)
-    target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, false)
+    target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
+    target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
     target.IsGrouped <- true
 )
 ```
