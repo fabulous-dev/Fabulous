@@ -212,16 +212,28 @@ module Stepper =
     let ValueChanged = Attributes.defineEvent<Xamarin.Forms.ValueChangedEventArgs> "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
 
 module ItemsView =
-    let ItemsSource =
-        Attributes.defineBindableWithComparer<WidgetItems, WidgetItems, IEnumerable<obj>>
+    let ItemsSource<'T> =
+        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, IEnumerable<Widget>>
+            Xamarin.Forms.ItemsView.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+    let GroupedItemsSource<'T> =
+        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
             Xamarin.Forms.ItemsView.ItemsSourceProperty
             id
             (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
             (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
 
 module ItemsViewOfCell =
-    let ItemsSource =
-        Attributes.defineBindableWithComparer<WidgetItems, WidgetItems, IEnumerable<obj>>
+    let ItemsSource<'T> =
+        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, IEnumerable<Widget>>
+            Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+    let GroupedItemsSource<'T> =
+        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
             Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
             id
             (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })

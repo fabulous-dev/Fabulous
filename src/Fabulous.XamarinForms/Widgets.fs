@@ -123,29 +123,30 @@ module ViewHelpers =
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
         
-    let inline buildVirtualizedList<'msg, 'marker, 'itemData> (key: WidgetKey) (attrDef: ScalarAttributeDefinition<WidgetItems, WidgetItems, IEnumerable<obj>>) (items: seq<'itemData>) (template: obj -> obj) =
-        let data =
+    let buildItems<'msg, 'marker, 'itemData, 'itemMarker> key (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, IEnumerable<Widget>>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =            
+        let template (item: obj) =
+            let item = unbox<'itemData> item
+            (itemTemplate item).Compile()
+            
+        let data : WidgetItems<'itemData> =
             { OriginalItems = items
               Template = template }
         
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
         
-    let buildItems<'msg, 'marker, 'itemData, 'itemMarker> key attrDef (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =            
-        let template (item: obj) : obj =
-            let item = unbox<'itemData> item
-            (itemTemplate item).Compile()
-            
-        buildVirtualizedList<'msg, 'marker, 'itemData> key attrDef items template
-        
-    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef (items: seq<'groupData>) (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) =
-        let template (group: obj): obj =
+    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData>, GroupedWidgetItems<'groupData>, IEnumerable<GroupItem>>) (items: seq<'groupData>) (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) =
+        let template (group: obj) =
             let group = unbox<'groupData> group
             let header = (groupHeaderTemplate group).Compile()
             let footer = (groupFooterTemplate group).Compile()
             let items = group |> Seq.map (fun item -> (itemTemplate item).Compile())
             GroupItem(header, footer, items)
             
-        buildVirtualizedList<'msg, 'marker, 'groupData> key attrDef items template
+        let data : GroupedWidgetItems<'groupData> =
+            { OriginalItems = items
+              Template = template }
+        
+        WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
         
     let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef items groupHeaderTemplate itemTemplate =
         buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker> key attrDef items groupHeaderTemplate itemTemplate (fun _ -> Unchecked.defaultof<_>)

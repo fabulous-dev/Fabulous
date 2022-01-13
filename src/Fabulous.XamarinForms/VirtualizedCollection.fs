@@ -42,14 +42,14 @@ module BindableHelpers =
 
 /// Create a DataTemplate for a specific root type (TextCell, ViewCell, etc.)
 /// that listen for BindingContext change to apply the Widget content to the cell
-type WidgetDataTemplate(``type``, isHeader, parent: IViewNode) =
+type WidgetDataTemplate(``type``, itemType, parent: IViewNode) =
     inherit DataTemplate(fun () ->
         let bindableObject = Activator.CreateInstance ``type`` :?> BindableObject
         
         let viewNode = ViewNode(ValueSome parent, parent.TreeContext, WeakReference(bindableObject))
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
         
-        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView isHeader bindableObject
+        let onBindingContextChanged = BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView itemType bindableObject
         bindableObject.BindingContextChanged.Add (fun _ -> onBindingContextChanged ())
         
         bindableObject :> obj
@@ -83,6 +83,10 @@ type GroupedWidgetDataTemplateSelector(node: IViewNode, itemType: VirtualizedIte
         if itemType = Header then groupItem.Header else groupItem.Footer
     )
         
-type WidgetItems =
-    { OriginalItems: IEnumerable
-      Template: obj -> obj }
+type WidgetItems<'T> =
+    { OriginalItems: IEnumerable<'T>
+      Template: 'T -> Widget }
+    
+type GroupedWidgetItems<'T> =
+    { OriginalItems: IEnumerable<'T>
+      Template: 'T -> GroupItem }
