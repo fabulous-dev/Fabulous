@@ -163,13 +163,13 @@ module ViewKeys =
     )
     let GroupedListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
         target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, true)
+        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
         target.IsGroupingEnabled <- true
     )
     let GroupedCollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
         target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, true)
-        target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, false)
+        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
+        target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
         target.IsGrouped <- true
     )
 

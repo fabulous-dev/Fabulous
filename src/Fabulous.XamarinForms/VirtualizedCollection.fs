@@ -4,6 +4,7 @@ open System
 open System.Collections
 open System.Collections.Generic
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =
@@ -13,9 +14,14 @@ type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =
         member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
         member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
 
+type VirtualizedItemType =
+    | Header
+    | Footer
+    | Item
+    
 module BindableHelpers =
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
-    let createOnBindingContextChanged canReuseView isHeader (target: BindableObject) =
+    let createOnBindingContextChanged canReuseView (itemType: VirtualizedItemType) (target: BindableObject) =
         let mutable prevWidgetOpt: Widget voption = ValueNone
         
         let onBindingContextChanged () =
@@ -23,11 +29,10 @@ module BindableHelpers =
             | null -> ()
             | value ->
                 let currWidget =
-                    match value with
-                    | :? Widget as widget -> widget
-                    | :? GroupItem as groupItem when isHeader = true -> groupItem.Header
-                    | :? GroupItem as groupItem when isHeader = false -> groupItem.Footer
-                    | v -> failwith $"Unexpected {v.GetType().FullName} in BindingContext"
+                    match itemType with
+                    | Item -> value :?> Widget
+                    | Header -> (value :?> GroupItem).Header
+                    | Footer -> (value :?> GroupItem).Footer
                     
                 let node = ViewNode.get target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
@@ -49,9 +54,10 @@ type WidgetDataTemplate(``type``, isHeader, parent: IViewNode) =
         
         bindableObject :> obj
     )
+        
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
-type WidgetDataTemplateSelector internal (node: IViewNode, isHeader: bool, getWidget: obj -> Widget) =
+type WidgetDataTemplateSelector internal (node: IViewNode, itemType: VirtualizedItemType, getWidget: obj -> Widget) =
     inherit DataTemplateSelector()
     
     /// Reuse data template for already known widget target type
@@ -64,17 +70,17 @@ type WidgetDataTemplateSelector internal (node: IViewNode, isHeader: bool, getWi
         match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->
-            let dataTemplate = WidgetDataTemplate(targetType, isHeader, node)
+            let dataTemplate = WidgetDataTemplate(targetType, itemType, node)
             cache.Add(targetType, dataTemplate)
             dataTemplate
 
 type SimpleWidgetDataTemplateSelector(node: IViewNode) =
-    inherit WidgetDataTemplateSelector(node, false, fun item -> item :?> Widget)
+    inherit WidgetDataTemplateSelector(node, Item, fun item -> item :?> Widget)
         
-type GroupedWidgetDataTemplateSelector(node: IViewNode, isHeader: bool) =
-    inherit WidgetDataTemplateSelector(node, isHeader, fun item ->
+type GroupedWidgetDataTemplateSelector(node: IViewNode, itemType: VirtualizedItemType) =
+    inherit WidgetDataTemplateSelector(node, itemType, fun item ->
         let groupItem = item :?> GroupItem
-        if isHeader then groupItem.Header else groupItem.Footer
+        if itemType = Header then groupItem.Header else groupItem.Footer
     )
         
 type WidgetItems =
