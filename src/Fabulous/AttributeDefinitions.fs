@@ -17,14 +17,13 @@ type IScalarAttributeDefinition =
     abstract member CompareBoxed : a: obj * b: obj -> ScalarAttributeComparison
 
 /// Attribute definition for scalar properties
-type ScalarAttributeDefinition<'inputType, 'modelType> =
-    {
-        Key: AttributeKey
-        Name: string
-        Convert: 'inputType -> 'modelType
-        Compare: 'modelType * 'modelType -> ScalarAttributeComparison
-        UpdateNode: 'modelType voption * IViewNode -> unit
-    }
+type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
+    { Key: AttributeKey
+      Name: string
+      Convert: 'inputType -> 'modelType
+      ConvertValue: 'modelType -> 'valueType
+      Compare: 'modelType * 'modelType -> ScalarAttributeComparison
+      UpdateNode: 'valueType voption * IViewNode -> unit }
 
     member x.WithValue(value) : ScalarAttribute =
         {
@@ -45,8 +44,7 @@ type ScalarAttributeDefinition<'inputType, 'modelType> =
             let newValueOpt =
                 match newValueOpt with
                 | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<'modelType> v)
-
+                | ValueSome v -> ValueSome (x.ConvertValue(unbox<'modelType> v))
             x.UpdateNode(newValueOpt, node)
 
 /// Attribute definition for widget properties

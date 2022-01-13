@@ -38,7 +38,7 @@ module Memo =
 
     let private compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
         match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
-        | (true, true) ->
+        | true, true ->
             match next.KeyComparer next.KeyData prev.KeyData with
             | true -> ScalarAttributeComparison.Identical
             | false -> ScalarAttributeComparison.Different
@@ -65,6 +65,7 @@ module Memo =
             Key = MemoAttributeKey
             Name = "MemoAttribute"
             Convert = id
+            ConvertValue = id
             Compare = compareAttributes
             UpdateNode = updateNode
         }
@@ -78,6 +79,7 @@ module Memo =
         {
             Key = MemoWidgetKey
             Name = "Memo"
+            TargetType = Unchecked.defaultof<_> // Memo isn't allowed in lists, so this will never get called
             CreateView =
                 fun (widget, context, parentNode) ->
 

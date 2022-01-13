@@ -2,7 +2,6 @@
 
 open System.IO
 open Fabulous
-open Fabulous.XamarinForms
 open Plugin.Media
 open Plugin.Media.Abstractions
 open Plugin.Permissions

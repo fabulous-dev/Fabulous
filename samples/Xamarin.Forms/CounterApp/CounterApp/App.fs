@@ -1,9 +1,12 @@
 namespace Fabulous.XamarinForms.Samples.CounterApp
 
+open System.Collections
+open System.Collections.Generic
+open System.Collections.ObjectModel
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
-open type View
+open type Fabulous.XamarinForms.View
 
 module Style =
     let createStyleFor<'T when 'T :> BindableObject> setters =
@@ -49,7 +52,7 @@ module Configuration =
         
     let view model =
         VerticalStackLayout() {
-            View.memo model.TimerOn timerView
+            View.lazy' timerView model.TimerOn
             
             Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
                 .automationId("StepSlider")
@@ -61,8 +64,17 @@ module Configuration =
         }
 
 module App =
+    type Person =
+        { Name: string }
+        
+    type Group(letter: string, items: Person list) =
+        inherit ObservableCollection<Person>(items)
+        member _.Letter = letter
+    
     type Model =
         { Count: int
+          Data: int list
+          GroupedData: Group list
           Configuration: Configuration.Model }
 
     type Msg =
@@ -72,6 +84,7 @@ module App =
         | Reset
         | TimedTick
         | OsThemeChanged of OSAppTheme
+        | ItemsThresholdReached
 
     type CmdMsg =
         | TickTimer
@@ -89,6 +102,8 @@ module App =
 
     let initModel () =
         { Count = 0
+          Data = [ for i in 0 .. 100 do i ]
+          GroupedData = [ for i in 0 .. 100 do Group(i.ToString(), [ for j in 0 .. 10 do { Name = $"Person {i} - {j}" } ]) ]
           Configuration = Configuration.init () }
         
     let init () =
@@ -108,52 +123,61 @@ module App =
         | OsThemeChanged osAppTheme ->
             printfn $"{osAppTheme}"
             model, []
+        | ItemsThresholdReached ->
+            { model with Data = List.append model.Data [ for i = model.Data.Length to model.Data.Length + 100 do i ] }, []
             
     type OtherMsg = Test
-
+    
     let view model =
         Application(
-            NavigationPage() {                
+            NavigationPage() {
                 ContentPage("Counter",
-                    (VerticalStackLayout() {
-                        Label(string model.Count)
-                            .automationId("CountLabel")
-                            .centerTextHorizontal()
-                            .style (
-                                Style.createStyleFor [
-                                    Label.TextColorProperty, box Color.Blue
-                                    Label.FontSizeProperty, box 24.
-                                ]
-                            )
+                    VerticalStackLayout() {(VerticalStackLayout() {
+                         Label(string model.Count)
+                             .automationId("CountLabel")
+                             .centerTextHorizontal()
+                             .style (
+                                 Style.createStyleFor [
+                                     Label.TextColorProperty, box Color.Blue
+                                     Label.FontSizeProperty, box 24.
+                                 ]
+                             )
 
-                        Button("Increment", Increment)
-                            .style(
-                                Style.createStyleFor [
-                                    Button.BackgroundColorProperty, box Color.Green
-                                    Button.TextColorProperty, box Color.White
-                                ]
-                            )
-                            .automationId("IncrementButton")
+                         Button("Increment", Increment)
+                             .style(
+                                 Style.createStyleFor [
+                                     Button.BackgroundColorProperty, box Color.Green
+                                     Button.TextColorProperty, box Color.White
+                                 ]
+                             )
+                             .automationId("IncrementButton")
 
-                        Button("Decrement", Decrement)
-                            .automationId("DecrementButton")
-                            .alignStartVertical(expand = true)
+                         Button("Decrement", Decrement)
+                             .automationId("DecrementButton")
+                             .alignStartVertical(expand = true)
 
-                        (View.map ConfigurationMsg (Configuration.view model.Configuration))
-                            .paddingLayout(20.)
-                            .centerHorizontal()
+                         (View.map ConfigurationMsg (Configuration.view model.Configuration))
+                             .paddingLayout(20.)
+                             .centerHorizontal()
 
-                        Button("Reset", Reset)
-                            .automationId("ResetButton")
-                            .isEnabled(model <> initModel ())
-                            .centerHorizontal()
-                    })
-                        .paddingLayout(30.)
-                        .centerVertical()
+                         Button("Reset", Reset)
+                             .automationId("ResetButton")
+                             .isEnabled(model <> initModel ())
+                             .centerHorizontal()
+                             
+                         (CollectionView(model.Data) (fun item ->
+                             Label(item.ToString())
+                                 .textColor(Color.Blue)
+                         ))
+                            .remainingItemsThreshold(10, ItemsThresholdReached)
+                     })
+                         .paddingLayout(30.)
+                         .centerVertical()
+                    }
                 ).hasNavigationBar(false)
             }
         )
-         .onRequestedThemeChanged(fun args -> OsThemeChanged args.RequestedTheme)
+         .onRequestedThemeChanged(OsThemeChanged)
          .resources(Style.resources)
 
     let program = Program.statefulApplicationWithCmdMsg init update view mapCmdMsgToCmd

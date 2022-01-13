@@ -2,8 +2,9 @@ namespace Fabulous
 
 module MapMsg =
     let MapMsg =
-        Attributes.defineScalarWithConverter<obj -> obj, _>
+        Attributes.defineScalarWithConverter<obj -> obj, _, _>
             "Fabulous_MapMsg"
+            id
             id
             ScalarAttributeComparers.noCompare
             (fun (value, node) ->

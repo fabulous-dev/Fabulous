@@ -34,6 +34,6 @@ module Program =
     let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) (arg: 'arg) =
         let runner = Runners.create program
         runner.Start(arg)
-        let adapter = ViewAdapters.create ViewNode.getViewNode runner
+        let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
         

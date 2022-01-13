@@ -46,3 +46,6 @@ type FabulousTimePicker() =
     override this.OnPropertyChanged(propertyName) =
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
+
+/// Force ListView to recycle rows because DataTemplateSelector disables it by default
+type FabulousListView() = inherit ListView(ListViewCachingStrategy.RecycleElement)

@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
@@ -18,13 +19,14 @@ type ILayout = inherit IView
 type IToolbarItem = inherit IMenuItem
 
 module Widgets =
-    let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
+    let registerWithAdditionalSetup<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> (additionalSetup: 'T -> IViewNode -> unit) =
         let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
             {
                 Key = key
                 Name = typeof<'T>.Name
+                TargetType = typeof<'T>
                 CreateView =
                     fun (widget, treeContext, parentNode) ->
                         let name = typeof<'T>.Name
@@ -33,18 +35,21 @@ module Widgets =
                         let view = new 'T()
                         let weakReference = WeakReference(view)
                         
-                        let node =
-                            ViewNode(parentNode, treeContext, weakReference)
-
-                        view.SetValue(ViewNode.ViewNodeProperty, node)
+                        let node = ViewNode(parentNode, treeContext, weakReference)
+                        ViewNode.set node view
+                        
+                        additionalSetup view node
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
 
-                        struct (node, box view)
+                        struct (node :> IViewNode, box view)
             }
 
         WidgetDefinitionStore.set key definition
         key
+        
+    let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new : unit -> 'T)> () =
+        registerWithAdditionalSetup<'T> (fun _ _ -> ())
     
 [<Extension>]
 type CollectionBuilderExtensions =
@@ -117,3 +122,31 @@ module ViewHelpers =
         (widget: WidgetBuilder<'msg, 'marker>)
         =
         AttributeCollectionBuilder<'msg, 'marker, 'item>(widget, collectionAttributeDefinition)
+        
+    let buildItems<'msg, 'marker, 'itemData, 'itemMarker> key (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, IEnumerable<Widget>>) (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =            
+        let template (item: obj) =
+            let item = unbox<'itemData> item
+            (itemTemplate item).Compile()
+            
+        let data : WidgetItems<'itemData> =
+            { OriginalItems = items
+              Template = template }
+        
+        WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
+        
+    let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData>, GroupedWidgetItems<'groupData>, IEnumerable<GroupItem>>) (items: seq<'groupData>) (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>) =
+        let template (group: obj) =
+            let group = unbox<'groupData> group
+            let header = (groupHeaderTemplate group).Compile()
+            let footer = (groupFooterTemplate group).Compile()
+            let items = group |> Seq.map (fun item -> (itemTemplate item).Compile())
+            GroupItem(header, footer, items)
+            
+        let data : GroupedWidgetItems<'groupData> =
+            { OriginalItems = items
+              Template = template }
+        
+        WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
+        
+    let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>> key attrDef items groupHeaderTemplate itemTemplate =
+        buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker> key attrDef items groupHeaderTemplate itemTemplate (fun _ -> Unchecked.defaultof<_>)

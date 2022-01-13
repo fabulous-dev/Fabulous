@@ -1,6 +1,7 @@
 namespace Fabulous.XamarinForms
 
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type [<Struct>] AppThemeValues<'T> =
@@ -14,7 +15,7 @@ module Attributes =
             bindableProperty.PropertyName
             (fun target ->
                 let childTarget = (target :?> BindableObject).GetValue(bindableProperty)
-                ViewNode.getViewNode childTarget
+                ViewNode.get childTarget
             )
             (fun target value ->
                 let bindableObject = target :?> BindableObject
@@ -24,10 +25,11 @@ module Attributes =
                     bindableObject.SetValue(bindableProperty, value)
             )
 
-    let defineBindableWithComparer<'inputType, 'modelType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (compare: ('modelType * 'modelType) -> ScalarAttributeComparison) =
-        Attributes.defineScalarWithConverter<'inputType, 'modelType>
+    let defineBindableWithComparer<'inputType, 'modelType, 'valueType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (convertValue: 'modelType -> 'valueType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) =
+        Attributes.defineScalarWithConverter<'inputType, 'modelType, 'valueType>
             bindableProperty.PropertyName
             convert
+            convertValue
             compare
             (fun (newValueOpt, node) ->
                 let target = node.Target :?> BindableObject
@@ -35,13 +37,14 @@ module Attributes =
                 | ValueNone -> target.ClearValue(bindableProperty)
                 | ValueSome v -> target.SetValue(bindableProperty, v)
             )
-
+    
     let inline defineBindable<'T when 'T: equality> bindableProperty =
-        defineBindableWithComparer<'T, 'T> bindableProperty id ScalarAttributeComparers.equalityCompare
+        defineBindableWithComparer<'T, 'T, 'T> bindableProperty id id ScalarAttributeComparers.equalityCompare
 
     let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineScalarWithConverter<AppThemeValues<'T>, AppThemeValues<'T>>
+        Attributes.defineScalarWithConverter<AppThemeValues<'T>, AppThemeValues<'T>, AppThemeValues<'T>>
             bindableProperty.PropertyName
+            id
             id
             ScalarAttributeComparers.equalityCompare
             (fun (newValueOpt, node) ->

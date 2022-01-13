@@ -8,30 +8,31 @@ module Attributes =
     let definePressable name =
         let key = AttributeDefinitionStore.getNextKey()
 
-        let definition: ScalarAttributeDefinition<obj, obj> =
+        let definition: ScalarAttributeDefinition<obj, obj, obj> =
             {
                 Key = key
                 Name = name
                 Convert = id
+                ConvertValue = id
                 Compare = ScalarAttributeComparers.noCompare
                 UpdateNode =
-                    fun (newValueOpt, viewNode) ->
+                    fun (newValueOpt, node) ->
 
-                        let btn = viewNode.Target :?> IButton
+                        let btn = node.Target :?> IButton
 
-                        match viewNode.TryGetHandler<int>(key) with
+                        match node.TryGetHandler<int>(key) with
                         | ValueNone -> ()
                         | ValueSome handlerId -> btn.RemovePressListener handlerId
 
                         match newValueOpt with
-                        | ValueNone -> viewNode.SetHandler(key, ValueNone)
+                        | ValueNone -> node.SetHandler(key, ValueNone)
 
                         | ValueSome msg ->
                             let handler () =
-                                Attributes.dispatchMsgOnViewNode viewNode msg
+                                Attributes.dispatchMsgOnViewNode node msg
 
                             let handlerId = btn.AddPressListener handler
-                            viewNode.SetHandler<int>(key, ValueSome handlerId)
+                            node.SetHandler<int>(key, ValueSome handlerId)
             }
 
         AttributeDefinitionStore.set key definition

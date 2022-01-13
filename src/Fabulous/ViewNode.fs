@@ -67,19 +67,19 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                         let definition =
                             AttributeDefinitionStore.get newWidget.Key :?> WidgetAttributeDefinition
 
-                        definition.UpdateNode(ValueSome newWidget.Value, this)
+                        definition.UpdateNode(ValueSome newWidget.Value, this :> IViewNode)
 
                     | WidgetChange.Removed removed ->
                         let definition =
                             AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
 
-                        definition.UpdateNode(ValueNone, this)
+                        definition.UpdateNode(ValueNone, this :> IViewNode)
 
                     | WidgetChange.Updated struct (newAttr, diffs) ->
                         let definition =
                             AttributeDefinitionStore.get newAttr.Key :?> WidgetAttributeDefinition
 
-                        definition.ApplyDiff(diffs, this)
+                        definition.ApplyDiff(diffs, this :> IViewNode)
 
         member this.ApplyWidgetCollectionDiffs(diffs) =
             if not targetRef.IsAlive then
@@ -91,16 +91,16 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                         let definition =
                             AttributeDefinitionStore.get added.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.UpdateNode(ValueSome added.Value, this)
+                        definition.UpdateNode(ValueSome added.Value, this :> IViewNode)
 
                     | WidgetCollectionChange.Removed removed ->
                         let definition =
                             AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.UpdateNode(ValueNone, this)
+                        definition.UpdateNode(ValueNone, this :> IViewNode)
 
                     | WidgetCollectionChange.Updated struct (newAttr, diffs) ->
                         let definition =
                             AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
 
-                        definition.ApplyDiff(diffs, this)
+                        definition.ApplyDiff(diffs, this :> IViewNode)

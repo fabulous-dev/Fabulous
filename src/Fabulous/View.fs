@@ -12,9 +12,9 @@ module ViewHelpers =
             true
 
 module View =
-    let memo<'msg, 'key, 'marker when 'key: equality>
-        (key: 'key)
+    let lazy'<'msg, 'key, 'marker when 'key: equality>
         (fn: 'key -> WidgetBuilder<'msg, 'marker>)
+        (key: 'key)
         : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
 
         let memo: Memo.MemoData =
@@ -39,3 +39,6 @@ module View =
             x.AddScalar(MapMsg.MapMsg.WithValue fnWithBoxing)
 
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
+
+    let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) =
+        lazy' (viewFn >> map mapFn) model

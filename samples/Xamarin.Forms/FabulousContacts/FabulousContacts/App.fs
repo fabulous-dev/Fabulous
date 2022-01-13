@@ -1,6 +1,5 @@
 namespace FabulousContacts
 
-open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
 open type Fabulous.XamarinForms.View
@@ -138,37 +137,23 @@ module App =
             let mainMsg = Cmd.ofMsg (MainPageMsg (MainPage.Msg.ContactDeleted contact))
             let m = { model with DetailPageModel = None; EditPageModel = None }
             m, mainMsg
-
-    let view (model: Model) =
-        let mainPage = MainPage.view model.MainPageModel
-
-        let detailPage =
-            model.DetailPageModel
-            |> Option.map DetailPage.view
-
-        let editPage =
-            model.EditPageModel
-            |> Option.map EditPage.view
             
-        let aboutPage =
-            model.AboutPageModel
-            |> Option.map AboutPage.view
-
+    let view (model: Model) =
         Application(
             (NavigationPage() {
-                View.map MainPageMsg mainPage
+                View.lazyMap MainPageMsg MainPage.view model.MainPageModel
 
-                match aboutPage with
+                match model.AboutPageModel with
                 | None -> ()
-                | Some about -> View.map AboutPageMsg about
+                | Some aboutModel -> View.lazyMap AboutPageMsg AboutPage.view aboutModel
 
-                match detailPage with
+                match model.DetailPageModel with
                 | None -> ()
-                | Some detail -> View.map DetailPageMsg detail
+                | Some detailModel -> View.lazyMap DetailPageMsg DetailPage.view detailModel
             
-                match editPage with
+                match model.EditPageModel with
                 | None -> ()
-                | Some edit -> View.map EditPageMsg edit
+                | Some editModel -> View.lazyMap EditPageMsg EditPage.view editModel
             })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)

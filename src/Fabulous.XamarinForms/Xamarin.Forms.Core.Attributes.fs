@@ -1,11 +1,12 @@
 ﻿namespace Fabulous.XamarinForms.XFAttributes
 
 open System
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 
 module Application =
-    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
+    let MainPage = Attributes.defineWidget "Application_MainPage" (fun target -> ViewNode.get((target :?> Xamarin.Forms.Application).MainPage)) (fun target value -> (target :?> Xamarin.Forms.Application).MainPage <- value)
     let Resources = Attributes.define<Xamarin.Forms.ResourceDictionary> "Application_Resources" (fun (newValueOpt, node) ->
         let application = node.Target :?> Xamarin.Forms.Application
         let value =
@@ -115,15 +116,15 @@ module RefreshView =
     let Refreshing = Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> Xamarin.Forms.RefreshView).Refreshing)
 
 module ScrollView =
-    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
+    let Content = Attributes.defineWidget "ScrollView_Content" (fun target -> ViewNode.get((target :?> Xamarin.Forms.ScrollView).Content)) (fun target value -> (target :?> Xamarin.Forms.ScrollView).Content <- value)
 
 module Image =
     let Source = Attributes.defineBindable<Xamarin.Forms.ImageSource> Xamarin.Forms.Image.SourceProperty
     let Aspect = Attributes.defineBindable<Xamarin.Forms.Aspect> Xamarin.Forms.Image.AspectProperty
 
 module Grid =
-    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_ColumnDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
-    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array> "Grid_RowDefinitions" Array.ofSeq ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
+    let ColumnDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array> "Grid_ColumnDefinitions" Array.ofSeq id ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridColumnDefinitions
+    let RowDefinitions = Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array> "Grid_RowDefinitions" Array.ofSeq id ScalarAttributeComparers.equalityCompare ViewUpdaters.updateGridRowDefinitions
     let Column = Attributes.defineBindable<int> Xamarin.Forms.Grid.ColumnProperty
     let Row = Attributes.defineBindable<int> Xamarin.Forms.Grid.RowProperty
     let ColumnSpacing = Attributes.defineBindable<float> Xamarin.Forms.Grid.ColumnSpacingProperty
@@ -175,7 +176,7 @@ module Editor =
     let Text = Attributes.defineBindable<string> Xamarin.Forms.Editor.TextProperty
 
 module ViewCell =
-    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.getViewNode((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
+    let View = Attributes.defineWidget "ViewCell_View" (fun target -> ViewNode.get((target :?> Xamarin.Forms.ViewCell).View)) (fun target value -> (target :?> Xamarin.Forms.ViewCell).View <- value)
 
 module MultiPageOfPage =
     let Children = Attributes.defineWidgetCollection "MultiPageOfPage" (fun target -> (target :?> Xamarin.Forms.MultiPage<Xamarin.Forms.Page>).Children)
@@ -209,3 +210,45 @@ module Stepper =
     let MinimumMaximum = Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
     let Value = Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
     let ValueChanged = Attributes.defineEvent<Xamarin.Forms.ValueChangedEventArgs> "Stepper_ValueChanged" (fun target -> (target :?> Xamarin.Forms.Stepper).ValueChanged)
+
+module ItemsView =
+    let ItemsSource<'T> =
+        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, IEnumerable<Widget>>
+            Xamarin.Forms.ItemsView.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+    let GroupedItemsSource<'T> =
+        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
+            Xamarin.Forms.ItemsView.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+
+module ItemsViewOfCell =
+    let ItemsSource<'T> =
+        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, IEnumerable<Widget>>
+            Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+    let GroupedItemsSource<'T> =
+        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
+            Xamarin.Forms.ItemsView<Xamarin.Forms.Cell>.ItemsSourceProperty
+            id
+            (fun modelValue -> seq { for x in modelValue.OriginalItems do modelValue.Template x })
+            (fun (a, b) -> ScalarAttributeComparers.equalityCompare(a.OriginalItems, b.OriginalItems))
+    
+module ListView =
+    let RowHeight = Attributes.defineBindable<int> Xamarin.Forms.ListView.RowHeightProperty
+    let SelectionMode = Attributes.defineBindable<Xamarin.Forms.ListViewSelectionMode> Xamarin.Forms.ListView.SelectionModeProperty
+    let ItemTapped = Attributes.defineEvent "ListView_ItemTapped" (fun target -> (target :?> Xamarin.Forms.ListView).ItemTapped)
+        
+    
+module TextCell =
+    let Text = Attributes.defineBindable<string> Xamarin.Forms.TextCell.TextProperty
+    let TextColor = Attributes.defineBindable<Xamarin.Forms.Color> Xamarin.Forms.TextCell.TextColorProperty
+    
+module CollectionView =
+    let RemainingItemsThreshold = Attributes.defineBindable<int> Xamarin.Forms.CollectionView.RemainingItemsThresholdProperty
+    let RemainingItemsThresholdReached = Attributes.defineEventNoArg "CollectionView_RemainingItemsThresholdReached" (fun target -> (target :?> Xamarin.Forms.CollectionView).RemainingItemsThresholdReached)

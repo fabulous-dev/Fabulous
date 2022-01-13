@@ -107,7 +107,7 @@ module ViewUpdaters =
                         |> ignore
 
             | WidgetCollectionItemChange.Update (index, diff) ->
-                let childNode = node.TreeContext.GetViewNode(pages.[index])
+                let childNode = node.TreeContext.GetViewNode(box (pages.[index]))
 
                 match diff.ScalarChanges with
                 | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
