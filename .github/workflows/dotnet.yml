@@ -16,8 +16,6 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore
       run: dotnet restore ${SLN_FILE}
-    - name: Check code formatting
-      run: dotnet fantomas --check **/*.fs
     - name: Build
       run: dotnet build --no-restore --configuration Release ${SLN_FILE}
     - name: Test
