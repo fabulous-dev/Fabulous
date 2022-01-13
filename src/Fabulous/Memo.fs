@@ -79,7 +79,7 @@ module Memo =
         {
             Key = MemoWidgetKey
             Name = "Memo"
-            TargetType = Unchecked.defaultof<_>
+            TargetType = Unchecked.defaultof<_> // Memo isn't allowed in lists, so this will never get called
             CreateView =
                 fun (widget, context, parentNode) ->
 
