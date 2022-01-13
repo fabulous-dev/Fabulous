@@ -137,26 +137,23 @@ module App =
             let mainMsg = Cmd.ofMsg (MainPageMsg (MainPage.Msg.ContactDeleted contact))
             let m = { model with DetailPageModel = None; EditPageModel = None }
             m, mainMsg
-
-    let inline lazyMap mapFn viewFn model =
-        View.lazy' (viewFn >> View.map mapFn) model
-    
+            
     let view (model: Model) =
         Application(
             (NavigationPage() {
-                lazyMap MainPageMsg MainPage.view model.MainPageModel
+                View.lazyMap MainPageMsg MainPage.view model.MainPageModel
 
                 match model.AboutPageModel with
                 | None -> ()
-                | Some aboutModel -> lazyMap AboutPageMsg AboutPage.view aboutModel
+                | Some aboutModel -> View.lazyMap AboutPageMsg AboutPage.view aboutModel
 
                 match model.DetailPageModel with
                 | None -> ()
-                | Some detailModel -> lazyMap DetailPageMsg DetailPage.view detailModel
+                | Some detailModel -> View.lazyMap DetailPageMsg DetailPage.view detailModel
             
                 match model.EditPageModel with
                 | None -> ()
-                | Some editModel -> lazyMap EditPageMsg EditPage.view editModel
+                | Some editModel -> View.lazyMap EditPageMsg EditPage.view editModel
             })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)

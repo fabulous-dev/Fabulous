@@ -20,6 +20,12 @@ type VirtualizedItemType =
     | Item
     
 module BindableHelpers =
+    let getWidgetFromBindableContext (itemType: VirtualizedItemType) (value: obj) =
+        match itemType with
+        | Item -> value :?> Widget
+        | Header -> (value :?> GroupItem).Header
+        | Footer -> (value :?> GroupItem).Footer
+        
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
     let createOnBindingContextChanged canReuseView (itemType: VirtualizedItemType) (target: BindableObject) =
         let mutable prevWidgetOpt: Widget voption = ValueNone
@@ -28,12 +34,7 @@ module BindableHelpers =
             match target.BindingContext with
             | null -> ()
             | value ->
-                let currWidget =
-                    match itemType with
-                    | Item -> value :?> Widget
-                    | Header -> (value :?> GroupItem).Header
-                    | Footer -> (value :?> GroupItem).Footer
-                    
+                let currWidget = getWidgetFromBindableContext itemType value
                 let node = ViewNode.get target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
                 prevWidgetOpt <- ValueSome currWidget
@@ -54,17 +55,16 @@ type WidgetDataTemplate(``type``, itemType, parent: IViewNode) =
         
         bindableObject :> obj
     )
-        
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
-type WidgetDataTemplateSelector internal (node: IViewNode, itemType: VirtualizedItemType, getWidget: obj -> Widget) =
+type WidgetDataTemplateSelector internal (node: IViewNode, itemType: VirtualizedItemType) =
     inherit DataTemplateSelector()
     
     /// Reuse data template for already known widget target type
     let cache = Dictionary<Type, WidgetDataTemplate>()
     
     override _.OnSelectTemplate(item, _) =
-        let widget = getWidget item
+        let widget = BindableHelpers.getWidgetFromBindableContext itemType item
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let targetType = widgetDefinition.TargetType
         match cache.TryGetValue(targetType) with
@@ -75,13 +75,10 @@ type WidgetDataTemplateSelector internal (node: IViewNode, itemType: Virtualized
             dataTemplate
 
 type SimpleWidgetDataTemplateSelector(node: IViewNode) =
-    inherit WidgetDataTemplateSelector(node, Item, fun item -> item :?> Widget)
+    inherit WidgetDataTemplateSelector(node, Item)
         
 type GroupedWidgetDataTemplateSelector(node: IViewNode, itemType: VirtualizedItemType) =
-    inherit WidgetDataTemplateSelector(node, itemType, fun item ->
-        let groupItem = item :?> GroupItem
-        if itemType = Header then groupItem.Header else groupItem.Footer
-    )
+    inherit WidgetDataTemplateSelector(node, itemType)
         
 type WidgetItems<'T> =
     { OriginalItems: IEnumerable<'T>

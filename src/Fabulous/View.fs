@@ -39,3 +39,6 @@ module View =
             x.AddScalar(MapMsg.MapMsg.WithValue fnWithBoxing)
 
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
+
+    let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) =
+        lazy' (viewFn >> map mapFn) model

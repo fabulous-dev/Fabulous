@@ -33,23 +33,23 @@ module ContactsListPage =
     type Model =
         { Contacts: Contact list
           FilterText: string
-          FilteredContacts: Contact list
           ContactGroups: ObservableCollection<ContactGroup> }
 
     // Functions
     let filterContacts filterText (contacts: Contact list) =
-        match filterText with
-        | null | "" ->
-            contacts
-        | s ->
-            contacts
-            |> List.filter (fun c -> c.FirstName.Contains s || c.LastName.Contains s)
-
-    let groupContacts contacts =
-        contacts
+        let filteredContacts =
+            match filterText with
+            | null | "" ->
+                contacts
+            | s ->
+                contacts
+                |> List.filter (fun c -> c.FirstName.Contains s || c.LastName.Contains s)
+        
+        filteredContacts
         |> List.groupBy (fun c -> c.LastName.[0].ToString().ToUpper())
-        |> List.map (fun (k, cs) -> (k, cs |> List.sortBy (fun c -> c.FirstName)))
-        |> List.sortBy (fun (k, _) -> k)
+        |> List.map (fun (k, cs) -> ContactGroup(k, cs |> List.sortBy (fun c -> c.FirstName)))
+        |> List.sortBy (fun cg -> cg.Name)
+        |> ObservableCollection<_>
 
     let findContactIn (groupedContacts: (string * Contact list) list) (gIndex: int, iIndex: int) =
         groupedContacts.[gIndex]
@@ -59,7 +59,6 @@ module ContactsListPage =
     let initModel =
         { Contacts = []
           FilterText = ""
-          FilteredContacts = []
           ContactGroups = ObservableCollection<ContactGroup>() }
     
     let init () =
@@ -74,13 +73,13 @@ module ContactsListPage =
             model, Cmd.none, ExternalMsg.NavigateToNewContact
 
         | UpdateFilterText filterText ->
-            let filteredContacts = filterContacts filterText model.Contacts
-            let m = { model with FilterText = filterText; FilteredContacts = filteredContacts }
+            let contactGroups = filterContacts filterText model.Contacts
+            let m = { model with FilterText = filterText; ContactGroups = contactGroups }
             m, Cmd.none, ExternalMsg.NoOp
 
         | ContactsLoaded contacts ->
-            let filteredContacts = filterContacts model.FilterText contacts
-            let m = { model with Contacts = contacts; FilteredContacts = filteredContacts }
+            let contactGroups = filterContacts model.FilterText contacts
+            let m = { model with Contacts = contacts; ContactGroups = contactGroups }
             m, Cmd.none, ExternalMsg.NoOp
 
         | ContactSelected index ->
