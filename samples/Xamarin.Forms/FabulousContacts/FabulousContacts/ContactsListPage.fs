@@ -7,8 +7,14 @@ open FabulousContacts.Models
 open FabulousContacts.Style
 open Xamarin.Forms
 open type Fabulous.XamarinForms.View
+open System.Collections.ObjectModel
 
 module ContactsListPage =
+    type ContactGroup(name: string, contacts: Contact list) =
+        inherit ObservableCollection<Contact>(contacts)
+        member _.ShortName = name.[0]
+        member _.Name = name
+    
     // Declarations
     type Msg =
         | AboutTapped
@@ -23,11 +29,12 @@ module ContactsListPage =
         | NavigateToAbout
         | NavigateToNewContact
         | NavigateToDetail of Contact
-
+        
     type Model =
         { Contacts: Contact list
           FilterText: string
-          FilteredContacts: Contact list }
+          FilteredContacts: Contact list
+          ContactGroups: ObservableCollection<ContactGroup> }
 
     // Functions
     let filterContacts filterText (contacts: Contact list) =
@@ -52,7 +59,8 @@ module ContactsListPage =
     let initModel =
         { Contacts = []
           FilterText = ""
-          FilteredContacts = [] }
+          FilteredContacts = []
+          ContactGroups = ObservableCollection<ContactGroup>() }
     
     let init () =
         initModel, Cmd.none
@@ -88,27 +96,19 @@ module ContactsListPage =
                     .backgroundColor(accentColor)
                     .cancelButtonColor(accentTextColor)
                     
-                (ListView(model.FilteredContacts) (fun contact ->
-                    cellView
-                        contact.Picture
-                        $"{contact.FirstName} {contact.LastName}"
-                        contact.Address
-                        contact.IsFavorite
-                ))
+                (GroupedListView(model.ContactGroups)
+                     (fun group -> groupView group.Name)
+                     (fun contact ->
+                        cellView
+                            contact.Picture
+                            $"{contact.FirstName} {contact.LastName}"
+                            contact.Address
+                            contact.IsFavorite
+                     ))
                     .rowHeight(60)
-                    //.showJumpList(model.Contacts.Length > 10)
                     .selectionMode(ListViewSelectionMode.None)
                     .itemTapped(ContactSelected)
                     .fillVertical(expand = true)
-
-                    //items = [
-                    //    for (groupName, items) in groupedContacts do
-                    //        yield groupName, groupView groupName, [
-                    //            for contact in items do
-                    //                let address = contact.Address.Replace("\n", " ")
-                    //                yield cachedCell contact address
-                    //            ]
-                    //]
             })
         )
             .toolbarItems() {

@@ -411,10 +411,10 @@ module MemoTests =
                     .automationId("not_memo")
 
                 View.memo
-                    model.memoTrigger
                     (fun i ->
                         renderCount <- renderCount + 1
                         Label(string i).automationId("memo"))
+                    model.memoTrigger
             }
 
         [<Test>]
@@ -469,8 +469,8 @@ module MemoTests =
         let view model =
             (Stack() {
                 match model with
-                | Btn -> View.memo model (fun i -> Button(string i, Change).automationId("btn"))
-                | Lbl -> View.memo model (fun i -> Label(string i).automationId("label"))
+                | Btn -> View.memo (fun i -> Button(string i, Change).automationId("btn")) model
+                | Lbl -> View.memo (fun i -> Label(string i).automationId("label")) model
              })
                 .automationId("stack")
 
@@ -520,20 +520,20 @@ module MemoTests =
                 match model with
                 | Label1 ->
                     View.memo
-                        model
                         (fun _ ->
                             Label("one")
                                 .record(true)
                                 .textColor("blue")
                                 .automationId("label"))
+                        model
                 | Label2 ->
                     View.memo
-                        (string model)
                         (fun _ ->
                             Label("two")
                                 .record(true)
                                 .textColor("blue")
                                 .automationId("label"))
+                        (string model)
             }
 
         [<Test>]

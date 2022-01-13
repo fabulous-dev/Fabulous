@@ -51,7 +51,7 @@ module Configuration =
         
     let view model =
         VerticalStackLayout() {
-            View.memo model.TimerOn timerView
+            View.memo timerView model.TimerOn
             
             Slider(min = 0., max = 10., value = float model.Step, onValueChanged = StepChanged)
                 .automationId("StepSlider")

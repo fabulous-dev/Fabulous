@@ -13,8 +13,8 @@ module ViewHelpers =
 
 module View =
     let memo<'msg, 'key, 'marker when 'key: equality>
-        (key: 'key)
         (fn: 'key -> WidgetBuilder<'msg, 'marker>)
+        (key: 'key)
         : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
 
         let memo: Memo.MemoData =

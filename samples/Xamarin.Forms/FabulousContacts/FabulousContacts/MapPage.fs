@@ -66,7 +66,7 @@ module MapPage =
                 |> Array.filter (snd >> Option.isSome)
                 |> Array.map (fun (c, p) ->
                     { Position = p.Value
-                      Label = sprintf "%s %s " c.FirstName c.LastName
+                      Label = $"%s{c.FirstName} %s{c.LastName} "
                       PinType = PinType.Place
                       Address = c.Address })
                 |> Array.toList
@@ -110,15 +110,12 @@ module MapPage =
     let view model =
         let map userPositionOpt pins =
             (Map(requestedRegion = MapSpan.FromCenterAndRadius(getUserPositionOrDefault userPositionOpt, Distance.FromKilometers(25.))) {
-                match model.Pins with
-                | None -> ()
-                | Some pins ->
-                    for pin in pins do
-                        Pin(
-                           pinType = pin.PinType,
-                           label = pin.Label,
-                           position = pin.Position
-                        ).address(pin.Address)
+                for pin in pins do
+                    Pin(
+                       pinType = pin.PinType,
+                       label = pin.Label,
+                       position = pin.Position
+                    ).address(pin.Address)
             })
                 .hasZoomEnabled(true)
                 .hasScrollEnabled(true)

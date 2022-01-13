@@ -1,6 +1,5 @@
 namespace FabulousContacts
 
-open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
 open type Fabulous.XamarinForms.View
@@ -140,19 +139,20 @@ module App =
             m, mainMsg
 
     let view (model: Model) =
-        let mainPage = MainPage.view model.MainPageModel
+        let mainPage =
+            View.memo MainPage.view model.MainPageModel 
 
         let detailPage =
             model.DetailPageModel
-            |> Option.map DetailPage.view
+            |> Option.map (View.memo DetailPage.view)
 
         let editPage =
             model.EditPageModel
-            |> Option.map EditPage.view
+            |> Option.map (View.memo EditPage.view)
             
         let aboutPage =
             model.AboutPageModel
-            |> Option.map AboutPage.view
+            |> Option.map (View.memo AboutPage.view)
 
         Application(
             (NavigationPage() {

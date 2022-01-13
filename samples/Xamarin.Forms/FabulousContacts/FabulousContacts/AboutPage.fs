@@ -1,7 +1,6 @@
 ﻿namespace FabulousContacts
 
 open System
-open Fabulous
 open Fabulous.XamarinForms
 open FabulousContacts.Controls
 open FabulousContacts.Style

@@ -222,7 +222,7 @@ module EditPage =
         
     let view model =
         let title =
-            let fullName = (sprintf "%s %s" model.FirstName model.LastName).Trim()
+            let fullName = $"%s{model.FirstName} %s{model.LastName}".Trim()
             match model.Contact, fullName.Trim() with
             | None, "" -> Strings.EditPage_Title_NewContact
             | _, "" -> Strings.EditPage_Title_EditContactWithNoName

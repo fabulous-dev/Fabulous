@@ -42,9 +42,9 @@ module MainPage =
 
     // Lifecycle
     let init dbPath () =
-        let (modelAllContacts, msgAllContacts) = ContactsListPage.init()
-        let (modelFavContacts, msgFavContacts) = ContactsListPage.init()
-        let (modelMap, msgMap) = MapPage.init()
+        let modelAllContacts, msgAllContacts = ContactsListPage.init()
+        let modelFavContacts, msgFavContacts = ContactsListPage.init()
+        let modelMap, msgMap = MapPage.init()
         let m =
             { Contacts = None
               TabAllContactsModel = modelAllContacts
