@@ -410,7 +410,7 @@ module MemoTests =
                 Label<Msg>(model.notMemoized)
                     .automationId("not_memo")
 
-                View.memo
+                View.lazy'
                     (fun i ->
                         renderCount <- renderCount + 1
                         Label(string i).automationId("memo"))
@@ -469,8 +469,8 @@ module MemoTests =
         let view model =
             (Stack() {
                 match model with
-                | Btn -> View.memo (fun i -> Button(string i, Change).automationId("btn")) model
-                | Lbl -> View.memo (fun i -> Label(string i).automationId("label")) model
+                | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId("btn")) model
+                | Lbl -> View.lazy' (fun i -> Label(string i).automationId("label")) model
              })
                 .automationId("stack")
 
@@ -519,7 +519,7 @@ module MemoTests =
             Stack() {
                 match model with
                 | Label1 ->
-                    View.memo
+                    View.lazy'
                         (fun _ ->
                             Label("one")
                                 .record(true)
@@ -527,7 +527,7 @@ module MemoTests =
                                 .automationId("label"))
                         model
                 | Label2 ->
-                    View.memo
+                    View.lazy'
                         (fun _ ->
                             Label("two")
                                 .record(true)

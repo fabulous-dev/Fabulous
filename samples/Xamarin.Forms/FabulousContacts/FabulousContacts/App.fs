@@ -138,37 +138,25 @@ module App =
             let m = { model with DetailPageModel = None; EditPageModel = None }
             m, mainMsg
 
+    let inline lazyMap mapFn viewFn model =
+        View.lazy' (viewFn >> View.map mapFn) model
+    
     let view (model: Model) =
-        let mainPage =
-            View.memo MainPage.view model.MainPageModel 
-
-        let detailPage =
-            model.DetailPageModel
-            |> Option.map (View.memo DetailPage.view)
-
-        let editPage =
-            model.EditPageModel
-            |> Option.map (View.memo EditPage.view)
-            
-        let aboutPage =
-            model.AboutPageModel
-            |> Option.map (View.memo AboutPage.view)
-
         Application(
             (NavigationPage() {
-                View.map MainPageMsg mainPage
+                lazyMap MainPageMsg MainPage.view model.MainPageModel
 
-                match aboutPage with
+                match model.AboutPageModel with
                 | None -> ()
-                | Some about -> View.map AboutPageMsg about
+                | Some aboutModel -> lazyMap AboutPageMsg AboutPage.view aboutModel
 
-                match detailPage with
+                match model.DetailPageModel with
                 | None -> ()
-                | Some detail -> View.map DetailPageMsg detail
+                | Some detailModel -> lazyMap DetailPageMsg DetailPage.view detailModel
             
-                match editPage with
+                match model.EditPageModel with
                 | None -> ()
-                | Some edit -> View.map EditPageMsg edit
+                | Some editModel -> lazyMap EditPageMsg EditPage.view editModel
             })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)

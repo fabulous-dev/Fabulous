@@ -12,7 +12,7 @@ module ViewHelpers =
             true
 
 module View =
-    let memo<'msg, 'key, 'marker when 'key: equality>
+    let lazy'<'msg, 'key, 'marker when 'key: equality>
         (fn: 'key -> WidgetBuilder<'msg, 'marker>)
         (key: 'key)
         : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
