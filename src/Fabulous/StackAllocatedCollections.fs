@@ -95,10 +95,10 @@ module StackList =
                     arr
 
             static member add(data: StackList<'v> inref, v: 'v) =
-                let lenght = data.size
+                let length = data.size
                 let struct (v0, v1, _) = data.items
 
-                match lenght with
+                match length with
                 | 0us -> StackList.one v
                 | 1us -> StackList.two(v0, v)
                 | 2us -> StackList.three(v0, v1, v)
@@ -447,6 +447,7 @@ module MutStackArray1 =
 open FSharp.NativeInterop
 
 #nowarn "9"
+
 let inline stackalloc<'a when 'a: unmanaged> (length: int) : Span<'a> =
     let p =
         NativePtr.stackalloc<'a> length

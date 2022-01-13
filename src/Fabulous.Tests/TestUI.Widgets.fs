@@ -154,7 +154,7 @@ type CollectionBuilderExtensions =
         }
 
     [<Extension>]
-    static member YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+    static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
         (
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker> seq
