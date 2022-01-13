@@ -6,6 +6,7 @@ open FabulousContacts.Components
 open FabulousContacts.Models
 open FabulousContacts.Style
 open Xamarin.Forms
+
 open type Fabulous.XamarinForms.View
 open System.Collections.ObjectModel
 
@@ -14,7 +15,7 @@ module ContactsListPage =
         inherit ObservableCollection<Contact>(contacts)
         member _.ShortName = name.[0]
         member _.Name = name
-    
+
     // Declarations
     type Msg =
         | AboutTapped
@@ -29,7 +30,7 @@ module ContactsListPage =
         | NavigateToAbout
         | NavigateToNewContact
         | NavigateToDetail of Contact
-        
+
     type Model =
         { Contacts: Contact list
           FilterText: string
@@ -39,12 +40,12 @@ module ContactsListPage =
     let filterContacts filterText (contacts: Contact list) =
         let filteredContacts =
             match filterText with
-            | null | "" ->
-                contacts
+            | null
+            | "" -> contacts
             | s ->
                 contacts
                 |> List.filter (fun c -> c.FirstName.Contains s || c.LastName.Contains s)
-        
+
         filteredContacts
         |> List.groupBy (fun c -> c.LastName.[0].ToString().ToUpper())
         |> List.map (fun (k, cs) -> ContactGroup(k, cs |> List.sortBy (fun c -> c.FirstName)))
@@ -60,57 +61,63 @@ module ContactsListPage =
         { Contacts = []
           FilterText = ""
           ContactGroups = ObservableCollection<ContactGroup>() }
-    
-    let init () =
-        initModel, Cmd.none
+
+    let init () = initModel, Cmd.none
 
     let update msg model =
         match msg with
-        | AboutTapped ->
-            model, Cmd.none, ExternalMsg.NavigateToAbout
+        | AboutTapped -> model, Cmd.none, ExternalMsg.NavigateToAbout
 
-        | AddNewContactTapped ->
-            model, Cmd.none, ExternalMsg.NavigateToNewContact
+        | AddNewContactTapped -> model, Cmd.none, ExternalMsg.NavigateToNewContact
 
         | UpdateFilterText filterText ->
             let contactGroups = filterContacts filterText model.Contacts
-            let m = { model with FilterText = filterText; ContactGroups = contactGroups }
+
+            let m =
+                { model with
+                      FilterText = filterText
+                      ContactGroups = contactGroups }
+
             m, Cmd.none, ExternalMsg.NoOp
 
         | ContactsLoaded contacts ->
             let contactGroups = filterContacts model.FilterText contacts
-            let m = { model with Contacts = contacts; ContactGroups = contactGroups }
+
+            let m =
+                { model with
+                      Contacts = contacts
+                      ContactGroups = contactGroups }
+
             m, Cmd.none, ExternalMsg.NoOp
 
-        | ContactSelected index ->
-            model, Cmd.none, ExternalMsg.NavigateToDetail (model.Contacts[index])
+        | ContactSelected index -> model, Cmd.none, ExternalMsg.NavigateToDetail(model.Contacts [ index ])
 
-        | Search ->
-            model, Cmd.none, ExternalMsg.NoOp
+        | Search -> model, Cmd.none, ExternalMsg.NoOp
 
     let view title model =
-        ContentPage(title,
+        ContentPage(
+            title,
             (VerticalStackLayout(spacing = 0.) {
                 SearchBar(model.FilterText, UpdateFilterText, Search)
                     .backgroundColor(accentColor)
-                    .cancelButtonColor(accentTextColor)
-                    
-                (GroupedListView(model.ContactGroups)
-                     (fun group -> groupView group.Name)
-                     (fun contact ->
+                    .cancelButtonColor (accentTextColor)
+
+                (GroupedListView
+                    (model.ContactGroups)
+                    (fun group -> groupView group.Name)
+                    (fun contact ->
                         cellView
                             contact.Picture
                             $"{contact.FirstName} {contact.LastName}"
                             contact.Address
-                            contact.IsFavorite
-                     ))
+                            contact.IsFavorite))
                     .rowHeight(60)
                     .selectionMode(ListViewSelectionMode.None)
                     .itemTapped(ContactSelected)
-                    .fillVertical(expand = true)
-            })
+                    .fillVertical (expand = true)
+             })
         )
-            .toolbarItems() {
-                ToolbarItem(Strings.Common_About, AboutTapped)
-                ToolbarItem("+", AddNewContactTapped)
-            }
+            .toolbarItems () {
+            ToolbarItem(Strings.Common_About, AboutTapped)
+            ToolbarItem("+", AddNewContactTapped)
+        }

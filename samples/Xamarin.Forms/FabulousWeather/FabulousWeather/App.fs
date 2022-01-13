@@ -2,7 +2,9 @@ namespace Fabulous.XamarinForms.Samples.FabulousWeather
 
 open Fabulous
 open Fabulous.XamarinForms
+
 open type Fabulous.XamarinForms.View
+
 open System
 open CityView
 
@@ -21,80 +23,101 @@ module App =
         async {
             let! currentWeather = WeatherApi.getCurrentWeatherForCityAsync cityName
             let! hourlyForecast = WeatherApi.getHourlyForecastForCityAsync cityName
-            
-            let model = 
+
+            let model =
                 { Date = currentWeather.Date
                   Temperature = currentWeather.Temperature
                   WeatherKind = currentWeather.WeatherKind
                   HourlyForecast = hourlyForecast.Values }
-                
-            return WeatherRefreshed (index, model)
-        } |> Cmd.ofAsyncMsg
-                
+
+            return WeatherRefreshed(index, model)
+        }
+        |> Cmd.ofAsyncMsg
+
     let initModel =
         { CurrentCityIndex = 0
           Cities =
-            [| { Name = "Seattle"
-                 Data = None
-                 IsRefreshing = true }
-               { Name = "New York"
-                 Data = None
-                 IsRefreshing = true }
-               { Name = "Paris"
-                 Data = None
-                 IsRefreshing = true } |] }
-        
-    let init() =
-        let cmd = Cmd.batch [
-            for i in 0 .. initModel.Cities.Length - 1 ->
-                getWeatherForCityAsync i initModel.Cities.[i].Name
-        ]
-        
+              [| { Name = "Seattle"
+                   Data = None
+                   IsRefreshing = true }
+                 { Name = "New York"
+                   Data = None
+                   IsRefreshing = true }
+                 { Name = "Paris"
+                   Data = None
+                   IsRefreshing = true } |] }
+
+    let init () =
+        let cmd =
+            Cmd.batch [ for i in 0 .. initModel.Cities.Length - 1 -> getWeatherForCityAsync i initModel.Cities.[i].Name ]
+
         initModel, cmd
 
     let update msg model =
         match msg with
         | GoToPreviousCity ->
             let prevIndex = Math.Max(0, model.CurrentCityIndex - 1)
-            { model with CurrentCityIndex = prevIndex }, Cmd.none
+
+            { model with
+                  CurrentCityIndex = prevIndex },
+            Cmd.none
 
         | GoToNextCity ->
             let nextIndex = Math.Max(0, model.CurrentCityIndex + 1)
-            { model with CurrentCityIndex = nextIndex }, Cmd.none
-            
+
+            { model with
+                  CurrentCityIndex = nextIndex },
+            Cmd.none
+
         | RequestRefresh index ->
             let updatedCities =
                 model.Cities
-                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = true } else c)
+                |> Array.mapi
+                    (fun i c ->
+                        if i = index then
+                            { c with IsRefreshing = true }
+                        else
+                            c)
 
-            let cmd = getWeatherForCityAsync index model.Cities.[index].Name
-            
+            let cmd =
+                getWeatherForCityAsync index model.Cities.[index].Name
+
             { model with Cities = updatedCities }, cmd
-            
+
         | WeatherRefreshed (index, data) ->
             let updatedCities =
                 model.Cities
-                |> Array.mapi (fun i c -> if i = index then { c with IsRefreshing = false; Data = Some data } else c)
-            
+                |> Array.mapi
+                    (fun i c ->
+                        if i = index then
+                            { c with
+                                  IsRefreshing = false
+                                  Data = Some data }
+                        else
+                            c)
+
             { model with Cities = updatedCities }, Cmd.none
 
     let previousNextView model =
         (Grid() {
-            cityView model.CurrentCityIndex model.Cities.[model.CurrentCityIndex] (RequestRefresh model.CurrentCityIndex)
+            cityView
+                model.CurrentCityIndex
+                model.Cities.[model.CurrentCityIndex]
+                (RequestRefresh model.CurrentCityIndex)
 
             if model.CurrentCityIndex > 0 then
                 Button($"< {model.Cities.[model.CurrentCityIndex - 1].Name}", GoToPreviousCity)
                     .alignStartHorizontal()
                     .alignStartVertical()
-                    .margin(20., 0., 0., 0.)
-                    
+                    .margin (20., 0., 0., 0.)
+
             if model.CurrentCityIndex < model.Cities.Length - 1 then
                 Button($"{model.Cities.[model.CurrentCityIndex + 1].Name} >", GoToNextCity)
                     .alignEndHorizontal()
                     .alignStartVertical()
-                    .margin(0., 0., 20., 0.)
-        })
-            .paddingLayout(0., 35., 0., 0.)
+                    .margin (0., 0., 20., 0.)
+         })
+            .paddingLayout (0., 35., 0., 0.)
 
     let view model =
         let temperatureOfCurrentCity =
@@ -103,19 +126,16 @@ module App =
             |> Option.defaultValue 0<kelvin>
 
         Application(
-            ContentPage("Weather",
-                PancakeView(
-                    Styles.gradientStops temperatureOfCurrentCity,
-                    previousNextView model
-                )
-            ).ignoreSafeArea()
+            ContentPage("Weather", PancakeView(Styles.gradientStops temperatureOfCurrentCity, previousNextView model))
+                .ignoreSafeArea ()
         )
-            //.resources([
-            //    LabelStyle()
-            //        .textColor(Styles.AccentTextColor)
+    //.resources([
+    //    LabelStyle()
+    //        .textColor(Styles.AccentTextColor)
 
-            //    ButtonStyle()
-            //        .textColor(Styles.AccentTextColor)
-            //])
+    //    ButtonStyle()
+    //        .textColor(Styles.AccentTextColor)
+    //])
 
-    let program = Program.statefulApplicationWithCmd init update view
+    let program =
+        Program.statefulApplicationWithCmd init update view

@@ -1,7 +1,6 @@
 ﻿namespace Fabulous
 
 open System
-open System.Collections.Generic
 
 /// Dev notes:
 ///
@@ -26,44 +25,36 @@ type ViewAdapterKey = int
 /// It will be up to the AttributeDefinition to decide how to apply the value.
 [<Struct>]
 type ScalarAttribute =
-    {
-        Key: AttributeKey
+    { Key: AttributeKey
 #if DEBUG
-        DebugName: string
+      DebugName: string
 #endif
-        Value: obj
-    }
+      Value: obj }
 
 
 and [<Struct>] WidgetAttribute =
-    {
-        Key: AttributeKey
+    { Key: AttributeKey
 #if DEBUG
-        DebugName: string
+      DebugName: string
 #endif
-        Value: Widget
-    }
+      Value: Widget }
 
 and [<Struct>] WidgetCollectionAttribute =
-    {
-        Key: AttributeKey
+    { Key: AttributeKey
 #if DEBUG
-        DebugName: string
+      DebugName: string
 #endif
-        Value: ArraySlice<Widget>
-    }
+      Value: ArraySlice<Widget> }
 
 /// Represents a virtual UI element such as a Label, a Button, etc.
 and [<Struct>] Widget =
-    {
-        Key: WidgetKey
+    { Key: WidgetKey
 #if DEBUG
-        DebugName: string
+      DebugName: string
 #endif
-        ScalarAttributes: ScalarAttribute [] voption
-        WidgetAttributes: WidgetAttribute [] voption
-        WidgetCollectionAttributes: WidgetCollectionAttribute [] voption
-    }
+      ScalarAttributes: ScalarAttribute [] voption
+      WidgetAttributes: WidgetAttribute [] voption
+      WidgetCollectionAttributes: WidgetCollectionAttribute [] voption }
 
 [<Struct; RequireQualifiedAccess>]
 type ScalarChange =
@@ -89,34 +80,30 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Remove of removed: int
 
 and [<Struct; NoComparison; NoEquality>] WidgetDiff =
-    {
-        ScalarChanges: ScalarChange [] voption
-        WidgetChanges: ArraySlice<WidgetChange> voption
-        WidgetCollectionChanges: ArraySlice<WidgetCollectionChange> voption
-    }
+    { ScalarChanges: ScalarChange [] voption
+      WidgetChanges: ArraySlice<WidgetChange> voption
+      WidgetCollectionChanges: ArraySlice<WidgetCollectionChange> voption }
 
 /// Context of the whole view tree
 [<Struct>]
 type ViewTreeContext =
-    {
-        CanReuseView: Widget -> Widget -> bool
-        GetViewNode: obj -> IViewNode
-        Dispatch: obj -> unit
-    }
+    { CanReuseView: Widget -> Widget -> bool
+      GetViewNode: obj -> IViewNode
+      Dispatch: obj -> unit }
 
 and IViewNode =
-    abstract member Target : obj
-    abstract member Parent : IViewNode voption
-    abstract member TreeContext : ViewTreeContext
-    abstract member MapMsg : (obj -> obj) voption with get, set
+    abstract member Target: obj
+    abstract member Parent: IViewNode voption
+    abstract member TreeContext: ViewTreeContext
+    abstract member MapMsg: (obj -> obj) voption with get, set
 
     // note that Widget is struct type, thus we have boxing via option
     // we don't have MemoizedWidget set for 99.9% of the cases
     // thus makes sense to have overhead of boxing
     // in order to save space
-    abstract member MemoizedWidget : Widget option with get, set
+    abstract member MemoizedWidget: Widget option with get, set
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
-    abstract member ApplyScalarDiffs : ScalarChange [] -> unit
-    abstract member ApplyWidgetDiffs : Span<WidgetChange> -> unit
-    abstract member ApplyWidgetCollectionDiffs : Span<WidgetCollectionChange> -> unit
+    abstract member ApplyScalarDiffs: ScalarChange [] -> unit
+    abstract member ApplyWidgetDiffs: Span<WidgetChange> -> unit
+    abstract member ApplyWidgetCollectionDiffs: Span<WidgetCollectionChange> -> unit

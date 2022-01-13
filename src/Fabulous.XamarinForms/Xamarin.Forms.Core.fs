@@ -82,105 +82,120 @@ type ITimePicker =
 
 type IStepper =
     inherit IView
-    
+
 type IListView =
     inherit IView
 
 type ITextCell =
     inherit ICell
-    
+
 type ICollectionView =
     inherit IView
 
 module ViewKeys =
     let Application =
-        Widgets.register<Xamarin.Forms.Application>()
+        Widgets.register<Xamarin.Forms.Application> ()
 
-    let ContentPage = Widgets.register<FabulousContentPage>()
+    let ContentPage = Widgets.register<FabulousContentPage> ()
 
     let StackLayout =
-        Widgets.register<Xamarin.Forms.StackLayout>()
+        Widgets.register<Xamarin.Forms.StackLayout> ()
 
-    let Grid = Widgets.register<Xamarin.Forms.Grid>()
-    let Label = Widgets.register<Xamarin.Forms.Label>()
-    let Button = Widgets.register<Xamarin.Forms.Button>()
-    let Switch = Widgets.register<Xamarin.Forms.Switch>()
-    let Slider = Widgets.register<Xamarin.Forms.Slider>()
+    let Grid = Widgets.register<Xamarin.Forms.Grid> ()
+    let Label = Widgets.register<Xamarin.Forms.Label> ()
+
+    let Button =
+        Widgets.register<Xamarin.Forms.Button> ()
+
+    let Switch =
+        Widgets.register<Xamarin.Forms.Switch> ()
+
+    let Slider =
+        Widgets.register<Xamarin.Forms.Slider> ()
 
     let ActivityIndicator =
-        Widgets.register<Xamarin.Forms.ActivityIndicator>()
+        Widgets.register<Xamarin.Forms.ActivityIndicator> ()
 
     let ContentView =
-        Widgets.register<Xamarin.Forms.ContentView>()
+        Widgets.register<Xamarin.Forms.ContentView> ()
 
     let RefreshView =
-        Widgets.register<Xamarin.Forms.RefreshView>()
+        Widgets.register<Xamarin.Forms.RefreshView> ()
 
     let ScrollView =
-        Widgets.register<Xamarin.Forms.ScrollView>()
+        Widgets.register<Xamarin.Forms.ScrollView> ()
 
-    let Image = Widgets.register<Xamarin.Forms.Image>()
+    let Image = Widgets.register<Xamarin.Forms.Image> ()
 
     let BoxView =
-        Widgets.register<Xamarin.Forms.BoxView>()
+        Widgets.register<Xamarin.Forms.BoxView> ()
 
     let NavigationPage =
-        Widgets.register<Xamarin.Forms.NavigationPage>()
+        Widgets.register<Xamarin.Forms.NavigationPage> ()
 
-    let Entry = Widgets.register<Xamarin.Forms.Entry>()
+    let Entry = Widgets.register<Xamarin.Forms.Entry> ()
 
     let TapGestureRecognizer =
-        Widgets.register<Xamarin.Forms.TapGestureRecognizer>()
+        Widgets.register<Xamarin.Forms.TapGestureRecognizer> ()
 
     let SearchBar =
-        Widgets.register<Xamarin.Forms.SearchBar>()
+        Widgets.register<Xamarin.Forms.SearchBar> ()
 
     let ToolbarItem =
-        Widgets.register<Xamarin.Forms.ToolbarItem>()
+        Widgets.register<Xamarin.Forms.ToolbarItem> ()
 
-    let Editor = Widgets.register<Xamarin.Forms.Editor>()
+    let Editor =
+        Widgets.register<Xamarin.Forms.Editor> ()
 
     let ViewCell =
-        Widgets.register<Xamarin.Forms.ViewCell>()
+        Widgets.register<Xamarin.Forms.ViewCell> ()
 
     let ImageButton =
-        Widgets.register<Xamarin.Forms.ImageButton>()
+        Widgets.register<Xamarin.Forms.ImageButton> ()
 
     let TabbedPage =
-        Widgets.register<Xamarin.Forms.TabbedPage>()
+        Widgets.register<Xamarin.Forms.TabbedPage> ()
 
     let DatePicker =
-        Widgets.register<Xamarin.Forms.DatePicker>()
+        Widgets.register<Xamarin.Forms.DatePicker> ()
 
-    let TimePicker = Widgets.register<FabulousTimePicker>()
-    let Stepper = Widgets.register<Xamarin.Forms.Stepper>()
-    let TextCell = Widgets.register<Xamarin.Forms.TextCell>()
-    let ListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
-        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-    )
-    let CollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
-        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-    )
-    let GroupedListView = Widgets.registerWithAdditionalSetup<FabulousListView>(fun target node ->
-        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
-        target.IsGroupingEnabled <- true
-    )
-    let GroupedCollectionView = Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>(fun target node ->
-        target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-        target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
-        target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
-        target.IsGrouped <- true
-    )
+    let TimePicker = Widgets.register<FabulousTimePicker> ()
+
+    let Stepper =
+        Widgets.register<Xamarin.Forms.Stepper> ()
+
+    let TextCell =
+        Widgets.register<Xamarin.Forms.TextCell> ()
+
+    let ListView =
+        Widgets.registerWithAdditionalSetup<FabulousListView>
+            (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
+
+    let CollectionView =
+        Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>
+            (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
+
+    let GroupedListView =
+        Widgets.registerWithAdditionalSetup<FabulousListView>
+            (fun target node ->
+                target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
+                target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
+                target.IsGroupingEnabled <- true)
+
+    let GroupedCollectionView =
+        Widgets.registerWithAdditionalSetup<Xamarin.Forms.CollectionView>
+            (fun target node ->
+                target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
+                target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
+                target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
+                target.IsGrouped <- true)
 
 [<AbstractClass; Sealed>]
 type ViewBuilders private () =
     static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage: WidgetBuilder<'msg, 'marker>) =
         ViewHelpers.buildWidgets<'msg, IApplication>
             ViewKeys.Application
-            [|
-                Application.MainPage.WithValue(mainPage.Compile())
-            |]
+            [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
     static member inline ContentPage<'msg, 'marker when 'marker :> IView>
         (
@@ -190,7 +205,7 @@ type ViewBuilders private () =
         WidgetBuilder<'msg, IContentPage>(
             ViewKeys.ContentPage,
             AttributesBundle(
-                StackList.one(Page.Title.WithValue(title)),
+                StackList.one (Page.Title.WithValue(title)),
                 ValueSome [| ContentPage.Content.WithValue(content.Compile()) |],
                 ValueNone
             )
@@ -253,9 +268,7 @@ type ViewBuilders private () =
     static member inline ContentView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
         ViewHelpers.buildWidgets<'msg, IContentView>
             ViewKeys.ContentView
-            [|
-                ContentView.Content.WithValue(content.Compile())
-            |]
+            [| ContentView.Content.WithValue(content.Compile()) |]
 
     static member inline RefreshView<'msg, 'marker when 'marker :> IView>
         (
@@ -267,7 +280,7 @@ type ViewBuilders private () =
             ViewKeys.RefreshView,
 
             AttributesBundle(
-                StackList.two(
+                StackList.two (
                     RefreshView.IsRefreshing.WithValue(isRefreshing),
                     RefreshView.Refreshing.WithValue(onRefreshing)
                 ),
@@ -279,9 +292,7 @@ type ViewBuilders private () =
     static member inline ScrollView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
         ViewHelpers.buildWidgets<'msg, IScrollView>
             ViewKeys.ScrollView
-            [|
-                ScrollView.Content.WithValue(content.Compile())
-            |]
+            [| ScrollView.Content.WithValue(content.Compile()) |]
 
     static member inline SourceImage<'msg>(imageSource: Xamarin.Forms.ImageSource, aspect: Xamarin.Forms.Aspect) =
         WidgetBuilder<'msg, IImage>(ViewKeys.Image, Image.Source.WithValue(imageSource), Image.Aspect.WithValue(aspect))
@@ -337,11 +348,7 @@ type ViewBuilders private () =
         )
 
     static member inline ViewCell<'msg, 'marker when 'marker :> IView>(view: WidgetBuilder<'msg, 'marker>) =
-        ViewHelpers.buildWidgets<'msg, IViewCell>
-            ViewKeys.ViewCell
-            [|
-                ViewCell.View.WithValue(view.Compile())
-            |]
+        ViewHelpers.buildWidgets<'msg, IViewCell> ViewKeys.ViewCell [| ViewCell.View.WithValue(view.Compile()) |]
 
     static member inline SourceImageButton<'msg>
         (
@@ -395,20 +402,36 @@ type ViewBuilders private () =
         )
 
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =
-        ViewHelpers.buildItems<'msg, IListView, 'itemData, 'itemMarker> ViewKeys.ListView ItemsViewOfCell.ItemsSource items
-        
-    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> IEnumerable<'itemData>>(items: seq<'groupData>) =
-        ViewHelpers.buildGroupItemsNoFooter<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker> ViewKeys.GroupedListView ItemsViewOfCell.GroupedItemsSource items
-            
+        ViewHelpers.buildItems<'msg, IListView, 'itemData, 'itemMarker>
+            ViewKeys.ListView
+            ItemsViewOfCell.ItemsSource
+            items
+
+    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> IEnumerable<'itemData>>
+        (items: seq<'groupData>)
+        =
+        ViewHelpers.buildGroupItemsNoFooter<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
+            ViewKeys.GroupedListView
+            ItemsViewOfCell.GroupedItemsSource
+            items
+
     static member inline TextCell<'msg>(text: string) =
         WidgetBuilder<'msg, ITextCell>(ViewKeys.TextCell, TextCell.Text.WithValue(text))
-            
+
     static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
-        ViewHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker> ViewKeys.CollectionView ItemsView.ItemsSource items
-        
-    static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> IEnumerable<'itemData>>(items: seq<'groupData>) =
-        ViewHelpers.buildGroupItems<'msg, ICollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker> ViewKeys.GroupedCollectionView ItemsView.GroupedItemsSource items
-    
+        ViewHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker>
+            ViewKeys.CollectionView
+            ItemsView.ItemsSource
+            items
+
+    static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> IEnumerable<'itemData>>
+        (items: seq<'groupData>)
+        =
+        ViewHelpers.buildGroupItems<'msg, ICollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
+            ViewKeys.GroupedCollectionView
+            ItemsView.GroupedItemsSource
+            items
+
 [<AbstractClass; Sealed>]
 type View private () =
     static member inline Application<'msg, 'marker when 'marker :> IPage>(mainPage) =
@@ -507,12 +530,24 @@ type View private () =
 
     static member inline Stepper<'msg>(min, max, value, onValueChanged) =
         ViewBuilders.Stepper<'msg>(min, max, value, onValueChanged)
-        
-    static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items) = ViewBuilders.ListView<'msg, 'itemData, 'itemMarker>(items)
-    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> seq<'itemData>>(items) = ViewBuilders.GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker>(items)
+
+    static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items) =
+        ViewBuilders.ListView<'msg, 'itemData, 'itemMarker>(items)
+
+    static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> seq<'itemData>>
+        (items)
+        =
+        ViewBuilders.GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker>(items)
+
     static member inline TextCell<'msg>(text) = ViewBuilders.TextCell<'msg>(text)
-    static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items) = ViewBuilders.CollectionView<'msg, 'itemData, 'itemMarker>(items)
-    static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> seq<'itemData>>(items) = ViewBuilders.GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker>(items)
+
+    static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items) =
+        ViewBuilders.CollectionView<'msg, 'itemData, 'itemMarker>(items)
+
+    static member inline GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> IView and 'groupMarker :> IView and 'groupData :> seq<'itemData>>
+        (items)
+        =
+        ViewBuilders.GroupedCollectionView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker>(items)
 
 
 [<Extension; AbstractClass; Sealed>]
@@ -526,8 +561,13 @@ type ViewExtensions private () =
         this.AddScalar(Application.Resources.WithValue(value))
 
     [<Extension>]
-    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, fn: Xamarin.Forms.OSAppTheme -> 'msg) =
+    static member inline onRequestedThemeChanged
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            fn: Xamarin.Forms.OSAppTheme -> 'msg
+        ) =
         this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> fn args.RequestedTheme |> box))
+
     [<Extension>]
     static member inline onModalPopped
         (
@@ -629,13 +669,11 @@ type ViewExtensions private () =
         ) =
         this.AddScalar(
             Button.TextColor.WithValue(
-                {
-                    Light = light
-                    Dark =
-                        match dark with
-                        | None -> ValueNone
-                        | Some v -> ValueSome v
-                }
+                { Light = light
+                  Dark =
+                      match dark with
+                      | None -> ValueNone
+                      | Some v -> ValueSome v }
             )
         )
 
@@ -784,13 +822,11 @@ type ViewExtensions private () =
         ) =
         this.AddScalar(
             DatePicker.TextColor.WithValue(
-                {
-                    Light = light
-                    Dark =
-                        match dark with
-                        | None -> ValueNone
-                        | Some v -> ValueSome v
-                }
+                { Light = light
+                  Dark =
+                      match dark with
+                      | None -> ValueNone
+                      | Some v -> ValueSome v }
             )
         )
 
@@ -827,13 +863,11 @@ type ViewExtensions private () =
         ) =
         this.AddScalar(
             TimePicker.TextColor.WithValue(
-                {
-                    Light = light
-                    Dark =
-                        match dark with
-                        | None -> ValueNone
-                        | Some v -> ValueSome v
-                }
+                { Light = light
+                  Dark =
+                      match dark with
+                      | None -> ValueNone
+                      | Some v -> ValueSome v }
             )
         )
 
@@ -848,18 +882,25 @@ type ViewExtensions private () =
     [<Extension>]
     static member inline rowHeight(this: WidgetBuilder<'msg, #IListView>, value: int) =
         this.AddScalar(ListView.RowHeight.WithValue(value))
+
     [<Extension>]
-    static member inline selectionMode(this: WidgetBuilder<'msg, #IListView>, value: Xamarin.Forms.ListViewSelectionMode) =
+    static member inline selectionMode
+        (
+            this: WidgetBuilder<'msg, #IListView>,
+            value: Xamarin.Forms.ListViewSelectionMode
+        ) =
         this.AddScalar(ListView.SelectionMode.WithValue(value))
+
     [<Extension>]
     static member inline itemTapped(this: WidgetBuilder<'msg, #IListView>, fn: int -> 'msg) =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
+
     [<Extension>]
     static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #ICollectionView>, value: int, msg: 'msg) =
         this
             .AddScalar(CollectionView.RemainingItemsThreshold.WithValue(value))
             .AddScalar(CollectionView.RemainingItemsThresholdReached.WithValue(msg))
-            
+
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, ITextCell>, value: Xamarin.Forms.Color) =
         this.AddScalar(TextCell.TextColor.WithValue(value))

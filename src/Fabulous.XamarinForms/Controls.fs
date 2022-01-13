@@ -14,38 +14,41 @@ type Dimension =
     /// Use the associated value as the number of device-specific units.
     | Absolute of float
 
-type SizeAllocatedEventArgs =
-    { Width: float
-      Height: float }
+type SizeAllocatedEventArgs = { Width: float; Height: float }
 
 /// Set UseSafeArea to true by default because View DSL only shows `ignoreSafeArea`
 type FabulousContentPage() as this =
     inherit ContentPage()
     do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true)
 
-    let sizeAllocated = Event<EventHandler<SizeAllocatedEventArgs>, _>()
+    let sizeAllocated =
+        Event<EventHandler<SizeAllocatedEventArgs>, _>()
 
-    [<CLIEvent>] member __.SizeAllocated = sizeAllocated.Publish
+    [<CLIEvent>]
+    member __.SizeAllocated = sizeAllocated.Publish
 
     override this.OnSizeAllocated(width, height) =
         base.OnSizeAllocated(width, height)
         sizeAllocated.Trigger(this, { Width = width; Height = height })
-        
+
 type TimeSelectedEventArgs(newTime: TimeSpan) =
     inherit EventArgs()
     member _.NewTime = newTime
-        
+
 /// Xamarin.Forms doesn't provide an event for selecting the time on a TimePicker, so we implement it
 type FabulousTimePicker() =
     inherit TimePicker()
-    
-    let timeSelected = Event<EventHandler<TimeSelectedEventArgs>, _>()
-    
-    [<CLIEvent>] member _.TimeSelected = timeSelected.Publish
-    
+
+    let timeSelected =
+        Event<EventHandler<TimeSelectedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.TimeSelected = timeSelected.Publish
+
     override this.OnPropertyChanged(propertyName) =
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
 /// Force ListView to recycle rows because DataTemplateSelector disables it by default
-type FabulousListView() = inherit ListView(ListViewCachingStrategy.RecycleElement)
+type FabulousListView() =
+    inherit ListView(ListViewCachingStrategy.RecycleElement)

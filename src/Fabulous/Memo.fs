@@ -7,26 +7,25 @@ module Memo =
 
     type internal MemoData =
         {
-            /// Captures data that memoization depends on
-            KeyData: obj
+          /// Captures data that memoization depends on
+          KeyData: obj
 
-            // comparer that remembers KeyType internally
-            KeyComparer: obj -> obj -> bool
+          // comparer that remembers KeyType internally
+          KeyComparer: obj -> obj -> bool
 
-            /// wrapped untyped lambda that users provide
-            CreateWidget: obj -> Widget
+          /// wrapped untyped lambda that users provide
+          CreateWidget: obj -> Widget
 
-            /// Captures type of data that memoization depends on
-            KeyType: Type
+          /// Captures type of data that memoization depends on
+          KeyType: Type
 
-            /// Captures type of the marker memoized function produces
-            MarkerType: Type
-        }
+          /// Captures type of the marker memoized function produces
+          MarkerType: Type }
 
     type Memoized<'t> = { phantom: 't }
 
-    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey()
-    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
+    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey ()
+    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey ()
 
     let inline private getMemoData (widget: Widget) : MemoData =
         match widget.ScalarAttributes with
@@ -61,14 +60,12 @@ module Memo =
         | ValueNone -> ()
 
     let internal MemoAttribute =
-        {
-            Key = MemoAttributeKey
-            Name = "MemoAttribute"
-            Convert = id
-            ConvertValue = id
-            Compare = compareAttributes
-            UpdateNode = updateNode
-        }
+        { Key = MemoAttributeKey
+          Name = "MemoAttribute"
+          Convert = id
+          ConvertValue = id
+          Compare = compareAttributes
+          UpdateNode = updateNode }
 
     AttributeDefinitionStore.set MemoAttributeKey MemoAttribute
 
@@ -76,27 +73,25 @@ module Memo =
 
 
     let private widgetDefinition: WidgetDefinition =
-        {
-            Key = MemoWidgetKey
-            Name = "Memo"
-            TargetType = Unchecked.defaultof<_> // Memo isn't allowed in lists, so this will never get called
-            CreateView =
-                fun (widget, context, parentNode) ->
+        { Key = MemoWidgetKey
+          Name = "Memo"
+          TargetType = Unchecked.defaultof<_> // Memo isn't allowed in lists, so this will never get called
+          CreateView =
+              fun (widget, context, parentNode) ->
 
-                    let memoData = getMemoData widget
+                  let memoData = getMemoData widget
 
-                    let memoizedWidget = memoData.CreateWidget memoData.KeyData
+                  let memoizedWidget = memoData.CreateWidget memoData.KeyData
 
-                    let memoizedDef =
-                        WidgetDefinitionStore.get memoizedWidget.Key
+                  let memoizedDef =
+                      WidgetDefinitionStore.get memoizedWidget.Key
 
-                    let struct (node, view) =
-                        memoizedDef.CreateView(memoizedWidget, context, parentNode)
+                  let struct (node, view) =
+                      memoizedDef.CreateView(memoizedWidget, context, parentNode)
 
-                    // store widget that was used to produce this node
-                    // to pass it to reconciler later on
-                    node.MemoizedWidget <- Some memoizedWidget
-                    struct (node, view)
-        }
+                  // store widget that was used to produce this node
+                  // to pass it to reconciler later on
+                  node.MemoizedWidget <- Some memoizedWidget
+                  struct (node, view) }
 
     WidgetDefinitionStore.set MemoWidgetKey widgetDefinition

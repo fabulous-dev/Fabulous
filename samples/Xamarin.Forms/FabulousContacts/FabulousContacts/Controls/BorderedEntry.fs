@@ -21,7 +21,7 @@ module FabulousBorderedEntry =
     let BorderColor =
         Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
 
-    let BorderedEntryKey = Widgets.register<BorderedEntry>()
+    let BorderedEntryKey = Widgets.register<BorderedEntry> ()
 
     type IBorderedEntry =
         inherit IEntry

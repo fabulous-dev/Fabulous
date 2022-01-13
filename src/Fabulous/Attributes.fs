@@ -32,17 +32,15 @@ module Attributes =
         (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
         (updateNode: 'valueType voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition =
-            {
-                Key = key
-                Name = name
-                Convert = convert
-                ConvertValue = convertValue
-                Compare = compare
-                UpdateNode = updateNode
-            }
+            { Key = key
+              Name = name
+              Convert = convert
+              ConvertValue = convertValue
+              Compare = compare
+              UpdateNode = updateNode }
 
         AttributeDefinitionStore.set key definition
         definition
@@ -53,15 +51,13 @@ module Attributes =
         (applyDiff: WidgetDiff * IViewNode -> unit)
         (updateNode: Widget voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: WidgetAttributeDefinition =
-            {
-                Key = key
-                Name = name
-                ApplyDiff = applyDiff
-                UpdateNode = updateNode
-            }
+            { Key = key
+              Name = name
+              ApplyDiff = applyDiff
+              UpdateNode = updateNode }
 
         AttributeDefinitionStore.set key definition
         definition
@@ -72,15 +68,13 @@ module Attributes =
         (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: WidgetCollectionAttributeDefinition =
-            {
-                Key = key
-                Name = name
-                ApplyDiff = applyDiff
-                UpdateNode = updateNode
-            }
+            { Key = key
+              Name = name
+              ApplyDiff = applyDiff
+              UpdateNode = updateNode }
 
         AttributeDefinitionStore.set key definition
         definition
@@ -131,7 +125,7 @@ module Attributes =
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
                     let childNode =
-                        node.TreeContext.GetViewNode(box (targetColl.[index]))
+                        node.TreeContext.GetViewNode(box targetColl.[index])
 
                     match widgetDiff.ScalarChanges with
                     | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
@@ -188,72 +182,68 @@ module Attributes =
         node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
-            {
-                Key = key
-                Name = name
-                Convert = id
-                ConvertValue = id
-                Compare = ScalarAttributeComparers.noCompare
-                UpdateNode =
-                    fun (newValueOpt, node) ->
-                        let event = getEvent node.Target
+            { Key = key
+              Name = name
+              Convert = id
+              ConvertValue = id
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateNode =
+                  fun (newValueOpt, node) ->
+                      let event = getEvent node.Target
 
-                        match node.TryGetHandler(key) with
-                        | ValueNone -> ()
-                        | ValueSome handler -> event.RemoveHandler handler
+                      match node.TryGetHandler(key) with
+                      | ValueNone -> ()
+                      | ValueSome handler -> event.RemoveHandler handler
 
-                        match newValueOpt with
-                        | ValueNone -> node.SetHandler(key, ValueNone)
+                      match newValueOpt with
+                      | ValueNone -> node.SetHandler(key, ValueNone)
 
-                        | ValueSome msg ->
-                            let handler =
-                                EventHandler(fun _ _ -> dispatchMsgOnViewNode node msg)
+                      | ValueSome msg ->
+                          let handler =
+                              EventHandler(fun _ _ -> dispatchMsgOnViewNode node msg)
 
-                            event.AddHandler handler
-                            node.SetHandler(key, ValueSome handler)
-            }
+                          event.AddHandler handler
+                          node.SetHandler(key, ValueSome handler) }
 
         AttributeDefinitionStore.set key definition
         definition
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: ScalarAttributeDefinition<_, _, _> =
-            {
-                Key = key
-                Name = name
-                Convert = id
-                ConvertValue = id
-                Compare = ScalarAttributeComparers.noCompare
-                UpdateNode =
-                    fun (newValueOpt: ('args -> obj) voption, node: IViewNode) ->
-                        let event = getEvent node.Target
+            { Key = key
+              Name = name
+              Convert = id
+              ConvertValue = id
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateNode =
+                  fun (newValueOpt: ('args -> obj) voption, node: IViewNode) ->
+                      let event = getEvent node.Target
 
-                        match node.TryGetHandler(key) with
-                        | ValueNone -> printfn $"No old handler for {name}"
-                        | ValueSome handler ->
-                            printfn $"Removed old handler for {name}"
-                            event.RemoveHandler handler
+                      match node.TryGetHandler(key) with
+                      | ValueNone -> printfn $"No old handler for {name}"
+                      | ValueSome handler ->
+                          printfn $"Removed old handler for {name}"
+                          event.RemoveHandler handler
 
-                        match newValueOpt with
-                        | ValueNone -> node.SetHandler(key, ValueNone)
+                      match newValueOpt with
+                      | ValueNone -> node.SetHandler(key, ValueNone)
 
-                        | ValueSome fn ->
-                            let handler =
-                                EventHandler<'args>
-                                    (fun _ args ->
-                                        printfn $"Handler for {name} triggered"
-                                        let r = fn args
-                                        dispatchMsgOnViewNode node r)
+                      | ValueSome fn ->
+                          let handler =
+                              EventHandler<'args>
+                                  (fun _ args ->
+                                      printfn $"Handler for {name} triggered"
+                                      let r = fn args
+                                      dispatchMsgOnViewNode node r)
 
-                            node.SetHandler(key, ValueSome handler)
-                            event.AddHandler handler
-                            printfn $"Added new handler for {name}"
-            }
+                          node.SetHandler(key, ValueSome handler)
+                          event.AddHandler handler
+                          printfn $"Added new handler for {name}" }
 
         AttributeDefinitionStore.set key definition
         definition

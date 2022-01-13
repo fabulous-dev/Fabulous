@@ -7,6 +7,7 @@ module Repository =
     type ContactObject() =
         [<PrimaryKey; AutoIncrement>]
         member val Id = 0 with get, set
+
         member val FirstName = "" with get, set
         member val LastName = "" with get, set
         member val Email = "" with get, set
@@ -37,36 +38,68 @@ module Repository =
           IsFavorite = obj.IsFavorite
           Picture = obj.Picture |> Option.ofObj }
 
-    let connect dbPath = async {
-        let db = SQLiteAsyncConnection(SQLiteConnectionString dbPath)
-        do! db.CreateTableAsync<ContactObject>() |> Async.AwaitTask |> Async.Ignore
-        return db
-    }
+    let connect dbPath =
+        async {
+            let db =
+                SQLiteAsyncConnection(SQLiteConnectionString dbPath)
 
-    let loadAllContacts dbPath = async {
-        let! database = connect dbPath
-        let! objs = database.Table<ContactObject>().ToListAsync() |> Async.AwaitTask
-        return objs |> Seq.toList |> List.map convertToModel
-    }
+            do!
+                db.CreateTableAsync<ContactObject>()
+                |> Async.AwaitTask
+                |> Async.Ignore
 
-    let insertContact dbPath contact = async {
-        let! database = connect dbPath
-        let obj = convertToObject contact
-        do! database.InsertAsync(obj) |> Async.AwaitTask |> Async.Ignore
-        let! rowIdObj = database.ExecuteScalarAsync("select last_insert_rowid()", [||]) |> Async.AwaitTask
-        let rowId = rowIdObj |> int
-        return { contact with Id = rowId }
-    }
+            return db
+        }
 
-    let updateContact dbPath contact = async {
-        let! database = connect dbPath
-        let obj = convertToObject contact
-        do! database.UpdateAsync(obj) |> Async.AwaitTask |> Async.Ignore
-        return contact
-    }
+    let loadAllContacts dbPath =
+        async {
+            let! database = connect dbPath
 
-    let deleteContact dbPath contact = async {
-        let! database = connect dbPath
-        let obj = convertToObject contact
-        do! database.DeleteAsync(obj) |> Async.AwaitTask |> Async.Ignore
-    }
+            let! objs =
+                database.Table<ContactObject>().ToListAsync()
+                |> Async.AwaitTask
+
+            return objs |> Seq.toList |> List.map convertToModel
+        }
+
+    let insertContact dbPath contact =
+        async {
+            let! database = connect dbPath
+            let obj = convertToObject contact
+
+            do!
+                database.InsertAsync(obj)
+                |> Async.AwaitTask
+                |> Async.Ignore
+
+            let! rowIdObj =
+                database.ExecuteScalarAsync("select last_insert_rowid()", [||])
+                |> Async.AwaitTask
+
+            let rowId = rowIdObj |> int
+            return { contact with Id = rowId }
+        }
+
+    let updateContact dbPath contact =
+        async {
+            let! database = connect dbPath
+            let obj = convertToObject contact
+
+            do!
+                database.UpdateAsync(obj)
+                |> Async.AwaitTask
+                |> Async.Ignore
+
+            return contact
+        }
+
+    let deleteContact dbPath contact =
+        async {
+            let! database = connect dbPath
+            let obj = convertToObject contact
+
+            do!
+                database.DeleteAsync(obj)
+                |> Async.AwaitTask
+                |> Async.Ignore
+        }

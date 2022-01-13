@@ -6,12 +6,10 @@ open Fabulous
 
 /// Widget definition to create a control
 type WidgetDefinition =
-    {
-        Key: WidgetKey
-        Name: string
-        TargetType: Type
-        CreateView: Widget * ViewTreeContext * IViewNode voption -> struct (IViewNode * obj)
-    }
+    { Key: WidgetKey
+      Name: string
+      TargetType: Type
+      CreateView: Widget * ViewTreeContext * IViewNode voption -> struct (IViewNode * obj) }
 
 module WidgetDefinitionStore =
     let private _widgets =

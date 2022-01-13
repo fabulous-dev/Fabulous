@@ -36,8 +36,3 @@ module ArraySlice =
                 arr.[i] <- arr.[i - by]
 
         arr
-
-//    let test () =
-//        let slice = ArraySlice(2us, [| 1; 2; 0; 0 |])
-//        let arr = shiftByMut &slice 2us
-//        printfn "%A" arr

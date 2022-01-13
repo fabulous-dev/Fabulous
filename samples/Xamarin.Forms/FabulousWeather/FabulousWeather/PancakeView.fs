@@ -15,7 +15,7 @@ module PancakeView =
         Attributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
 
     let PancakeViewKey =
-        Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
+        Widgets.register<Xamarin.Forms.PancakeView.PancakeView> ()
 
     type IPancakeView =
         inherit IView
@@ -30,7 +30,7 @@ module PancakeView =
                 PancakeViewKey,
 
                 AttributesBundle(
-                    StackList.one(BackgroundGradientStops.WithValue(backgroundGradientStops)),
+                    StackList.one (BackgroundGradientStops.WithValue(backgroundGradientStops)),
                     ValueSome [| Content.WithValue(content.Compile()) |],
                     ValueNone
                 )

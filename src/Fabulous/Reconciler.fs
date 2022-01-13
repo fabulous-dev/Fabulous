@@ -42,7 +42,7 @@ module Reconciler =
         | ValueNone, ValueSome next -> next |> Array.map ScalarChange.Added |> ValueSome
         | ValueSome prev, ValueSome next ->
 
-            let mutable result = DiffBuilder.create()
+            let mutable result = DiffBuilder.create ()
 
             let mutable prevIndex = 0
             let mutable nextIndex = 0
@@ -50,7 +50,7 @@ module Reconciler =
             let prevLength = prev.Length
             let nextLength = next.Length
 
-            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
                 if prevIndex = prevLength then
                     // that means we are done with the prev and only need to add next's tail to added
                     //result <- StackArray3.add(&result, (ScalarChange.Added next.[nextIndex]))
@@ -146,15 +146,15 @@ module Reconciler =
             let prevLength = prev.Length
             let nextLength = next.Length
 
-            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
                 if prevIndex = prevLength then
                     // that means we are done with the prev and only need to add next's tail to added
-                    result <- MutStackArray1.addMut(&result, WidgetChange.Added next.[nextIndex])
+                    result <- MutStackArray1.addMut (&result, WidgetChange.Added next.[nextIndex])
                     nextIndex <- nextIndex + 1
 
                 elif nextIndex = nextLength then
                     // that means that we are done with new items and only need prev's tail to removed
-                    result <- MutStackArray1.addMut(&result, WidgetChange.Removed prev.[prevIndex])
+                    result <- MutStackArray1.addMut (&result, WidgetChange.Removed prev.[prevIndex])
                     prevIndex <- prevIndex + 1
 
                 else
@@ -170,12 +170,12 @@ module Reconciler =
                     match prevKey.CompareTo nextKey with
                     | c when c < 0 ->
                         // prev key is less than next -> remove prev key
-                        result <- MutStackArray1.addMut(&result, WidgetChange.Removed prevAttr)
+                        result <- MutStackArray1.addMut (&result, WidgetChange.Removed prevAttr)
                         prevIndex <- prevIndex + 1
 
                     | c when c > 0 ->
                         // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut(&result, WidgetChange.Added nextAttr)
+                        result <- MutStackArray1.addMut (&result, WidgetChange.Added nextAttr)
                         nextIndex <- nextIndex + 1
 
                     | _ ->
@@ -197,7 +197,7 @@ module Reconciler =
 
                         match changeOpt with
                         | ValueNone -> ()
-                        | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
+                        | ValueSome change -> result <- MutStackArray1.addMut (&result, change)
 
             MutStackArray1.toArraySlice &result
 
@@ -233,11 +233,11 @@ module Reconciler =
             let prevLength = prev.Length
             let nextLength = next.Length
 
-            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
                 if prevIndex = prevLength then
                     // that means we are done with the prev and only need to add next's tail to added
                     // DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
-                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added next.[nextIndex])
+                    result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Added next.[nextIndex])
 
 
                     nextIndex <- nextIndex + 1
@@ -245,7 +245,7 @@ module Reconciler =
                 elif nextIndex = nextLength then
                     // that means that we are done with new items and only need prev's tail to removed
                     // DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
-                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prev.[prevIndex])
+                    result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Removed prev.[prevIndex])
 
 
                     prevIndex <- prevIndex + 1
@@ -264,12 +264,12 @@ module Reconciler =
                     | c when c < 0 ->
                         // prev key is less than next -> remove prev key
 
-                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prevAttr)
+                        result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Removed prevAttr)
                         prevIndex <- prevIndex + 1
 
                     | c when c > 0 ->
                         // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added nextAttr)
+                        result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Added nextAttr)
                         nextIndex <- nextIndex + 1
 
                     | _ ->
@@ -288,7 +288,7 @@ module Reconciler =
                             let change =
                                 WidgetCollectionChange.Updated struct (nextAttr, slice)
 
-                            result <- MutStackArray1.addMut(&result, change)
+                            result <- MutStackArray1.addMut (&result, change)
 
             MutStackArray1.toArraySlice &result
 
@@ -304,7 +304,7 @@ module Reconciler =
 
         if prev.Length > next.Length then
             for i = next.Length to prev.Length - 1 do
-                result <- MutStackArray1.addMut(&result, WidgetCollectionItemChange.Remove i)
+                result <- MutStackArray1.addMut (&result, WidgetCollectionItemChange.Remove i)
 
         for i = 0 to next.Length - 1 do
             let currItem = next.[i]
@@ -323,13 +323,13 @@ module Reconciler =
 
                     match diffWidget canReuseView (ValueSome prevItem) currItem with
                     | ValueNone -> ValueNone
-                    | ValueSome diffs -> ValueSome (WidgetCollectionItemChange.Update struct (i, diffs))
+                    | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
 
                 | ValueSome _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
 
             match changeOpt with
             | ValueNone -> ()
-            | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
+            | ValueSome change -> result <- MutStackArray1.addMut (&result, change)
 
         MutStackArray1.toArraySlice &result
 

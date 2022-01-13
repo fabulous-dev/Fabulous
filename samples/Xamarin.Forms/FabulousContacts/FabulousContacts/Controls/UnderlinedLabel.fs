@@ -10,7 +10,7 @@ type UnderlinedLabel() =
 
 [<AutoOpen>]
 module FabulousUnderlinedLabel =
-    let UnderlinedLabelKey = Widgets.register<UnderlinedLabel>()
+    let UnderlinedLabelKey = Widgets.register<UnderlinedLabel> ()
 
     type IUnderlinedLabel =
         inherit ILabel
