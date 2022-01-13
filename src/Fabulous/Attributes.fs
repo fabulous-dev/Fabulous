@@ -131,7 +131,7 @@ module Attributes =
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
                     let childNode =
-                        node.TreeContext.GetViewNode(targetColl.[index])
+                        node.TreeContext.GetViewNode(box (targetColl.[index]))
 
                     match widgetDiff.ScalarChanges with
                     | ValueSome changes -> childNode.ApplyScalarDiffs(changes)

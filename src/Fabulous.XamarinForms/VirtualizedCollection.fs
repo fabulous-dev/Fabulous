@@ -12,7 +12,7 @@ type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =
     member _.Footer = footer
     interface IEnumerable<Widget> with
         member this.GetEnumerator(): IEnumerator<Widget> = source.GetEnumerator()
-        member this.GetEnumerator(): IEnumerator = source.GetEnumerator()
+        member this.GetEnumerator(): IEnumerator = source.GetEnumerator() :> IEnumerator
 
 type VirtualizedItemType =
     | Header
@@ -68,11 +68,11 @@ type WidgetDataTemplateSelector internal (node: IViewNode, itemType: Virtualized
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let targetType = widgetDefinition.TargetType
         match cache.TryGetValue(targetType) with
-        | true, dataTemplate -> dataTemplate
+        | true, dataTemplate -> dataTemplate :> DataTemplate
         | false, _ ->
             let dataTemplate = WidgetDataTemplate(targetType, itemType, node)
             cache.Add(targetType, dataTemplate)
-            dataTemplate
+            dataTemplate :> DataTemplate
 
 type SimpleWidgetDataTemplateSelector(node: IViewNode) =
     inherit WidgetDataTemplateSelector(node, Item)

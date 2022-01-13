@@ -42,7 +42,7 @@ module Widgets =
 
                         Reconciler.update treeContext.CanReuseView ValueNone widget node
 
-                        struct (node, box view)
+                        struct (node :> IViewNode, box view)
             }
 
         WidgetDefinitionStore.set key definition
