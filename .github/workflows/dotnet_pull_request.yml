@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
-      PUSH_PACKAGES: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
