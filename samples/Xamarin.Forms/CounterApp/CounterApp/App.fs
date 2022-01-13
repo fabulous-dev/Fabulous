@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms.Samples.CounterApp
 
 open System.Collections
 open System.Collections.Generic
+open System.Collections.ObjectModel
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
@@ -66,11 +67,9 @@ module App =
     type Person =
         { Name: string }
         
-    type Group(letter: string, items: IEnumerable<Person>) =
+    type Group(letter: string, items: Person list) =
+        inherit ObservableCollection<Person>(items)
         member _.Letter = letter
-        interface IEnumerable<Person> with
-            member _.GetEnumerator() : IEnumerator<Person> = items.GetEnumerator()
-            member _.GetEnumerator() : IEnumerator = items.GetEnumerator()
     
     type Model =
         { Count: int
