@@ -1,5 +1,7 @@
 ﻿namespace Fabulous
 
+open System
+open System.Collections.Generic
 
 /// Dev notes:
 ///
@@ -18,6 +20,7 @@ type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
 
+
 /// Represents a value for a property of a widget.
 /// Can map to a real property (such as Label.Text) or to a non-existent one.
 /// It will be up to the AttributeDefinition to decide how to apply the value.
@@ -30,6 +33,7 @@ type ScalarAttribute =
 #endif
         Value: obj
     }
+
 
 and [<Struct>] WidgetAttribute =
     {
@@ -46,7 +50,7 @@ and [<Struct>] WidgetCollectionAttribute =
 #if DEBUG
         DebugName: string
 #endif
-        Value: Widget []
+        Value: ArraySlice<Widget>
     }
 
 /// Represents a virtual UI element such as a Label, a Button, etc.
@@ -56,9 +60,9 @@ and [<Struct>] Widget =
 #if DEBUG
         DebugName: string
 #endif
-        ScalarAttributes: ScalarAttribute []
-        WidgetAttributes: WidgetAttribute []
-        WidgetCollectionAttributes: WidgetCollectionAttribute []
+        ScalarAttributes: ScalarAttribute [] voption
+        WidgetAttributes: WidgetAttribute [] voption
+        WidgetCollectionAttributes: WidgetCollectionAttribute [] voption
     }
 
 [<Struct; RequireQualifiedAccess>]
@@ -76,7 +80,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetChange =
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
     | Added of added: WidgetCollectionAttribute
     | Removed of removed: WidgetCollectionAttribute
-    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionItemChange [])
+    | Updated of updated: struct (WidgetCollectionAttribute * ArraySlice<WidgetCollectionItemChange>)
 
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
@@ -84,11 +88,11 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Update of widgetUpdated: struct (int * WidgetDiff)
     | Remove of removed: int
 
-and [<Struct>] WidgetDiff =
+and [<Struct; NoComparison; NoEquality>] WidgetDiff =
     {
-        ScalarChanges: ScalarChange []
-        WidgetChanges: WidgetChange []
-        WidgetCollectionChanges: WidgetCollectionChange []
+        ScalarChanges: ScalarChange [] voption
+        WidgetChanges: ArraySlice<WidgetChange> voption
+        WidgetCollectionChanges: ArraySlice<WidgetCollectionChange> voption
     }
 
 /// Context of the whole view tree
@@ -114,5 +118,5 @@ and IViewNode =
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
     abstract member ApplyScalarDiffs : ScalarChange [] -> unit
-    abstract member ApplyWidgetDiffs : WidgetChange [] -> unit
-    abstract member ApplyWidgetCollectionDiffs : WidgetCollectionChange [] -> unit
+    abstract member ApplyWidgetDiffs : Span<WidgetChange> -> unit
+    abstract member ApplyWidgetCollectionDiffs : Span<WidgetCollectionChange> -> unit

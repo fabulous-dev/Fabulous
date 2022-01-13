@@ -128,3 +128,15 @@ let main argv =
 //        ()
 //
 //    0 // return an integer exit code
+
+//[<EntryPoint>]
+//let mainProfile argv =
+//
+//    let b = DiffingAttributes.Benchmarks()
+//    b.depth <- 10
+//
+//    for _ in 0 .. 2 do
+//        let widgets = b.ProcessMessages()
+//        ()
+//
+//    0 // return an integer exit code

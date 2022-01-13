@@ -3,6 +3,8 @@ module Tests.TestUI_Widgets
 open System
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections
+open Fabulous.StackAllocatedCollections.StackList
 open Tests
 open Tests.Platform
 open TestUI_Attributes
@@ -37,10 +39,12 @@ module Widgets =
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
+                        let oldWidget: Widget voption = ValueNone
+
                         Reconciler.update
                             //                            context.ViewTreeContext.GetViewNode
                             context.CanReuseView
-                            ValueNone
+                            oldWidget
                             widget
                             viewNode
 
@@ -92,10 +96,14 @@ type WidgetExtensions() =
         this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
 
-let inline private scalars
-    (value: ScalarAttribute [])
-    : struct (ScalarAttribute [] * WidgetAttribute [] * WidgetCollectionAttribute []) =
-    struct (value, [||], [||])
+    [<Extension>]
+    static member inline record<'msg, 'marker when 'marker :> TestLabelMarker>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            value: bool
+        ) =
+        this.AddScalar(Attributes.Text.Record.WithValue(value))
+
 
 ///----------------
 
@@ -106,18 +114,22 @@ type View private () =
     static let TestStackKey = Widgets.register<TestStack>()
 
     static member Label<'msg>(text: string) =
-        WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, scalars [| Attributes.Text.Text.WithValue(text) |])
+        WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
 
 
     static member Button<'msg>(text: string, onClicked: 'msg) =
         WidgetBuilder<'msg, TestButtonMarker>(
             TestButtonKey,
-            scalars [| Attributes.Text.Text.WithValue(text)
-                       Attributes.Button.Pressed.WithValue(onClicked) |]
+            Attributes.Text.Text.WithValue(text),
+            Attributes.Button.Pressed.WithValue(onClicked)
         )
 
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
-        CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, ValueNone, Attributes.Container.Children)
+        CollectionBuilder<'msg, TestStackMarker, 'marker>(
+            TestStackKey,
+            StackList.empty(),
+            Attributes.Container.Children
+        )
 
 [<Extension>]
 type CollectionBuilderExtensions =
@@ -127,7 +139,9 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -135,7 +149,9 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
         ) : Content<'msg> =
-        { Widgets = [ x.Compile() ] }
+        {
+            Widgets = MutStackArray1.One(x.Compile())
+        }
 
     [<Extension>]
     static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -143,8 +159,13 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker> seq
         ) : Content<'msg> =
+        // TODO optimize this one with addMut
         {
-            Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toList
+            Widgets =
+                x
+                |> Seq.map(fun wb -> wb.Compile())
+                |> Seq.toArray
+                |> MutStackArray1.fromArray
         }
 
 
@@ -199,7 +220,8 @@ module Run =
                 state <- Some(newModel, target, newWidget)
 
                 // ViewNode.getViewNode
-                Reconciler.update x.viewContext.CanReuseView (ValueSome oldWidget) newWidget viewNode
+                let oldWidget = (ValueSome oldWidget)
+                Reconciler.update x.viewContext.CanReuseView oldWidget newWidget viewNode
                 ()
 
         member x.Start(arg: 'arg) =

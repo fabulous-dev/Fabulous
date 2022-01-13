@@ -1,5 +1,6 @@
 ﻿namespace FabulousContacts.Controls
 
+open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.XFAttributes
 open Xamarin.Forms
@@ -10,10 +11,10 @@ type UnderlinedLabel() =
 [<AutoOpen>]
 module FabulousUnderlinedLabel =
     let UnderlinedLabelKey = Widgets.register<UnderlinedLabel>()
-    
-    type IUnderlinedLabel = inherit ILabel
+
+    type IUnderlinedLabel =
+        inherit ILabel
 
     type Fabulous.XamarinForms.View with
         static member inline UnderlinedLabel<'msg>(text) =
-            ViewHelpers.buildScalars<'msg, IUnderlinedLabel> UnderlinedLabelKey
-                [| Label.Text.WithValue(text) |]
+            WidgetBuilder<'msg, IUnderlinedLabel>(UnderlinedLabelKey, Label.Text.WithValue(text))

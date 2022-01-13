@@ -7,13 +7,13 @@ module Memo =
 
     type internal MemoData =
         {
-            /// Captures type of data that memoization depends on
+            /// Captures data that memoization depends on
             KeyData: obj
 
             // comparer that remembers KeyType internally
             KeyComparer: obj -> obj -> bool
 
-            /// Lambda that users provide
+            /// wrapped untyped lambda that users provide
             CreateWidget: obj -> Widget
 
             /// Captures type of data that memoization depends on
@@ -29,10 +29,9 @@ module Memo =
     let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
-        match widget.ScalarAttributes.Length with
-        | 1 -> widget.ScalarAttributes.[0].Value :?> MemoData
+        match widget.ScalarAttributes with
+        | ValueSome attrs when attrs.Length = 1 -> attrs.[0].Value :?> MemoData
         | _ -> failwith "Memo widget cannot have extra attributes"
-
 
     let internal canReuseMemoizedWidget prev next =
         (getMemoData prev).MarkerType = (getMemoData next).MarkerType

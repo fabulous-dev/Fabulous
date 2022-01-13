@@ -41,8 +41,12 @@ module Attributes =
     //    open Fabulous.Attributes
 
     module Text =
+        let Record =
+            Attributes.define<bool> "Text" TestUI_ViewUpdaters.updateRecord
+
         let Text =
             Attributes.define<string> "Text" TestUI_ViewUpdaters.updateText
+
 
     module TextStyle =
         let TextColor =

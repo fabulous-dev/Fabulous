@@ -41,6 +41,10 @@ let updateText (newValueOpt: string voption, viewNode: IViewNode) =
     let textElement = viewNode.Target :?> IText
     textElement.Text <- ValueOption.defaultValue "" newValueOpt
 
+let updateRecord (newValueOpt: bool voption, viewNode: IViewNode) =
+    let textElement = viewNode.Target :?> TestLabel
+    textElement.record <- ValueOption.defaultValue false newValueOpt
+
 let updateTextColor (newValueOpt: string voption, viewNode: IViewNode) =
     let textElement = viewNode.Target :?> IText
     textElement.TextColor <- ValueOption.defaultValue "" newValueOpt

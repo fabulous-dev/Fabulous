@@ -67,8 +67,8 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: WidgetCollectionItemChange [] * IViewNode -> unit)
-        (updateNode: Widget [] voption * IViewNode -> unit)
+        (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
+        (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -88,14 +88,17 @@ module Attributes =
         let applyDiff (diff: WidgetDiff, node: IViewNode) =
             let childNode = get node.Target
 
-            if diff.ScalarChanges.Length > 0 then
-                childNode.ApplyScalarDiffs(diff.ScalarChanges)
+            match diff.ScalarChanges with
+            | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
+            | ValueNone -> ()
 
-            if diff.WidgetChanges.Length > 0 then
-                childNode.ApplyWidgetDiffs(diff.WidgetChanges)
+            match diff.WidgetChanges with
+            | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
+            | ValueNone -> ()
 
-            if diff.WidgetCollectionChanges.Length > 0 then
-                childNode.ApplyWidgetCollectionDiffs(diff.WidgetCollectionChanges)
+            match diff.WidgetCollectionChanges with
+            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
+            | ValueNone -> ()
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with
@@ -110,15 +113,15 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff (diffs: WidgetCollectionItemChange [], node: IViewNode) =
+        let applyDiff (diffs: ArraySlice<WidgetCollectionItemChange>, node: IViewNode) =
             let targetColl = getCollection node.Target
 
-            for diff in diffs do
+            for diff in ArraySlice.toSpan diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove index -> targetColl.RemoveAt(index)
                 | _ -> ()
 
-            for diff in diffs do
+            for diff in ArraySlice.toSpan diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -128,14 +131,17 @@ module Attributes =
                     let childNode =
                         node.TreeContext.GetViewNode(targetColl.[index])
 
-                    if widgetDiff.ScalarChanges.Length > 0 then
-                        childNode.ApplyScalarDiffs(widgetDiff.ScalarChanges)
+                    match widgetDiff.ScalarChanges with
+                    | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
+                    | ValueNone -> ()
 
-                    if widgetDiff.WidgetChanges.Length > 0 then
-                        childNode.ApplyWidgetDiffs(widgetDiff.WidgetChanges)
+                    match widgetDiff.WidgetChanges with
+                    | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
+                    | ValueNone -> ()
 
-                    if widgetDiff.WidgetCollectionChanges.Length > 0 then
-                        childNode.ApplyWidgetCollectionDiffs(widgetDiff.WidgetCollectionChanges)
+                    match widgetDiff.WidgetCollectionChanges with
+                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
+                    | ValueNone -> ()
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -143,14 +149,14 @@ module Attributes =
 
                 | _ -> ()
 
-        let updateNode (newValueOpt: Widget [] voption, node: IViewNode) =
+        let updateNode (newValueOpt: ArraySlice<Widget> voption, node: IViewNode) =
             let targetColl = getCollection node.Target
             targetColl.Clear()
 
             match newValueOpt with
             | ValueNone -> ()
             | ValueSome widgets ->
-                for widget in widgets do
+                for widget in ArraySlice.toSpan widgets do
                     let view = Helpers.createViewForWidget node widget
                     targetColl.Add(unbox view)
 
