@@ -4,8 +4,8 @@ open Fabulous
 open System.Collections.Generic
 
 type IAttributeDefinition =
-    abstract member Key : AttributeKey
-    abstract member UpdateNode : newValueOpt: obj voption * node: IViewNode -> unit
+    abstract member Key: AttributeKey
+    abstract member UpdateNode: newValueOpt: obj voption * node: IViewNode -> unit
 
 [<Struct; RequireQualifiedAccess>]
 type ScalarAttributeComparison =
@@ -14,7 +14,7 @@ type ScalarAttributeComparison =
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition
-    abstract member CompareBoxed : a: obj * b: obj -> ScalarAttributeComparison
+    abstract member CompareBoxed: a: obj * b: obj -> ScalarAttributeComparison
 
 /// Attribute definition for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
@@ -26,13 +26,11 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
       UpdateNode: 'valueType voption * IViewNode -> unit }
 
     member x.WithValue(value) : ScalarAttribute =
-        {
-            Key = x.Key
+        { Key = x.Key
 #if DEBUG
-            DebugName = x.Name
+          DebugName = x.Name
 #endif
-            Value = x.Convert(value)
-        }
+          Value = x.Convert(value) }
 
     interface IScalarAttributeDefinition with
         member x.Key = x.Key
@@ -44,26 +42,23 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
             let newValueOpt =
                 match newValueOpt with
                 | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome (x.ConvertValue(unbox<'modelType> v))
+                | ValueSome v -> ValueSome(x.ConvertValue(unbox<'modelType> v))
+
             x.UpdateNode(newValueOpt, node)
 
 /// Attribute definition for widget properties
 type WidgetAttributeDefinition =
-    {
-        Key: AttributeKey
-        Name: string
-        ApplyDiff: WidgetDiff * IViewNode -> unit
-        UpdateNode: Widget voption * IViewNode -> unit
-    }
+    { Key: AttributeKey
+      Name: string
+      ApplyDiff: WidgetDiff * IViewNode -> unit
+      UpdateNode: Widget voption * IViewNode -> unit }
 
     member x.WithValue(value: Widget) : WidgetAttribute =
-        {
-            Key = x.Key
+        { Key = x.Key
 #if DEBUG
-            DebugName = x.Name
+          DebugName = x.Name
 #endif
-            Value = value
-        }
+          Value = value }
 
     interface IAttributeDefinition with
         member x.Key = x.Key
@@ -78,21 +73,17 @@ type WidgetAttributeDefinition =
 
 /// Attribute definition for collection properties
 type WidgetCollectionAttributeDefinition =
-    {
-        Key: AttributeKey
-        Name: string
-        ApplyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit
-        UpdateNode: ArraySlice<Widget> voption * IViewNode -> unit
-    }
+    { Key: AttributeKey
+      Name: string
+      ApplyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit
+      UpdateNode: ArraySlice<Widget> voption * IViewNode -> unit }
 
     member x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =
-        {
-            Key = x.Key
+        { Key = x.Key
 #if DEBUG
-            DebugName = x.Name
+          DebugName = x.Name
 #endif
-            Value = value
-        }
+          Value = value }
 
     interface IAttributeDefinition with
         member x.Key = x.Key

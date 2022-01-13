@@ -10,11 +10,12 @@ open FabulousContacts.Repository
 open Plugin.Media
 open Xamarin.Forms
 open Plugin.Permissions
+
 open type Fabulous.XamarinForms.View
 
 module EditPage =
     // Declarations
-    type Msg = 
+    type Msg =
         // Fields update
         | UpdateFirstName of string
         | UpdateLastName of string
@@ -53,93 +54,122 @@ module EditPage =
           IsLastNameValid: bool }
 
     // Functions
-    let tryDeleteAsync dbPath (contact: Contact) = async {
-        let! shouldDelete = 
-            let title = Strings.EditPage_DeleteContact contact.FirstName contact.LastName
-            displayAlertWithConfirm(title, Strings.EditPage_DeleteContactConfirmation, Strings.Common_Yes, Strings.Common_No)
+    let tryDeleteAsync dbPath (contact: Contact) =
+        async {
+            let! shouldDelete =
+                let title =
+                    Strings.EditPage_DeleteContact contact.FirstName contact.LastName
 
-        if shouldDelete then
-            do! deleteContact dbPath contact
-            return Some (ContactDeleted contact)
-        else
-            return None
-    }
+                displayAlertWithConfirm (
+                    title,
+                    Strings.EditPage_DeleteContactConfirmation,
+                    Strings.Common_Yes,
+                    Strings.Common_No
+                )
 
-    let doAsync<'a when 'a: (new : unit -> 'a) and 'a :> BasePermission> action = async {
-        let! permissionGranted = askPermissionAsync<'a> ()
-        if permissionGranted then
-            let! pictureOpt = action()
-            match pictureOpt with
-            | None ->
+            if shouldDelete then
+                do! deleteContact dbPath contact
+                return Some(ContactDeleted contact)
+            else
                 return None
-            | Some picture ->
-                let! bytes = readBytesAsync picture
-                return Some bytes
-        else
-            return None
-    }
+        }
 
-    let tryUpdatePictureAsync (previousValue: _ option) = async {
-        let canTakePicture = CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported
-        let canPickPicture = CrossMedia.Current.IsPickPhotoSupported
-        
-        let hasPreviousPicture = previousValue.IsSome
+    let doAsync<'a when 'a: (new: unit -> 'a) and 'a :> BasePermission> action =
+        async {
+            let! permissionGranted = askPermissionAsync<'a> ()
 
-        let! action =
-            displayActionSheet(None,
-                               Some Strings.Common_Cancel,
-                               (if hasPreviousPicture then Some Strings.EditPage_PictureContextMenu_Remove else None),
-                               Some [|
-                                   if canTakePicture then yield Strings.EditPage_PictureContextMenu_TakePicture
-                                   if canPickPicture then yield Strings.EditPage_PictureContextMenu_ChooseFromGallery
-                               |])
-            
-        let setPicture value = Some (SetPicture value)
+            if permissionGranted then
+                let! pictureOpt = action ()
 
-        match action with
-        | s when s = Strings.EditPage_PictureContextMenu_Remove ->
-            return setPicture None
-        | s when s = Strings.EditPage_PictureContextMenu_TakePicture ->
-            let! bytes = doAsync<CameraPermission> takePictureAsync
-            return setPicture bytes
-        | s when s = Strings.EditPage_PictureContextMenu_ChooseFromGallery ->
-            let! bytes = doAsync<PhotosPermission> pickPictureAsync
-            return setPicture bytes
-        | _ ->
-            return None
-    }
+                match pictureOpt with
+                | None -> return None
+                | Some picture ->
+                    let! bytes = readBytesAsync picture
+                    return Some bytes
+            else
+                return None
+        }
+
+    let tryUpdatePictureAsync (previousValue: _ option) =
+        async {
+            let canTakePicture =
+                CrossMedia.Current.IsCameraAvailable
+                && CrossMedia.Current.IsTakePhotoSupported
+
+            let canPickPicture = CrossMedia.Current.IsPickPhotoSupported
+
+            let hasPreviousPicture = previousValue.IsSome
+
+            let! action =
+                displayActionSheet (
+                    None,
+                    Some Strings.Common_Cancel,
+                    (if hasPreviousPicture then
+                         Some Strings.EditPage_PictureContextMenu_Remove
+                     else
+                         None),
+                    Some [| if canTakePicture then
+                                yield Strings.EditPage_PictureContextMenu_TakePicture
+                            if canPickPicture then
+                                yield Strings.EditPage_PictureContextMenu_ChooseFromGallery |]
+                )
+
+            let setPicture value = Some(SetPicture value)
+
+            match action with
+            | s when s = Strings.EditPage_PictureContextMenu_Remove -> return setPicture None
+            | s when s = Strings.EditPage_PictureContextMenu_TakePicture ->
+                let! bytes = doAsync<CameraPermission> takePictureAsync
+                return setPicture bytes
+            | s when s = Strings.EditPage_PictureContextMenu_ChooseFromGallery ->
+                let! bytes = doAsync<PhotosPermission> pickPictureAsync
+                return setPicture bytes
+            | _ -> return None
+        }
 
     let sayContactNotValidAsync () =
-        displayAlert(Strings.EditPage_InvalidContactTitle, Strings.EditPage_InvalidContactDescription, Strings.Common_OK)
+        displayAlert (
+            Strings.EditPage_InvalidContactTitle,
+            Strings.EditPage_InvalidContactDescription,
+            Strings.Common_OK
+        )
 
-    let createOrUpdateAsync dbPath contact = async {
-        match contact.Id with
-        | 0 ->
-            let! insertedContact = insertContact dbPath contact
-            return ContactAdded insertedContact
-        | _ ->
-            let! updatedContact = updateContact dbPath contact
-            return ContactUpdated updatedContact
-    }
-    
-    let trySaveAsync model dbPath = async {
-        if not model.IsFirstNameValid || not model.IsLastNameValid then
-            do! sayContactNotValidAsync ()
-            return None
-        else
-            let id = (match model.Contact with None -> 0 | Some c -> c.Id)
-            let newContact =
-                { Id = id
-                  FirstName = model.FirstName
-                  LastName = model.LastName
-                  Email = model.Email
-                  Phone = model.Phone
-                  Address = model.Address
-                  IsFavorite = model.IsFavorite
-                  Picture = model.Picture }
-            let! msg = createOrUpdateAsync dbPath newContact
-            return Some msg
-    }
+    let createOrUpdateAsync dbPath contact =
+        async {
+            match contact.Id with
+            | 0 ->
+                let! insertedContact = insertContact dbPath contact
+                return ContactAdded insertedContact
+            | _ ->
+                let! updatedContact = updateContact dbPath contact
+                return ContactUpdated updatedContact
+        }
+
+    let trySaveAsync model dbPath =
+        async {
+            if not model.IsFirstNameValid
+               || not model.IsLastNameValid then
+                do! sayContactNotValidAsync ()
+                return None
+            else
+                let id =
+                    (match model.Contact with
+                     | None -> 0
+                     | Some c -> c.Id)
+
+                let newContact =
+                    { Id = id
+                      FirstName = model.FirstName
+                      LastName = model.LastName
+                      Email = model.Email
+                      Phone = model.Phone
+                      Address = model.Address
+                      IsFavorite = model.IsFavorite
+                      Picture = model.Picture }
+
+                let! msg = createOrUpdateAsync dbPath newContact
+                return Some msg
+        }
 
     // Validations
     let validateFirstName = not << String.IsNullOrWhiteSpace
@@ -177,77 +207,93 @@ module EditPage =
     let update dbPath msg (model: Model) =
         match msg with
         | UpdateFirstName v ->
-            let m = { model with FirstName = v; IsFirstNameValid = (validateFirstName v) }
+            let m =
+                { model with
+                      FirstName = v
+                      IsFirstNameValid = (validateFirstName v) }
+
             m, Cmd.none, ExternalMsg.NoOp
 
         | UpdateLastName v ->
-            let m = { model with LastName = v; IsLastNameValid = (validateLastName v) }
+            let m =
+                { model with
+                      LastName = v
+                      IsLastNameValid = (validateLastName v) }
+
             m, Cmd.none, ExternalMsg.NoOp
 
-        | UpdateEmail email ->
-            { model with Email = email }, Cmd.none, ExternalMsg.NoOp
+        | UpdateEmail email -> { model with Email = email }, Cmd.none, ExternalMsg.NoOp
 
-        | UpdatePhone phone ->
-            { model with Phone = phone }, Cmd.none, ExternalMsg.NoOp
+        | UpdatePhone phone -> { model with Phone = phone }, Cmd.none, ExternalMsg.NoOp
 
-        | UpdateAddress address ->
-            { model with Address = address }, Cmd.none, ExternalMsg.NoOp
+        | UpdateAddress address -> { model with Address = address }, Cmd.none, ExternalMsg.NoOp
 
-        | UpdateIsFavorite isFavorite ->
-            { model with IsFavorite = isFavorite }, Cmd.none, ExternalMsg.NoOp
+        | UpdateIsFavorite isFavorite -> { model with IsFavorite = isFavorite }, Cmd.none, ExternalMsg.NoOp
 
         | UpdatePicture ->
-            let cmd = Cmd.ofAsyncMsgOption (tryUpdatePictureAsync model.Picture)
+            let cmd =
+                Cmd.ofAsyncMsgOption (tryUpdatePictureAsync model.Picture)
+
             model, cmd, ExternalMsg.NoOp
 
-        | SetPicture picture ->
-            { model with Picture = picture}, Cmd.none, ExternalMsg.NoOp
+        | SetPicture picture -> { model with Picture = picture }, Cmd.none, ExternalMsg.NoOp
 
         | SaveContact ->
-            let cmd = Cmd.ofAsyncMsgOption (trySaveAsync model dbPath)
+            let cmd =
+                Cmd.ofAsyncMsgOption (trySaveAsync model dbPath)
+
             model, cmd, ExternalMsg.NoOp
 
         | DeleteContact contact ->
-            let cmd = Cmd.ofAsyncMsgOption (tryDeleteAsync dbPath contact)
+            let cmd =
+                Cmd.ofAsyncMsgOption (tryDeleteAsync dbPath contact)
+
             model, cmd, ExternalMsg.NoOp
 
-        | ContactAdded contact -> 
-            model, Cmd.none, ExternalMsg.GoBackAfterContactAdded contact
+        | ContactAdded contact -> model, Cmd.none, ExternalMsg.GoBackAfterContactAdded contact
 
-        | ContactUpdated contact -> 
-            model, Cmd.none, ExternalMsg.GoBackAfterContactUpdated contact
+        | ContactUpdated contact -> model, Cmd.none, ExternalMsg.GoBackAfterContactUpdated contact
 
-        | ContactDeleted contact ->
-            model, Cmd.none, ExternalMsg.GoBackAfterContactDeleted contact
-        
+        | ContactDeleted contact -> model, Cmd.none, ExternalMsg.GoBackAfterContactDeleted contact
+
     let view model =
         let title =
-            let fullName = $"%s{model.FirstName} %s{model.LastName}".Trim()
+            let fullName =
+                $"%s{model.FirstName} %s{model.LastName}".Trim()
+
             match model.Contact, fullName.Trim() with
             | None, "" -> Strings.EditPage_Title_NewContact
             | _, "" -> Strings.EditPage_Title_EditContactWithNoName
             | _, _ -> fullName
 
-        ContentPage(title,
+        ContentPage(
+            title,
             ScrollView(
                 (VerticalStackLayout() {
-                    (Grid(
-                        coldefs = [ Absolute 100.; Star ],
-                        rowdefs = [ Absolute 50.; Absolute 50. ]
-                    ) {
+                    (Grid(coldefs = [ Absolute 100.; Star ], rowdefs = [ Absolute 50.; Absolute 50. ]) {
                         profilePictureButton model.Picture UpdatePicture
 
-                        (formEntry Strings.EditPage_FirstNameField_Label model.FirstName Keyboard.Text model.IsFirstNameValid UpdateFirstName)
+                        (formEntry
+                            Strings.EditPage_FirstNameField_Label
+                            model.FirstName
+                            Keyboard.Text
+                            model.IsFirstNameValid
+                            UpdateFirstName)
                             .centerVertical()
-                            .gridColumn(1)
+                            .gridColumn (1)
 
-                        (formEntry Strings.EditPage_LastNameField_Label model.LastName Keyboard.Text model.IsLastNameValid UpdateLastName)
+                        (formEntry
+                            Strings.EditPage_LastNameField_Label
+                            model.LastName
+                            Keyboard.Text
+                            model.IsLastNameValid
+                            UpdateLastName)
                             .centerVertical()
                             .gridColumn(1)
-                            .gridRow(1)
-                    })
+                            .gridRow (1)
+                     })
                         .columnSpacing(10.)
-                        .rowSpacing(0.)
+                        .rowSpacing (0.)
 
                     favoriteField model.IsFavorite UpdateIsFavorite
                     formLabel Strings.EditPage_EmailField_Label
@@ -260,12 +306,9 @@ module EditPage =
                     match model.Contact with
                     | None -> ()
                     | Some x when x.Id = 0 -> ()
-                    | Some contact ->
-                        destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
-                })
-                    .paddingLayout(Thickness(20.))
+                    | Some contact -> destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
+                 })
+                    .paddingLayout (Thickness(20.))
             )
         )
-            .toolbarItems() {
-                toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact
-            }
+            .toolbarItems () { toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact }

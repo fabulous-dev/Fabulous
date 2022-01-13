@@ -4,9 +4,8 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
-type [<Struct>] AppThemeValues<'T> =
-    { Light: 'T
-      Dark: 'T voption }
+[<Struct>]
+type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
 
 module Attributes =
     /// Define an attribute storing a Widget for a bindable property
@@ -14,18 +13,25 @@ module Attributes =
         Attributes.defineWidget
             bindableProperty.PropertyName
             (fun target ->
-                let childTarget = (target :?> BindableObject).GetValue(bindableProperty)
-                ViewNode.get childTarget
-            )
+                let childTarget =
+                    (target :?> BindableObject)
+                        .GetValue(bindableProperty)
+
+                ViewNode.get childTarget)
             (fun target value ->
                 let bindableObject = target :?> BindableObject
+
                 if value = null then
                     bindableObject.ClearValue(bindableProperty)
                 else
-                    bindableObject.SetValue(bindableProperty, value)
-            )
+                    bindableObject.SetValue(bindableProperty, value))
 
-    let defineBindableWithComparer<'inputType, 'modelType, 'valueType> (bindableProperty: BindableProperty) (convert: 'inputType -> 'modelType) (convertValue: 'modelType -> 'valueType) (compare: 'modelType * 'modelType -> ScalarAttributeComparison) =
+    let defineBindableWithComparer<'inputType, 'modelType, 'valueType>
+        (bindableProperty: BindableProperty)
+        (convert: 'inputType -> 'modelType)
+        (convertValue: 'modelType -> 'valueType)
+        (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
+        =
         Attributes.defineScalarWithConverter<'inputType, 'modelType, 'valueType>
             bindableProperty.PropertyName
             convert
@@ -33,11 +39,11 @@ module Attributes =
             compare
             (fun (newValueOpt, node) ->
                 let target = node.Target :?> BindableObject
+
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v)
-            )
-    
+                | ValueSome v -> target.SetValue(bindableProperty, v))
+
     let inline defineBindable<'T when 'T: equality> bindableProperty =
         defineBindableWithComparer<'T, 'T, 'T> bindableProperty id id ScalarAttributeComparers.equalityCompare
 
@@ -49,8 +55,9 @@ module Attributes =
             ScalarAttributeComparers.equalityCompare
             (fun (newValueOpt, node) ->
                 let target = node.Target :?> BindableObject
+
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(bindableProperty)
                 | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
-                | ValueSome { Light = light; Dark = ValueSome dark } -> target.SetOnAppTheme(bindableProperty, light, dark)
-            )
+                | ValueSome { Light = light; Dark = ValueSome dark } ->
+                    target.SetOnAppTheme(bindableProperty, light, dark))

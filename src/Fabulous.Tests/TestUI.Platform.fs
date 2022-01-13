@@ -8,17 +8,17 @@ type TestViewElement() =
     member val PropertyBag = Dictionary<string, obj>()
 
 type IText =
-    abstract member Text : string with get, set
-    abstract member TextColor : string with get, set
+    abstract member Text: string with get, set
+    abstract member TextColor: string with get, set
 
 type IContainer =
-    abstract member Children : List<TestViewElement>
+    abstract member Children: List<TestViewElement>
 
 type ButtonHandler = unit -> unit
 
 type IButton =
-    abstract AddPressListener : ButtonHandler -> int
-    abstract RemovePressListener : int -> unit
+    abstract AddPressListener: ButtonHandler -> int
+    abstract RemovePressListener: int -> unit
 
 type LabelChangeList =
     | TextSet of string
@@ -64,8 +64,8 @@ type TestButton() =
     let handlers = Dictionary<int, ButtonHandler>()
 
     member _.Press() =
-        for handler in Array.ofSeq(handlers.Values) do
-            handler()
+        for handler in Array.ofSeq (handlers.Values) do
+            handler ()
 
     interface IText with
         member val Text = "" with get, set

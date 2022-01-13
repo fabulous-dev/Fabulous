@@ -17,13 +17,19 @@ module Strings =
     let MainPage_Title = "FabulousContacts"
     let MainPage_TabAllTitle = "All"
     let MainPage_TabFavoritesTitle = "Favorites"
-    let DetailPage_CapabilityNotSupported capability = $"%s{capability} is not supported on this device"
+
+    let DetailPage_CapabilityNotSupported capability =
+        $"%s{capability} is not supported on this device"
+
     let DetailPage_DialNumberFailed = "Can't dial number"
     let DetailPage_ComposeSmsFailed = "Can't send SMS"
     let DetailPage_ComposeEmailFailed = "Can't send email"
     let DetailPage_Toolbar_EditContact = "Edit"
     let EditPage_DeleteContact firstName lastName = $"Delete %s{firstName} %s{lastName}"
-    let EditPage_DeleteContactConfirmation = "This action is definitive. Are you sure?"
+
+    let EditPage_DeleteContactConfirmation =
+        "This action is definitive. Are you sure?"
+
     let EditPage_InvalidContactTitle = "Invalid contact"
     let EditPage_InvalidContactDescription = "Please fill all mandatory fields"
     let EditPage_Title_NewContact = "New Contact"
@@ -43,7 +49,10 @@ module Strings =
     let EditPage_PictureContextMenu_ChooseFromGallery = "Choose from the gallery"
     let AboutPage_AboutFabulousContacts_NameAndVersion = "FabulousContacts v1.0"
     let AboutPage_AboutFabulousContacts_DescriptionTitle = "Description"
-    let AboutPage_AboutFabulousContacts_Description = "FabulousContacts is an open-source sample Contacts app"
+
+    let AboutPage_AboutFabulousContacts_Description =
+        "FabulousContacts is an open-source sample Contacts app"
+
     let AboutPage_AboutFSharp_MadeWith = "Made with"
     let AboutPage_AboutFSharp_FSharp = "F#"
     let AboutPage_AboutFSharp_FabulousXamarinForms = "Fabulous for Xamarin.Forms"
@@ -52,4 +61,6 @@ module Strings =
     let AboutPage_Credits_XamarinEssentials = "Xamarin.Essentials"
     let AboutPage_AboutAuthor_Title = "Author"
     let AboutPage_AboutAuthor_AuthorName = "Timothé Larivière"
-    let AboutPage_AboutAuthor_ReachOut = "If you want to know more about this app or just want to reach me:"
+
+    let AboutPage_AboutAuthor_ReachOut =
+        "If you want to know more about this app or just want to reach me:"

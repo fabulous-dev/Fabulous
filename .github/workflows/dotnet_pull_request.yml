@@ -6,13 +6,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
-      PUSH_PACKAGES: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - name: Check code formatting
+      run: |
+        dotnet tool restore
+        dotnet fantomas --check **/*.fs
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build

@@ -6,34 +6,32 @@ open Tests.Platform
 module Attributes =
 
     let definePressable name =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
-            {
-                Key = key
-                Name = name
-                Convert = id
-                ConvertValue = id
-                Compare = ScalarAttributeComparers.noCompare
-                UpdateNode =
-                    fun (newValueOpt, node) ->
+            { Key = key
+              Name = name
+              Convert = id
+              ConvertValue = id
+              Compare = ScalarAttributeComparers.noCompare
+              UpdateNode =
+                  fun (newValueOpt, node) ->
 
-                        let btn = node.Target :?> IButton
+                      let btn = node.Target :?> IButton
 
-                        match node.TryGetHandler<int>(key) with
-                        | ValueNone -> ()
-                        | ValueSome handlerId -> btn.RemovePressListener handlerId
+                      match node.TryGetHandler<int>(key) with
+                      | ValueNone -> ()
+                      | ValueSome handlerId -> btn.RemovePressListener handlerId
 
-                        match newValueOpt with
-                        | ValueNone -> node.SetHandler(key, ValueNone)
+                      match newValueOpt with
+                      | ValueNone -> node.SetHandler(key, ValueNone)
 
-                        | ValueSome msg ->
-                            let handler () =
-                                Attributes.dispatchMsgOnViewNode node msg
+                      | ValueSome msg ->
+                          let handler () =
+                              Attributes.dispatchMsgOnViewNode node msg
 
-                            let handlerId = btn.AddPressListener handler
-                            node.SetHandler<int>(key, ValueSome handlerId)
-            }
+                          let handlerId = btn.AddPressListener handler
+                          node.SetHandler<int>(key, ValueSome handlerId) }
 
         AttributeDefinitionStore.set key definition
         definition

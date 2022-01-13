@@ -3,14 +3,22 @@ namespace Fabulous.XamarinForms.Samples.TicTacToe
 open Xamarin.Forms
 open Fabulous
 open Fabulous.XamarinForms
+
 open type Fabulous.XamarinForms.View
 
 /// Represents a player and a player's move
 type Player =
     | X
     | O
-    member p.Swap = match p with X -> O | O -> X
-    member p.Name = match p with X -> "X" | Y -> "Y"
+    member p.Swap =
+        match p with
+        | X -> O
+        | O -> X
+
+    member p.Name =
+        match p with
+        | X -> "X"
+        | Y -> "Y"
 
 /// Represents the game state contents of a single cell
 type GameCell =
@@ -54,16 +62,15 @@ type Model =
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
       /// updates telling us the overall allocated size.
-      VisualBoardSize: double option
-    }
+      VisualBoardSize: double option }
 
 /// The model, update and view content of the app. This is placed in an
 /// independent model to facilitate unit testing.
 module App =
     let positions =
         [ for x in 0 .. 2 do
-            for y in 0 .. 2 do
-               yield (x, y) ]
+              for y in 0 .. 2 do
+                  yield (x, y) ]
 
     let initialBoard =
         Map.ofList [ for p in positions -> p, Empty ]
@@ -71,40 +78,57 @@ module App =
     let init () =
         { NextUp = X
           Board = initialBoard
-          GameScore = (0,0)
+          GameScore = (0, 0)
           VisualBoardSize = None }
 
     /// Check if there are any more moves available in the game
-    let anyMoreMoves m = m.Board |> Map.exists (fun _ c -> c = Empty)
+    let anyMoreMoves m =
+        m.Board |> Map.exists (fun _ c -> c = Empty)
 
     let lines =
         [
-            // rows
-            for row in 0 .. 2 do yield [(row,0); (row,1); (row,2)]
-            // columns
-            for col in 0 .. 2 do yield [(0,col); (1,col); (2,col)]
-            // diagonals
-            yield [(0,0); (1,1); (2,2)]
-            yield [(0,2); (1,1); (2,0)]
-        ]
+          // rows
+          for row in 0 .. 2 do
+              yield [ (row, 0); (row, 1); (row, 2) ]
+          // columns
+          for col in 0 .. 2 do
+              yield [ (0, col); (1, col); (2, col) ]
+          // diagonals
+          yield [ (0, 0); (1, 1); (2, 2) ]
+          yield [ (0, 2); (1, 1); (2, 0) ] ]
 
     /// Determine if a line is a winning line.
-    let getLine (board: Board) line =
-        line |> List.map (fun p -> board.[p])
+    let getLine (board: Board) line = line |> List.map (fun p -> board.[p])
 
     /// Determine if a line is a winning line.
     let getLineWinner line =
-        if line |> List.forall (function Full X -> true | _ -> false) then Some X
-        elif line |> List.forall (function Full O -> true | _ -> false) then Some O
-        else None
+        if line
+           |> List.forall
+               (function
+               | Full X -> true
+               | _ -> false) then
+            Some X
+        elif line
+             |> List.forall
+                 (function
+                 | Full O -> true
+                 | _ -> false) then
+            Some O
+        else
+            None
 
     /// Determine the game result, if any.
     let getGameResult model =
-        match lines |> Seq.tryPick (getLine model.Board >> getLineWinner) with
+        match
+            lines
+            |> Seq.tryPick (getLine model.Board >> getLineWinner)
+            with
         | Some p -> Win p
         | _ ->
-           if anyMoreMoves model then StillPlaying
-           else Draw
+            if anyMoreMoves model then
+                StillPlaying
+            else
+                Draw
 
     /// Get a message to show the current game result
     let getMessage model =
@@ -119,27 +143,36 @@ module App =
         | Play pos ->
             let newModel =
                 { model with
-                    Board = model.Board.Add(pos, Full model.NextUp)
-                    NextUp = model.NextUp.Swap }
-                             
+                      Board = model.Board.Add(pos, Full model.NextUp)
+                      NextUp = model.NextUp.Swap }
+
             // Make an announcement in the middle of the game.
             let result = getGameResult newModel
+
             if result <> StillPlaying then
                 gameOver (getMessage newModel)
-                             
+
             let newModel2 =
-                let (x,y) = newModel.GameScore
+                let (x, y) = newModel.GameScore
+
                 match result with
-                | Win p -> { newModel with GameScore = (if p = X then (x+1, y) else (x, y+1)) }
+                | Win p ->
+                    { newModel with
+                          GameScore = (if p = X then (x + 1, y) else (x, y + 1)) }
                 | _ -> newModel
-                             
+
             // Return the new model.
             newModel2
         | Restart ->
-            { model with NextUp = X; Board = initialBoard; GameScore = (0, 0) }
+            { model with
+                  NextUp = X
+                  Board = initialBoard
+                  GameScore = (0, 0) }
         | VisualBoardSizeChanged args ->
             let size = min args.Width args.Height - 80.
-            { model with VisualBoardSize = Some size }
+
+            { model with
+                  VisualBoardSize = Some size }
 
     /// A helper used in the 'view' function to get the name
     /// of the Xaml resource for the image for a player
@@ -156,74 +189,77 @@ module App =
         | Empty -> ""
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
-    let uiText (row,col) = sprintf "%d%d" row col
+    let uiText (row, col) = sprintf "%d%d" row col
 
     /// A condition used in the 'view' function to check if we can play in a cell.
     /// The visual contents of a cell depends on this condition.
-    let canPlay model cell = (cell = Empty) && (getGameResult model = StillPlaying)
+    let canPlay model cell =
+        (cell = Empty)
+        && (getGameResult model = StillPlaying)
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model =
         Application(
             (NavigationPage() {
                 let contentPage =
-                    ContentPage("TicTacToe",
-                        Grid(
-                            coldefs = [ Star ],
-                            rowdefs = [ Star; Auto; Auto ]
-                        ) {
-                            (Grid(
-                                coldefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ],
-                                rowdefs = [ Star; Absolute 5.0; Star; Absolute 5.0; Star ]
-                            ) {
-                                BoxView(Color.Black).gridRow(1).gridColumnSpan(5)
-                                BoxView(Color.Black).gridRow(3).gridColumnSpan(5)
-                                BoxView(Color.Black).gridColumn(1).gridRowSpan(5)
-                                BoxView(Color.Black).gridColumn(3).gridRowSpan(5)
+                    ContentPage(
+                        "TicTacToe",
+                        Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
+                            (Grid(coldefs = [ Star
+                                              Absolute 5.0
+                                              Star
+                                              Absolute 5.0
+                                              Star ],
+                                  rowdefs = [ Star
+                                              Absolute 5.0
+                                              Star
+                                              Absolute 5.0
+                                              Star ]) {
+                                BoxView(Color.Black).gridRow(1).gridColumnSpan (5)
+                                BoxView(Color.Black).gridRow(3).gridColumnSpan (5)
+                                BoxView(Color.Black).gridColumn(1).gridRowSpan (5)
+                                BoxView(Color.Black).gridColumn(3).gridRowSpan (5)
 
-                                for ((row,col) as pos) in positions do
+                                for ((row, col) as pos) in positions do
                                     if canPlay model model.Board.[pos] then
                                         Button("", Play pos)
                                             .backgroundColor(Color.LightBlue)
                                             .gridRow(row * 2)
-                                            .gridColumn(col * 2)
+                                            .gridColumn (col * 2)
                                     else
                                         Image(imageForPos model.Board.[pos], Aspect.AspectFit)
                                             .center()
                                             .margin(10.)
                                             .gridRow(row * 2)
-                                            .gridColumn(col * 2)
-                            })
+                                            .gridColumn (col * 2)
+                             })
                                 .rowSpacing(0.)
                                 .columnSpacing(0.)
                                 .center()
                                 .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
-                                .gridRow(0)
+                                .gridRow (0)
 
                             Label(getMessage model)
                                 .textColor(Color.Black)
                                 .font(namedSize = NamedSize.Large)
                                 .center()
                                 .margin(10.)
-                                .gridRow(1)
+                                .gridRow (1)
 
                             Button("Restart game", Restart)
                                 .textColor(Color.Black)
                                 .backgroundColor(Color.LightBlue)
                                 .font(NamedSize.Large)
-                                .gridRow(2)
+                                .gridRow (2)
                         }
                     )
 
                 match model.VisualBoardSize with
-                | None ->
-                    contentPage
-                        .onSizeAllocated(VisualBoardSizeChanged)
-                | Some _ ->
-                    contentPage
-            })
+                | None -> contentPage.onSizeAllocated (VisualBoardSizeChanged)
+                | Some _ -> contentPage
+             })
                 .barBackgroundColor(Color.LightBlue)
-                .barTextColor(Color.Black)
+                .barTextColor (Color.Black)
         )
 
     // Display a modal message giving the game result. This is doing a UI
@@ -231,6 +267,8 @@ module App =
     // this dependency out to allow unit testing of the 'update' function.
 
     let gameOver msg =
-        Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
+        Application.Current.MainPage.DisplayAlert("Game over", msg, "OK")
+        |> ignore
 
-    let program = Program.statefulApplication init (update gameOver) view
+    let program =
+        Program.statefulApplication init (update gameOver) view

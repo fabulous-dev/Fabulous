@@ -19,7 +19,7 @@ module Pin =
     let Address =
         Attributes.defineBindable<string> Pin.AddressProperty
 
-    let PinKey = Widgets.register<Pin>()
+    let PinKey = Widgets.register<Pin> ()
 
 module Map =
     let RequestedRegion =
@@ -41,7 +41,7 @@ module Map =
     let HasScrollEnabled =
         Attributes.defineBindable<bool> Map.HasScrollEnabledProperty
 
-    let MapKey = Widgets.register<Map>()
+    let MapKey = Widgets.register<Map> ()
 
 module MapView =
     type IPin =
@@ -84,6 +84,4 @@ module MapView =
                 _: CollectionBuilder<'msg, 'marker, IPin>,
                 x: WidgetBuilder<'msg, 'itemType>
             ) : Content<'msg> =
-            {
-                Widgets = MutStackArray1.One(x.Compile())
-            }
+            { Widgets = MutStackArray1.One(x.Compile()) }

@@ -19,36 +19,30 @@ open Tests.TestUI_ViewNode
 //-------Widgets
 
 module Widgets =
-    let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
-        let key = WidgetDefinitionStore.getNextKey()
+    let register<'T when 'T :> TestViewElement and 'T: (new: unit -> 'T)> () =
+        let key = WidgetDefinitionStore.getNextKey ()
 
         let definition =
-            {
-                Key = key
-                Name = typeof<'T>.Name
-                TargetType = typeof<'T>
-                CreateView =
-                    fun (widget, context, parentNode) ->
-                        let name = typeof<'T>.Name
-                        printfn $"Creating view for {name}"
+            { Key = key
+              Name = typeof<'T>.Name
+              TargetType = typeof<'T>
+              CreateView =
+                  fun (widget, context, parentNode) ->
+                      let name = typeof<'T>.Name
+                      printfn $"Creating view for {name}"
 
-                        let view = new 'T()
-                        let weakReference = WeakReference(view)
+                      let view = new 'T()
+                      let weakReference = WeakReference(view)
 
-                        let viewNode = ViewNode(parentNode, context, weakReference)
+                      let viewNode =
+                          ViewNode(parentNode, context, weakReference)
 
-                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
+                      view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                        let oldWidget: Widget voption = ValueNone
+                      let oldWidget: Widget voption = ValueNone
 
-                        Reconciler.update
-                            context.CanReuseView
-                            oldWidget
-                            widget
-                            viewNode
-
-                        struct (viewNode, box view)
-            }
+                      Reconciler.update context.CanReuseView oldWidget widget viewNode
+                      struct (viewNode, box view) }
 
         WidgetDefinitionStore.set key definition
         key
@@ -108,9 +102,9 @@ type WidgetExtensions() =
 
 [<AbstractClass; Sealed>]
 type View private () =
-    static let TestLabelKey = Widgets.register<TestLabel>()
-    static let TestButtonKey = Widgets.register<TestButton>()
-    static let TestStackKey = Widgets.register<TestStack>()
+    static let TestLabelKey = Widgets.register<TestLabel> ()
+    static let TestButtonKey = Widgets.register<TestButton> ()
+    static let TestStackKey = Widgets.register<TestStack> ()
 
     static member Label<'msg>(text: string) =
         WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
@@ -126,7 +120,7 @@ type View private () =
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(
             TestStackKey,
-            StackList.empty(),
+            StackList.empty (),
             Attributes.Container.Children
         )
 
@@ -138,9 +132,7 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, 'itemMarker>
         ) : Content<'msg> =
-        {
-            Widgets = MutStackArray1.One(x.Compile())
-        }
+        { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -148,9 +140,7 @@ type CollectionBuilderExtensions =
             _: CollectionBuilder<'msg, 'marker, IMarker>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
         ) : Content<'msg> =
-        {
-            Widgets = MutStackArray1.One(x.Compile())
-        }
+        { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
     static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -159,32 +149,26 @@ type CollectionBuilderExtensions =
             x: WidgetBuilder<'msg, 'itemMarker> seq
         ) : Content<'msg> =
         // TODO optimize this one with addMut
-        {
-            Widgets =
-                x
-                |> Seq.map(fun wb -> wb.Compile())
-                |> Seq.toArray
-                |> MutStackArray1.fromArray
-        }
+        { Widgets =
+              x
+              |> Seq.map (fun wb -> wb.Compile())
+              |> Seq.toArray
+              |> MutStackArray1.fromArray }
 
 
 
 
 ///------------------
 type StatefulView<'arg, 'model, 'msg, 'marker> =
-    {
-        Init: 'arg -> 'model
-        Update: 'msg -> 'model -> 'model
-        View: 'model -> WidgetBuilder<'msg, 'marker>
-    }
+    { Init: 'arg -> 'model
+      Update: 'msg -> 'model -> 'model
+      View: 'model -> WidgetBuilder<'msg, 'marker> }
 
 module StatefulWidget =
     let mkSimpleView init update view : StatefulView<_, _, _, _> =
-        {
-            Init = init
-            Update = update
-            View = view
-        }
+        { Init = init
+          Update = update
+          View = view }
 
 
 module Run =
@@ -192,11 +176,9 @@ module Run =
         let mutable state: ('model * obj * Widget) option = None
 
         member private x.viewContext: ViewTreeContext =
-            {
-                CanReuseView = ViewHelpers.canReuseView
-                Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-                GetViewNode = ViewNode.getViewNode
-            }
+            { CanReuseView = ViewHelpers.canReuseView
+              Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
+              GetViewNode = ViewNode.getViewNode }
 
         member x.ProcessMessage(msg: 'msg) =
             match state with
