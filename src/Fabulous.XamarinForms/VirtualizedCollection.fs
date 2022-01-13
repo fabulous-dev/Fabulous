@@ -60,7 +60,7 @@ type WidgetDataTemplateSelector internal (node: IViewNode, isHeader: bool, getWi
     override _.OnSelectTemplate(item, _) =
         let widget = getWidget item
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-        let targetType = widgetDefinition.GetTargetType(widget)
+        let targetType = widgetDefinition.TargetType
         match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->

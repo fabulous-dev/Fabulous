@@ -9,7 +9,7 @@ type WidgetDefinition =
     {
         Key: WidgetKey
         Name: string
-        GetTargetType: Widget -> Type
+        TargetType: Type
         CreateView: Widget * ViewTreeContext * IViewNode voption -> struct (IViewNode * obj)
     }
 

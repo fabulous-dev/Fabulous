@@ -38,7 +38,7 @@ module Memo =
 
     let private compareAttributes (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
         match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
-        | (true, true) ->
+        | true, true ->
             match next.KeyComparer next.KeyData prev.KeyData with
             | true -> ScalarAttributeComparison.Identical
             | false -> ScalarAttributeComparison.Different
@@ -79,13 +79,7 @@ module Memo =
         {
             Key = MemoWidgetKey
             Name = "Memo"
-            GetTargetType =
-                fun widget ->
-                    let memoData = getMemoData widget
-                    let memoizedWidget = memoData.CreateWidget memoData.KeyData
-                    let memoizedDef = WidgetDefinitionStore.get memoizedWidget.Key
-                    memoizedDef.GetTargetType(memoizedWidget)
-                    
+            TargetType = Unchecked.defaultof<_>
             CreateView =
                 fun (widget, context, parentNode) ->
 
