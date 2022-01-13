@@ -67,21 +67,6 @@ type WidgetBuilder<'msg, 'marker> =
                 struct (StackList.add(&scalarAttributes, attr), widgetAttributes, widgetCollectionAttributes)
             )
 
-
-        //        [<EditorBrowsable(EditorBrowsableState.Never)>]
-//        member inline x.AddScalars(scalars: StackArray3<ScalarAttribute>) : WidgetBuilder<'msg, 'marker> =
-//            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
-//
-//            WidgetBuilder<'msg, 'marker>(
-//                x.Key,
-//                AttributesBundle(
-//                    StackArray3.combine scalarAttributes scalars,
-//                    widgetAttributes,
-//                    widgetCollectionAttributes
-//                )
-//            )
-
-
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidget(attr: WidgetAttribute) =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes

@@ -128,10 +128,7 @@ module ViewHelpers =
             { OriginalItems = items
               Template = template }
         
-        let attrs =
-            [| attrDef.WithValue(data) |]
-        
-        WidgetBuilder<'msg, 'marker>(key, struct (attrs, [||], [||]))
+        WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
         
     let buildItems<'msg, 'marker, 'itemData, 'itemMarker> key attrDef (items: seq<'itemData>) (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>) =            
         let template (item: obj) : obj =

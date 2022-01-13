@@ -401,8 +401,7 @@ type ViewBuilders private () =
         ViewHelpers.buildGroupItemsNoFooter<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker> ViewKeys.GroupedListView ItemsViewOfCell.ItemsSource items
             
     static member inline TextCell<'msg>(text: string) =
-        ViewHelpers.buildScalars<'msg, ITextCell> ViewKeys.TextCell
-            [| TextCell.Text.WithValue(text) |]
+        WidgetBuilder<'msg, ITextCell>(ViewKeys.TextCell, TextCell.Text.WithValue(text))
             
     static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
         ViewHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker> ViewKeys.CollectionView ItemsView.ItemsSource items
@@ -857,10 +856,10 @@ type ViewExtensions private () =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
     [<Extension>]
     static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #ICollectionView>, value: int, msg: 'msg) =
-        this.AddScalars([|
-            CollectionView.RemainingItemsThreshold.WithValue(value)
-            CollectionView.RemainingItemsThresholdReached.WithValue(msg)
-        |])
+        this
+            .AddScalar(CollectionView.RemainingItemsThreshold.WithValue(value))
+            .AddScalar(CollectionView.RemainingItemsThresholdReached.WithValue(msg))
+            
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, ITextCell>, value: Xamarin.Forms.Color) =
         this.AddScalar(TextCell.TextColor.WithValue(value))
