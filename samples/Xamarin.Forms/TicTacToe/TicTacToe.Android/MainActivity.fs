@@ -1,27 +1,30 @@
-﻿namespace Fabulous.XamarinForms.Samples.TicTacToe.Android
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace TicTacToe.Android
+
+open System
 
 open Android.App
+open Android.Content
+open Android.Content.PM
 open Android.Runtime
-open Xamarin.Essentials
-open Xamarin.Forms
+open Android.Views
+open Android.Widget
+open Android.OS
 open Xamarin.Forms.Platform.Android
-open Fabulous.XamarinForms.Samples.TicTacToe
+open TicTacToe
 
-[<Activity(Label = "TicTacToe.Android", MainLauncher = true, Icon = "@mipmap/icon")>]
+[<Activity (Label = "TicTacToe.Android", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
+    override this.OnCreate(bundle: Bundle) =
+        FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
 
-    override this.OnCreate(bundle) =
-        base.OnCreate(bundle)
-        Platform.Init(this, bundle)
-        Forms.Init(this, bundle)
+        base.OnCreate (bundle)
+        Xamarin.Essentials.Platform.Init(this, bundle)
+        Xamarin.Forms.Forms.Init(this, bundle)
         this.LoadApplication(App())
 
-    override this.OnRequestPermissionsResult
-        (
-            requestCode: int,
-            permissions: string [],
-            [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []
-        ) =
-        Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
+    override this.OnRequestPermissionsResult(requestCode: int, permissions: string[], [<GeneratedEnum>] grantResults: Android.Content.PM.Permission[]) =
+        Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults)
