@@ -60,12 +60,6 @@
         "replaces": "XamarinEssentialsSdk",
         "defaultValue": "1.7.0"
       },
-      "SystemNumericsVectorsSdk": {
-        "type": "parameter",
-        "dataType": "string",
-        "replaces": "SystemNumericsVectorsSdk",
-        "defaultValue": "4.5.0"
-      },
       "XamarinFormsSdk": {
         "type": "parameter",
         "dataType": "string",
