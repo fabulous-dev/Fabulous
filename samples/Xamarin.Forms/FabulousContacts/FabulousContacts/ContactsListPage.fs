@@ -90,7 +90,7 @@ module ContactsListPage =
 
             m, Cmd.none, ExternalMsg.NoOp
 
-        | ContactSelected index -> model, Cmd.none, ExternalMsg.NavigateToDetail(unbox model.Contacts [ index ])
+        | ContactSelected index -> model, Cmd.none, ExternalMsg.NavigateToDetail(model.Contacts.[index])
 
         | Search -> model, Cmd.none, ExternalMsg.NoOp
 
