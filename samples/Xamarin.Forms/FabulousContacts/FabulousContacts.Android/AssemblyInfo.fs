@@ -8,7 +8,8 @@ open Android.App
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
 //type Resources = Fabulous.XamarinForms.Samples.FabulousContacts.Android.Resources
 type Resources = FabulousContacts.Android.Resource
-[<assembly: Android.Runtime.ResourceDesigner("FabulousContacts.Android.Resource", IsApplication=true)>]
+
+[<assembly: Android.Runtime.ResourceDesigner("FabulousContacts.Android.Resource", IsApplication = true)>]
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -53,4 +54,4 @@ type Resources = FabulousContacts.Android.Resource
 
 [<assembly: UsesFeature("android.hardware.camera", Required = false)>]
 [<assembly: UsesFeature("android.hardware.camera.autofocus", Required = false)>]
-do()
+do ()

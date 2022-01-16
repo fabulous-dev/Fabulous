@@ -7,9 +7,10 @@ open Android.App
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
 type Resources = TicTacToe.Android.Resource
-[<assembly: Android.Runtime.ResourceDesigner("TicTacToe.Android.Resources", IsApplication=true)>]
 
-// General Information about an assembly is controlled through the following 
+[<assembly: Android.Runtime.ResourceDesigner("TicTacToe.Android.Resources", IsApplication = true)>]
+
+// General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [<assembly: AssemblyTitle("TicTacToe.Android")>]
@@ -25,11 +26,11 @@ type Resources = TicTacToe.Android.Resource
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
-//      Minor Version 
+//      Minor Version
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [<assembly: AssemblyVersion("1.0.*")>]
 [<assembly: AssemblyVersion("1.0.0.0")>]
@@ -38,4 +39,4 @@ type Resources = TicTacToe.Android.Resource
 // Add some common permissions, these can be removed if not needed
 [<assembly: UsesPermission(Android.Manifest.Permission.Internet)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)>]
-do()
+do ()
