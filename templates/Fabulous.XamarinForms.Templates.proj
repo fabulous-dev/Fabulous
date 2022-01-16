@@ -27,9 +27,7 @@ content/*/**/bin/**/*;
         </ExcludeFromPackage>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="content/**/*.*" Exclude="$(ExcludeFromPackage)" >
-            <PackagePath>Content\</PackagePath>
-        </Content>
+        <Content Include="content/**/*.*" Exclude="$(ExcludeFromPackage)" />
         <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
     </ItemGroup>
 </Project>

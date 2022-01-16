@@ -22,7 +22,7 @@ jobs:
       run: dotnet test --no-build --configuration Release ${SLN_FILE}
     - name: Pack
       run: |
-        sed -i 's/FABULOUS_PKG_VERSION/2.0.0-nightly-${GITHUB_RUN_ID}/g' "templates/content/blank/.template.config/template.json"
+        sed -i "s/FABULOUS_PKG_VERSION/2.0.0-nightly-${GITHUB_RUN_ID}/g" "templates/content/blank/.template.config/template.json"
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" ${SLN_FILE}
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
