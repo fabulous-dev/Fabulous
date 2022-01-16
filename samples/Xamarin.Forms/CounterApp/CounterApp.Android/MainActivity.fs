@@ -1,21 +1,38 @@
-﻿namespace Fabulous.XamarinForms.Samples.CounterApp.Android
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace CounterApp.Android
+
+open System
 
 open Android.App
+open Android.Content
+open Android.Content.PM
 open Android.Runtime
-open Xamarin.Essentials
-open Xamarin.Forms
-open Xamarin.Forms.Platform.Android
-open Fabulous.XamarinForms.Samples.CounterApp
+open Android.Views
+open Android.Widget
+open Android.OS
 
-[<Activity(Label = "CounterApp.Android", MainLauncher = true, Icon = "@mipmap/icon")>]
+open Fabulous.XamarinForms
+open Fabulous.XamarinForms.Samples.CounterApp
+open Xamarin.Forms.Platform.Android
+
+[<Activity(Label = "CounterApp.Android",
+           Icon = "@drawable/icon",
+           Theme = "@style/MainTheme",
+           MainLauncher = true,
+           ConfigurationChanges = (ConfigChanges.ScreenSize
+                                   ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
 
-    override this.OnCreate(bundle) =
+    override this.OnCreate(bundle: Bundle) =
+        FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
+
         base.OnCreate(bundle)
-        Platform.Init(this, bundle)
-        Forms.Init(this, bundle)
-        this.LoadApplication(App())
+        Xamarin.Essentials.Platform.Init(this, bundle)
+        Xamarin.Forms.Forms.Init(this, bundle)
+        let application: Xamarin.Forms.Application = unbox (Program.create App.program ())
+        this.LoadApplication(application)
 
     override this.OnRequestPermissionsResult
         (
@@ -23,5 +40,5 @@ type MainActivity() =
             permissions: string [],
             [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []
         ) =
-        Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
+        Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults)
