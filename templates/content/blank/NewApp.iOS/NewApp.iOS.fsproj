@@ -148,10 +148,10 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="Fabulous">
-          <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
+          <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.1\Fabulous.dll</HintPath>
         </Reference>
         <Reference Include="Fabulous.XamarinForms">
-          <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
+          <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.1\Fabulous.XamarinForms.dll</HintPath>
         </Reference>
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
