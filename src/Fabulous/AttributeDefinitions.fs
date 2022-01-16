@@ -1,20 +1,7 @@
 ﻿namespace Fabulous
 
 open Fabulous
-open System.Collections.Generic
 
-type IAttributeDefinition =
-    abstract member Key: AttributeKey
-    abstract member UpdateNode: newValueOpt: obj voption * node: IViewNode -> unit
-
-[<Struct; RequireQualifiedAccess>]
-type ScalarAttributeComparison =
-    | Identical
-    | Different
-
-type IScalarAttributeDefinition =
-    inherit IAttributeDefinition
-    abstract member CompareBoxed: a: obj * b: obj -> ScalarAttributeComparison
 
 /// Attribute definition for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
@@ -95,18 +82,3 @@ type WidgetCollectionAttributeDefinition =
                 | ValueSome v -> ValueSome(unbox<ArraySlice<Widget>> v)
 
             x.UpdateNode(newValueOpt, node)
-
-module AttributeDefinitionStore =
-    let private _attributes =
-        Dictionary<AttributeKey, IAttributeDefinition>()
-
-    let mutable private _nextKey = 0
-
-    let get key = _attributes.[key]
-    let set key value = _attributes.[key] <- value
-    let remove key = _attributes.Remove(key) |> ignore
-
-    let getNextKey () : AttributeKey =
-        let key = _nextKey
-        _nextKey <- _nextKey + 1
-        key

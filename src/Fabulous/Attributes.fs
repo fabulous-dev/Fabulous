@@ -32,7 +32,7 @@ module Attributes =
         (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
         (updateNode: 'valueType voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition =
             { Key = key
@@ -51,7 +51,7 @@ module Attributes =
         (applyDiff: WidgetDiff * IViewNode -> unit)
         (updateNode: Widget voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: WidgetAttributeDefinition =
             { Key = key
@@ -68,7 +68,7 @@ module Attributes =
         (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: WidgetCollectionAttributeDefinition =
             { Key = key
@@ -84,9 +84,8 @@ module Attributes =
         let applyDiff (diff: WidgetDiff, node: IViewNode) =
             let childNode = get node.Target
 
-            match diff.ScalarChanges with
-            | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
-            | ValueNone -> ()
+            childNode.ApplyScalarDiffs(&diff.ScalarChanges)
+
 
             match diff.WidgetChanges with
             | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
@@ -127,9 +126,7 @@ module Attributes =
                     let childNode =
                         node.TreeContext.GetViewNode(box targetColl.[index])
 
-                    match widgetDiff.ScalarChanges with
-                    | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
-                    | ValueNone -> ()
+                    childNode.ApplyScalarDiffs(&widgetDiff.ScalarChanges)
 
                     match widgetDiff.WidgetChanges with
                     | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
@@ -182,7 +179,7 @@ module Attributes =
         node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
             { Key = key
@@ -212,7 +209,7 @@ module Attributes =
         definition
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<_, _, _> =
             { Key = key

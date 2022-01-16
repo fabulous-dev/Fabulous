@@ -19,8 +19,8 @@ open Tests.TestUI_ViewNode
 //-------Widgets
 
 module Widgets =
-    let register<'T when 'T :> TestViewElement and 'T: (new: unit -> 'T)> () =
-        let key = WidgetDefinitionStore.getNextKey ()
+    let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
+        let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
             { Key = key
@@ -29,7 +29,7 @@ module Widgets =
               CreateView =
                   fun (widget, context, parentNode) ->
                       let name = typeof<'T>.Name
-                      printfn $"Creating view for {name}"
+                      //                      printfn $"Creating view for {name}"
 
                       let view = new 'T()
                       let weakReference = WeakReference(view)
@@ -102,9 +102,9 @@ type WidgetExtensions() =
 
 [<AbstractClass; Sealed>]
 type View private () =
-    static let TestLabelKey = Widgets.register<TestLabel> ()
-    static let TestButtonKey = Widgets.register<TestButton> ()
-    static let TestStackKey = Widgets.register<TestStack> ()
+    static let TestLabelKey = Widgets.register<TestLabel>()
+    static let TestButtonKey = Widgets.register<TestButton>()
+    static let TestStackKey = Widgets.register<TestStack>()
 
     static member Label<'msg>(text: string) =
         WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
@@ -120,7 +120,7 @@ type View private () =
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(
             TestStackKey,
-            StackList.empty (),
+            StackList.empty(),
             Attributes.Container.Children
         )
 
@@ -151,7 +151,7 @@ type CollectionBuilderExtensions =
         // TODO optimize this one with addMut
         { Widgets =
               x
-              |> Seq.map (fun wb -> wb.Compile())
+              |> Seq.map(fun wb -> wb.Compile())
               |> Seq.toArray
               |> MutStackArray1.fromArray }
 

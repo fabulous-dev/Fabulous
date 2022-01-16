@@ -27,96 +27,96 @@ module Reconciler =
     ///         compare values
     ///
     /// break when we reached both ends of the arrays
-    let rec diffScalarAttributes
-        (prev: ScalarAttribute [] voption)
-        (next: ScalarAttribute [] voption)
-        : ScalarChange [] voption =
-        match (prev, next) with
-        | ValueNone, ValueNone -> ValueNone
+//    let rec diffScalarAttributes
+//        (prev: ScalarAttribute [] voption)
+//        (next: ScalarAttribute [] voption)
+//        : ScalarChange [] voption =
+//        match (prev, next) with
+//        | ValueNone, ValueNone -> ValueNone
+//
+//        // all were deleted
+//        | ValueSome prev, ValueNone ->
+//            prev
+//            |> Array.map ScalarChange.Removed
+//            |> ValueSome
+//        | ValueNone, ValueSome next -> next |> Array.map ScalarChange.Added |> ValueSome
+//        | ValueSome prev, ValueSome next ->
+//
+//            let mutable result = DiffBuilder.create ()
+//
+//            let mutable prevIndex = 0
+//            let mutable nextIndex = 0
+//
+//            let prevLength = prev.Length
+//            let nextLength = next.Length
+//
+//            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
+//                if prevIndex = prevLength then
+//                    // that means we are done with the prev and only need to add next's tail to added
+//                    //result <- StackArray3.add(&result, (ScalarChange.Added next.[nextIndex]))
+//                    DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
+//                    nextIndex <- nextIndex + 1
+//
+//                elif nextIndex = nextLength then
+//                    // that means that we are done with new items and only need prev's tail to removed
+//                    // result <- StackArray3.add(&result, ScalarChange.Removed prev.[prevIndex])
+//                    DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
+//                    prevIndex <- prevIndex + 1
+//
+//                else
+//                    // we haven't reached either of the ends
+//                    let prevAttr = prev.[prevIndex]
+//                    let nextAttr = next.[nextIndex]
+//
+//                    let prevKey = prevAttr.Key
+//                    let nextKey = nextAttr.Key
+//
+//                    match prevKey.CompareTo nextKey with
+//                    | c when c < 0 ->
+//                        // prev key is less than next -> remove prev key
+//                        DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
+//                        //                        result <- StackArray3.add(&result, ScalarChange.Removed prevAttr)
+//                        prevIndex <- prevIndex + 1
+//
+//                    | c when c > 0 ->
+//                        // prev key is more than next -> add next item
+//                        // result <- StackArray3.add(&result, ScalarChange.Added nextAttr)
+//                        DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
+//                        nextIndex <- nextIndex + 1
+//
+//                    | _ ->
+//                        // means that we are targeting the same attribute
+//
+//                        let definition =
+//                            AttributeDefinitionStore.get prevAttr.Key :?> IScalarAttributeDefinition
+//
+//                        match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
+//                        // Previous and next values are identical, we don't need to do anything
+//                        | ScalarAttributeComparison.Identical -> ()
+//
+//                        // New value completely replaces the old value
+//                        | ScalarAttributeComparison.Different ->
+//                            DiffBuilder.addOpMut &result DiffBuilder.Change (uint16 nextIndex)
+//
+//                        // move both pointers
+//                        prevIndex <- prevIndex + 1
+//                        nextIndex <- nextIndex + 1
+//
+//
+//            match DiffBuilder.lenght &result with
+//            | 0 -> ValueNone
+//            | _ ->
+//                ValueSome(
+//                    DiffBuilder.toArray
+//                        &result
+//                        (fun op ->
+//                            match op with
+//                            | DiffBuilder.Added i -> ScalarChange.Added next.[int i]
+//                            | DiffBuilder.Removed i -> ScalarChange.Removed prev.[int i]
+//                            | DiffBuilder.Changed i -> ScalarChange.Updated next.[int i])
+//                )
 
-        // all were deleted
-        | ValueSome prev, ValueNone ->
-            prev
-            |> Array.map ScalarChange.Removed
-            |> ValueSome
-        | ValueNone, ValueSome next -> next |> Array.map ScalarChange.Added |> ValueSome
-        | ValueSome prev, ValueSome next ->
-
-            let mutable result = DiffBuilder.create ()
-
-            let mutable prevIndex = 0
-            let mutable nextIndex = 0
-
-            let prevLength = prev.Length
-            let nextLength = next.Length
-
-            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
-                if prevIndex = prevLength then
-                    // that means we are done with the prev and only need to add next's tail to added
-                    //result <- StackArray3.add(&result, (ScalarChange.Added next.[nextIndex]))
-                    DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
-                    nextIndex <- nextIndex + 1
-
-                elif nextIndex = nextLength then
-                    // that means that we are done with new items and only need prev's tail to removed
-                    // result <- StackArray3.add(&result, ScalarChange.Removed prev.[prevIndex])
-                    DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
-                    prevIndex <- prevIndex + 1
-
-                else
-                    // we haven't reached either of the ends
-                    let prevAttr = prev.[prevIndex]
-                    let nextAttr = next.[nextIndex]
-
-                    let prevKey = prevAttr.Key
-                    let nextKey = nextAttr.Key
-
-                    match prevKey.CompareTo nextKey with
-                    | c when c < 0 ->
-                        // prev key is less than next -> remove prev key
-                        DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
-                        //                        result <- StackArray3.add(&result, ScalarChange.Removed prevAttr)
-                        prevIndex <- prevIndex + 1
-
-                    | c when c > 0 ->
-                        // prev key is more than next -> add next item
-                        // result <- StackArray3.add(&result, ScalarChange.Added nextAttr)
-                        DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
-                        nextIndex <- nextIndex + 1
-
-                    | _ ->
-                        // means that we are targeting the same attribute
-
-                        let definition =
-                            AttributeDefinitionStore.get prevAttr.Key :?> IScalarAttributeDefinition
-
-                        match definition.CompareBoxed(prevAttr.Value, nextAttr.Value) with
-                        // Previous and next values are identical, we don't need to do anything
-                        | ScalarAttributeComparison.Identical -> ()
-
-                        // New value completely replaces the old value
-                        | ScalarAttributeComparison.Different ->
-                            DiffBuilder.addOpMut &result DiffBuilder.Change (uint16 nextIndex)
-
-                        // move both pointers
-                        prevIndex <- prevIndex + 1
-                        nextIndex <- nextIndex + 1
-
-
-            match DiffBuilder.lenght &result with
-            | 0 -> ValueNone
-            | _ ->
-                ValueSome(
-                    DiffBuilder.toArray
-                        &result
-                        (fun op ->
-                            match op with
-                            | DiffBuilder.Added i -> ScalarChange.Added next.[int i]
-                            | DiffBuilder.Removed i -> ScalarChange.Removed prev.[int i]
-                            | DiffBuilder.Changed i -> ScalarChange.Updated next.[int i])
-                )
-
-    and diffWidgetAttributes
+    let rec diffWidgetAttributes
         (canReuseView: Widget -> Widget -> bool)
         (prev: WidgetAttribute [] voption)
         (next: WidgetAttribute [] voption)
@@ -146,15 +146,15 @@ module Reconciler =
             let prevLength = prev.Length
             let nextLength = next.Length
 
-            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
+            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
                 if prevIndex = prevLength then
                     // that means we are done with the prev and only need to add next's tail to added
-                    result <- MutStackArray1.addMut (&result, WidgetChange.Added next.[nextIndex])
+                    result <- MutStackArray1.addMut(&result, WidgetChange.Added next.[nextIndex])
                     nextIndex <- nextIndex + 1
 
                 elif nextIndex = nextLength then
                     // that means that we are done with new items and only need prev's tail to removed
-                    result <- MutStackArray1.addMut (&result, WidgetChange.Removed prev.[prevIndex])
+                    result <- MutStackArray1.addMut(&result, WidgetChange.Removed prev.[prevIndex])
                     prevIndex <- prevIndex + 1
 
                 else
@@ -170,12 +170,12 @@ module Reconciler =
                     match prevKey.CompareTo nextKey with
                     | c when c < 0 ->
                         // prev key is less than next -> remove prev key
-                        result <- MutStackArray1.addMut (&result, WidgetChange.Removed prevAttr)
+                        result <- MutStackArray1.addMut(&result, WidgetChange.Removed prevAttr)
                         prevIndex <- prevIndex + 1
 
                     | c when c > 0 ->
                         // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut (&result, WidgetChange.Added nextAttr)
+                        result <- MutStackArray1.addMut(&result, WidgetChange.Added nextAttr)
                         nextIndex <- nextIndex + 1
 
                     | _ ->
@@ -197,7 +197,7 @@ module Reconciler =
 
                         match changeOpt with
                         | ValueNone -> ()
-                        | ValueSome change -> result <- MutStackArray1.addMut (&result, change)
+                        | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
 
             MutStackArray1.toArraySlice &result
 
@@ -233,11 +233,11 @@ module Reconciler =
             let prevLength = prev.Length
             let nextLength = next.Length
 
-            while not (prevIndex >= prevLength && nextIndex >= nextLength) do
+            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
                 if prevIndex = prevLength then
                     // that means we are done with the prev and only need to add next's tail to added
                     // DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
-                    result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Added next.[nextIndex])
+                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added next.[nextIndex])
 
 
                     nextIndex <- nextIndex + 1
@@ -245,7 +245,7 @@ module Reconciler =
                 elif nextIndex = nextLength then
                     // that means that we are done with new items and only need prev's tail to removed
                     // DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
-                    result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Removed prev.[prevIndex])
+                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prev.[prevIndex])
 
 
                     prevIndex <- prevIndex + 1
@@ -264,12 +264,12 @@ module Reconciler =
                     | c when c < 0 ->
                         // prev key is less than next -> remove prev key
 
-                        result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Removed prevAttr)
+                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prevAttr)
                         prevIndex <- prevIndex + 1
 
                     | c when c > 0 ->
                         // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut (&result, WidgetCollectionChange.Added nextAttr)
+                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added nextAttr)
                         nextIndex <- nextIndex + 1
 
                     | _ ->
@@ -288,7 +288,7 @@ module Reconciler =
                             let change =
                                 WidgetCollectionChange.Updated struct (nextAttr, slice)
 
-                            result <- MutStackArray1.addMut (&result, change)
+                            result <- MutStackArray1.addMut(&result, change)
 
             MutStackArray1.toArraySlice &result
 
@@ -304,7 +304,7 @@ module Reconciler =
 
         if prev.Length > next.Length then
             for i = next.Length to prev.Length - 1 do
-                result <- MutStackArray1.addMut (&result, WidgetCollectionItemChange.Remove i)
+                result <- MutStackArray1.addMut(&result, WidgetCollectionItemChange.Remove i)
 
         for i = 0 to next.Length - 1 do
             let currItem = next.[i]
@@ -329,7 +329,7 @@ module Reconciler =
 
             match changeOpt with
             | ValueNone -> ()
-            | ValueSome change -> result <- MutStackArray1.addMut (&result, change)
+            | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
 
         MutStackArray1.toArraySlice &result
 
@@ -354,7 +354,7 @@ module Reconciler =
             | ValueSome widget -> widget.WidgetCollectionAttributes
 
         let scalarDiffs =
-            diffScalarAttributes prevScalarAttributes next.ScalarAttributes
+            ScalarChanges(prevScalarAttributes, next.ScalarAttributes)
 
         let widgetDiffs =
             diffWidgetAttributes canReuseView prevWidgetAttributes next.WidgetAttributes
@@ -363,13 +363,19 @@ module Reconciler =
             diffWidgetCollectionAttributes canReuseView prevWidgetCollectionAttributes next.WidgetCollectionAttributes
 
 
-        match (scalarDiffs, widgetDiffs, collectionDiffs) with
-        | ValueNone, ValueNone, ValueNone -> ValueNone
-        | _ ->
-            ValueSome
-                { ScalarChanges = scalarDiffs
-                  WidgetChanges = widgetDiffs
-                  WidgetCollectionChanges = collectionDiffs }
+        ValueSome
+            { ScalarChanges = scalarDiffs
+              WidgetChanges = widgetDiffs
+              WidgetCollectionChanges = collectionDiffs }
+
+    // TODO convert to Enumerator all diffs
+//        match (scalarDiffs, widgetDiffs, collectionDiffs) with
+//        | ValueNone, ValueNone, ValueNone -> ValueNone
+//        | _ ->
+//            ValueSome
+//                { ScalarChanges = scalarDiffs
+//                  WidgetChanges = widgetDiffs
+//                  WidgetCollectionChanges = collectionDiffs }
 
     /// Diffs changes and applies them on the target
     let update
@@ -381,9 +387,7 @@ module Reconciler =
         match diffWidget canReuseView prevOpt next with
         | ValueNone -> ()
         | ValueSome diff ->
-            match diff.ScalarChanges with
-            | ValueSome changes -> node.ApplyScalarDiffs(changes)
-            | ValueNone -> ()
+            node.ApplyScalarDiffs(&diff.ScalarChanges)
 
             match diff.WidgetChanges with
             | ValueSome slice -> node.ApplyWidgetDiffs(ArraySlice.toSpan slice)
