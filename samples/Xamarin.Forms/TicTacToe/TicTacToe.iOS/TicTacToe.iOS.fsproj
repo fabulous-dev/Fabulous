@@ -128,7 +128,6 @@
         <Compile Include="AppDelegate.fs" />
         <None Include="Entitlements.plist" />
         <None Include="Info.plist" />
-        <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
