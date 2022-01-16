@@ -2,6 +2,7 @@ namespace NewApp
 
 open Xamarin.Forms
 open Fabulous.XamarinForms
+
 open type View
 
 module App =
@@ -20,20 +21,21 @@ module App =
 
     let view model =
         Application(
-            ContentPage("NewApp",
+            ContentPage(
+                "NewApp",
                 VerticalStackLayout() {
                     Label("Hello from Fabulous v2!")
                         .font(namedSize = NamedSize.Title)
-                        .centerTextHorizontal()
+                        .centerTextHorizontal ()
 
                     (VerticalStackLayout() {
                         Label($"Count is {model.Count}")
-                            .centerTextHorizontal()
+                            .centerTextHorizontal ()
 
                         Button("Increment", Increment)
                         Button("Decrement", Decrement)
-                    })
-                        .centerVertical(expand = true)
+                     })
+                        .centerVertical (expand = true)
                 }
             )
         )
