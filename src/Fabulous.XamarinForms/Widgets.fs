@@ -6,35 +6,10 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
-open Fabulous.XamarinForms
+open Microsoft.FSharp.Core
 
-type IMarker =
-    interface
-    end
-
-type IApplication =
-    inherit IMarker
-
-type IPage =
-    inherit IMarker
-
-type IView =
-    inherit IMarker
-
-type ICell =
-    inherit IMarker
-
-type IMenuItem =
-    inherit IMarker
-
-type IGestureRecognizer =
-    inherit IMarker
-
-type ILayout =
-    inherit IView
-
-type IToolbarItem =
-    inherit IMenuItem
+[<AbstractClass; Sealed>]
+type View = class end
 
 module Widgets =
     let registerWithAdditionalSetup<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new: unit -> 'T)>
@@ -70,76 +45,8 @@ module Widgets =
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new: unit -> 'T)> () =
         registerWithAdditionalSetup<'T> (fun _ _ -> ())
 
-[<Extension>]
-type CollectionBuilderExtensions =
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
-        (
-            _: CollectionBuilder<'msg, 'marker, IPage>,
-            x: WidgetBuilder<'msg, 'itemType>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
-        (
-            _: CollectionBuilder<'msg, 'marker, IView>,
-            x: WidgetBuilder<'msg, 'itemType>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
-            x: WidgetBuilder<'msg, 'itemType>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
-            x: WidgetBuilder<'msg, 'itemType>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
-        (
-            _: CollectionBuilder<'msg, 'marker, IPage>,
-            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
-        (
-            _: CollectionBuilder<'msg, 'marker, IView>,
-            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
-            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
-            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-module ViewHelpers =
-    let inline compileSeq (items: seq<WidgetBuilder<'msg, #IMarker>>) =
+module WidgetHelpers =
+    let inline compileSeq (items: seq<WidgetBuilder<'msg, 'marker>>) =
         items
         |> Seq.map (fun item -> item.Compile())
         |> Seq.toArray

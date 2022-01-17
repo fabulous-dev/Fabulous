@@ -269,7 +269,7 @@ module EditPage =
         ContentPage(
             title,
             ScrollView(
-                (VerticalStackLayout() {
+                (VStack() {
                     (Grid(coldefs = [ Absolute 100.; Star ], rowdefs = [ Absolute 50.; Absolute 50. ]) {
                         profilePictureButton model.Picture UpdatePicture
 
@@ -308,7 +308,7 @@ module EditPage =
                     | Some x when x.Id = 0 -> ()
                     | Some contact -> destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
                  })
-                    .paddingLayout (Thickness(20.))
+                    .padding (Thickness(20.))
             )
         )
             .toolbarItems () { toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact }

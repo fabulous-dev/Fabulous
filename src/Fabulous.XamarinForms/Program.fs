@@ -6,7 +6,7 @@ module Program =
     let inline private define
         (init: 'arg -> 'model * Cmd<'msg>)
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
-        (view: 'model -> WidgetBuilder<'msg, #IMarker>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         =
         { Init = init
           Update = (fun (msg, model) -> update msg model)

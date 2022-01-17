@@ -5,8 +5,12 @@ open Fabulous.XamarinForms
 open Fabulous.StackAllocatedCollections
 open Fabulous.StackAllocatedCollections.StackList
 
-[<AutoOpen>]
+type IPancakeView =
+    inherit IView
+
 module PancakeView =
+    let WidgetKey = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
+    
     let BackgroundGradientStops =
         Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection>
             Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty
@@ -14,12 +18,8 @@ module PancakeView =
     let Content =
         Attributes.defineBindableWidget Xamarin.Forms.PancakeView.PancakeView.ContentProperty
 
-    let PancakeViewKey =
-        Widgets.register<Xamarin.Forms.PancakeView.PancakeView> ()
-
-    type IPancakeView =
-        inherit IView
-
+[<AutoOpen>]
+module PancakeViewBuilders =
     type Fabulous.XamarinForms.View with
         static member inline PancakeView<'msg, 'marker when 'marker :> IView>
             (
@@ -27,11 +27,10 @@ module PancakeView =
                 content: WidgetBuilder<'msg, 'marker>
             ) =
             WidgetBuilder<'msg, IPancakeView>(
-                PancakeViewKey,
-
+                PancakeView.WidgetKey,
                 AttributesBundle(
-                    StackList.one (BackgroundGradientStops.WithValue(backgroundGradientStops)),
-                    ValueSome [| Content.WithValue(content.Compile()) |],
+                    StackList.one (PancakeView.BackgroundGradientStops.WithValue(backgroundGradientStops)),
+                    ValueSome [| PancakeView.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )
             )
