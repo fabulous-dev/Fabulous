@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\..\packages\Xamarin.Forms.5.0.0.2244\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2244\build\Xamarin.Forms.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -88,132 +87,71 @@
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="FSharp.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-          <HintPath>..\..\..\..\packages\FSharp.Core.6.0.1\lib\netstandard2.1\FSharp.Core.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="OpenTK-1.0" />
         <Reference Include="System" />
         <Reference Include="System.Drawing.Common.dll" />
         <Reference Include="System.Numerics" />
         <Reference Include="System.Xml" />
         <Reference Include="System.Core" />
-        <Reference Include="Xamarin.Essentials, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Essentials.1.7.0\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="Xamarin.iOS" />
-        <Reference Include="System.Buffers">
-          <HintPath>..\..\..\..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Runtime.CompilerServices.Unsafe">
-          <HintPath>..\..\..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Memory">
-          <HintPath>..\..\..\..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
-        </Reference>
-        <Reference Include="SQLitePCLRaw.core">
-          <HintPath>..\..\..\..\packages\SQLitePCLRaw.core.2.0.4\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
-        </Reference>
-        <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl">
-          <HintPath>..\..\..\..\packages\SQLitePCLRaw.provider.dynamic_cdecl.2.0.4\lib\netstandard2.0\SQLitePCLRaw.provider.dynamic_cdecl.dll</HintPath>
-        </Reference>
-        <Reference Include="SQLitePCLRaw.batteries_v2">
-          <HintPath>..\..\..\..\packages\SQLitePCLRaw.bundle_green.2.0.4\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
-        </Reference>
-        <Reference Include="SQLitePCLRaw.nativelibrary">
-          <HintPath>..\..\..\..\packages\SQLitePCLRaw.bundle_green.2.0.4\lib\Xamarin.iOS10\SQLitePCLRaw.nativelibrary.dll</HintPath>
-        </Reference>
-        <Reference Include="SQLite-net">
-          <HintPath>..\..\..\..\packages\sqlite-net-pcl.1.8.116\lib\netstandard2.0\SQLite-net.dll</HintPath>
-        </Reference>
-        <Reference Include="Plugin.Media">
-          <HintPath>..\..\..\..\packages\Xam.Plugin.Media.5.0.1\lib\xamarinios10\Plugin.Media.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Core">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Platform">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Platform.iOS">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Xaml">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Maps">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.Maps.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Maps.iOS">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.Maps.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Maps.iOS.dll</HintPath>
-        </Reference>
-        <Reference Include="Plugin.Permissions">
-          <HintPath>..\..\..\..\packages\Plugin.Permissions.6.0.1\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
-        </Reference>
     </ItemGroup>
     <ItemGroup>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <Compile Include="Properties\AssemblyInfo.fs" />
-      <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-      <BundleResource Include="Resources\addphoto.png" />
-      <BundleResource Include="Resources\alltab@2x.png" />
-      <BundleResource Include="Resources\blog.png" />
-      <BundleResource Include="Resources\call.png" />
-      <BundleResource Include="Resources\email.png" />
-      <BundleResource Include="Resources\favoritetab@2x.png" />
-      <BundleResource Include="Resources\fsharp.png" />
-      <BundleResource Include="Resources\github.png" />
-      <BundleResource Include="Resources\icon.png" />
-      <BundleResource Include="Resources\maptab@2x.png" />
-      <BundleResource Include="Resources\slack.png" />
-      <BundleResource Include="Resources\sms.png" />
-      <BundleResource Include="Resources\star.png" />
-      <BundleResource Include="Resources\twitter.png" />
-      <BundleResource Include="Resources\xamarin.png" />
-      <Compile Include="BorderedEntryRenderer.fs" />
-      <Compile Include="UnderlinedLabelRenderer.fs" />
-      <Compile Include="AppDelegate.fs" />
-      <None Include="Entitlements.plist" />
-      <None Include="Info.plist" />
-      <None Include="packages.config" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
-        <Name>Fabulous</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\FabulousContacts\FabulousContacts.fsproj">
-        <Project>{D8FA693C-E8F7-4BA4-BF41-41602BA0C88F}</Project>
-        <Name>FabulousContacts</Name>
-        <ReferenceSourceTarget></ReferenceSourceTarget>
-      </ProjectReference>
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
-        <Name>Fabulous.XamarinForms</Name>
-      </ProjectReference>
+        <PackageReference Include="Xamarin.CommunityToolkit" Version="1.3.1" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+        <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2196"/>
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+        <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
+        <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.8.116"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png" />
+        <Compile Include="Properties\AssemblyInfo.fs" />
+        <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+        <BundleResource Include="Resources\addphoto.png" />
+        <BundleResource Include="Resources\alltab@2x.png" />
+        <BundleResource Include="Resources\blog.png" />
+        <BundleResource Include="Resources\call.png" />
+        <BundleResource Include="Resources\email.png" />
+        <BundleResource Include="Resources\favoritetab@2x.png" />
+        <BundleResource Include="Resources\fsharp.png" />
+        <BundleResource Include="Resources\github.png" />
+        <BundleResource Include="Resources\icon.png" />
+        <BundleResource Include="Resources\maptab@2x.png" />
+        <BundleResource Include="Resources\slack.png" />
+        <BundleResource Include="Resources\sms.png" />
+        <BundleResource Include="Resources\star.png" />
+        <BundleResource Include="Resources\twitter.png" />
+        <BundleResource Include="Resources\xamarin.png" />
+        <Compile Include="BorderedEntryRenderer.fs" />
+        <Compile Include="UnderlinedLabelRenderer.fs" />
+        <Compile Include="AppDelegate.fs" />
+        <None Include="Entitlements.plist" />
+        <None Include="Info.plist" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+            <Name>Fabulous</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\FabulousContacts\FabulousContacts.fsproj">
+            <Project>{D8FA693C-E8F7-4BA4-BF41-41602BA0C88F}</Project>
+            <Name>FabulousContacts</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+            <Name>Fabulous.XamarinForms</Name>
+        </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
-    <Import Project="..\..\..\..\packages\Xamarin.Forms.5.0.0.2244\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2244\build\Xamarin.Forms.targets')" />
 </Project>

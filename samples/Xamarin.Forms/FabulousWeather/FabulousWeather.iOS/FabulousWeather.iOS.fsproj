@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -88,97 +87,54 @@
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="FSharp.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-          <HintPath>..\..\..\..\packages\FSharp.Core.6.0.1\lib\netstandard2.1\FSharp.Core.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="OpenTK-1.0" />
         <Reference Include="System" />
         <Reference Include="System.Drawing.Common.dll" />
         <Reference Include="System.Numerics" />
         <Reference Include="System.Xml" />
         <Reference Include="System.Core" />
-        <Reference Include="Xamarin.Essentials, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Essentials.1.7.0\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Platform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Platform.iOS, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="Xamarin.iOS" />
-        <Reference Include="FSharp.Data">
-          <HintPath>..\..\..\..\packages\FSharp.Data.4.2.5\lib\netstandard2.0\FSharp.Data.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.Forms.PancakeView">
-          <HintPath>..\..\..\..\packages\Xamarin.Forms.PancakeView.2.3.0.759\lib\xamarinios10\Xamarin.Forms.PancakeView.dll</HintPath>
-        </Reference>
     </ItemGroup>
     <ItemGroup>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png">
-        <Visible>false</Visible>
-      </ImageAsset>
-      <Compile Include="Properties\AssemblyInfo.fs" />
-      <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-      <BundleResource Include="Resources\new_york.png" />
-      <BundleResource Include="Resources\paris.png" />
-      <BundleResource Include="Resources\seattle.png" />
-      <Compile Include="AppDelegate.fs" />
-      <None Include="Entitlements.plist" />
-      <None Include="Info.plist" />
-      <None Include="packages.config" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
-        <Name>Fabulous</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
-        <Name>Fabulous.XamarinForms</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
-        <Name>FabulousWeather</Name>
-      </ProjectReference>
+        <PackageReference Include="Xamarin.CommunityToolkit" Version="1.3.1" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+        <PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+        <PackageReference Include="FSharp.Data" Version="4.2.7" />
+    </ItemGroup>
+    <ItemGroup>
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png" />
+        <Compile Include="Properties\AssemblyInfo.fs" />
+        <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+        <BundleResource Include="Resources\new_york.png" />
+        <BundleResource Include="Resources\paris.png" />
+        <BundleResource Include="Resources\seattle.png" />
+        <Compile Include="AppDelegate.fs" />
+        <None Include="Entitlements.plist" />
+        <None Include="Info.plist" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+            <Name>Fabulous</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+            <Name>Fabulous.XamarinForms</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\FabulousWeather\FabulousWeather.fsproj">
+            <Name>FabulousWeather</Name>
+        </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
-    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-      <PropertyGroup>
-        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-      </PropertyGroup>
-      <Error Condition="!Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.props'))" />
-      <Error Condition="!Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.targets'))" />
-    </Target>
-    <Import Project="..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.5.0.0.2196\build\Xamarin.Forms.targets')" />
 </Project>

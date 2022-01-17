@@ -2,13 +2,11 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
         <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
-        <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
-        <PackageReference Include="Fabulous" Version="FabulousPkgsVersion" />
+        <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" />
         <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
     </ItemGroup>
     <ItemGroup>
