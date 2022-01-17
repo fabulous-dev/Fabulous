@@ -31,7 +31,8 @@
     ],
     "guids": [
       "99E19497-29A6-4B77-B773-BEC55F9B55DC",
-      "1069F96F-A42B-4CD8-8FA1-7F047C726B88"
+      "1069F96F-A42B-4CD8-8FA1-7F047C726B88",
+      "E26BCFA7-B118-4866-875B-F4364DF40545"
     ],
     "symbols": {
       "AppIdentifier": {
@@ -77,6 +78,18 @@
         "dataType": "string",
         "replaces": "FSharpCorePkgVersion",
         "defaultValue": "6.0.1"
+      },
+      "XamarinCommunityToolkitSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinCommunityToolkitSdk",
+        "defaultValue": "1.3.2"
+      },
+      "XamarinAndroidFSharpResourceProviderSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinAndroidFSharpResourceProviderSdk",
+        "defaultValue": "1.0.0.28"
       }
     }
   }

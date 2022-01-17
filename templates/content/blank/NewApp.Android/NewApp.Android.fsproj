@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{E26BCFA7-B118-4866-875B-F4364DF40545}</ProjectGuid>
+        <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
+        <UseStandardResourceNames>true</UseStandardResourceNames>
+        <OutputType>Library</OutputType>
+        <RootNamespace>NewApp.Android</RootNamespace>
+        <AssemblyName>NewApp.Android</AssemblyName>
+        <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
+        <AndroidApplication>True</AndroidApplication>
+        <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+        <AndroidResgenClass>Resource</AndroidResgenClass>
+        <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+        <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+        <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <AndroidLinkMode>None</AndroidLinkMode>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug</OutputPath>
+        <DefineConstants>DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <PlatformTarget>
+        </PlatformTarget>
+        <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
+        <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release</OutputPath>
+        <DefineConstants>
+        </DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <AndroidManagedSymbols>true</AndroidManagedSymbols>
+        <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+        <GenerateTailCalls>true</GenerateTailCalls>
+        <PlatformTarget>
+        </PlatformTarget>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="Assets\AboutAssets.txt" />
+        <None Include="Properties\AndroidManifest.xml" />
+        <None Include="Resources\AboutResources.txt" />
+        <AndroidResource Include="Resources\drawable\icon.png" />
+        <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+        <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+        <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+        <AndroidResource Include="Resources\layout\Tabbar.axml" />
+        <AndroidResource Include="Resources\layout\Toolbar.axml" />
+        <AndroidResource Include="Resources\values\styles.xml" />
+        <Compile Include="AssemblyInfo.fs" />
+        <Compile Include="MainActivity.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\NewApp\NewApp.fsproj">
+            <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
+            <Name>NewApp</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Java.Interop" />
+        <Reference Include="Mono.Android" />
+        <Reference Include="mscorlib" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.Numerics.Vectors" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Xamarin.Android.FSharp.ResourceProvider" Version="XamarinAndroidFSharpResourceProviderSdk" />
+        <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" />
+        <PackageReference Include="Xamarin.CommunityToolkit" Version="XamarinCommunityToolkitSdk" />
+        <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
+        <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
+        <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
+    </ItemGroup>
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+</Project>

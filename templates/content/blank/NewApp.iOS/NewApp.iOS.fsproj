@@ -99,7 +99,6 @@
         <Compile Include="AppDelegate.fs" />
         <None Include="Entitlements.plist" />
         <None Include="Info.plist" />
-        <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="OpenTK-1.0" />
@@ -112,6 +111,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" />
+        <PackageReference Include="Xamarin.CommunityToolkit" Version="XamarinCommunityToolkitSdk" />
         <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
         <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
         <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
