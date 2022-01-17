@@ -21,13 +21,13 @@ let rec findOptional (root: TestViewElement) (id: string) : TestViewElement opti
 
             children
             |> Array.ofSeq
-            |> Array.fold (fun res child -> res |> Option.orElse (findOptional child id)) None
+            |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
 
         | _ -> None
 
 let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
     findOptional root id
-    |> Option.defaultWith (fun () -> failwith "not found")
+    |> Option.defaultWith(fun () -> failwith "not found")
     :?> 'a
 
 
@@ -46,7 +46,7 @@ module SimpleLabelTests =
     let view model =
         Label(model.text)
             .textColor(model.color)
-            .automationId ("label")
+            .automationId("label")
 
     let init () = { text = "hi"; color = "red" }
 
@@ -82,7 +82,7 @@ module ButtonTests =
 
     let view model =
         Button(model.count.ToString(), Increment)
-            .automationId ("btn")
+            .automationId("btn")
 
     let init () = { count = 0 }
 
@@ -112,7 +112,7 @@ module SimpleStackTests =
 
     let update msg model =
         match msg with
-        | Delete id -> model |> List.filter (fun (id_, _) -> id_ <> id)
+        | Delete id -> model |> List.filter(fun (id_, _) -> id_ <> id)
         | AddNew (id, text) -> (id, text) :: model
         | ChangeText (id, text) ->
             model
@@ -127,9 +127,9 @@ module SimpleStackTests =
         (Stack() {
             yield!
                 model
-                |> List.map (fun (id, text) -> (Label(text).automationId (id.ToString())))
+                |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
          })
-            .automationId ("stack")
+            .automationId("stack")
 
 
     let init () = []
@@ -150,7 +150,7 @@ module SimpleStackTests =
 
         // add first
         instance.ProcessMessage(AddNew(1, "yo"))
-        Assert.AreEqual(stack.Children.Count, 1)
+        Assert.AreEqual(1, stack.Children.Count)
 
         let label =
             stack.Children.[0] :?> TestLabel :> IText
@@ -198,10 +198,10 @@ module ComputationExpressionTest =
     let JustValue () =
         let view model =
             // requires implemented "Yield"
-            Stack() { Button("inc", Inc).automationId ("inc") }
+            Stack() { Button("inc", Inc).automationId("inc") }
 
         let instance =
-            StatefulWidget.mkSimpleView (fun () -> 0) update view
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
             |> Run.Instance
 
         let tree = (instance.Start())
@@ -217,15 +217,15 @@ module ComputationExpressionTest =
             // requires implemented "Zero"
             (Stack() {
                 if (model % 2 = 0) then
-                    Label("label").automationId ("label")
+                    Label("label").automationId("label")
                 else
-                    Button("btn", Inc).automationId ("btn")
+                    Button("btn", Inc).automationId("btn")
              })
-                .automationId ("stack")
+                .automationId("stack")
 
 
         let instance =
-            StatefulWidget.mkSimpleView (fun () -> 0) update view
+            StatefulWidget.mkSimpleView(fun () -> 0) update view
             |> Run.Instance
 
         let tree = (instance.Start())
@@ -260,11 +260,11 @@ module ComputationExpressionTest =
                 // requires implemented "YieldFrom"
                 yield!
                     [ for i in 0 .. model -> i.ToString() ]
-                    |> List.map (fun i -> Label(i).automationId (i))
+                    |> List.map(fun i -> Label(i).automationId(i))
             }
 
         let instance =
-            StatefulWidget.mkSimpleView (fun () -> count) update view
+            StatefulWidget.mkSimpleView(fun () -> count) update view
             |> Run.Instance
 
         let tree = (instance.Start())
@@ -284,11 +284,11 @@ module ComputationExpressionTest =
         let view model =
             Stack() {
                 // requires implemented "For"
-                for i in 0 .. model -> Label(i.ToString()).automationId (i.ToString())
+                for i in 0 .. model -> Label(i.ToString()).automationId(i.ToString())
             }
 
         let instance =
-            StatefulWidget.mkSimpleView (fun () -> count) update view
+            StatefulWidget.mkSimpleView(fun () -> count) update view
             |> Run.Instance
 
         let tree = (instance.Start())
@@ -353,13 +353,13 @@ module MapViewTests =
                 mapMsg
                 (Button("+1", AddOne)
                     .automationId("add")
-                    .textColor ("red"))
+                    .textColor("red"))
 
             Label(model.ToString())
                 .automationId("label")
-                .textColor ("blue")
+                .textColor("blue")
 
-            View.map mapMsg (Button("-2", RemoveTwo).automationId ("remove"))
+            View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
         }
 
 
@@ -406,12 +406,12 @@ module MemoTests =
         let view model =
             Stack() {
                 Label<Msg>(model.notMemoized)
-                    .automationId ("not_memo")
+                    .automationId("not_memo")
 
                 View.lazy'
                     (fun i ->
                         renderCount <- renderCount + 1
-                        Label(string i).automationId ("memo"))
+                        Label(string i).automationId("memo"))
                     model.memoTrigger
             }
 
@@ -465,10 +465,10 @@ module MemoTests =
         let view model =
             (Stack() {
                 match model with
-                | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId ("btn")) model
-                | Lbl -> View.lazy' (fun i -> Label(string i).automationId ("label")) model
+                | Btn -> View.lazy'(fun i -> Button(string i, Change).automationId("btn")) model
+                | Lbl -> View.lazy'(fun i -> Label(string i).automationId("label")) model
              })
-                .automationId ("stack")
+                .automationId("stack")
 
         [<Test>]
         let Test () =
@@ -520,7 +520,7 @@ module MemoTests =
                             Label("one")
                                 .record(true)
                                 .textColor("blue")
-                                .automationId ("label"))
+                                .automationId("label"))
                         model
                 | Label2 ->
                     View.lazy'
@@ -528,7 +528,7 @@ module MemoTests =
                             Label("two")
                                 .record(true)
                                 .textColor("blue")
-                                .automationId ("label"))
+                                .automationId("label"))
                         (string model)
             }
 

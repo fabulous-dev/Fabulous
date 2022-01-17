@@ -65,7 +65,7 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
+        (applyDiff: WidgetCollectionItemChanges * IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
@@ -85,15 +85,9 @@ module Attributes =
             let childNode = get node.Target
 
             childNode.ApplyScalarDiffs(&diff.ScalarChanges)
+            childNode.ApplyWidgetDiffs(&diff.WidgetChanges)
+            childNode.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
 
-
-            match diff.WidgetChanges with
-            | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
-
-            match diff.WidgetCollectionChanges with
-            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
 
         let updateNode (newValueOpt: Widget voption, node: IViewNode) =
             match newValueOpt with
@@ -108,15 +102,15 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff (diffs: ArraySlice<WidgetCollectionItemChange>, node: IViewNode) =
+        let applyDiff (diffs: WidgetCollectionItemChanges, node: IViewNode) =
             let targetColl = getCollection node.Target
 
-            for diff in ArraySlice.toSpan diffs do
+            for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove index -> targetColl.RemoveAt(index)
                 | _ -> ()
 
-            for diff in ArraySlice.toSpan diffs do
+            for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -127,14 +121,8 @@ module Attributes =
                         node.TreeContext.GetViewNode(box targetColl.[index])
 
                     childNode.ApplyScalarDiffs(&widgetDiff.ScalarChanges)
-
-                    match widgetDiff.WidgetChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-                    | ValueNone -> ()
-
-                    match widgetDiff.WidgetCollectionChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-                    | ValueNone -> ()
+                    childNode.ApplyWidgetDiffs(&widgetDiff.WidgetChanges)
+                    childNode.ApplyWidgetCollectionDiffs(&widgetDiff.WidgetCollectionChanges)
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget

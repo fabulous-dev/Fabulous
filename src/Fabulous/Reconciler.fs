@@ -1,7 +1,6 @@
 ﻿namespace Fabulous
 
 open Fabulous
-open Fabulous.StackAllocatedCollections
 
 module Reconciler =
     /// Let's imagine that we have the following situation
@@ -116,257 +115,257 @@ module Reconciler =
 //                            | DiffBuilder.Changed i -> ScalarChange.Updated next.[int i])
 //                )
 
-    let rec diffWidgetAttributes
-        (canReuseView: Widget -> Widget -> bool)
-        (prev: WidgetAttribute [] voption)
-        (next: WidgetAttribute [] voption)
-        : ArraySlice<WidgetChange> voption =
-
-        match (prev, next) with
-        | ValueNone, ValueNone -> ValueNone
-
-        // all were deleted
-        | ValueSome prev, ValueNone ->
-            prev
-            |> Array.map WidgetChange.Removed
-            |> ArraySlice.fromArray
-
-        | ValueNone, ValueSome next ->
-            next
-            |> Array.map WidgetChange.Added
-            |> ArraySlice.fromArray
-
-        | ValueSome prev, ValueSome next ->
-
-            let mutable result = MutStackArray1.Empty
-
-            let mutable prevIndex = 0
-            let mutable nextIndex = 0
-
-            let prevLength = prev.Length
-            let nextLength = next.Length
-
-            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
-                if prevIndex = prevLength then
-                    // that means we are done with the prev and only need to add next's tail to added
-                    result <- MutStackArray1.addMut(&result, WidgetChange.Added next.[nextIndex])
-                    nextIndex <- nextIndex + 1
-
-                elif nextIndex = nextLength then
-                    // that means that we are done with new items and only need prev's tail to removed
-                    result <- MutStackArray1.addMut(&result, WidgetChange.Removed prev.[prevIndex])
-                    prevIndex <- prevIndex + 1
-
-                else
-                    // we haven't reached either of the ends
-                    let prevAttr = prev.[prevIndex]
-                    let nextAttr = next.[nextIndex]
-
-                    let prevKey = prevAttr.Key
-                    let nextKey = nextAttr.Key
-                    let prevWidget = prevAttr.Value
-                    let nextWidget = nextAttr.Value
-
-                    match prevKey.CompareTo nextKey with
-                    | c when c < 0 ->
-                        // prev key is less than next -> remove prev key
-                        result <- MutStackArray1.addMut(&result, WidgetChange.Removed prevAttr)
-                        prevIndex <- prevIndex + 1
-
-                    | c when c > 0 ->
-                        // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut(&result, WidgetChange.Added nextAttr)
-                        nextIndex <- nextIndex + 1
-
-                    | _ ->
-                        // means that we are targeting the same attribute
-
-                        // move both pointers
-                        prevIndex <- prevIndex + 1
-                        nextIndex <- nextIndex + 1
-
-                        let changeOpt =
-                            if prevWidget = nextWidget then
-                                ValueNone
-                            elif canReuseView prevWidget nextWidget then
-                                match diffWidget canReuseView (ValueSome prevWidget) nextWidget with
-                                | ValueNone -> ValueNone
-                                | ValueSome diffs -> ValueSome(WidgetChange.Updated struct (nextAttr, diffs))
-                            else
-                                ValueSome(WidgetChange.ReplacedBy nextAttr)
-
-                        match changeOpt with
-                        | ValueNone -> ()
-                        | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
-
-            MutStackArray1.toArraySlice &result
-
-
-    and diffWidgetCollectionAttributes
-        (canReuseView: Widget -> Widget -> bool)
-        (prev: WidgetCollectionAttribute [] voption)
-        (next: WidgetCollectionAttribute [] voption)
-        : ArraySlice<WidgetCollectionChange> voption =
-
-        match (prev, next) with
-        | ValueNone, ValueNone -> ValueNone
-
-        // all were deleted
-        | ValueSome prev, ValueNone ->
-            prev
-            |> Array.map WidgetCollectionChange.Removed
-            |> ArraySlice.fromArray
-
-        | ValueNone, ValueSome next ->
-            next
-            |> Array.map WidgetCollectionChange.Added
-            |> ArraySlice.fromArray
-
-        | ValueSome prev, ValueSome next ->
-
-            let mutable result = MutStackArray1.Empty
-
-
-            let mutable prevIndex = 0
-            let mutable nextIndex = 0
-
-            let prevLength = prev.Length
-            let nextLength = next.Length
-
-            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
-                if prevIndex = prevLength then
-                    // that means we are done with the prev and only need to add next's tail to added
-                    // DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
-                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added next.[nextIndex])
-
-
-                    nextIndex <- nextIndex + 1
-
-                elif nextIndex = nextLength then
-                    // that means that we are done with new items and only need prev's tail to removed
-                    // DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
-                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prev.[prevIndex])
-
-
-                    prevIndex <- prevIndex + 1
-
-                else
-                    // we haven't reached either of the ends
-                    let prevAttr = prev.[prevIndex]
-                    let nextAttr = next.[nextIndex]
-
-                    let prevKey = prevAttr.Key
-                    let nextKey = nextAttr.Key
-                    let prevWidgetColl = prevAttr.Value
-                    let nextWidgetColl = nextAttr.Value
-
-                    match prevKey.CompareTo nextKey with
-                    | c when c < 0 ->
-                        // prev key is less than next -> remove prev key
-
-                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prevAttr)
-                        prevIndex <- prevIndex + 1
-
-                    | c when c > 0 ->
-                        // prev key is more than next -> add next item
-                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added nextAttr)
-                        nextIndex <- nextIndex + 1
-
-                    | _ ->
-                        // means that we are targeting the same attribute
-
-                        // move both pointers
-                        prevIndex <- prevIndex + 1
-                        nextIndex <- nextIndex + 1
-
-                        let diff =
-                            diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl
-
-                        match diff with
-                        | ValueNone -> ()
-                        | ValueSome slice ->
-                            let change =
-                                WidgetCollectionChange.Updated struct (nextAttr, slice)
-
-                            result <- MutStackArray1.addMut(&result, change)
-
-            MutStackArray1.toArraySlice &result
-
-    and diffWidgetCollections
-        (canReuseView: Widget -> Widget -> bool)
-        (prev: ArraySlice<Widget>)
-        (next: ArraySlice<Widget>)
-        : ArraySlice<WidgetCollectionItemChange> voption =
-        let mutable result = MutStackArray1.Empty
-
-        let prev = ArraySlice.toSpan prev
-        let next = ArraySlice.toSpan next
-
-        if prev.Length > next.Length then
-            for i = next.Length to prev.Length - 1 do
-                result <- MutStackArray1.addMut(&result, WidgetCollectionItemChange.Remove i)
-
-        for i = 0 to next.Length - 1 do
-            let currItem = next.[i]
-            //            index < 0 || index >= array.Length ? (FSharpOption<T>) null : FSharpOption<T>.Some(array[index]);
-            let prevItemOpt =
-                if (i >= prev.Length) then
-                    ValueNone
-                else
-                    ValueSome prev.[i]
-
-            let changeOpt =
-                match prevItemOpt with
-                | ValueNone -> ValueSome(WidgetCollectionItemChange.Insert struct (i, currItem))
-
-                | ValueSome prevItem when canReuseView prevItem currItem ->
-
-                    match diffWidget canReuseView (ValueSome prevItem) currItem with
-                    | ValueNone -> ValueNone
-                    | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
-
-                | ValueSome _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
-
-            match changeOpt with
-            | ValueNone -> ()
-            | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
-
-        MutStackArray1.toArraySlice &result
-
-    and diffWidget
-        (canReuseView: Widget -> Widget -> bool)
-        (prevOpt: Widget voption)
-        (next: Widget)
-        : WidgetDiff voption =
-        let prevScalarAttributes =
-            match prevOpt with
-            | ValueNone -> ValueNone
-            | ValueSome widget -> widget.ScalarAttributes
-
-        let prevWidgetAttributes =
-            match prevOpt with
-            | ValueNone -> ValueNone
-            | ValueSome widget -> widget.WidgetAttributes
-
-        let prevWidgetCollectionAttributes =
-            match prevOpt with
-            | ValueNone -> ValueNone
-            | ValueSome widget -> widget.WidgetCollectionAttributes
-
-        let scalarDiffs =
-            ScalarChanges(prevScalarAttributes, next.ScalarAttributes)
-
-        let widgetDiffs =
-            diffWidgetAttributes canReuseView prevWidgetAttributes next.WidgetAttributes
-
-        let collectionDiffs =
-            diffWidgetCollectionAttributes canReuseView prevWidgetCollectionAttributes next.WidgetCollectionAttributes
-
-
-        ValueSome
-            { ScalarChanges = scalarDiffs
-              WidgetChanges = widgetDiffs
-              WidgetCollectionChanges = collectionDiffs }
+    //    let rec diffWidgetAttributes
+//        (canReuseView: Widget -> Widget -> bool)
+//        (prev: WidgetAttribute [] voption)
+//        (next: WidgetAttribute [] voption)
+//        : ArraySlice<WidgetChange> voption =
+//
+//        match (prev, next) with
+//        | ValueNone, ValueNone -> ValueNone
+//
+//        // all were deleted
+//        | ValueSome prev, ValueNone ->
+//            prev
+//            |> Array.map WidgetChange.Removed
+//            |> ArraySlice.fromArray
+//
+//        | ValueNone, ValueSome next ->
+//            next
+//            |> Array.map WidgetChange.Added
+//            |> ArraySlice.fromArray
+//
+//        | ValueSome prev, ValueSome next ->
+//
+//            let mutable result = MutStackArray1.Empty
+//
+//            let mutable prevIndex = 0
+//            let mutable nextIndex = 0
+//
+//            let prevLength = prev.Length
+//            let nextLength = next.Length
+//
+//            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+//                if prevIndex = prevLength then
+//                    // that means we are done with the prev and only need to add next's tail to added
+//                    result <- MutStackArray1.addMut(&result, WidgetChange.Added next.[nextIndex])
+//                    nextIndex <- nextIndex + 1
+//
+//                elif nextIndex = nextLength then
+//                    // that means that we are done with new items and only need prev's tail to removed
+//                    result <- MutStackArray1.addMut(&result, WidgetChange.Removed prev.[prevIndex])
+//                    prevIndex <- prevIndex + 1
+//
+//                else
+//                    // we haven't reached either of the ends
+//                    let prevAttr = prev.[prevIndex]
+//                    let nextAttr = next.[nextIndex]
+//
+//                    let prevKey = prevAttr.Key
+//                    let nextKey = nextAttr.Key
+//                    let prevWidget = prevAttr.Value
+//                    let nextWidget = nextAttr.Value
+//
+//                    match prevKey.CompareTo nextKey with
+//                    | c when c < 0 ->
+//                        // prev key is less than next -> remove prev key
+//                        result <- MutStackArray1.addMut(&result, WidgetChange.Removed prevAttr)
+//                        prevIndex <- prevIndex + 1
+//
+//                    | c when c > 0 ->
+//                        // prev key is more than next -> add next item
+//                        result <- MutStackArray1.addMut(&result, WidgetChange.Added nextAttr)
+//                        nextIndex <- nextIndex + 1
+//
+//                    | _ ->
+//                        // means that we are targeting the same attribute
+//
+//                        // move both pointers
+//                        prevIndex <- prevIndex + 1
+//                        nextIndex <- nextIndex + 1
+//
+//                        let changeOpt =
+//                            if prevWidget = nextWidget then
+//                                ValueNone
+//                            elif canReuseView prevWidget nextWidget then
+//                                match diffWidget canReuseView (ValueSome prevWidget) nextWidget with
+//                                | ValueNone -> ValueNone
+//                                | ValueSome diffs -> ValueSome(WidgetChange.Updated struct (nextAttr, diffs))
+//                            else
+//                                ValueSome(WidgetChange.ReplacedBy nextAttr)
+//
+//                        match changeOpt with
+//                        | ValueNone -> ()
+//                        | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
+//
+//            MutStackArray1.toArraySlice &result
+//
+//
+//    and diffWidgetCollectionAttributes
+//        (canReuseView: Widget -> Widget -> bool)
+//        (prev: WidgetCollectionAttribute [] voption)
+//        (next: WidgetCollectionAttribute [] voption)
+//        : ArraySlice<WidgetCollectionChange> voption =
+//
+//        match (prev, next) with
+//        | ValueNone, ValueNone -> ValueNone
+//
+//        // all were deleted
+//        | ValueSome prev, ValueNone ->
+//            prev
+//            |> Array.map WidgetCollectionChange.Removed
+//            |> ArraySlice.fromArray
+//
+//        | ValueNone, ValueSome next ->
+//            next
+//            |> Array.map WidgetCollectionChange.Added
+//            |> ArraySlice.fromArray
+//
+//        | ValueSome prev, ValueSome next ->
+//
+//            let mutable result = MutStackArray1.Empty
+//
+//
+//            let mutable prevIndex = 0
+//            let mutable nextIndex = 0
+//
+//            let prevLength = prev.Length
+//            let nextLength = next.Length
+//
+//            while not(prevIndex >= prevLength && nextIndex >= nextLength) do
+//                if prevIndex = prevLength then
+//                    // that means we are done with the prev and only need to add next's tail to added
+//                    // DiffBuilder.addOpMut &result DiffBuilder.Add (uint16 nextIndex)
+//                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added next.[nextIndex])
+//
+//
+//                    nextIndex <- nextIndex + 1
+//
+//                elif nextIndex = nextLength then
+//                    // that means that we are done with new items and only need prev's tail to removed
+//                    // DiffBuilder.addOpMut &result DiffBuilder.Remove (uint16 prevIndex)
+//                    result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prev.[prevIndex])
+//
+//
+//                    prevIndex <- prevIndex + 1
+//
+//                else
+//                    // we haven't reached either of the ends
+//                    let prevAttr = prev.[prevIndex]
+//                    let nextAttr = next.[nextIndex]
+//
+//                    let prevKey = prevAttr.Key
+//                    let nextKey = nextAttr.Key
+//                    let prevWidgetColl = prevAttr.Value
+//                    let nextWidgetColl = nextAttr.Value
+//
+//                    match prevKey.CompareTo nextKey with
+//                    | c when c < 0 ->
+//                        // prev key is less than next -> remove prev key
+//
+//                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Removed prevAttr)
+//                        prevIndex <- prevIndex + 1
+//
+//                    | c when c > 0 ->
+//                        // prev key is more than next -> add next item
+//                        result <- MutStackArray1.addMut(&result, WidgetCollectionChange.Added nextAttr)
+//                        nextIndex <- nextIndex + 1
+//
+//                    | _ ->
+//                        // means that we are targeting the same attribute
+//
+//                        // move both pointers
+//                        prevIndex <- prevIndex + 1
+//                        nextIndex <- nextIndex + 1
+//
+//                        let diff =
+//                            diffWidgetCollections canReuseView prevWidgetColl nextWidgetColl
+//
+//                        match diff with
+//                        | ValueNone -> ()
+//                        | ValueSome slice ->
+//                            let change =
+//                                WidgetCollectionChange.Updated struct (nextAttr, slice)
+//
+//                            result <- MutStackArray1.addMut(&result, change)
+//
+//            MutStackArray1.toArraySlice &result
+//
+//    and diffWidgetCollections
+//        (canReuseView: Widget -> Widget -> bool)
+//        (prev: ArraySlice<Widget>)
+//        (next: ArraySlice<Widget>)
+//        : ArraySlice<WidgetCollectionItemChange> voption =
+//        let mutable result = MutStackArray1.Empty
+//
+//        let prev = ArraySlice.toSpan prev
+//        let next = ArraySlice.toSpan next
+//
+//        if prev.Length > next.Length then
+//            for i = next.Length to prev.Length - 1 do
+//                result <- MutStackArray1.addMut(&result, WidgetCollectionItemChange.Remove i)
+//
+//        for i = 0 to next.Length - 1 do
+//            let currItem = next.[i]
+//            //            index < 0 || index >= array.Length ? (FSharpOption<T>) null : FSharpOption<T>.Some(array[index]);
+//            let prevItemOpt =
+//                if (i >= prev.Length) then
+//                    ValueNone
+//                else
+//                    ValueSome prev.[i]
+//
+//            let changeOpt =
+//                match prevItemOpt with
+//                | ValueNone -> ValueSome(WidgetCollectionItemChange.Insert struct (i, currItem))
+//
+//                | ValueSome prevItem when canReuseView prevItem currItem ->
+//
+//                    match diffWidget canReuseView (ValueSome prevItem) currItem with
+//                    | ValueNone -> ValueNone
+//                    | ValueSome diffs -> ValueSome(WidgetCollectionItemChange.Update struct (i, diffs))
+//
+//                | ValueSome _ -> ValueSome(WidgetCollectionItemChange.Replace struct (i, currItem))
+//
+//            match changeOpt with
+//            | ValueNone -> ()
+//            | ValueSome change -> result <- MutStackArray1.addMut(&result, change)
+//
+//        MutStackArray1.toArraySlice &result
+//
+//    and diffWidget
+//        (canReuseView: Widget -> Widget -> bool)
+//        (prevOpt: Widget voption)
+//        (next: Widget)
+//        : WidgetDiff voption =
+//        let prevScalarAttributes =
+//            match prevOpt with
+//            | ValueNone -> ValueNone
+//            | ValueSome widget -> widget.ScalarAttributes
+//
+//        let prevWidgetAttributes =
+//            match prevOpt with
+//            | ValueNone -> ValueNone
+//            | ValueSome widget -> widget.WidgetAttributes
+//
+//        let prevWidgetCollectionAttributes =
+//            match prevOpt with
+//            | ValueNone -> ValueNone
+//            | ValueSome widget -> widget.WidgetCollectionAttributes
+//
+//        let scalarDiffs =
+//            ScalarChanges(prevScalarAttributes, next.ScalarAttributes)
+//
+//        let widgetDiffs =
+//            diffWidgetAttributes canReuseView prevWidgetAttributes next.WidgetAttributes
+//
+//        let collectionDiffs =
+//            diffWidgetCollectionAttributes canReuseView prevWidgetCollectionAttributes next.WidgetCollectionAttributes
+//
+//
+//        ValueSome
+//            { ScalarChanges = scalarDiffs
+//              WidgetChanges = widgetDiffs
+//              WidgetCollectionChanges = collectionDiffs }
 
     // TODO convert to Enumerator all diffs
 //        match (scalarDiffs, widgetDiffs, collectionDiffs) with
@@ -384,15 +383,10 @@ module Reconciler =
         (next: Widget)
         (node: IViewNode)
         : unit =
-        match diffWidget canReuseView prevOpt next with
-        | ValueNone -> ()
-        | ValueSome diff ->
-            node.ApplyScalarDiffs(&diff.ScalarChanges)
 
-            match diff.WidgetChanges with
-            | ValueSome slice -> node.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
+        let diff =
+            WidgetDiff.create(prevOpt, next, canReuseView)
 
-            match diff.WidgetCollectionChanges with
-            | ValueSome slice -> node.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
+        node.ApplyScalarDiffs(&diff.ScalarChanges)
+        node.ApplyWidgetDiffs(&diff.WidgetChanges)
+        node.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
