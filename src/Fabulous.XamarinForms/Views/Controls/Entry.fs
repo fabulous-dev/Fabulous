@@ -8,7 +8,7 @@ type IEntry =
     inherit IInputView
 
 module Entry =
-    let WidgetKey = Widgets.register<Entry>()
+    let WidgetKey = Widgets.register<Entry> ()
 
     let Text =
         Attributes.defineBindable<string> Entry.TextProperty
@@ -18,7 +18,7 @@ module Entry =
 
     let Keyboard =
         Attributes.defineBindable<Keyboard> Entry.KeyboardProperty
-        
+
 [<AutoOpen>]
 module EntryBuilders =
     type Fabulous.XamarinForms.View with
@@ -28,7 +28,7 @@ module EntryBuilders =
                 Entry.Text.WithValue(text),
                 InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
             )
-    
+
 [<Extension>]
 type EntryModifiers =
     [<Extension>]

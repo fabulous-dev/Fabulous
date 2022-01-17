@@ -7,7 +7,7 @@ type ITabbedPage =
     inherit IPage
 
 module TabbedPage =
-    let WidgetKey = Widgets.register<TabbedPage>()
+    let WidgetKey = Widgets.register<TabbedPage> ()
 
 [<AutoOpen>]
 module TabbedPageBuilders =

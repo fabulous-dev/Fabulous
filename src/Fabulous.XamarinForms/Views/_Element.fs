@@ -4,12 +4,14 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
 
-type IElement = interface end
+type IElement =
+    interface
+    end
 
 module Element =
     let AutomationId =
         Attributes.defineBindable<string> Element.AutomationIdProperty
-    
+
 [<Extension>]
 type ElementModifiers =
     [<Extension>]

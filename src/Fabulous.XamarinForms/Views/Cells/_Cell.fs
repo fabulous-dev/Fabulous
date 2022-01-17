@@ -1,4 +1,4 @@
 namespace Fabulous.XamarinForms
 
-type ICell = inherit IElement
-
+type ICell =
+    inherit IElement

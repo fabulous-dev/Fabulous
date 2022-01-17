@@ -5,10 +5,10 @@ open Xamarin.Forms
 
 type ISlider =
     inherit IView
-    
+
 module Slider =
-    let WidgetKey = Widgets.register<Slider>()
-        
+    let WidgetKey = Widgets.register<Slider> ()
+
     let MinimumMaximum =
         Attributes.define<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
 

@@ -9,8 +9,7 @@ type IItemsViewOfCell =
 module ItemsViewOfCell =
     let ItemsSource<'T> =
         Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>
-            Xamarin.Forms.ItemsView<Cell>
-                .ItemsSourceProperty
+            Xamarin.Forms.ItemsView<Cell>.ItemsSourceProperty
             id
             (fun modelValue ->
                 seq {
@@ -21,8 +20,7 @@ module ItemsViewOfCell =
 
     let GroupedItemsSource<'T> =
         Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, System.Collections.Generic.IEnumerable<GroupItem>>
-            Xamarin.Forms.ItemsView<Cell>
-                .ItemsSourceProperty
+            Xamarin.Forms.ItemsView<Cell>.ItemsSourceProperty
             id
             (fun modelValue ->
                 seq {

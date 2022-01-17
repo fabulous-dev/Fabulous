@@ -8,7 +8,7 @@ type IGrid =
     inherit Fabulous.XamarinForms.ILayout
 
 module Grid =
-    let WidgetKey = Widgets.register<Grid>()
+    let WidgetKey = Widgets.register<Grid> ()
 
     let ColumnDefinitions =
         Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array>
@@ -43,7 +43,7 @@ module Grid =
 
     let RowSpan =
         Attributes.defineBindable<int> Grid.RowSpanProperty
-        
+
 [<AutoOpen>]
 module GridBuilders =
     type Fabulous.XamarinForms.View with
@@ -54,10 +54,9 @@ module GridBuilders =
                 Grid.ColumnDefinitions.WithValue(coldefs),
                 Grid.RowDefinitions.WithValue(rowdefs)
             )
-        
-        static member inline Grid<'msg>() =
-            View.Grid<'msg>([ Star ], [ Star ])
-        
+
+        static member inline Grid<'msg>() = View.Grid<'msg>([ Star ], [ Star ])
+
 [<Extension>]
 type GridModifiers =
     [<Extension>]
@@ -77,7 +76,7 @@ type GridAttachedModifiers =
     [<Extension>]
     static member inline gridRow(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.Row.WithValue(value))
-        
+
     [<Extension>]
     static member inline gridColumnSpan(this: WidgetBuilder<'msg, #IView>, value: int) =
         this.AddScalar(Grid.ColumnSpan.WithValue(value))

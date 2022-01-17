@@ -6,9 +6,9 @@ open Xamarin.Forms
 
 type IStepper =
     inherit IView
-    
+
 module Stepper =
-    let WidgetKey = Widgets.register<Stepper>()
+    let WidgetKey = Widgets.register<Stepper> ()
 
     let Increment =
         Attributes.defineBindable<float> Stepper.IncrementProperty

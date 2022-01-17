@@ -9,7 +9,9 @@ open Fabulous.StackAllocatedCollections
 open Microsoft.FSharp.Core
 
 [<AbstractClass; Sealed>]
-type View = class end
+type View =
+    class
+    end
 
 module Widgets =
     let registerWithAdditionalSetup<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new: unit -> 'T)>

@@ -11,14 +11,14 @@ module ListView =
     let WidgetKey =
         Widgets.registerWithAdditionalSetup<FabulousListView>
             (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
-            
+
     let GroupedWidgetKey =
         Widgets.registerWithAdditionalSetup<FabulousListView>
             (fun target node ->
                 target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
                 target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
                 target.IsGroupingEnabled <- true)
-            
+
     let RowHeight =
         Attributes.defineBindable<int> ListView.RowHeightProperty
 
@@ -36,7 +36,7 @@ module ListViewBuilders =
                 ListView.WidgetKey
                 ItemsViewOfCell.ItemsSource
                 items
-                
+
         static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker when 'itemMarker :> ICell and 'groupMarker :> ICell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
@@ -44,7 +44,7 @@ module ListViewBuilders =
                 ListView.GroupedWidgetKey
                 ItemsViewOfCell.GroupedItemsSource
                 items
-        
+
 [<Extension>]
 type ListViewModifiers =
     [<Extension>]
@@ -52,11 +52,7 @@ type ListViewModifiers =
         this.AddScalar(ListView.RowHeight.WithValue(value))
 
     [<Extension>]
-    static member inline selectionMode
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            value: ListViewSelectionMode
-        ) =
+    static member inline selectionMode(this: WidgetBuilder<'msg, #IListView>, value: ListViewSelectionMode) =
         this.AddScalar(ListView.SelectionMode.WithValue(value))
 
     [<Extension>]

@@ -8,7 +8,7 @@ type IDatePicker =
     inherit IView
 
 module DatePicker =
-    let WidgetKey = Widgets.register<DatePicker>()
+    let WidgetKey = Widgets.register<DatePicker> ()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> DatePicker.CharacterSpacingProperty
@@ -86,12 +86,7 @@ type DatePickerModifiers =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
 
     [<Extension>]
-    static member inline textColor
-        (
-            this: WidgetBuilder<'msg, IDatePicker>,
-            light: Color,
-            ?dark: Color
-        ) =
+    static member inline textColor(this: WidgetBuilder<'msg, IDatePicker>, light: Color, ?dark: Color) =
         this.AddScalar(
             DatePicker.TextColor.WithValue(
                 { Light = light
@@ -105,7 +100,7 @@ type DatePickerModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, IDatePicker>, value: TextTransform) =
         this.AddScalar(DatePicker.TextTransform.WithValue(value))
-        
+
     [<Extension>]
     static member inline font
         (
@@ -130,7 +125,7 @@ type DatePickerModifiers =
         | Some v -> res <- res.AddScalar(DatePicker.FontAttributes.WithValue(v))
 
         res
-        
+
     [<Extension>]
     static member inline font(this: WidgetBuilder<'msg, #IDatePicker>, value: NamedSize) =
         this.AddScalar(DatePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<DatePicker>)))

@@ -36,7 +36,7 @@ module Android =
                     .On<Android>()
                     .SetToolbarPlacement(value)
                 |> ignore)
-               
+
 [<Extension>]
 type PlatformModifiers =
     [<Extension>]

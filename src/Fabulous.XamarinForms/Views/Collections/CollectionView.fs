@@ -11,7 +11,7 @@ module CollectionView =
     let WidgetKey =
         Widgets.registerWithAdditionalSetup<CollectionView>
             (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
-            
+
     let GroupedWidgetKey =
         Widgets.registerWithAdditionalSetup<CollectionView>
             (fun target node ->
@@ -33,7 +33,9 @@ module CollectionView =
 [<AutoOpen>]
 module CollectionViewBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>(items: seq<'itemData>) =
+        static member inline CollectionView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
+            (items: seq<'itemData>)
+            =
             WidgetHelpers.buildItems<'msg, ICollectionView, 'itemData, 'itemMarker>
                 CollectionView.WidgetKey
                 ItemsView.ItemsSource
@@ -46,11 +48,16 @@ module CollectionViewBuilders =
                 CollectionView.GroupedWidgetKey
                 ItemsView.GroupedItemsSource
                 items
-            
+
 [<Extension>]
 type CollectionViewModifiers =
     [<Extension>]
-    static member inline remainingItemsThreshold(this: WidgetBuilder<'msg, #ICollectionView>, value: int, onThresholdReached: 'msg) =
+    static member inline remainingItemsThreshold
+        (
+            this: WidgetBuilder<'msg, #ICollectionView>,
+            value: int,
+            onThresholdReached: 'msg
+        ) =
         this
             .AddScalar(CollectionView.RemainingItemsThreshold.WithValue(value))
             .AddScalar(CollectionView.RemainingItemsThresholdReached.WithValue(onThresholdReached))

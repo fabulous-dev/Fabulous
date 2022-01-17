@@ -8,14 +8,13 @@ type IToolbarItem =
     inherit IMenuItem
 
 module ToolbarItem =
-    let WidgetKey = Widgets.register<ToolbarItem>()
+    let WidgetKey = Widgets.register<ToolbarItem> ()
 
     let Order =
         Attributes.define<ToolbarItemOrder>
             "ToolbarItem_Order"
             (fun (newValueOpt, node) ->
-                let toolbarItem =
-                    node.Target :?> ToolbarItem
+                let toolbarItem = node.Target :?> ToolbarItem
 
                 match newValueOpt with
                 | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default
@@ -30,7 +29,7 @@ module ToolbarItemBuilders =
                 MenuItem.Text.WithValue(text),
                 MenuItem.Clicked.WithValue(onClicked)
             )
-            
+
 [<Extension>]
 type ToolbarItemModifiers =
     [<Extension>]

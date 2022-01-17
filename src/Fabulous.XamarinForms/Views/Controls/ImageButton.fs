@@ -7,7 +7,7 @@ type IImageButton =
     inherit IView
 
 module ImageButton =
-    let WidgetKey = Widgets.register<ImageButton>()
+    let WidgetKey = Widgets.register<ImageButton> ()
 
     let Source =
         Attributes.defineBindable<ImageSource> ImageButton.SourceProperty
@@ -21,12 +21,7 @@ module ImageButton =
 [<AutoOpen>]
 module ImageButtonBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline ImageButton<'msg>
-            (
-                source: ImageSource,
-                onClicked: 'msg,
-                aspect: Xamarin.Forms.Aspect
-            ) =
+        static member inline ImageButton<'msg>(source: ImageSource, onClicked: 'msg, aspect: Xamarin.Forms.Aspect) =
             WidgetBuilder<'msg, IImageButton>(
                 ImageButton.WidgetKey,
                 ImageButton.Source.WithValue(source),

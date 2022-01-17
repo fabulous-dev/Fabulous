@@ -8,7 +8,7 @@ type ISearchBar =
     inherit IInputView
 
 module SearchBar =
-    let WidgetKey = Widgets.register<SearchBar>()
+    let WidgetKey = Widgets.register<SearchBar> ()
 
     let Text =
         Attributes.defineBindable<string> SearchBar.TextProperty
@@ -19,10 +19,8 @@ module SearchBar =
     let SearchButtonPressed =
         Attributes.defineEventNoArg
             "SearchBar_SearchButtonPressed"
-            (fun target ->
-                (target :?> SearchBar)
-                    .SearchButtonPressed)
-        
+            (fun target -> (target :?> SearchBar).SearchButtonPressed)
+
 [<AutoOpen>]
 module SearchBarBuilders =
     type Fabulous.XamarinForms.View with
@@ -33,7 +31,7 @@ module SearchBarBuilders =
                 InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box),
                 SearchBar.SearchButtonPressed.WithValue(onSearchButtonPressed)
             )
-            
+
 [<Extension>]
 type SearchBarModifiers =
     [<Extension>]

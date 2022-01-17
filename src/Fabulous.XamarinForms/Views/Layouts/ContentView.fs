@@ -9,8 +9,9 @@ type IContentView =
 module ContentView =
     let WidgetKey = Widgets.register<ContentView> ()
 
-    let Content = Attributes.defineBindableWidget ContentView.ContentProperty
-        
+    let Content =
+        Attributes.defineBindableWidget ContentView.ContentProperty
+
 [<AutoOpen>]
 module ContentViewBuilders =
     type Fabulous.XamarinForms.View with

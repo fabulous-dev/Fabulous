@@ -5,9 +5,9 @@ open Xamarin.Forms
 
 type IBoxView =
     inherit IView
-    
+
 module BoxView =
-    let WidgetKey = Widgets.register<BoxView>()
+    let WidgetKey = Widgets.register<BoxView> ()
 
     let Color =
         Attributes.defineBindable<Color> BoxView.ColorProperty

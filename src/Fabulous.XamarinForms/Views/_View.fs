@@ -21,7 +21,7 @@ module XFView =
         Attributes.defineWidgetCollection<IGestureRecognizer>
             "View_GestureRecognizers"
             (fun target -> (target :?> View).GestureRecognizers)
-        
+
 [<Extension>]
 type ViewModifiers =
     [<Extension>]
@@ -31,7 +31,7 @@ type ViewModifiers =
     [<Extension>]
     static member inline verticalOptions(this: WidgetBuilder<'msg, #IView>, value: LayoutOptions) =
         this.AddScalar(XFView.VerticalOptions.WithValue(value))
-        
+
     [<Extension>]
     static member inline center(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
         let options =
@@ -64,7 +64,7 @@ type ViewModifiers =
             | Some true -> LayoutOptions.CenterAndExpand
 
         this.AddScalar(XFView.VerticalOptions.WithValue(options))
-        
+
     [<Extension>]
     static member inline alignStartHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
         let options =
@@ -128,7 +128,7 @@ type ViewModifiers =
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Thickness) =
         this.AddScalar(XFView.Margin.WithValue(value))
-        
+
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(XFView.Margin.WithValue(Thickness(value)))
@@ -146,7 +146,9 @@ type ViewModifiers =
 
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =
-        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IGestureRecognizer> XFView.GestureRecognizers this
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IGestureRecognizer>
+            XFView.GestureRecognizers
+            this
 
     [<Extension>]
     static member inline size(this: WidgetBuilder<'msg, #IView>, ?width: float, ?height: float) =

@@ -7,15 +7,14 @@ type ITapGestureRecognizer =
     inherit Fabulous.XamarinForms.IGestureRecognizer
 
 module TapGestureRecognizer =
-    let WidgetKey = Widgets.register<TapGestureRecognizer>()
+    let WidgetKey =
+        Widgets.register<TapGestureRecognizer> ()
 
     let Tapped =
         Attributes.defineEventNoArg
             "TapGestureRecognizer_Tapped"
-            (fun target ->
-                (target :?> TapGestureRecognizer)
-                    .Tapped)
-           
+            (fun target -> (target :?> TapGestureRecognizer).Tapped)
+
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
     type Fabulous.XamarinForms.View with

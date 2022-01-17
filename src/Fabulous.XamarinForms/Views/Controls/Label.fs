@@ -6,9 +6,9 @@ open Xamarin.Forms
 
 type ILabel =
     inherit IView
-    
+
 module Label =
-    let WidgetKey = Widgets.register<Label>()
+    let WidgetKey = Widgets.register<Label> ()
 
     let Text =
         Attributes.defineBindable<string> Label.TextProperty
@@ -33,21 +33,17 @@ module Label =
 
     let LineBreakMode =
         Attributes.defineBindable<Xamarin.Forms.LineBreakMode> Label.LineBreakModeProperty
-        
+
 [<AutoOpen>]
 module LabelBuilders =
     type Fabulous.XamarinForms.View with
         static member inline Label<'msg>(text: string) =
             WidgetBuilder<'msg, ILabel>(Label.WidgetKey, Label.Text.WithValue(text))
-        
+
 [<Extension>]
 type LabelModifiers =
     [<Extension>]
-    static member inline horizontalTextAlignment
-        (
-            this: WidgetBuilder<'msg, #ILabel>,
-            value: TextAlignment
-        ) =
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
 
     [<Extension>]
@@ -67,13 +63,20 @@ type LabelModifiers =
         this.AddScalar(Label.Padding.WithValue(value))
 
     [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, left: float, top: float, right: float, bottom: float) =
+    static member inline padding
+        (
+            this: WidgetBuilder<'msg, #ILabel>,
+            left: float,
+            top: float,
+            right: float,
+            bottom: float
+        ) =
         this.AddScalar(Label.Padding.WithValue(Thickness(left, top, right, bottom)))
 
     [<Extension>]
     static member inline lineBreakMode(this: WidgetBuilder<'msg, #ILabel>, value: LineBreakMode) =
         this.AddScalar(Label.LineBreakMode.WithValue(value))
-        
+
     [<Extension>]
     static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ILabel>) =
         this.AddScalar(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))

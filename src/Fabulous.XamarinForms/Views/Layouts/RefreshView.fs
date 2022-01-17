@@ -6,18 +6,15 @@ open Xamarin.Forms
 
 type IRefreshView =
     inherit IContentView
-    
+
 module RefreshView =
-    let WidgetKey =
-        Widgets.register<RefreshView> ()
-        
+    let WidgetKey = Widgets.register<RefreshView> ()
+
     let IsRefreshing =
         Attributes.defineBindable<bool> RefreshView.IsRefreshingProperty
 
     let Refreshing =
-        Attributes.defineEventNoArg
-            "RefreshView_Refreshing"
-            (fun target -> (target :?> RefreshView).Refreshing)
+        Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =

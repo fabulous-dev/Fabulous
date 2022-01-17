@@ -5,17 +5,16 @@ open Xamarin.Forms
 
 type IScrollView =
     inherit Fabulous.XamarinForms.ILayout
-    
+
 module ScrollView =
-    let WidgetKey =
-        Widgets.register<ScrollView> ()
-        
+    let WidgetKey = Widgets.register<ScrollView> ()
+
     let Content =
         Attributes.defineWidget
             "ScrollView_Content"
             (fun target -> ViewNode.get (target :?> ScrollView).Content)
             (fun target value -> (target :?> ScrollView).Content <- value)
-        
+
 [<AutoOpen>]
 module ScrollViewBuilders =
     type Fabulous.XamarinForms.View with

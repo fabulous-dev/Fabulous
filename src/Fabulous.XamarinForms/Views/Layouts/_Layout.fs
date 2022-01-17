@@ -18,19 +18,17 @@ module Layout =
         Attributes.defineBindable<bool> Layout.IsClippedToBoundsProperty
 
     let LayoutChanged =
-        Attributes.defineEventNoArg
-            "Layout_LayoutChanged"
-            (fun target -> (target :?> Layout).LayoutChanged)
-    
+        Attributes.defineEventNoArg "Layout_LayoutChanged" (fun target -> (target :?> Layout).LayoutChanged)
+
 [<Extension>]
 type LayoutModifiers =
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #ILayout>, value: Thickness) =
         this.AddScalar(Layout.Padding.WithValue(value))
-        
+
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #ILayout>, value: float) =
-        LayoutModifiers.padding(this, Thickness(value))
+        LayoutModifiers.padding (this, Thickness(value))
 
     [<Extension>]
     static member inline padding
@@ -41,7 +39,7 @@ type LayoutModifiers =
             right: float,
             bottom: float
         ) =
-        LayoutModifiers.padding(this, Thickness(left, top, right, bottom))
+        LayoutModifiers.padding (this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline cascadeInputTransparent(this: WidgetBuilder<'msg, #ILayout>, value: bool) =

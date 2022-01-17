@@ -4,7 +4,8 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
 
-type IPage = inherit IElement
+type IPage =
+    inherit IElement
 
 module Page =
     let BackgroundImageSource =
@@ -35,7 +36,7 @@ module Page =
 
     let LayoutChanged =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
-        
+
 [<Extension>]
 type PageModifiers =
     [<Extension>]

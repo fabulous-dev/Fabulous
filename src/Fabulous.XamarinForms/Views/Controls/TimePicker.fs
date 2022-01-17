@@ -8,7 +8,7 @@ type ITimePicker =
     inherit IView
 
 module TimePicker =
-    let WidgetKey = Widgets.register<FabulousTimePicker>()
+    let WidgetKey = Widgets.register<FabulousTimePicker> ()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> TimePicker.CharacterSpacingProperty
@@ -70,12 +70,7 @@ type TimePickerModifiers =
         this.AddScalar(TimePicker.Format.WithValue(value))
 
     [<Extension>]
-    static member inline textColor
-        (
-            this: WidgetBuilder<'msg, #ITimePicker>,
-            light: Color,
-            ?dark: Color
-        ) =
+    static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: Color, ?dark: Color) =
         this.AddScalar(
             TimePicker.TextColor.WithValue(
                 { Light = light
@@ -89,7 +84,7 @@ type TimePickerModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #ITimePicker>, value: TextTransform) =
         this.AddScalar(TimePicker.TextTransform.WithValue(value))
-        
+
     [<Extension>]
     static member inline font
         (
@@ -114,7 +109,7 @@ type TimePickerModifiers =
         | Some v -> res <- res.AddScalar(TimePicker.FontAttributes.WithValue(v))
 
         res
-        
+
     [<Extension>]
     static member inline font(this: WidgetBuilder<'msg, #ITimePicker>, value: NamedSize) =
         this.AddScalar(TimePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<TimePicker>)))

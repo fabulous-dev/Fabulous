@@ -7,14 +7,14 @@ type IStackLayout =
     inherit Fabulous.XamarinForms.ILayout
 
 module StackLayout =
-    let WidgetKey = Widgets.register<StackLayout>()
+    let WidgetKey = Widgets.register<StackLayout> ()
 
     let Orientation =
         Attributes.defineBindable<StackOrientation> StackLayout.OrientationProperty
 
     let Spacing =
         Attributes.defineBindable<float> StackLayout.SpacingProperty
-            
+
 [<AutoOpen>]
 module StackLayoutBuilders =
     type Fabulous.XamarinForms.View with
@@ -34,10 +34,9 @@ module StackLayoutBuilders =
                     StackLayout.Orientation.WithValue(orientation),
                     StackLayout.Spacing.WithValue(v)
                 )
-        
+
         static member inline HStack<'msg>(?spacing) =
             View.StackLayout<'msg>(StackOrientation.Horizontal, ?spacing = spacing)
 
         static member inline VStack<'msg>(?spacing) =
             View.StackLayout<'msg>(StackOrientation.Vertical, ?spacing = spacing)
-            

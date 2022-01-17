@@ -8,7 +8,7 @@ type INavigationPage =
     inherit IPage
 
 module NavigationPage =
-    let WidgetKey = Widgets.register<NavigationPage>()
+    let WidgetKey = Widgets.register<NavigationPage> ()
 
     let Pages =
         Attributes.defineWidgetCollectionWithConverter
@@ -38,17 +38,17 @@ module NavigationPageBuilders =
     type Fabulous.XamarinForms.View with
         static member inline NavigationPage<'msg>() =
             CollectionBuilder<'msg, INavigationPage, IPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
-        
+
 [<Extension>]
 type NavigationPageModifiers =
     [<Extension>]
     static member inline barBackgroundColor(this: WidgetBuilder<'msg, #INavigationPage>, value: Color) =
         this.AddScalar(NavigationPage.BarBackgroundColor.WithValue(value))
-        
+
     [<Extension>]
     static member inline barTextColor(this: WidgetBuilder<'msg, #INavigationPage>, value: Color) =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(value))
-        
+
     [<Extension>]
     static member inline popped(this: WidgetBuilder<'msg, #INavigationPage>, value: 'msg) =
         this.AddScalar(NavigationPage.Popped.WithValue(fun _ -> box value))

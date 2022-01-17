@@ -7,7 +7,7 @@ type IEditor =
     inherit IInputView
 
 module Editor =
-    let WidgetKey = Widgets.register<Editor>()
+    let WidgetKey = Widgets.register<Editor> ()
 
     let Text =
         Attributes.defineBindable<string> Editor.TextProperty

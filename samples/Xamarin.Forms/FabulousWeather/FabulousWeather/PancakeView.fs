@@ -9,8 +9,9 @@ type IPancakeView =
     inherit IView
 
 module PancakeView =
-    let WidgetKey = Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
-    
+    let WidgetKey =
+        Widgets.register<Xamarin.Forms.PancakeView.PancakeView> ()
+
     let BackgroundGradientStops =
         Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection>
             Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty

@@ -6,7 +6,7 @@ open Xamarin.Forms
 
 type IVisualElement =
     inherit IElement
-    
+
 module VisualElement =
     let IsEnabled =
         Attributes.defineBindable<bool> VisualElement.IsEnabledProperty
@@ -25,7 +25,7 @@ module VisualElement =
 
     let IsVisible =
         Attributes.defineBindable<bool> VisualElement.IsVisibleProperty
-    
+
 [<Extension>]
 type VisualElementModifiers =
     [<Extension>]
