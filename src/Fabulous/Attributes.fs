@@ -32,7 +32,7 @@ module Attributes =
         (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         (updateNode: 'valueType voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition =
             { Key = key
@@ -51,7 +51,7 @@ module Attributes =
         (applyDiff: WidgetDiff -> IViewNode -> unit)
         (updateNode: Widget voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: WidgetAttributeDefinition =
             { Key = key
@@ -68,7 +68,7 @@ module Attributes =
         (applyDiff: WidgetCollectionItemChanges -> IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: WidgetCollectionAttributeDefinition =
             { Key = key
@@ -163,7 +163,7 @@ module Attributes =
         node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
             { Key = key
@@ -193,7 +193,7 @@ module Attributes =
         definition
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
-        let key = AttributeDefinitionStore.getNextKey()
+        let key = AttributeDefinitionStore.getNextKey ()
 
         let definition: ScalarAttributeDefinition<_, _, _> =
             { Key = key

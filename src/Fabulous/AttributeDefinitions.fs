@@ -4,12 +4,12 @@ open System.Collections.Generic
 open Fabulous
 
 type IAttributeDefinition =
-    abstract member Key : AttributeKey
-    abstract member UpdateNode : obj voption -> IViewNode -> unit
+    abstract member Key: AttributeKey
+    abstract member UpdateNode: obj voption -> IViewNode -> unit
 
 type IScalarAttributeDefinition =
     inherit IAttributeDefinition
-    abstract member CompareBoxed : a: obj -> b: obj -> ScalarAttributeComparison
+    abstract member CompareBoxed: a: obj -> b: obj -> ScalarAttributeComparison
 
 
 /// Attribute definition for scalar properties
