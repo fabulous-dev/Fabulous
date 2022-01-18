@@ -12,6 +12,8 @@
         <Compile Include="ArrayExtra.fs"/>
         <Compile Include="StackAllocatedCollections.fs"/>
         <Compile Include="Core.fs"/>
+        <Compile Include="WidgetDiff.fs"/>
+        <Compile Include="IViewNode.fs"/>
         <Compile Include="AttributeDefinitions.fs"/>
         <Compile Include="WidgetDefinitions.fs"/>
         <Compile Include="Builders.fs"/>

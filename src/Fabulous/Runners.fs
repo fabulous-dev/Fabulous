@@ -16,9 +16,9 @@ type IRunner =
 
 type IViewAdapter =
     inherit IDisposable
-    abstract CreateView: unit -> obj
-    abstract Attach: obj -> unit
-    abstract Detach: bool -> unit
+    abstract CreateView : unit -> obj
+    abstract Attach : obj -> unit
+    abstract Detach : bool -> unit
 
 module RunnerStore =
     let private _runners = Dictionary<StateKey, IRunner>()
@@ -55,7 +55,7 @@ module Runners =
     type Runner<'arg, 'model, 'msg>(key: StateKey, program: Program<'arg, 'model, 'msg>) =
 
         let rec processMsg msg =
-            let model = unbox (StateStore.get key)
+            let model = unbox(StateStore.get key)
             let newModel, cmd = program.Update(msg, model)
             StateStore.set key newModel
 
@@ -83,7 +83,7 @@ module Runners =
         member _.Stop() = ()
 
     let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) =
-        let key = StateStore.getNextKey ()
+        let key = StateStore.getNextKey()
         let runner = Runner(key, program)
         RunnerStore.set key runner
         runner
@@ -113,10 +113,10 @@ module ViewAdapters =
 
         member private _.Dispatch(msg) =
             if _allowDispatch then
-                dispatch (unbox msg)
+                dispatch(unbox msg)
 
         member this.CreateView() =
-            let state = unbox (StateStore.get stateKey)
+            let state = unbox(StateStore.get stateKey)
             let widget = view state
             _widget <- widget
 
@@ -144,7 +144,6 @@ module ViewAdapters =
 
                 let node = getViewNode _root
 
-                // TODO handle the case when Type of the widget changes
                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                 _allowDispatch <- true
 
@@ -157,7 +156,7 @@ module ViewAdapters =
             member _.Detach(shouldDestroyNode) = ()
 
     let create<'arg, 'model, 'msg> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg>) =
-        let key = ViewAdapterStore.getNextKey ()
+        let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
             new ViewAdapter<'model, 'msg>(

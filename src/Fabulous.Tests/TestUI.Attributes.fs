@@ -6,7 +6,7 @@ open Tests.Platform
 module Attributes =
 
     let definePressable name =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
             { Key = key
@@ -15,7 +15,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt, node) ->
+                  fun struct (newValueOpt, node) ->
 
                       let btn = node.Target :?> IButton
 
