@@ -35,7 +35,7 @@ module Memo =
     let internal canReuseMemoizedWidget prev next =
         (getMemoData prev).MarkerType = (getMemoData next).MarkerType
 
-    let private compareAttributes struct (prev: MemoData, next: MemoData) : ScalarAttributeComparison =
+    let private compareAttributes (prev: MemoData) (next: MemoData) : ScalarAttributeComparison =
         match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
         | true, true ->
             match next.KeyComparer next.KeyData prev.KeyData with
@@ -43,7 +43,7 @@ module Memo =
             | false -> ScalarAttributeComparison.Different
         | _ -> ScalarAttributeComparison.Different
 
-    let private updateNode struct (data: MemoData voption, node: IViewNode) : unit =
+    let private updateNode (data: MemoData voption) (node: IViewNode) : unit =
         match data with
         | ValueSome memoData ->
             let memoizedWidget = memoData.CreateWidget memoData.KeyData

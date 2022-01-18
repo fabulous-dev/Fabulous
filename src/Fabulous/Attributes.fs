@@ -15,9 +15,9 @@ module Helpers =
         view
 
 module ScalarAttributeComparers =
-    let noCompare struct (_, _) = ScalarAttributeComparison.Different
+    let noCompare _ _ = ScalarAttributeComparison.Different
 
-    let equalityCompare struct (a, b) =
+    let equalityCompare a b =
         if a = b then
             ScalarAttributeComparison.Identical
         else
@@ -29,8 +29,8 @@ module Attributes =
         name
         (convert: 'inputType -> 'modelType)
         (convertValue: 'modelType -> 'valueType)
-        (compare: struct ('modelType * 'modelType) -> ScalarAttributeComparison)
-        (updateNode: struct ('valueType voption * IViewNode) -> unit)
+        (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
+        (updateNode: 'valueType voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -48,8 +48,8 @@ module Attributes =
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter
         name
-        (applyDiff: struct (WidgetDiff * IViewNode) -> unit)
-        (updateNode: struct (Widget voption * IViewNode) -> unit)
+        (applyDiff: WidgetDiff -> IViewNode -> unit)
+        (updateNode: Widget voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -65,8 +65,8 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: struct (WidgetCollectionItemChanges * IViewNode) -> unit)
-        (updateNode: struct (ArraySlice<Widget> voption * IViewNode) -> unit)
+        (applyDiff: WidgetCollectionItemChanges -> IViewNode -> unit)
+        (updateNode: ArraySlice<Widget> voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey()
 
@@ -81,13 +81,13 @@ module Attributes =
 
     /// Define an attribute storing a Widget for a CLR property
     let defineWidget<'T when 'T: null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
-        let applyDiff struct (diff: WidgetDiff, node: IViewNode) =
+        let applyDiff (diff: WidgetDiff) (node: IViewNode) =
             let childNode = get node.Target
 
             childNode.ApplyDiff(&diff)
 
 
-        let updateNode struct (newValueOpt: Widget voption, node: IViewNode) =
+        let updateNode (newValueOpt: Widget voption) (node: IViewNode) =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
@@ -100,7 +100,7 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff struct (diffs: WidgetCollectionItemChanges, node: IViewNode) =
+        let applyDiff (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
 
             for diff in diffs do
@@ -126,7 +126,7 @@ module Attributes =
 
                 | _ -> ()
 
-        let updateNode struct (newValueOpt: ArraySlice<Widget> voption, node: IViewNode) =
+        let updateNode (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
             let targetColl = getCollection node.Target
             targetColl.Clear()
 
@@ -172,7 +172,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun struct (newValueOpt, node) ->
+                  fun newValueOpt node ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with
@@ -202,7 +202,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun struct (newValueOpt: ('args -> obj) voption, node: IViewNode) ->
+                  fun (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with

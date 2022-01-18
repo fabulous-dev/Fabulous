@@ -18,19 +18,19 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                 let definition =
                     AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode(ValueSome added.Value, this)
+                definition.UpdateNode(ValueSome added.Value) this
 
             | ScalarChange.Removed removed ->
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode(ValueNone, this)
+                definition.UpdateNode ValueNone this
 
             | ScalarChange.Updated newAttr ->
                 let definition =
                     AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode(ValueSome newAttr.Value, this)
+                definition.UpdateNode(ValueSome newAttr.Value) this
 
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do
@@ -40,19 +40,19 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                 let definition =
                     AttributeDefinitionStore.get newWidget.Key :?> WidgetAttributeDefinition
 
-                definition.UpdateNode(ValueSome newWidget.Value, this :> IViewNode)
+                definition.UpdateNode(ValueSome newWidget.Value) (this :> IViewNode)
 
             | WidgetChange.Removed removed ->
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
 
-                definition.UpdateNode(ValueNone, this :> IViewNode)
+                definition.UpdateNode ValueNone (this :> IViewNode)
 
             | WidgetChange.Updated struct (newAttr, diffs) ->
                 let definition =
                     AttributeDefinitionStore.get newAttr.Key :?> WidgetAttributeDefinition
 
-                definition.ApplyDiff(diffs, this :> IViewNode)
+                definition.ApplyDiff diffs (this :> IViewNode)
 
     member inline private this.ApplyWidgetCollectionDiffs(diffs: WidgetCollectionChanges inref) =
         for diff in diffs do
@@ -61,19 +61,19 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                 let definition =
                     AttributeDefinitionStore.get added.Key :?> WidgetCollectionAttributeDefinition
 
-                definition.UpdateNode(ValueSome added.Value, this :> IViewNode)
+                definition.UpdateNode(ValueSome added.Value) (this :> IViewNode)
 
             | WidgetCollectionChange.Removed removed ->
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
 
-                definition.UpdateNode(ValueNone, this :> IViewNode)
+                definition.UpdateNode ValueNone (this :> IViewNode)
 
             | WidgetCollectionChange.Updated struct (newAttr, diffs) ->
                 let definition =
                     AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
 
-                definition.ApplyDiff(diffs, this :> IViewNode)
+                definition.ApplyDiff diffs (this :> IViewNode)
 
     interface IViewNode with
         member _.Target = targetRef.Target

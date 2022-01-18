@@ -8,7 +8,7 @@ module Reconciler =
         let def =
             AttributeDefinitionStore.get key :?> IScalarAttributeDefinition
 
-        def.CompareBoxed(a, b)
+        def.CompareBoxed a b
 
     let update
         (canReuseView: Widget -> Widget -> bool)

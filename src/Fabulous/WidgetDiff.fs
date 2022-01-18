@@ -9,22 +9,11 @@ type ScalarAttributeComparison =
     | Identical
     | Different
 
-///// Tuple cannot be used with IsByRefLike structs
-///// this is essentially a Tuple of 2 that can work with them
-//[<Struct; IsByRefLike>]
-//type Pair<'a, 'b> =
-//    struct
-//        val First: 'a
-//        val Second: 'b
-//        new(a: 'a, b: 'b) = { First = a; Second = b }
-//    end
-
 [<Struct; IsByRefLike; RequireQualifiedAccess; NoComparison; NoEquality>]
 type EnumerationMode<'a> =
     | AllAddedOrRemoved of struct ('a [] * bool)
     | Empty
     | ActualDiff of prevNext: struct ('a [] * 'a [])
-
 
 module EnumerationMode =
     let fromOptions prev next =
