@@ -72,6 +72,8 @@ module Memo =
 
 
 
+    // Memo isn't allowed in lists, TargetType will never get called,
+    // so Unchecked.defaultof is an acceptable value
     let private widgetDefinition: WidgetDefinition =
         { Key = MemoWidgetKey
           Name = "Memo"
