@@ -10,7 +10,7 @@ module iOS =
     let UseSafeArea =
         Attributes.define<bool>
             "Page_UseSafeArea"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let page = node.Target :?> Xamarin.Forms.Page
 
                 let value =
@@ -24,7 +24,7 @@ module Android =
     let ToolbarPlacement =
         Attributes.define<ToolbarPlacement>
             "TabbedPage_ToolbarPlacement"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let tabbedPage = node.Target :?> Xamarin.Forms.TabbedPage
 
                 let value =

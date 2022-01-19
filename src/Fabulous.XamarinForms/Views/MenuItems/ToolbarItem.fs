@@ -13,7 +13,7 @@ module ToolbarItem =
     let Order =
         Attributes.define<ToolbarItemOrder>
             "ToolbarItem_Order"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let toolbarItem = node.Target :?> ToolbarItem
 
                 match newValueOpt with

@@ -19,7 +19,7 @@ module Application =
     let Resources =
         Attributes.define<ResourceDictionary>
             "Application_Resources"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let application = node.Target :?> Application
 
                 let value =
@@ -32,7 +32,7 @@ module Application =
     let UserAppTheme =
         Attributes.define<OSAppTheme>
             "Application_UserAppTheme"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let application = node.Target :?> Application
 
                 let value =

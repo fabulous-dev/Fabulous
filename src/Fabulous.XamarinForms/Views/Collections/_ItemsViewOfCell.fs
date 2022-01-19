@@ -16,7 +16,7 @@ module ItemsViewOfCell =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
     let GroupedItemsSource<'T> =
         Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, System.Collections.Generic.IEnumerable<GroupItem>>
@@ -27,4 +27,4 @@ module ItemsViewOfCell =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
