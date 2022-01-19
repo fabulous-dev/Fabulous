@@ -7,28 +7,28 @@
         <RepositoryUrl>https://github.com/TimLariviere/Fabulous-new</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="PackageREADME.md" Pack="true" PackagePath="\"/>
-        <Compile Include="ArraySlice.fs"/>
-        <Compile Include="ArrayExtra.fs"/>
-        <Compile Include="StackAllocatedCollections.fs"/>
-        <Compile Include="Core.fs"/>
-        <Compile Include="WidgetDiff.fs"/>
-        <Compile Include="IViewNode.fs"/>
-        <Compile Include="AttributeDefinitions.fs"/>
-        <Compile Include="WidgetDefinitions.fs"/>
-        <Compile Include="Builders.fs"/>
-        <Compile Include="Reconciler.fs"/>
-        <Compile Include="ViewNode.fs"/>
-        <Compile Include="State.fs"/>
-        <Compile Include="Cmd.fs"/>
-        <Compile Include="Runners.fs"/>
-        <Compile Include="Attributes.fs"/>
-        <Compile Include="Memo.fs"/>
-        <Compile Include="MapMsg.fs"/>
-        <Compile Include="View.fs"/>
+        <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
+        <Compile Include="ArraySlice.fs" />
+        <Compile Include="ArrayExtra.fs" />
+        <Compile Include="StackAllocatedCollections.fs" />
+        <Compile Include="Primitives.fs" />
+        <Compile Include="WidgetDiff.fs" />
+        <Compile Include="IViewNode.fs" />
+        <Compile Include="AttributeDefinitions.fs" />
+        <Compile Include="WidgetDefinitions.fs" />
+        <Compile Include="Builders.fs" />
+        <Compile Include="Reconciler.fs" />
+        <Compile Include="ViewNode.fs" />
+        <Compile Include="State.fs" />
+        <Compile Include="Cmd.fs" />
+        <Compile Include="Runners.fs" />
+        <Compile Include="Attributes.fs" />
+        <Compile Include="Memo.fs" />
+        <Compile Include="MapMsg.fs" />
+        <Compile Include="View.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="6.0.1"/>
-        <PackageReference Include="System.Memory" Version="4.5.3"/>
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+        <PackageReference Include="System.Memory" Version="4.5.3" />
     </ItemGroup>
 </Project>
