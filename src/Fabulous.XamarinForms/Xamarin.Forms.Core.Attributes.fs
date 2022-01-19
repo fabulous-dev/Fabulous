@@ -241,7 +241,7 @@ module Switch =
 
 module Slider =
     let MinimumMaximum =
-        Attributes.define<float * float> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
+        Attributes.define<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
 
     let Value =
         Attributes.defineBindable<float> Xamarin.Forms.Slider.ValueProperty
@@ -495,7 +495,7 @@ module Stepper =
         Attributes.defineBindable<float> Xamarin.Forms.Stepper.IncrementProperty
 
     let MinimumMaximum =
-        Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+        Attributes.define<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
 
     let Value =
         Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty

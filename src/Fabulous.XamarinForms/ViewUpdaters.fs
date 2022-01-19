@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 module ViewUpdaters =
-    let updateSliderMinMax (newValueOpt: (float * float) voption) (node: IViewNode) =
+    let updateSliderMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let slider = node.Target :?> Slider
 
         match newValueOpt with
@@ -22,7 +22,7 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
-    let updateStepperMinMax (newValueOpt: (float * float) voption) (node: IViewNode) =
+    let updateStepperMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let stepper = node.Target :?> Stepper
 
         match newValueOpt with
