@@ -7,7 +7,7 @@ module MapMsg =
             id
             id
             ScalarAttributeComparers.noCompare
-            (fun (value, node) ->
+            (fun value node ->
                 match value with
                 | ValueNone -> node.MapMsg <- ValueNone
                 | ValueSome fn -> node.MapMsg <- ValueSome fn)

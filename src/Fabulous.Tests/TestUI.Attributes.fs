@@ -15,7 +15,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt, node) ->
+                  fun newValueOpt node ->
 
                       let btn = node.Target :?> IButton
 

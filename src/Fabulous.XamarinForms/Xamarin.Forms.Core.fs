@@ -256,7 +256,7 @@ type ViewBuilders private () =
             ViewKeys.Slider,
             Slider.Value.WithValue(value),
             Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box),
-            Slider.MinimumMaximum.WithValue(min, max)
+            Slider.MinimumMaximum.WithValue(struct (min, max))
         )
 
     static member inline ActivityIndicator<'msg>(isRunning: bool) =
@@ -398,7 +398,7 @@ type ViewBuilders private () =
             ViewKeys.Stepper,
             Stepper.Value.WithValue(value),
             Stepper.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box),
-            Stepper.MinimumMaximum.WithValue((min, max))
+            Stepper.MinimumMaximum.WithValue(struct (min, max))
         )
 
     static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> ICell>(items: seq<'itemData>) =

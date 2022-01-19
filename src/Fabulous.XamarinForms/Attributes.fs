@@ -30,14 +30,14 @@ module Attributes =
         (bindableProperty: BindableProperty)
         (convert: 'inputType -> 'modelType)
         (convertValue: 'modelType -> 'valueType)
-        (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
+        (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         =
         Attributes.defineScalarWithConverter<'inputType, 'modelType, 'valueType>
             bindableProperty.PropertyName
             convert
             convertValue
             compare
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -53,7 +53,7 @@ module Attributes =
             id
             id
             ScalarAttributeComparers.equalityCompare
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

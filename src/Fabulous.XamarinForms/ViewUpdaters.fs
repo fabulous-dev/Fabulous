@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 module ViewUpdaters =
-    let updateSliderMinMax (newValueOpt: (float * float) voption, node: IViewNode) =
+    let updateSliderMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let slider = node.Target :?> Slider
 
         match newValueOpt with
@@ -22,7 +22,7 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
-    let updateStepperMinMax (newValueOpt: (float * float) voption, node: IViewNode) =
+    let updateStepperMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let stepper = node.Target :?> Stepper
 
         match newValueOpt with
@@ -40,7 +40,7 @@ module ViewUpdaters =
                 stepper.SetValue(Stepper.MinimumProperty, min)
                 stepper.SetValue(Stepper.MaximumProperty, max)
 
-    let updateGridColumnDefinitions (newValueOpt: Dimension [] voption, node: IViewNode) =
+    let updateGridColumnDefinitions (newValueOpt: Dimension [] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -58,7 +58,7 @@ module ViewUpdaters =
 
                 grid.ColumnDefinitions.Add(ColumnDefinition(Width = gridLength))
 
-    let updateGridRowDefinitions (newValueOpt: Dimension [] voption, node: IViewNode) =
+    let updateGridRowDefinitions (newValueOpt: Dimension [] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -78,11 +78,11 @@ module ViewUpdaters =
 
     /// NOTE: Would be better to have a custom diff logic for Navigation
     /// because it's a Stack and not a random access collection
-    let applyDiffNavigationPagePages (diffs: ArraySlice<WidgetCollectionItemChange>, node: IViewNode) =
+    let applyDiffNavigationPagePages (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let navigationPage = node.Target :?> NavigationPage
         let pages = List.ofSeq navigationPage.Pages
 
-        for diff in ArraySlice.toSpan diffs do
+        for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
                 if index >= pages.Length then
@@ -110,17 +110,7 @@ module ViewUpdaters =
                 let childNode =
                     node.TreeContext.GetViewNode(box pages.[index])
 
-                match diff.ScalarChanges with
-                | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
-                | ValueNone -> ()
-
-                match diff.WidgetChanges with
-                | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-                | ValueNone -> ()
-
-                match diff.WidgetCollectionChanges with
-                | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-                | ValueNone -> ()
+                childNode.ApplyDiff(&diff)
 
 
             | WidgetCollectionItemChange.Replace (index, widget) ->
@@ -163,7 +153,7 @@ module ViewUpdaters =
                         navigationPage.PushAsync(temp.Pop(), false)
                         |> ignore
 
-    let updateNavigationPagePages (newValueOpt: ArraySlice<Widget> voption, node: IViewNode) =
+    let updateNavigationPagePages (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
         let navigationPage = node.Target :?> NavigationPage
         navigationPage.PopToRootAsync(false) |> ignore
 

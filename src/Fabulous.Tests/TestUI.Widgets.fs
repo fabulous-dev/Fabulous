@@ -29,7 +29,7 @@ module Widgets =
               CreateView =
                   fun (widget, context, parentNode) ->
                       let name = typeof<'T>.Name
-                      printfn $"Creating view for {name}"
+                      //                      printfn $"Creating view for {name}"
 
                       let view = new 'T()
                       let weakReference = WeakReference(view)

@@ -150,7 +150,7 @@ module SimpleStackTests =
 
         // add first
         instance.ProcessMessage(AddNew(1, "yo"))
-        Assert.AreEqual(stack.Children.Count, 1)
+        Assert.AreEqual(1, stack.Children.Count)
 
         let label =
             stack.Children.[0] :?> TestLabel :> IText

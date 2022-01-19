@@ -144,7 +144,6 @@ module ViewAdapters =
 
                 let node = getViewNode _root
 
-                // TODO handle the case when Type of the widget changes
                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                 _allowDispatch <- true
 

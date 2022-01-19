@@ -15,9 +15,9 @@ module Helpers =
         view
 
 module ScalarAttributeComparers =
-    let noCompare (_, _) = ScalarAttributeComparison.Different
+    let noCompare _ _ = ScalarAttributeComparison.Different
 
-    let equalityCompare (a, b) =
+    let equalityCompare a b =
         if a = b then
             ScalarAttributeComparison.Identical
         else
@@ -29,8 +29,8 @@ module Attributes =
         name
         (convert: 'inputType -> 'modelType)
         (convertValue: 'modelType -> 'valueType)
-        (compare: 'modelType * 'modelType -> ScalarAttributeComparison)
-        (updateNode: 'valueType voption * IViewNode -> unit)
+        (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
+        (updateNode: 'valueType voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -48,8 +48,8 @@ module Attributes =
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter
         name
-        (applyDiff: WidgetDiff * IViewNode -> unit)
-        (updateNode: Widget voption * IViewNode -> unit)
+        (applyDiff: WidgetDiff -> IViewNode -> unit)
+        (updateNode: Widget voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -65,8 +65,8 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: ArraySlice<WidgetCollectionItemChange> * IViewNode -> unit)
-        (updateNode: ArraySlice<Widget> voption * IViewNode -> unit)
+        (applyDiff: WidgetCollectionItemChanges -> IViewNode -> unit)
+        (updateNode: ArraySlice<Widget> voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -81,22 +81,13 @@ module Attributes =
 
     /// Define an attribute storing a Widget for a CLR property
     let defineWidget<'T when 'T: null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
-        let applyDiff (diff: WidgetDiff, node: IViewNode) =
+        let applyDiff (diff: WidgetDiff) (node: IViewNode) =
             let childNode = get node.Target
 
-            match diff.ScalarChanges with
-            | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
-            | ValueNone -> ()
+            childNode.ApplyDiff(&diff)
 
-            match diff.WidgetChanges with
-            | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
 
-            match diff.WidgetCollectionChanges with
-            | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-            | ValueNone -> ()
-
-        let updateNode (newValueOpt: Widget voption, node: IViewNode) =
+        let updateNode (newValueOpt: Widget voption) (node: IViewNode) =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
@@ -109,15 +100,15 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff (diffs: ArraySlice<WidgetCollectionItemChange>, node: IViewNode) =
+        let applyDiff (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
 
-            for diff in ArraySlice.toSpan diffs do
+            for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove index -> targetColl.RemoveAt(index)
                 | _ -> ()
 
-            for diff in ArraySlice.toSpan diffs do
+            for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -127,17 +118,7 @@ module Attributes =
                     let childNode =
                         node.TreeContext.GetViewNode(box targetColl.[index])
 
-                    match widgetDiff.ScalarChanges with
-                    | ValueSome changes -> childNode.ApplyScalarDiffs(changes)
-                    | ValueNone -> ()
-
-                    match widgetDiff.WidgetChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetDiffs(ArraySlice.toSpan slice)
-                    | ValueNone -> ()
-
-                    match widgetDiff.WidgetCollectionChanges with
-                    | ValueSome slice -> childNode.ApplyWidgetCollectionDiffs(ArraySlice.toSpan slice)
-                    | ValueNone -> ()
+                    childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, widget) ->
                     let view = Helpers.createViewForWidget node widget
@@ -145,7 +126,7 @@ module Attributes =
 
                 | _ -> ()
 
-        let updateNode (newValueOpt: ArraySlice<Widget> voption, node: IViewNode) =
+        let updateNode (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
             let targetColl = getCollection node.Target
             targetColl.Clear()
 
@@ -191,7 +172,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt, node) ->
+                  fun newValueOpt node ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with
@@ -221,7 +202,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt: ('args -> obj) voption, node: IViewNode) ->
+                  fun (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with

@@ -15,7 +15,7 @@ module Application =
     let Resources =
         Attributes.define<Xamarin.Forms.ResourceDictionary>
             "Application_Resources"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let application =
                     node.Target :?> Xamarin.Forms.Application
 
@@ -29,7 +29,7 @@ module Application =
     let UserAppTheme =
         Attributes.define<Xamarin.Forms.OSAppTheme>
             "Application_UserAppTheme"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let application =
                     node.Target :?> Xamarin.Forms.Application
 
@@ -241,7 +241,7 @@ module Switch =
 
 module Slider =
     let MinimumMaximum =
-        Attributes.define<float * float> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
+        Attributes.define<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
 
     let Value =
         Attributes.defineBindable<float> Xamarin.Forms.Slider.ValueProperty
@@ -399,7 +399,7 @@ module ToolbarItem =
     let Order =
         Attributes.define<Xamarin.Forms.ToolbarItemOrder>
             "ToolbarItem_Order"
-            (fun (newValueOpt, node) ->
+            (fun newValueOpt node ->
                 let toolbarItem =
                     node.Target :?> Xamarin.Forms.ToolbarItem
 
@@ -495,7 +495,7 @@ module Stepper =
         Attributes.defineBindable<float> Xamarin.Forms.Stepper.IncrementProperty
 
     let MinimumMaximum =
-        Attributes.define<float * float> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+        Attributes.define<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
 
     let Value =
         Attributes.defineBindable<float> Xamarin.Forms.Stepper.ValueProperty
@@ -515,7 +515,7 @@ module ItemsView =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
     let GroupedItemsSource<'T> =
         Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
@@ -526,7 +526,7 @@ module ItemsView =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
 module ItemsViewOfCell =
     let ItemsSource<'T> =
@@ -539,7 +539,7 @@ module ItemsViewOfCell =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
     let GroupedItemsSource<'T> =
         Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, IEnumerable<GroupItem>>
@@ -551,7 +551,7 @@ module ItemsViewOfCell =
                     for x in modelValue.OriginalItems do
                         modelValue.Template x
                 })
-            (fun (a, b) -> ScalarAttributeComparers.equalityCompare (a.OriginalItems, b.OriginalItems))
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
 module ListView =
     let RowHeight =
