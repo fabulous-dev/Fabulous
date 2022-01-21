@@ -48,7 +48,7 @@ module Components =
 
     let groupView name =
         ViewCell(
-            (VerticalStackLayout() {
+            (VStack() {
                 Label(name)
                     .textColor(accentTextColor)
                     .verticalOptions(LayoutOptions.FillAndExpand)
@@ -60,12 +60,12 @@ module Components =
 
     let cellView picture name address isFavorite =
         ViewCell(
-            (HorizontalStackLayout(spacing = 10.) {
+            (HStack(spacing = 10.) {
                 (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
                     .margin(15., 0., 0., 0.)
                     .size (height = 50., width = 50.)
 
-                (VerticalStackLayout(spacing = 5.) {
+                (VStack(spacing = 5.) {
                     Label(name)
                         .font(18.)
                         .fillVertical(expand = true)
@@ -85,7 +85,7 @@ module Components =
                     .margin(0., 0., 15., 0.)
                     .size (height = 25., width = 25.)
              })
-                .paddingLayout (Thickness 5.)
+                .padding (5.)
         )
 
     let detailActionButton (imagePath: string) onClicked =
@@ -107,7 +107,7 @@ module Components =
         | _ -> Label(text)
 
     let favoriteField isFavorite markAsFavorite =
-        (HorizontalStackLayout() {
+        (HStack() {
             Label(Strings.EditPage_MarkAsFavoriteField_Label)
                 .centerVertical ()
 

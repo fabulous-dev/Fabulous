@@ -21,7 +21,7 @@ module Styles =
     let createStyleFor<'T when 'T :> BindableObject> setters =
         let style = Style(typeof<'T>)
 
-        for (property, value) in setters do
+        for property, value in setters do
             style.Setters.Add(Setter(Property = property, Value = value))
 
         style

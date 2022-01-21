@@ -138,13 +138,13 @@ module MainPage =
         | NoContactAddNewContactTapped -> model, Cmd.none, ExternalMsg.NavigateToNewContact
 
     let loadingView title =
-        TabbedPage(title) { ContentPage("Loading", VerticalStackLayout() { centralLabel Strings.MainPage_Loading }) }
+        TabbedPage(title) { ContentPage("Loading", VStack() { centralLabel Strings.MainPage_Loading }) }
 
     let emptyView title =
         TabbedPage(title) {
             ContentPage(
                 "Empty",
-                VerticalStackLayout() { centralLabel Strings.MainPage_NoContact }
+                VStack() { centralLabel Strings.MainPage_NoContact }
             )
                 .toolbarItems () {
                 ToolbarItem(Strings.Common_About, NoContactAboutTapped)

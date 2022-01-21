@@ -102,7 +102,7 @@ module DetailPage =
         | ContactUpdated contact -> { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
 
     let header contact =
-        (VerticalStackLayout(spacing = 10.) {
+        (VStack(spacing = 10.) {
             Label(contact.FirstName + " " + contact.LastName)
                 .font(size = 20., attributes = FontAttributes.Bold)
                 .textColor(accentTextColor)
@@ -121,7 +121,7 @@ module DetailPage =
                 .backgroundColor(Color.White)
                 .centerHorizontal ()
 
-            (HorizontalStackLayout(spacing = 20.) {
+            (HStack(spacing = 20.) {
                 if hasSetField contact.Phone then
                     detailActionButton "call.png" CallTapped
                     detailActionButton "sms.png" SmsTapped
@@ -133,10 +133,10 @@ module DetailPage =
                 .margin (0., 10., 0., 10.)
          })
             .backgroundColor(Color.FromHex("#448cb8"))
-            .paddingLayout (20., 10., 20., 10.)
+            .padding (20., 10., 20., 10.)
 
     let body contact =
-        (VerticalStackLayout(spacing = 10.) {
+        (VStack(spacing = 10.) {
             detailFieldTitle "Email"
             optionalLabel contact.Email
             detailFieldTitle "Phone"
@@ -144,13 +144,13 @@ module DetailPage =
             detailFieldTitle "Address"
             optionalLabel contact.Address
          })
-            .paddingLayout (20., 10., 20., 20.)
+            .padding (20., 10., 20., 20.)
 
     let view model =
         ContentPage(
             "Detail page",
             ScrollView(
-                VerticalStackLayout(spacing = 0.) {
+                VStack(spacing = 0.) {
                     header model.Contact
                     body model.Contact
                 }

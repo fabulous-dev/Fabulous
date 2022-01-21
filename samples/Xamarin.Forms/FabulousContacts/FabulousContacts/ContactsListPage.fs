@@ -97,7 +97,7 @@ module ContactsListPage =
     let view title model =
         ContentPage(
             title,
-            (VerticalStackLayout(spacing = 0.) {
+            (VStack(spacing = 0.) {
                 SearchBar(model.FilterText, UpdateFilterText, Search)
                     .backgroundColor(accentColor)
                     .cancelButtonColor (accentTextColor)

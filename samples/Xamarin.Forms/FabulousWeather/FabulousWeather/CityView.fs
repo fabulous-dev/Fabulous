@@ -20,7 +20,7 @@ module CityView =
           IsRefreshing: bool }
 
     let loadingView (cityName: string) =
-        VerticalStackLayout() {
+        VStack() {
             Label(cityName.ToUpper())
                 .font(namedSize = Xamarin.Forms.NamedSize.Title)
                 .centerTextHorizontal()
@@ -38,7 +38,7 @@ module CityView =
             isRefreshing,
             onRefreshing,
             ScrollView(
-                VerticalStackLayout() {
+                VStack() {
                     Label(cityName.ToUpper())
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontal ()
@@ -65,11 +65,11 @@ module CityView =
                         .font(Styles.CurrentDateFontSize)
                         .centerTextHorizontal ()
 
-                    (HorizontalStackLayout() {
+                    (HStack() {
                         for forecast in data.HourlyForecast do
                             PancakeView(
                                 Styles.HourlyForecastGradientStops,
-                                VerticalStackLayout() {
+                                VStack() {
                                     Label(forecast.Date.ToString("h tt").ToLower())
                                         .centerTextHorizontal ()
 
@@ -101,7 +101,7 @@ module CityView =
         match city.Data with
         | Some data ->
             ContentView(loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing)
-                .paddingLayout (padding)
+                .padding (padding)
         | None ->
             ContentView(loadingView city.Name)
-                .paddingLayout (padding)
+                .padding (padding)

@@ -4,7 +4,6 @@ open System
 open System.Collections
 open System.Collections.Generic
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =

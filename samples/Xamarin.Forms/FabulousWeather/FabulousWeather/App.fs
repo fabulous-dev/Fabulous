@@ -117,7 +117,7 @@ module App =
                     .alignStartVertical()
                     .margin (0., 0., 20., 0.)
          })
-            .paddingLayout (0., 35., 0., 0.)
+            .padding (0., 35., 0., 0.)
 
     let view model =
         let temperatureOfCurrentCity =

@@ -18,7 +18,7 @@ type Player =
     member p.Name =
         match p with
         | X -> "X"
-        | Y -> "Y"
+        | O -> "O"
 
 /// Represents the game state contents of a single cell
 type GameCell =
@@ -57,7 +57,7 @@ type Model =
       Board: Board
 
       /// The state of play on the board
-      GameScore: (int * int)
+      GameScore: int * int
 
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
@@ -153,7 +153,7 @@ module App =
                 gameOver (getMessage newModel)
 
             let newModel2 =
-                let (x, y) = newModel.GameScore
+                let x, y = newModel.GameScore
 
                 match result with
                 | Win p ->
@@ -220,7 +220,7 @@ module App =
                                 BoxView(Color.Black).gridColumn(1).gridRowSpan (5)
                                 BoxView(Color.Black).gridColumn(3).gridRowSpan (5)
 
-                                for ((row, col) as pos) in positions do
+                                for row, col as pos in positions do
                                     if canPlay model model.Board.[pos] then
                                         Button("", Play pos)
                                             .backgroundColor(Color.LightBlue)

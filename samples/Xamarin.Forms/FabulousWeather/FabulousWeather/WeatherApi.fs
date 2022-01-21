@@ -10,10 +10,10 @@ module WeatherApi =
     let baseEndpoint = "http://api.openweathermap.org/data/2.5"
 
     let currentWeatherEndpoint =
-        sprintf "%s/weather?appid=%s" baseEndpoint apiKey
+        $"%s{baseEndpoint}/weather?appid=%s{apiKey}"
 
     let hourlyForecastEndpoint =
-        sprintf "%s/forecast?appid=%s" baseEndpoint apiKey
+        $"%s{baseEndpoint}/forecast?appid=%s{apiKey}"
 
     type CurrentWeatherApi = JsonProvider<"WeatherSamples/current-weather.json">
     type HourlyForecastApi = JsonProvider<"WeatherSamples/hourly-forecast.json">
@@ -71,7 +71,7 @@ module WeatherApi =
 
     let getCurrentWeatherForCityAsync name =
         async {
-            let! currentWeather = CurrentWeatherApi.AsyncLoad(sprintf "%s&q=%s" currentWeatherEndpoint name)
+            let! currentWeather = CurrentWeatherApi.AsyncLoad $"%s{currentWeatherEndpoint}&q=%s{name}"
 
             return
                 { Date =
@@ -85,7 +85,7 @@ module WeatherApi =
 
     let getHourlyForecastForCityAsync name =
         async {
-            let! hourlyForecast = HourlyForecastApi.AsyncLoad(sprintf "%s&q=%s" hourlyForecastEndpoint name)
+            let! hourlyForecast = HourlyForecastApi.AsyncLoad $"%s{hourlyForecastEndpoint}&q=%s{name}"
 
             return
                 { Values =
