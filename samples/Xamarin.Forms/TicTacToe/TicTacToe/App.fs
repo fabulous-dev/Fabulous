@@ -1,4 +1,4 @@
-namespace Fabulous.XamarinForms.Samples.TicTacToe
+﻿namespace TicTacToe
 
 open Xamarin.Forms
 open Fabulous

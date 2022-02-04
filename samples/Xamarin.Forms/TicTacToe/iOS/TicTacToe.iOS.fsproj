@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+  </PropertyGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\**\*" />
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <Compile Include="AppDelegate.fs" />
+    <Compile Include="SceneDelegate.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="[5.0.0.1]" />
+    <PackageReference Update="FSharp.Core" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+</Project>
