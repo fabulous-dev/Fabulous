@@ -1,6 +1,7 @@
 ﻿namespace FabulousContacts.iOS
 
 open System
+open ObjCRuntime
 open Xamarin.Forms.Platform.iOS
 
 type BorderedEntryRenderer() =

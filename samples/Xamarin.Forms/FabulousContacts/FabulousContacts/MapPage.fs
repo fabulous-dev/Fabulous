@@ -1,6 +1,6 @@
 ﻿namespace FabulousContacts
 
-open System
+(*open System
 open Xamarin.Essentials
 open Xamarin.Forms.Maps
 open Fabulous
@@ -142,3 +142,4 @@ module MapPage =
             .title(Strings.MapPage_Title)
             .fileIcon("maptab.png")
             .onAppearing (RetrieveUserPosition)
+*)

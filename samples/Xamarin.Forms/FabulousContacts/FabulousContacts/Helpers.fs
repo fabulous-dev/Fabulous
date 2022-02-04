@@ -7,6 +7,7 @@ open Plugin.Media.Abstractions
 open Plugin.Permissions
 open Plugin.Permissions.Abstractions
 open Xamarin.Forms
+open Fabulous.XamarinForms
 
 open type Fabulous.XamarinForms.View
 

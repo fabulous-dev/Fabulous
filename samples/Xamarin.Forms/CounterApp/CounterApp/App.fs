@@ -55,7 +55,7 @@ module App =
         Application(
             ContentPage(
                 "CounterApp",
-                (VStack() {
+                (VStack() {                    
                     Label($"%d{model.Count}").centerTextHorizontal ()
 
                     Button("Increment", Increment)

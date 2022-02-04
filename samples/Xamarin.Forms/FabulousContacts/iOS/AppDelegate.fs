@@ -1,13 +1,13 @@
-namespace FabulousContacts.iOS
+﻿namespace FabulousContacts.iOS
 
 open System
 open System.IO
-open Foundation
+open Plugin.Media
 open UIKit
-open Xamarin
+open Foundation
+open Xamarin.Essentials
 open Xamarin.Forms
 open Xamarin.Forms.Platform.iOS
-open Plugin.Media
 open FabulousContacts
 open Fabulous.XamarinForms
 
@@ -31,21 +31,14 @@ type AppDelegate() =
 
     override this.FinishedLaunching(app, options) =
         Forms.Init()
-        FormsMaps.Init()
+        //FormsMaps.Init()
 
         CrossMedia.Current.Initialize()
         |> Async.AwaitTask
         |> ignore
 
         let dbPath = getDbPath ()
-        let prg = (App.program dbPath)
-        let appx = Program.create prg ()
-        let application: Xamarin.Forms.Application = unbox appx
+        let appx = (App.program dbPath)
+        let application: Xamarin.Forms.Application = unbox (Program.create appx ())
         this.LoadApplication(application)
         base.FinishedLaunching(app, options)
-
-module Main =
-    [<EntryPoint>]
-    let main args =
-        UIApplication.Main(args, null, typeof<AppDelegate>)
-        0
