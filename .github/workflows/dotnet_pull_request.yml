@@ -3,7 +3,7 @@ on: pull_request
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
     steps:
@@ -16,6 +16,10 @@ jobs:
       run: |
         dotnet tool restore
         dotnet fantomas --check -r src samples templates
+    - name: Set GitHub PAT for NuGet
+      run: dotnet nuget update source github -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+    - name: Install dotnet workload
+      run: dotnet workload install ios android
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
