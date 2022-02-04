@@ -1,18 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
-        <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
-        <PackageReference Update="FSharp.Core" Version="6.0.1" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Include="App.fs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
-    </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-ios;net6.0-android</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="FSharp.Core" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-ios' ">
+    <PackageReference Include="Xamarin.Forms" Version="[5.0.0.1]" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
 </Project>

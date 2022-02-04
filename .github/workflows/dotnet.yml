@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
     steps:
@@ -14,6 +14,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - name: Set GitHub PAT for NuGet
+      run: dotnet nuget update source github -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+    - name: Install dotnet workload
+      run: dotnet workload install ios android
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
@@ -27,5 +31,5 @@ jobs:
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
-        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name github
-        dotnet nuget push "nupkgs/*.nupkg" --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name fabulous
+        dotnet nuget push "nupkgs/*.nupkg" --source fabulous --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

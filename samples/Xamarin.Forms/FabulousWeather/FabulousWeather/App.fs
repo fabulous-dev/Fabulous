@@ -1,4 +1,4 @@
-namespace Fabulous.XamarinForms.Samples.FabulousWeather
+namespace FabulousWeather
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -126,7 +126,12 @@ module App =
             |> Option.defaultValue 0<kelvin>
 
         Application(
-            ContentPage("Weather", PancakeView(Styles.gradientStops temperatureOfCurrentCity, previousNextView model))
+            ContentPage(
+                "Weather",
+                //PancakeView(Styles.gradientStops
+                ContentView(previousNextView model)
+                    .backgroundColor (Styles.getStartGradientColor temperatureOfCurrentCity)
+            )
                 .ignoreSafeArea ()
         )
     //.resources([

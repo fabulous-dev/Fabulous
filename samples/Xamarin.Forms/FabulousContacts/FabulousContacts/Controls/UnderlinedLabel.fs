@@ -2,7 +2,6 @@
 
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.XFAttributes
 open Xamarin.Forms
 
 type UnderlinedLabel() =

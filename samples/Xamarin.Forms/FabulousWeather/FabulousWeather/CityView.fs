@@ -1,4 +1,4 @@
-﻿namespace Fabulous.XamarinForms.Samples.FabulousWeather
+﻿namespace FabulousWeather
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -67,8 +67,9 @@ module CityView =
 
                     (HStack() {
                         for forecast in data.HourlyForecast do
-                            PancakeView(
-                                Styles.HourlyForecastGradientStops,
+                            ContentView(
+                                //PancakeView(
+                                //    Styles.HourlyForecastGradientStops,
                                 VStack() {
                                     Label(forecast.Date.ToString("h tt").ToLower())
                                         .centerTextHorizontal ()
@@ -84,6 +85,7 @@ module CityView =
                                         .centerTextHorizontal ()
                                 }
                             )
+                                .backgroundColor (Styles.HourlyForecastStartColor)
                      })
                         .centerHorizontal()
                         .margin (0., 30., 0., 0.)

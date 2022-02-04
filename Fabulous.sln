@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xamarin.Forms", "Xamarin.Fo
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp", "samples\Xamarin.Forms\CounterApp\CounterApp\CounterApp.fsproj", "{32D4933B-3527-4BB9-9DC1-A3D37A16BEE9}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "samples\Xamarin.Forms\CounterApp\CounterApp.iOS\CounterApp.iOS.fsproj", "{62C174B1-3D0D-4272-B75D-3C7DF87302C4}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "samples\Xamarin.Forms\CounterApp\iOS\CounterApp.iOS.fsproj", "{62C174B1-3D0D-4272-B75D-3C7DF87302C4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Android", "samples\Xamarin.Forms\CounterApp\CounterApp.Android\CounterApp.Android.fsproj", "{9DF1205F-1F70-4293-AFBE-C6965C5F58FA}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Android", "samples\Xamarin.Forms\CounterApp\Android\CounterApp.Android.fsproj", "{9DF1205F-1F70-4293-AFBE-C6965C5F58FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", "{B6321E10-688D-4324-B152-0DE60964CC01}"
 EndProject
@@ -27,25 +27,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FabulousWeather", "Fabulous
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousWeather", "samples\Xamarin.Forms\FabulousWeather\FabulousWeather\FabulousWeather.fsproj", "{A419D3DC-7D99-4DFC-BCCC-1D951A4C867A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousWeather.Android", "samples\Xamarin.Forms\FabulousWeather\FabulousWeather.Android\FabulousWeather.Android.fsproj", "{0B0CED3B-D7A3-4037-9400-68771F6087DA}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousWeather.Android", "samples\Xamarin.Forms\FabulousWeather\Android\FabulousWeather.Android.fsproj", "{0B0CED3B-D7A3-4037-9400-68771F6087DA}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousWeather.iOS", "samples\Xamarin.Forms\FabulousWeather\FabulousWeather.iOS\FabulousWeather.iOS.fsproj", "{6BE674F7-4629-4841-BB9F-5F8A54C5F89F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousWeather.iOS", "samples\Xamarin.Forms\FabulousWeather\iOS\FabulousWeather.iOS.fsproj", "{6BE674F7-4629-4841-BB9F-5F8A54C5F89F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicTacToe", "TicTacToe", "{79073DFA-FD5B-48B3-9B57-F8D8B082150D}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe", "samples\Xamarin.Forms\TicTacToe\TicTacToe\TicTacToe.fsproj", "{0566BF5E-20B4-4391-B493-44290CF3FEE6}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.Android", "samples\Xamarin.Forms\TicTacToe\TicTacToe.Android\TicTacToe.Android.fsproj", "{75FFA6B8-1B73-450F-AFBC-EAEE8D90D9A6}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.Android", "samples\Xamarin.Forms\TicTacToe\Android\TicTacToe.Android.fsproj", "{75FFA6B8-1B73-450F-AFBC-EAEE8D90D9A6}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.iOS", "samples\Xamarin.Forms\TicTacToe\TicTacToe.iOS\TicTacToe.iOS.fsproj", "{C50FBC00-6DDD-48D0-A0CD-77236E5BAAAF}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.iOS", "samples\Xamarin.Forms\TicTacToe\iOS\TicTacToe.iOS.fsproj", "{C50FBC00-6DDD-48D0-A0CD-77236E5BAAAF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FabulousContacts", "FabulousContacts", "{6B597F33-71B9-41B7-B064-A62CD0F82F94}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousContacts", "samples\Xamarin.Forms\FabulousContacts\FabulousContacts\FabulousContacts.fsproj", "{D8FA693C-E8F7-4BA4-BF41-41602BA0C88F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousContacts.Android", "samples\Xamarin.Forms\FabulousContacts\FabulousContacts.Android\FabulousContacts.Android.fsproj", "{B3E39B66-CDBC-4A71-8607-834043C50DC9}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousContacts.Android", "samples\Xamarin.Forms\FabulousContacts\Android\FabulousContacts.Android.fsproj", "{B3E39B66-CDBC-4A71-8607-834043C50DC9}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousContacts.iOS", "samples\Xamarin.Forms\FabulousContacts\FabulousContacts.iOS\FabulousContacts.iOS.fsproj", "{FD577647-C3A6-45CB-BDFE-B8FE2D9E0E50}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FabulousContacts.iOS", "samples\Xamarin.Forms\FabulousContacts\iOS\FabulousContacts.iOS.fsproj", "{FD577647-C3A6-45CB-BDFE-B8FE2D9E0E50}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Benchmarks", "src\Fabulous.Benchmarks\Fabulous.Benchmarks.fsproj", "{9034B95D-4EBD-4CBF-AEB7-963B3F2C83CB}"
 EndProject
