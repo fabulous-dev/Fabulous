@@ -27,7 +27,15 @@ open FabulousContacts
 [<assembly: UsesFeature("android.hardware.camera.autofocus", Required = false)>]
 do ()
 
-[<Activity(Label = "FabulousContacts", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation ||| ConfigChanges.UiMode ||| ConfigChanges.ScreenLayout ||| ConfigChanges.SmallestScreenSize) )>]
+[<Activity(Label = "FabulousContacts",
+           Icon = "@drawable/icon",
+           Theme = "@style/MainTheme",
+           MainLauncher = true,
+           ConfigurationChanges = (ConfigChanges.ScreenSize
+                                   ||| ConfigChanges.Orientation
+                                   ||| ConfigChanges.UiMode
+                                   ||| ConfigChanges.ScreenLayout
+                                   ||| ConfigChanges.SmallestScreenSize))>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
 
@@ -53,6 +61,11 @@ type MainActivity() =
         let application: Xamarin.Forms.Application = unbox (Program.create app ())
         this.LoadApplication(application)
 
-    override this.OnRequestPermissionsResult (requestCode: int, permissions: string [], [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []) =
+    override this.OnRequestPermissionsResult
+        (
+            requestCode: int,
+            permissions: string [],
+            [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []
+        ) =
         Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults)

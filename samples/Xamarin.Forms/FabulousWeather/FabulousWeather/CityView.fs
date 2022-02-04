@@ -68,8 +68,8 @@ module CityView =
                     (HStack() {
                         for forecast in data.HourlyForecast do
                             ContentView(
-                            //PancakeView(
-                            //    Styles.HourlyForecastGradientStops,
+                                //PancakeView(
+                                //    Styles.HourlyForecastGradientStops,
                                 VStack() {
                                     Label(forecast.Date.ToString("h tt").ToLower())
                                         .centerTextHorizontal ()
@@ -84,7 +84,8 @@ module CityView =
                                     Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
                                         .centerTextHorizontal ()
                                 }
-                            ).backgroundColor(Styles.HourlyForecastStartColor)
+                            )
+                                .backgroundColor (Styles.HourlyForecastStartColor)
                      })
                         .centerHorizontal()
                         .margin (0., 30., 0., 0.)

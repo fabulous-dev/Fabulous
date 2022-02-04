@@ -126,12 +126,13 @@ module App =
             |> Option.defaultValue 0<kelvin>
 
         Application(
-            ContentPage("Weather",
+            ContentPage(
+                "Weather",
                 //PancakeView(Styles.gradientStops
-                ContentView(
-                    previousNextView model
-                ).backgroundColor(Styles.getStartGradientColor temperatureOfCurrentCity)
-            ).ignoreSafeArea ()
+                ContentView(previousNextView model)
+                    .backgroundColor (Styles.getStartGradientColor temperatureOfCurrentCity)
+            )
+                .ignoreSafeArea ()
         )
     //.resources([
     //    LabelStyle()

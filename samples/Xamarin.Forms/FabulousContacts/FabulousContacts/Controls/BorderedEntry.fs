@@ -14,13 +14,13 @@ type BorderedEntry() =
     member this.BorderColor
         with get () = this.GetValue(BorderedEntry.BorderColorProperty) :?> Color
         and set (value: Color) = this.SetValue(BorderedEntry.BorderColorProperty, value)
-        
+
 type IBorderedEntry =
     inherit IEntry
 
 module BorderedEntry =
     let WidgetKey = Widgets.register<BorderedEntry> ()
-    
+
     let BorderColor =
         Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
 

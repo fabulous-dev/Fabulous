@@ -33,7 +33,7 @@ module MainPage =
         { Contacts: Contact list option
           TabAllContactsModel: ContactsListPage.Model
           TabFavContactsModel: ContactsListPage.Model }
-          //TabMapModel: MapPage.Model }
+    //TabMapModel: MapPage.Model }
 
     // Functions
     let loadAsync dbPath =
@@ -52,13 +52,13 @@ module MainPage =
             { Contacts = None
               TabAllContactsModel = modelAllContacts
               TabFavContactsModel = modelFavContacts }
-              //TabMapModel = modelMap }
+        //TabMapModel = modelMap }
 
         let batchCmd =
             Cmd.batch [ Cmd.ofAsyncMsg (loadAsync dbPath)
                         Cmd.map TabAllContactsMsg msgAllContacts
                         Cmd.map TabFavContactsMsg msgFavContacts ]
-                        // Cmd.map TabMapMsg msgMap ]
+        // Cmd.map TabMapMsg msgMap ]
 
         m, batchCmd
 
@@ -91,7 +91,7 @@ module MainPage =
             let batchCmd =
                 Cmd.batch [ Cmd.ofMsg (TabAllContactsMsg allMsg)
                             Cmd.ofMsg (TabFavContactsMsg favMsg) ]
-                            // Cmd.ofMsg (TabMapMsg mapMsg) ]
+            // Cmd.ofMsg (TabMapMsg mapMsg) ]
 
             let m = { model with Contacts = Some contacts }
             m, batchCmd, ExternalMsg.NoOp
@@ -166,7 +166,7 @@ module MainPage =
         (TabbedPage(title) {
             View.map TabAllContactsMsg tabAllContacts
             View.map TabAllContactsMsg tabFavContacts
-            //View.map TabMapMsg tabMap
+         //View.map TabMapMsg tabMap
          })
             .androidToolbarPlacement (ToolbarPlacement.Bottom)
 

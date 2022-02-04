@@ -12,7 +12,15 @@ open NewApp
 [<assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)>]
 do ()
 
-[<Activity(Label = "NewApp", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation ||| ConfigChanges.UiMode ||| ConfigChanges.ScreenLayout ||| ConfigChanges.SmallestScreenSize) )>]
+[<Activity(Label = "NewApp",
+           Icon = "@drawable/icon",
+           Theme = "@style/MainTheme",
+           MainLauncher = true,
+           ConfigurationChanges = (ConfigChanges.ScreenSize
+                                   ||| ConfigChanges.Orientation
+                                   ||| ConfigChanges.UiMode
+                                   ||| ConfigChanges.ScreenLayout
+                                   ||| ConfigChanges.SmallestScreenSize))>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
 

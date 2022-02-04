@@ -2,8 +2,8 @@
 
 open UIKit
 
-module Main = 
+module Main =
     [<EntryPoint>]
-    let main args = 
+    let main args =
         UIApplication.Main(args, null, typeof<AppDelegate>)
         0

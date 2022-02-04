@@ -9,7 +9,15 @@ open Xamarin.Forms.Platform.Android
 open Fabulous.XamarinForms
 open TicTacToe
 
-[<Activity(Label = "TicTacToe", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation ||| ConfigChanges.UiMode ||| ConfigChanges.ScreenLayout ||| ConfigChanges.SmallestScreenSize) )>]
+[<Activity(Label = "TicTacToe",
+           Icon = "@drawable/icon",
+           Theme = "@style/MainTheme",
+           MainLauncher = true,
+           ConfigurationChanges = (ConfigChanges.ScreenSize
+                                   ||| ConfigChanges.Orientation
+                                   ||| ConfigChanges.UiMode
+                                   ||| ConfigChanges.ScreenLayout
+                                   ||| ConfigChanges.SmallestScreenSize))>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
 
@@ -26,6 +34,11 @@ type MainActivity() =
         let application: Xamarin.Forms.Application = unbox (Program.create App.program ())
         this.LoadApplication(application)
 
-    override this.OnRequestPermissionsResult (requestCode: int, permissions: string [], [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []) =
+    override this.OnRequestPermissionsResult
+        (
+            requestCode: int,
+            permissions: string [],
+            [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []
+        ) =
         Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults)
