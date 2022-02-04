@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-ios;net6.0-android</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="WeatherSamples\current-weather.json" />
+    <None Include="WeatherSamples\hourly-forecast.json" />
+    <Compile Include="PancakeView.fs" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="WeatherApi.fs" />
+    <Compile Include="Styles.fs" />
+    <Compile Include="CityView.fs" />
+    <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="FSharp.Core" Version="6.0.1" />
+    <!-- <PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" /> -->
+    <PackageReference Include="FSharp.Data" Version="4.2.5" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-ios' ">
+    <PackageReference Include="Xamarin.Forms" Version="[5.0.0.1]" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+</Project>

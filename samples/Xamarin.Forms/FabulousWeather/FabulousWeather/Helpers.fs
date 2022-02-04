@@ -1,4 +1,4 @@
-﻿namespace Fabulous.XamarinForms.Samples.FabulousWeather
+﻿namespace FabulousWeather
 
 open System
 
