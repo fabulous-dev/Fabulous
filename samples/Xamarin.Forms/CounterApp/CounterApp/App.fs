@@ -1,4 +1,4 @@
-namespace Fabulous.XamarinForms.Samples.CounterApp
+﻿namespace CounterApp
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -60,7 +60,7 @@ module App =
 
                     Button("Increment", Increment)
 
-                    Button("Decrement", Increment)
+                    Button("Decrement", Decrement)
 
                     (HStack() {
                         Label("Timer")
