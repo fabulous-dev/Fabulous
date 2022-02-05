@@ -5,6 +5,12 @@
     <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+    <CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
+    <CodesignKey>Apple Distribution: Timothe Lariviere (6QPDZ967XA)</CodesignKey>
+    <CodesignProvision>FabulousSamplesDistribution</CodesignProvision>
+  </PropertyGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\**\*" />
     <None Include="Info.plist" />
