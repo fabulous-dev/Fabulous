@@ -154,7 +154,7 @@ type ButtonModifiers =
         res
 
     [<Extension>]
-    static member inline imageSource(this: WidgetBuilder<'msg, #IButton>, light, ?dark) =
+    static member inline imageSource(this: WidgetBuilder<'msg, #IButton>, light: string, ?dark: string) =
         this.AddScalar(Button.ImageSource.WithValue(AppThemeValues<string>.create (light, dark)))
 
     [<Extension>]

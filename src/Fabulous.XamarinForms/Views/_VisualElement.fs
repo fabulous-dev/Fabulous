@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IVisualElement =
@@ -38,15 +39,7 @@ type VisualElementModifiers =
 
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: Color, ?dark: Color) =
-        this.AddScalar(
-            VisualElement.BackgroundColor.WithValue(
-                { Light = light
-                  Dark =
-                      match dark with
-                      | None -> ValueNone
-                      | Some v -> ValueSome v }
-            )
-        )
+        this.AddScalar(VisualElement.BackgroundColor.WithValue(AppThemeValues<Color>.create (light, dark)))
 
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
