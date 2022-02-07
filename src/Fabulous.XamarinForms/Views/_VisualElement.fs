@@ -15,7 +15,7 @@ module VisualElement =
         Attributes.defineBindable<float> VisualElement.OpacityProperty
 
     let BackgroundColor =
-        Attributes.defineBindable<Color> VisualElement.BackgroundColorProperty
+        Attributes.defineAppThemeBindable<Color> VisualElement.BackgroundColorProperty
 
     let Height =
         Attributes.defineBindable<float> VisualElement.HeightRequestProperty
@@ -37,8 +37,16 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Opacity.WithValue(value))
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, value: Color) =
-        this.AddScalar(VisualElement.BackgroundColor.WithValue(value))
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: Color, ?dark: Color) =
+        this.AddScalar(
+            VisualElement.BackgroundColor.WithValue(
+                { Light = light
+                  Dark =
+                      match dark with
+                      | None -> ValueNone
+                      | Some v -> ValueSome v }
+            )
+        )
 
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
