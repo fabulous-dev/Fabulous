@@ -111,7 +111,7 @@ module DetailPage =
             (Grid() {
                 getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
 
-                Image("star.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "star.png")
                     .isVisible(contact.IsFavorite)
                     .size(height = 35., width = 35.)
                     .alignStartHorizontal()

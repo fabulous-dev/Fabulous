@@ -4,10 +4,10 @@ open Fabulous
 open Xamarin.Forms
 
 [<Struct>]
-type AppThemeValues<'T> =
-    { Light: 'T
-      Dark: 'T voption }
-    static member inline create(light, dark) =
+type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
+
+module AppTheme =
+    let inline create<'T> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
               match dark with

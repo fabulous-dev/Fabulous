@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open System
 open WeatherApi
+open Xamarin.Forms
 
 open type Fabulous.XamarinForms.View
 
@@ -22,7 +23,7 @@ module CityView =
     let loadingView (cityName: string) =
         VStack() {
             Label(cityName.ToUpper())
-                .font(namedSize = Xamarin.Forms.NamedSize.Title)
+                .font(namedSize = NamedSize.Title)
                 .centerTextHorizontal()
                 .padding (0., 20., 0., 0.)
 
@@ -43,18 +44,18 @@ module CityView =
                         .font(Styles.CityNameFontSize)
                         .centerTextHorizontal ()
 
-                    Image($"{sanitizedCityName}.png", Xamarin.Forms.Aspect.AspectFit)
+                    Image(Aspect.AspectFit, $"{sanitizedCityName}.png")
                         .opacity (0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
                         .font(Styles.CurrentTemperatureFontSize)
                         .centerTextHorizontal()
-                        .margin (Xamarin.Forms.Thickness(30., 0., 0., 0.))
+                        .margin (Thickness(30., 0., 0., 0.))
 
                     Label(data.WeatherKind.ToString().ToUpper())
                         .font(Styles.CurrentWeatherKindFontSize)
                         .centerTextHorizontal()
-                        .margin (Xamarin.Forms.Thickness(0., 10., 0., 0.))
+                        .margin (Thickness(0., 10., 0., 0.))
 
                     Label(
                         data
@@ -75,8 +76,8 @@ module CityView =
                                         .centerTextHorizontal ()
 
                                     Image(
-                                        Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png"),
-                                        Xamarin.Forms.Aspect.AspectFit
+                                        Xamarin.Forms.Aspect.AspectFit,
+                                        Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png")
                                     )
                                         .centerHorizontal()
                                         .centerVertical (expand = true)
@@ -95,10 +96,10 @@ module CityView =
 
     let cityView (index: int) (city: CityData) onRefreshing =
         let padding =
-            if Xamarin.Forms.Device.RuntimePlatform = Xamarin.Forms.Device.Android then
-                Xamarin.Forms.Thickness(0., 24., 0., 30.)
+            if Device.RuntimePlatform = Device.Android then
+                Thickness(0., 24., 0., 30.)
             else
-                Xamarin.Forms.Thickness(0., 0., 0., 40.)
+                Thickness(0., 0., 0., 40.)
 
         match city.Data with
         | Some data ->

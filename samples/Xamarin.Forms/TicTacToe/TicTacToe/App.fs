@@ -227,7 +227,7 @@ module App =
                                             .gridRow(row * 2)
                                             .gridColumn (col * 2)
                                     else
-                                        Image(imageForPos model.Board.[pos], Aspect.AspectFit)
+                                        Image(Aspect.AspectFit, imageForPos model.Board.[pos])
                                             .center()
                                             .margin(10.)
                                             .gridRow(row * 2)
@@ -249,7 +249,7 @@ module App =
                             Button("Restart game", Restart)
                                 .textColor(Color.Black)
                                 .backgroundColor(Color.LightBlue)
-                                .font(NamedSize.Large)
+                                .font(namedSize = NamedSize.Large)
                                 .gridRow (2)
                         }
                     )

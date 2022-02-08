@@ -96,8 +96,8 @@ module Helpers =
 
     let getImageValueOrDefault (defaultValue: string) aspect (value: byte [] option) =
         match value with
-        | None -> Image(defaultValue, aspect)
-        | Some bytes -> Image(new MemoryStream(bytes), aspect)
+        | None -> Image(aspect, defaultValue)
+        | Some bytes -> Image(aspect, new MemoryStream(bytes))
 
 module Cmd =
     let performAsync asyncUnit =

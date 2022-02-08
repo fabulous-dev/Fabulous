@@ -1,5 +1,7 @@
 namespace Fabulous.XamarinForms
 
+open System
+open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
@@ -36,7 +38,7 @@ module Button =
         Attributes.defineBindable<float> Button.FontSizeProperty
 
     let ImageSource =
-        Attributes.defineAppThemeBindable<string> Button.ImageSourceProperty
+        Attributes.defineAppThemeBindable<ImageSource> Button.ImageSourceProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> Button.PaddingProperty
@@ -73,7 +75,7 @@ module ButtonBuilders =
 type ButtonModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IButton>, light: Color, ?dark: Color) =
-        this.AddScalar(Button.TextColor.WithValue(AppThemeValues<Color>.create (light, dark)))
+        this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IButton>, value: TextTransform) =
@@ -85,7 +87,7 @@ type ButtonModifiers =
 
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IButton>, light: Color, ?dark: Color) =
-        this.AddScalar(Button.BorderColor.WithValue(AppThemeValues<Color>.create (light, dark)))
+        this.AddScalar(Button.BorderColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline borderWidth(this: WidgetBuilder<'msg, #IButton>, value: float) =
@@ -154,8 +156,41 @@ type ButtonModifiers =
         res
 
     [<Extension>]
-    static member inline imageSource(this: WidgetBuilder<'msg, #IButton>, light: string, ?dark: string) =
-        this.AddScalar(Button.ImageSource.WithValue(AppThemeValues<string>.create (light, dark)))
+    static member inline image(this: WidgetBuilder<'msg, #IButton>, light: ImageSource, ?dark: ImageSource) =
+        this.AddScalar(Button.ImageSource.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline image(this: WidgetBuilder<'msg, #IButton>, light: string, ?dark: string) =
+        let light = ImageSource.FromFile(light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromFile(v))
+
+        ButtonModifiers.image (this, light, ?dark = dark)
+
+    [<Extension>]
+    static member inline image(this: WidgetBuilder<'msg, #IButton>, light: Uri, ?dark: Uri) =
+        let light = ImageSource.FromUri(light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromUri(v))
+
+        ButtonModifiers.image (this, light, ?dark = dark)
+
+    [<Extension>]
+    static member inline image(this: WidgetBuilder<'msg, #IButton>, light: Stream, ?dark: Stream) =
+        let light = ImageSource.FromStream(fun () -> light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromStream(fun () -> v))
+
+        ButtonModifiers.image (this, light, ?dark = dark)
 
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IButton>, msg: 'msg) =
