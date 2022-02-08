@@ -21,23 +21,17 @@ module Image =
         Attributes.defineBindable<bool> Image.IsOpaqueProperty
 
     let Source =
-        Attributes.defineAppThemeBindable<string> Image.SourceProperty
+        Attributes.defineAppThemeBindable<ImageSource> Image.SourceProperty
 
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline Image<'msg>(imageSource: ImageSource, aspect: Aspect) =
-            WidgetBuilder<'msg, IImage>(
-                Image.WidgetKey,
-                (Attributes.defineBindable<ImageSource> Image.SourceProperty)
-                    .WithValue(imageSource),
-                Image.Aspect.WithValue(aspect)
-            )
 
-        static member inline Image<'msg>(light: string, ?dark: string) =
+        static member inline Image<'msg>(light: ImageSource, aspect: Aspect, ?dark: ImageSource) =
             WidgetBuilder<'msg, IImage>(
                 Image.WidgetKey,
-                Image.Source.WithValue(AppThemeValues<string>.create (light, dark))
+                Image.Aspect.WithValue(aspect),
+                Image.Source.WithValue(AppThemeValues.create<ImageSource> (light, dark))
             )
 
         static member inline Image<'msg>(path: string, aspect: Aspect) =
@@ -51,10 +45,6 @@ module ImageBuilders =
 
 [<Extension>]
 type ImageModifiers =
-    [<Extension>]
-    static member inline aspect(this: WidgetBuilder<'msg, #IImage>, aspect: Aspect) =
-        this.AddScalar(Image.Aspect.WithValue(aspect))
-
     [<Extension>]
     static member inline isAnimationPlaying(this: WidgetBuilder<'msg, #IImage>, isAnimationPlaying: bool) =
         this.AddScalar(Image.IsAnimationPlaying.WithValue(isAnimationPlaying))
