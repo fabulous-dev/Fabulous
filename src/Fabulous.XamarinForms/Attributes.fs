@@ -7,7 +7,7 @@ open Xamarin.Forms
 type AppThemeValues<'T> =
     { Light: 'T
       Dark: 'T voption }
-    static member inline create<'T>(light : 'T, ?dark: 'T) =
+    static member inline create<'T>(light: 'T, ?dark: 'T) =
         { Light = light
           Dark =
               match dark with
@@ -72,4 +72,4 @@ module Attributes =
     let inline getAppTheme<'T> light dark =
         match dark with
         | Some dark -> AppThemeValues<'T>.create (light, dark)
-        | None -> AppThemeValues<'T>.create(light)
+        | None -> AppThemeValues<'T>.create (light)
