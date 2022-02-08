@@ -1,6 +1,8 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IImage =
@@ -9,11 +11,17 @@ type IImage =
 module Image =
     let WidgetKey = Widgets.register<Image> ()
 
-    let Source =
-        Attributes.defineBindable<ImageSource> Image.SourceProperty
-
     let Aspect =
         Attributes.defineBindable<Aspect> Image.AspectProperty
+
+    let IsAnimationPlaying =
+        Attributes.defineBindable<bool> Image.IsAnimationPlayingProperty
+
+    let IsOpaque =
+        Attributes.defineBindable<bool> Image.IsOpaqueProperty
+
+    let Source =
+        Attributes.defineAppThemeBindable<string> Image.SourceProperty
 
 [<AutoOpen>]
 module ImageBuilders =
@@ -21,8 +29,15 @@ module ImageBuilders =
         static member inline Image<'msg>(imageSource: ImageSource, aspect: Aspect) =
             WidgetBuilder<'msg, IImage>(
                 Image.WidgetKey,
-                Image.Source.WithValue(imageSource),
+                (Attributes.defineBindable<ImageSource> Image.SourceProperty)
+                    .WithValue(imageSource),
                 Image.Aspect.WithValue(aspect)
+            )
+
+        static member inline Image<'msg>(light: string, ?dark: string) =
+            WidgetBuilder<'msg, IImage>(
+                Image.WidgetKey,
+                Image.Source.WithValue(AppThemeValues<string>.create (light, dark))
             )
 
         static member inline Image<'msg>(path: string, aspect: Aspect) =
@@ -33,3 +48,17 @@ module ImageBuilders =
 
         static member inline Image<'msg>(stream: System.IO.Stream, aspect: Aspect) =
             View.Image<'msg>(ImageSource.FromStream(fun () -> stream), aspect)
+
+[<Extension>]
+type ImageModifiers =
+    [<Extension>]
+    static member inline aspect(this: WidgetBuilder<'msg, #IImage>, aspect: Aspect) =
+        this.AddScalar(Image.Aspect.WithValue(aspect))
+
+    [<Extension>]
+    static member inline isAnimationPlaying(this: WidgetBuilder<'msg, #IImage>, isAnimationPlaying: bool) =
+        this.AddScalar(Image.IsAnimationPlaying.WithValue(isAnimationPlaying))
+
+    [<Extension>]
+    static member inline isOpaque(this: WidgetBuilder<'msg, #IImage>, isOpaque: bool) =
+        this.AddScalar(Image.IsOpaque.WithValue(isOpaque))
