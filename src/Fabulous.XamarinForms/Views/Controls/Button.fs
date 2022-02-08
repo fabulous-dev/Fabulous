@@ -36,7 +36,7 @@ module Button =
         Attributes.defineBindable<float> Button.FontSizeProperty
 
     let ImageSource =
-        Attributes.defineAppThemeBindable<string> Button.ImageSourceProperty
+        Attributes.defineAppThemeBindable<ImageSource> Button.ImageSourceProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> Button.PaddingProperty
@@ -154,8 +154,8 @@ type ButtonModifiers =
         res
 
     [<Extension>]
-    static member inline imageSource(this: WidgetBuilder<'msg, #IButton>, light: string, ?dark: string) =
-        this.AddScalar(Button.ImageSource.WithValue(AppThemeValues<string>.create (light, dark)))
+    static member inline imageSource(this: WidgetBuilder<'msg, #IButton>, light: ImageSource, ?dark: ImageSource) =
+        this.AddScalar(Button.ImageSource.WithValue(AppThemeValues.create<ImageSource> (light, dark)))
 
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IButton>, msg: 'msg) =
