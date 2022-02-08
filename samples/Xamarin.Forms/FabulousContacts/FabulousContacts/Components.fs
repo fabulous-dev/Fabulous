@@ -79,7 +79,7 @@ module Components =
                     .fillHorizontal(expand = true)
                     .margin (0., 5., 0., 5.)
 
-                Image("star.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "star.png")
                     .isVisible(isFavorite)
                     .centerVertical()
                     .margin(0., 0., 15., 0.)
@@ -126,7 +126,7 @@ module Components =
 
         | Some picture ->
             ContentView(
-                Image(new MemoryStream(picture), Aspect.AspectFill)
+                Image(Aspect.AspectFill, new MemoryStream(picture))
             )
                 .gridRowSpan(
                 2

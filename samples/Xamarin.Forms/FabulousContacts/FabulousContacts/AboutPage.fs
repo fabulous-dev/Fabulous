@@ -63,7 +63,7 @@ module AboutPage =
             Label(Strings.AboutPage_AboutFSharp_MadeWith)
 
             (VStack() {
-                Image("fsharp.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "fsharp.png")
                     .size (height = 50., width = 50.)
 
                 Label(Strings.AboutPage_AboutFSharp_FSharp)
@@ -72,7 +72,7 @@ module AboutPage =
                 .gestureRecognizers () { TapGestureRecognizer(openBrowser fsharpOrgUrl) }
 
             (VStack() {
-                Image("xamarin.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "xamarin.png")
                     .size (height = 50., width = 50.)
 
                 Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
@@ -107,7 +107,7 @@ module AboutPage =
             Label(Strings.AboutPage_AboutAuthor_AuthorName)
 
             (HStack(spacing = 15.) {
-                Image("blog.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "blog.png")
                     .size (height = 35., width = 35.)
 
                 UnderlinedLabel(authorBlogUrl).centerVertical ()
@@ -118,7 +118,7 @@ module AboutPage =
                 .margin (Thickness(0., 10., 0., 0.))
 
             (HStack(spacing = 15.) {
-                Image("github.png", Aspect.AspectFit)
+                Image(Aspect.AspectFit, "github.png")
                     .size (height = 35., width = 35.)
 
                 UnderlinedLabel(authorGitHubHandle)
@@ -128,7 +128,7 @@ module AboutPage =
 
             (HStack(spacing = 15.) {
                 (VStack() {
-                    Image("twitter.png", Aspect.AspectFit)
+                    Image(Aspect.AspectFit, "twitter.png")
                         .size (height = 50., width = 50.)
 
                     Label(authorTwitterHandle).centerTextHorizontal ()
@@ -136,7 +136,7 @@ module AboutPage =
                     .gestureRecognizers () { TapGestureRecognizer(openBrowser authorTwitterUrl) }
 
                 (VStack() {
-                    Image("slack.png", Aspect.AspectFit)
+                    Image(Aspect.AspectFit, "slack.png")
                         .size (height = 50., width = 50.)
 
                     Label(authorSlackHandle).centerTextHorizontal ()
@@ -152,7 +152,7 @@ module AboutPage =
             "About FabulousContacts",
             ScrollView(
                 (VStack() {
-                    ContentView(Image("icon.png", Aspect.AspectFit))
+                    ContentView(Image(Aspect.AspectFit, "icon.png"))
                         .backgroundColor(accentColor)
                         .size(height = 100., width = 100.)
                         .centerHorizontal()

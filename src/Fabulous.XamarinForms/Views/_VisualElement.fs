@@ -39,8 +39,7 @@ type VisualElementModifiers =
 
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: Color, ?dark: Color) =
-        let appTheme = Attributes.getAppTheme<Color> light dark
-        this.AddScalar(VisualElement.BackgroundColor.WithValue(appTheme))
+        this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
