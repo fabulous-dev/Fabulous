@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IVisualElement =
@@ -15,7 +16,7 @@ module VisualElement =
         Attributes.defineBindable<float> VisualElement.OpacityProperty
 
     let BackgroundColor =
-        Attributes.defineBindable<Color> VisualElement.BackgroundColorProperty
+        Attributes.defineAppThemeBindable<Color> VisualElement.BackgroundColorProperty
 
     let Height =
         Attributes.defineBindable<float> VisualElement.HeightRequestProperty
@@ -37,8 +38,8 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Opacity.WithValue(value))
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, value: Color) =
-        this.AddScalar(VisualElement.BackgroundColor.WithValue(value))
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: Color, ?dark: Color) =
+        this.AddScalar(VisualElement.BackgroundColor.WithValue(AppThemeValues<Color>.create (light, dark)))
 
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =

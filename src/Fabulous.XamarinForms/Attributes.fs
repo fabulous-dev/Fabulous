@@ -4,7 +4,15 @@ open Fabulous
 open Xamarin.Forms
 
 [<Struct>]
-type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
+type AppThemeValues<'T> =
+    { Light: 'T
+      Dark: 'T voption }
+    static member inline create(light, dark) =
+        { Light = light
+          Dark =
+              match dark with
+              | None -> ValueNone
+              | Some v -> ValueSome v }
 
 module Attributes =
     /// Define an attribute storing a Widget for a bindable property
