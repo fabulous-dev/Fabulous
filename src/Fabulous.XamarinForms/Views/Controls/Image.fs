@@ -28,37 +28,42 @@ module Image =
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.XamarinForms.View with
-
         static member inline Image<'msg>(aspect: Aspect, light: ImageSource, ?dark: ImageSource) =
-            let appTheme =
-                Attributes.getAppTheme<ImageSource> light dark
-
             WidgetBuilder<'msg, IImage>(
                 Image.WidgetKey,
                 Image.Aspect.WithValue(aspect),
-                Image.Source.WithValue(appTheme)
+                Image.Source.WithValue(AppTheme.create light dark)
             )
 
         static member inline Image<'msg>(aspect: Aspect, light: string, ?dark: string) =
-            match dark with
-            | Some dark -> View.Image<'msg>(aspect, ImageSource.FromFile(light), ImageSource.FromFile(dark))
-            | None -> View.Image<'msg>(aspect, ImageSource.FromFile(light))
+            let light = ImageSource.FromFile(light)
+
+            let dark =
+                match dark with
+                | None -> None
+                | Some v -> Some(ImageSource.FromFile(v))
+
+            View.Image<'msg>(aspect, light, ?dark = dark)
 
         static member inline Image<'msg>(aspect: Aspect, light: Uri, ?dark: Uri) =
-            match dark with
-            | Some dark -> View.Image<'msg>(aspect, ImageSource.FromUri(light), ImageSource.FromUri(dark))
-            | None -> View.Image<'msg>(aspect, ImageSource.FromUri(light))
+            let light = ImageSource.FromUri(light)
 
+            let dark =
+                match dark with
+                | None -> None
+                | Some v -> Some(ImageSource.FromUri(v))
+
+            View.Image<'msg>(aspect, light, ?dark = dark)
 
         static member inline Image<'msg>(aspect: Aspect, light: Stream, ?dark: Stream) =
-            match dark with
-            | Some dark ->
-                View.Image<'msg>(
-                    aspect,
-                    ImageSource.FromStream(fun () -> light),
-                    ImageSource.FromStream(fun () -> dark)
-                )
-            | None -> View.Image<'msg>(aspect, ImageSource.FromStream(fun () -> light))
+            let light = ImageSource.FromStream(fun () -> light)
+
+            let dark =
+                match dark with
+                | None -> None
+                | Some v -> Some(ImageSource.FromStream(fun () -> v))
+
+            View.Image<'msg>(aspect, light, ?dark = dark)
 
 [<Extension>]
 type ImageModifiers =

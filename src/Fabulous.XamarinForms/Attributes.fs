@@ -4,10 +4,10 @@ open Fabulous
 open Xamarin.Forms
 
 [<Struct>]
-type AppThemeValues<'T> =
-    { Light: 'T
-      Dark: 'T voption }
-    static member inline create<'T>(light: 'T, ?dark: 'T) =
+type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
+
+module AppTheme =
+    let inline create<'T> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
               match dark with
@@ -68,8 +68,3 @@ module Attributes =
                 | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
                 | ValueSome { Light = light; Dark = ValueSome dark } ->
                     target.SetOnAppTheme(bindableProperty, light, dark))
-
-    let inline getAppTheme<'T> light dark =
-        match dark with
-        | Some dark -> AppThemeValues<'T>.create (light, dark)
-        | None -> AppThemeValues<'T>.create (light)
