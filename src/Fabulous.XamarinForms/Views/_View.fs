@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IView =
-    inherit IVisualElement
+    inherit INavigableElement
 
 module XFView =
     let HorizontalOptions =

@@ -6,7 +6,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ILabel =
-    inherit INavigableElement
+    inherit IView
 
 module Label =
     let WidgetKey = Widgets.register<Label> ()

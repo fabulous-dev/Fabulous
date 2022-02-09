@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type INavigableElement =
-    inherit IView
+    inherit IVisualElement
 
 module NavigableElement =
     let Style =

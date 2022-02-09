@@ -8,7 +8,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IButton =
-    inherit INavigableElement
+    inherit IView
 
 module Button =
     let WidgetKey = Widgets.register<Button> ()
