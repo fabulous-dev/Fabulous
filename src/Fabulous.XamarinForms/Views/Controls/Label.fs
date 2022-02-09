@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ILabel =
@@ -10,29 +11,51 @@ type ILabel =
 module Label =
     let WidgetKey = Widgets.register<Label> ()
 
-    let Text =
-        Attributes.defineBindable<string> Label.TextProperty
+    let CharacterSpacing =
+        Attributes.defineBindable<float> Label.CharacterSpacingProperty
+
+    let FontAttributes =
+        Attributes.defineBindable<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
+
+    let FontFamily =
+        Attributes.defineBindable<string> Label.FontFamilyProperty
+
+    let FontSize =
+        Attributes.defineBindable<float> Label.FontSizeProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindable<TextAlignment> Label.HorizontalTextAlignmentProperty
 
-    let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Label.VerticalTextAlignmentProperty
+    let LineBreakMode =
+        Attributes.defineBindable<Xamarin.Forms.LineBreakMode> Label.LineBreakModeProperty
 
-    let FontSize =
-        Attributes.defineBindable<double> Label.FontSizeProperty
+    let LineHeight =
+        Attributes.defineBindable<float> Label.LineHeightProperty
+
+    let MaxLines =
+        Attributes.defineBindable<int> Label.MaxLinesProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> Label.PaddingProperty
 
     let TextColor =
-        Attributes.defineBindable<Color> Label.TextColorProperty
+        Attributes.defineAppThemeBindable<Color> Label.TextColorProperty
 
-    let FontAttributes =
-        Attributes.defineBindable<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
+    let TextDecorations =
+        Attributes.defineBindable<TextDecorations> Label.TextDecorationsProperty
 
-    let LineBreakMode =
-        Attributes.defineBindable<Xamarin.Forms.LineBreakMode> Label.LineBreakModeProperty
+    let Text =
+        Attributes.defineBindable<string> Label.TextProperty
+
+    let TextTransform =
+        Attributes.defineBindable<TextTransform> Label.TextTransformProperty
+
+    let TextType =
+        Attributes.defineBindable<TextType> Label.TextTypeProperty
+
+    let VerticalTextAlignment =
+        Attributes.defineBindable<TextAlignment> Label.VerticalTextAlignmentProperty
+
 
 [<AutoOpen>]
 module LabelBuilders =
@@ -42,52 +65,10 @@ module LabelBuilders =
 
 [<Extension>]
 type LabelModifiers =
-    [<Extension>]
-    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
-        this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
 
     [<Extension>]
-    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
-        this.AddScalar(Label.VerticalTextAlignment.WithValue(value))
-
-    [<Extension>]
-    static member inline font(this: WidgetBuilder<'msg, #ILabel>, value: double) =
-        this.AddScalar(Label.FontSize.WithValue(value))
-
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, value: Color) =
-        this.AddScalar(Label.TextColor.WithValue(value))
-
-    [<Extension>]
-    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: Thickness) =
-        this.AddScalar(Label.Padding.WithValue(value))
-
-    [<Extension>]
-    static member inline padding
-        (
-            this: WidgetBuilder<'msg, #ILabel>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
-        ) =
-        this.AddScalar(Label.Padding.WithValue(Thickness(left, top, right, bottom)))
-
-    [<Extension>]
-    static member inline lineBreakMode(this: WidgetBuilder<'msg, #ILabel>, value: LineBreakMode) =
-        this.AddScalar(Label.LineBreakMode.WithValue(value))
-
-    [<Extension>]
-    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ILabel>) =
-        this.AddScalar(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
-
-    [<Extension>]
-    static member inline style(this: WidgetBuilder<'msg, #IView>, style: Style) =
-        this.AddScalar(NavigableElement.Style.WithValue(style))
-
-    [<Extension>]
-    static member inline centerTextVertical(this: WidgetBuilder<'msg, #ILabel>) =
-        this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+        this.AddScalar(Label.CharacterSpacing.WithValue(value))
 
     [<Extension>]
     static member inline font
@@ -95,7 +76,8 @@ type LabelModifiers =
             this: WidgetBuilder<'msg, #ILabel>,
             ?size: double,
             ?namedSize: NamedSize,
-            ?attributes: FontAttributes
+            ?attributes: FontAttributes,
+            ?fontFamily: string
         ) =
 
         let mutable res = this
@@ -112,4 +94,71 @@ type LabelModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
 
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontFamily.WithValue(v))
+
         res
+
+    [<Extension>]
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
+        this.AddScalar(Label.HorizontalTextAlignment.WithValue(value))
+
+    [<Extension>]
+    static member inline lineBreakMode(this: WidgetBuilder<'msg, #ILabel>, value: LineBreakMode) =
+        this.AddScalar(Label.LineBreakMode.WithValue(value))
+
+    [<Extension>]
+    static member inline lineHeight(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+        this.AddScalar(Label.LineHeight.WithValue(value))
+
+    [<Extension>]
+    static member inline maxLines(this: WidgetBuilder<'msg, #ILabel>, value: int) =
+        this.AddScalar(Label.MaxLines.WithValue(value))
+
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: Thickness) =
+        this.AddScalar(Label.Padding.WithValue(value))
+
+    [<Extension>]
+    static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: float) =
+        LabelModifiers.padding (this, Thickness(value))
+
+    [<Extension>]
+    static member inline padding
+        (
+            this: WidgetBuilder<'msg, #ILabel>,
+            left: float,
+            top: float,
+            right: float,
+            bottom: float
+        ) =
+        LabelModifiers.padding (this, Thickness(left, top, right, bottom))
+
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: Color, ?dark: Color) =
+        this.AddScalar(Label.TextColor.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline textDecoration(this: WidgetBuilder<'msg, #ILabel>, value: TextDecorations) =
+        this.AddScalar(Label.TextDecorations.WithValue(value))
+
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, #ILabel>, value: TextTransform) =
+        this.AddScalar(Label.TextTransform.WithValue(value))
+
+    [<Extension>]
+    static member inline textType(this: WidgetBuilder<'msg, #ILabel>, value: TextType) =
+        this.AddScalar(Label.TextType.WithValue(value))
+
+    [<Extension>]
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ILabel>, value: TextAlignment) =
+        this.AddScalar(Label.VerticalTextAlignment.WithValue(value))
+
+    [<Extension>]
+    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ILabel>) =
+        this.AddScalar(Label.HorizontalTextAlignment.WithValue(TextAlignment.Center))
+
+    [<Extension>]
+    static member inline centerTextVertical(this: WidgetBuilder<'msg, #ILabel>) =
+        this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))

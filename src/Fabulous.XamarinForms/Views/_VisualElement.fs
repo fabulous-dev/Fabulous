@@ -6,7 +6,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IVisualElement =
-    inherit IElement
+    inherit INavigableElement
 
 module VisualElement =
     let IsEnabled =
