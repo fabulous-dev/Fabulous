@@ -6,7 +6,7 @@ open Xamarin.Forms
 
 type INavigableElement =
     inherit IView
-    
+
 module NavigableElement =
     let Style =
         Attributes.defineBindable<Xamarin.Forms.Style> NavigableElement.StyleProperty
