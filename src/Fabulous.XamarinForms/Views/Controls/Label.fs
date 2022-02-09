@@ -6,7 +6,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ILabel =
-    inherit IView
+    inherit INavigableElement
 
 module Label =
     let WidgetKey = Widgets.register<Label> ()
@@ -162,7 +162,3 @@ type LabelModifiers =
     [<Extension>]
     static member inline centerTextVertical(this: WidgetBuilder<'msg, #ILabel>) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
-
-    [<Extension>]
-    static member inline style(this: WidgetBuilder<'msg, #IView>, style: Style) =
-        this.AddScalar(NavigableElement.Style.WithValue(style))
