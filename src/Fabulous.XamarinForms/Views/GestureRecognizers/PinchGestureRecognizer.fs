@@ -16,7 +16,7 @@ module PinchGestureRecognizer =
             (fun target -> (target :?> PinchGestureRecognizer).PinchUpdated)
 
 [<AutoOpen>]
-module TapGestureRecognizerBuilders =
+module PinchGestureRecognizerBuilders =
     type Fabulous.XamarinForms.View with
         static member inline PinchGestureRecognizer<'msg>(onPinchUpdated: PinchGestureUpdatedEventArgs -> 'msg) =
             WidgetBuilder<'msg, IPinchGestureRecognizer>(
