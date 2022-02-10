@@ -44,9 +44,5 @@ type DragGestureRecognizerModifiers =
         this.AddScalar(DragGestureRecognizer.CanDrag.WithValue(value))
 
     [<Extension>]
-    static member inline onDropCompleted
-        (
-            this: WidgetBuilder<'msg, #IDragGestureRecognizer>,
-            onDropCompleted: 'msg
-        ) =
+    static member inline onDropCompleted(this: WidgetBuilder<'msg, #IDragGestureRecognizer>, onDropCompleted: 'msg) =
         this.AddScalar(DragGestureRecognizer.DropCompleted.WithValue(fun _ -> onDropCompleted |> box))
