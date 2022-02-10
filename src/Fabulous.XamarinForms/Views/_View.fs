@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IView =
@@ -131,7 +132,7 @@ type ViewModifiers =
 
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: float) =
-        this.AddScalar(XFView.Margin.WithValue(Thickness(value)))
+        ViewModifiers.margin (this, Thickness(value))
 
     [<Extension>]
     static member inline margin
@@ -142,21 +143,10 @@ type ViewModifiers =
             right: float,
             bottom: float
         ) =
-        this.AddScalar(XFView.Margin.WithValue(Thickness(left, top, right, bottom)))
+        ViewModifiers.margin (this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IGestureRecognizer>
             XFView.GestureRecognizers
             this
-
-    [<Extension>]
-    static member inline size(this: WidgetBuilder<'msg, #IView>, ?width: float, ?height: float) =
-        match width, height with
-        | None, None -> this
-        | Some w, None -> this.AddScalar(VisualElement.Width.WithValue(w))
-        | None, Some h -> this.AddScalar(VisualElement.Height.WithValue(h))
-        | Some w, Some h ->
-            this
-                .AddScalar(VisualElement.Width.WithValue(w))
-                .AddScalar(VisualElement.Height.WithValue(h))
