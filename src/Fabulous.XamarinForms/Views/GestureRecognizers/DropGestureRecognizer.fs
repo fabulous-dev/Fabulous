@@ -12,17 +12,7 @@ module DropGestureRecognizer =
         Widgets.register<DropGestureRecognizer> ()
 
     let AllowDrop =
-        Attributes.define<bool>
-            "DropGestureRecognizer_AllowDrop"
-            (fun newValueOpt node ->
-                let gesture = node.Target :?> DropGestureRecognizer
-
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
-
-                gesture.AllowDrop <- value)
+        Attributes.defineBindable<bool> DropGestureRecognizer.AllowDropProperty
 
     let Drop =
         Attributes.defineEvent<DropEventArgs>
@@ -40,14 +30,13 @@ module DropGestureRecognizer =
             "DropGestureRecognizer_DragLeave"
             (fun target -> (target :?> DropGestureRecognizer).DragLeave)
 
-
 [<AutoOpen>]
 module DropGestureRecognizerBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline DropGestureRecognizer<'msg>(onDrop: bool -> 'msg) =
+        static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
             WidgetBuilder<'msg, IDragGestureRecognizer>(
                 DropGestureRecognizer.WidgetKey,
-                DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args.Handled |> box)
+                DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args |> box)
             )
 
 [<Extension>]
@@ -60,9 +49,9 @@ type DropGestureRecognizerModifiers =
         this.AddScalar(DropGestureRecognizer.AllowDrop.WithValue(value))
 
     [<Extension>]
-    static member inline onDragOver(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragOver: unit -> 'msg) =
+    static member inline onDragOver(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragOver: 'msg) =
         this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun _ -> onDragOver |> box))
 
     [<Extension>]
-    static member inline onDragLeave(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragLeave: unit -> 'msg) =
+    static member inline onDragLeave(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragLeave: 'msg) =
         this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun _ -> onDragLeave |> box))
