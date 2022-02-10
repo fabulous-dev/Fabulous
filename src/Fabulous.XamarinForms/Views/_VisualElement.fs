@@ -85,6 +85,17 @@ module VisualElement =
     let Visual =
         Attributes.defineBindable<IVisual> VisualElement.VisualProperty
 
+
+    let Focused =
+        Attributes.defineEvent<FocusEventArgs>
+            "VisualElement_Focused"
+            (fun target -> (target :?> VisualElement).Focused)
+
+    let Unfocused =
+        Attributes.defineEvent<FocusEventArgs>
+            "VisualElement_Unfocused"
+            (fun target -> (target :?> VisualElement).Unfocused)
+
 [<Extension>]
 type VisualElementModifiers =
 
@@ -198,3 +209,11 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline visual(this: WidgetBuilder<'msg, #IVisualElement>, value: IVisual) =
         this.AddScalar(VisualElement.Visual.WithValue(value))
+
+    [<Extension>]
+    static member inline onFocused(this: WidgetBuilder<'msg, #IVisualElement>, onFocused: bool -> 'msg) =
+        this.AddScalar(VisualElement.Focused.WithValue(fun args -> onFocused args.IsFocused |> box))
+
+    [<Extension>]
+    static member inline onUnfocused(this: WidgetBuilder<'msg, #IVisualElement>, onUnfocused: bool -> 'msg) =
+        this.AddScalar(VisualElement.Unfocused.WithValue(fun args -> onUnfocused args.IsFocused |> box))
