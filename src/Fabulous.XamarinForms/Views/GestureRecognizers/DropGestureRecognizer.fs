@@ -24,7 +24,6 @@ module DropGestureRecognizer =
             "DropGestureRecognizer_DragOver"
             (fun target -> (target :?> DropGestureRecognizer).DragOver)
 
-
     let DragLeave =
         Attributes.defineEvent<DragEventArgs>
             "DropGestureRecognizer_DragLeave"
@@ -34,7 +33,7 @@ module DropGestureRecognizer =
 module DropGestureRecognizerBuilders =
     type Fabulous.XamarinForms.View with
         static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
-            WidgetBuilder<'msg, IDragGestureRecognizer>(
+            WidgetBuilder<'msg, IDropGestureRecognizer>(
                 DropGestureRecognizer.WidgetKey,
                 DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args |> box)
             )
