@@ -114,11 +114,7 @@ type CarouselViewModifiers =
         CarouselViewModifiers.peekAreaInsets (this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline onPositionChanged
-        (
-            this: WidgetBuilder<'msg, #ICarouselView>,
-            onPositionChanged: int -> 'msg
-        ) =
+    static member inline onPositionChanged(this: WidgetBuilder<'msg, #ICarouselView>, onPositionChanged: int -> 'msg) =
         this.AddScalar(
             CarouselView.PositionChanged.WithValue(fun args -> onPositionChanged args.CurrentPosition |> box)
         )
@@ -126,7 +122,7 @@ type CarouselViewModifiers =
     [<Extension>]
     static member inline position(this: WidgetBuilder<'msg, #ICarouselView>, value: int) =
         this.AddScalar(CarouselView.Position.WithValue(value))
-        
+
     [<Extension>]
     static member inline currentItem(this: WidgetBuilder<'msg, #ICarouselView>, value: int) =
         this.AddScalar(CarouselView.CurrentItem.WithValue(value))
