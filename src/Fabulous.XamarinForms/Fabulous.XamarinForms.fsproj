@@ -51,6 +51,7 @@
     <Compile Include="Views\Controls\DatePicker.fs" />
     <Compile Include="Views\Controls\TimePicker.fs" />
     <Compile Include="Views\Controls\Stepper.fs" />
+    <Compile Include="Views\Controls\WebView.fs" />
     <Compile Include="Views\Collections\_ItemsView.fs" />
     <Compile Include="Views\Collections\_ItemsViewOfCell.fs" />
     <Compile Include="Views\Collections\ListView.fs" />
