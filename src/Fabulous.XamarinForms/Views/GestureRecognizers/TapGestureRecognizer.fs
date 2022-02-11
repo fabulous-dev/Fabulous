@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
 
@@ -15,6 +16,9 @@ module TapGestureRecognizer =
             "TapGestureRecognizer_Tapped"
             (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
+    let NumberOfTapsRequired =
+        Attributes.defineBindable<int> TapGestureRecognizer.NumberOfTapsRequiredProperty
+
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
     type Fabulous.XamarinForms.View with
@@ -23,3 +27,12 @@ module TapGestureRecognizerBuilders =
                 TapGestureRecognizer.WidgetKey,
                 TapGestureRecognizer.Tapped.WithValue(onTapped)
             )
+
+[<Extension>]
+type TapGestureRecognizerModifiers =
+
+    /// <summary>The number of taps required to trigger the callback</summary>
+    /// <param name="value">The number of taps required</param>
+    [<Extension>]
+    static member inline numberOfTapsRequired(this: WidgetBuilder<'msg, #ITapGestureRecognizer>, value: int) =
+        this.AddScalar(TapGestureRecognizer.NumberOfTapsRequired.WithValue(value))
