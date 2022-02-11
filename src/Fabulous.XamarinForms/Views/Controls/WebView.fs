@@ -40,7 +40,7 @@ module WebView =
 [<AutoOpen>]
 module WebViewBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline private WebView<'msg>(source: WebViewSource) =
+        static member inline WebView<'msg>(source: WebViewSource) =
             WidgetBuilder<'msg, IWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
         static member inline WebView<'msg>(html: string, ?baseUrl: string) =
