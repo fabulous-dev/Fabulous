@@ -38,12 +38,14 @@
     <Compile Include="Views\Pages\_MultiPageOfPage.fs" />
     <Compile Include="Views\Pages\TabbedPage.fs" />
     <Compile Include="Views\Layouts\_Layout.fs" />
+    <Compile Include="Views\Layouts\_TemplatedView.fs" />
     <Compile Include="Views\Layouts\ContentView.fs" />
     <Compile Include="Views\Layouts\RefreshView.fs" />
     <Compile Include="Views\Layouts\LayoutOfView.fs" />
     <Compile Include="Views\Layouts\StackLayout.fs" />
     <Compile Include="Views\Layouts\Grid.fs" />
     <Compile Include="Views\Layouts\ScrollView.fs" />
+    <Compile Include="Views\Controls\IndicatorView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
     <Compile Include="Views\Controls\Span.fs" />
     <Compile Include="Views\Controls\FormattedLabel.fs" />
@@ -66,6 +68,7 @@
     <Compile Include="Views\Collections\_ItemsViewOfCell.fs" />
     <Compile Include="Views\Collections\ListView.fs" />
     <Compile Include="Views\Collections\CollectionView.fs" />
+    <Compile Include="Views\Collections\CarouselView.fs" />
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Platforms.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
