@@ -48,9 +48,17 @@ type DropGestureRecognizerModifiers =
         this.AddScalar(DropGestureRecognizer.AllowDrop.WithValue(value))
 
     [<Extension>]
-    static member inline onDragOver(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragOver: 'msg) =
-        this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun _ -> onDragOver |> box))
+    static member inline onDragOver
+        (
+            this: WidgetBuilder<'msg, #IDropGestureRecognizer>,
+            onDragOver: DragEventArgs -> 'msg
+        ) =
+        this.AddScalar(DropGestureRecognizer.DragOver.WithValue(fun args -> onDragOver args |> box))
 
     [<Extension>]
-    static member inline onDragLeave(this: WidgetBuilder<'msg, #IDropGestureRecognizer>, onDragLeave: 'msg) =
-        this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun _ -> onDragLeave |> box))
+    static member inline onDragLeave
+        (
+            this: WidgetBuilder<'msg, #IDropGestureRecognizer>,
+            onDragLeave: DragEventArgs -> 'msg
+        ) =
+        this.AddScalar(DropGestureRecognizer.DragLeave.WithValue(fun args -> onDragLeave args |> box))
