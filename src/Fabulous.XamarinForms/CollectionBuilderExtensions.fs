@@ -24,6 +24,14 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+        (
+            _: CollectionBuilder<'msg, 'marker, ISpan>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
@@ -38,6 +46,8 @@ type CollectionBuilderExtensions =
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
+
+
 
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
@@ -56,26 +66,18 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+        (
+            _: CollectionBuilder<'msg, 'marker, ISpan>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
-        (
-            _: AttributeCollectionBuilder<'msg, 'marker, ISpan>,
-            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
-        ) : Content<'msg> =
-        { Widgets = MutStackArray1.One(x.Compile()) }
-
-    [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
-        (
-            _: CollectionBuilder<'msg, 'marker, ISpan>,
-            x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
