@@ -55,13 +55,23 @@ module CarouselView =
         Attributes.defineBindable<int> CarouselView.PositionProperty
 
 [<AutoOpen>]
-module CarouselViewViewBuilders =
+module CarouselViewBuilders =
     type Fabulous.XamarinForms.View with
         static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
             (items: seq<'itemData>)
             =
             WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker>
                 CarouselView.WidgetKey
+                ItemsView.ItemsSource
+                items
+                
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
+            (items: seq<'itemData>, position: int, positionChanged: int -> 'msg)
+            =
+            WidgetHelpers.buildItemsWithScalars<'msg, ICarouselView, 'itemData, 'itemMarker>
+                CarouselView.WidgetKey
+                (CarouselView.Position.WithValue(position))
+                (CarouselView.PositionChanged.WithValue(fun e -> positionChanged e.CurrentPosition |> box))
                 ItemsView.ItemsSource
                 items
 
@@ -112,16 +122,6 @@ type CarouselViewModifiers =
             bottom: float
         ) =
         CarouselViewModifiers.peekAreaInsets (this, Thickness(left, top, right, bottom))
-
-    [<Extension>]
-    static member inline onPositionChanged(this: WidgetBuilder<'msg, #ICarouselView>, onPositionChanged: int -> 'msg) =
-        this.AddScalar(
-            CarouselView.PositionChanged.WithValue(fun args -> onPositionChanged args.CurrentPosition |> box)
-        )
-
-    [<Extension>]
-    static member inline position(this: WidgetBuilder<'msg, #ICarouselView>, value: int) =
-        this.AddScalar(CarouselView.Position.WithValue(value))
 
     [<Extension>]
     static member inline currentItem(this: WidgetBuilder<'msg, #ICarouselView>, value: int) =

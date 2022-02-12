@@ -55,13 +55,14 @@ module IndicatorView =
 [<AutoOpen>]
 module IndicatorViewBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline IndicatorView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
-            (items: seq<'itemData>)
+        static member inline IndicatorView<'msg>(count: int, position: int, positionChanged: int -> 'msg)
             =
-            WidgetHelpers.buildItems<'msg, IIndicatorView, 'itemData, 'itemMarker>
-                IndicatorView.WidgetKey
-                IndicatorView.ItemsSource
-                items
+            WidgetBuilder<'msg, IIndicatorView>(
+                IndicatorView.WidgetKey,
+                IndicatorView.Count.WithValue(count),
+                IndicatorView.Position.WithValue(position),
+                IndicatorView.PositionChanged.WithValue(fun args -> positionChanged args.CurrentPosition |> box)
+            )
 
 [<Extension>]
 type IndicatorViewModifiers =
