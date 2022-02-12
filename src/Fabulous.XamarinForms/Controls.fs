@@ -52,3 +52,22 @@ type FabulousTimePicker() =
 /// Force ListView to recycle rows because DataTemplateSelector disables it by default
 type FabulousListView() =
     inherit ListView(ListViewCachingStrategy.RecycleElement)
+
+type CustomEntryCell() =
+    inherit EntryCell()
+
+    let mutable oldText = ""
+
+    let textChanged =
+        Event<EventHandler<TextChangedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.TextChanged = textChanged.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        if propertyName = EntryCell.TextProperty.PropertyName then
+            textChanged.Trigger(this, TextChangedEventArgs(oldText, this.Text))
+
+    override this.OnPropertyChanging(propertyName) =
+        if propertyName = EntryCell.TextProperty.PropertyName then
+            oldText <- this.Text
