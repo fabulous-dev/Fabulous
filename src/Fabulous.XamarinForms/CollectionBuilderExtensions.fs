@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections
+open Fabulous.XamarinForms
 
 [<Extension>]
 type CollectionBuilderExtensions =
@@ -23,6 +24,14 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+        (
+            _: CollectionBuilder<'msg, 'marker, ISpan>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
@@ -38,6 +47,8 @@ type CollectionBuilderExtensions =
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
+
+
     [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPage>
         (
@@ -50,6 +61,14 @@ type CollectionBuilderExtensions =
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IView>
         (
             _: CollectionBuilder<'msg, 'marker, IView>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ISpan>
+        (
+            _: CollectionBuilder<'msg, 'marker, ISpan>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

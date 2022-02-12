@@ -42,6 +42,8 @@
     <Compile Include="Views\Layouts\Grid.fs" />
     <Compile Include="Views\Layouts\ScrollView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
+    <Compile Include="Views\Controls\Span.fs" />
+    <Compile Include="Views\Controls\FormattedLabel.fs" />
     <Compile Include="Views\Controls\Button.fs" />
     <Compile Include="Views\Controls\Switch.fs" />
     <Compile Include="Views\Controls\Slider.fs" />
