@@ -29,6 +29,9 @@
     <Compile Include="Views\Cells\_Cell.fs" />
     <Compile Include="Views\Cells\ViewCell.fs" />
     <Compile Include="Views\Cells\TextCell.fs" />
+    <Compile Include="Views\Cells\ImageCell.fs" />
+    <Compile Include="Views\Cells\SwitchCell.fs" />
+    <Compile Include="Views\Cells\EntryCell.fs" />
     <Compile Include="Views\Pages\_Page.fs" />
     <Compile Include="Views\Pages\ContentPage.fs" />
     <Compile Include="Views\Pages\NavigationPage.fs" />
