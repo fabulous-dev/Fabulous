@@ -18,13 +18,14 @@ module ImageCell =
 [<AutoOpen>]
 module ImageCellBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline ImageCell<'msg>(light: ImageSource, ?dark: ImageSource) =
+        static member inline ImageCell<'msg>(text: string, light: ImageSource, ?dark: ImageSource) =
             WidgetBuilder<'msg, IImageCell>(
                 ImageCell.WidgetKey,
+                TextCell.Text.WithValue(text),
                 ImageCell.ImageSource.WithValue(AppTheme.create light dark)
             )
 
-        static member inline ImageCell<'msg>(light: string, ?dark: string) =
+        static member inline ImageCell<'msg>(text: string, light: string, ?dark: string) =
             let light = ImageSource.FromFile(light)
 
             let dark =
@@ -32,9 +33,9 @@ module ImageCellBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromFile(v))
 
-            View.ImageCell<'msg>(light, ?dark = dark)
+            View.ImageCell<'msg>(text, light, ?dark = dark)
 
-        static member inline ImageCell<'msg>(light: Uri, ?dark: Uri) =
+        static member inline ImageCell<'msg>(text: string, light: Uri, ?dark: Uri) =
             let light = ImageSource.FromUri(light)
 
             let dark =
@@ -42,9 +43,9 @@ module ImageCellBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromUri(v))
 
-            View.ImageCell<'msg>(light, ?dark = dark)
+            View.ImageCell<'msg>(text, light, ?dark = dark)
 
-        static member inline ImageCell<'msg>(light: Stream, ?dark: Stream) =
+        static member inline ImageCell<'msg>(text: string, light: Stream, ?dark: Stream) =
             let light = ImageSource.FromStream(fun () -> light)
 
             let dark =
@@ -52,4 +53,4 @@ module ImageCellBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-            View.ImageCell<'msg>(light, ?dark = dark)
+            View.ImageCell<'msg>(text, light, ?dark = dark)

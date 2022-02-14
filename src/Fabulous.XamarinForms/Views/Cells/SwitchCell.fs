@@ -28,25 +28,19 @@ module SwitchCell =
 [<AutoOpen>]
 module SwitchCellBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline SwitchCell<'msg>(value: bool, onChanged: bool -> 'msg) =
+        static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, ISwitchCell>(
                 SwitchCell.WidgetKey,
                 SwitchCell.On.WithValue(value),
+                SwitchCell.Text.WithValue(text),
                 SwitchCell.OnChanged.WithValue(fun args -> onChanged args.Value |> box)
             )
 
 [<Extension>]
 type SwitchCellModifiers =
-
-    /// <summary>Set the text of the text cell.</summary>
-    /// <param name="text">The text to display.</param>
-    [<Extension>]
-    static member inline text(this: WidgetBuilder<'msg, #ISwitchCell>, text: string) =
-        this.AddScalar(SwitchCell.Text.WithValue(text))
-
     /// <summary>Set the color of the on state</summary>
     /// <param name="light">The color of the on state in the light theme.</param>
     /// <param name="dark">The color of the on state in the dark theme.</param>
     [<Extension>]
-    static member inline onColor(this: WidgetBuilder<'msg, #ISwitchCell>, light: Color, ?dark: Color) =
+    static member inline colorOn(this: WidgetBuilder<'msg, #ISwitchCell>, light: Color, ?dark: Color) =
         this.AddScalar(SwitchCell.OnColor.WithValue(AppTheme.create light dark))

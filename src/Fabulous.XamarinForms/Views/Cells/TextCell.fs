@@ -44,12 +44,6 @@ type TextCellModifiers =
     static member inline detailColor(this: WidgetBuilder<'msg, #ITextCell>, light: Color, ?dark: Color) =
         this.AddScalar(TextCell.DetailColor.WithValue(AppTheme.create light dark))
 
-    /// <summary>Set the text of the text cell.</summary>
-    /// <param name="text">The text to display.</param>
-    [<Extension>]
-    static member inline text(this: WidgetBuilder<'msg, #ITextCell>, text: string) =
-        this.AddScalar(TextCell.Text.WithValue(text))
-
     /// <summary>Set the text of the detail text cell.</summary>
     /// <param name="text">The text of the detail text cell.</param>
     [<Extension>]

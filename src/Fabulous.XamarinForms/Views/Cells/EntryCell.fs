@@ -43,9 +43,10 @@ module EntryCell =
 module EntryCellBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline EntryCell<'msg>(text: string, onTextChanged: string -> 'msg) =
+        static member inline EntryCell<'msg>(label: string, text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IEntryCell>(
                 EntryCell.WidgetKey,
+                EntryCell.Label.WithValue(label),
                 EntryCell.Text.WithValue(text),
                 EntryCell.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
             )
@@ -82,12 +83,6 @@ type EntryCellModifiers =
     [<Extension>]
     static member inline placeholder(this: WidgetBuilder<'msg, #IEntryCell>, placeholder: string) =
         this.AddScalar(EntryCell.Placeholder.WithValue(placeholder))
-
-    /// <summary>Set the label text</summary>
-    /// param name="label">The label text</summary>
-    [<Extension>]
-    static member inline label(this: WidgetBuilder<'msg, #IEntryCell>, label: string) =
-        this.AddScalar(EntryCell.Label.WithValue(label))
 
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEntryCell>, onCompleted: 'msg) =
