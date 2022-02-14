@@ -80,3 +80,11 @@ type SliderModifiers =
     [<Extension>]
     static member inline thumbImageSource(this: WidgetBuilder<'msg, #ISlider>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Slider.ThumbImageSource.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline onDragCompleted(this: WidgetBuilder<'msg, #ISlider>, onDragCompleted: 'msg) =
+        this.AddScalar(Slider.DragCompleted.WithValue(onDragCompleted))
+
+    [<Extension>]
+    static member inline onDragStarted(this: WidgetBuilder<'msg, #ISlider>, onDragStarted: 'msg) =
+        this.AddScalar(Slider.DragStarted.WithValue(onDragStarted))
