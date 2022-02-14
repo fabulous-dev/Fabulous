@@ -76,6 +76,8 @@ type FabulousIndicatorView() =
     override this.OnPropertyChanging(propertyName) =
         if propertyName = IndicatorView.PositionProperty.PropertyName then
             oldPositionValue <- this.Position
+
+/// Xamarin.Forms doesn't provide an event for textChanged the EntryCell, so we implement it
 type CustomEntryCell() =
     inherit EntryCell()
 
