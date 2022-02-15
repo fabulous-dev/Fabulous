@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0-ios;net6.0-android</TargetFrameworks>
+    <TargetFrameworks>net6.0-ios;net6.0-android;netstandard2.1</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
     <VersionPrefix>2.0.0</VersionPrefix>
@@ -81,7 +81,7 @@
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.1" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0-ios' ">
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-ios' ">
