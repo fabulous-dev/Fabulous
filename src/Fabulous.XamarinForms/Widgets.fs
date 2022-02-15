@@ -77,7 +77,7 @@ module WidgetHelpers =
               Template = template }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
-        
+
     let buildItemsWithScalars<'msg, 'marker, 'itemData, 'itemMarker>
         key
         (scalarA: ScalarAttribute)
