@@ -20,16 +20,6 @@ module CollectionView =
                 target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
                 target.IsGrouped <- true)
 
-    let RemainingItemsThreshold =
-        Attributes.defineBindable<int> CollectionView.RemainingItemsThresholdProperty
-
-    let RemainingItemsThresholdReached =
-        Attributes.defineEventNoArg
-            "CollectionView_RemainingItemsThresholdReached"
-            (fun target ->
-                (target :?> CollectionView)
-                    .RemainingItemsThresholdReached)
-
 [<AutoOpen>]
 module CollectionViewBuilders =
     type Fabulous.XamarinForms.View with
@@ -48,16 +38,3 @@ module CollectionViewBuilders =
                 CollectionView.GroupedWidgetKey
                 ItemsView.GroupedItemsSource
                 items
-
-[<Extension>]
-type CollectionViewModifiers =
-    [<Extension>]
-    static member inline remainingItemsThreshold
-        (
-            this: WidgetBuilder<'msg, #ICollectionView>,
-            value: int,
-            onThresholdReached: 'msg
-        ) =
-        this
-            .AddScalar(CollectionView.RemainingItemsThreshold.WithValue(value))
-            .AddScalar(CollectionView.RemainingItemsThresholdReached.WithValue(onThresholdReached))

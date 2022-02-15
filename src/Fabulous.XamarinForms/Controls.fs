@@ -35,6 +35,11 @@ type TimeSelectedEventArgs(newTime: TimeSpan) =
     inherit EventArgs()
     member _.NewTime = newTime
 
+type PositionChangedEventArgs(previousPosition: int, currentPosition: int) =
+    inherit EventArgs()
+    member _.PreviousPosition = previousPosition
+    member _.CurrentPosition = currentPosition
+
 /// Xamarin.Forms doesn't provide an event for selecting the time on a TimePicker, so we implement it
 type FabulousTimePicker() =
     inherit TimePicker()
@@ -53,6 +58,26 @@ type FabulousTimePicker() =
 type FabulousListView() =
     inherit ListView(ListViewCachingStrategy.RecycleElement)
 
+type FabulousIndicatorView() =
+    inherit IndicatorView()
+
+    let mutable oldPositionValue: int = 0
+
+    let positionChanged =
+        Event<EventHandler<PositionChangedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.PositionChanged = positionChanged.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        if propertyName = IndicatorView.PositionProperty.PropertyName then
+            positionChanged.Trigger(this, PositionChangedEventArgs(oldPositionValue, this.Position))
+
+    override this.OnPropertyChanging(propertyName) =
+        if propertyName = IndicatorView.PositionProperty.PropertyName then
+            oldPositionValue <- this.Position
+
+/// Xamarin.Forms doesn't provide an event for textChanged the EntryCell, so we implement it
 type CustomEntryCell() =
     inherit EntryCell()
 
