@@ -1,7 +1,10 @@
 namespace Fabulous.XamarinForms
 
+open System
+open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ISlider =
@@ -80,6 +83,48 @@ type SliderModifiers =
     [<Extension>]
     static member inline thumbImageSource(this: WidgetBuilder<'msg, #ISlider>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Slider.ThumbImageSource.WithValue(AppTheme.create light dark))
+
+    /// <summary>Set the source of the thumbImage.</summary>
+    /// <param name="light">The source of the thumbImage in the light theme.</param>
+    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    [<Extension>]
+    static member inline thumbImageSource(this: WidgetBuilder<'msg, #ISlider>, light: string, ?dark: string) =
+        let light = ImageSource.FromFile(light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromFile(v))
+
+        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
+
+    /// <summary>Set the source of the thumbImage.</summary>
+    /// <param name="light">The source of the thumbImage in the light theme.</param>
+    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    [<Extension>]
+    static member inline thumbImageSource(this: WidgetBuilder<'msg, #ISlider>, light: Uri, ?dark: Uri) =
+        let light = ImageSource.FromUri(light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromUri(v))
+
+        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
+
+    /// <summary>Set the source of the thumbImage.</summary>
+    /// <param name="light">The source of the thumbImage in the light theme.</param>
+    /// <param name="dark">The source of the thumbImage in the dark theme.</param>
+    [<Extension>]
+    static member inline thumbImageSource(this: WidgetBuilder<'msg, #ISlider>, light: Stream, ?dark: Stream) =
+        let light = ImageSource.FromStream(fun () -> light)
+
+        let dark =
+            match dark with
+            | None -> None
+            | Some v -> Some(ImageSource.FromStream(fun () -> v))
+
+        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
 
     [<Extension>]
     static member inline onDragCompleted(this: WidgetBuilder<'msg, #ISlider>, onDragCompleted: 'msg) =

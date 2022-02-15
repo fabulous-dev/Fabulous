@@ -37,7 +37,7 @@ module StepperBuilders =
 
 [<Extension>]
 type StepperModifiers =
-    /// <summary>Increments the Steeper's value</summary>
+    /// <summary>Increments the Stepper's value</summary>
     /// <param name="value">The amount to increment the Stepper by.</param>
     [<Extension>]
     static member inline increment(this: WidgetBuilder<'msg, #IStepper>, value: float) =
