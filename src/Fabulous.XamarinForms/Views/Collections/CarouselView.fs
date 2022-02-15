@@ -9,29 +9,28 @@ type ICarouselView =
     inherit IItemsView
 
 module CarouselView =
+
     let WidgetKey =
         Widgets.registerWithAdditionalSetup<CarouselView>
             (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
 
-    let RemainingItemsThreshold =
-        Attributes.defineBindable<int> CarouselView.RemainingItemsThresholdProperty
-
-    let HorizontalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> CarouselView.HorizontalScrollBarVisibilityProperty
-
     let IsBounceEnabled =
         Attributes.defineBindable<bool> CarouselView.IsBounceEnabledProperty
 
+    let IsDragging =
+        Attributes.defineBindable<bool> CarouselView.IsDraggingProperty
+
+    let IsScrollAnimated =
+        Attributes.defineBindable<bool> CarouselView.IsScrollAnimatedProperty
+
+    let IsSwipeEnabled =
+        Attributes.defineBindable<bool> CarouselView.IsSwipeEnabledProperty
+
+    let Loop =
+        Attributes.defineBindable<bool> CarouselView.LoopProperty
+
     let PeekAreaInsets =
         Attributes.defineBindable<Thickness> CarouselView.PeekAreaInsetsProperty
-
-    let RemainingItemsThresholdReached =
-        Attributes.defineEventNoArg
-            "CarouselView_RemainingItemsThresholdReached"
-            (fun target ->
-                (target :?> CarouselView)
-                    .RemainingItemsThresholdReached)
-
 
     let CurrentItem =
         Attributes.define<obj>
@@ -42,9 +41,6 @@ module CarouselView =
                 match newValueOpt with
                 | ValueNone -> carouselView.CurrentItem <- null
                 | ValueSome currentItem -> carouselView.CurrentItem <- currentItem)
-
-    let Loop =
-        Attributes.defineBindable<bool> CarouselView.LoopProperty
 
     let PositionChanged =
         Attributes.defineEvent<PositionChangedEventArgs>
@@ -64,10 +60,13 @@ module CarouselViewBuilders =
                 CarouselView.WidgetKey
                 ItemsView.ItemsSource
                 items
-                
+
         static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
-            (items: seq<'itemData>, position: int, positionChanged: int -> 'msg)
-            =
+            (
+                items: seq<'itemData>,
+                position: int,
+                positionChanged: int -> 'msg
+            ) =
             WidgetHelpers.buildItemsWithScalars<'msg, ICarouselView, 'itemData, 'itemMarker>
                 CarouselView.WidgetKey
                 (CarouselView.Position.WithValue(position))
@@ -77,29 +76,32 @@ module CarouselViewBuilders =
 
 [<Extension>]
 type CarouselViewModifiers =
-    [<Extension>]
-    static member inline remainingItemsThreshold
-        (
-            this: WidgetBuilder<'msg, #ICarouselView>,
-            value: int,
-            onThresholdReached: 'msg
-        ) =
-        this
-            .AddScalar(CarouselView.RemainingItemsThreshold.WithValue(value))
-            .AddScalar(CarouselView.RemainingItemsThresholdReached.WithValue(onThresholdReached))
-
-    [<Extension>]
-    static member inline horizontalScrollBarVisibility
-        (
-            this: WidgetBuilder<'msg, #ICarouselView>,
-            value: ScrollBarVisibility
-        ) =
-        this.AddScalar(CarouselView.HorizontalScrollBarVisibility.WithValue(value))
-
+    /// <summary>Sets the IsBounceEnabled property.</summary>
+    /// <param name="value">true if Bounce is enabled; otherwise, false.</param>
     [<Extension>]
     static member inline isBounceEnabled(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
         this.AddScalar(CarouselView.IsBounceEnabled.WithValue(value))
 
+    /// <summary>Sets the IsDragging property.</summary>
+    /// <param name="value">true if Dragging is enabled; otherwise, false.</param>
+    [<Extension>]
+    static member inline isDragging(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+        this.AddScalar(CarouselView.IsDragging.WithValue(value))
+
+    /// <summary>Sets the IsScrollAnimated property.</summary>
+    /// <param name="value">true if scroll is animated; otherwise, false.</param>
+    [<Extension>]
+    static member inline isScrollAnimated(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+        this.AddScalar(CarouselView.IsScrollAnimated.WithValue(value))
+
+    /// <summary>Sets the IsSwipeEnabled property.</summary>
+    /// <param name="value">true if Swipe is enabled; otherwise, false.</param>
+    [<Extension>]
+    static member inline isSwipeEnabled(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
+        this.AddScalar(CarouselView.IsSwipeEnabled.WithValue(value))
+
+    /// <summary>Sets the Loop property.</summary>
+    /// <param name="value">true if Loop is enabled; otherwise, false.</param>
     [<Extension>]
     static member inline loop(this: WidgetBuilder<'msg, #ICarouselView>, value: bool) =
         this.AddScalar(CarouselView.Loop.WithValue(value))
@@ -124,5 +126,5 @@ type CarouselViewModifiers =
         CarouselViewModifiers.peekAreaInsets (this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline currentItem(this: WidgetBuilder<'msg, #ICarouselView>, value: int) =
+    static member inline currentItem(this: WidgetBuilder<'msg, #ICarouselView>, value: obj) =
         this.AddScalar(CarouselView.CurrentItem.WithValue(value))
