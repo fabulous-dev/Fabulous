@@ -20,6 +20,16 @@ module ToolbarItem =
                 | ValueNone -> toolbarItem.Order <- ToolbarItemOrder.Default
                 | ValueSome order -> toolbarItem.Order <- order)
 
+    let Priority =
+        Attributes.define<int>
+            "ToolbarItem_Priority"
+            (fun newValueOpt node ->
+                let toolbarItem = node.Target :?> ToolbarItem
+
+                match newValueOpt with
+                | ValueNone -> toolbarItem.Priority <- 0
+                | ValueSome priority -> toolbarItem.Priority <- priority)
+
 [<AutoOpen>]
 module ToolbarItemBuilders =
     type Fabulous.XamarinForms.View with
@@ -35,3 +45,7 @@ type ToolbarItemModifiers =
     [<Extension>]
     static member inline order(this: WidgetBuilder<'msg, #IToolbarItem>, value: ToolbarItemOrder) =
         this.AddScalar(ToolbarItem.Order.WithValue(value))
+
+    [<Extension>]
+    static member inline priority(this: WidgetBuilder<'msg, #IToolbarItem>, value: int) =
+        this.AddScalar(ToolbarItem.Priority.WithValue(value))
