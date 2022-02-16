@@ -10,7 +10,7 @@ type IProgressBar =
 
 module ProgressBar =
 
-    let WidgetKey = Widgets.register<CustomProgressBar> ()
+    let WidgetKey = Widgets.register<ProgressBar> ()
 
     let ProgressColor =
         Attributes.defineAppThemeBindable<Color> ProgressBar.ProgressColorProperty
@@ -22,10 +22,7 @@ module ProgressBar =
 module ProgressBarBuilders =
     type Fabulous.XamarinForms.View with
         static member inline ProgressBar<'msg>(progress: float) =
-            WidgetBuilder<'msg, ICheckBox>(
-                ProgressBar.WidgetKey,
-                ProgressBar.Progress.WithValue(progress)
-            )
+            WidgetBuilder<'msg, ICheckBox>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 
 [<Extension>]
 type ProgressBarModifiers =
