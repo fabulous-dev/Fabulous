@@ -54,32 +54,12 @@ type TimePickerModifiers =
         this.AddScalar(TimePicker.CharacterSpacing.WithValue(value))
 
     [<Extension>]
-    static member inline fontAttributes(this: WidgetBuilder<'msg, #ITimePicker>, value: FontAttributes) =
-        this.AddScalar(TimePicker.FontAttributes.WithValue(value))
-
-    [<Extension>]
-    static member inline fontFamily(this: WidgetBuilder<'msg, #ITimePicker>, value: string) =
-        this.AddScalar(TimePicker.FontFamily.WithValue(value))
-
-    [<Extension>]
-    static member inline fontSize(this: WidgetBuilder<'msg, #ITimePicker>, value: float) =
-        this.AddScalar(TimePicker.FontSize.WithValue(value))
-
-    [<Extension>]
     static member inline format(this: WidgetBuilder<'msg, #ITimePicker>, value: string) =
         this.AddScalar(TimePicker.Format.WithValue(value))
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: Color, ?dark: Color) =
-        this.AddScalar(
-            TimePicker.TextColor.WithValue(
-                { Light = light
-                  Dark =
-                      match dark with
-                      | None -> ValueNone
-                      | Some v -> ValueSome v }
-            )
-        )
+        this.AddScalar(TimePicker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #ITimePicker>, value: TextTransform) =
@@ -88,10 +68,11 @@ type TimePickerModifiers =
     [<Extension>]
     static member inline font
         (
-            this: WidgetBuilder<'msg, ITimePicker>,
+            this: WidgetBuilder<'msg, #ITimePicker>,
             ?size: double,
             ?namedSize: NamedSize,
-            ?attributes: FontAttributes
+            ?attributes: FontAttributes,
+            ?fontFamily: string
         ) =
 
         let mutable res = this
@@ -108,8 +89,8 @@ type TimePickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(TimePicker.FontAttributes.WithValue(v))
 
-        res
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(TimePicker.FontFamily.WithValue(v))
 
-    [<Extension>]
-    static member inline font(this: WidgetBuilder<'msg, #ITimePicker>, value: NamedSize) =
-        this.AddScalar(TimePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<TimePicker>)))
+        res

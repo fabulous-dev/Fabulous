@@ -58,48 +58,8 @@ module DatePickerBuilders =
 [<Extension>]
 type DatePickerModifiers =
     [<Extension>]
-    static member inline characterSpacing(this: WidgetBuilder<'msg, IDatePicker>, value: float) =
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #IDatePicker>, value: float) =
         this.AddScalar(DatePicker.CharacterSpacing.WithValue(value))
-
-    [<Extension>]
-    static member inline fontAttributes(this: WidgetBuilder<'msg, IDatePicker>, value: FontAttributes) =
-        this.AddScalar(DatePicker.FontAttributes.WithValue(value))
-
-    [<Extension>]
-    static member inline fontFamily(this: WidgetBuilder<'msg, IDatePicker>, value: string) =
-        this.AddScalar(DatePicker.FontFamily.WithValue(value))
-
-    [<Extension>]
-    static member inline fontSize(this: WidgetBuilder<'msg, IDatePicker>, value: float) =
-        this.AddScalar(DatePicker.FontSize.WithValue(value))
-
-    [<Extension>]
-    static member inline format(this: WidgetBuilder<'msg, IDatePicker>, value: string) =
-        this.AddScalar(DatePicker.Format.WithValue(value))
-
-    [<Extension>]
-    static member inline minimumDate(this: WidgetBuilder<'msg, IDatePicker>, value: System.DateTime) =
-        this.AddScalar(DatePicker.MinimumDate.WithValue(value))
-
-    [<Extension>]
-    static member inline maximumDate(this: WidgetBuilder<'msg, IDatePicker>, value: System.DateTime) =
-        this.AddScalar(DatePicker.MaximumDate.WithValue(value))
-
-    [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, IDatePicker>, light: Color, ?dark: Color) =
-        this.AddScalar(
-            DatePicker.TextColor.WithValue(
-                { Light = light
-                  Dark =
-                      match dark with
-                      | None -> ValueNone
-                      | Some v -> ValueSome v }
-            )
-        )
-
-    [<Extension>]
-    static member inline textTransform(this: WidgetBuilder<'msg, IDatePicker>, value: TextTransform) =
-        this.AddScalar(DatePicker.TextTransform.WithValue(value))
 
     [<Extension>]
     static member inline font
@@ -107,7 +67,8 @@ type DatePickerModifiers =
             this: WidgetBuilder<'msg, #IDatePicker>,
             ?size: double,
             ?namedSize: NamedSize,
-            ?attributes: FontAttributes
+            ?attributes: FontAttributes,
+            ?fontFamily: string
         ) =
 
         let mutable res = this
@@ -124,8 +85,28 @@ type DatePickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(DatePicker.FontAttributes.WithValue(v))
 
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(DatePicker.FontFamily.WithValue(v))
+
         res
 
     [<Extension>]
-    static member inline font(this: WidgetBuilder<'msg, #IDatePicker>, value: NamedSize) =
-        this.AddScalar(DatePicker.FontSize.WithValue(Device.GetNamedSize(value, typeof<DatePicker>)))
+    static member inline format(this: WidgetBuilder<'msg, #IDatePicker>, value: string) =
+        this.AddScalar(DatePicker.Format.WithValue(value))
+
+    [<Extension>]
+    static member inline minimumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: System.DateTime) =
+        this.AddScalar(DatePicker.MinimumDate.WithValue(value))
+
+    [<Extension>]
+    static member inline maximumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: System.DateTime) =
+        this.AddScalar(DatePicker.MaximumDate.WithValue(value))
+
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: Color, ?dark: Color) =
+        this.AddScalar(DatePicker.TextColor.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, #IDatePicker>, value: TextTransform) =
+        this.AddScalar(DatePicker.TextTransform.WithValue(value))
