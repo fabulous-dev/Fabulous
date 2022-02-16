@@ -1,4 +1,4 @@
-namespace Fabulous.XamarinForms.Views
+namespace Fabulous.XamarinForms
 
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -22,7 +22,7 @@ module ProgressBar =
 module ProgressBarBuilders =
     type Fabulous.XamarinForms.View with
         static member inline ProgressBar<'msg>(progress: float) =
-            WidgetBuilder<'msg, ICheckBox>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
+            WidgetBuilder<'msg, IProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 
 [<Extension>]
 type ProgressBarModifiers =
