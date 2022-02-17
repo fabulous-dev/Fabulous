@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IContentView =
-    inherit Fabulous.XamarinForms.ILayout
+    inherit ITemplatedView
 
 module ContentView =
     let WidgetKey = Widgets.register<ContentView> ()
