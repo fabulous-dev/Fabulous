@@ -6,7 +6,7 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IFrame =
-    inherit ITemplatedView
+    inherit IContentView
 
 module Frame =
     let WidgetKey = Widgets.register<Frame> ()
@@ -20,14 +20,13 @@ module Frame =
     let HasShadow =
         Attributes.defineBindable<bool> Frame.HasShadowProperty
 
-    let Content =
-        Attributes.defineBindableWidget Frame.ContentProperty
-
 [<AutoOpen>]
 module FrameBuilders =
     type Fabulous.XamarinForms.View with
         static member inline Frame<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IFrame> Frame.WidgetKey [| Frame.Content.WithValue(content.Compile()) |]
+            WidgetHelpers.buildWidgets<'msg, IFrame>
+                Frame.WidgetKey
+                [| ContentView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]
 type FrameModifiers =
