@@ -122,5 +122,5 @@ type EntryModifiers =
         this.AddScalar(Entry.VerticalTextAlignment.WithValue(value))
 
     [<Extension>]
-    static member inline onCompleted(this: WidgetBuilder<'msg, #IEntry>, value: 'msg) =
-        this.AddScalar(Entry.Completed.WithValue(value))
+    static member inline onCompleted(this: WidgetBuilder<'msg, #IEntry>, onCompleted: 'msg) =
+        this.AddScalar(Entry.Completed.WithValue(onCompleted))
