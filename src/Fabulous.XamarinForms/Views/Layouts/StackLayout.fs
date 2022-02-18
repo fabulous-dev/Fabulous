@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IStackLayout =
-    inherit Fabulous.XamarinForms.ILayout
+    inherit ILayoutOfView
 
 module StackLayout =
     let WidgetKey = Widgets.register<StackLayout> ()

@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IFlexLayout =
-    inherit Fabulous.XamarinForms.ILayout
+    inherit ILayoutOfView
 
 module FlexLayout =
 
@@ -44,7 +44,6 @@ module FlexLayout =
     let Wrap =
         Attributes.defineBindable<FlexWrap> FlexLayout.WrapProperty
 
-
 [<AutoOpen>]
 module FlexLayoutBuilders =
     type Fabulous.XamarinForms.View with
@@ -80,13 +79,13 @@ type FlexLayoutModifiers =
     /// <summary>Sets a value that controls whether the coordinates of child elements are specified in absolute or relative terms.</summary>
     /// <param name="value">Enumerates values that control how layout coordinates are interpreted when specifying the positions of child elements.</param>
     [<Extension>]
-    static member inline position(this: WidgetBuilder<'msg, #IView>, value: FlexPosition) =
+    static member inline position(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexPosition) =
         this.AddScalar(FlexLayout.Position.WithValue(value))
 
     /// <summary>Sets a value that describes how child elements are justified when there is extra space around them.</summary>
     /// <param name="value">Enumerates values that control how child elements are justified when there is extra space around them.</param>
     [<Extension>]
-    static member inline justifyContent(this: WidgetBuilder<'msg, #IView>, value: FlexJustify) =
+    static member inline justifyContent(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexJustify) =
         this.AddScalar(FlexLayout.JustifyContent.WithValue(value))
 
 [<Extension>]
