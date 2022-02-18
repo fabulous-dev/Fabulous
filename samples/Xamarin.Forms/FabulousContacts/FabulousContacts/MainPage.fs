@@ -155,11 +155,11 @@ module MainPage =
     let regularView title model =
         let tabAllContacts =
             (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel)
-                .fileIcon ("alltab.png")
+                .iconImageSource ("alltab.png")
 
         let tabFavContacts =
             (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)
-                .fileIcon ("favoritetab.png")
+                .iconImageSource ("favoritetab.png")
 
         //let tabMap = MapPage.view model.TabMapModel
 
