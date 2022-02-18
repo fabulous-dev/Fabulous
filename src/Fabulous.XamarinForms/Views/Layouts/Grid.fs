@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IGrid =
-    inherit Fabulous.XamarinForms.ILayout
+    inherit ILayoutOfView
 
 module Grid =
     let WidgetKey = Widgets.register<Grid> ()

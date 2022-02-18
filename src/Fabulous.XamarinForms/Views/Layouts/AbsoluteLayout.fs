@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IAbsoluteLayout =
-    inherit Fabulous.XamarinForms.ILayout
+    inherit ILayoutOfView
 
 module AbsoluteLayout =
 

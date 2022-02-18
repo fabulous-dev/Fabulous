@@ -1,4 +1,4 @@
 namespace Fabulous.XamarinForms
 
 type ITemplatedView =
-    inherit ILayout
+    inherit Fabulous.XamarinForms.ILayout
