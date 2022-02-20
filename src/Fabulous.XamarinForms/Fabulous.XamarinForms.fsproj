@@ -93,6 +93,13 @@
     <Compile Include="Views\Shapes\Geometries\PathGeometry.fs" />
     <Compile Include="Views\Shapes\Geometries\GeometryGroup.fs" />
     <Compile Include="Views\Shapes\Geometries\RoundRectangleGeometry.fs" />
+    <Compile Include="Views\Shapes\_Shape.fs" />
+    <Compile Include="Views\Shapes\Ellipse.fs" />
+    <Compile Include="Views\Shapes\Rectangle.fs" />
+    <Compile Include="Views\Shapes\Path.fs" />
+    <Compile Include="Views\Shapes\Line.fs" />
+    <Compile Include="Views\Shapes\Polygon.fs" />
+    <Compile Include="Views\Shapes\Polyline.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
