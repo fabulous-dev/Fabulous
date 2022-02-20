@@ -21,15 +21,13 @@ module GeometryGroup =
 [<AutoOpen>]
 module GeometryGroupBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline GeometryGroup<'msg>() =
-            CollectionBuilder<'msg, IGeometryGroup, IGeometry>(
-                GeometryGroup.WidgetKey,
-                GeometryGroup.Children
-            )
-
-[<Extension>]
-type GeometryGroupModifiers =
-
-    [<Extension>]
-    static member inline fillRule(this: WidgetBuilder<'msg, #IGeometryGroup>, value: FillRule) =
-        this.AddScalar(GeometryGroup.FillRule.WithValue(value))
+        static member inline GeometryGroup<'msg>(?fillRule: FillRule) =
+            match fillRule with
+            | None ->
+                CollectionBuilder<'msg, IGeometryGroup, IGeometry>(GeometryGroup.WidgetKey, GeometryGroup.Children)
+            | Some fillRule ->
+                CollectionBuilder<'msg, IGeometryGroup, IGeometry>(
+                    GeometryGroup.WidgetKey,
+                    GeometryGroup.Children,
+                    GeometryGroup.FillRule.WithValue(fillRule)
+                )

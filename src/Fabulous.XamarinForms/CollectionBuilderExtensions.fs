@@ -40,6 +40,22 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathFigure>
+        (
+            _: CollectionBuilder<'msg, 'marker, IPathFigure>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathSegment>
+        (
+            _: CollectionBuilder<'msg, 'marker, IPathSegment>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
@@ -54,7 +70,6 @@ type CollectionBuilderExtensions =
             x: WidgetBuilder<'msg, 'itemType>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }
-
 
 
     [<Extension>]
@@ -85,6 +100,22 @@ type CollectionBuilderExtensions =
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGeometry>
         (
             _: CollectionBuilder<'msg, 'marker, IGeometry>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathFigure>
+        (
+            _: CollectionBuilder<'msg, 'marker, IPathFigure>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathSegment>
+        (
+            _: CollectionBuilder<'msg, 'marker, IPathSegment>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

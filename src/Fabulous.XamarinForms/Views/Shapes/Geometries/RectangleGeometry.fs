@@ -15,7 +15,6 @@ module RectangleGeometry =
 
 [<AutoOpen>]
 module RectangleGeometryBuilders =
-
     type Fabulous.XamarinForms.View with
         static member inline RectangleGeometry<'msg>(rect: Rect) =
-            WidgetBuilder<'msg, IEllipseGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))
+            WidgetBuilder<'msg, IRectangleGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))
