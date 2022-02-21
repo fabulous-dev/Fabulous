@@ -14,7 +14,7 @@ module Polygon =
     let WidgetKey = Widgets.register<Polygon> ()
 
     let Points =
-        Attributes.defineScalarWithConverter<Points.Value, Points.Value, Points.Value>
+        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
             "Polygon_Points"
             id
             id
@@ -26,13 +26,13 @@ module Polygon =
                 | ValueNone -> target.ClearValue(Polygon.PointsProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Points.String string ->
+                    | PointsConverter.String string ->
                         target.SetValue(
                             Polygon.PointsProperty,
                             PointCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Points.PointsList points ->
+                    | PointsConverter.PointsList points ->
                         let coll = PointCollection()
                         points |> List.iter coll.Add
                         target.SetValue(Polygon.PointsProperty, coll))
@@ -44,7 +44,7 @@ module Polygon =
 module PolygonBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polygon<'msg>(points: Points.Value) =
+        static member inline Polygon<'msg>(points: PointsConverter.Value) =
             WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.Points.WithValue(points))
 
 [<Extension>]

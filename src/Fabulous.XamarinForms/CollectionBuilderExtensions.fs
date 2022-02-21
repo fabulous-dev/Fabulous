@@ -56,6 +56,14 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ITransform>
+        (
+            _: CollectionBuilder<'msg, 'marker, ITransform>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
@@ -116,6 +124,14 @@ type CollectionBuilderExtensions =
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IPathSegment>
         (
             _: CollectionBuilder<'msg, 'marker, IPathSegment>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> ITransform>
+        (
+            _: CollectionBuilder<'msg, 'marker, ITransform>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

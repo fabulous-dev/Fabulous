@@ -12,6 +12,8 @@ type IPathGeometry =
 module PathGeometry =
     let WidgetKey = Widgets.register<PathGeometry> ()
 
+    // FIXME Figures can be also used as a string using PathFigureCollectionConverter.
+    // Should be just use PathSegment Widgets ?
     let Figures =
         Attributes.defineWidgetCollection "PathGeometry_Figures" (fun target -> (target :?> PathGeometry).Figures)
 

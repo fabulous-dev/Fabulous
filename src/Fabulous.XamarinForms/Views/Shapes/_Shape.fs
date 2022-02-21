@@ -20,7 +20,7 @@ module Shape =
         Attributes.defineBindable<float> Shape.StrokeThicknessProperty
 
     let StrokeDashArray =
-        Attributes.defineScalarWithConverter<Double.Value, Double.Value, Double.Value>
+        Attributes.defineScalarWithConverter<DoubleConverter.Value, DoubleConverter.Value, DoubleConverter.Value>
             "Shape_StrokeDashArray"
             id
             id
@@ -32,13 +32,13 @@ module Shape =
                 | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Double.String string ->
+                    | DoubleConverter.String string ->
                         target.SetValue(
                             Shape.StrokeDashArrayProperty,
                             DoubleCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Double.DoubleList points ->
+                    | DoubleConverter.DoubleList points ->
                         let coll = DoubleCollection()
                         points |> List.iter coll.Add
                         target.SetValue(Shape.StrokeDashArrayProperty, coll))
@@ -75,7 +75,7 @@ type ShapeModifiers =
         this.AddScalar(Shape.StrokeThickness.WithValue(value))
 
     [<Extension>]
-    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: Double.Value) =
+    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: DoubleConverter.Value) =
         this.AddScalar(Shape.StrokeDashArray.WithValue(value))
 
     [<Extension>]

@@ -11,7 +11,7 @@ module PolyLineSegment =
     let WidgetKey = Widgets.register<PolyLineSegment> ()
 
     let Points =
-        Attributes.defineScalarWithConverter<Points.Value, Points.Value, Points.Value>
+        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
             "PolyLineSegment_Points"
             id
             id
@@ -23,13 +23,13 @@ module PolyLineSegment =
                 | ValueNone -> target.ClearValue(PolyLineSegment.PointsProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Points.String string ->
+                    | PointsConverter.String string ->
                         target.SetValue(
                             PolyLineSegment.PointsProperty,
                             PointCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Points.PointsList points ->
+                    | PointsConverter.PointsList points ->
                         let coll = PointCollection()
                         points |> List.iter coll.Add
                         target.SetValue(PolyLineSegment.PointsProperty, coll))
@@ -38,7 +38,7 @@ module PolyLineSegment =
 module PolyLineSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline PolyLineSegment<'msg>(point: Points.Value) =
+        static member inline PolyLineSegment<'msg>(point: PointsConverter.Value) =
             WidgetBuilder<'msg, IPolyLineSegment>(
                 PolyLineSegment.WidgetKey,
                 PolyLineSegment.Points.WithValue(point)

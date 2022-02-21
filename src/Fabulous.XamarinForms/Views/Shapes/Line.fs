@@ -18,6 +18,7 @@ module Line =
             "Line_Point1"
             (fun newValueOpt node ->
                 let line = node.Target :?> Line
+
                 match newValueOpt with
                 | ValueNone ->
                     line.X1 <- 0
@@ -44,5 +45,5 @@ module Line =
 module LineBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Line<'msg>(point1: struct (float * float), point2: struct (float * float)) =
-            WidgetBuilder<'msg, ILine>(Line.WidgetKey, Line.Point1.WithValue(point1), Line.Point2.WithValue(point2))
+        static member inline Line<'msg>(x1: float, y1: float, x2: float, y2: float) =
+            WidgetBuilder<'msg, ILine>(Line.WidgetKey, Line.Point1.WithValue((x1, y1)), Line.Point2.WithValue(x2, y2))

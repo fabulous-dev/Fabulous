@@ -14,7 +14,7 @@ module Polyline =
     let WidgetKey = Widgets.register<Polyline> ()
 
     let Points =
-        Attributes.defineScalarWithConverter<Points.Value, Points.Value, Points.Value>
+        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
             "Polyline_Points"
             id
             id
@@ -26,13 +26,13 @@ module Polyline =
                 | ValueNone -> target.ClearValue(Polyline.PointsProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Points.String string ->
+                    | PointsConverter.String string ->
                         target.SetValue(
                             Polyline.PointsProperty,
                             PointCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Points.PointsList points ->
+                    | PointsConverter.PointsList points ->
                         let coll = PointCollection()
                         points |> List.iter coll.Add
                         target.SetValue(Polyline.PointsProperty, coll))
@@ -44,7 +44,7 @@ module Polyline =
 module PolylineBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polyline<'msg>(points: Points.Value) =
+        static member inline Polyline<'msg>(points: PointsConverter.Value) =
             WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.Points.WithValue(points))
 
 [<Extension>]

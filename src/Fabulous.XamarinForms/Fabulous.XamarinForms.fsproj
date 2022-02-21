@@ -8,7 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ViewNode.fs" />
-    <Compile Include="InputTypes.fs" />
     <Compile Include="Attributes.fs" />
     <Compile Include="Controls.fs" />
     <Compile Include="VirtualizedCollection.fs" />
@@ -16,6 +15,7 @@
     <Compile Include="ViewUpdaters.fs" />
     <Compile Include="Views\_Element.fs" />
     <Compile Include="Views\_Geometry.fs" />
+    <Compile Include="Views\InputTypes.fs" />
     <Compile Include="Views\_NavigableElement.fs" />
     <Compile Include="Views\_VisualElement.fs" />
     <Compile Include="Views\GestureRecognizers\_GestureRecognizer.fs" />
@@ -93,6 +93,14 @@
     <Compile Include="Views\Shapes\Geometries\PathGeometry.fs" />
     <Compile Include="Views\Shapes\Geometries\GeometryGroup.fs" />
     <Compile Include="Views\Shapes\Geometries\RoundRectangleGeometry.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\_Transform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\RotateTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\ScaleTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\SkewTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\TranslateTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\CompositeTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\MatrixTransform.fs" />
+    <Compile Include="Views\Shapes\PathTransforms\TransformGroup.fs" />
     <Compile Include="Views\Shapes\_Shape.fs" />
     <Compile Include="Views\Shapes\Ellipse.fs" />
     <Compile Include="Views\Shapes\Rectangle.fs" />

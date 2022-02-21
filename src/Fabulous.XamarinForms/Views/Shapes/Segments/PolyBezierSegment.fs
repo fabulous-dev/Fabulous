@@ -11,7 +11,7 @@ module PolyBezierSegment =
     let WidgetKey = Widgets.register<PolyBezierSegment> ()
 
     let Points =
-        Attributes.defineScalarWithConverter<Points.Value, Points.Value, Points.Value>
+        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
             "PolyBezierSegment_Points"
             id
             id
@@ -23,13 +23,13 @@ module PolyBezierSegment =
                 | ValueNone -> target.ClearValue(PolyBezierSegment.PointsProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Points.String string ->
+                    | PointsConverter.String string ->
                         target.SetValue(
                             PolyBezierSegment.PointsProperty,
                             PointCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Points.PointsList points ->
+                    | PointsConverter.PointsList points ->
                         let coll = PointCollection()
                         points |> List.iter coll.Add
                         target.SetValue(PolyBezierSegment.PointsProperty, coll))
@@ -38,7 +38,7 @@ module PolyBezierSegment =
 module PolyBezierSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline PolyBezierSegment<'msg>(point: Points.Value) =
+        static member inline PolyBezierSegment<'msg>(point: PointsConverter.Value) =
             WidgetBuilder<'msg, IPolyBezierSegment>(
                 PolyBezierSegment.WidgetKey,
                 PolyBezierSegment.Points.WithValue(point)

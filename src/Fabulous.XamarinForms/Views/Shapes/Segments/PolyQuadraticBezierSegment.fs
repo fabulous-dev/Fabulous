@@ -11,7 +11,7 @@ module PolyQuadraticBezierSegment =
     let WidgetKey = Widgets.register<PolyQuadraticBezierSegment> ()
 
     let Points =
-        Attributes.defineScalarWithConverter<Points.Value, Points.Value, Points.Value>
+        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
             "PolyLineSegment_Points"
             id
             id
@@ -23,13 +23,13 @@ module PolyQuadraticBezierSegment =
                 | ValueNone -> target.ClearValue(PolyQuadraticBezierSegment.PointsProperty)
                 | ValueSome pointsValue ->
                     match pointsValue with
-                    | Points.String string ->
+                    | PointsConverter.String string ->
                         target.SetValue(
                             PolyQuadraticBezierSegment.PointsProperty,
                             PointCollectionConverter()
                                 .ConvertFromInvariantString(string)
                         )
-                    | Points.PointsList points ->
+                    | PointsConverter.PointsList points ->
                         let coll = PointCollection()
                         points |> List.iter coll.Add
                         target.SetValue(PolyQuadraticBezierSegment.PointsProperty, coll))
@@ -38,7 +38,7 @@ module PolyQuadraticBezierSegment =
 module PolyQuadraticBezierSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline PolyQuadraticBezierSegment<'msg>(point: Points.Value) =
+        static member inline PolyQuadraticBezierSegment<'msg>(point: PointsConverter.Value) =
             WidgetBuilder<'msg, IPolyQuadraticBezierSegment>(
                 PolyQuadraticBezierSegment.WidgetKey,
                 PolyQuadraticBezierSegment.Points.WithValue(point)
