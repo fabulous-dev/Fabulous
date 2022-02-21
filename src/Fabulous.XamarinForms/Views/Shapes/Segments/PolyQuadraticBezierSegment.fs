@@ -8,7 +8,8 @@ type IPolyQuadraticBezierSegment =
     inherit IPathSegment
 
 module PolyQuadraticBezierSegment =
-    let WidgetKey = Widgets.register<PolyQuadraticBezierSegment> ()
+    let WidgetKey =
+        Widgets.register<PolyQuadraticBezierSegment> ()
 
     let Points =
         Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
