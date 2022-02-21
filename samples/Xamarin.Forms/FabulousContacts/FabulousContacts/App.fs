@@ -187,7 +187,7 @@ module App =
              })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
-                .popped (NavigationPopped)
+                .onPopped (NavigationPopped)
         )
 
     let program dbPath =

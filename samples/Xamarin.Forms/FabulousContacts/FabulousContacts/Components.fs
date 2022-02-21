@@ -89,7 +89,7 @@ module Components =
         )
 
     let detailActionButton (imagePath: string) onClicked =
-        ImageButton(imagePath, onClicked, Aspect.AspectFit)
+        ImageButton(imagePath, onClicked, aspect = Aspect.AspectFit)
             .backgroundColor(accentColor)
             .size(height = 35.)
             .fillHorizontal (expand = true)
@@ -120,7 +120,7 @@ module Components =
     let profilePictureButton (picture: byte [] option) updatePicture =
         match picture with
         | None ->
-            ContentView(ImageButton("addphoto.png", updatePicture, Aspect.AspectFit))
+            ContentView(ImageButton("addphoto.png", updatePicture, aspect = Aspect.AspectFit))
                 .backgroundColor(Color.White)
                 .gridRowSpan (2)
 
