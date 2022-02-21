@@ -39,7 +39,4 @@ module PolyLineSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
         static member inline PolyLineSegment<'msg>(point: PointsConverter.Value) =
-            WidgetBuilder<'msg, IPolyLineSegment>(
-                PolyLineSegment.WidgetKey,
-                PolyLineSegment.Points.WithValue(point)
-            )
+            WidgetBuilder<'msg, IPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.Points.WithValue(point))
