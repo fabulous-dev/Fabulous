@@ -53,27 +53,19 @@ module ImageButtonBuilders =
     type Fabulous.XamarinForms.View with
         static member inline ImageButton<'msg>
             (
+                aspect: Aspect,
                 light: ImageSource,
                 onClicked: 'msg,
-                ?dark: ImageSource,
-                ?aspect: Aspect
+                ?dark: ImageSource
             ) =
-            match aspect with
-            | None ->
-                WidgetBuilder<'msg, IImageButton>(
-                    ImageButton.WidgetKey,
-                    ImageButton.Source.WithValue(AppTheme.create light dark),
-                    ImageButton.Clicked.WithValue(onClicked)
-                )
-            | Some aspect ->
-                WidgetBuilder<'msg, IImageButton>(
-                    ImageButton.WidgetKey,
-                    ImageButton.Aspect.WithValue(aspect),
-                    ImageButton.Source.WithValue(AppTheme.create light dark),
-                    ImageButton.Clicked.WithValue(onClicked)
-                )
+            WidgetBuilder<'msg, IImageButton>(
+                ImageButton.WidgetKey,
+                ImageButton.Aspect.WithValue(aspect),
+                ImageButton.Clicked.WithValue(onClicked),
+                ImageButton.Source.WithValue(AppTheme.create light dark)
+            )
 
-        static member inline ImageButton<'msg>(light: string, onClicked: 'msg, ?dark: string, ?aspect: Aspect) =
+        static member inline ImageButton<'msg>(aspect: Aspect, light: string, onClicked: 'msg, ?dark: string) =
             let light = ImageSource.FromResource(light)
 
             let dark =
@@ -81,9 +73,9 @@ module ImageButtonBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromResource(v))
 
-            View.ImageButton<'msg>(light = light, onClicked = onClicked, ?dark = dark, ?aspect = aspect)
+            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
 
-        static member inline ImageButton<'msg>(light: Uri, onClicked: 'msg, ?dark: Uri, ?aspect: Aspect) =
+        static member inline ImageButton<'msg>(aspect: Aspect, light: Uri, onClicked: 'msg, ?dark: Uri) =
             let light = ImageSource.FromUri(light)
 
             let dark =
@@ -91,9 +83,9 @@ module ImageButtonBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromUri(v))
 
-            View.ImageButton<'msg>(light = light, onClicked = onClicked, ?dark = dark, ?aspect = aspect)
+            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
 
-        static member inline ImageButton<'msg>(light: Stream, onClicked: 'msg, ?dark: Stream, ?aspect: Aspect) =
+        static member inline ImageButton<'msg>(aspect: Aspect, light: Stream, onClicked: 'msg, ?dark: Stream) =
             let light = ImageSource.FromStream(fun () -> light)
 
             let dark =
@@ -101,7 +93,7 @@ module ImageButtonBuilders =
                 | None -> None
                 | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-            View.ImageButton<'msg>(light = light, onClicked = onClicked, ?dark = dark, ?aspect = aspect)
+            View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
 
 [<Extension>]
 type ImageButtonModifiers =
