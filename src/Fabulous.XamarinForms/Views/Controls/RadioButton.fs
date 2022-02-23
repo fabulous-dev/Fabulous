@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
@@ -30,21 +31,7 @@ module RadioButton =
         Attributes.defineBindable<string> RadioButton.ContentProperty
 
     let ContentWidget =
-        Attributes.define<Content.Value>
-            "RadioButton_ContentWidget"
-            (fun newValueOpt node ->
-                let radioButton = node.Target :?> RadioButton
-
-                match newValueOpt with
-                | ValueNone -> ()
-                | ValueSome content ->
-                    match content with
-                    | Content.String _ -> ()
-                    | Content.Widget widget ->
-                        let view =
-                            Helpers.createViewForWidget node widget |> unbox
-
-                        radioButton.Content <- view)
+        Attributes.defineBindableWidget RadioButton.ContentProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> RadioButton.FontAttributesProperty
@@ -87,12 +74,22 @@ module RadioButtonBuilders =
                 RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
             )
 
-        static member inline RadioButton<'msg>(isChecked: bool, content: Content.Value, onChecked: bool -> 'msg) =
+        static member inline RadioButton<'msg, 'marker when 'marker :> IView>
+            (
+                isChecked: bool,
+                content: WidgetBuilder<'msg, 'marker>,
+                onChecked: bool -> 'msg
+            ) =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
-                RadioButton.IsChecked.WithValue(isChecked),
-                RadioButton.ContentWidget.WithValue(content),
-                RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
+                AttributesBundle(
+                    StackList.two (
+                        RadioButton.IsChecked.WithValue(isChecked),
+                        RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
+                    ),
+                    ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
+                    ValueNone
+                )
             )
 
 [<Extension>]
