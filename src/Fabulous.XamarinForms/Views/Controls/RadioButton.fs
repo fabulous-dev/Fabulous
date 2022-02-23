@@ -170,5 +170,5 @@ type RadioButtonModifiers =
 [<Extension>]
 type RadioButtonAttachedModifiers =
     [<Extension>]
-    static member inline radioButtonGroupName(this: WidgetBuilder<'msg, #ILayout>, value: string) =
+    static member inline radioButtonGroupName(this: WidgetBuilder<'msg, #ILayoutOfView>, value: string) =
         this.AddScalar(RadioButton.RadioButtonGroupName.WithValue(value))
