@@ -24,6 +24,7 @@
     <Compile Include="Views\GestureRecognizers\DragGestureRecognizer.fs" />
     <Compile Include="Views\GestureRecognizers\DropGestureRecognizer.fs" />
     <Compile Include="Views\_View.fs" />
+    <Compile Include="Views\InputTypes.fs" />
     <Compile Include="Views\MenuItems\MenuItem.fs" />
     <Compile Include="Views\MenuItems\ToolbarItem.fs" />
     <Compile Include="Views\Cells\_Cell.fs" />
@@ -69,6 +70,7 @@
     <Compile Include="Views\Controls\WebView.fs" />
     <Compile Include="Views\Controls\CheckBox.fs" />
     <Compile Include="Views\Controls\ProgressBar.fs" />
+    <Compile Include="Views\Controls\RadioButton.fs" />
     <Compile Include="Views\Collections\_ItemsView.fs" />
     <Compile Include="Views\Collections\_ItemsViewOfCell.fs" />
     <Compile Include="Views\Collections\ListView.fs" />
