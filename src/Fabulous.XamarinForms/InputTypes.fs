@@ -13,5 +13,4 @@ module InputTypes =
 
         let fromString value = String value
 
-        let fromWidget<'msg, 'marker when 'marker :> IView> (builder: WidgetBuilder<'msg, 'marker>) =
-            Widget(builder.Compile())
+        let fromWidget<'msg, 'marker> (builder: WidgetBuilder<'msg, 'marker>) = Widget(builder.Compile())
