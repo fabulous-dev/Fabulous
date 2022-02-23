@@ -13,30 +13,62 @@ type IPath =
 module Path =
     let WidgetKey = Widgets.register<Path> ()
 
-    // FIXME Data can be also used as a string using PathGeometryConverter.
-    // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/path-markup-syntax
-    // Should be just use Geometry Widgets ?
-    let Data =
+    let DataWidget =
         Attributes.defineBindableWidget Path.DataProperty
 
-    let RenderTransform =
+    let DataString =
+        Attributes.define<string>
+            "Path_DataString"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Path.DataProperty)
+                | ValueSome value ->
+                    target.SetValue(
+                        Path.DataProperty,
+                        PathGeometryConverter()
+                            .ConvertFromInvariantString(value)
+                    ))
+
+    let RenderTransformWidget =
         Attributes.defineBindableWidget Path.RenderTransformProperty
+
+    let RenderTransformString =
+        Attributes.define<string>
+            "Path_RenderTransformString"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Path.RenderTransformProperty)
+                | ValueSome value ->
+                    target.SetValue(
+                        Path.RenderTransformProperty,
+                        TransformTypeConverter()
+                            .ConvertFromInvariantString(value)
+                    ))
 
 [<AutoOpen>]
 module PathBuilders =
 
     type Fabulous.XamarinForms.View with
         static member inline Path<'msg, 'marker when 'marker :> IGeometry>(content: WidgetBuilder<'msg, 'marker>) =
-            WidgetHelpers.buildWidgets<'msg, IPath> Path.WidgetKey [| Path.Data.WithValue(content.Compile()) |]
+            WidgetHelpers.buildWidgets<'msg, IPath> Path.WidgetKey [| Path.DataWidget.WithValue(content.Compile()) |]
+
+        static member inline Path<'msg>(content: string) =
+            WidgetBuilder<'msg, IPath>(Path.WidgetKey, Path.DataString.WithValue(content))
 
 [<Extension>]
 type PathModifiers =
-    // FIXME RenderTransform can be also used as a string using TransformTypeConverter.
-    // Should be just use Transform Widgets ?
     [<Extension>]
     static member inline renderTransform<'msg, 'marker, 'contentMarker when 'marker :> IPath and 'contentMarker :> ITransform>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
         ) =
-        this.AddWidget(Path.RenderTransform.WithValue(content.Compile()))
+        this.AddWidget(Path.RenderTransformWidget.WithValue(content.Compile()))
+
+    [<Extension>]
+    static member inline renderTransform(this: WidgetBuilder<'msg, #IPath>, value: string) =
+        this.AddScalar(Path.RenderTransformString.WithValue(value))

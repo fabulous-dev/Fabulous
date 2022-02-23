@@ -1,6 +1,5 @@
 namespace Fabulous.XamarinForms
 
-open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -12,10 +11,25 @@ type IPathGeometry =
 module PathGeometry =
     let WidgetKey = Widgets.register<PathGeometry> ()
 
-    // FIXME Figures can be also used as a string using PathFigureCollectionConverter.
-    // Should be just use PathSegment Widgets ?
-    let Figures =
-        Attributes.defineWidgetCollection "PathGeometry_Figures" (fun target -> (target :?> PathGeometry).Figures)
+    let FiguresWidgets =
+        Attributes.defineWidgetCollection
+            "PathGeometry_FiguresWidgets"
+            (fun target -> (target :?> PathGeometry).Figures)
+
+    let FiguresString =
+        Attributes.define<string>
+            "PathGeometry_FiguresString"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(PathGeometry.FiguresProperty)
+                | ValueSome value ->
+                    target.SetValue(
+                        PathGeometry.FiguresProperty,
+                        PathFigureCollectionConverter()
+                            .ConvertFromInvariantString(value)
+                    ))
 
     let FillRule =
         Attributes.defineBindable<FillRule> PathGeometry.FillRuleProperty
@@ -26,10 +40,25 @@ module PathGeometryBuilders =
     type Fabulous.XamarinForms.View with
         static member inline PathGeometry<'msg>(?fillRule: FillRule) =
             match fillRule with
-            | None -> CollectionBuilder<'msg, IPathGeometry, IPathFigure>(PathGeometry.WidgetKey, PathGeometry.Figures)
+            | None ->
+                CollectionBuilder<'msg, IPathGeometry, IPathFigure>(PathGeometry.WidgetKey, PathGeometry.FiguresWidgets)
             | Some fillRule ->
                 CollectionBuilder<'msg, IPathGeometry, IPathFigure>(
                     PathGeometry.WidgetKey,
-                    PathGeometry.Figures,
+                    PathGeometry.FiguresWidgets,
+                    PathGeometry.FillRule.WithValue(fillRule)
+                )
+
+        static member inline PathGeometry<'msg>(content: string, ?fillRule: FillRule) =
+            match fillRule with
+            | None ->
+                WidgetBuilder<'msg, IPathGeometry>(
+                    PathGeometry.WidgetKey,
+                    PathGeometry.FiguresString.WithValue(content)
+                )
+            | Some fillRule ->
+                WidgetBuilder<'msg, IPathGeometry>(
+                    PathGeometry.WidgetKey,
+                    PathGeometry.FiguresString.WithValue(content),
                     PathGeometry.FillRule.WithValue(fillRule)
                 )
