@@ -19,29 +19,33 @@ module Shape =
     let StrokeThickness =
         Attributes.defineBindable<float> Shape.StrokeThicknessProperty
 
-    let StrokeDashArray =
-        Attributes.defineScalarWithConverter<DoubleConverter.Value, DoubleConverter.Value, DoubleConverter.Value>
-            "Shape_StrokeDashArray"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
+    let StrokeDashArrayString =
+        Attributes.define<string>
+            "Shape_StrokeDashArrayString"
             (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
-                | ValueSome pointsValue ->
-                    match pointsValue with
-                    | DoubleConverter.String string ->
-                        target.SetValue(
-                            Shape.StrokeDashArrayProperty,
-                            DoubleCollectionConverter()
-                                .ConvertFromInvariantString(string)
-                        )
-                    | DoubleConverter.DoubleList points ->
-                        let coll = DoubleCollection()
-                        points |> List.iter coll.Add
-                        target.SetValue(Shape.StrokeDashArrayProperty, coll))
+                | ValueSome string ->
+                    target.SetValue(
+                        Shape.StrokeDashArrayProperty,
+                        DoubleCollectionConverter()
+                            .ConvertFromInvariantString(string)
+                    ))
+
+    let StrokeDashArrayList =
+        Attributes.define<float list>
+            "Shape_StrokeDashArrayList"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
+                | ValueSome points ->
+                    let coll = DoubleCollection()
+                    points |> List.iter coll.Add
+                    target.SetValue(Shape.StrokeDashArrayProperty, coll))
 
     let StrokeDashOffset =
         Attributes.defineBindable<float> Shape.StrokeDashOffsetProperty
@@ -75,8 +79,12 @@ type ShapeModifiers =
         this.AddScalar(Shape.StrokeThickness.WithValue(value))
 
     [<Extension>]
-    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: DoubleConverter.Value) =
-        this.AddScalar(Shape.StrokeDashArray.WithValue(value))
+    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: string) =
+        this.AddScalar(Shape.StrokeDashArrayString.WithValue(value))
+
+    [<Extension>]
+    static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: float list) =
+        this.AddScalar(Shape.StrokeDashArrayList.WithValue(value))
 
     [<Extension>]
     static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IShape>, value: float) =

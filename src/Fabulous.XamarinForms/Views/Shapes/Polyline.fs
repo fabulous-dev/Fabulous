@@ -13,29 +13,33 @@ module Polyline =
 
     let WidgetKey = Widgets.register<Polyline> ()
 
-    let Points =
-        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
-            "Polyline_Points"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
+    let PointsString =
+        Attributes.define<string>
+            "Polyline_PointsString"
             (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(Polyline.PointsProperty)
-                | ValueSome pointsValue ->
-                    match pointsValue with
-                    | PointsConverter.String string ->
-                        target.SetValue(
-                            Polyline.PointsProperty,
-                            PointCollectionConverter()
-                                .ConvertFromInvariantString(string)
-                        )
-                    | PointsConverter.PointsList points ->
-                        let coll = PointCollection()
-                        points |> List.iter coll.Add
-                        target.SetValue(Polyline.PointsProperty, coll))
+                | ValueSome string ->
+                    target.SetValue(
+                        Polyline.PointsProperty,
+                        PointCollectionConverter()
+                            .ConvertFromInvariantString(string)
+                    ))
+
+    let PointsList =
+        Attributes.define<Point list>
+            "Polyline_PointsList"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Polyline.PointsProperty)
+                | ValueSome points ->
+                    let coll = PointCollection()
+                    points |> List.iter coll.Add
+                    target.SetValue(Polyline.PointsProperty, coll))
 
     let FillRule =
         Attributes.defineBindable<FillRule> Polyline.FillRuleProperty
@@ -44,8 +48,11 @@ module Polyline =
 module PolylineBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polyline<'msg>(points: PointsConverter.Value) =
-            WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.Points.WithValue(points))
+        static member inline Polyline<'msg>(points: string) =
+            WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.PointsString.WithValue(points))
+
+        static member inline Polyline<'msg>(points: Point list) =
+            WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.PointsList.WithValue(points))
 
 [<Extension>]
 type PolylineModifiers =

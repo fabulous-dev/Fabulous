@@ -13,29 +13,33 @@ module Polygon =
 
     let WidgetKey = Widgets.register<Polygon> ()
 
-    let Points =
-        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
-            "Polygon_Points"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
+    let PointsString =
+        Attributes.define<string>
+            "Polygon_PointsString"
             (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(Polygon.PointsProperty)
-                | ValueSome pointsValue ->
-                    match pointsValue with
-                    | PointsConverter.String string ->
-                        target.SetValue(
-                            Polygon.PointsProperty,
-                            PointCollectionConverter()
-                                .ConvertFromInvariantString(string)
-                        )
-                    | PointsConverter.PointsList points ->
-                        let coll = PointCollection()
-                        points |> List.iter coll.Add
-                        target.SetValue(Polygon.PointsProperty, coll))
+                | ValueSome string ->
+                    target.SetValue(
+                        Polygon.PointsProperty,
+                        PointCollectionConverter()
+                            .ConvertFromInvariantString(string)
+                    ))
+
+    let PointsList =
+        Attributes.define<Point list>
+            "Polygon_PointsList"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Polygon.PointsProperty)
+                | ValueSome points ->
+                    let coll = PointCollection()
+                    points |> List.iter coll.Add
+                    target.SetValue(Polygon.PointsProperty, coll))
 
     let FillRule =
         Attributes.defineBindable<FillRule> Polygon.FillRuleProperty
@@ -44,8 +48,11 @@ module Polygon =
 module PolygonBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polygon<'msg>(points: PointsConverter.Value) =
-            WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.Points.WithValue(points))
+        static member inline Polygon<'msg>(points: string) =
+            WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.PointsString.WithValue(points))
+
+        static member inline Polygon<'msg>(points: Point list) =
+            WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.PointsList.WithValue(points))
 
 [<Extension>]
 type PolygonModifiers =

@@ -20,8 +20,5 @@ module EllipseBuilders =
         static member inline Ellipse<'msg>() =
             WidgetBuilder<'msg, IEllipse>(
                 Ellipse.WidgetKey,
-                AttributesBundle(
-                    StackList.empty(),
-                    ValueSome [| |],
-                    ValueNone
-                ))
+                AttributesBundle(StackList.empty (), ValueSome [||], ValueNone)
+            )

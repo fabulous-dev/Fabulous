@@ -15,7 +15,6 @@
     <Compile Include="ViewUpdaters.fs" />
     <Compile Include="Views\_Element.fs" />
     <Compile Include="Views\_Geometry.fs" />
-    <Compile Include="Views\InputTypes.fs" />
     <Compile Include="Views\_NavigableElement.fs" />
     <Compile Include="Views\_VisualElement.fs" />
     <Compile Include="Views\GestureRecognizers\_GestureRecognizer.fs" />
