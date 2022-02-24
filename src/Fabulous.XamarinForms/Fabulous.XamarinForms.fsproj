@@ -13,7 +13,6 @@
     <Compile Include="VirtualizedCollection.fs" />
     <Compile Include="Widgets.fs" />
     <Compile Include="ViewUpdaters.fs" />
-    <Compile Include="InputTypes.fs" />
     <Compile Include="Views\_Element.fs" />
     <Compile Include="Views\_NavigableElement.fs" />
     <Compile Include="Views\_VisualElement.fs" />
