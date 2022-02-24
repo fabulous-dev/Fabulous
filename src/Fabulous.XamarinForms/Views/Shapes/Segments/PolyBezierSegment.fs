@@ -10,36 +10,46 @@ type IPolyBezierSegment =
 module PolyBezierSegment =
     let WidgetKey = Widgets.register<PolyBezierSegment> ()
 
-    let Points =
-        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
-            "PolyBezierSegment_Points"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
+    let PointsString =
+        Attributes.define<string>
+            "PolyBezierSegment_PointsString"
             (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(PolyBezierSegment.PointsProperty)
-                | ValueSome pointsValue ->
-                    match pointsValue with
-                    | PointsConverter.String string ->
-                        target.SetValue(
-                            PolyBezierSegment.PointsProperty,
-                            PointCollectionConverter()
-                                .ConvertFromInvariantString(string)
-                        )
-                    | PointsConverter.PointsList points ->
-                        let coll = PointCollection()
-                        points |> List.iter coll.Add
-                        target.SetValue(PolyBezierSegment.PointsProperty, coll))
+                | ValueSome string ->
+                    target.SetValue(
+                        PolyBezierSegment.PointsProperty,
+                        PointCollectionConverter()
+                            .ConvertFromInvariantString(string)
+                    ))
+
+    let PointsList =
+        Attributes.define<Point list>
+            "PolyBezierSegment_PointsList"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(PolyBezierSegment.PointsProperty)
+                | ValueSome points ->
+                    let coll = PointCollection()
+                    points |> List.iter coll.Add
+                    target.SetValue(PolyBezierSegment.PointsProperty, coll))
 
 [<AutoOpen>]
 module PolyBezierSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline PolyBezierSegment<'msg>(point: PointsConverter.Value) =
+        static member inline PolyBezierSegment<'msg>(points: string) =
             WidgetBuilder<'msg, IPolyBezierSegment>(
                 PolyBezierSegment.WidgetKey,
-                PolyBezierSegment.Points.WithValue(point)
+                PolyBezierSegment.PointsString.WithValue(points)
+            )
+
+        static member inline PolyBezierSegment<'msg>(points: Point list) =
+            WidgetBuilder<'msg, IPolyBezierSegment>(
+                PolyBezierSegment.WidgetKey,
+                PolyBezierSegment.PointsList.WithValue(points)
             )

@@ -10,33 +10,46 @@ type IPolyLineSegment =
 module PolyLineSegment =
     let WidgetKey = Widgets.register<PolyLineSegment> ()
 
-    let Points =
-        Attributes.defineScalarWithConverter<PointsConverter.Value, PointsConverter.Value, PointsConverter.Value>
-            "PolyLineSegment_Points"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
+    let PointsString =
+        Attributes.define<string>
+            "PolyLineSegment_PointsString"
             (fun newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(PolyLineSegment.PointsProperty)
-                | ValueSome pointsValue ->
-                    match pointsValue with
-                    | PointsConverter.String string ->
-                        target.SetValue(
-                            PolyLineSegment.PointsProperty,
-                            PointCollectionConverter()
-                                .ConvertFromInvariantString(string)
-                        )
-                    | PointsConverter.PointsList points ->
-                        let coll = PointCollection()
-                        points |> List.iter coll.Add
-                        target.SetValue(PolyLineSegment.PointsProperty, coll))
+                | ValueSome string ->
+                    target.SetValue(
+                        PolyLineSegment.PointsProperty,
+                        PointCollectionConverter()
+                            .ConvertFromInvariantString(string)
+                    ))
+
+    let PointsList =
+        Attributes.define<Point list>
+            "PolyLineSegment_PointsList"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(PolyLineSegment.PointsProperty)
+                | ValueSome points ->
+                    let coll = PointCollection()
+                    points |> List.iter coll.Add
+                    target.SetValue(PolyLineSegment.PointsProperty, coll))
 
 [<AutoOpen>]
 module PolyLineSegmentBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline PolyLineSegment<'msg>(point: PointsConverter.Value) =
-            WidgetBuilder<'msg, IPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.Points.WithValue(point))
+        static member inline PolyLineSegment<'msg>(points: string) =
+            WidgetBuilder<'msg, IPolyLineSegment>(
+                PolyLineSegment.WidgetKey,
+                PolyLineSegment.PointsString.WithValue(points)
+            )
+
+        static member inline PolyLineSegment<'msg>(points: Point list) =
+            WidgetBuilder<'msg, IPolyLineSegment>(
+                PolyLineSegment.WidgetKey,
+                PolyLineSegment.PointsList.WithValue(points)
+            )
