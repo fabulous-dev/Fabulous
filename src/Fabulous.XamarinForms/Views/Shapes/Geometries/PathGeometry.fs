@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -14,7 +15,7 @@ module PathGeometry =
     let FiguresWidgets =
         Attributes.defineWidgetCollection
             "PathGeometry_FiguresWidgets"
-            (fun target -> (target :?> PathGeometry).Figures)
+            (fun target -> (target :?> PathGeometry).Figures :> IList<_>)
 
     let FiguresString =
         Attributes.define<string>

@@ -22,10 +22,10 @@ module Line =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.X1 <- 0
-                    line.Y1 <- 0
-                    line.X2 <- 0
-                    line.Y2 <- 0
+                    line.X1 <- 0.
+                    line.Y1 <- 0.
+                    line.X2 <- 0.
+                    line.Y2 <- 0.
                 | ValueSome (startPoint, endPoint) ->
                     line.X1 <- startPoint.X
                     line.Y1 <- startPoint.Y

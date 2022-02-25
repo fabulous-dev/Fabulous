@@ -1,6 +1,6 @@
 namespace Fabulous.XamarinForms
 
-open System.Runtime.CompilerServices
+open System.Collections.Generic
 open Xamarin.Forms.Shapes
 open Fabulous
 open Fabulous.XamarinForms
@@ -13,7 +13,7 @@ module GeometryGroup =
     let WidgetKey = Widgets.register<GeometryGroup> ()
 
     let Children =
-        Attributes.defineWidgetCollection "GeometryGroup_Children" (fun target -> (target :?> GeometryGroup).Children)
+        Attributes.defineWidgetCollection "GeometryGroup_Children" (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
 
     let FillRule =
         Attributes.defineBindable<FillRule> GeometryGroup.FillRuleProperty

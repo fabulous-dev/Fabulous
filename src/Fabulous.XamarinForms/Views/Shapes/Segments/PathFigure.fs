@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
@@ -12,7 +13,7 @@ module PathFigure =
     let WidgetKey = Widgets.register<PathFigure> ()
 
     let Segments =
-        Attributes.defineWidgetCollection "PathGeometry_Segments" (fun target -> (target :?> PathFigure).Segments)
+        Attributes.defineWidgetCollection "PathGeometry_Segments" (fun target -> (target :?> PathFigure).Segments :> IList<_>)
 
     let StartPoint =
         Attributes.defineBindable<Point> PathFigure.StartPointProperty
