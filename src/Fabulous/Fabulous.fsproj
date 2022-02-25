@@ -26,6 +26,7 @@
         <Compile Include="Memo.fs" />
         <Compile Include="MapMsg.fs" />
         <Compile Include="View.fs" />
+        <Compile Include="ViewRef.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Update="FSharp.Core" Version="6.0.1" />

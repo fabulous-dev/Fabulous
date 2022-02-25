@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
@@ -32,23 +33,28 @@ module CarouselView =
     let PeekAreaInsets =
         Attributes.defineBindable<Thickness> CarouselView.PeekAreaInsetsProperty
 
-    let CurrentItem =
-        Attributes.define<obj>
-            "CarouselView_CurrentItem"
+    let IndicatorView =
+        Attributes.defineScalarWithConverter<ViewRef<IndicatorView>, _, _>
+            "CarouselView_IndicatorView"
+            id
+            id
+            ScalarAttributeComparers.equalityCompare
             (fun newValueOpt node ->
-                let carouselView = node.Target :?> CarouselView
+                let handler =
+                    match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Key) with
+                    | ValueSome handler -> handler
+                    | ValueNone ->
+                        let newHandler =
+                            EventHandler<IndicatorView>
+                                (fun _ indicatorView -> (node.Target :?> CarouselView).IndicatorView <- indicatorView)
+
+                        newHandler
 
                 match newValueOpt with
-                | ValueNone -> carouselView.CurrentItem <- null
-                | ValueSome currentItem -> carouselView.CurrentItem <- currentItem)
-
-    let PositionChanged =
-        Attributes.defineEvent<PositionChangedEventArgs>
-            "CarouselView_PositionChanged"
-            (fun target -> (target :?> CarouselView).PositionChanged)
-
-    let Position =
-        Attributes.defineBindable<int> CarouselView.PositionProperty
+                | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Key, ValueNone)
+                | ValueSome curr ->
+                    curr.Attached.AddHandler(handler)
+                    node.SetHandler(ViewRefAttributes.ViewRef.Key, ValueSome handler))
 
 [<AutoOpen>]
 module CarouselViewBuilders =
@@ -58,19 +64,6 @@ module CarouselViewBuilders =
             =
             WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker>
                 CarouselView.WidgetKey
-                ItemsView.ItemsSource
-                items
-
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
-            (
-                items: seq<'itemData>,
-                position: int,
-                positionChanged: int -> 'msg
-            ) =
-            WidgetHelpers.buildItemsWithScalars<'msg, ICarouselView, 'itemData, 'itemMarker>
-                CarouselView.WidgetKey
-                (CarouselView.Position.WithValue(position))
-                (CarouselView.PositionChanged.WithValue(fun e -> positionChanged e.CurrentPosition |> box))
                 ItemsView.ItemsSource
                 items
 
@@ -126,5 +119,5 @@ type CarouselViewModifiers =
         CarouselViewModifiers.peekAreaInsets (this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline currentItem(this: WidgetBuilder<'msg, #ICarouselView>, value: obj) =
-        this.AddScalar(CarouselView.CurrentItem.WithValue(value))
+    static member inline indicatorView(this: WidgetBuilder<'msg, #ICarouselView>, value: ViewRef<IndicatorView>) =
+        this.AddScalar(CarouselView.IndicatorView.WithValue(value))
