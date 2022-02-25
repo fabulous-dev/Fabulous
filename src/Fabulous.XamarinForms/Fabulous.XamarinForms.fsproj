@@ -65,6 +65,7 @@
     <Compile Include="Views\Controls\Editor.fs" />
     <Compile Include="Views\Controls\ImageButton.fs" />
     <Compile Include="Views\Controls\DatePicker.fs" />
+    <Compile Include="Views\Controls\Picker.fs" />
     <Compile Include="Views\Controls\TimePicker.fs" />
     <Compile Include="Views\Controls\Stepper.fs" />
     <Compile Include="Views\Controls\WebView.fs" />

@@ -1,0 +1,133 @@
+namespace Fabulous.XamarinForms
+
+open System.Runtime.CompilerServices
+open Fabulous
+open Xamarin.Forms
+
+type IPicker =
+    inherit IView
+
+module Picker =
+    let WidgetKey = Widgets.register<Picker> ()
+
+    let CharacterSpacing =
+        Attributes.defineBindable<float> Picker.CharacterSpacingProperty
+
+    let HorizontalTextAlignment =
+        Attributes.defineBindable<TextAlignment> Picker.HorizontalTextAlignmentProperty
+
+    let VerticalTextAlignment =
+        Attributes.defineBindable<TextAlignment> Picker.VerticalTextAlignmentProperty
+
+    let FontAttributes =
+        Attributes.defineBindable<FontAttributes> Picker.FontAttributesProperty
+
+    let FontFamily =
+        Attributes.defineBindable<string> Picker.FontFamilyProperty
+
+    let FontSize =
+        Attributes.defineBindable<float> Picker.FontSizeProperty
+
+    let TextColor =
+        Attributes.defineAppThemeBindable<Color> Picker.TextColorProperty
+
+    let TextTransform =
+        Attributes.defineBindable<TextTransform> Picker.TextTransformProperty
+
+    let Title =
+        Attributes.defineBindable<string> Picker.TitleProperty
+
+    let TitleColor =
+        Attributes.defineAppThemeBindable<Color> Picker.TitleColorProperty
+
+    let SelectedIndex =
+        Attributes.defineBindable<int> Picker.SelectedIndexProperty
+
+    let ItemSource =
+        Attributes.define<string array>
+            "Picker_ItemSource"
+            (fun newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
+                | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
+
+    let SelectedIndexChanged =
+        Attributes.defineEventNoArg
+            "Picker_SelectedIndexChanged"
+            (fun target -> (target :?> Picker).SelectedIndexChanged)
+
+[<AutoOpen>]
+module PickerBuilders =
+    type Fabulous.XamarinForms.View with
+        static member inline Picker<'msg>(items: string list, onSelectedIndexChanged: 'msg) =
+            WidgetBuilder<'msg, IPicker>(
+                Picker.WidgetKey,
+                Picker.ItemSource.WithValue(items |> Array.ofList),
+                Picker.SelectedIndexChanged.WithValue(onSelectedIndexChanged)
+            )
+
+[<Extension>]
+type PickerModifiers =
+    [<Extension>]
+    static member inline characterSpacing(this: WidgetBuilder<'msg, #IPicker>, value: float) =
+        this.AddScalar(Picker.CharacterSpacing.WithValue(value))
+
+    [<Extension>]
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
+        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value))
+
+    [<Extension>]
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
+        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
+
+    [<Extension>]
+    static member inline font
+        (
+            this: WidgetBuilder<'msg, #IPicker>,
+            ?size: double,
+            ?namedSize: NamedSize,
+            ?attributes: FontAttributes,
+            ?fontFamily: string
+        ) =
+
+        let mutable res = this
+
+        match size with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v))
+
+        match namedSize with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>)))
+
+        match attributes with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Picker.FontAttributes.WithValue(v))
+
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Picker.FontFamily.WithValue(v))
+
+        res
+
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
+        this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline textTransform(this: WidgetBuilder<'msg, #IPicker>, value: TextTransform) =
+        this.AddScalar(Picker.TextTransform.WithValue(value))
+
+    [<Extension>]
+    static member inline title(this: WidgetBuilder<'msg, #IPicker>, value: string) =
+        this.AddScalar(Picker.Title.WithValue(value))
+
+    [<Extension>]
+    static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
+        this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline selectedIndex(this: WidgetBuilder<'msg, #IPicker>, value: int) =
+        this.AddScalar(Picker.SelectedIndex.WithValue(value))
