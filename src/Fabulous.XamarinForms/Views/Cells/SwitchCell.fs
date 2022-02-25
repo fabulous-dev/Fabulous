@@ -44,3 +44,8 @@ type SwitchCellModifiers =
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #ISwitchCell>, light: Color, ?dark: Color) =
         this.AddScalar(SwitchCell.OnColor.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct SwitchCell control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ISwitchCell>, value: ViewRef<SwitchCell>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

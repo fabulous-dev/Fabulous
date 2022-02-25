@@ -87,3 +87,8 @@ type EditorModifiers =
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEditor>, onCompleted: 'msg) =
         this.AddScalar(Editor.Completed.WithValue(onCompleted))
+
+    /// <summary>Link a ViewRef to access the direct Editor control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IEditor>, value: ViewRef<Editor>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -121,3 +121,8 @@ type CarouselViewModifiers =
     [<Extension>]
     static member inline indicatorView(this: WidgetBuilder<'msg, #ICarouselView>, value: ViewRef<IndicatorView>) =
         this.AddScalar(CarouselView.IndicatorView.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct CarouselView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ICarouselView>, value: ViewRef<CarouselView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

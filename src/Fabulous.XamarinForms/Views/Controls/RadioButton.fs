@@ -172,6 +172,11 @@ type RadioButtonModifiers =
     static member inline value(this: WidgetBuilder<'msg, #IRadioButton>, value: obj) =
         this.AddScalar(RadioButton.Value.WithValue(value))
 
+    /// <summary>Link a ViewRef to access the direct RadioButton control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IRadioButton>, value: ViewRef<RadioButton>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
 [<Extension>]
 type RadioButtonAttachedModifiers =
     [<Extension>]

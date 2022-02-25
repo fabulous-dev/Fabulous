@@ -89,5 +89,5 @@ type IndicatorViewModifiers =
     /// <summary>Sets the maximum number of visible indicators.</summary>
     /// <param name="maximum">The maximum number of visible indicators.</param>
     [<Extension>]
-    static member inline maximumVisible(this: WidgetBuilder<'msg, #IIndicatorView>, count: int) =
+    static member inline maximumVisible(this: WidgetBuilder<'msg, IIndicatorView>, count: int) =
         this.AddScalar(IndicatorView.MaximumVisible.WithValue(count))

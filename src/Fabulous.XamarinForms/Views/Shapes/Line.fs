@@ -50,3 +50,11 @@ module LineBuilders =
                 Shape.StrokeThickness.WithValue(strokeThickness),
                 Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )
+
+
+[<Extension>]
+type LineModifiers =
+    /// <summary>Link a ViewRef to access the direct Line control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ILine>, value: ViewRef<Line>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

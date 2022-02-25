@@ -72,3 +72,8 @@ type PathModifiers =
     [<Extension>]
     static member inline renderTransform(this: WidgetBuilder<'msg, #IPath>, value: string) =
         this.AddScalar(Path.RenderTransformString.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct Path control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IPath>, value: ViewRef<Path>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -82,3 +82,8 @@ type PolylineModifiers =
     [<Extension>]
     static member inline fillRule(this: WidgetBuilder<'msg, #IPolyline>, value: FillRule) =
         this.AddScalar(Polyline.FillRule.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct Polyline control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IPolyline>, value: ViewRef<Polyline>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

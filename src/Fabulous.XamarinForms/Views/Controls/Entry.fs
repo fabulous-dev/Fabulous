@@ -124,3 +124,8 @@ type EntryModifiers =
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEntry>, onCompleted: 'msg) =
         this.AddScalar(Entry.Completed.WithValue(onCompleted))
+
+    /// <summary>Link a ViewRef to access the direct Entry control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IEntry>, value: ViewRef<Entry>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

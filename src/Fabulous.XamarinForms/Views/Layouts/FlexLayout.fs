@@ -88,6 +88,11 @@ type FlexLayoutModifiers =
     static member inline justifyContent(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexJustify) =
         this.AddScalar(FlexLayout.JustifyContent.WithValue(value))
 
+    /// <summary>Link a ViewRef to access the direct FlexLayout control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFlexLayout>, value: ViewRef<FlexLayout>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
 [<Extension>]
 type FlexLayoutAttachedModifiers =
     /// <summary>Sets a value that the element will use the alignment supplied by the FlexAlignItems</summary>

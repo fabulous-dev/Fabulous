@@ -88,3 +88,8 @@ type ScrollViewModifiers =
     [<Extension>]
     static member inline onScrolled(this: WidgetBuilder<'msg, #IScrollView>, onScrolled: ScrolledEventArgs -> 'msg) =
         this.AddScalar(ScrollView.Scrolled.WithValue(fun args -> onScrolled args |> box))
+
+    /// <summary>Link a ViewRef to access the direct ScrollView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IScrollView>, value: ViewRef<ScrollView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

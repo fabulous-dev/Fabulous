@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System
 open System.IO
+open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -54,3 +55,10 @@ module ImageCellBuilders =
                 | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
             View.ImageCell<'msg>(text, light, ?dark = dark)
+
+[<Extension>]
+type ImageCellModifiers =
+    /// <summary>Link a ViewRef to access the direct ImageCell control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IImageCell>, value: ViewRef<ImageCell>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

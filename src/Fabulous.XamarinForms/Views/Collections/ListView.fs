@@ -58,3 +58,8 @@ type ListViewModifiers =
     [<Extension>]
     static member inline itemTapped(this: WidgetBuilder<'msg, #IListView>, fn: int -> 'msg) =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> fn args.ItemIndex |> box))
+
+    /// <summary>Link a ViewRef to access the direct ListView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IListView>, value: ViewRef<ListView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

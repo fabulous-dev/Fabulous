@@ -74,3 +74,8 @@ type ImageModifiers =
     [<Extension>]
     static member inline isOpaque(this: WidgetBuilder<'msg, #IImage>, isOpaque: bool) =
         this.AddScalar(Image.IsOpaque.WithValue(isOpaque))
+
+    /// <summary>Link a ViewRef to access the direct Image control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IImage>, value: ViewRef<Image>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

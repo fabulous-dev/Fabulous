@@ -41,3 +41,8 @@ type ContentPageModifiers =
     [<Extension>]
     static member inline onSizeAllocated(this: WidgetBuilder<'msg, #IContentPage>, fn: SizeAllocatedEventArgs -> 'msg) =
         this.AddScalar(ContentPage.SizeAllocated.WithValue(fn >> box))
+
+    /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IContentPage>, value: ViewRef<ContentPage>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

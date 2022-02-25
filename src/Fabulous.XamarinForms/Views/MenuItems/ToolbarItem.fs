@@ -49,3 +49,8 @@ type ToolbarItemModifiers =
     [<Extension>]
     static member inline priority(this: WidgetBuilder<'msg, #IToolbarItem>, value: int) =
         this.AddScalar(ToolbarItem.Priority.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct ToolbarItem control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IToolbarItem>, value: ViewRef<ToolbarItem>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

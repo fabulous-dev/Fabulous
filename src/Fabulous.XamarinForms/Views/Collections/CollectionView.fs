@@ -38,3 +38,10 @@ module CollectionViewBuilders =
                 CollectionView.GroupedWidgetKey
                 ItemsView.GroupedItemsSource
                 items
+
+[<Extension>]
+type CollectionViewModifiers =
+    /// <summary>Link a ViewRef to access the direct CollectionView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ICollectionView>, value: ViewRef<CollectionView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

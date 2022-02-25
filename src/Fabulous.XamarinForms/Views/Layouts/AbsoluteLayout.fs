@@ -24,6 +24,13 @@ module AbsoluteLayoutBuilders =
             CollectionBuilder<'msg, IAbsoluteLayout, IView>(AbsoluteLayout.WidgetKey, LayoutOfView.Children)
 
 [<Extension>]
+type AbsoluteLayoutModifiers =
+    /// <summary>Link a ViewRef to access the direct AbsoluteLayout control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IAbsoluteLayout>, value: ViewRef<AbsoluteLayout>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
 type AbsoluteLayoutAttachedModifiers =
     /// <summary>Specify the bounding rectangle's position and dimensions. The first two values in the list must represent numbers. The latter two values may each either be numbers, or the value AbsoluteLayout.AutoSize</summary>
     /// <param name= "x">The x-coordinate of the bounding rectangle.</param>

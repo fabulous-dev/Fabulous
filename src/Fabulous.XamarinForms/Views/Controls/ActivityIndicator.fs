@@ -34,3 +34,8 @@ type ActivityIndicatorModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #IActivityIndicator>, light: Color, ?dark: Color) =
         this.AddScalar(ActivityIndicator.Color.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct ActivityIndicator control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IActivityIndicator>, value: ViewRef<ActivityIndicator>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
