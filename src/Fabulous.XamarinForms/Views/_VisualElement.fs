@@ -23,7 +23,7 @@ module VisualElement =
         Attributes.defineAppThemeBindable<Brush> VisualElement.BackgroundProperty
 
     let Clip =
-        Attributes.defineBindable<Geometry> VisualElement.ClipProperty
+        Attributes.defineBindableWidget VisualElement.ClipProperty
 
     let FlowDirection =
         Attributes.defineBindable<FlowDirection> VisualElement.FlowDirectionProperty
@@ -116,8 +116,12 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Background.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline clip(this: WidgetBuilder<'msg, #IVisualElement>, value: Geometry) =
-        this.AddScalar(VisualElement.Clip.WithValue(value))
+    static member inline clip<'msg, 'marker, 'contentMarker when 'marker :> IVisualElement and 'contentMarker :> IGeometry>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(VisualElement.Clip.WithValue(content.Compile()))
 
     [<Extension>]
     static member inline flowDirection(this: WidgetBuilder<'msg, #IVisualElement>, value: FlowDirection) =
