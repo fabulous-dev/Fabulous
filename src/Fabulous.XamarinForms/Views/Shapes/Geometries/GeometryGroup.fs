@@ -13,7 +13,9 @@ module GeometryGroup =
     let WidgetKey = Widgets.register<GeometryGroup> ()
 
     let Children =
-        Attributes.defineWidgetCollection "GeometryGroup_Children" (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
+        Attributes.defineWidgetCollection
+            "GeometryGroup_Children"
+            (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
 
     let FillRule =
         Attributes.defineBindable<FillRule> GeometryGroup.FillRuleProperty

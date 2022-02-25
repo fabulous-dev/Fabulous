@@ -13,7 +13,9 @@ module PathFigure =
     let WidgetKey = Widgets.register<PathFigure> ()
 
     let Segments =
-        Attributes.defineWidgetCollection "PathGeometry_Segments" (fun target -> (target :?> PathFigure).Segments :> IList<_>)
+        Attributes.defineWidgetCollection
+            "PathGeometry_Segments"
+            (fun target -> (target :?> PathFigure).Segments :> IList<_>)
 
     let StartPoint =
         Attributes.defineBindable<Point> PathFigure.StartPointProperty

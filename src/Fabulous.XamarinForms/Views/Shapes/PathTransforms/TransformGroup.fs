@@ -13,7 +13,9 @@ module TransformGroup =
     let WidgetKey = Widgets.register<TransformGroup> ()
 
     let Children =
-        Attributes.defineWidgetCollection "TransformGroup_Children" (fun target -> (target :?> TransformGroup).Children :> IList<_>)
+        Attributes.defineWidgetCollection
+            "TransformGroup_Children"
+            (fun target -> (target :?> TransformGroup).Children :> IList<_>)
 
 [<AutoOpen>]
 module TransformGroupBuilders =
