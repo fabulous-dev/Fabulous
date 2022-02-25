@@ -66,7 +66,7 @@ module RadioButton =
 module RadioButtonBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline RadioButton<'msg>(isChecked: bool, content: string, onChecked: bool -> 'msg) =
+        static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
                 RadioButton.IsChecked.WithValue(isChecked),
@@ -76,8 +76,8 @@ module RadioButtonBuilders =
 
         static member inline RadioButton<'msg, 'marker when 'marker :> IView>
             (
-                isChecked: bool,
                 content: WidgetBuilder<'msg, 'marker>,
+                isChecked: bool,
                 onChecked: bool -> 'msg
             ) =
             WidgetBuilder<'msg, IRadioButton>(
