@@ -48,11 +48,33 @@ module Polygon =
 module PolygonBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polygon<'msg>(points: string) =
-            WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.PointsString.WithValue(points))
+        static member inline Polygon<'msg>
+            (
+                points: string,
+                strokeThickness: float,
+                strokeLight: Brush,
+                ?strokeDark: Brush
+            ) =
+            WidgetBuilder<'msg, IPolygon>(
+                Polygon.WidgetKey,
+                Polygon.PointsString.WithValue(points),
+                Shape.StrokeThickness.WithValue(strokeThickness),
+                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+            )
 
-        static member inline Polygon<'msg>(points: Point list) =
-            WidgetBuilder<'msg, IPolygon>(Polygon.WidgetKey, Polygon.PointsList.WithValue(points))
+        static member inline Polygon<'msg>
+            (
+                points: Point list,
+                strokeThickness: float,
+                strokeLight: Brush,
+                ?strokeDark: Brush
+            ) =
+            WidgetBuilder<'msg, IPolygon>(
+                Polygon.WidgetKey,
+                Polygon.PointsList.WithValue(points),
+                Shape.StrokeThickness.WithValue(strokeThickness),
+                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+            )
 
 [<Extension>]
 type PolygonModifiers =

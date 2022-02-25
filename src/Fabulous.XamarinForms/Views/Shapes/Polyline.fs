@@ -48,11 +48,33 @@ module Polyline =
 module PolylineBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Polyline<'msg>(points: string) =
-            WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.PointsString.WithValue(points))
+        static member inline Polyline<'msg>
+            (
+                points: string,
+                strokeThickness: float,
+                strokeLight: Brush,
+                ?strokeDark: Brush
+            ) =
+            WidgetBuilder<'msg, IPolyline>(
+                Polyline.WidgetKey,
+                Polyline.PointsString.WithValue(points),
+                Shape.StrokeThickness.WithValue(strokeThickness),
+                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+            )
 
-        static member inline Polyline<'msg>(points: Point list) =
-            WidgetBuilder<'msg, IPolyline>(Polyline.WidgetKey, Polyline.PointsList.WithValue(points))
+        static member inline Polyline<'msg>
+            (
+                points: Point list,
+                strokeThickness: float,
+                strokeLight: Brush,
+                ?strokeDark: Brush
+            ) =
+            WidgetBuilder<'msg, IPolyline>(
+                Polyline.WidgetKey,
+                Polyline.PointsList.WithValue(points),
+                Shape.StrokeThickness.WithValue(strokeThickness),
+                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
+            )
 
 [<Extension>]
 type PolylineModifiers =

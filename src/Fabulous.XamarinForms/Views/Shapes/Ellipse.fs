@@ -17,8 +17,9 @@ module Ellipse =
 module EllipseBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline Ellipse<'msg>() =
+        static member inline Ellipse<'msg>(strokeThickness: float, strokeLight: Brush, ?strokeDark: Brush) =
             WidgetBuilder<'msg, IEllipse>(
                 Ellipse.WidgetKey,
-                AttributesBundle(StackList.empty (), ValueSome [||], ValueNone)
+                Shape.StrokeThickness.WithValue(strokeThickness),
+                Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )
