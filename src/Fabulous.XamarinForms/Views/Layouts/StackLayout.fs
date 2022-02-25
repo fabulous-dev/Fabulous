@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
 
@@ -40,3 +41,10 @@ module StackLayoutBuilders =
 
         static member inline VStack<'msg>(?spacing) =
             View.StackLayout<'msg>(StackOrientation.Vertical, ?spacing = spacing)
+
+[<Extension>]
+type StackLayoutModifiers =
+    /// <summary>Link a ViewRef to access the direct StackLayout control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IStackLayout>, value: ViewRef<StackLayout>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
 
@@ -19,3 +20,10 @@ module ContentViewBuilders =
             WidgetHelpers.buildWidgets<'msg, IContentView>
                 ContentView.WidgetKey
                 [| ContentView.Content.WithValue(content.Compile()) |]
+
+[<Extension>]
+type ContentViewModifiers =
+    /// <summary>Link a ViewRef to access the direct ContentView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IContentView>, value: ViewRef<ContentView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

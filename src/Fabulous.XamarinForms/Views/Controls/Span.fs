@@ -121,3 +121,8 @@ type SpanModifiers =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IGestureRecognizer>
             Span.GestureRecognizers
             this
+
+    /// <summary>Link a ViewRef to access the direct Span control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ISpan>, value: ViewRef<Span>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

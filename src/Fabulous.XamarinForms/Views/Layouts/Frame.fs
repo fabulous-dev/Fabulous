@@ -48,3 +48,8 @@ type FrameModifiers =
     [<Extension>]
     static member inline hasShadow(this: WidgetBuilder<'msg, #IFrame>, value: bool) =
         this.AddScalar(Frame.HasShadow.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct Frame control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IFrame>, value: ViewRef<Frame>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

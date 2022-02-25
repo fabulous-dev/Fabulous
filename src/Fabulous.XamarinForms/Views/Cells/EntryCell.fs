@@ -87,3 +87,8 @@ type EntryCellModifiers =
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEntryCell>, onCompleted: 'msg) =
         this.AddScalar(EntryCell.OnCompleted.WithValue(onCompleted))
+
+    /// <summary>Link a ViewRef to access the direct EntryCell control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IEntryCell>, value: ViewRef<EntryCell>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

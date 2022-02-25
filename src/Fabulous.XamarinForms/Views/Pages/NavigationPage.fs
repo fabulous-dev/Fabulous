@@ -198,3 +198,8 @@ type NavigationPageAttachedModifiers =
             content: WidgetBuilder<'msg, 'contentMarker>
         ) =
         this.AddWidget(NavigationPage.TitleView.WithValue(content.Compile()))
+
+    /// <summary>Link a ViewRef to access the direct NavigationPage control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, INavigationPage>, value: ViewRef<NavigationPage>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

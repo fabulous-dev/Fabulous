@@ -32,3 +32,8 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: Color, ?dark: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IProgressBar>, value: ViewRef<ProgressBar>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

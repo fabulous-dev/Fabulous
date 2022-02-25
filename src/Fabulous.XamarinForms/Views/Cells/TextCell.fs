@@ -49,3 +49,8 @@ type TextCellModifiers =
     [<Extension>]
     static member inline detailText(this: WidgetBuilder<'msg, #ITextCell>, text: string) =
         this.AddScalar(TextCell.Detail.WithValue(text))
+
+    /// <summary>Link a ViewRef to access the direct TextCell control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ITextCell>, value: ViewRef<TextCell>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

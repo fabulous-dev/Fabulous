@@ -38,3 +38,8 @@ type RectangleModifiers =
         this
             .AddScalar(Rectangle.RadiusX.WithValue(x))
             .AddScalar(Rectangle.RadiusY.WithValue(y))
+
+    /// <summary>Link a ViewRef to access the direct Rectangle control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IRectangle>, value: ViewRef<Rectangle>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

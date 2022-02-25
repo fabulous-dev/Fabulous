@@ -40,3 +40,8 @@ type CheckBoxModifiers =
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #ICheckBox>, light: Color, ?dark: Color) =
         this.AddScalar(CheckBox.Color.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct CheckBox control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ICheckBox>, value: ViewRef<CheckBox>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -37,3 +37,8 @@ type SearchBarModifiers =
     [<Extension>]
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, value: Color) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct SearchBar control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ISearchBar>, value: ViewRef<SearchBar>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

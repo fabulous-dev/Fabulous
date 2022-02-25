@@ -110,3 +110,8 @@ type DatePickerModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IDatePicker>, value: TextTransform) =
         this.AddScalar(DatePicker.TextTransform.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IDatePicker>, value: ViewRef<DatePicker>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -47,3 +47,8 @@ type SwitchModifiers =
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #ISwitch>, light: Color, ?dark: Color) =
         this.AddScalar(Switch.ColorOn.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct Switch control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ISwitch>, value: ViewRef<Switch>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

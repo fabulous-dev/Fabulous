@@ -158,3 +158,8 @@ type ImageButtonModifiers =
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IImageButton>, onReleased: 'msg) =
         this.AddScalar(ImageButton.Released.WithValue(onReleased))
+
+    /// <summary>Link a ViewRef to access the direct ImageButton control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IImageButton>, value: ViewRef<ImageButton>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

@@ -67,6 +67,11 @@ type GridModifiers =
     static member inline rowSpacing(this: WidgetBuilder<'msg, #IGrid>, value: float) =
         this.AddScalar(Grid.RowSpacing.WithValue(value))
 
+    /// <summary>Link a ViewRef to access the direct Grid control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IGrid>, value: ViewRef<Grid>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
 [<Extension>]
 type GridAttachedModifiers =
     [<Extension>]

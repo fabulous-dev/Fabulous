@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open Xamarin.Forms
@@ -36,3 +37,10 @@ module RefreshViewBuilders =
                     ValueNone
                 )
             )
+
+[<Extension>]
+type RefreshViewModifiers =
+    /// <summary>Link a ViewRef to access the direct RefreshView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IRefreshView>, value: ViewRef<RefreshView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

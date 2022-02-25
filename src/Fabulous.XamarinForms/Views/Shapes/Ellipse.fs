@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open Xamarin.Forms
@@ -23,3 +24,10 @@ module EllipseBuilders =
                 Shape.StrokeThickness.WithValue(strokeThickness),
                 Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )
+
+[<Extension>]
+type EllipseModifiers =
+    /// <summary>Link a ViewRef to access the direct Ellipse control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IEllipse>, value: ViewRef<Ellipse>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

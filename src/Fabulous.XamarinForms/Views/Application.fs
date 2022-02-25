@@ -104,3 +104,8 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, fn: ModalPushingEventArgs -> 'msg) =
         this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
+
+    /// <summary>Link a ViewRef to access the direct Application instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

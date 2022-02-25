@@ -94,3 +94,8 @@ type TimePickerModifiers =
         | Some v -> res <- res.AddScalar(TimePicker.FontFamily.WithValue(v))
 
         res
+
+    /// <summary>Link a ViewRef to access the direct TimePicker control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, ITimePicker>, value: ViewRef<TimePicker>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

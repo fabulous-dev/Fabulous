@@ -29,3 +29,8 @@ type BoxViewModifiers =
     [<Extension>]
     static member inline cornerRadius(this: WidgetBuilder<'msg, #IBoxView>, value: float) =
         this.AddScalar(BoxView.CornerRadius.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct BoxView control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IBoxView>, value: ViewRef<BoxView>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

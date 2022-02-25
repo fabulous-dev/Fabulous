@@ -82,3 +82,8 @@ type PolygonModifiers =
     [<Extension>]
     static member inline fillRule(this: WidgetBuilder<'msg, #IPolygon>, value: FillRule) =
         this.AddScalar(Polygon.FillRule.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct Polygon control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IPolygon>, value: ViewRef<Polygon>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

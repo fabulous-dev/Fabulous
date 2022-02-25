@@ -107,3 +107,8 @@ type MenuItemModifiers =
     [<Extension>]
     static member inline isEnabled(this: WidgetBuilder<'msg, #IMenuItem>, value: bool) =
         this.AddScalar(MenuItem.IsEnabled.WithValue(value))
+
+    /// <summary>Link a ViewRef to access the direct MenuItem control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IMenuItem>, value: ViewRef<MenuItem>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
