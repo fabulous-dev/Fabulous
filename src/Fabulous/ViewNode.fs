@@ -79,6 +79,7 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
         member _.Target = targetRef.Target
         member _.TreeContext = treeContext
         member _.Parent = parentNode
+        member val Reference: ViewRef voption = ValueNone with get, set
         member val MapMsg: (obj -> obj) voption = ValueNone with get, set
         member val MemoizedWidget: Widget option = None with get, set
 

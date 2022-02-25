@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms.Shapes
@@ -12,7 +13,9 @@ module TransformGroup =
     let WidgetKey = Widgets.register<TransformGroup> ()
 
     let Children =
-        Attributes.defineWidgetCollection "TransformGroup_Children" (fun target -> (target :?> TransformGroup).Children)
+        Attributes.defineWidgetCollection
+            "TransformGroup_Children"
+            (fun target -> (target :?> TransformGroup).Children :> IList<_>)
 
 [<AutoOpen>]
 module TransformGroupBuilders =

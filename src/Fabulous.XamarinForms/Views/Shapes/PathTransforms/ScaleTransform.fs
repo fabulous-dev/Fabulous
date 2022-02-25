@@ -18,8 +18,8 @@ module ScaleTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.ScaleX <- 0
-                    line.ScaleY <- 0
+                    line.ScaleX <- 0.
+                    line.ScaleY <- 0.
                 | ValueSome (x, y) ->
                     line.ScaleX <- x
                     line.ScaleY <- y)

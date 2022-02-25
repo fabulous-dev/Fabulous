@@ -18,8 +18,8 @@ module SkewTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.AngleX <- 0
-                    line.AngleY <- 0
+                    line.AngleX <- 0.
+                    line.AngleY <- 0.
                 | ValueSome (x, y) ->
                     line.AngleX <- x
                     line.AngleY <- y)

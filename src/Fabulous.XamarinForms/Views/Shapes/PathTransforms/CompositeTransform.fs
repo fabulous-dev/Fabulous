@@ -19,8 +19,8 @@ module CompositeTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.CenterX <- 0
-                    line.CenterY <- 0
+                    line.CenterX <- 0.
+                    line.CenterY <- 0.
                 | ValueSome (x, y) ->
                     line.CenterX <- x
                     line.CenterY <- y)
@@ -33,8 +33,8 @@ module CompositeTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.ScaleX <- 0
-                    line.ScaleY <- 0
+                    line.ScaleX <- 0.
+                    line.ScaleY <- 0.
                 | ValueSome (x, y) ->
                     line.ScaleX <- x
                     line.ScaleY <- y)
@@ -47,8 +47,8 @@ module CompositeTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.SkewX <- 0
-                    line.SkewY <- 0
+                    line.SkewX <- 0.
+                    line.SkewY <- 0.
                 | ValueSome (x, y) ->
                     line.SkewX <- x
                     line.SkewY <- y)
@@ -61,8 +61,8 @@ module CompositeTransform =
 
                 match newValueOpt with
                 | ValueNone ->
-                    line.TranslateX <- 0
-                    line.TranslateY <- 0
+                    line.TranslateX <- 0.
+                    line.TranslateY <- 0.
                 | ValueSome (x, y) ->
                     line.TranslateX <- x
                     line.TranslateY <- y)
