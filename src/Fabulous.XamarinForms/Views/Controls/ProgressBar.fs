@@ -18,6 +18,22 @@ module ProgressBar =
     let Progress =
         Attributes.defineBindable<float> ProgressBar.ProgressProperty
 
+    let ProgressTo =
+        Attributes.define<struct (float * uint32 * Easing)>
+            "ProgressBar_ProgressTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> ProgressBar
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.ProgressTo(0., uint32 0, Easing.Linear)
+                    |> Async.AwaitTask
+                    |> ignore
+                | ValueSome (progress, duration, easing) ->
+                    view.ProgressTo(progress, duration, easing)
+                    |> Async.AwaitTask
+                    |> ignore)
+
 [<AutoOpen>]
 module ProgressBarBuilders =
     type Fabulous.XamarinForms.View with
@@ -32,6 +48,16 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: Color, ?dark: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline progressTo
+        (
+            this: WidgetBuilder<'msg, #IProgressBar>,
+            value: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(ProgressBar.ProgressTo.WithValue(value, uint32 duration, easing))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
     [<Extension>]
