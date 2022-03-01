@@ -38,8 +38,8 @@ let view model =
     Application(
         NavigationPage() {                
             ContentPage("Counter",
-                VerticalStackLayout() {
-                    Image("fabulous.png", Aspect.AspectFit)
+                VStack(16.) {
+                    Image(Aspect.AspectFit, "fabulous.png")
                     Label(model.Text)
                     Button("Click me", ButtonClicked)
                 }
