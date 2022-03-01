@@ -66,12 +66,12 @@ module ImageButtonBuilders =
             )
 
         static member inline ImageButton<'msg>(aspect: Aspect, light: string, onClicked: 'msg, ?dark: string) =
-            let light = ImageSource.FromResource(light)
+            let light = ImageSource.FromFile(light)
 
             let dark =
                 match dark with
                 | None -> None
-                | Some v -> Some(ImageSource.FromResource(v))
+                | Some v -> Some(ImageSource.FromFile(v))
 
             View.ImageButton<'msg>(aspect, light = light, onClicked = onClicked, ?dark = dark)
 
