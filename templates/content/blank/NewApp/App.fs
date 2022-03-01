@@ -23,12 +23,12 @@ module App =
         Application(
             ContentPage(
                 "NewApp",
-                VerticalStackLayout() {
+                VStack() {
                     Label("Hello from Fabulous v2!")
                         .font(namedSize = NamedSize.Title)
                         .centerTextHorizontal ()
 
-                    (VerticalStackLayout() {
+                    (VStack() {
                         Label($"Count is {model.Count}")
                             .centerTextHorizontal ()
 
