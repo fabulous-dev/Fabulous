@@ -48,6 +48,7 @@
     <Compile Include="Views\Layouts\ScrollView.fs" />
     <Compile Include="Views\Layouts\Frame.fs" />
     <Compile Include="Views\Layouts\AbsoluteLayout.fs" />
+    <Compile Include="Views\Layouts\RelativeLayout.fs" />
     <Compile Include="Views\Layouts\FlexLayout.fs" />
     <Compile Include="Views\Controls\IndicatorView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
