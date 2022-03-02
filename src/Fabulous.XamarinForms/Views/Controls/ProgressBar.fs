@@ -40,6 +40,12 @@ module ProgressBarBuilders =
         static member inline ProgressBar<'msg>(progress: float) =
             WidgetBuilder<'msg, IProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 
+        static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
+            WidgetBuilder<'msg, IProgressBar>(
+                ProgressBar.WidgetKey,
+                ProgressBar.ProgressTo.WithValue((progress, uint32 duration, easing))
+            )
+
 [<Extension>]
 type ProgressBarModifiers =
     /// <summary>Set the color of the progress bar</summary>
@@ -48,16 +54,6 @@ type ProgressBarModifiers =
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: Color, ?dark: Color) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
-
-    [<Extension>]
-    static member inline progressTo
-        (
-            this: WidgetBuilder<'msg, #IProgressBar>,
-            value: float,
-            duration: int,
-            easing: Easing
-        ) =
-        this.AddScalar(ProgressBar.ProgressTo.WithValue(value, uint32 duration, easing))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
     [<Extension>]
