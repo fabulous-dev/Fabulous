@@ -47,7 +47,11 @@ module ProgressBarBuilders =
         static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
             WidgetBuilder<'msg, IProgressBar>(
                 ProgressBar.WidgetKey,
-                ProgressBar.ProgressTo.WithValue({ Progress = progress; AnimationDuration = uint32 duration; Easing = easing })
+                ProgressBar.ProgressTo.WithValue(
+                    { Progress = progress
+                      AnimationDuration = uint32 duration
+                      Easing = easing }
+                )
             )
 
 [<Extension>]
