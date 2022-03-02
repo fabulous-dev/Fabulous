@@ -8,6 +8,12 @@ open Fabulous
 type IProgressBar =
     inherit IView
 
+[<Struct>]
+type ProgressToData =
+    { Progress: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
 module ProgressBar =
 
     let WidgetKey = Widgets.register<ProgressBar> ()
@@ -19,7 +25,7 @@ module ProgressBar =
         Attributes.defineBindable<float> ProgressBar.ProgressProperty
 
     let ProgressTo =
-        Attributes.define<struct (float * uint32 * Easing)>
+        Attributes.define<ProgressToData>
             "ProgressBar_ProgressTo"
             (fun newValueOpt node ->
                 let view = node.Target :?> ProgressBar
@@ -27,11 +33,9 @@ module ProgressBar =
                 match newValueOpt with
                 | ValueNone ->
                     view.ProgressTo(0., uint32 0, Easing.Linear)
-                    |> Async.AwaitTask
                     |> ignore
-                | ValueSome (progress, duration, easing) ->
-                    view.ProgressTo(progress, duration, easing)
-                    |> Async.AwaitTask
+                | ValueSome data ->
+                    view.ProgressTo(data.Progress, data.AnimationDuration, data.Easing)
                     |> ignore)
 
 [<AutoOpen>]
@@ -43,7 +47,7 @@ module ProgressBarBuilders =
         static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
             WidgetBuilder<'msg, IProgressBar>(
                 ProgressBar.WidgetKey,
-                ProgressBar.ProgressTo.WithValue((progress, uint32 duration, easing))
+                ProgressBar.ProgressTo.WithValue({ Progress = progress; AnimationDuration = uint32 duration; Easing = easing })
             )
 
 [<Extension>]
