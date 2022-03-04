@@ -11,9 +11,11 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.101
+        dotnet-version: 6.0.200
     - name: Set GitHub PAT for NuGet
-      run: dotnet nuget update source github -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+      run: |
+        cp nuget.config.example nuget.config
+        dotnet nuget update source github -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
     - name: Check code formatting
       run: |
         dotnet tool restore

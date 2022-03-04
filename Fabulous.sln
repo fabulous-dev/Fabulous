@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution files", "_Solutio
 		nuget.config = nuget.config
 		.gitignore = .gitignore
 		nuget.config.example = nuget.config.example
+		dotnet.yml = .github\workflows\dotnet.yml
+		dotnet.yml = .github\workflows\dotnet_pull_request.yml
 	EndProjectSection
 EndProject
 Global
