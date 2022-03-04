@@ -8,6 +8,13 @@ open Xamarin.Forms
 type IView =
     inherit IVisualElement
 
+[<Struct>]
+type TranslateToData =
+    { X: float
+      Y: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
 module XFView =
     let HorizontalOptions =
         Attributes.defineBindable<LayoutOptions> View.HorizontalOptionsProperty
@@ -22,6 +29,20 @@ module XFView =
         Attributes.defineWidgetCollection<IGestureRecognizer>
             "View_GestureRecognizers"
             (fun target -> (target :?> View).GestureRecognizers)
+
+    let TranslateTo =
+        Attributes.define<TranslateToData>
+            "View_TranslateTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.TranslateTo(0., 0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing)
+                    |> ignore)
 
 [<Extension>]
 type ViewModifiers =
@@ -150,3 +171,26 @@ type ViewModifiers =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IGestureRecognizer>
             XFView.GestureRecognizers
             this
+
+    /// <summary>Animates an elements TranslationX and TranslationY properties from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="x">The x component of the final translation vector.</param>
+    /// <param name="y">The y component of the final translation vector.</param>
+    /// <param name="duration">The duration of the animation in milliseconds.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline translateTo
+        (
+            this: WidgetBuilder<'msg, #IView>,
+            x: float,
+            y: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            XFView.TranslateTo.WithValue(
+                { X = x
+                  Y = y
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
