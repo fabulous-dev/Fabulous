@@ -15,6 +15,12 @@ type TranslateToData =
       AnimationDuration: uint32
       Easing: Easing }
 
+[<Struct>]
+type ScaleToData =
+    { Scale: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
 module XFView =
     let HorizontalOptions =
         Attributes.defineBindable<LayoutOptions> View.HorizontalOptionsProperty
@@ -42,6 +48,18 @@ module XFView =
                     |> ignore
                 | ValueSome data ->
                     view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let ScaleTo =
+        Attributes.define<ScaleToData>
+            "View_ScaleTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing)
                     |> ignore)
 
 [<Extension>]
@@ -190,6 +208,20 @@ type ViewModifiers =
             XFView.TranslateTo.WithValue(
                 { X = x
                   Y = y
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleTo(this: WidgetBuilder<'msg, #IView>, scale: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.ScaleTo.WithValue(
+                { Scale = scale
                   AnimationDuration = uint duration
                   Easing = easing }
             )
