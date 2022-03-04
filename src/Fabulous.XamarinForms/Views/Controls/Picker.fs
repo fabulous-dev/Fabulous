@@ -40,9 +40,6 @@ module Picker =
     let TitleColor =
         Attributes.defineAppThemeBindable<Color> Picker.TitleColorProperty
 
-    let SelectedIndex =
-        Attributes.defineBindable<int> Picker.SelectedIndexProperty
-
     let ItemSource =
         Attributes.define<string array>
             "Picker_ItemSource"
@@ -54,18 +51,22 @@ module Picker =
                 | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
     let SelectedIndexChanged =
-        Attributes.defineEventNoArg
+        Attributes.defineEventWithAdditionalStep
             "Picker_SelectedIndexChanged"
             (fun target -> (target :?> Picker).SelectedIndexChanged)
 
 [<AutoOpen>]
 module PickerBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline Picker<'msg>(items: string list, onSelectedIndexChanged: 'msg) =
+        static member inline Picker<'msg>(items: string list, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
                 Picker.ItemSource.WithValue(items |> Array.ofList),
-                Picker.SelectedIndexChanged.WithValue(onSelectedIndexChanged)
+                Picker.SelectedIndexChanged.WithValue
+                    (fun sender ->
+                        let picker = sender :?> Picker
+
+                        onSelectedIndexChanged picker.SelectedIndex |> box)
             )
 
 [<Extension>]
@@ -112,6 +113,9 @@ type PickerModifiers =
 
         res
 
+    /// <summary>Set the source of the thumbImage.</summary>
+    /// <param name="light">The color of the text in the light theme.</param>
+    /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
         this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
@@ -124,10 +128,9 @@ type PickerModifiers =
     static member inline title(this: WidgetBuilder<'msg, #IPicker>, value: string) =
         this.AddScalar(Picker.Title.WithValue(value))
 
+    /// <summary>Set the source of the thumbImage.</summary>
+    /// <param name="light">The color of the title in the light theme.</param>
+    /// <param name="dark">The color of the title in the dark theme.</param>
     [<Extension>]
     static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
         this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
-
-    [<Extension>]
-    static member inline selectedIndex(this: WidgetBuilder<'msg, #IPicker>, value: int) =
-        this.AddScalar(Picker.SelectedIndex.WithValue(value))
