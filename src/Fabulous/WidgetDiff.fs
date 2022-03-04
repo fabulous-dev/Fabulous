@@ -491,7 +491,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         if prev.Length > next.Length
            && tailIndex < prev.Length - next.Length then
 
-            e.current <- WidgetCollectionItemChange.Remove(next.Length - tailIndex)
+            e.current <- WidgetCollectionItemChange.Remove(prev.Length - tailIndex - 1)
             e.tailIndex <- tailIndex + 1
 
             true
