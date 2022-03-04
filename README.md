@@ -38,7 +38,7 @@ let view model =
     Application(
         NavigationPage() {                
             ContentPage("Counter",
-                VStack(16.) {
+                VStack(spacing = 16.) {
                     Image(Aspect.AspectFit, "fabulous.png")
                     Label(model.Text)
                     Button("Click me", ButtonClicked)

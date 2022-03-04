@@ -1,4 +1,4 @@
-﻿namespace CounterApp
+namespace CounterApp
 
 open Fabulous
 open Fabulous.XamarinForms

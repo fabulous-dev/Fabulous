@@ -41,3 +41,5 @@ docs/Fabulous/.obsidian/
 docs/.obsidian/
 src/Fabulous.Benchmarks/BenchmarkDotNet.Artifacts
 nupkgs/
+
+nuget.config

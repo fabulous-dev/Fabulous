@@ -42,7 +42,7 @@ module Widgets =
                       let oldWidget: Widget voption = ValueNone
 
                       Reconciler.update context.CanReuseView oldWidget widget viewNode
-                      struct (viewNode, box view) }
+                      struct (viewNode :> IViewNode, box view) }
 
         WidgetDefinitionStore.set key definition
         key

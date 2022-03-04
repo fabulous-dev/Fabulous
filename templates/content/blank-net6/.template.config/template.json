@@ -1,0 +1,95 @@
+{
+    "author": "fsprojects",
+    "classifications": [
+      "Fabulous",
+      "Xamarin.Forms",
+      "Mobile",
+      "Elmish",
+      "Cross-platform"
+    ],
+    "name": "Fabulous for Xamarin.Forms App vFABULOUS_PKG_VERSION",
+    "groupIdentity": "Fabulous.XamarinForms.App.Net6",
+    "identity": "Fabulous.XamarinForms.Net6",
+    "shortName": "fabulous-xf-app-net6",
+    "tags": {
+      "language": "F#",
+      "type": "project"
+    },
+    "sourceName": "NewApp",
+    "primaryOutputs": [
+      {
+        "path": "NewApp\\NewApp.fs"
+      },
+      {
+        "condition": "iOS",
+        "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+      }
+    ],
+    "defaultName": "App",
+    "preferNameDirectory": "true",
+    "postActions": [
+    ],
+    "guids": [
+      "99E19497-29A6-4B77-B773-BEC55F9B55DC",
+      "1069F96F-A42B-4CD8-8FA1-7F047C726B88",
+      "E26BCFA7-B118-4866-875B-F4364DF40545"
+    ],
+    "symbols": {
+      "AppIdentifier": {
+        "type": "parameter",
+        "description": "Overrides the Info.plist's CFBundleIdentifier",
+        "datatype": "string",
+        "defaultValue": "com.companyname"
+      },
+      "iOSAppIdentifier": {
+        "type": "parameter",
+        "description": "Overrides the Info.plist's CFBundleIdentifier",
+        "datatype": "string"
+      },
+      "iOSAppIdentifierReplacer": {
+        "type": "generated",
+        "generator": "coalesce",
+        "parameters": {
+          "sourceVariableName": "iOSAppIdentifier",
+          "fallbackVariableName": "AppIdentifier"
+        },
+        "replaces": "com.companyname.NewApp.iOS"
+      },
+      "XamarinEssentialsSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinEssentialsSdk",
+        "defaultValue": "1.7.0"
+      },
+      "XamarinFormsSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinFormsSdk",
+        "defaultValue": "5.0.0.2196"
+      },
+      "FabulousPkgsVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "FabulousPkgsVersion",
+        "defaultValue": "FABULOUS_PKG_VERSION"
+      },
+      "FSharpCorePkgVersion": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "FSharpCorePkgVersion",
+        "defaultValue": "6.0.1"
+      },
+      "XamarinCommunityToolkitSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "XamarinCommunityToolkitSdk",
+        "defaultValue": "1.3.2"
+      },
+      "FSharpAndroidResourceSdk": {
+        "type": "parameter",
+        "dataType": "string",
+        "replaces": "FSharpAndroidResourceSdk",
+        "defaultValue": "1.0.0"
+      }
+    }
+  }

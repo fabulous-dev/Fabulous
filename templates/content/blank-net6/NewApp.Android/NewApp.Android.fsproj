@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="AndroidManifest.xml" />
+    <Compile Include="MainActivity.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Android.Resource" Version="FSharpAndroidResourceSdk" />
+    <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
+    <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
+    <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
+    <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewApp\NewApp.fsproj" />
+  </ItemGroup>
+</Project>

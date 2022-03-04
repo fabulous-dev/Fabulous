@@ -53,7 +53,9 @@ module Attributes =
 
     module Container =
         let Children =
-            Attributes.defineWidgetCollection "Container_Children" (fun target -> (target :?> IContainer).Children)
+            Attributes.defineWidgetCollection
+                "Container_Children"
+                (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
 
     module Button =
