@@ -1,5 +1,6 @@
 module Fabulous.Tests.Run
 
+open Fabulous.StackAllocatedCollections
 open NUnit.Framework
 
 open Tests.Platform
@@ -561,7 +562,7 @@ module MemoTests =
                 label.changeList
             )
 
-
+/// https://github.com/TimLariviere/Fabulous-new/issues/99
 module Issue99 =
     type Msg = Toggle
 
@@ -598,3 +599,99 @@ module Issue99 =
 
         Assert.AreSame(button1Start, button1Toggled)
         Assert.AreSame(button1Start, button1Untoggled)
+
+/// https://github.com/TimLariviere/Fabulous-new/issues/104
+module Issue104 =
+    type Msg = Toggle
+
+    let init () = false
+
+    let update msg model =
+        match msg with
+        | Toggle -> not model
+
+    let Attr1 =
+        Attributes.define<string> "Attr1" (fun _ _ -> ())
+
+    let Attr2 =
+        Attributes.define<string> "Attr2" (fun _ _ -> ())
+
+    let Attr3 =
+        Attributes.define<string> "Attr3" (fun _ _ -> ())
+
+    let Attr4 =
+        Attributes.define<string> "Attr4" (fun _ _ -> ())
+
+    let Attr5 =
+        Attributes.define<string> "Attr5" (fun _ _ -> ())
+
+    let ControlWidgetKey = Widgets.register<TestButton> ()
+
+    let Control<'msg> () =
+        WidgetBuilder<'msg, TestButtonMarker>(
+            ControlWidgetKey,
+            AttributesBundle(StackList.StackList.empty (), ValueNone, ValueNone)
+        )
+
+    [<System.Runtime.CompilerServices.Extension>]
+    type WidgetExtensions() =
+        [<System.Runtime.CompilerServices.Extension>]
+        static member inline attr1<'msg, 'marker when 'marker :> IMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: string
+            ) =
+            this.AddScalar(Attr1.WithValue(value))
+
+        [<System.Runtime.CompilerServices.Extension>]
+        static member inline attr2<'msg, 'marker when 'marker :> IMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: string
+            ) =
+            this.AddScalar(Attr2.WithValue(value))
+
+        [<System.Runtime.CompilerServices.Extension>]
+        static member inline attr3<'msg, 'marker when 'marker :> IMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: string
+            ) =
+            this.AddScalar(Attr3.WithValue(value))
+
+        [<System.Runtime.CompilerServices.Extension>]
+        static member inline attr4<'msg, 'marker when 'marker :> IMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: string
+            ) =
+            this.AddScalar(Attr4.WithValue(value))
+
+        [<System.Runtime.CompilerServices.Extension>]
+        static member inline attr5<'msg, 'marker when 'marker :> IMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: string
+            ) =
+            this.AddScalar(Attr5.WithValue(value))
+
+    let view model =
+        Stack() {
+            if not model then
+                Control().attr4("test").attr5 ("test")
+            else
+                Control()
+                    .attr1("test")
+                    .attr2("test")
+                    .attr3 ("test")
+        }
+
+    [<Test>]
+    let Test () =
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        instance.ProcessMessage(Toggle)

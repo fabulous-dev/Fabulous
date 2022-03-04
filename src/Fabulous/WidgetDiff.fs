@@ -209,7 +209,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                         | c when c > 0 ->
                             // prev key is more than next -> add next item
-                            e.current <- ScalarChange.Added prev.[nextIndex]
+                            e.current <- ScalarChange.Added next.[nextIndex]
                             res <- ValueSome true
                             nextIndex <- nextIndex + 1
 
