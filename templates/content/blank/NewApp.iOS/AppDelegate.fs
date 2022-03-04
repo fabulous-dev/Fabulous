@@ -9,7 +9,7 @@ open Xamarin.Forms.Platform.iOS
 open Fabulous.XamarinForms
 open NewApp
 
-[<Register(nameof AppDelegate)>]
+[<Register("AppDelegate")>]
 type AppDelegate() =
     inherit FormsApplicationDelegate()
 
@@ -18,3 +18,9 @@ type AppDelegate() =
         let application: Xamarin.Forms.Application = unbox (Program.create App.program ())
         this.LoadApplication(application)
         base.FinishedLaunching(app, options)
+
+module Main =
+    [<EntryPoint>]
+    let main args =
+        UIApplication.Main(args, null, typeof<AppDelegate>)
+        0
