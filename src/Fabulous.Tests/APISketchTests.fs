@@ -564,37 +564,37 @@ module MemoTests =
 
 module Issue99 =
     type Msg = Toggle
-    
+
     let init () = false
-    
+
     let update msg model =
-        match msg with Toggle -> not model
-        
+        match msg with
+        | Toggle -> not model
+
     let view model =
         Stack() {
-            Button("Button1", Toggle)
-                .automationId("button1")
-            
+            Button("Button1", Toggle).automationId ("button1")
+
             if model then
                 Label("Label1")
                 Button("Button2", Toggle)
         }
-        
+
     [<Test>]
     let Test () =
-        let program = StatefulWidget.mkSimpleView init update view
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
         let instance = Run.Instance program
         let tree = instance.Start()
-        
+
         let button1Start = find<TestButton> tree "button1"
-        
+
         instance.ProcessMessage(Toggle)
         let button1Toggled = find<TestButton> tree "button1"
-        
+
         instance.ProcessMessage(Toggle)
         let button1Untoggled = find<TestButton> tree "button1"
-        
+
         Assert.AreSame(button1Start, button1Toggled)
         Assert.AreSame(button1Start, button1Untoggled)
-        
-        
