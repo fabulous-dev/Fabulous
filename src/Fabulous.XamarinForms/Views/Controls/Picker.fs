@@ -134,3 +134,8 @@ type PickerModifiers =
     [<Extension>]
     static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
         this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
+
+    /// <summary>Link a ViewRef to access the direct Picker control instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IPicker>, value: ViewRef<Picker>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
