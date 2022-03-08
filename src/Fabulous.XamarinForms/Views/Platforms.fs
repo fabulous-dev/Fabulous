@@ -44,7 +44,8 @@ module iOS =
                     | ValueNone -> UpdateMode.Immediately
                     | ValueSome v -> v
 
-                datePicker.On<iOS>().SetUpdateMode(value) |> ignore)
+                datePicker.On<iOS>().SetUpdateMode(value)
+                |> ignore)
 
     let TimePickerUpdateMode =
         Attributes.define<UpdateMode>
@@ -57,7 +58,8 @@ module iOS =
                     | ValueNone -> UpdateMode.Immediately
                     | ValueSome v -> v
 
-                timePicker.On<iOS>().SetUpdateMode(value) |> ignore)
+                timePicker.On<iOS>().SetUpdateMode(value)
+                |> ignore)
 
 module Android =
     let ToolbarPlacement =
