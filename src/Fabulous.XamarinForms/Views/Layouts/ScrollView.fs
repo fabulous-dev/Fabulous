@@ -1,8 +1,12 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+
+[<Struct>]
+type ScrollToData = { X: float; Y: float; Animated: bool }
 
 type IScrollView =
     inherit Fabulous.XamarinForms.ILayout
@@ -33,6 +37,18 @@ module ScrollView =
 
     let Scrolled =
         Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
+
+    let ScrollTo =
+        Attributes.define<ScrollToData>
+            "ScrollView_ScrollTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> ScrollView
+
+                match newValueOpt with
+                | ValueNone -> view.ScrollToAsync(0., 0., true) |> ignore
+                | ValueSome data ->
+                    view.ScrollToAsync(data.X, data.Y, data.Animated)
+                    |> ignore)
 
 [<AutoOpen>]
 module ScrollViewBuilders =
@@ -88,6 +104,14 @@ type ScrollViewModifiers =
     [<Extension>]
     static member inline onScrolled(this: WidgetBuilder<'msg, #IScrollView>, onScrolled: ScrolledEventArgs -> 'msg) =
         this.AddScalar(ScrollView.Scrolled.WithValue(fun args -> onScrolled args |> box))
+
+    /// <summary>Returns a task that scrolls the scroll view to a position asynchronously.</summary>
+    /// <param name="x">The X position of the finished scroll.</param>
+    /// <param name="y">The Y position of the finished scroll.</param>
+    /// <param name="animated">Whether or not to animate the scroll.</param>
+    [<Extension>]
+    static member inline scrollTo(this: WidgetBuilder<'msg, #IScrollView>, x: float, y: float, animated: bool) =
+        this.AddScalar(ScrollView.ScrollTo.WithValue({ X = x; Y = y; Animated = animated }))
 
     /// <summary>Link a ViewRef to access the direct ScrollView control instance</summary>
     [<Extension>]
