@@ -20,6 +20,45 @@ module iOS =
 
                 page.On<iOS>().SetUseSafeArea(value) |> ignore)
 
+    let PickerUpdateMode =
+        Attributes.define<UpdateMode>
+            "Picker_UpdateMode"
+            (fun newValueOpt node ->
+                let picker = node.Target :?> Xamarin.Forms.Picker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                picker.On<iOS>().SetUpdateMode(value) |> ignore)
+
+    let DatePickerUpdateMode =
+        Attributes.define<UpdateMode>
+            "DatePicker_UpdateMode"
+            (fun newValueOpt node ->
+                let datePicker = node.Target :?> Xamarin.Forms.DatePicker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                datePicker.On<iOS>().SetUpdateMode(value) |> ignore)
+
+    let TimePickerUpdateMode =
+        Attributes.define<UpdateMode>
+            "TimePicker_UpdateMode"
+            (fun newValueOpt node ->
+                let timePicker = node.Target :?> Xamarin.Forms.TimePicker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                timePicker.On<iOS>().SetUpdateMode(value) |> ignore)
+
 module Android =
     let ToolbarPlacement =
         Attributes.define<ToolbarPlacement>
@@ -42,6 +81,18 @@ type PlatformModifiers =
     [<Extension>]
     static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
         this.AddScalar(iOS.UseSafeArea.WithValue(false))
+
+    [<Extension>]
+    static member inline pickerUpdateMode(this: WidgetBuilder<'msg, #IPicker>, mode: UpdateMode) =
+        this.AddScalar(iOS.PickerUpdateMode.WithValue(mode))
+
+    [<Extension>]
+    static member inline datePickerUpdateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: UpdateMode) =
+        this.AddScalar(iOS.DatePickerUpdateMode.WithValue(mode))
+
+    [<Extension>]
+    static member inline timePickerUpdateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: UpdateMode) =
+        this.AddScalar(iOS.TimePickerUpdateMode.WithValue(mode))
 
     [<Extension>]
     static member inline androidToolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
