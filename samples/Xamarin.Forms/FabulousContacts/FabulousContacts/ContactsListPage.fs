@@ -52,9 +52,18 @@ module ContactsListPage =
         |> List.sortBy (fun cg -> cg.Name)
         |> ObservableCollection<_>
 
-    let findContactIn (groupedContacts: (string * Contact list) list) (gIndex: int, iIndex: int) =
-        groupedContacts.[gIndex]
-        |> (fun (_, items) -> items.[iIndex])
+    let findContactIn (groupedContacts: ObservableCollection<ContactGroup>) (index: int) =
+        let mutable i = index
+        let mutable foundContact = Unchecked.defaultof<Contact>
+        
+        for group in groupedContacts do
+            i <- i - 1
+            for contact in group do
+                if i = 0 then
+                    foundContact <- contact
+                i <- i - 1
+                    
+        foundContact
 
     // Lifecycle
     let initModel =
@@ -63,7 +72,7 @@ module ContactsListPage =
           ContactGroups = ObservableCollection<ContactGroup>() }
 
     let init () = initModel, Cmd.none
-
+    
     let update msg model =
         match msg with
         | AboutTapped -> model, Cmd.none, ExternalMsg.NavigateToAbout
@@ -90,7 +99,9 @@ module ContactsListPage =
 
             m, Cmd.none, ExternalMsg.NoOp
 
-        | ContactSelected index -> model, Cmd.none, ExternalMsg.NavigateToDetail(model.Contacts.[index])
+        | ContactSelected index ->
+            let contact = findContactIn model.ContactGroups index
+            model, Cmd.none, ExternalMsg.NavigateToDetail(contact)
 
         | Search -> model, Cmd.none, ExternalMsg.NoOp
 
