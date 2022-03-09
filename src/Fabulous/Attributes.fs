@@ -65,7 +65,7 @@ module Attributes =
     /// Define a custom attribute storing a widget collection
     let defineWidgetCollectionWithConverter
         name
-        (applyDiff: WidgetCollectionItemChanges -> IViewNode -> unit)
+        (applyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
@@ -100,7 +100,7 @@ module Attributes =
 
     /// Define an attribute storing a collection of Widget
     let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
-        let applyDiff (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+        let applyDiff _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
 
             for diff in diffs do

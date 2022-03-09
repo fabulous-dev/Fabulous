@@ -38,7 +38,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetChange =
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
     | Added of added: WidgetCollectionAttribute
     | Removed of removed: WidgetCollectionAttribute
-    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionItemChanges)
+    | Updated of updated: struct (WidgetCollectionAttribute * WidgetCollectionAttribute * WidgetCollectionItemChanges)
 
 and [<Struct; IsByRefLike; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
@@ -455,7 +455,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
                                     compareScalars
                                 )
 
-                            e.current <- WidgetCollectionChange.Updated(nextAttr, diff)
+                            e.current <- WidgetCollectionChange.Updated(prevAttr, nextAttr, diff)
 
                     true
                 else

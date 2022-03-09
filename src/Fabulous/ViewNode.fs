@@ -69,11 +69,11 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
 
                 definition.UpdateNode ValueNone (this :> IViewNode)
 
-            | WidgetCollectionChange.Updated struct (newAttr, diffs) ->
+            | WidgetCollectionChange.Updated struct (oldAttr, newAttr, diffs) ->
                 let definition =
                     AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
 
-                definition.ApplyDiff diffs (this :> IViewNode)
+                definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 
     interface IViewNode with
         member _.Target = targetRef.Target
