@@ -55,14 +55,14 @@ module ContactsListPage =
     let findContactIn (groupedContacts: ObservableCollection<ContactGroup>) (index: int) =
         let mutable i = index
         let mutable foundContact = Unchecked.defaultof<Contact>
-        
+
         for group in groupedContacts do
             i <- i - 1
+
             for contact in group do
-                if i = 0 then
-                    foundContact <- contact
+                if i = 0 then foundContact <- contact
                 i <- i - 1
-                    
+
         foundContact
 
     // Lifecycle
@@ -72,7 +72,7 @@ module ContactsListPage =
           ContactGroups = ObservableCollection<ContactGroup>() }
 
     let init () = initModel, Cmd.none
-    
+
     let update msg model =
         match msg with
         | AboutTapped -> model, Cmd.none, ExternalMsg.NavigateToAbout

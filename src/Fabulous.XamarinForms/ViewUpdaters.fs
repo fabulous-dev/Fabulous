@@ -81,11 +81,11 @@ module ViewUpdaters =
     let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let navigationPage = node.Target :?> NavigationPage
         let pages = Array.ofSeq navigationPage.Pages
-        
+
         let mutable pagesLength =
             let struct (size, _) = prev
             int size
-        
+
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
@@ -110,7 +110,7 @@ module ViewUpdaters =
                     while temp.Count > 0 do
                         navigationPage.PushAsync(temp.Pop(), false)
                         |> ignore
-                        
+
                     pagesLength <- pagesLength + 1
 
             | WidgetCollectionItemChange.Update (index, diff) ->
@@ -160,7 +160,7 @@ module ViewUpdaters =
                     while temp.Count > 1 do
                         navigationPage.PushAsync(temp.Pop(), false)
                         |> ignore
-                        
+
                     pagesLength <- pagesLength - 1
 
     let updateNavigationPagePages (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =

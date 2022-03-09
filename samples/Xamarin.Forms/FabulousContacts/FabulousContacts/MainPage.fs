@@ -177,6 +177,5 @@ module MainPage =
             | None -> loadingView title
             | Some [] -> emptyView title
             | Some _ -> regularView title model
-            
-        tabbedPage
-            .androidToolbarPlacement (ToolbarPlacement.Bottom)
+
+        tabbedPage.androidToolbarPlacement (ToolbarPlacement.Bottom)
