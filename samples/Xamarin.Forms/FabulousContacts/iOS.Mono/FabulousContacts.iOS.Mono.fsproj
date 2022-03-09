@@ -3,13 +3,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{9CA07D47-D998-4172-9795-885AFA2BCAD1}</ProjectGuid>
+    <ProjectGuid>{BAAE8C5F-4C78-41D5-9939-CA691EEEF7EF}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CounterApp.iOS.Mono</RootNamespace>
+    <RootNamespace>FabulousContacts.iOS.Mono</RootNamespace>
     <UsePartialTypes>false</UsePartialTypes>
-    <AssemblyName>CounterApp.iOS.Mono</AssemblyName>
+    <AssemblyName>FabulousContacts.iOS.Mono</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -23,13 +23,10 @@
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchProfiling>true</MtouchProfiling>
-    <IOSDebuggerPort>43701</IOSDebuggerPort>
+    <IOSDebuggerPort>14881</IOSDebuggerPort>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <PlatformTarget></PlatformTarget>
-    <DeviceSpecificBuild>false</DeviceSpecificBuild>
-    <MtouchVerbosity></MtouchVerbosity>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <Optimize>true</Optimize>
@@ -44,8 +41,6 @@
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <GenerateTailCalls>true</GenerateTailCalls>
-    <PlatformTarget></PlatformTarget>
-    <MtouchVerbosity></MtouchVerbosity>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <Optimize>true</Optimize>
@@ -58,8 +53,6 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <GenerateTailCalls>true</GenerateTailCalls>
-    <PlatformTarget></PlatformTarget>
-    <MtouchVerbosity></MtouchVerbosity>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,26 +68,59 @@
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <IOSDebuggerPort>45710</IOSDebuggerPort>
+    <IOSDebuggerPort>32312</IOSDebuggerPort>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <PlatformTarget></PlatformTarget>
-    <MtouchVerbosity></MtouchVerbosity>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="mscorlib" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="6.0.3" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
+    <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2337" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <BundleResource Include="Resources\addphoto.png" />
+    <BundleResource Include="Resources\alltab@2x.png" />
+    <BundleResource Include="Resources\blog.png" />
+    <BundleResource Include="Resources\call.png" />
+    <BundleResource Include="Resources\email.png" />
+    <BundleResource Include="Resources\favoritetab@2x.png" />
+    <BundleResource Include="Resources\fsharp.png" />
+    <BundleResource Include="Resources\github.png" />
+    <BundleResource Include="Resources\icon.png" />
+    <BundleResource Include="Resources\maptab@2x.png" />
+    <BundleResource Include="Resources\slack.png" />
+    <BundleResource Include="Resources\sms.png" />
+    <BundleResource Include="Resources\star.png" />
+    <BundleResource Include="Resources\twitter.png" />
+    <BundleResource Include="Resources\xamarin.png" />
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <Compile Include="BorderedEntryRenderer.fs" />
+    <Compile Include="UnderlinedLabelRenderer.fs" />
+    <Compile Include="AppDelegate.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
@@ -105,28 +131,10 @@
       <Project>{6c7591cf-8023-4867-9c60-a9a770d0e218}</Project>
       <Name>Fabulous</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp</Name>
+    <ProjectReference Include="..\FabulousContacts\FabulousContacts.fsproj">
+      <Project>{49f7ac94-d211-421f-b881-9077b2c5aa6f}</Project>
+      <Name>FabulousContacts</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@1x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@2x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60x60@3x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76x76@2x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5x83.5@2x.png" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <InterfaceDefinition Include="LaunchScreen.storyboard" />
-    <None Include="Info.plist" />
-    <None Include="Entitlements.plist" />
-    <Compile Include="AppDelegate.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
 </Project>

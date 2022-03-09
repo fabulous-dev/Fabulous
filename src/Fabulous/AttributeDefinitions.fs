@@ -71,7 +71,7 @@ type WidgetAttributeDefinition =
 type WidgetCollectionAttributeDefinition =
     { Key: AttributeKey
       Name: string
-      ApplyDiff: WidgetCollectionItemChanges -> IViewNode -> unit
+      ApplyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit
       UpdateNode: ArraySlice<Widget> voption -> IViewNode -> unit }
 
     member x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =

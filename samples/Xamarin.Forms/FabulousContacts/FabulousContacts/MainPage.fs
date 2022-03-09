@@ -168,12 +168,14 @@ module MainPage =
             View.map TabAllContactsMsg tabFavContacts
          //View.map TabMapMsg tabMap
          })
-            .androidToolbarPlacement (ToolbarPlacement.Bottom)
 
     let view model =
         let title = Strings.MainPage_Title
 
-        match model.Contacts with
-        | None -> loadingView title
-        | Some [] -> emptyView title
-        | Some _ -> regularView title model
+        let tabbedPage =
+            match model.Contacts with
+            | None -> loadingView title
+            | Some [] -> emptyView title
+            | Some _ -> regularView title model
+
+        tabbedPage.androidToolbarPlacement (ToolbarPlacement.Bottom)

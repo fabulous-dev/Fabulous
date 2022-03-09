@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0-ios;net6.0-android</TargetFrameworks>
+    <TargetFrameworks>net6.0-ios;netstandard2.1</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
   </PropertyGroup>
@@ -35,9 +35,9 @@
     <PackageReference Include="Xamarin.Forms" Version="[5.0.0.1]" />
     <!-- <PackageReference Include="Xamarin.Forms.Maps" Version="[5.0.0.1]" /> -->
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0-ios' ">
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
-    <!-- <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2337" /> -->
+    <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2337" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
