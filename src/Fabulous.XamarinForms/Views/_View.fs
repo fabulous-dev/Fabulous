@@ -21,6 +21,13 @@ type ScaleToData =
       AnimationDuration: uint32
       Easing: Easing }
 
+[<Struct>]
+type FadeToData =
+    { Opacity: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
+
 module XFView =
     let HorizontalOptions =
         Attributes.defineBindable<LayoutOptions> View.HorizontalOptionsProperty
@@ -60,6 +67,18 @@ module XFView =
                 | ValueNone -> view.ScaleTo(1., uint 0, Easing.Linear) |> ignore
                 | ValueSome data ->
                     view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let FadeTo =
+        Attributes.define<FadeToData>
+            "View_FadeTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.FadeTo(0., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.FadeTo(data.Opacity, data.AnimationDuration, data.Easing)
                     |> ignore)
 
 [<Extension>]
@@ -222,6 +241,20 @@ type ViewModifiers =
         this.AddScalar(
             XFView.ScaleTo.WithValue(
                 { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements Opacity property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="opacity">The value of the final opacity value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline fadeTo(this: WidgetBuilder<'msg, #IView>, opacity: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.FadeTo.WithValue(
+                { Opacity = opacity
                   AnimationDuration = uint duration
                   Easing = easing }
             )
