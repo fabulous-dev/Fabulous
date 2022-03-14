@@ -8,17 +8,45 @@ type ICollectionView =
     inherit IItemsView
 
 module CollectionView =
-    let WidgetKey =
-        Widgets.registerWithAdditionalSetup<CollectionView>
-            (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
+    let WidgetKey = Widgets.register<CollectionView> ()
 
-    let GroupedWidgetKey =
-        Widgets.registerWithAdditionalSetup<CollectionView>
-            (fun target node ->
-                target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-                target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
-                target.GroupFooterTemplate <- GroupedWidgetDataTemplateSelector(node, Footer)
-                target.IsGrouped <- true)
+    let GroupedItemsSource<'groupData, 'itemData> =
+        Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>
+            "CollectionView_GroupedItemsSource"
+            id
+            id
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+            (fun newValueOpt node ->
+                let collectionView = node.Target :?> CollectionView
+
+                match newValueOpt with
+                | ValueNone ->
+                    collectionView.IsGrouped <- false
+                    collectionView.ClearValue(CollectionView.ItemsSourceProperty)
+                    collectionView.ClearValue(CollectionView.GroupHeaderTemplateProperty)
+                    collectionView.ClearValue(CollectionView.GroupFooterTemplateProperty)
+                    collectionView.ClearValue(CollectionView.ItemTemplateProperty)
+
+                | ValueSome value ->
+                    collectionView.IsGrouped <- true
+
+                    collectionView.SetValue(
+                        CollectionView.ItemTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate)
+                    )
+
+                    collectionView.SetValue(
+                        CollectionView.GroupHeaderTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)
+                    )
+
+                    if value.FooterTemplate.IsSome then
+                        collectionView.SetValue(
+                            CollectionView.GroupFooterTemplateProperty,
+                            WidgetDataTemplateSelector(node, unbox >> value.FooterTemplate.Value)
+                        )
+
+                    collectionView.SetValue(CollectionView.ItemsSourceProperty, value.OriginalItems))
 
 [<AutoOpen>]
 module CollectionViewBuilders =
@@ -35,8 +63,8 @@ module CollectionViewBuilders =
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItems<'msg, ICollectionView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
-                CollectionView.GroupedWidgetKey
-                ItemsView.GroupedItemsSource
+                CollectionView.WidgetKey
+                CollectionView.GroupedItemsSource
                 items
 
 [<Extension>]
