@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IItemsView =
@@ -9,26 +10,25 @@ type IItemsView =
 
 module ItemsView =
     let ItemsSource<'T> =
-        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>
-            ItemsView.ItemsSourceProperty
+        Attributes.defineScalarWithConverter<WidgetItems<'T>, WidgetItems<'T>, WidgetItems<'T>>
+            "ItemsView_ItemsSource"
             id
-            (fun modelValue ->
-                seq {
-                    for x in modelValue.OriginalItems do
-                        modelValue.Template x
-                })
+            id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+            (fun newValueOpt node ->
+                let itemsView = node.Target :?> ItemsView
 
-    let GroupedItemsSource<'T> =
-        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, System.Collections.Generic.IEnumerable<GroupItem>>
-            ItemsView.ItemsSourceProperty
-            id
-            (fun modelValue ->
-                seq {
-                    for x in modelValue.OriginalItems do
-                        modelValue.Template x
-                })
-            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+                match newValueOpt with
+                | ValueNone ->
+                    itemsView.ClearValue(ItemsView.ItemTemplateProperty)
+                    itemsView.ClearValue(ItemsView.ItemsSourceProperty)
+                | ValueSome value ->
+                    itemsView.SetValue(
+                        ItemsView.ItemTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.Template)
+                    )
+
+                    itemsView.SetValue(ItemsView.ItemsSourceProperty, value.OriginalItems))
 
     let RemainingItemsThreshold =
         Attributes.defineBindable<int> ItemsView.RemainingItemsThresholdProperty

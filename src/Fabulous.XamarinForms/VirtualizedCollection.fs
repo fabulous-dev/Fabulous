@@ -1,41 +1,20 @@
 namespace Fabulous.XamarinForms
 
 open System
-open System.Collections
 open System.Collections.Generic
 open Fabulous
 open Xamarin.Forms
 
-type GroupItem(header: Widget, footer: Widget, source: IEnumerable<Widget>) =
-    member _.Header = header
-    member _.Footer = footer
-
-    interface IEnumerable<Widget> with
-        member this.GetEnumerator() : IEnumerator<Widget> = source.GetEnumerator()
-        member this.GetEnumerator() : IEnumerator = source.GetEnumerator() :> IEnumerator
-
-type VirtualizedItemType =
-    | Header
-    | Footer
-    | Item
-
 module BindableHelpers =
-    let getWidgetFromBindableContext (itemType: VirtualizedItemType) (value: obj) =
-        match itemType with
-        | Item -> value :?> Widget
-        | Header -> (value :?> GroupItem).Header
-        | Footer -> (value :?> GroupItem).Footer
-
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
-    let createOnBindingContextChanged canReuseView (itemType: VirtualizedItemType) (target: BindableObject) =
+    let createOnBindingContextChanged canReuseView templateFn (target: BindableObject) =
         let mutable prevWidgetOpt: Widget voption = ValueNone
 
         let onBindingContextChanged () =
             match target.BindingContext with
             | null -> ()
             | value ->
-                let currWidget =
-                    getWidgetFromBindableContext itemType value
+                let currWidget = templateFn value
 
                 let node = ViewNode.get target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
@@ -45,7 +24,7 @@ module BindableHelpers =
 
 /// Create a DataTemplate for a specific root type (TextCell, ViewCell, etc.)
 /// that listen for BindingContext change to apply the Widget content to the cell
-type WidgetDataTemplate(``type``, itemType, parent: IViewNode) =
+type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Widget) =
     inherit DataTemplate(fun () ->
         let bindableObject =
             Activator.CreateInstance ``type`` :?> BindableObject
@@ -56,45 +35,39 @@ type WidgetDataTemplate(``type``, itemType, parent: IViewNode) =
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
         let onBindingContextChanged =
-            BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView itemType bindableObject
+            BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView templateFn bindableObject
 
         bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged ())
 
         bindableObject :> obj)
 
 /// Redirect to the right type of DataTemplate based on the target type of the current widget cell
-type WidgetDataTemplateSelector internal (node: IViewNode, itemType: VirtualizedItemType) =
+type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Widget) =
     inherit DataTemplateSelector()
 
     /// Reuse data template for already known widget target type
-    let cache = Dictionary<Type, WidgetDataTemplate>()
+    let cache = Dictionary<Type, DataTemplate>()
 
     override _.OnSelectTemplate(item, _) =
-        let widget =
-            BindableHelpers.getWidgetFromBindableContext itemType item
-
+        let widget = templateFn item
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
         let targetType = widgetDefinition.TargetType
 
         match cache.TryGetValue(targetType) with
-        | true, dataTemplate -> dataTemplate :> DataTemplate
+        | true, dataTemplate -> dataTemplate
         | false, _ ->
             let dataTemplate =
-                WidgetDataTemplate(targetType, itemType, node)
+                WidgetDataTemplate(node, targetType, templateFn) :> DataTemplate
 
             cache.Add(targetType, dataTemplate)
-            dataTemplate :> DataTemplate
-
-type SimpleWidgetDataTemplateSelector(node: IViewNode) =
-    inherit WidgetDataTemplateSelector(node, Item)
-
-type GroupedWidgetDataTemplateSelector(node: IViewNode, itemType: VirtualizedItemType) =
-    inherit WidgetDataTemplateSelector(node, itemType)
+            dataTemplate
 
 type WidgetItems<'T> =
     { OriginalItems: IEnumerable<'T>
       Template: 'T -> Widget }
 
-type GroupedWidgetItems<'T> =
-    { OriginalItems: IEnumerable<'T>
-      Template: 'T -> GroupItem }
+type GroupedWidgetItems<'groupData, 'itemData> =
+    { OriginalItems: IEnumerable<'groupData>
+      HeaderTemplate: 'groupData -> Widget
+      FooterTemplate: ('groupData -> Widget) option
+      ItemTemplate: 'itemData -> Widget }

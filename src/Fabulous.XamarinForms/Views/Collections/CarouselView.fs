@@ -10,10 +10,7 @@ type ICarouselView =
     inherit IItemsView
 
 module CarouselView =
-
-    let WidgetKey =
-        Widgets.registerWithAdditionalSetup<CarouselView>
-            (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
+    let WidgetKey = Widgets.register<CarouselView> ()
 
     let IsBounceEnabled =
         Attributes.defineBindable<bool> CarouselView.IsBounceEnabledProperty

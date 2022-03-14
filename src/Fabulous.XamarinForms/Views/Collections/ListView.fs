@@ -8,16 +8,38 @@ type IListView =
     inherit IItemsViewOfCell
 
 module ListView =
-    let WidgetKey =
-        Widgets.registerWithAdditionalSetup<FabulousListView>
-            (fun target node -> target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node))
+    let WidgetKey = Widgets.register<FabulousListView> ()
 
-    let GroupedWidgetKey =
-        Widgets.registerWithAdditionalSetup<FabulousListView>
-            (fun target node ->
-                target.ItemTemplate <- SimpleWidgetDataTemplateSelector(node)
-                target.GroupHeaderTemplate <- GroupedWidgetDataTemplateSelector(node, Header)
-                target.IsGroupingEnabled <- true)
+    let GroupedItemsSource<'groupData, 'itemData> =
+        Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>
+            "ListView_GroupedItemsSource"
+            id
+            id
+            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+            (fun newValueOpt node ->
+                let listView = node.Target :?> ListView
+
+                match newValueOpt with
+                | ValueNone ->
+                    listView.IsGroupingEnabled <- false
+                    listView.ClearValue(ListView.ItemsSourceProperty)
+                    listView.ClearValue(ListView.GroupHeaderTemplateProperty)
+                    listView.ClearValue(ListView.ItemTemplateProperty)
+
+                | ValueSome value ->
+                    listView.IsGroupingEnabled <- true
+
+                    listView.SetValue(ListView.ItemsSourceProperty, value.OriginalItems)
+
+                    listView.SetValue(
+                        ListView.ItemTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate)
+                    )
+
+                    listView.SetValue(
+                        ListView.GroupHeaderTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate)
+                    ))
 
     let RowHeight =
         Attributes.defineBindable<int> ListView.RowHeightProperty
@@ -41,8 +63,8 @@ module ListViewBuilders =
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItemsNoFooter<'msg, IListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
-                ListView.GroupedWidgetKey
-                ItemsViewOfCell.GroupedItemsSource
+                ListView.WidgetKey
+                ListView.GroupedItemsSource
                 items
 
 [<Extension>]

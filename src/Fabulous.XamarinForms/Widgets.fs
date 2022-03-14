@@ -1,11 +1,10 @@
 ﻿namespace Fabulous.XamarinForms
 
 open System
-open System.Collections.Generic
-open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
+open Fabulous.XamarinForms
 open Microsoft.FSharp.Core
 
 [<AbstractClass; Sealed>]
@@ -64,7 +63,7 @@ module WidgetHelpers =
 
     let buildItems<'msg, 'marker, 'itemData, 'itemMarker>
         key
-        (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, IEnumerable<Widget>>)
+        (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, WidgetItems<'itemData>>)
         (items: seq<'itemData>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         =
@@ -78,60 +77,33 @@ module WidgetHelpers =
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
-    let buildItemsWithScalars<'msg, 'marker, 'itemData, 'itemMarker>
-        key
-        (scalarA: ScalarAttribute)
-        (scalarB: ScalarAttribute)
-        (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, IEnumerable<Widget>>)
-        (items: seq<'itemData>)
-        (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
-        =
-        let template (item: obj) =
-            let item = unbox<'itemData> item
-            (itemTemplate item).Compile()
-
-        let data: WidgetItems<'itemData> =
-            { OriginalItems = items
-              Template = template }
-
-        WidgetBuilder<'msg, 'marker>(key, scalarA, scalarB, attrDef.WithValue(data))
-
     let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData>, GroupedWidgetItems<'groupData>, IEnumerable<GroupItem>>)
+        (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>)
         (items: seq<'groupData>)
         (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         (groupFooterTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         =
-        let template (group: obj) =
-            let group = unbox<'groupData> group
-            let header = (groupHeaderTemplate group).Compile()
-            let footer = (groupFooterTemplate group).Compile()
-
-            let items =
-                group
-                |> Seq.map (fun item -> (itemTemplate item).Compile())
-
-            GroupItem(header, footer, items)
-
-        let data: GroupedWidgetItems<'groupData> =
+        let data: GroupedWidgetItems<'groupData, 'itemData> =
             { OriginalItems = items
-              Template = template }
+              HeaderTemplate = fun d -> (groupHeaderTemplate d).Compile()
+              FooterTemplate = Some(fun d -> (groupFooterTemplate d).Compile())
+              ItemTemplate = fun d -> (itemTemplate d).Compile() }
 
         WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))
 
     let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        attrDef
-        items
-        groupHeaderTemplate
-        itemTemplate
+        (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>)
+        (items: seq<'groupData>)
+        (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
+        (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         =
-        buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker>
-            key
-            attrDef
-            items
-            groupHeaderTemplate
-            itemTemplate
-            (fun _ -> Unchecked.defaultof<_>)
+        let data: GroupedWidgetItems<'groupData, 'itemData> =
+            { OriginalItems = items
+              HeaderTemplate = fun d -> (groupHeaderTemplate d).Compile()
+              FooterTemplate = None
+              ItemTemplate = fun d -> (itemTemplate d).Compile() }
+
+        WidgetBuilder<'msg, 'marker>(key, attrDef.WithValue(data))

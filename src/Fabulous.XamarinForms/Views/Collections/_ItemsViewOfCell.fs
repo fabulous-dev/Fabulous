@@ -8,23 +8,22 @@ type IItemsViewOfCell =
 
 module ItemsViewOfCell =
     let ItemsSource<'T> =
-        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>
-            Xamarin.Forms.ItemsView<Cell>.ItemsSourceProperty
+        Attributes.defineScalarWithConverter<WidgetItems<'T>, WidgetItems<'T>, WidgetItems<'T>>
+            "ItemsViewOfCell_ItemsSource"
             id
-            (fun modelValue ->
-                seq {
-                    for x in modelValue.OriginalItems do
-                        modelValue.Template x
-                })
+            id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+            (fun newValueOpt node ->
+                let itemsView = node.Target :?> ItemsView<Cell>
 
-    let GroupedItemsSource<'T> =
-        Attributes.defineBindableWithComparer<GroupedWidgetItems<'T>, GroupedWidgetItems<'T>, System.Collections.Generic.IEnumerable<GroupItem>>
-            Xamarin.Forms.ItemsView<Cell>.ItemsSourceProperty
-            id
-            (fun modelValue ->
-                seq {
-                    for x in modelValue.OriginalItems do
-                        modelValue.Template x
-                })
-            (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
+                match newValueOpt with
+                | ValueNone ->
+                    itemsView.ClearValue(ItemsView<Cell>.ItemTemplateProperty)
+                    itemsView.ClearValue(ItemsView<Cell>.ItemsSourceProperty)
+                | ValueSome value ->
+                    itemsView.SetValue(
+                        ItemsView<Cell>.ItemTemplateProperty,
+                        WidgetDataTemplateSelector(node, unbox >> value.Template)
+                    )
+
+                    itemsView.SetValue(ItemsView<Cell>.ItemsSourceProperty, value.OriginalItems))
