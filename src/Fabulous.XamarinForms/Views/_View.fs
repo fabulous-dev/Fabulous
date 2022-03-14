@@ -27,6 +27,11 @@ type FadeToData =
       AnimationDuration: uint32
       Easing: Easing }
 
+[<Struct>]
+type RotateToData =
+    { Rotation: float
+      AnimationDuration: uint32
+      Easing: Easing }
 
 module XFView =
     let HorizontalOptions =
@@ -69,6 +74,30 @@ module XFView =
                     view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing)
                     |> ignore)
 
+    let ScaleXTo =
+        Attributes.define<ScaleToData>
+            "View_ScaleXTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleXTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleXTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let ScaleYTo =
+        Attributes.define<ScaleToData>
+            "View_ScaleYTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleYTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleYTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
     let FadeTo =
         Attributes.define<FadeToData>
             "View_FadeTo"
@@ -79,6 +108,46 @@ module XFView =
                 | ValueNone -> view.FadeTo(0., uint 0, Easing.Linear) |> ignore
                 | ValueSome data ->
                     view.FadeTo(data.Opacity, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateTo =
+        Attributes.define<RotateToData>
+            "View_RotateTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.RotateTo(0., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.RotateTo(data.Rotation, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateXTo =
+        Attributes.define<RotateToData>
+            "View_RotateXTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.RotateXTo(0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.RotateXTo(data.Rotation, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateYTo =
+        Attributes.define<RotateToData>
+            "View_RotateYTo"
+            (fun newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.RotateYTo(0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.RotateYTo(data.Rotation, data.AnimationDuration, data.Easing)
                     |> ignore)
 
 [<Extension>]
@@ -246,6 +315,34 @@ type ViewModifiers =
             )
         )
 
+    /// <summary>Animates elements ScaleX property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleXTo(this: WidgetBuilder<'msg, #IView>, scale: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.ScaleXTo.WithValue(
+                { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements ScaleY property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleYTo(this: WidgetBuilder<'msg, #IView>, scale: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.ScaleYTo.WithValue(
+                { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
     /// <summary>Animates elements Opacity property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="opacity">The value of the final opacity value.</param>
     /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
@@ -255,6 +352,48 @@ type ViewModifiers =
         this.AddScalar(
             XFView.FadeTo.WithValue(
                 { Opacity = opacity
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements Rotation property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotation value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateTo(this: WidgetBuilder<'msg, #IView>, rotation: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.RotateTo.WithValue(
+                { Rotation = rotation
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements RotationX property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotationX value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateXTo(this: WidgetBuilder<'msg, #IView>, rotation: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.RotateXTo.WithValue(
+                { Rotation = rotation
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements RotationY property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotationY value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateYTo(this: WidgetBuilder<'msg, #IView>, rotation: float, duration: int, easing: Easing) =
+        this.AddScalar(
+            XFView.RotateYTo.WithValue(
+                { Rotation = rotation
                   AnimationDuration = uint duration
                   Easing = easing }
             )
