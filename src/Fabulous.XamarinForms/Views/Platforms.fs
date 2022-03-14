@@ -61,6 +61,23 @@ module iOS =
                 timePicker.On<iOS>().SetUpdateMode(value)
                 |> ignore)
 
+    let HideNavigationBarSeparator =
+        Attributes.define<bool>
+            "NavigationPage_HideNavigationBarSeparator"
+            (fun newValueOpt node ->
+                let page =
+                    node.Target :?> Xamarin.Forms.NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                page
+                    .On<iOS>()
+                    .SetHideNavigationBarSeparator(value)
+                |> ignore)
+
 module Android =
     let ToolbarPlacement =
         Attributes.define<ToolbarPlacement>
@@ -95,6 +112,10 @@ type PlatformModifiers =
     [<Extension>]
     static member inline timePickerUpdateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: UpdateMode) =
         this.AddScalar(iOS.TimePickerUpdateMode.WithValue(mode))
+
+    [<Extension>]
+    static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(iOS.HideNavigationBarSeparator.WithValue(value))
 
     [<Extension>]
     static member inline androidToolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
