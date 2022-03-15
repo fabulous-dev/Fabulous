@@ -17,7 +17,7 @@ jobs:
     - name: Set GitHub PAT for NuGet
       run: |
         cp nuget.config.example nuget.config
-        dotnet nuget update source github -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+        dotnet nuget update source fabulousfx -u USERNAME -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
     - name: Install dotnet workload
       run: dotnet workload install ios android
     - name: Restore
@@ -33,5 +33,5 @@ jobs:
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
-        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name fabulous
-        dotnet nuget push "nupkgs/*.nupkg" --source fabulous --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name timlariviere
+        dotnet nuget push "nupkgs/*.nupkg" --source timlariviere --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

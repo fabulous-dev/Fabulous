@@ -4,12 +4,12 @@
         <clear />
         <add key="nuget" value="https://api.nuget.org/v3/index.json" />
         <!-- Rebuilt Xamarin.Forms for new net6.0-ios -->
-        <add key="github" value="https://nuget.pkg.github.com/fabulousfx/index.json" />
+        <add key="fabulousfx" value="https://nuget.pkg.github.com/fabulousfx/index.json" />
     </packageSources>
     <packageSourceCredentials>
-        <github>
+        <fabulousfx>
             <add key="Username" value="USERNAME" />
             <add key="ClearTextPassword" value="TOKEN" />
-        </github>
+        </fabulousfx>
     </packageSourceCredentials>
 </configuration>
