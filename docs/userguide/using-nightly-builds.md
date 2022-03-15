@@ -1,4 +1,4 @@
-# Using nightly builds
+## Using nightly builds
 
 On every commit to the `main` branch, packages for each project and template are automatically generated and published to the GitHub Packages Registry.
 
