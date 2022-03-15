@@ -1,4 +1,4 @@
-# Architecture - Virtualized collections
+## Architecture - Virtualized collections
 
 Virtualized collection enables displaying a scrolling list of data while only instantiating the visible rows.
 When scrolling, the no longer visible rows are reused and updated with the new data.
