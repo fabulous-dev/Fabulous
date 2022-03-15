@@ -16,7 +16,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-ios' ">
     <PackageReference Include="Xamarin.Forms" Version="[5.0.0.1]" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-android' ">
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net6.0-ios' ">
     <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
   </ItemGroup>
 </Project>
