@@ -29,7 +29,7 @@
       {
         "description": "Manual actions required",
         "manualInstructions": [{
-          "text": "This template uses nightly builds from the GitHub repo. Please follow instructions at https://timothelariviere.com/Fabulous-new//userguide/using-nightly-builds.md"
+          "text": "This template uses nightly builds from the GitHub repo. Please follow instructions at https://timothelariviere.com/Fabulous-new//userguide/using-nightly-builds.html"
         }],
         "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
         "continueOnError": true
