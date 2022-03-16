@@ -135,7 +135,7 @@ type PlatformModifiers =
     static member inline timePickerUpdateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: UpdateMode) =
         this.AddScalar(iOS.TimePickerUpdateMode.WithValue(mode))
 
-    /// <summary>iOS platform specific. Set  this hide the navigation bar separator.</summary>
+    /// <summary>iOS platform specific. Sets a value that hides the navigation bar separator.</summary>
     /// <param name="value">true to hide the separator. Otherwise, false.</param>
     [<Extension>]
     static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
