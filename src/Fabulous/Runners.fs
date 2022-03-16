@@ -132,7 +132,7 @@ module ViewAdapters =
 
             _root <- root
             _allowDispatch <- true
-            
+
             _root
 
         member _.OnStateChanged(args) =
