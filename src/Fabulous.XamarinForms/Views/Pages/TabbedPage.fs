@@ -5,7 +5,7 @@ open Fabulous
 open Xamarin.Forms
 
 type ITabbedPage =
-    inherit IPage
+    inherit IMultiPageOfPage
 
 module TabbedPage =
     let WidgetKey = Widgets.register<TabbedPage> ()
@@ -62,12 +62,6 @@ type TabbedPageModifiers =
     [<Extension>]
     static member inline unselectedTabColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: Color, ?dark: Color) =
         this.AddScalar(TabbedPage.UnselectedTabColor.WithValue(AppTheme.create light dark))
-
-    /// <summary>Raised when the CurrentPage property changes.</summary>
-    /// <param name="onCurrentPageChanged">The msg to invoke when the CurrentPage property changes.</param>
-    [<Extension>]
-    static member inline onCurrentPageChanged(this: WidgetBuilder<'msg, #ITabbedPage>, onCurrentPageChanged: 'msg) =
-        this.AddScalar(MultiPageOfPage.CurrentPageChanged.WithValue(onCurrentPageChanged))
 
     /// <summary>Link a ViewRef to access the direct TabbedPage control instance</summary>
     [<Extension>]
