@@ -2,6 +2,8 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
+open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
@@ -78,6 +80,19 @@ module iOS =
                     .SetHideNavigationBarSeparator(value)
                 |> ignore)
 
+    let CursorColor =
+        Attributes.define<Color>
+            "Entry_CursorColor"
+            (fun newValueOpt node ->
+                let entry = node.Target :?> Xamarin.Forms.Entry
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> Xamarin.Forms.Color.Default
+                    | ValueSome x -> x
+
+                entry.On<iOS>().SetCursorColor(value) |> ignore)
+
 module Android =
     let ToolbarPlacement =
         Attributes.define<ToolbarPlacement>
@@ -97,26 +112,43 @@ module Android =
 
 [<Extension>]
 type PlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that controls whether padding values are overridden with the safe area insets.</summary>
     [<Extension>]
     static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
         this.AddScalar(iOS.UseSafeArea.WithValue(false))
 
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
     [<Extension>]
     static member inline pickerUpdateMode(this: WidgetBuilder<'msg, #IPicker>, mode: UpdateMode) =
         this.AddScalar(iOS.PickerUpdateMode.WithValue(mode))
 
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
     [<Extension>]
     static member inline datePickerUpdateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: UpdateMode) =
         this.AddScalar(iOS.DatePickerUpdateMode.WithValue(mode))
 
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the time picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
     [<Extension>]
     static member inline timePickerUpdateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: UpdateMode) =
         this.AddScalar(iOS.TimePickerUpdateMode.WithValue(mode))
 
+    /// <summary>iOS platform specific. Set  this hide the navigation bar separator.</summary>
+    /// <param name="value">true to hide the separator. Otherwise, false.</param>
     [<Extension>]
     static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
         this.AddScalar(iOS.HideNavigationBarSeparator.WithValue(value))
 
+    /// <summary>iOS platform specific. Sets the entry color of the cursor</summary>
+    /// <param name="value">The new cursor color.</param>
     [<Extension>]
-    static member inline androidToolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
+    static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: Color) =
+        this.AddScalar(iOS.CursorColor.WithValue(value))
+
+    /// <summary>Android platform specific. Sets the toolbar placement.</summary>
+    /// <param name= "value">The new toolbar placement value.</param>
+    [<Extension>]
+    static member inline toolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
         this.AddScalar(Android.ToolbarPlacement.WithValue(value))
