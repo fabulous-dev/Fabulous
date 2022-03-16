@@ -106,7 +106,7 @@ module ViewAdapters =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
-        let mutable _allowDispatch = true
+        let mutable _allowDispatch = false
 
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
@@ -131,6 +131,8 @@ module ViewAdapters =
                 definition.CreateView(widget, treeContext, ValueNone)
 
             _root <- root
+            _allowDispatch <- true
+            
             _root
 
         member _.OnStateChanged(args) =
