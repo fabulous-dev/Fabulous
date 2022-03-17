@@ -48,6 +48,7 @@
     <Compile Include="Views\Pages\NavigationPage.fs" />
     <Compile Include="Views\Pages\_MultiPageOfPage.fs" />
     <Compile Include="Views\Pages\TabbedPage.fs" />
+    <Compile Include="Views\Pages\FlyoutPage.fs" />
     <Compile Include="Views\Layouts\_Layout.fs" />
     <Compile Include="Views\Layouts\_TemplatedView.fs" />
     <Compile Include="Views\Layouts\ContentView.fs" />
