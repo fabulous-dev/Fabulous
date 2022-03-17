@@ -3,8 +3,6 @@ name: gh-pages
 on:
   push:
     branches: [main]
-    paths:
-    - 'docs/**'
 
 jobs:
   deploy:
@@ -19,7 +17,8 @@ jobs:
       # Copy the content of the docs folder from main branch to docs branch
       - name: Copy docs from main
         run: |
-          git checkout main -- docs
+          git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/main*:refs/remotes/origin/main*
+          git checkout --progress --force refs/remotes/origin/main -- docs
           mv docs/content content
           rm -r docs
 
