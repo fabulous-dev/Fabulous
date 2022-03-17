@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://timothelariviere.com/Fabulous-new/sitemap.xml
+Sitemap: https://timothelariviere.com/Fabulous-new/sitemap.xml
