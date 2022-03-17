@@ -1,0 +1,46 @@
+name: gh-pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+    - 'docs/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the docs branch containing the Doks website
+      - name: Checkout docs branch
+        uses: actions/checkout@v2
+        with:
+          ref: docs
+
+      # Copy the content of the docs folder from main branch to docs branch
+      - name: Copy docs from main
+        run: |
+          git checkout main -- docs
+          mv docs/content content
+          rm -r docs
+
+      # Build website
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check for linting errors
+        run: npm test
+
+      - name: Build production website
+        run: npm run build
+
+      # Deploy to GitHub Pages branch
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
