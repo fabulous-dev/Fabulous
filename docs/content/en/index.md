@@ -1,4 +1,4 @@
-## Fabulous v2
+# Fabulous v2
 
 - [Goals of v2](goals-of-v2.md)
 - [Using nightly builds](userguide/using-nightly-builds.md)

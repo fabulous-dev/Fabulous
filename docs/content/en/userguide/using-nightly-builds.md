@@ -1,4 +1,4 @@
-## Using nightly builds
+# Using nightly builds
 
 On every commit to the `main` branch, packages for each project and template are automatically generated and published to the GitHub Packages Registry.
 
@@ -8,7 +8,8 @@ You'll also new to generate a GitHub PAT (personal access token) for your accoun
 
 For instructions on how to generate a GitHub PAT, see [Authenticating with a Personal Access Token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-with-a-personal-access-token).
 
-_Example of nuget.config_
+Example of `nuget.config`:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
@@ -32,7 +33,9 @@ _Example of nuget.config_
 It's the same than above, except you'll need to create `nuget.config` first so the `dotnet` CLI can retrieve the templates from GitHub.
 
 Once you configured `nuget.config`, you can run
-```
+
+```sh
 dotnet new -i Fabulous.XamarinForms.Templates::XYZ
 ```
+
 where `XYZ` is the latest version from [Fabulous.XamarinForms.Templates versions](https://github.com/TimLariviere/Fabulous-new/packages/1191236/versions).
