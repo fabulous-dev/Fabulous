@@ -95,7 +95,7 @@ module FlyoutPageBuilders =
                 [| FlyoutPage.Flyout.WithValue(flyout.Compile())
                    FlyoutPage.Detail.WithValue(detail.Compile()) |]
 
-        static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IPage and 'detail :> INavigationPage>
+        static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IPage and 'detail :> IPage>
             (
                 flyout: WidgetBuilder<'msg, 'flyout>,
                 detail: WidgetBuilder<'msg, 'detail>
@@ -109,39 +109,39 @@ module FlyoutPageBuilders =
 type FlyoutPageModifiers =
 
     [<Extension>]
-    static member inline canChangeIsPresented(this: WidgetBuilder<'msg, IFlyoutPage>, value: bool) =
+    static member inline canChangeIsPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
         this.AddScalar(FlyoutPage.CanChangeIsPresented.WithValue(value))
 
     [<Extension>]
-    static member inline isPresented(this: WidgetBuilder<'msg, IFlyoutPage>, value: bool) =
+    static member inline isPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
         this.AddScalar(FlyoutPage.IsPresented.WithValue(value))
 
     [<Extension>]
-    static member inline isGestureEnabled(this: WidgetBuilder<'msg, IFlyoutPage>, value: bool) =
+    static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
         this.AddScalar(FlyoutPage.IsGestureEnabled.WithValue(value))
 
     [<Extension>]
-    static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, IFlyoutPage>, value: FlyoutLayoutBehavior) =
+    static member inline flyoutLayoutBehavior(this: WidgetBuilder<'msg, #IFlyoutPage>, value: FlyoutLayoutBehavior) =
         this.AddScalar(FlyoutPage.FlyoutLayoutBehavior.WithValue(value))
 
     [<Extension>]
-    static member inline flyoutBounds(this: WidgetBuilder<'msg, IFlyoutPage>, value: Rectangle) =
+    static member inline flyoutBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
         this.AddScalar(FlyoutPage.FlyoutBounds.WithValue(value))
 
     [<Extension>]
-    static member inline detailBounds(this: WidgetBuilder<'msg, IFlyoutPage>, value: Rectangle) =
+    static member inline detailBounds(this: WidgetBuilder<'msg, #IFlyoutPage>, value: Rectangle) =
         this.AddScalar(FlyoutPage.DetailBounds.WithValue(value))
 
     [<Extension>]
     static member inline onBackButtonPressed
         (
-            this: WidgetBuilder<'msg, IFlyoutPage>,
+            this: WidgetBuilder<'msg, #IFlyoutPage>,
             onBackButtonPressed: bool -> 'msg
         ) =
         this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> onBackButtonPressed args.Handled |> box))
 
     [<Extension>]
-    static member inline onPresentedChanged(this: WidgetBuilder<'msg, IFlyoutPage>, onPresentedChanged: 'msg) =
+    static member inline onPresentedChanged(this: WidgetBuilder<'msg, #IFlyoutPage>, onPresentedChanged: 'msg) =
         this.AddScalar(FlyoutPage.IsPresentedChanged.WithValue(onPresentedChanged))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
