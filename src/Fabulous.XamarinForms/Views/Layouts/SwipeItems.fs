@@ -36,7 +36,11 @@ type SwipeItemsModifiers() =
         this.AddScalar(SwipeItems.SwipeMode.WithValue(value))
 
     [<Extension>]
-    static member inline swipeBehaviorOnInvoked(this: WidgetBuilder<'msg, #ISwipeItems>, value: SwipeBehaviorOnInvoked) =
+    static member inline swipeBehaviorOnInvoked
+        (
+            this: WidgetBuilder<'msg, #ISwipeItems>,
+            value: SwipeBehaviorOnInvoked
+        ) =
         this.AddScalar(SwipeItems.SwipeBehaviorOnInvoked.WithValue(value))
 
     [<Extension>]
