@@ -61,6 +61,9 @@
     <Compile Include="Views\Layouts\AbsoluteLayout.fs" />
     <Compile Include="Views\Layouts\RelativeLayout.fs" />
     <Compile Include="Views\Layouts\FlexLayout.fs" />
+    <Compile Include="Views\Layouts\SwipeItem.fs" />
+    <Compile Include="Views\Layouts\SwipeItems.fs" />
+    <Compile Include="Views\Layouts\SwipeView.fs" />
     <Compile Include="Views\Controls\IndicatorView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
     <Compile Include="Views\Controls\Span.fs" />
