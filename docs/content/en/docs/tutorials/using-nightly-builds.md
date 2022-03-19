@@ -1,4 +1,17 @@
-# Using nightly builds
+---
+title: "Using nightly builds"
+description: ""
+lead: ""
+date: 2020-10-06T08:48:57+00:00
+lastmod: 2020-10-06T08:48:57+00:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "tutorials"
+weight: 100
+toc: true
+---
 
 On every commit to the `main` branch, packages for each project and template are automatically generated and published to the GitHub Packages Registry.
 
