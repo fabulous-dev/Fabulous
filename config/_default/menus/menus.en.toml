@@ -2,8 +2,8 @@
 
 [[main]]
   name = "Docs"
-  url = "/docs/introduction/"
-# url = "/docs/1.0/introduction/"
+  url = "/docs/about/"
+# url = "/docs/1.0/about/"
   weight = 10
 
 [[main]]
@@ -15,7 +15,7 @@
   name = "Get Started"
   weight = 30
   identifier = "get-started"
-  url = "/docs/introduction/"
+  url = "/docs/about/"
 
 [[main]]
   name = "Quickstarts"
