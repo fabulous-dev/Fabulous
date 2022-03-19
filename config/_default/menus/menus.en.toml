@@ -21,14 +21,14 @@
   name = "Quickstarts"
   weight = 40
   identifier = "quickstarts"
-  url = "/quickstarts/"
+  url = "/docs/quickstarts/"
   parent = "get-started"
 
 [[main]]
   name = "Tutorials"
   weight = 50
   identifier = "tutorials"
-  url = "/tutorials/"
+  url = "/docs/tutorials/"
   parent = "get-started"
 
 [[social]]

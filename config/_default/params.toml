@@ -84,7 +84,7 @@ lastMod = false
   highLight = true
   kaTex = false
   multilingualMode = false
-  docsVersioning = true
+  docsVersioning = false
   fullWidth = false
 
 [menu]
