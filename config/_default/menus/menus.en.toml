@@ -1,43 +1,10 @@
-[[docs]]
-  name = "Prologue"
-  weight = 10
-  identifier = "prologue"
-  url = "/docs/prologue/"
-
-[[docs]]
-  name = "Help"
-  weight = 60
-  identifier = "help"
-  url = "/docs/help/"
-
-# [[docs]]
-#   name = "Lorem"
-#   weight = 70
-#   identifier = "lorem"
-#   url = "/docs/lorem/"
-
-[[guide]]
-  name = "Lorem"
-  weight = 10
-  identifier = "lorem"
-  url = "/guide/lorem/"
-
-[[tutorial]]
-  name = "Lorem"
-  weight = 10
-  identifier = "lorem"
-  url = "/tutorial/lorem/"
+## Links on main page
 
 [[main]]
   name = "Docs"
-  url = "/docs/prologue/introduction/"
-# url = "/docs/1.0/prologue/introduction/"
+  url = "/docs/introduction/"
+# url = "/docs/1.0/introduction/"
   weight = 10
-
-# [[main]]
-#   name = "Tutorial"
-#   url = "/tutorial/lorem/ipsum/"
-#   weight = 15
 
 [[main]]
   name = "Blog"
@@ -48,20 +15,20 @@
   name = "Get Started"
   weight = 30
   identifier = "get-started"
-  url = "/docs/prologue/introduction/"
+  url = "/docs/introduction/"
 
 [[main]]
-  name = "Quick Start"
+  name = "Quickstarts"
   weight = 40
-  identifier = "quick-start"
-  url = "/docs/prologue/quick-start/"
+  identifier = "quickstarts"
+  url = "/quickstarts/"
   parent = "get-started"
 
 [[main]]
-  name = "Tutorial"
+  name = "Tutorials"
   weight = 50
-  identifier = "tutorial"
-  url = "https://getdoks.org/tutorial/introduction/"
+  identifier = "tutorials"
+  url = "/tutorials/"
   parent = "get-started"
 
 [[social]]
@@ -77,7 +44,23 @@
   url = "https://twitter.com/Tim_Lariviere"
   weight = 20
 
-# [[footer]]
-#   name = "Privacy"
-#   url = "/privacy-policy/"
-#   weight = 10
+
+## Links in the sidebar of Docs
+
+[[docs]]
+  name = "Quickstarts"
+  weight = 10
+  identifier = "quickstarts"
+  url = "/quickstarts/"
+
+[[docs]]
+  name = "Tutorials"
+  weight = 20
+  identifier = "tutorials"
+  url = "/tutorials/"
+
+[[docs]]
+  name = "API Overview"
+  weight = 60
+  identifier = "api-overview"
+  url = "/api/"
