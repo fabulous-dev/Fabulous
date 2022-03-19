@@ -1,4 +1,17 @@
-# Reasonable goals of v2
+---
+title: "Reasonable goals of v2"
+description: ""
+lead: ""
+date: 2020-10-06T08:48:57+00:00
+lastmod: 2020-10-06T08:48:57+00:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "architecture"
+weight: 100
+toc: true
+---
 
 Due to the complex nature of GUI framework development, Fabulous v2 represents a substantial amount of work.  
 In order to manage and optimize the time of everyone involved, more reasonable goals are required to get a version 2 out as fast as possible.
