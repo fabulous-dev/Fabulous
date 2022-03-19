@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 type IItemsViewOfCell =
-    inherit IItemsView
+    inherit IView
 
 module ItemsViewOfCell =
     let ItemsSource<'T> =
