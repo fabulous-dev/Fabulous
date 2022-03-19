@@ -48,19 +48,25 @@
 ## Links in the sidebar of Docs
 
 [[docs]]
-  name = "Quickstarts"
+  name = "About"
   weight = 10
+  identifier = "about"
+  url = "/docs/about/"
+
+[[docs]]
+  name = "Quickstarts"
+  weight = 20
   identifier = "quickstarts"
-  url = "/quickstarts/"
+  url = "/docs/quickstarts/"
 
 [[docs]]
   name = "Tutorials"
-  weight = 20
+  weight = 30
   identifier = "tutorials"
-  url = "/tutorials/"
+  url = "/docs/tutorials/"
 
 [[docs]]
-  name = "API Overview"
-  weight = 60
-  identifier = "api-overview"
-  url = "/api/"
+  name = "Architecture"
+  weight = 40
+  identifier = "architecture"
+  url = "/docs/architecture/"
