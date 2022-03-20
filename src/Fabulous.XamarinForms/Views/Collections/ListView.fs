@@ -64,9 +64,6 @@ module ListView =
     let HasUnevenRows =
         Attributes.defineBindable<bool> ListView.HasUnevenRowsProperty
 
-    let IsGroupingEnabled =
-        Attributes.defineBindable<bool> ListView.IsGroupingEnabledProperty
-
     let SeparatorVisibility =
         Attributes.defineBindable<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
@@ -168,10 +165,6 @@ type ListViewModifiers =
             value: ScrollBarVisibility
         ) =
         this.AddScalar(ListView.VerticalScrollBarVisibility.WithValue(value))
-
-    [<Extension>]
-    static member inline isGroupingEnabled(this: WidgetBuilder<'msg, #IListView>, value: bool) =
-        this.AddScalar(ListView.IsGroupingEnabled.WithValue(value))
 
     [<Extension>]
     static member inline isPullToRefreshEnabled(this: WidgetBuilder<'msg, #IListView>, value: bool) =
