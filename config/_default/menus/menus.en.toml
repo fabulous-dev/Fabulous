@@ -2,7 +2,7 @@
 
 [[main]]
   name = "Docs"
-  url = "/docs/about/"
+  url = "/docs/about/fabulous-for-xamarinforms/"
 # url = "/docs/1.0/about/"
   weight = 10
 
@@ -15,7 +15,7 @@
   name = "Get Started"
   weight = 30
   identifier = "get-started"
-  url = "/docs/about/"
+  url = "/docs/about/fabulous-for-xamarinforms/"
 
 [[main]]
   name = "Quickstarts"
