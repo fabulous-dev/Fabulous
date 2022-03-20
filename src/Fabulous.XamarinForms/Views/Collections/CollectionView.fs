@@ -2,6 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ICollectionView =
@@ -48,6 +49,23 @@ module CollectionView =
 
                     collectionView.SetValue(CollectionView.ItemsSourceProperty, value.OriginalItems))
 
+    let SelectionMode =
+        Attributes.defineBindable<SelectionMode> CollectionView.SelectionModeProperty
+
+    let Header =
+        Attributes.defineBindableWidget CollectionView.HeaderProperty
+
+    let Footer =
+        Attributes.defineBindableWidget CollectionView.FooterProperty
+
+    let ItemSizingStrategy =
+        Attributes.defineBindable<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
+
+    let SelectionChanged =
+        Attributes.defineEvent<SelectionChangedEventArgs>
+            "CollectionView_SelectionChanged"
+            (fun target -> (target :?> CollectionView).SelectionChanged)
+
 [<AutoOpen>]
 module CollectionViewBuilders =
     type Fabulous.XamarinForms.View with
@@ -69,6 +87,39 @@ module CollectionViewBuilders =
 
 [<Extension>]
 type CollectionViewModifiers =
+
+    [<Extension>]
+    static member inline selectionMode(this: WidgetBuilder<'msg, #ICollectionView>, value: SelectionMode) =
+        this.AddScalar(CollectionView.SelectionMode.WithValue(value))
+
+    [<Extension>]
+    static member inline onSelectionChanged
+        (
+            this: WidgetBuilder<'msg, #ICollectionView>,
+            onSelectionChanged: SelectionChangedEventArgs -> 'msg
+        ) =
+        this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged (args) |> box))
+
+    [<Extension>]
+    static member inline header<'msg, 'marker, 'contentMarker when 'marker :> ICollectionView and 'contentMarker :> IView>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(CollectionView.Header.WithValue(content.Compile()))
+
+    [<Extension>]
+    static member inline footer<'msg, 'marker, 'contentMarker when 'marker :> ICollectionView and 'contentMarker :> IView>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(CollectionView.Footer.WithValue(content.Compile()))
+
+    [<Extension>]
+    static member inline itemSizingStrategy(this: WidgetBuilder<'msg, #ICollectionView>, value: ItemSizingStrategy) =
+        this.AddScalar(CollectionView.ItemSizingStrategy.WithValue(value))
+
     /// <summary>Link a ViewRef to access the direct CollectionView control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ICollectionView>, value: ViewRef<CollectionView>) =
