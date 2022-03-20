@@ -30,6 +30,9 @@ module ItemsView =
 
                     itemsView.SetValue(ItemsView.ItemsSourceProperty, value.OriginalItems))
 
+    let EmptyView =
+        Attributes.defineBindableWidget ItemsView.EmptyViewProperty
+
     let RemainingItemsThreshold =
         Attributes.defineBindable<int> ItemsView.RemainingItemsThresholdProperty
 
@@ -119,3 +122,11 @@ type ItemsViewModifiers =
             onScrolled: ItemsViewScrolledEventArgs -> 'msg
         ) =
         this.AddScalar(ItemsView.Scrolled.WithValue(fun args -> onScrolled args |> box))
+
+    [<Extension>]
+    static member inline emptyView<'msg, 'marker, 'contentMarker when 'marker :> IItemsView and 'contentMarker :> IView>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(ItemsView.EmptyView.WithValue(content.Compile()))
