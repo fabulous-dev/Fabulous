@@ -20,7 +20,7 @@
 
 {{ $filePath := replace .File.Path "\\" "/" }}
 
-{{ $parts = $parts | append "content" .Lang $filePath }}
+{{ $parts = $parts | append "docs" "content" .Lang $filePath }}
 
 {{ $url := delimit $parts "/" }}
 
