@@ -9,7 +9,6 @@ images: []
 menu:
   docs:
     parent: "tutorials"
-weight: 300
 toc: true
 ---
 

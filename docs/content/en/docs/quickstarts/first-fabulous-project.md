@@ -9,7 +9,6 @@ images: []
 menu:
   docs:
     parent: "quickstarts"
-weight: 200
 toc: true
 ---
 

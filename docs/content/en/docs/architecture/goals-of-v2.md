@@ -9,7 +9,6 @@ images: []
 menu:
   docs:
     parent: "architecture"
-weight: 400
 toc: true
 ---
 

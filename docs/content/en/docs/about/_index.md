@@ -6,11 +6,5 @@ date: 2020-10-06T08:48:23+00:00
 lastmod: 2020-10-06T08:48:23+00:00
 draft: false
 images: []
-menu:
-    docs:
-        parent: "about"
-weight: 100
-toc: true
+weight: 10
 ---
-
-Introduction to Fabulous v2
