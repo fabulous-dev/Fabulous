@@ -124,7 +124,7 @@ module ContactsListPage =
                             contact.IsFavorite))
                     .rowHeight(60)
                     .selectionMode(ListViewSelectionMode.None)
-                    .itemTapped(ContactSelected)
+                    .onItemTapped(ContactSelected)
                     .fillVertical (expand = true)
              })
         )
