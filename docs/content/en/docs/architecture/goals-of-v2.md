@@ -61,7 +61,7 @@ This version 2 will focus 100% on dynamic views (main selling point).
 Fabulous.StaticViews will be removed completely.  
 Support for Fabulous.AdaptiveViews won't be considered.
 
-**Release target**: December 2021 (include v2 architecture and XF 5.0 support)
+**Release target**: Early April 2022 (include v2 architecture and XF 5.0 support)
 
 ## Xamarin.Forms 5.0 support
 
@@ -115,21 +115,22 @@ let view model =
 
 ```
 
-**Release target**: December 2021 (include v2 architecture and XF 5.0 support)
+**Release target**: Early April 2022 (include v2 architecture and XF 5.0 support)
 
 ## Migration path from version 1
 
-When v2 and the new DSL will be validated by early adopters, we will need to work on a migration path for users that developped their apps with Fabulous v1.  
-Ideally, there should be the least amount of breaking changes possible since it's mostly internal stuffs that will change.
+When v2 and the new DSL will be validated by early adopters, we will need to work on a migration path for users that developped their apps with Fabulous v1.
 
 To permit this, here's what we will be done:
 
-- Make the old DSL work with v2
-  - This will allow (ideally) seamless transition from v1 to v2
-- Make Fabulous.XamarinForms.Generator outputs both the new DSL and old DSL for Xamarin.Forms 5.0
-- Release everything related to the migration (old DSL) in a compatibility package instead of directly in Fabulous.XamarinForms
+- Check if a new `ViewElement` can be added to v1 that would host a v2 runner to enable progressive migration
+- Write documentation:
+  - What are the differences between v1 and v2
+  - What are the available features
+  - How to migrate from v1 to v2
+  - Add most common migration examples (`StackLayout(orientation = vertical, children = [ (...) ])` to `VStack() { (...) }`, etc.)
 
-**Release target**: February 2022
+**Release target**: May 2022
 
 ## Components
 
@@ -149,7 +150,7 @@ Inspiration: https://www.youtube.com/watch?v=YV_qrjN8bRA
 
 We're still discussing how to implement such a library.
 
-**Release target**: April 2022
+**Release target**: July 2022
 
 ## .NET 6 / MAUI support
 
