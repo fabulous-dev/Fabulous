@@ -25,11 +25,11 @@ module App =
           DetailPageModel: DetailPage.Model option
           EditPageModel: EditPage.Model option
           AboutPageModel: unit option
-
-          // Workaround Cmd limitation -- Can not pop a page in page stack and send Cmd at the same time
-          // Otherwise it would pop pages 2 times in NavigationPage
-          WorkaroundNavPageBug: bool
-          WorkaroundNavPageBugPendingCmd: Cmd<Msg> }
+          /// This field counts the number of pages we are popping at once
+          /// This is done to be able to differentiate NavigationPage.onPopped triggered by us
+          /// or by users pressing back button.
+          /// Xamarin.Forms doesn't tell us the difference
+          PoppingCount: int }
 
     let init dbPath () =
         let mainModel, mainMsg = MainPage.init dbPath ()
@@ -39,8 +39,7 @@ module App =
               DetailPageModel = None
               EditPageModel = None
               AboutPageModel = None
-              WorkaroundNavPageBug = false
-              WorkaroundNavPageBugPendingCmd = Cmd.none }
+              PoppingCount = 0 }
 
         initialModel, (Cmd.map MainPageMsg mainMsg)
 
@@ -117,16 +116,15 @@ module App =
             { model with AboutPageModel = Some m }, Cmd.none
 
         | NavigationPopped ->
-            match model.WorkaroundNavPageBug with
-            | true ->
-                // Do not pop pages if already done manually
-                let newModel =
-                    { model with
-                          WorkaroundNavPageBug = false
-                          WorkaroundNavPageBugPendingCmd = Cmd.none }
-
-                newModel, model.WorkaroundNavPageBugPendingCmd
-            | false -> navigationMapper model, Cmd.none
+            if model.PoppingCount = 0 then
+                // Update the navigation stack because the user pressed the back button
+                navigationMapper model, Cmd.none
+            else
+                // Do nothing since the page has already been popped by us
+                // We decrease the counter for the next popped events
+                { model with
+                      PoppingCount = model.PoppingCount - 1 },
+                Cmd.none
 
         | GoToAbout -> { model with AboutPageModel = Some() }, Cmd.none
 
@@ -142,7 +140,12 @@ module App =
             let mainMsg =
                 Cmd.ofMsg (MainPageMsg(MainPage.Msg.ContactAdded contact))
 
-            { model with EditPageModel = None }, mainMsg
+            let m =
+                { model with
+                      EditPageModel = None
+                      PoppingCount = 1 }
+
+            m, mainMsg
 
         | UpdateWhenContactUpdated contact ->
             let pendingCmds =
@@ -152,10 +155,9 @@ module App =
             let m =
                 { model with
                       EditPageModel = None
-                      WorkaroundNavPageBug = true
-                      WorkaroundNavPageBugPendingCmd = pendingCmds }
+                      PoppingCount = 1 }
 
-            m, Cmd.none
+            m, pendingCmds
 
         | UpdateWhenContactDeleted contact ->
             let mainMsg =
@@ -164,7 +166,8 @@ module App =
             let m =
                 { model with
                       DetailPageModel = None
-                      EditPageModel = None }
+                      EditPageModel = None
+                      PoppingCount = 2 }
 
             m, mainMsg
 

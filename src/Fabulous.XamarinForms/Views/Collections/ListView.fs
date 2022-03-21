@@ -211,12 +211,8 @@ type ListViewModifiers =
         this.AddScalar(ListView.ItemDisappearing.WithValue(fun args -> onItemDisappearing args |> box))
 
     [<Extension>]
-    static member inline onItemTapped
-        (
-            this: WidgetBuilder<'msg, #IListView>,
-            onItemTapped: ItemTappedEventArgs -> 'msg
-        ) =
-        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> onItemTapped args |> box))
+    static member inline onItemTapped(this: WidgetBuilder<'msg, #IListView>, onItemTapped: int -> 'msg) =
+        this.AddScalar(ListView.ItemTapped.WithValue(fun args -> onItemTapped args.ItemIndex |> box))
 
     [<Extension>]
     static member inline onItemSelected
