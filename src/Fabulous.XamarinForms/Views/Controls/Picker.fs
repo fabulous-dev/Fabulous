@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type IPicker =
     inherit IView
@@ -54,6 +55,19 @@ module Picker =
         Attributes.defineEventWithAdditionalStep
             "Picker_SelectedIndexChanged"
             (fun target -> (target :?> Picker).SelectedIndexChanged)
+
+    let UpdateMode =
+        Attributes.define<iOSSpecific.UpdateMode>
+            "Picker_UpdateMode"
+            (fun newValueOpt node ->
+                let picker = node.Target :?> Picker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                iOSSpecific.Picker.SetUpdateMode(picker, value))
 
 [<AutoOpen>]
 module PickerBuilders =
@@ -139,3 +153,11 @@ type PickerModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IPicker>, value: ViewRef<Picker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type PickerPlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
+    [<Extension>]
+    static member inline updateMode(this: WidgetBuilder<'msg, #IPicker>, mode: iOSSpecific.UpdateMode) =
+        this.AddScalar(Picker.UpdateMode.WithValue(mode))

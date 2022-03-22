@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type ITimePicker =
     inherit IView
@@ -36,6 +37,19 @@ module TimePicker =
 
     let TextTransform =
         Attributes.defineBindable<Xamarin.Forms.TextTransform> TimePicker.TextTransformProperty
+
+    let UpdateMode =
+        Attributes.define<iOSSpecific.UpdateMode>
+            "TimePicker_UpdateMode"
+            (fun newValueOpt node ->
+                let timePicker = node.Target :?> TimePicker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                iOSSpecific.TimePicker.SetUpdateMode(timePicker, value))
 
 [<AutoOpen>]
 module TimePickerBuilders =
@@ -99,3 +113,11 @@ type TimePickerModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ITimePicker>, value: ViewRef<TimePicker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type TimePickerPlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the time picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
+    [<Extension>]
+    static member inline updateMode(this: WidgetBuilder<'msg, #ITimePicker>, mode: iOSSpecific.UpdateMode) =
+        this.AddScalar(TimePicker.UpdateMode.WithValue(mode))

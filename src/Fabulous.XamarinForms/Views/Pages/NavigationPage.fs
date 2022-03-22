@@ -6,6 +6,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type INavigationPage =
     inherit IPage
@@ -60,6 +61,19 @@ module NavigationPage =
 
     let TitleView =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
+
+    let HideNavigationBarSeparator =
+        Attributes.define<bool>
+            "NavigationPage_HideNavigationBarSeparator"
+            (fun newValueOpt node ->
+                let page = node.Target :?> NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
 [<AutoOpen>]
 module NavigationPageBuilders =
@@ -203,3 +217,11 @@ type NavigationPageAttachedModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, INavigationPage>, value: ViewRef<NavigationPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type NavigationPagePlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that hides the navigation bar separator.</summary>
+    /// <param name="value">true to hide the separator. Otherwise, false.</param>
+    [<Extension>]
+    static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.HideNavigationBarSeparator.WithValue(value))

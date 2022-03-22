@@ -123,7 +123,6 @@
     <Compile Include="Views\Shapes\Polygon.fs" />
     <Compile Include="Views\Shapes\Polyline.fs" />
     <Compile Include="Views\Application.fs" />
-    <Compile Include="Views\Platforms.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
