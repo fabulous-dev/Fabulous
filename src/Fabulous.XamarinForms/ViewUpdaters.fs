@@ -90,10 +90,10 @@ module ViewUpdaters =
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
                 if index >= pagesLength then
-                    let page =
-                        Helpers.createViewForWidget node widget :?> Page
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node widget
 
-                    navigationPage.PushAsync(page) |> ignore
+                    navigationPage.PushAsync(page :?> Page) |> ignore
                     pagesLength <- pagesLength + 1
                 else
                     let temp = System.Collections.Generic.Stack<Page>()
@@ -102,10 +102,10 @@ module ViewUpdaters =
                         temp.Push(pages.[i])
                         navigationPage.PopAsync() |> ignore
 
-                    let page =
-                        Helpers.createViewForWidget node widget :?> Page
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node widget
 
-                    navigationPage.PushAsync(page, false) |> ignore
+                    navigationPage.PushAsync(page :?> Page, false) |> ignore
 
                     while temp.Count > 0 do
                         navigationPage.PushAsync(temp.Pop(), false)
@@ -120,14 +120,14 @@ module ViewUpdaters =
                 childNode.ApplyDiff(&diff)
 
 
-            | WidgetCollectionItemChange.Replace (index, widget) ->
+            | WidgetCollectionItemChange.Replace (index, _, newWidget) ->
                 if index = pagesLength - 1 then
                     navigationPage.PopAsync() |> ignore
 
-                    let page =
-                        Helpers.createViewForWidget node widget :?> Page
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node newWidget
 
-                    navigationPage.PushAsync(page) |> ignore
+                    navigationPage.PushAsync(page :?> Page) |> ignore
                 else
                     let temp = System.Collections.Generic.Stack<Page>()
 
@@ -135,16 +135,16 @@ module ViewUpdaters =
                         temp.Push(pages.[i])
                         navigationPage.PopAsync() |> ignore
 
-                    let page =
-                        Helpers.createViewForWidget node widget :?> Page
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node newWidget
 
-                    navigationPage.PushAsync(page, false) |> ignore
+                    navigationPage.PushAsync(page :?> Page, false) |> ignore
 
                     while temp.Count > 1 do
                         navigationPage.PushAsync(temp.Pop(), false)
                         |> ignore
 
-            | WidgetCollectionItemChange.Remove index ->
+            | WidgetCollectionItemChange.Remove (index, _) ->
                 if index > pagesLength - 1 then
                     () // Do nothing, page has already been popped
                 elif index = pagesLength - 1 then
@@ -171,7 +171,7 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome widgets ->
             for widget in ArraySlice.toSpan widgets do
-                let page =
-                    Helpers.createViewForWidget node widget :?> Page
+                let struct (_, page) =
+                    Helpers.createViewForWidget node widget
 
-                navigationPage.PushAsync(page) |> ignore
+                navigationPage.PushAsync(page :?> Page) |> ignore

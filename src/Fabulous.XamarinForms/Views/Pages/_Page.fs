@@ -29,6 +29,7 @@ module Page =
     let ToolbarItems =
         Attributes.defineWidgetCollection<ToolbarItem>
             "Page_ToolbarItems"
+            ViewNode.get
             (fun target -> (target :?> Page).ToolbarItems)
 
     let Appearing =

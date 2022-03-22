@@ -14,7 +14,10 @@ module SwipeItems =
     let WidgetKey = Widgets.register<SwipeItems> ()
 
     let SwipeItems =
-        Attributes.defineWidgetCollection "SwipeItems_SwipeItems" (fun target -> (target :?> SwipeItems) :> IList<_>)
+        Attributes.defineWidgetCollection
+            "SwipeItems_SwipeItems"
+            ViewNode.get
+            (fun target -> (target :?> SwipeItems) :> IList<_>)
 
     let SwipeMode =
         Attributes.defineBindable<SwipeMode> Xamarin.Forms.SwipeItems.ModeProperty

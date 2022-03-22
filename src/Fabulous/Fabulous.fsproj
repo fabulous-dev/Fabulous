@@ -22,6 +22,7 @@
         <Compile Include="State.fs" />
         <Compile Include="Cmd.fs" />
         <Compile Include="Runners.fs" />
+        <Compile Include="Lifecycle.fs" />
         <Compile Include="Attributes.fs" />
         <Compile Include="Memo.fs" />
         <Compile Include="MapMsg.fs" />

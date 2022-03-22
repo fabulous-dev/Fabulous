@@ -8,11 +8,7 @@ module Helpers =
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
-
-        let struct (_node, view) =
-            widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
-
-        view
+        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
     let noCompare _ _ = ScalarAttributeComparison.Different
@@ -91,28 +87,41 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let view =
-                    Helpers.createViewForWidget node widget |> unbox
+                let struct (_, view) =
+                    Helpers.createViewForWidget node widget
 
-                set node.Target view
+                set node.Target (unbox view)
 
         defineWidgetWithConverter name applyDiff updateNode
 
     /// Define an attribute storing a collection of Widget
-    let defineWidgetCollection<'itemType> name (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
+    let defineWidgetCollection<'itemType> name (getViewNode: obj -> IViewNode) (getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
+        let triggerLifecycleEvent (definition: ScalarAttributeDefinition<obj, obj, obj>) (widget: Widget) (node: IViewNode) =
+            match AttributeHelpers.tryFindScalarAttribute definition widget with
+            | ValueNone -> ()
+            | ValueSome msg -> Dispatch.dispatchMsgOnViewNode node msg
+        
         let applyDiff _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
 
             for diff in diffs do
                 match diff with
-                | WidgetCollectionItemChange.Remove index -> targetColl.RemoveAt(index)
+                | WidgetCollectionItemChange.Remove (index, widget) ->
+                    let itemNode = getViewNode targetColl.[index]
+                    triggerLifecycleEvent Lifecycle.WillUnmountAttribute widget itemNode
+                    targetColl.RemoveAt(index)
+                    triggerLifecycleEvent Lifecycle.DidUnmountAttribute widget itemNode
+                    
                 | _ -> ()
 
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let view = Helpers.createViewForWidget node widget
+                    let struct (itemNode, view) = Helpers.createViewForWidget node widget
+                    
+                    triggerLifecycleEvent Lifecycle.WillMountAttribute widget itemNode
                     targetColl.Insert(index, unbox view)
+                    triggerLifecycleEvent Lifecycle.DidMountAttribute widget itemNode
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
                     let childNode =
@@ -120,9 +129,17 @@ module Attributes =
 
                     childNode.ApplyDiff(&widgetDiff)
 
-                | WidgetCollectionItemChange.Replace (index, widget) ->
-                    let view = Helpers.createViewForWidget node widget
+                | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
+                    let prevItemNode = getViewNode targetColl.[index]
+                    let struct (nextItemNode, view) = Helpers.createViewForWidget node newWidget
+                    
+                    triggerLifecycleEvent Lifecycle.WillUnmountAttribute oldWidget prevItemNode
+                    triggerLifecycleEvent Lifecycle.WillMountAttribute newWidget nextItemNode
+                    
                     targetColl.[index] <- unbox view
+                    
+                    triggerLifecycleEvent Lifecycle.DidUnmountAttribute oldWidget prevItemNode
+                    triggerLifecycleEvent Lifecycle.DidMountAttribute newWidget nextItemNode
 
                 | _ -> ()
 
@@ -134,33 +151,13 @@ module Attributes =
             | ValueNone -> ()
             | ValueSome widgets ->
                 for widget in ArraySlice.toSpan widgets do
-                    let view = Helpers.createViewForWidget node widget
+                    let struct (_, view) = Helpers.createViewForWidget node widget
                     targetColl.Add(unbox view)
 
         defineWidgetCollectionWithConverter name applyDiff updateNode
 
     let inline define<'T when 'T: equality> name updateTarget =
         defineScalarWithConverter<'T, 'T, 'T> name id id ScalarAttributeComparers.equalityCompare updateTarget
-
-    let dispatchMsgOnViewNode (node: IViewNode) msg =
-        let mutable parentOpt = node.Parent
-
-        let mutable mapMsg =
-            match node.MapMsg with
-            | ValueNone -> id
-            | ValueSome fn -> fn
-
-        while parentOpt.IsSome do
-            let parent = parentOpt.Value
-            parentOpt <- parent.Parent
-
-            mapMsg <-
-                match parent.MapMsg with
-                | ValueNone -> mapMsg
-                | ValueSome fn -> mapMsg >> fn
-
-        let newMsg = mapMsg msg
-        node.TreeContext.Dispatch(newMsg)
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
         let key = AttributeDefinitionStore.getNextKey ()
@@ -184,7 +181,7 @@ module Attributes =
 
                       | ValueSome msg ->
                           let handler =
-                              EventHandler(fun _ _ -> dispatchMsgOnViewNode node msg)
+                              EventHandler(fun _ _ -> Dispatch.dispatchMsgOnViewNode node msg)
 
                           event.AddHandler handler
                           node.SetHandler(key, ValueSome handler) }
@@ -217,7 +214,7 @@ module Attributes =
                                   (fun sender _ ->
                                       printfn $"Handler for {name} triggered"
                                       let r = fn sender
-                                      dispatchMsgOnViewNode node r)
+                                      Dispatch.dispatchMsgOnViewNode node r)
 
                           node.SetHandler(key, ValueSome handler)
                           event.AddHandler handler
@@ -255,7 +252,7 @@ module Attributes =
                                   (fun _ args ->
                                       printfn $"Handler for {name} triggered"
                                       let r = fn args
-                                      dispatchMsgOnViewNode node r)
+                                      Dispatch.dispatchMsgOnViewNode node r)
 
                           node.SetHandler(key, ValueSome handler)
                           event.AddHandler handler

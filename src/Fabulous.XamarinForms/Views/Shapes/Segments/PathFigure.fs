@@ -15,6 +15,7 @@ module PathFigure =
     let Segments =
         Attributes.defineWidgetCollection
             "PathGeometry_Segments"
+            ViewNode.get
             (fun target -> (target :?> PathFigure).Segments :> IList<_>)
 
     let StartPoint =

@@ -106,3 +106,12 @@ module AttributeDefinitionStore =
         let key = _nextKey
         _nextKey <- _nextKey + 1
         key
+        
+module AttributeHelpers =
+      let tryFindScalarAttribute (definition: ScalarAttributeDefinition<'inputType, 'modelType, 'valueType>) (widget: Widget) =
+            match widget.ScalarAttributes with
+            | ValueNone -> ValueNone
+            | ValueSome attrs ->
+                  match attrs |> Array.tryFind (fun attr -> attr.Key = definition.Key) with
+                  | None -> ValueNone
+                  | Some attr -> ValueSome (unbox<'modelType> attr.Value)

@@ -42,9 +42,9 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
 
 and [<Struct; IsByRefLike; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
-    | Replace of widgetReplaced: struct (int * Widget)
+    | Replace of widgetReplaced: struct (int * Widget * Widget)
     | Update of widgetUpdated: struct (int * WidgetDiff)
-    | Remove of removed: int
+    | Remove of removed: struct (int * Widget)
 
 and [<Struct; NoComparison; NoEquality>] WidgetDiff =
     { ScalarChanges: ScalarChanges
@@ -491,7 +491,8 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         if prev.Length > next.Length
            && tailIndex < prev.Length - next.Length then
 
-            e.current <- WidgetCollectionItemChange.Remove(prev.Length - tailIndex - 1)
+            let index = prev.Length - tailIndex - 1
+            e.current <- WidgetCollectionItemChange.Remove(index, prev.[index])
             e.tailIndex <- tailIndex + 1
 
             true
@@ -515,7 +516,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
 
                 e.current <- WidgetCollectionItemChange.Update(i, diff)
 
-            | ValueSome _ -> e.current <- WidgetCollectionItemChange.Replace(i, currItem)
+            | ValueSome prevItem -> e.current <- WidgetCollectionItemChange.Replace(i, prevItem, currItem)
 
             e.index <- i + 1
             true
