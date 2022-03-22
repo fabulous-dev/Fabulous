@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type ITabbedPage =
     inherit IMultiPageOfPage
@@ -22,24 +23,18 @@ module TabbedPage =
     let UnselectedTabColor =
         Attributes.defineAppThemeBindable<Color> TabbedPage.UnselectedTabColorProperty
 
-    open Xamarin.Forms.PlatformConfiguration
-    open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
-
     let ToolbarPlacement =
-        Attributes.define<ToolbarPlacement>
+        Attributes.define<AndroidSpecific.ToolbarPlacement>
             "TabbedPage_ToolbarPlacement"
             (fun newValueOpt node ->
-                let tabbedPage = node.Target :?> Xamarin.Forms.TabbedPage
+                let tabbedPage = node.Target :?> TabbedPage
 
                 let value =
                     match newValueOpt with
-                    | ValueNone -> ToolbarPlacement.Default
+                    | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
                     | ValueSome v -> v
 
-                tabbedPage
-                    .On<Android>()
-                    .SetToolbarPlacement(value)
-                |> ignore)
+                AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
 
 [<AutoOpen>]
 module TabbedPageBuilders =

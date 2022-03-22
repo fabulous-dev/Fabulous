@@ -5,6 +5,7 @@ open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type IPage =
     inherit IVisualElement
@@ -39,20 +40,18 @@ module Page =
     let LayoutChanged =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
-    open Xamarin.Forms.PlatformConfiguration
-    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
     let UseSafeArea =
         Attributes.define<bool>
             "Page_UseSafeArea"
             (fun newValueOpt node ->
-                let page = node.Target :?> Xamarin.Forms.Page
+                let page = node.Target :?> Page
 
                 let value =
                     match newValueOpt with
                     | ValueNone -> false
                     | ValueSome v -> v
 
-                page.On<iOS>().SetUseSafeArea(value) |> ignore)
+                iOSSpecific.Page.SetUseSafeArea(page, value))
 
 [<Extension>]
 type PageModifiers =

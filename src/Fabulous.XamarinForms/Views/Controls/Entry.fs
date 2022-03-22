@@ -4,6 +4,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type IEntry =
     inherit IInputView
@@ -47,21 +48,18 @@ module Entry =
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
-    open Xamarin.Forms.PlatformConfiguration
-    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
-
     let CursorColor =
         Attributes.define<Color>
             "Entry_CursorColor"
             (fun newValueOpt node ->
-                let entry = node.Target :?> Xamarin.Forms.Entry
+                let entry = node.Target :?> Entry
 
                 let value =
                     match newValueOpt with
-                    | ValueNone -> Xamarin.Forms.Color.Default
+                    | ValueNone -> Color.Default
                     | ValueSome x -> x
 
-                entry.On<iOS>().SetCursorColor(value) |> ignore)
+                iOSSpecific.Entry.SetCursorColor(entry, value))
 
 [<AutoOpen>]
 module EntryBuilders =

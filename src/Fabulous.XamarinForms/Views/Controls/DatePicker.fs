@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type IDatePicker =
     inherit IView
@@ -45,22 +46,18 @@ module DatePicker =
             "DatePicker_DateSelected"
             (fun target -> (target :?> DatePicker).DateSelected)
 
-    open Xamarin.Forms.PlatformConfiguration
-    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
-
     let UpdateMode =
-        Attributes.define<UpdateMode>
+        Attributes.define<iOSSpecific.UpdateMode>
             "DatePicker_UpdateMode"
             (fun newValueOpt node ->
-                let datePicker = node.Target :?> Xamarin.Forms.DatePicker
+                let datePicker = node.Target :?> DatePicker
 
                 let value =
                     match newValueOpt with
-                    | ValueNone -> UpdateMode.Immediately
+                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
                     | ValueSome v -> v
 
-                datePicker.On<iOS>().SetUpdateMode(value)
-                |> ignore)
+                iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
 
 [<AutoOpen>]
 module DatePickerBuilders =
@@ -133,12 +130,10 @@ type DatePickerModifiers =
     static member inline reference(this: WidgetBuilder<'msg, IDatePicker>, value: ViewRef<DatePicker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-open Xamarin.Forms.PlatformConfiguration.iOSSpecific
-
 [<Extension>]
 type DatePickerPlatformModifiers =
     /// <summary>iOS platform specific. Sets a value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
     /// <param name="mode">The new property value to assign.</param>
     [<Extension>]
-    static member inline updateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: UpdateMode) =
+    static member inline updateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: iOSSpecific.UpdateMode) =
         this.AddScalar(DatePicker.UpdateMode.WithValue(mode))
