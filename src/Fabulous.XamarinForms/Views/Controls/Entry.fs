@@ -47,6 +47,22 @@ module Entry =
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
+    open Xamarin.Forms.PlatformConfiguration
+    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+
+    let CursorColor =
+        Attributes.define<Color>
+            "Entry_CursorColor"
+            (fun newValueOpt node ->
+                let entry = node.Target :?> Xamarin.Forms.Entry
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> Xamarin.Forms.Color.Default
+                    | ValueSome x -> x
+
+                entry.On<iOS>().SetCursorColor(value) |> ignore)
+
 [<AutoOpen>]
 module EntryBuilders =
     type Fabulous.XamarinForms.View with
@@ -129,3 +145,11 @@ type EntryModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IEntry>, value: ViewRef<Entry>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+[<Extension>]
+type EntryPlatformModifiers =
+    /// <summary>iOS platform specific. Sets the entry color of the cursor</summary>
+    /// <param name="value">The new cursor color.</param>
+    [<Extension>]
+    static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: Color) =
+        this.AddScalar(Entry.CursorColor.WithValue(value))

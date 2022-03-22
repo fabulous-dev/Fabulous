@@ -45,6 +45,23 @@ module DatePicker =
             "DatePicker_DateSelected"
             (fun target -> (target :?> DatePicker).DateSelected)
 
+    open Xamarin.Forms.PlatformConfiguration
+    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+
+    let UpdateMode =
+        Attributes.define<UpdateMode>
+            "DatePicker_UpdateMode"
+            (fun newValueOpt node ->
+                let datePicker = node.Target :?> Xamarin.Forms.DatePicker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                datePicker.On<iOS>().SetUpdateMode(value)
+                |> ignore)
+
 [<AutoOpen>]
 module DatePickerBuilders =
     type Fabulous.XamarinForms.View with
@@ -115,3 +132,13 @@ type DatePickerModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IDatePicker>, value: ViewRef<DatePicker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+
+[<Extension>]
+type DatePickerPlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
+    [<Extension>]
+    static member inline updateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: UpdateMode) =
+        this.AddScalar(DatePicker.UpdateMode.WithValue(mode))

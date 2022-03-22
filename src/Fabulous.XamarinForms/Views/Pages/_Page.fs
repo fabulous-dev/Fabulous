@@ -39,6 +39,21 @@ module Page =
     let LayoutChanged =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
+    open Xamarin.Forms.PlatformConfiguration
+    open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+    let UseSafeArea =
+        Attributes.define<bool>
+            "Page_UseSafeArea"
+            (fun newValueOpt node ->
+                let page = node.Target :?> Xamarin.Forms.Page
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                page.On<iOS>().SetUseSafeArea(value) |> ignore)
+
 [<Extension>]
 type PageModifiers =
     /// <summary>The Page's title.</summary>
@@ -195,3 +210,11 @@ type PageModifiers =
             bottom: float
         ) =
         PageModifiers.padding (this, Thickness(left, top, right, bottom))
+
+[<Extension>]
+type PagePlatformModifiers =
+
+    /// <summary>iOS platform specific. Sets a value that controls whether padding values are overridden with the safe area insets.</summary>
+    [<Extension>]
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
+        this.AddScalar(Page.UseSafeArea.WithValue(false))
