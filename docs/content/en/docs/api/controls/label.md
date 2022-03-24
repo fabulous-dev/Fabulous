@@ -1,22 +1,35 @@
-
-
-## Label
+---
+title: "Label"
+description: ""
+lead: ""
+date: 2022-03-24T00:00:00+00:00
+lastmod: 2022-03-24T00:00:00+00:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "controls"
+weight: 501
+toc: true
+---
 
 Constructor
 
-```f#
+```fs
 Label("Hello World")
 ```
 
 Modifiers
 
 - characterSpacing
-```f#
+
+```fs
 Label("Hello word")
     .characterSpacing(1.)
 ```
 - font
-```f#
+
+```fs
 Label("Hello word")
     .font(size = 12.)
     
@@ -31,28 +44,33 @@ Label("Hello word")
 ```
 
 - horizontalTextAlignment
-```f#
+
+```fs
 Label("Hello word")
     .horizontalTextAlignment(TextAlignment.Center)
 ```
 - lineBreakMode
-```f#
+
+```fs
 Label("Hello word")
     .lineBreakMode(LineBreakMode.WordWrap)
 ```
 - lineHeight
-```f#
+
+```fs
 Label("Hello word")
     .lineHeight(1.5)
 ```
 - maxLines
-```f#
+
+```fs
 Label("Hello word")
     .maxLines(1)
 ```
 
 - padding
-```f#
+
+```fs
 Label("Hello word")
     .padding(Thickness(10.))
     
@@ -64,7 +82,8 @@ Label("Hello word")
     
 ```
 - textColor
-```f#
+
+```fs
 Label("Hello word")
     .textColor(Color.Red)
     
@@ -72,37 +91,44 @@ Label("Hello word")
     .textColor(light = Color.Red, dark = Color.Blue)
 ```
 - textDecoration
-```f#
+
+```fs
 Label("Hello word")
     .textDecoration(TextDecorations.Underline)
 ```
 - textTransform
-```f#
+
+```fs
 Label("Hello word")
     .textTransform(TextTransform.Lowercase)
 ```
 - textType
-```f#
+
+```fs
 Label("Hello word")
     .textType(TextType.Text)
 ```
 - verticalTextAlignment
-```f#
+
+```fs
 Label("Hello word")
     .verticalTextAlignment(TextAlignment.Center)
 ```
 - centerTextHorizontal
-```f#
+
+```fs
 Label("Hello word")
     .centerTextHorizontal()
 ```
 - centerTextVertical
-```f#
+
+```fs
 Label("Hello word")
     .centerTextVertical()
 ```
 - reference
-```f#
+
+```fs
 let labelRef = ViewRef<Label>()
 Label("Hello word")
     .reference(labelRef)
