@@ -4,25 +4,25 @@ Xamarin.Forms documentation: Element Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 Important notes # This control can&amp;rsquo;t be instantiated on its own. Its properties and events are inherited by its descendants.
 Constructors # None
-Properties # automationId(value: string) Sets the automation identifier of the widget Events # onMounted(value: &amp;lsquo;msg) Listens for the widget being mounted onUnmounted(value: &amp;lsquo;msg) Listens for the widget being unmounted</description></item><item><title>Label</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/label/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/label/</guid><description>Inheritance: [Element]({{ ref &amp;ldquo;element.md&amp;rdquo; }}) -&amp;gt; [NavigableElement]({{ ref &amp;ldquo;navigableelement.md&amp;rdquo; }}) -&amp;gt; [VisualElement]({{ ref &amp;ldquo;visualelement.md&amp;rdquo; }}) -&amp;gt; [View]({{ ref &amp;ldquo;view.md&amp;rdquo; }})
+Properties # automationId(value: string) Sets the automation identifier of the widget Events # onMounted(value: &amp;lsquo;msg) Listens for the widget being mounted onUnmounted(value: &amp;lsquo;msg) Listens for the widget being unmounted</description></item><item><title>Label</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/label/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/label/</guid><description>Inheritance: Element -&amp;gt; NavigableElement -&amp;gt; VisualElement -&amp;gt; View
 Xamarin.Forms documentation: Label Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 Constructors # Constructors Description Label(text: string) Define a Label widget Properties # Properties Description characterSpacing(value: float) Sets the spacing between each character of the text font(?</description></item><item><title>NavigableElement</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</guid><description>Marker: INavigableElement
-Inheritance: [Element]({{ ref &amp;ldquo;element.md&amp;rdquo; }})
+Inheritance: Element
 Xamarin.Forms documentation: NavigableElement Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 Important notes # This control can&amp;rsquo;t be instantiated on its own. Its properties and events are inherited by its descendants.
 Constructors # TBD
 Properties # TBD
 Events # TBD</description></item><item><title>View</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/view/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/view/</guid><description>Marker: IVisualElement
-Inheritance: [Element]({{ ref &amp;ldquo;element.md&amp;rdquo; }}) -&amp;gt; [NavigableElement]({{ ref &amp;ldquo;navigableelement.md&amp;rdquo; }}) -&amp;gt; [VisualElement]({{ ref &amp;ldquo;visualelement.md&amp;rdquo; }})
+Inheritance: Element -&amp;gt; NavigableElement -&amp;gt; VisualElement
 Xamarin.Forms documentation: View Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 Important notes # This control can&amp;rsquo;t be instantiated on its own. Its properties and events are inherited by its descendants.
 Constructors # TBD
 Properties # TBD
 Events # TBD</description></item><item><title>VisualElement</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/visualelement/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/visualelement/</guid><description>Marker: IVisualElement
-Inheritance: [Element]({{ ref &amp;ldquo;element.md&amp;rdquo; }}) -&amp;gt; [NavigableElement]({{ ref &amp;ldquo;navigableelement.md&amp;rdquo; }})
+Inheritance: Element -&amp;gt; NavigableElement
 Xamarin.Forms documentation: VisualElement Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 Important notes # This control can&amp;rsquo;t be instantiated on its own. Its properties and events are inherited by its descendants.
