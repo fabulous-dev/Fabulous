@@ -28,13 +28,13 @@ None
 
 ## Properties
 
-| | |
+| Properties | Description |
 |--|--|
 | automationId(value: string) | Sets the automation identifier of the widget |
 
 ## Events
 
-| | |
+| Events | Description |
 |--|--|
 | onMounted(value: 'msg) | Listens for the widget being mounted |
 | onUnmounted(value: 'msg) | Listens for the widget being unmounted |
