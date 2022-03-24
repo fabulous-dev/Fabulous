@@ -13,9 +13,7 @@ toc: true
 ---
 
 **Inheritance:** None  
-**Xamarin.Forms documentation:** [Element Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.element)
-
-For details on how the control actually works, please refer to the Xamarin.Forms documentation.
+**Xamarin.Forms documentation:** [Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.element)
 
 ## Constructors
 
