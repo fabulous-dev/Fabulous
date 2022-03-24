@@ -21,7 +21,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| Label(text: string) | Define a Label widget with a text |
+| Label(text: string) | Defines a Label widget with a text |
 
 ## Properties
 
