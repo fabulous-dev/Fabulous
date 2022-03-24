@@ -15,7 +15,7 @@ toc: true
 
 **Marker:** ILabel  
 **Inheritance:** [Element](element.md) -> [NavigableElement](navigableelement.md) -> [VisualElement](visualelement.md) -> [View](view.md)  
-**Xamarin.Forms documentation:** [Label Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.label?view=xamarin-forms#constructors)
+**Xamarin.Forms documentation:** [Label Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.label)
 
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 
@@ -54,7 +54,7 @@ For details on how the control actually works, please refer to the Xamarin.Forms
 
 ## Events
 
-No event available
+None
 
 ## Usages
 
