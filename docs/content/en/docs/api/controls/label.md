@@ -13,123 +13,70 @@ weight: 501
 toc: true
 ---
 
-Constructor
+**Marker:** ILabel  
+**Inheritance:** [Element](element.md) -> [NavigableElement](navigableelement.md) -> [VisualElement](visualelement.md) -> [View](view.md)  
+**Xamarin.Forms documentation:** [Label Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.label?view=xamarin-forms#constructors)
+
+For details on how the control actually works, please refer to the Xamarin.Forms documentation.
+
+## Constructors
+
+| | |
+|--|--|
+| Label(text: string) | Define a Label widget |
+
+## Properties
+
+| | |
+|--|--|
+| characterSpacing(value: float) | Sets the spacing between each character of the text |
+| font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
+| horizontalTextAlignment(value: textAlignment) | Sets the horizontal alignment of the text |
+| lineBreakMode(value: LineBreakMode) | Sets the line break mode |
+| lineHeight(value: float) | Sets the multiplier to apply to the default line height when displaying text |
+| maxLines(value: int) | Sets the maximum number of lines allowed |
+| padding(value: Thickness) | Sets the amount of padding around the text |
+| padding(value: float) | Sets a uniform amount of padding around the text |
+| padding(left: float, top: float, right: float, bottom: float) | Sets the amount of padding around the text |
+| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textDecoration(value: TextDecorations) | Sets the text decorations (underline, strike, etc) to apply on the text |
+| textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
+| textType(value: TextType) | Sets the text type (plain text, HTML) |
+| verticalTextAlignment(value: TextAlignment) | Sets the vertical alignment of the text |
+| reference(value: ViewRef&lt;Label&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Label` instance associated to this widget |
+
+## Shorthand properties
+
+| | |
+|--|--|
+| centerTextHorizontal() | Center the text horizontally inside the Label. Same than `horizontalTextAlignment(TextAlignment.Center)` |
+| centerTextVertical() | Center the text vertically inside the Label. Same than `verticalTextAlignment(TextAlignment.Center)`  |
+
+## Events
+
+No event available
+
+## Usages
 
 ```fs
 Label("Hello World")
-```
-
-Modifiers
-
-- characterSpacing
-
-```fs
-Label("Hello word")
     .characterSpacing(1.)
-```
-- font
-
-```fs
-Label("Hello word")
-    .font(size = 12.)
-    
-Label("Hello word")
-    .font(namedSize = NamedSize.Large)
-    
-Label("Hello word")
-    .font(attributes = FontAttributes.Bold)
-
-Label("Hello word")
-    .font(fontFamily = "Arial")
-```
-
-- horizontalTextAlignment
-
-```fs
-Label("Hello word")
+    .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
     .horizontalTextAlignment(TextAlignment.Center)
-```
-- lineBreakMode
-
-```fs
-Label("Hello word")
     .lineBreakMode(LineBreakMode.WordWrap)
-```
-- lineHeight
-
-```fs
-Label("Hello word")
     .lineHeight(1.5)
-```
-- maxLines
-
-```fs
-Label("Hello word")
     .maxLines(1)
-```
-
-- padding
-
-```fs
-Label("Hello word")
-    .padding(Thickness(10.))
-    
-Label("Hello word")
     .padding(10.)
-    
-Label("Hello word")
-    .padding(10., 10., 10., 10.)
-    
-```
-- textColor
-
-```fs
-Label("Hello word")
-    .textColor(Color.Red)
-    
-Label("Hello word")
     .textColor(light = Color.Red, dark = Color.Blue)
-```
-- textDecoration
-
-```fs
-Label("Hello word")
     .textDecoration(TextDecorations.Underline)
-```
-- textTransform
-
-```fs
-Label("Hello word")
     .textTransform(TextTransform.Lowercase)
-```
-- textType
-
-```fs
-Label("Hello word")
     .textType(TextType.Text)
-```
-- verticalTextAlignment
-
-```fs
-Label("Hello word")
     .verticalTextAlignment(TextAlignment.Center)
-```
-- centerTextHorizontal
-
-```fs
-Label("Hello word")
-    .centerTextHorizontal()
-```
-- centerTextVertical
-
-```fs
-Label("Hello word")
-    .centerTextVertical()
-```
-- reference
-
-```fs
-let labelRef = ViewRef<Label>()
-Label("Hello word")
     .reference(labelRef)
+```
+
+```fs
+Label("Hello World")
+    .centerTextHorizontal()
+    .centerTextVertical()
 ```
