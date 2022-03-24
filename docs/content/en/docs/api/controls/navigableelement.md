@@ -13,7 +13,7 @@ toc: true
 ---
 
 **Inheritance:** [Element]({{< ref "element.md" >}})  
-**Xamarin.Forms documentation:** [Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.navigableelement)
+**Xamarin.Forms documentation:** NavigableElement [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.navigableelement)
 
 ## Constructors
 

@@ -13,7 +13,7 @@ toc: true
 ---
 
 **Inheritance:** None  
-**Xamarin.Forms documentation:** [Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.element)
+**Xamarin.Forms documentation:** Element [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.element)
 
 ## Constructors
 
