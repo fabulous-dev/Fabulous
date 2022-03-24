@@ -12,7 +12,6 @@ menu:
 toc: true
 ---
 
-**Marker:** INavigableElement  
 **Inheritance:** [Element]({{< ref "element.md" >}})  
 **Xamarin.Forms documentation:** [NavigableElement Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.navigableelement)
 

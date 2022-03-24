@@ -12,7 +12,6 @@ menu:
 toc: true
 ---
 
-**Marker:** IVisualElement  
 **Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}})  
 **Xamarin.Forms documentation:** [VisualElement Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.visualelement)
 

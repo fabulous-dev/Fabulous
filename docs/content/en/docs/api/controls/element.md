@@ -12,7 +12,6 @@ menu:
 toc: true
 ---
 
-**Marker:** IElement  
 **Inheritance:** None  
 **Xamarin.Forms documentation:** [Element Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.element)
 
