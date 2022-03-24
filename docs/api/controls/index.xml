@@ -8,7 +8,7 @@ Properties # automationId(value: string) Sets the automation identifier of the w
 Inheritance: Element -&amp;gt; NavigableElement -&amp;gt; VisualElement -&amp;gt; View
 Xamarin.Forms documentation: Label Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
-Constructors # Label(text: string) Define a Label widget Properties # characterSpacing(value: float) Sets the spacing between each character of the text font(?</description></item><item><title>NavigableElement</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</guid><description>Marker: INavigableElement
+Constructors # Constructors Description Label(text: string) Define a Label widget Properties # Properties Description characterSpacing(value: float) Sets the spacing between each character of the text font(?</description></item><item><title>NavigableElement</title><link>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</link><pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><guid>https://timothelariviere.com/Fabulous-new/docs/api/controls/navigableelement/</guid><description>Marker: INavigableElement
 Inheritance: Element
 Xamarin.Forms documentation: NavigableElement Class
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
