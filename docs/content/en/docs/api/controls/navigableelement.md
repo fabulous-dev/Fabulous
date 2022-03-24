@@ -9,7 +9,6 @@ images: []
 menu:
   docs:
     parent: "controls"
-weight: 501
 toc: true
 ---
 

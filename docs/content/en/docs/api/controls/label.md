@@ -9,7 +9,6 @@ images: []
 menu:
   docs:
     parent: "controls"
-weight: 501
 toc: true
 ---
 
@@ -21,13 +20,13 @@ For details on how the control actually works, please refer to the Xamarin.Forms
 
 ## Constructors
 
-| | |
+| Constructors | Description |
 |--|--|
 | Label(text: string) | Define a Label widget |
 
 ## Properties
 
-| | |
+| Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the text |
 | font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
@@ -47,10 +46,10 @@ For details on how the control actually works, please refer to the Xamarin.Forms
 
 ## Shorthand properties
 
-| | |
+| Properties | Description |
 |--|--|
-| centerTextHorizontal() | Center the text horizontally inside the Label. Same than `horizontalTextAlignment(TextAlignment.Center)` |
-| centerTextVertical() | Center the text vertically inside the Label. Same than `verticalTextAlignment(TextAlignment.Center)`  |
+| centerTextHorizontal() | Center the text horizontally inside the Label. Same as `horizontalTextAlignment(TextAlignment.Center)` |
+| centerTextVertical() | Center the text vertically inside the Label. Same as `verticalTextAlignment(TextAlignment.Center)`  |
 
 ## Events
 
@@ -72,11 +71,22 @@ Label("Hello World")
     .textTransform(TextTransform.Lowercase)
     .textType(TextType.Text)
     .verticalTextAlignment(TextAlignment.Center)
-    .reference(labelRef)
 ```
+
+### Use shorthand properties
 
 ```fs
 Label("Hello World")
+    .size(500., 500.)
     .centerTextHorizontal()
     .centerTextVertical()
+```
+
+### Get access to the underlying Xamarin.Forms.Label
+
+```fs
+let labelRef = ViewRef<Label>()
+
+Label("Hello World")
+    .reference(labelRef)
 ```
