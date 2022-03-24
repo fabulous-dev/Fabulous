@@ -1,13 +1,20 @@
 namespace Fabulous
 
+open Fabulous
+
 module MapMsg =
-    let MapMsg =
-        Attributes.defineScalarWithConverter<obj -> obj, _, _>
-            "Fabulous_MapMsg"
-            id
-            id
-            ScalarAttributeComparers.noCompare
-            (fun value node ->
-                match value with
-                | ValueNone -> node.MapMsg <- ValueNone
-                | ValueSome fn -> node.MapMsg <- ValueSome fn)
+    /// Store a map function to convert a child message to a parent message.
+    /// Help compose independent views using different MVU cycle and messages
+    let MapMsg : ScalarAttributeDefinition<obj -> obj, obj -> obj, obj -> obj> =
+        let key = AttributeDefinitionStore.getNextKey ()
+
+        let definition =
+            { Key = key
+              Name = "Fabulous_MapMsg"
+              Convert = id
+              ConvertValue = id
+              Compare = fun _ _ -> ScalarAttributeComparison.Identical
+              UpdateNode = fun _newValueOpt _node -> () }
+
+        AttributeDefinitionStore.set key definition
+        definition

@@ -31,7 +31,7 @@ module Widgets =
                       let weakReference = WeakReference(view)
 
                       let node =
-                          ViewNode(parentNode, treeContext, weakReference)
+                          ViewNode(widget, parentNode, treeContext, weakReference)
 
                       ViewNode.set node view
 

@@ -4,7 +4,7 @@ open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
 [<Sealed>]
-type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
+type ViewNode(widget: Widget, parentNode: IViewNode voption, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
 
     // TODO consider combine handlers mapMsg and property bag
     // also we can probably use just Dictionary instead of Map because
@@ -76,11 +76,11 @@ type ViewNode(parentNode: IViewNode voption, treeContext: ViewTreeContext, targe
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 
     interface IViewNode with
+        member val Widget = widget with get, set
         member _.Target = targetRef.Target
         member _.TreeContext = treeContext
         member _.Parent = parentNode
         member val Reference: ViewRef voption = ValueNone with get, set
-        member val MapMsg: (obj -> obj) voption = ValueNone with get, set
         member val MemoizedWidget: Widget option = None with get, set
 
         member _.TryGetHandler<'T>(key: AttributeKey) =

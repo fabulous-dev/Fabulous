@@ -1,5 +1,7 @@
 namespace Fabulous
 
+open Fabulous
+
 type ViewRef(onAttached, onDetached) =
     let handle = System.WeakReference<obj>(null)
 
@@ -34,11 +36,12 @@ type ViewTreeContext =
       Dispatch: obj -> unit }
 
 and IViewNode =
+    /// Current widget defining this ViewNode
+    abstract member Widget: Widget with get, set
     abstract member Target: obj
     abstract member Parent: IViewNode voption
     abstract member TreeContext: ViewTreeContext
     abstract member Reference: ViewRef voption with get, set
-    abstract member MapMsg: (obj -> obj) voption with get, set
 
     // note that Widget is struct type, thus we have boxing via option
     // we don't have MemoizedWidget set for 99.9% of the cases

@@ -20,17 +20,9 @@ type ElementModifiers =
         this.AddScalar(Element.AutomationId.WithValue(value))
 
     [<Extension>]
-    static member inline willMount(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
-        this.AddScalar(Lifecycle.WillMountAttribute.WithValue(value))
+    static member inline onMounted(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
+        this.AddScalar(Lifecycle.Mounted.WithValue(value))
 
     [<Extension>]
-    static member inline didMount(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
-        this.AddScalar(Lifecycle.DidMountAttribute.WithValue(value))
-
-    [<Extension>]
-    static member inline willUnmount(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
-        this.AddScalar(Lifecycle.WillUnmountAttribute.WithValue(value))
-
-    [<Extension>]
-    static member inline didUnmount(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
-        this.AddScalar(Lifecycle.DidUnmountAttribute.WithValue(value))
+    static member inline onUnmounted(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
+        this.AddScalar(Lifecycle.Unmounted.WithValue(value))
