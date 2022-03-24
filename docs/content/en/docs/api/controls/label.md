@@ -12,7 +12,7 @@ menu:
 toc: true
 ---
 
-**Inheritance:** [Element]({{ ref "element.md" }}) -> [NavigableElement]({{ ref "navigableelement.md" }}) -> [VisualElement]({{ ref "visualelement.md" }}) -> [View]({{ ref "view.md" }})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}}) -> [View]({{< ref "view.md" >}})  
 **Xamarin.Forms documentation:** [Label Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.label)
 
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.

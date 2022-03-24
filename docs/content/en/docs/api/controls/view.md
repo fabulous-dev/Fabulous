@@ -13,7 +13,7 @@ toc: true
 ---
 
 **Marker:** IVisualElement  
-**Inheritance:** [Element]({{ ref "element.md" }}) -> [NavigableElement]({{ ref "navigableelement.md" }}) -> [VisualElement]({{ ref "visualelement.md" }})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}})  
 **Xamarin.Forms documentation:** [View Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.view)
 
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.

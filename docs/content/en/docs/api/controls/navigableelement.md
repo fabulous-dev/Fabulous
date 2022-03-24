@@ -13,7 +13,7 @@ toc: true
 ---
 
 **Marker:** INavigableElement  
-**Inheritance:** [Element]({{ ref "element.md" }})  
+**Inheritance:** [Element]({{< ref "element.md" >}})  
 **Xamarin.Forms documentation:** [NavigableElement Class](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.navigableelement)
 
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
