@@ -18,13 +18,9 @@ toc: true
 
 For details on how the control actually works, please refer to the Xamarin.Forms documentation.
 
-## Important notes
-
-This control can't be instantiated on its own. Its properties and events are inherited by its descendants.
-
 ## Constructors
 
-TBD
+This control can't be instantiated on its own. Its properties and events are inherited by its descendants.
 
 ## Properties
 
