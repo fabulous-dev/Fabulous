@@ -10,9 +10,7 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
-        <Compile Include="ArraySlice.fs" />
-        <Compile Include="ArrayExtra.fs" />
-        <Compile Include="StackAllocatedCollections.fs" />
+        <Compile Include="Array.fs" />
         <Compile Include="Primitives.fs" />
         <Compile Include="WidgetDiff.fs" />
         <Compile Include="IViewNode.fs" />
