@@ -19,7 +19,7 @@ module Path =
     let DataString =
         Attributes.define<string>
             "Path_DataString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -37,7 +37,7 @@ module Path =
     let RenderTransformString =
         Attributes.define<string>
             "Path_RenderTransformString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

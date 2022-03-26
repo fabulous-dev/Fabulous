@@ -36,15 +36,11 @@ module ViewRefAttributes =
             id
             id
             ScalarAttributeComparers.equalityCompare
-            (fun newValueOpt node ->
-                match node.Reference with
+            (fun oldValueOpt newValueOpt node ->
+                match oldValueOpt with
                 | ValueNone -> ()
-                | ValueSome viewRef ->
-                    viewRef.Unset()
-                    node.Reference <- ValueNone
+                | ValueSome viewRef -> viewRef.Unset()
 
                 match newValueOpt with
                 | ValueNone -> ()
-                | ValueSome viewRef ->
-                    node.Reference <- ValueSome viewRef
-                    viewRef.Set(node.Target))
+                | ValueSome viewRef -> viewRef.Set(node.Target))

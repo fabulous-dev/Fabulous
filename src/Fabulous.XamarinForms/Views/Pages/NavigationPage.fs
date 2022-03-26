@@ -65,7 +65,7 @@ module NavigationPage =
     let HideNavigationBarSeparator =
         Attributes.define<bool>
             "NavigationPage_HideNavigationBarSeparator"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage
 
                 let value =

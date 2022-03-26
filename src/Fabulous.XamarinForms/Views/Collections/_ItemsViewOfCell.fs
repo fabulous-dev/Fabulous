@@ -13,7 +13,7 @@ module ItemsViewOfCell =
             id
             id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let itemsView = node.Target :?> ItemsView<Cell>
 
                 match newValueOpt with

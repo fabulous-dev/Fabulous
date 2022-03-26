@@ -27,7 +27,7 @@ module EnumerationMode =
 type ScalarChange =
     | Added of added: ScalarAttribute
     | Removed of removed: ScalarAttribute
-    | Updated of updated: ScalarAttribute
+    | Updated of old: ScalarAttribute * updated: ScalarAttribute
 
 and [<Struct; RequireQualifiedAccess>] WidgetChange =
     | Added of added: WidgetAttribute
@@ -222,7 +222,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                             // New value completely replaces the old value
                             | ScalarAttributeComparison.Different ->
-                                e.current <- ScalarChange.Updated next.[nextIndex]
+                                e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
                                 res <- ValueSome true
 
                             // move both pointers

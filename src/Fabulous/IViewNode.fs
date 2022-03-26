@@ -7,7 +7,7 @@ type ViewRef(onAttached, onDetached) =
 
     /// Check if the new target is the same than the previous one
     /// This is done to avoid triggering change events when nothing changes
-    member private __.IsSameTarget(target) =
+    member private _.IsSameTarget(target) =
         match handle.TryGetTarget() with
         | true, res when res = target -> true
         | _ -> false
@@ -36,19 +36,35 @@ type ViewTreeContext =
       Dispatch: obj -> unit }
 
 and IViewNode =
-    /// Current widget defining this ViewNode
-    abstract member Widget: Widget with get, set
+    /// The view that is being rendered
     abstract member Target: obj
-    abstract member Parent: IViewNode voption
+    
+    /// The context of the whole view tree
     abstract member TreeContext: ViewTreeContext
-    abstract member Reference: ViewRef voption with get, set
 
     // note that Widget is struct type, thus we have boxing via option
     // we don't have MemoizedWidget set for 99.9% of the cases
     // thus makes sense to have overhead of boxing
     // in order to save space
     abstract member MemoizedWidget: Widget option with get, set
+    
+    /// The parent node
+    abstract member Parent: IViewNode option
+
+    /// Indicates if the node has been disconnected from the tree
+    abstract member IsDisconnected: bool
+
+    /// Convert the node messages to its parent's message type
+    abstract member MapMsg: (obj -> obj) option with get, set
+    
+    /// If set, returns the event handler for a given attribute key
     abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
+    
+    /// Set the event handler for a given attribute key
     abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
 
+    /// Disconnect the node from the tree    
+    abstract member Disconnect : unit -> unit
+
+    /// Apply the diffing result to this node
     abstract member ApplyDiff: WidgetDiff inref -> unit

@@ -13,7 +13,7 @@ module PolyBezierSegment =
     let PointsString =
         Attributes.define<string>
             "PolyBezierSegment_PointsString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -28,7 +28,7 @@ module PolyBezierSegment =
     let PointsList =
         Attributes.define<Point list>
             "PolyBezierSegment_PointsList"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

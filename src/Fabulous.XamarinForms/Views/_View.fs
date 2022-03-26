@@ -52,7 +52,7 @@ module XFView =
     let TranslateTo =
         Attributes.define<TranslateToData>
             "View_TranslateTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -66,7 +66,7 @@ module XFView =
     let ScaleTo =
         Attributes.define<ScaleToData>
             "View_ScaleTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -78,7 +78,7 @@ module XFView =
     let ScaleXTo =
         Attributes.define<ScaleToData>
             "View_ScaleXTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -90,7 +90,7 @@ module XFView =
     let ScaleYTo =
         Attributes.define<ScaleToData>
             "View_ScaleYTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -102,7 +102,7 @@ module XFView =
     let FadeTo =
         Attributes.define<FadeToData>
             "View_FadeTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -114,7 +114,7 @@ module XFView =
     let RotateTo =
         Attributes.define<RotateToData>
             "View_RotateTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -126,7 +126,7 @@ module XFView =
     let RotateXTo =
         Attributes.define<RotateToData>
             "View_RotateXTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with
@@ -140,7 +140,7 @@ module XFView =
     let RotateYTo =
         Attributes.define<RotateToData>
             "View_RotateYTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> View
 
                 match newValueOpt with

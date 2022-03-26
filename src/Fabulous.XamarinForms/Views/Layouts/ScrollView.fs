@@ -41,7 +41,7 @@ module ScrollView =
     let ScrollTo =
         Attributes.define<ScrollToData>
             "ScrollView_ScrollTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> ScrollView
 
                 match newValueOpt with

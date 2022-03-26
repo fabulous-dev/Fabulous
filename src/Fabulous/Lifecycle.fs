@@ -10,7 +10,7 @@ module Lifecycle =
               Convert = id
               ConvertValue = id
               Compare = fun _ _ -> ScalarAttributeComparison.Identical
-              UpdateNode = fun _newValueOpt _node -> () }
+              UpdateNode = fun _oldValueOpt _newValueOpt _node -> () }
 
         AttributeDefinitionStore.set key definition
         definition

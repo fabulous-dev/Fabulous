@@ -43,7 +43,7 @@ module Memo =
             | false -> ScalarAttributeComparison.Different
         | _ -> ScalarAttributeComparison.Different
 
-    let private updateNode (data: MemoData voption) (node: IViewNode) : unit =
+    let private updateNode _ (data: MemoData voption) (node: IViewNode) : unit =
         match data with
         | ValueSome memoData ->
             let memoizedWidget = memoData.CreateWidget memoData.KeyData

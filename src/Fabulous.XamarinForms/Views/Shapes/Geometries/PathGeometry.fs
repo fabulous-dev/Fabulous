@@ -21,7 +21,7 @@ module PathGeometry =
     let FiguresString =
         Attributes.define<string>
             "PathGeometry_FiguresString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

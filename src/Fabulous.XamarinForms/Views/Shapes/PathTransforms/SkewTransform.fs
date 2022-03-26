@@ -13,7 +13,7 @@ module SkewTransform =
     let AnglesXY =
         Attributes.define<struct (float * float)>
             "SkewTransform_Angles"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> SkewTransform
 
                 match newValueOpt with

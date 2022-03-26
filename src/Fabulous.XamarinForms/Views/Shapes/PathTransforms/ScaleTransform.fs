@@ -13,7 +13,7 @@ module ScaleTransform =
     let ScaleXY =
         Attributes.define<struct (float * float)>
             "ScaleTransform_Scale"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> ScaleTransform
 
                 match newValueOpt with

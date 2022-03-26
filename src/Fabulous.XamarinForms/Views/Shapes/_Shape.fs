@@ -22,7 +22,7 @@ module Shape =
     let StrokeDashArrayString =
         Attributes.define<string>
             "Shape_StrokeDashArrayString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -37,7 +37,7 @@ module Shape =
     let StrokeDashArrayList =
         Attributes.define<float list>
             "Shape_StrokeDashArrayList"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

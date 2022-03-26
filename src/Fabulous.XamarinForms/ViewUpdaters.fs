@@ -4,7 +4,7 @@ open Fabulous
 open Xamarin.Forms
 
 module ViewUpdaters =
-    let updateSliderMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
+    let updateSliderMinMax _ (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let slider = node.Target :?> Slider
 
         match newValueOpt with
@@ -22,7 +22,7 @@ module ViewUpdaters =
                 slider.SetValue(Slider.MinimumProperty, min)
                 slider.SetValue(Slider.MaximumProperty, max)
 
-    let updateStepperMinMax (newValueOpt: struct (float * float) voption) (node: IViewNode) =
+    let updateStepperMinMax _ (newValueOpt: struct (float * float) voption) (node: IViewNode) =
         let stepper = node.Target :?> Stepper
 
         match newValueOpt with
@@ -40,7 +40,7 @@ module ViewUpdaters =
                 stepper.SetValue(Stepper.MinimumProperty, min)
                 stepper.SetValue(Stepper.MaximumProperty, max)
 
-    let updateGridColumnDefinitions (newValueOpt: Dimension [] voption) (node: IViewNode) =
+    let updateGridColumnDefinitions _ (newValueOpt: Dimension [] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -58,7 +58,7 @@ module ViewUpdaters =
 
                 grid.ColumnDefinitions.Add(ColumnDefinition(Width = gridLength))
 
-    let updateGridRowDefinitions (newValueOpt: Dimension [] voption) (node: IViewNode) =
+    let updateGridRowDefinitions _ (newValueOpt: Dimension [] voption) (node: IViewNode) =
         let grid = node.Target :?> Grid
 
         match newValueOpt with
@@ -163,7 +163,7 @@ module ViewUpdaters =
 
                     pagesLength <- pagesLength - 1
 
-    let updateNavigationPagePages (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+    let updateNavigationPagePages _ (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
         let navigationPage = node.Target :?> NavigationPage
         navigationPage.PopToRootAsync(false) |> ignore
 

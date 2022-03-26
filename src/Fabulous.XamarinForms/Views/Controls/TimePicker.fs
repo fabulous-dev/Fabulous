@@ -41,7 +41,7 @@ module TimePicker =
     let UpdateMode =
         Attributes.define<iOSSpecific.UpdateMode>
             "TimePicker_UpdateMode"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let timePicker = node.Target :?> TimePicker
 
                 let value =

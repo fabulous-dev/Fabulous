@@ -44,7 +44,7 @@ module Page =
     let UseSafeArea =
         Attributes.define<bool>
             "Page_UseSafeArea"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let page = node.Target :?> Page
 
                 let value =

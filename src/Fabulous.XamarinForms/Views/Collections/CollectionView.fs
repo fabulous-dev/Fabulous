@@ -17,7 +17,7 @@ module CollectionView =
             id
             id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let collectionView = node.Target :?> CollectionView
 
                 match newValueOpt with
@@ -98,7 +98,7 @@ type CollectionViewModifiers =
             this: WidgetBuilder<'msg, #ICollectionView>,
             onSelectionChanged: SelectionChangedEventArgs -> 'msg
         ) =
-        this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged (args) |> box))
+        this.AddScalar(CollectionView.SelectionChanged.WithValue(fun args -> onSelectionChanged args |> box))
 
     [<Extension>]
     static member inline header<'msg, 'marker, 'contentMarker when 'marker :> ICollectionView and 'contentMarker :> IView>

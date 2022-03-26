@@ -17,7 +17,6 @@ module BindableHelpers =
                 let currWidget = templateFn value
 
                 let node = ViewNode.get target
-                node.Widget <- currWidget
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
                 prevWidgetOpt <- ValueSome currWidget
 
@@ -30,10 +29,8 @@ type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Wi
         let bindableObject =
             Activator.CreateInstance ``type`` :?> BindableObject
 
-        // For now, we don't know the widget but we need to assign a ViewNode to the row we just created
-        // ViewNode.Widget will be assigned during BindingContextChanged
         let viewNode =
-            ViewNode(Unchecked.defaultof<Widget>, ValueSome parent, parent.TreeContext, WeakReference(bindableObject))
+            ViewNode(Some parent, parent.TreeContext, WeakReference(bindableObject))
 
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
 

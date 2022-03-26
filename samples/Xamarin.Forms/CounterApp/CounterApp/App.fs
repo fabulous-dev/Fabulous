@@ -7,27 +7,37 @@ open type View
 module App =
     type Model =
         { Toggled: bool
-          Mounted: bool
-          Unmounted: bool }
+          MountedS: bool
+          MountedL: bool
+          UnmountedS: bool
+          UnmountedL: bool }
 
     type Msg =
         | Toggle
-        | Mounted
-        | Unmounted
+        | Mounted of bool
+        | Unmounted of bool
 
     let init () =
         { Toggled = false
-          Mounted = false
-          Unmounted = false }
+          MountedS = false
+          MountedL = false
+          UnmountedS = false
+          UnmountedL = false }
 
     let update msg model =
         match msg with
         | Toggle ->
             { model with Toggled = not model.Toggled }
-        | Mounted ->
-            { model with Mounted = true; Unmounted = false }
-        | Unmounted ->
-            { model with Unmounted = true; Mounted = false }
+        | Mounted x ->
+            if x then
+                { model with MountedS = true; UnmountedS = false }
+            else
+                { model with MountedL = true; UnmountedL = false }
+        | Unmounted x ->
+            if x then
+                { model with UnmountedS = true; MountedS = false }
+            else
+                { model with UnmountedL = true; MountedL = false }
 
     let view model =
         Application(
@@ -37,16 +47,20 @@ module App =
                     Label($"Hello: {model.Toggled}")
                     Button("Toggle", Toggle)
                     
-                    Label($"Mounted: {model.Mounted}")
-                    Label($"Unmounted: {model.Unmounted}")
-                    
                     if model.Toggled then
-                        VStack() {
+                        (VStack() {
                             Label("Lifecycle label")
-                                .onMounted(Mounted)
-                                .onUnmounted(Unmounted)
+                                .onMounted(Mounted false)
+                                .onUnmounted(Unmounted false)
                                 .backgroundColor(Xamarin.Forms.Color.Red)
-                        }
+                        })
+                            .onMounted(Mounted true)
+                            .onUnmounted(Unmounted true)
+                    
+                    Label($"MountedS: {model.MountedS}")
+                    Label($"UnmountedS: {model.UnmountedS}")
+                    Label($"MountedL: {model.MountedL}")
+                    Label($"UnmountedL: {model.UnmountedL}")
                  })
                     .padding(30.)
                     .centerVertical ()

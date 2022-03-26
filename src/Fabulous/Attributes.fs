@@ -26,7 +26,7 @@ module Attributes =
         (convert: 'inputType -> 'modelType)
         (convertValue: 'modelType -> 'valueType)
         (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
-        (updateNode: 'valueType voption -> IViewNode -> unit)
+        (updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -45,7 +45,7 @@ module Attributes =
     let defineWidgetWithConverter
         name
         (applyDiff: WidgetDiff -> IViewNode -> unit)
-        (updateNode: Widget voption -> IViewNode -> unit)
+        (updateNode: Widget voption -> Widget voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -62,7 +62,7 @@ module Attributes =
     let defineWidgetCollectionWithConverter
         name
         (applyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit)
-        (updateNode: ArraySlice<Widget> voption -> IViewNode -> unit)
+        (updateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit)
         =
         let key = AttributeDefinitionStore.getNextKey ()
 
@@ -83,7 +83,7 @@ module Attributes =
             childNode.ApplyDiff(&diff)
 
 
-        let updateNode (newValueOpt: Widget voption) (node: IViewNode) =
+        let updateNode _ (newValueOpt: Widget voption) (node: IViewNode) =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
@@ -104,11 +104,12 @@ module Attributes =
                 | WidgetCollectionItemChange.Remove (index, widget) ->
                     let itemNode = getViewNode targetColl.[index]
                     
+                    // Trigger the unmounted event
+                    Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
+                    itemNode.Disconnect()
+                    
                     // Remove the child from the UI tree
                     targetColl.RemoveAt(index)
-                    
-                    // Trigger the unmounted event
-                    Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
                     
                 | _ -> ()
 
@@ -133,16 +134,19 @@ module Attributes =
                     let prevItemNode = getViewNode targetColl.[index]
                     let struct (nextItemNode, view) = Helpers.createViewForWidget node newWidget
                     
+                    // Trigger the unmounted event for the old child
+                    Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
+                    prevItemNode.Disconnect()
+                    
                     // Replace the existing child in the UI tree at the index with the new one
                     targetColl.[index] <- unbox view
                     
-                    // Trigger the unmounted event on the old child, and the mounted event on the new child
-                    Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
+                    // Trigger the mounted event for the new child
                     Dispatcher.dispatchEventForAllChildren nextItemNode newWidget Lifecycle.Mounted
 
                 | _ -> ()
 
-        let updateNode (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+        let updateNode _ (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
             let targetColl = getCollection node.Target
             targetColl.Clear()
 
@@ -168,7 +172,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun newValueOpt node ->
+                  fun _ newValueOpt node ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with
@@ -198,7 +202,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt: (obj -> obj) voption) node ->
+                  fun _ (newValueOpt: (obj -> obj) voption) node ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with
@@ -211,13 +215,11 @@ module Attributes =
                           let handler =
                               EventHandler
                                   (fun sender _ ->
-                                      printfn $"Handler for {name} triggered"
                                       let r = fn sender
                                       Dispatcher.dispatch node r)
 
                           node.SetHandler(key, ValueSome handler)
-                          event.AddHandler handler
-                          printfn $"Added new handler for {name}" }
+                          event.AddHandler handler }
 
         AttributeDefinitionStore.set key definition
         definition
@@ -233,14 +235,12 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
+                  fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
                       let event = getEvent node.Target
 
                       match node.TryGetHandler(key) with
-                      | ValueNone -> printfn $"No old handler for {name}"
-                      | ValueSome handler ->
-                          printfn $"Removed old handler for {name}"
-                          event.RemoveHandler handler
+                      | ValueNone -> ()
+                      | ValueSome handler -> event.RemoveHandler handler
 
                       match newValueOpt with
                       | ValueNone -> node.SetHandler(key, ValueNone)
@@ -249,13 +249,11 @@ module Attributes =
                           let handler =
                               EventHandler<'args>
                                   (fun _ args ->
-                                      printfn $"Handler for {name} triggered"
                                       let r = fn args
                                       Dispatcher.dispatch node r)
 
                           node.SetHandler(key, ValueSome handler)
-                          event.AddHandler handler
-                          printfn $"Added new handler for {name}" }
+                          event.AddHandler handler }
 
         AttributeDefinitionStore.set key definition
         definition
