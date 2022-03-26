@@ -15,7 +15,7 @@ module Attributes =
               ConvertValue = id
               Compare = ScalarAttributeComparers.noCompare
               UpdateNode =
-                  fun newValueOpt node ->
+                  fun _ newValueOpt node ->
 
                       let btn = node.Target :?> IButton
 
@@ -27,8 +27,7 @@ module Attributes =
                       | ValueNone -> node.SetHandler(key, ValueNone)
 
                       | ValueSome msg ->
-                          let handler () =
-                              Attributes.dispatchMsgOnViewNode node msg
+                          let handler () = Dispatcher.dispatch node msg
 
                           let handlerId = btn.AddPressListener handler
                           node.SetHandler<int>(key, ValueSome handlerId) }
@@ -55,6 +54,7 @@ module Attributes =
         let Children =
             Attributes.defineWidgetCollection
                 "Container_Children"
+                TestUI_ViewNode.ViewNode.getViewNode
                 (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
 

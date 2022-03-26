@@ -611,19 +611,19 @@ module Issue104 =
         | Toggle -> not model
 
     let Attr1 =
-        Attributes.define<string> "Attr1" (fun _ _ -> ())
+        Attributes.define<string> "Attr1" (fun _ _ _ -> ())
 
     let Attr2 =
-        Attributes.define<string> "Attr2" (fun _ _ -> ())
+        Attributes.define<string> "Attr2" (fun _ _ _ -> ())
 
     let Attr3 =
-        Attributes.define<string> "Attr3" (fun _ _ -> ())
+        Attributes.define<string> "Attr3" (fun _ _ _ -> ())
 
     let Attr4 =
-        Attributes.define<string> "Attr4" (fun _ _ -> ())
+        Attributes.define<string> "Attr4" (fun _ _ _ -> ())
 
     let Attr5 =
-        Attributes.define<string> "Attr5" (fun _ _ -> ())
+        Attributes.define<string> "Attr5" (fun _ _ _ -> ())
 
     let ControlWidgetKey = Widgets.register<TestButton> ()
 
