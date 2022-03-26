@@ -1,66 +1,81 @@
 namespace CounterApp
 
+open Fabulous
 open Fabulous.XamarinForms
 
-open type View
+open type Fabulous.XamarinForms.View
 
 module App =
     type Model =
-        { Toggled: bool
-          MountedS: bool
-          MountedL: bool
-          UnmountedS: bool
-          UnmountedL: bool }
+        { Count: int
+          Step: int
+          TimerOn: bool }
 
     type Msg =
-        | Toggle
-        | Mounted of bool
-        | Unmounted of bool
+        | Increment
+        | Decrement
+        | Reset
+        | SetStep of float
+        | TimerToggled of bool
+        | TimedTick
 
-    let init () =
-        { Toggled = false
-          MountedS = false
-          MountedL = false
-          UnmountedS = false
-          UnmountedL = false }
+    let initModel = { Count = 0; Step = 1; TimerOn = false }
+
+    let timerCmd () =
+        async {
+            do! Async.Sleep 200
+            return TimedTick
+        }
+        |> Cmd.ofAsyncMsg
+
+    let init () = initModel, Cmd.none
 
     let update msg model =
         match msg with
-        | Toggle ->
-            { model with Toggled = not model.Toggled }
-        | Mounted x ->
-            if x then
-                { model with MountedS = true; UnmountedS = false }
+        | Increment ->
+            { model with
+                  Count = model.Count + model.Step },
+            Cmd.none
+        | Decrement ->
+            { model with
+                  Count = model.Count - model.Step },
+            Cmd.none
+        | Reset -> initModel, Cmd.none
+        | SetStep n -> { model with Step = int (n + 0.5) }, Cmd.none
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd () else Cmd.none)
+        | TimedTick ->
+            if model.TimerOn then
+                { model with
+                      Count = model.Count + model.Step },
+                timerCmd ()
             else
-                { model with MountedL = true; UnmountedL = false }
-        | Unmounted x ->
-            if x then
-                { model with UnmountedS = true; MountedS = false }
-            else
-                { model with UnmountedL = true; MountedL = false }
+                model, Cmd.none
 
     let view model =
         Application(
             ContentPage(
                 "CounterApp",
                 (VStack() {
-                    Label($"Hello: {model.Toggled}")
-                    Button("Toggle", Toggle)
-                    
-                    if model.Toggled then
-                        (VStack() {
-                            Label("Lifecycle label")
-                                .onMounted(Mounted false)
-                                .onUnmounted(Unmounted false)
-                                .backgroundColor(Xamarin.Forms.Color.Red)
-                        })
-                            .onMounted(Mounted true)
-                            .onUnmounted(Unmounted true)
-                    
-                    Label($"MountedS: {model.MountedS}")
-                    Label($"UnmountedS: {model.UnmountedS}")
-                    Label($"MountedL: {model.MountedL}")
-                    Label($"UnmountedL: {model.UnmountedL}")
+                    Label($"%d{model.Count}").centerTextHorizontal ()
+
+                    Button("Increment", Increment)
+
+                    Button("Decrement", Decrement)
+
+                    (HStack() {
+                        Label("Timer")
+
+                        Switch(model.TimerOn, TimerToggled)
+                     })
+                        .padding(20.)
+                        .centerHorizontal ()
+
+                    Slider(0.0, 10.0, double model.Step, SetStep)
+
+                    Label($"Step size: %d{model.Step}")
+                        .centerTextHorizontal ()
+
+                    Button("Reset", Reset)
                  })
                     .padding(30.)
                     .centerVertical ()
@@ -68,4 +83,4 @@ module App =
         )
 
     let program =
-        Program.statefulApplication init update view
+        Program.statefulApplicationWithCmd init update view
