@@ -90,8 +90,7 @@ module ViewUpdaters =
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
                 if index >= pagesLength then
-                    let struct (_, page) =
-                        Helpers.createViewForWidget node widget
+                    let struct (_, page) = Helpers.createViewForWidget node widget
 
                     navigationPage.PushAsync(page :?> Page) |> ignore
                     pagesLength <- pagesLength + 1
@@ -102,10 +101,10 @@ module ViewUpdaters =
                         temp.Push(pages.[i])
                         navigationPage.PopAsync() |> ignore
 
-                    let struct (_, page) =
-                        Helpers.createViewForWidget node widget
+                    let struct (_, page) = Helpers.createViewForWidget node widget
 
-                    navigationPage.PushAsync(page :?> Page, false) |> ignore
+                    navigationPage.PushAsync(page :?> Page, false)
+                    |> ignore
 
                     while temp.Count > 0 do
                         navigationPage.PushAsync(temp.Pop(), false)
@@ -138,7 +137,8 @@ module ViewUpdaters =
                     let struct (_, page) =
                         Helpers.createViewForWidget node newWidget
 
-                    navigationPage.PushAsync(page :?> Page, false) |> ignore
+                    navigationPage.PushAsync(page :?> Page, false)
+                    |> ignore
 
                     while temp.Count > 1 do
                         navigationPage.PushAsync(temp.Pop(), false)
@@ -171,7 +171,6 @@ module ViewUpdaters =
         | ValueNone -> ()
         | ValueSome widgets ->
             for widget in ArraySlice.toSpan widgets do
-                let struct (_, page) =
-                    Helpers.createViewForWidget node widget
+                let struct (_, page) = Helpers.createViewForWidget node widget
 
                 navigationPage.PushAsync(page :?> Page) |> ignore

@@ -7,7 +7,7 @@ open Fabulous
 type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
 
     let mutable _isDisconnected = false
-    
+
     // TODO consider combine handlers mapMsg and property bag
     // also we can probably use just Dictionary instead of Map because
     // ViewNode is supposed to be mutable, stateful and persistent object
@@ -26,13 +26,13 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode (ValueSome removed.Value) ValueNone this
+                definition.UpdateNode(ValueSome removed.Value) ValueNone this
 
             | ScalarChange.Updated (oldAttr, newAttr) ->
                 let definition =
                     AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode (ValueSome oldAttr.Value) (ValueSome newAttr.Value) this
+                definition.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) this
 
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do
@@ -48,7 +48,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
 
-                definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
+                definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
 
             | WidgetChange.Updated struct (newAttr, diffs) ->
                 let definition =
@@ -69,7 +69,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 let definition =
                     AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
 
-                definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
+                definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
 
             | WidgetCollectionChange.Updated struct (oldAttr, newAttr, diffs) ->
                 let definition =
@@ -84,7 +84,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
         member _.Parent = parent
         member val MapMsg: (obj -> obj) option = None with get, set
         member _.IsDisconnected = _isDisconnected
-        
+
         member _.TryGetHandler<'T>(key: AttributeKey) =
             match Map.tryFind key _handlers with
             | None -> ValueNone
@@ -99,9 +99,8 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                         match handlerOpt with
                         | ValueNone -> None
                         | ValueSome h -> Some(box h))
-                    
-        member _.Disconnect() =
-            _isDisconnected <- true
+
+        member _.Disconnect() = _isDisconnected <- true
 
         member x.ApplyDiff(diff) =
             if not targetRef.IsAlive then

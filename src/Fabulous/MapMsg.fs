@@ -5,7 +5,7 @@ open Fabulous
 module MapMsg =
     /// Store a map function to convert a child message to a parent message.
     /// Help compose independent views using different MVU cycle and messages
-    let MapMsg : ScalarAttributeDefinition<obj -> obj, obj -> obj, obj -> obj> =
+    let MapMsg: ScalarAttributeDefinition<obj -> obj, obj -> obj, obj -> obj> =
         let key = AttributeDefinitionStore.getNextKey ()
 
         let definition =
@@ -14,10 +14,11 @@ module MapMsg =
               Convert = id
               ConvertValue = id
               Compare = fun _ _ -> ScalarAttributeComparison.Identical
-              UpdateNode = fun _oldValueOpt newValueOpt node ->
-                  match newValueOpt with
-                  | ValueNone -> node.MapMsg <- None
-                  | ValueSome fn -> node.MapMsg <- Some fn }
+              UpdateNode =
+                  fun _oldValueOpt newValueOpt node ->
+                      match newValueOpt with
+                      | ValueNone -> node.MapMsg <- None
+                      | ValueSome fn -> node.MapMsg <- Some fn }
 
         AttributeDefinitionStore.set key definition
         definition

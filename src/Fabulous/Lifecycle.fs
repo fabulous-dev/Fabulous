@@ -14,9 +14,9 @@ module Lifecycle =
 
         AttributeDefinitionStore.set key definition
         definition
-    
+
     /// Store an event that will be triggered when a Widget has been mounted in the UI tree
     let Mounted = createAttribute "Mounted"
-    
+
     /// Store an event that will be triggered when a Widget has been unmounted from the UI tree
     let Unmounted = createAttribute "Unmounted"

@@ -54,24 +54,25 @@ module ViewAdapterStore =
 module Runners =
     // Runner is created for the component itself. No point in reusing a runner for another component
     type Runner<'arg, 'model, 'msg>(key: StateKey, program: Program<'arg, 'model, 'msg>) =
-        
-        let mailbox = MailboxProcessor.Start(fun inbox ->
-            let rec processMsg () =
-                async {
-                    let! msg = inbox.Receive()
-                    let model = unbox (StateStore.get key)
-                    let newModel, cmd = program.Update(msg, model)
-                    StateStore.set key newModel
-        
-                    for sub in cmd do
-                        sub inbox.Post
-                        
-                    return! processMsg ()
-                }
-            
-            processMsg ()
-        )
-        
+
+        let mailbox =
+            MailboxProcessor.Start
+                (fun inbox ->
+                    let rec processMsg () =
+                        async {
+                            let! msg = inbox.Receive()
+                            let model = unbox (StateStore.get key)
+                            let newModel, cmd = program.Update(msg, model)
+                            StateStore.set key newModel
+
+                            for sub in cmd do
+                                sub inbox.Post
+
+                            return! processMsg ()
+                        }
+
+                    processMsg ())
+
         let start arg =
             let model, cmd = program.Init(arg)
             StateStore.set key model
@@ -156,9 +157,7 @@ module ViewAdapters =
 
                 let node = getViewNode _root
 
-                syncAction (fun () ->
-                    Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
-                )
+                syncAction (fun () -> Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node)
 
         member _.Dispose() = _stateSubscription.Dispose()
 

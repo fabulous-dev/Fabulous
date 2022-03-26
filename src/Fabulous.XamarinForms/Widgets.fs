@@ -34,7 +34,7 @@ module Widgets =
                           match parentNode with
                           | ValueNone -> None
                           | ValueSome node -> Some node
-                          
+
                       let node =
                           ViewNode(parentNode, treeContext, weakReference)
 
