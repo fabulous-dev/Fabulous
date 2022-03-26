@@ -40,7 +40,7 @@ module ArraySlice =
                 arr.[i] <- arr.[i - by]
 
         arr
-        
+
 module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
         let res = Array.zeroCreate (arr.Length + 1)
