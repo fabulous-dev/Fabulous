@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    permissions: write-all
     runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
