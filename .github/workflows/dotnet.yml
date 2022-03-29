@@ -1,7 +1,7 @@
 name: .NET
 on:
    push:
-     branches: [ main ]
+     branches: [ 'v2.0' ]
      paths-ignore: [ 'docs/**' ]
 
 jobs:
