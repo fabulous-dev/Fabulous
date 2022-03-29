@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://timothelariviere.com/Fabulous-new/sitemap.xml
+Sitemap: https://fsprojects.github.io/Fabulous/sitemap.xml
