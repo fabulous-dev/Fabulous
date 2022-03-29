@@ -35,5 +35,5 @@ jobs:
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
-        dotnet nuget add source https://nuget.pkg.github.com/TimLariviere/index.json --name timlariviere
-        dotnet nuget push "nupkgs/*.nupkg" --source timlariviere --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget add source https://nuget.pkg.github.com/fsprojects/index.json --name fsprojects
+        dotnet nuget push "nupkgs/*.nupkg" --source fsprojects --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
