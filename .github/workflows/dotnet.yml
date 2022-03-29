@@ -4,9 +4,10 @@ on:
      branches: [ 'v2.0' ]
      paths-ignore: [ 'docs/**' ]
 
+permissions: write-all
+
 jobs:
   build:
-    permissions: write-all
     runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
