@@ -27,7 +27,7 @@ module ProgressBar =
     let ProgressTo =
         Attributes.define<ProgressToData>
             "ProgressBar_ProgressTo"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let view = node.Target :?> ProgressBar
 
                 match newValueOpt with

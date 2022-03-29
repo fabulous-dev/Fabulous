@@ -8,7 +8,8 @@ type Program<'arg, 'model, 'msg> =
     { Init: 'arg -> 'model * Cmd<'msg>
       Update: 'msg * 'model -> 'model * Cmd<'msg>
       View: 'model -> Widget
-      CanReuseView: Widget -> Widget -> bool }
+      CanReuseView: Widget -> Widget -> bool
+      SyncAction: (unit -> unit) -> unit }
 
 type IRunner =
     interface
@@ -54,27 +55,37 @@ module Runners =
     // Runner is created for the component itself. No point in reusing a runner for another component
     type Runner<'arg, 'model, 'msg>(key: StateKey, program: Program<'arg, 'model, 'msg>) =
 
-        let rec processMsg msg =
-            let model = unbox (StateStore.get key)
-            let newModel, cmd = program.Update(msg, model)
-            StateStore.set key newModel
+        let mailbox =
+            MailboxProcessor.Start
+                (fun inbox ->
+                    let rec processMsg () =
+                        async {
+                            let! msg = inbox.Receive()
+                            let model = unbox (StateStore.get key)
+                            let newModel, cmd = program.Update(msg, model)
+                            StateStore.set key newModel
 
-            for sub in cmd do
-                sub processMsg
+                            for sub in cmd do
+                                sub inbox.Post
+
+                            return! processMsg ()
+                        }
+
+                    processMsg ())
 
         let start arg =
             let model, cmd = program.Init(arg)
             StateStore.set key model
 
             for sub in cmd do
-                sub processMsg
+                sub mailbox.Post
 
         interface IRunner
 
         member _.Key = key
         member _.Program = program
 
-        member _.Dispatch(msg) = processMsg msg
+        member _.Dispatch(msg) = mailbox.Post msg
 
 
         member _.Start(arg) = start arg
@@ -100,6 +111,7 @@ module ViewAdapters =
             stateKey: StateKey,
             view: 'model -> Widget,
             canReuseView: Widget -> Widget -> bool,
+            syncAction: (unit -> unit) -> unit,
             dispatch: 'msg -> unit,
             getViewNode: obj -> IViewNode
         ) as this =
@@ -112,8 +124,8 @@ module ViewAdapters =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
 
         member private _.Dispatch(msg) =
-            if _allowDispatch then
-                dispatch (unbox msg)
+            //if _allowDispatch then
+            dispatch (unbox msg)
 
         member this.CreateView() =
             let state = unbox (StateStore.get stateKey)
@@ -137,7 +149,6 @@ module ViewAdapters =
 
         member _.OnStateChanged(args) =
             if args.Key = stateKey then
-                _allowDispatch <- false
                 let state = unbox args.NewState
 
                 let prevWidget = _widget
@@ -146,8 +157,7 @@ module ViewAdapters =
 
                 let node = getViewNode _root
 
-                Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
-                _allowDispatch <- true
+                syncAction (fun () -> Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node)
 
         member _.Dispose() = _stateSubscription.Dispose()
 
@@ -166,6 +176,7 @@ module ViewAdapters =
                 runner.Key,
                 runner.Program.View,
                 runner.Program.CanReuseView,
+                runner.Program.SyncAction,
                 runner.Dispatch,
                 getViewNode
             )

@@ -17,7 +17,7 @@ module Line =
     let Points =
         Attributes.define<struct (Point * Point)>
             "Line_Point1"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> Line
 
                 match newValueOpt with

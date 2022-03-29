@@ -14,7 +14,7 @@ module PolyQuadraticBezierSegment =
     let PointsString =
         Attributes.define<string>
             "PolyQuadraticBezierSegment_PointsString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -29,7 +29,7 @@ module PolyQuadraticBezierSegment =
     let PointsList =
         Attributes.define<Point list>
             "PolyQuadraticBezierSegment_PointsList"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

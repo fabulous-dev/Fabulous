@@ -44,7 +44,7 @@ module Picker =
     let ItemSource =
         Attributes.define<string array>
             "Picker_ItemSource"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -59,7 +59,7 @@ module Picker =
     let UpdateMode =
         Attributes.define<iOSSpecific.UpdateMode>
             "Picker_UpdateMode"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let picker = node.Target :?> Picker
 
                 let value =

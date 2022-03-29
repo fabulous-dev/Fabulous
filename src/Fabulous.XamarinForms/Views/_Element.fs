@@ -14,6 +14,15 @@ module Element =
 
 [<Extension>]
 type ElementModifiers =
+    /// Sets a value that allows the automation framework to find and interact with this element.
     [<Extension>]
     static member inline automationId(this: WidgetBuilder<'msg, #IElement>, value: string) =
         this.AddScalar(Element.AutomationId.WithValue(value))
+
+    [<Extension>]
+    static member inline onMounted(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
+        this.AddScalar(Lifecycle.Mounted.WithValue(value))
+
+    [<Extension>]
+    static member inline onUnmounted(this: WidgetBuilder<'msg, #IElement>, value: 'msg) =
+        this.AddScalar(Lifecycle.Unmounted.WithValue(value))

@@ -16,7 +16,7 @@ module MatrixTransform =
     let Matrix =
         Attributes.define<struct (float * float * float * float * float * float)>
             "MatrixTransform_Matrix"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> MatrixTransform
 
                 match newValueOpt with

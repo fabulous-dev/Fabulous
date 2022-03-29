@@ -29,6 +29,7 @@ module Page =
     let ToolbarItems =
         Attributes.defineWidgetCollection<ToolbarItem>
             "Page_ToolbarItems"
+            ViewNode.get
             (fun target -> (target :?> Page).ToolbarItems)
 
     let Appearing =
@@ -43,7 +44,7 @@ module Page =
     let UseSafeArea =
         Attributes.define<bool>
             "Page_UseSafeArea"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let page = node.Target :?> Page
 
                 let value =

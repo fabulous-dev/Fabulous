@@ -14,7 +14,7 @@ module FlyoutPage =
     let CanChangeIsPresented =
         Attributes.define<bool>
             "FlyoutPage_CanChangeIsPresented"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage
 
                 let value =
@@ -39,7 +39,7 @@ module FlyoutPage =
     let FlyoutBounds =
         Attributes.define<Rectangle>
             "FlyoutPage_FlyoutBounds"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage
 
                 let value =
@@ -61,7 +61,7 @@ module FlyoutPage =
     let DetailBounds =
         Attributes.define<Rectangle>
             "FlyoutPage_DetailBounds"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage
 
                 let value =

@@ -16,7 +16,7 @@ module Polyline =
     let PointsString =
         Attributes.define<string>
             "Polyline_PointsString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -31,7 +31,7 @@ module Polyline =
     let PointsList =
         Attributes.define<Point list>
             "Polyline_PointsList"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

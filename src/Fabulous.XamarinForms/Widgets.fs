@@ -30,6 +30,11 @@ module Widgets =
                       let view = new 'T()
                       let weakReference = WeakReference(view)
 
+                      let parentNode =
+                          match parentNode with
+                          | ValueNone -> None
+                          | ValueSome node -> Some node
+
                       let node =
                           ViewNode(parentNode, treeContext, weakReference)
 

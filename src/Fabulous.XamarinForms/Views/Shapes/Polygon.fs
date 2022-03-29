@@ -16,7 +16,7 @@ module Polygon =
     let PointsString =
         Attributes.define<string>
             "Polygon_PointsString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -31,7 +31,7 @@ module Polygon =
     let PointsList =
         Attributes.define<Point list>
             "Polygon_PointsList"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

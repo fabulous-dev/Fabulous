@@ -15,7 +15,7 @@ module Cell =
     let Height =
         Attributes.define<float>
             "Cell_Height"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let cell = node.Target :?> Cell
 
                 let value =

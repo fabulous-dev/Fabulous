@@ -14,6 +14,7 @@ module FormattedLabel =
     let Spans =
         Attributes.defineWidgetCollection
             "FormattedString_Spans"
+            ViewNode.get
             (fun target ->
                 let label = target :?> Xamarin.Forms.Label
 

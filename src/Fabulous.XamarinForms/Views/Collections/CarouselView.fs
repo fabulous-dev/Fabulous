@@ -36,7 +36,7 @@ module CarouselView =
             id
             id
             ScalarAttributeComparers.equalityCompare
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let handler =
                     match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Key) with
                     | ValueSome handler -> handler

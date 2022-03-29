@@ -49,7 +49,7 @@ module DatePicker =
     let UpdateMode =
         Attributes.define<iOSSpecific.UpdateMode>
             "DatePicker_UpdateMode"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let datePicker = node.Target :?> DatePicker
 
                 let value =

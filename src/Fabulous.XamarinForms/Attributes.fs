@@ -44,7 +44,7 @@ module Attributes =
             convert
             convertValue
             compare
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
@@ -60,7 +60,7 @@ module Attributes =
             id
             id
             ScalarAttributeComparers.equalityCompare
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with

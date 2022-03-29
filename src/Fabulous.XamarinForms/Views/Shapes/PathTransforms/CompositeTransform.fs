@@ -14,7 +14,7 @@ module CompositeTransform =
     let CenterXY =
         Attributes.define<struct (float * float)>
             "CompositeTransform_CenterXY"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
 
                 match newValueOpt with
@@ -28,7 +28,7 @@ module CompositeTransform =
     let ScaleXY =
         Attributes.define<struct (float * float)>
             "CompositeTransform_ScaleXY"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
 
                 match newValueOpt with
@@ -42,7 +42,7 @@ module CompositeTransform =
     let SkewXY =
         Attributes.define<struct (float * float)>
             "CompositeTransform_SkewXY"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
 
                 match newValueOpt with
@@ -56,7 +56,7 @@ module CompositeTransform =
     let TranslateXY =
         Attributes.define<struct (float * float)>
             "CompositeTransform_TranslateXY"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
 
                 match newValueOpt with

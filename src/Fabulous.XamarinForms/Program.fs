@@ -1,6 +1,7 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
+open Xamarin.Forms
 
 module Program =
     let inline private define
@@ -11,7 +12,8 @@ module Program =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
           View = fun model -> (view model).Compile()
-          CanReuseView = ViewHelpers.canReuseView }
+          CanReuseView = ViewHelpers.canReuseView
+          SyncAction = Device.BeginInvokeOnMainThread }
 
     let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
         define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view

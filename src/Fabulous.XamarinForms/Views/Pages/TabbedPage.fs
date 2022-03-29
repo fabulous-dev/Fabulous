@@ -26,7 +26,7 @@ module TabbedPage =
     let ToolbarPlacement =
         Attributes.define<AndroidSpecific.ToolbarPlacement>
             "TabbedPage_ToolbarPlacement"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let tabbedPage = node.Target :?> TabbedPage
 
                 let value =

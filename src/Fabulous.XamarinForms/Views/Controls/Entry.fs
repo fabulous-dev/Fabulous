@@ -51,7 +51,7 @@ module Entry =
     let CursorColor =
         Attributes.define<Color>
             "Entry_CursorColor"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let entry = node.Target :?> Entry
 
                 let value =

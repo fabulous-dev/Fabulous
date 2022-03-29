@@ -47,6 +47,7 @@ module Span =
     let GestureRecognizers =
         Attributes.defineWidgetCollection<IGestureRecognizer>
             "Span_GestureRecognizers"
+            ViewNode.get
             (fun target -> (target :?> Span).GestureRecognizers)
 
 [<AutoOpen>]

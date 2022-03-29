@@ -15,12 +15,13 @@ module PathGeometry =
     let FiguresWidgets =
         Attributes.defineWidgetCollection
             "PathGeometry_FiguresWidgets"
+            ViewNode.get
             (fun target -> (target :?> PathGeometry).Figures :> IList<_>)
 
     let FiguresString =
         Attributes.define<string>
             "PathGeometry_FiguresString"
-            (fun newValueOpt node ->
+            (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
                 match newValueOpt with
