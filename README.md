@@ -2,7 +2,7 @@
 
 *F# Functional App Development, using declarative dynamic UI*
 
-[![.NET](https://github.com/TimLariviere/Fabulous-new/actions/workflows/dotnet.yml/badge.svg)](https://github.com/TimLariviere/Fabulous-new/actions/workflows/dotnet.yml) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
+[![.NET](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml/badge.svg)](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 

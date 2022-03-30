@@ -2,10 +2,10 @@
     <PropertyGroup>
         <Description>Fabulous for Xamarin.Forms Template</Description>
         <Authors>TimLariviere</Authors>
-        <PackageProjectUrl>https://github.com/TimLariviere/Fabulous-new</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageIcon>images\nuget-icon.png</PackageIcon>
-        <RepositoryUrl>https://github.com/TimLariviere/Fabulous-new.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/fsprojects/Fabulous.git</RepositoryUrl>
         <PackageTags>template;fsharp;fabulous</PackageTags>
         <NeutralLanguage>en-US</NeutralLanguage>
         <PackageType>Template</PackageType>
