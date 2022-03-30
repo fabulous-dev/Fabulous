@@ -13,9 +13,9 @@ weight: 301
 toc: true
 ---
 
-On every commit to the `main` branch, packages for each project and template are automatically generated and published to the GitHub Packages Registry.
+On every commit to the `v2.0` branch, packages for each project and template are automatically generated and published to the GitHub Packages Registry.
 
-If you plan to use those packages, you'll need to add a `nuget.config` file to your solution folder and you'll need to add a source pointing to `https://nuget.pkg.github.com/TimLariviere/index.json`.
+If you plan to use those packages, you'll need to add a `nuget.config` file to your solution folder and you'll need to add a source pointing to `https://nuget.pkg.github.com/fsprojects/index.json`.
 
 You'll also new to generate a GitHub PAT (personal access token) for your account and set that token in the `nuget.config` file.
 
@@ -30,13 +30,13 @@ Example of `nuget.config`:
         <clear />
         <add key="nuget" value="https://api.nuget.org/v3/index.json" />
         <!-- For nightly builds -->
-        <add key="fabulous" value="https://nuget.pkg.github.com/TimLariviere/index.json" />
+        <add key="fsprojects" value="https://nuget.pkg.github.com/fsprojects/index.json" />
     </packageSources>
     <packageSourceCredentials>
-        <fabulous>
+        <fsprojects>
             <add key="Username" value="USERNAME" />
             <add key="ClearTextPassword" value="TOKEN" />
-        </fabulous>
+        </fsprojects>
     </packageSourceCredentials>
 </configuration>
 ```
@@ -51,4 +51,4 @@ Once you configured `nuget.config`, you can run
 dotnet new -i Fabulous.XamarinForms.Templates::XYZ
 ```
 
-where `XYZ` is the latest version from [Fabulous.XamarinForms.Templates versions](https://github.com/TimLariviere/Fabulous-new/packages/1191236/versions).
+where `XYZ` is the latest version from [Fabulous.XamarinForms.Templates versions](https://github.com/fsprojects/Fabulous/packages/1334656/versions).

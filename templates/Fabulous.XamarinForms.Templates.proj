@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Fabulous for Xamarin.Forms Template</Description>
-        <Authors>TimLariviere</Authors>
+        <Authors>Fabulous contributors</Authors>
         <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageIcon>images\nuget-icon.png</PackageIcon>
