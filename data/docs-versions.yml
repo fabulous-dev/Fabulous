@@ -46,8 +46,14 @@
 #     - v: "4.5"
 #     - v: "4.6"
 
+- group: v1.x
+  baseurl: "/docs/v1"
+  description: "Current major release. Last update was v1.1.0."
+  versions:
+    - v: "1.0"
+
 - group: v2.x
-  baseurl: "/docs"
-  description: "Current major release. Last update was v0.2.0."
+  baseurl: "/docs/v2"
+  description: "Current major release. Last update was v2.0.0-preview.1"
   versions:
     - v: "2.0"

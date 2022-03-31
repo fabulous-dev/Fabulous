@@ -8,6 +8,7 @@ enableRobotsTXT = true
 languageCode = "en-US"
 paginate = 7
 rssLimit = 10
+ignoreErrors = ["image-not-found"]
 
 # Multilingual
 defaultContentLanguage = "en"
