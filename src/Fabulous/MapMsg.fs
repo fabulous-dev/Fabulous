@@ -13,7 +13,7 @@ module MapMsg =
               Name = "Fabulous_MapMsg"
               Convert = id
               ConvertValue = id
-              Compare = fun _ _ -> ScalarAttributeComparison.Identical
+              Compare = fun _ _ -> ScalarAttributeComparison.Different
               UpdateNode =
                   fun _oldValueOpt newValueOpt node ->
                       match newValueOpt with
