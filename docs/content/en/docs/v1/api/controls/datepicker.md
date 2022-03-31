@@ -1,0 +1,58 @@
+---
+title : "DatePicker"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "controls"
+weight: 101
+toc: true
+---
+
+### Basic example
+
+
+```fs 
+View.DatePicker()
+```
+
+<img src="images/view/DatePicker-adr-basic.png" width="300">
+
+<br /> <br /> 
+
+### Basic example with styling
+
+```fs 
+View.DatePicker
+    (
+        horizontalOptions = style.Position,
+        verticalOptions = style.Position,
+        backgroundColor = style.ViewColor
+    )
+```
+
+
+<img src="images/view/DatePicker-adr-styled.png" width="300">
+
+<br /> <br /> 
+
+See also:
+
+* [`Xamarin.Forms.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker)
+
+<br /> 
+
+### More examples
+
+```fs
+View.DatePicker(minimumDate = DateTime.Today,
+    maximumDate = DateTime.Today + TimeSpan.FromDays(365.0),
+    date = startDate,
+    dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
+```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177357-9cdae280-9810-11e9-9979-1e91cf8c5ea6.png" width="400">

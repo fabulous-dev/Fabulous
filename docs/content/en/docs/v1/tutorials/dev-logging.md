@@ -1,11 +1,17 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-Traces and Crashes
-------
-##### (topic last updated: pending)
-<br /> 
+---
+title : "Traces and crashes"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 In Fabulous, everything happens in a centralized message loop that is responsible for calling your `init`, `update` and `view` functions.  
 Fabulous allows you to plug into this loop to run custom logic such as logging and error handling.
@@ -21,7 +27,7 @@ There's a few built-in functions available already:
 To use them, you will need to add them when declaring the runner, before calling `XamarinFormsProgram.run`.  
 You can add multiple trace functions, one after another.
 
-```fsharp
+```fs
 type App () as app = 
     inherit Application ()
 
@@ -45,7 +51,7 @@ You can define your own handlers instead to do additional logic.
 
 Here's a simple example that prints a message each time something happens
 
-```fsharp
+```fs
 let withSimpleTrace (program: Program<'model, 'msg, _>) =
     let traceInit () =
         Console.WriteLine "Init"
@@ -81,7 +87,7 @@ type App () as app =
 
 You're not required to implement all handlers, if you only need to override `update` then just override that one.
 
-```fsharp
+```fs
 let withSimpleTrace (program: Program<'model, 'msg, _>) =
     let traceUpdate msg model =
         Console.WriteLine "Update"
@@ -114,7 +120,7 @@ AppCenter will provide a dashboard of those events and exceptions along with sta
 
 Here we override `update` to call `Analytics.TrackEvent`, and `onError` to call `Crashes.TrackError`.
 
-```fsharp
+```fs
 module AppCenter =
     type AppCenterUpdateTracer<'msg, 'model> =
         'msg -> 'model -> (string * (string * string) list) option
@@ -138,7 +144,7 @@ module AppCenter =
 We could trace everything, but you should consider to trace the minimum to protect your users' privacy.  
 To do that, we have added a `AppCenterUpdateTracer` function that will filter the messages that interest us and what data we should extract from it.
 
-```fsharp
+```fs
 module Tracing =
     let hasValue = (not << String.IsNullOrEmpty) >> string
 
@@ -159,7 +165,7 @@ module Tracing =
 
 In our `App` class, we need to call `AppCenter.Start("appsecrets", typeof<Analytics>, typeof<Crashes>)` to initialize it.
 
-```fsharp
+```fs
 type App () as app = 
     inherit Application ()
 

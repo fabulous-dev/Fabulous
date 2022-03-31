@@ -1,11 +1,17 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-Pitfalls and F# 5.0 support
-------
-##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
-<br /> 
+---
+title : "Pitfalls and F# 5.0 support"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 Here are some common pitfalls you might encounter when using Fabulous.
 

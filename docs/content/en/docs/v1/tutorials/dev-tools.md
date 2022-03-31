@@ -1,12 +1,17 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-
-fabulous-cli
------
-##### (topic last updated: pending)
-<br /> 
+---
+title : "fabulous-cli"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 With the `fabulous-cli` you can run LiveUpdate. 
 
@@ -83,7 +88,7 @@ adds the declarations to an F# interpreter. This interpreter will make some refl
 
 **To take effect as app changes, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.**  For example:
 
-```fsharp
+```fs
 module App =
     ...
     let init() = ...

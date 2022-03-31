@@ -1,14 +1,20 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-The Init and Update Functions
-------
-##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
-<br /> 
+---
+title : "The Init and Update Functions"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 The init function returns an initial model, and the update function processes a message and returns a new model:
-```fsharp
+```fs
 type Model = { TimerOn: bool } 
 
 type Message = 
@@ -31,7 +37,7 @@ with the model to queue up long running operations such as network calls.
 
 Commands are often asynchronous and nearly always dispatch messages. For example, the simplest way to make a command
 is `Cmd.ofAsyncMsg` which triggers a message dispatch when an async completes:
-```fsharp
+```fs
 let timerCmd = 
     async { do! Async.Sleep 200
             return TimedTick }
@@ -43,7 +49,7 @@ Triggering Commands on Initialization
 
 The `init` function may trigger commands, e.g. initial database requests.  This is permitted when using `Program.mkProgram`.
 For example here is a pattern  to get an initial balance on startup:
-```fsharp
+```fs
 let fetchInitialBalance = Cmd.ofAsyncMsg (async { ... })
 
 let init () = { ... }, fetchInitialBalance
@@ -55,7 +61,7 @@ Triggering Commands as Messages are Processed
 The `update` function may trigger commands such as timers.  This is permitted when using `Program.mkProgram`.
 For example, here is one pattern for a timer loop that can be turned on/off:
 
-```fsharp
+```fs
 type Model = 
     { TimerOn: bool
       Count: int
@@ -82,7 +88,7 @@ Triggering Commands from External Events
 ------
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
-```fsharp
+```fs
 let timerTick dispatch =
     let timer = new System.Timers.Timer(1.0)
     timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
@@ -96,7 +102,7 @@ let runner =
         
 ```
 Likewise, the general pattern to subscribe to external event sources is as follows:
-```fsharp
+```fs
 let subscribeToPushEvent dispatch = 
      ...
      call dispatch in some closure
@@ -127,7 +133,7 @@ Fabulous only provides some helpers to help you achieve this with less code.
 
 The principle is to replace any direct usage of `Cmd<'msg>` from `init` and `update`, and instead use a discriminated union called `CmdMsg`.
 
-```fsharp
+```fs
 type Model = 
     { TimerOn: bool
       Count: int
@@ -156,7 +162,7 @@ let update msg model =
 
 Doing this transforms the output of both `init` and `update` to pure data output, which can then be easily unit tested
 
-```fsharp
+```fs
 [<Test>]
 let togglingOnShouldTriggerTimerTick () =
     let initialModel = { TimerOn = false; Count = 0; Step = 1 }
@@ -169,7 +175,7 @@ So in order to make this work with Fabulous, you need a function that will conve
 
 Fabulous then helps you boot your application using `Program.mkProgramWithCmdMsg`
 
-```fsharp
+```fs
 let mapCommands cmdMsg =
     match cmdMsg with
     | TimerTick -> timerCmd()
@@ -197,7 +203,7 @@ The rules:
 When handling any long running operation, the operation should initiate it's thing and dispatch a message when done.
 If necessary, explicitly off-load and then dispatch at the end, e.g.
 
-```fsharp
+```fs
 let backgroundCmd =
     Cmd.ofAsyncMsg (async { 
         do! Async.SwitchToThreadPool()
@@ -215,7 +221,7 @@ Fabulous has 2 helper functions for this:
 
 - `Cmd.ofMsgOption`
 
-```fsharp
+```fs
 let autoSaveCmd =
     match userPreference.IsAutoSaveEnabled with
     | false -> None
@@ -231,7 +237,7 @@ let update msg model =
 
 - `Cmd.ofAsyncMsgOption`
 
-```fsharp
+```fs
 let takePictureCmd = async {
     try
         let! picture = takePictureAsync()
@@ -253,14 +259,14 @@ Webrequests in a Command
 Sometimes it is needed to make some web requests. Which tool you use here does not matter. For example you could use FSharp.Data to make HttpRequests.
 These are the steps that you have to do, to make it work:
 1. Create a case in the message type for a successful and failure webrequests
-```fsharp
+```fs
 type Msg =
     | LoginClicked
     | LoginSuccess
     | AuthError
 ```
 2. Implement the Command and return the correct message
-```fsharp
+```fs
 let authUser (username : string) (password : string) =
     async {
         do! Async.SwitchToThreadPool()
@@ -278,7 +284,7 @@ let authUser (username : string) (password : string) =
     |> Cmd.ofAsyncMsg
 ```
 3. Call the Command from update e.g. when a button is clicked
-```fsharp
+```fs
 let update msg model =
     match msg with
     | LoginClicked -> { model with IsRunning = true }, authUser model.Username model.Password // Call the Command
@@ -290,7 +296,7 @@ let update msg model =
                      IsRunning = false }, Cmd.none
 ```
 4. Create your view as you need
-```fsharp
+```fs
 match model.IsLoggedIn with
 | true -> LoggedInSuccesful
 | false -> LoginView
@@ -304,7 +310,7 @@ In this case, you might want to dispatch a message from the app project to Fabul
 
 To allow for this kind of use case, the `dispatch` function is exposed as a `Dispatch(msg)` method by the `ProgramRunner`. By default this runner is not accessible, but you can make a read-only property to let apps access it.
 
-```fsharp
+```fs
 type App() as app =
     inherit Application()
 
@@ -318,7 +324,7 @@ type App() as app =
 Once done, you can access it in the app project
 
 - Android
-```fsharp
+```fs
 [<Activity>]
 type MainActivity() =
     inherit FormsApplicationActivity()
@@ -344,7 +350,7 @@ type MainActivity() =
 ```
 
 - iOS
-```fsharp
+```fs
 [<Register("AppDelegate")>]
 type AppDelegate () =
     inherit FormsApplicationDelegate ()

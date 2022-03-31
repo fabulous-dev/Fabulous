@@ -1,16 +1,22 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-MVU
-------
-##### `topic last updated: v1.0 - 04.04.2021 - 02:51pm`
-<br /> 
+---
+title : "MVU"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 Applications built with Fabulous use the MVU design pattern (Model-View-Update, also known from the origin The Elm Architecture). 
 
 Here is the typical structure for the main logic of an app:
-```fsharp
+```fs
 type Msg =
     | ...
 

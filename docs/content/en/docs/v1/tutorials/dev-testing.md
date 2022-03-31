@@ -1,11 +1,17 @@
-{% include_relative _header.md %}
-
-{% include_relative contents.md %}
-
-Testing
-------
-##### (topic last updated: pending)
-<br /> 
+---
+title : "Testing"
+description: ""
+lead: ""
+date: 2022-03-31T00:00:00+00:00
+lastmod: 2022-03-31T00:00:00+00:00
+draft: false
+images: []
+menu:
+    docs:
+        parent: "tutorials"
+weight: 101
+toc: true
+---
 
 The Model-View-Update architecture used by Fabulous makes it simple to unit test every part of your application.  
 Apps are composed of 3 key pure F# functions: `init`, `update` and `view`  
@@ -18,7 +24,7 @@ It usually takes nothing and returns a value.
 
 Let's take this code for example:
 
-```fsharp
+```fs
 type Model =
     { Count: int
       Step: int }
@@ -30,7 +36,7 @@ let init () =
 Here we can make sure that the default state stays exact throughout the life of the project.  
 So using our favorite unit test framework (here we use [FsUnit](https://fsprojects.github.io/FsUnit/) for this example), we can write a test that will check if the value returned by `init` is the one we expect.
 
-```fsharp
+```fs
 [<Test>]
 let ``Init should return a valid initial state``() =
     App.init () |> should equal { Count = 0; Step = 1 }
@@ -43,7 +49,7 @@ Testing it is equivalent to what we just did with `init`.
 
 Let's take this code for example:
 
-```fsharp
+```fs
 type Model =
     { Count: int
       Step: int }
@@ -62,7 +68,7 @@ let update msg model =
 
 We can write the following tests:
 
-```fsharp
+```fs
 [<Test>]
 let ``Given the message Increment, Update should increment Count by Step``() =
     let initialModel = { Count = 5; Step = 4 }
@@ -105,7 +111,7 @@ The Viewer only takes a `ViewElement` as a parameter.
 (If you pass a `ViewElement` that represents a different control than the Viewer expects, the Viewer will throw an exception)
 
 Let's take this code for example:
-```fsharp
+```fs
 let view (model: Model) dispatch =  
     View.ContentPage(
         content=View.StackLayout(
@@ -137,7 +143,7 @@ And finally, we assert that the properties have the expected values.
 #### Viewer API
 The following approach uses the Viewer API. This is a way but with this you have to know exactly at which position the child you need is. 
 
-```fsharp
+```fs
 [<Test>]
 let ``View should generate a label showing the count number of the model``() =
     let model = { Count = 5; Step = 4; TimerOn = true }
@@ -155,7 +161,7 @@ With `findViewElement` and `tryFindViewElement` you don't need to know where exa
 This approach is the recommended way for testing and to get the ViewElements in a View.
 
 ##### findViewElement
-```fsharp
+```fs
 [<Test>]
 let ``View should generate a label showing the count number of the model``() =
     let model = { Count = 5; Step = 4; TimerOn = true }
@@ -169,7 +175,7 @@ let ``View should generate a label showing the count number of the model``() =
 ##### tryFindViewElement
 `tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement. 
 
-```fsharp
+```fs
 [<Test>]
 let ``When user is authenticated, View should not include a connection button``() =
     let model = { Count = 5; Step = 4; TimerOn = true }
@@ -183,7 +189,7 @@ let ``When user is authenticated, View should not include a connection button``(
 If you want to test your event handlers, you can retrieve them in the same way than a regular property.  
 Then, you can execute the event handler like a normal function and check its result through a mocked dispatch.
 
-```fsharp
+```fs
 [<Test>]
 let ``Clicking the button Increment should send the message Increment``() =
     let mockedDispatch msg =
