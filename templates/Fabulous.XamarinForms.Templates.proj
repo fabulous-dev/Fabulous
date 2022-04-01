@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Description>Fabulous for Xamarin.Forms Template</Description>
+        <Description>Template to create projects using Fabulous for Xamarin.Forms</Description>
         <Authors>Fabulous contributors</Authors>
         <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
