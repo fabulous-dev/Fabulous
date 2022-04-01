@@ -1,3 +1,1 @@
-# Fabulous v2
-
-This package is an alpha release. DO NOT USE in production.
+Fabulous combines the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL

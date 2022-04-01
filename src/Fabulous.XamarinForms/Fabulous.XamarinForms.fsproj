@@ -17,6 +17,8 @@
     <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
     <Compile Include="ViewNode.fs" />
     <Compile Include="Attributes.fs" />
     <Compile Include="Controls.fs" />
@@ -125,6 +127,5 @@
     <Compile Include="Views\Application.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
-    <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
