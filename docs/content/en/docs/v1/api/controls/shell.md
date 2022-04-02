@@ -1,4 +1,5 @@
 ---
+id: "v1-shell"
 title : "Shell"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 

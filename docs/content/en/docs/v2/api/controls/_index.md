@@ -1,4 +1,5 @@
 ---
+id: "v2-controls"
 title : "Controls"
 description: "Controls API Reference"
 lead: ""

@@ -1,4 +1,5 @@
 ---
+id: "v1-stepper"
 title : "Stepper"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.Stepper( 5.0 )
 ```
-
-<img src="images/view/Stepper-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -32,8 +30,6 @@ View.Stepper(
     value = 5.0
 )
 ```
-
-<img src="images/view/Stepper-adr-styled.png" width="300">
 
 See also:
 

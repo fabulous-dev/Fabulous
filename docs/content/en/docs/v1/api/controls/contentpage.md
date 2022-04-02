@@ -1,4 +1,5 @@
 ---
+id: "v1-contentpage"
 title : "ContentPage"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -23,8 +23,6 @@ View.ContentPage(
     content = View.Label("ContentPage with a single Label")
 )
 ```
-
-<img src="images/pages/content-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -41,8 +39,6 @@ View.ContentPage(
     )
 )
 ```
-
-<img src="images/pages/content-adr-styled.png" width="300">
 
 See also:
 

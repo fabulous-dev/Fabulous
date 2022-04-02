@@ -1,4 +1,5 @@
 ---
+id: "v1-carouselview"
 title : "CarouselView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -22,8 +22,6 @@ View.CarouselView([
     View.Label("Third CarouselView")
 ])
 ```
-
-<img src="images/view/CarouselView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -57,8 +55,6 @@ View.CarouselView(
     ]
 )
 ```
-
-<img src="images/view/CarouselView-adr-styled.png" width="300">
 
 See also:
 

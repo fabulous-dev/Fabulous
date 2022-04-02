@@ -1,4 +1,5 @@
 ---
+id: "v1-polygon"
 title : "Polygon"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -23,8 +23,6 @@ View.Polygon(
     strokeThickness = 5.
 )
 ```
-
-<img src="images/view/Polygon-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -40,8 +38,6 @@ View.Polygon(
     strokeThickness = 5.
 )
 ```
-
-<img src="images/view/Polygon-adr-styled.png" width="300">
 
 See also:
 

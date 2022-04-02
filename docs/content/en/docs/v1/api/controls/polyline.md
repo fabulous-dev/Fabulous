@@ -1,4 +1,5 @@
 ---
+id: "v1-polyline"
 title : "Polyline"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -22,8 +22,6 @@ View.Polyline(
     strokeThickness = 1.
 )
 ```
-
-<img src="images/view/Polyline-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -38,8 +36,6 @@ View.Polyline(
     strokeThickness = 1.
 )
 ```
-
-<img src="images/view/Polyline-adr-styled.png" width="300">
 
 See also:
 

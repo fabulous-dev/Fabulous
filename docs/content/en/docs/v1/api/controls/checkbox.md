@@ -1,4 +1,5 @@
 ---
+id: "v1-checkbox"
 title : "Checkbox"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.CheckBox(true)
 ```
-
-<img src="images/view/CheckBox-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -31,8 +29,6 @@ View.CheckBox(
     isChecked = true
 )
 ```
-
-<img src="images/view/CheckBox-adr-styled.png" width="300">
 
 See also:
 

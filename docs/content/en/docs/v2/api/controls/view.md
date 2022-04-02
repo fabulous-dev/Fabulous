@@ -1,4 +1,5 @@
 ---
+id: "v2-view"
 title: "View"
 description: ""
 lead: ""

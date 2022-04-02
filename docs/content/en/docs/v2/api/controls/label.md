@@ -1,4 +1,5 @@
 ---
+id: "v2-label"
 title: "Label"
 description: ""
 lead: ""

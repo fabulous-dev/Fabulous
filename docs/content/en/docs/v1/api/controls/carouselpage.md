@@ -1,4 +1,5 @@
 ---
+id: "v1-carouselpage"
 title : "CarouselPage"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -29,8 +29,6 @@ View.CarouselPage(
     ]
 )
 ```
-
-<img src="images/pages/content-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -62,8 +60,6 @@ View.CarouselPage(
     ]
 )
 ```
-
-<img src="images/pages/carousel-adr-styled.png" width="300">
 
 See also:
 

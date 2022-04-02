@@ -1,4 +1,5 @@
 ---
+id: "v1-videomanager"
 title : "VideoManager"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "extensions"
-weight: 101
 toc: true
 ---
 

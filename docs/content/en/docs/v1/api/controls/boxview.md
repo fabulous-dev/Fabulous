@@ -1,4 +1,5 @@
 ---
+id: "v1-boxview"
 title : "BoxView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.BoxView()
 ```
-
-<img src="images/view/BoxView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -30,8 +28,6 @@ View.BoxView(
     backgroundColor = style.ViewColor
 )
 ```
-
-<img src="images/view/BoxView-adr-styled.png" width="300">
 
 See also:
 

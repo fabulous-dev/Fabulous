@@ -1,4 +1,5 @@
 ---
+id: "v1-activityindicator"
 title : "ActivityIndicator"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.ActivityIndicator(isRunning = true)
 ```
-
-<img src="images/view/ActivityIndicator-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -31,8 +29,6 @@ View.ActivityIndicator(
     isRunning = true
 )
 ```
-
-<img src="images/view/ActivityIndicator-adr-styled.png" width="300">
 
 See also:
 

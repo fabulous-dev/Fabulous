@@ -1,4 +1,5 @@
 ---
+id: "v2-navigablelement"
 title: "NavigableElement"
 description: ""
 lead: ""

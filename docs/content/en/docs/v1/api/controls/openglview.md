@@ -1,4 +1,5 @@
 ---
+id: "v1-openglview"
 title : "OpenGLView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.OpenGLView(hasRenderLoop = true)
 ```
-
-<img src="images/view/OpenGLView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -32,8 +30,6 @@ View.OpenGLView(
     hasRenderLoop = true
 )
 ```
-
-<img src="images/view/OpenGLView-adr-styled.png" width="300">
 
 See also:
 

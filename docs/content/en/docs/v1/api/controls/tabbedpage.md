@@ -1,4 +1,5 @@
 ---
+id: "v1-tabbedpage"
 title : "TabbedPage"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -27,8 +27,6 @@ View.TabbedPage([
     )
 ])
 ```
-
-<img src="images/pages/tabbed-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -60,8 +58,6 @@ View.TabbedPage(
     ]
 )
 ```
-
-<img src="images/pages/tabbed-adr-styled.png" width="300">
 
 See also:
 

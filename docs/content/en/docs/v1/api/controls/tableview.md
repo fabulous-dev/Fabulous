@@ -1,4 +1,5 @@
 ---
+id: "v1-tableview"
 title : "TableView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -49,8 +49,6 @@ View.TableView(
     ])
 )
 ```
-
-<img src="images/view/TableView-adr-basic.png" width="300">
 
 See also:
 

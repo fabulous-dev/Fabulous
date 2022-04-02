@@ -1,4 +1,5 @@
 ---
+id: "v1-getting-started"
 title : "Getting started"
 description: ""
 lead: ""
@@ -9,7 +10,7 @@ images: []
 menu:
     docs:
         parent: "v1"
-weight: 101
+weight: 10
 toc: true
 ---
 

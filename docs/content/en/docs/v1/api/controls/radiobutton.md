@@ -1,4 +1,5 @@
 ---
+id: "v1-radiobutton"
 title : "RadioButton"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -21,8 +21,6 @@ View.StackLayout([
     View.RadioButton(Content.String "RadioButton 2")
 ])
 ```
-
-<img src="images/view/RadioButton-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -51,8 +49,6 @@ View.StackLayout(
     ]
 )
 ```
-
-<img src="images/view/RadioButton-adr-styled.png" width="300">
 
 See also:
 

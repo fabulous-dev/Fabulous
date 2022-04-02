@@ -1,4 +1,5 @@
 ---
+id: "v2-virtualized-collections"
 title: "Virtualized collections"
 description: ""
 lead: ""

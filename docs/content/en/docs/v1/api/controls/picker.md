@@ -1,4 +1,5 @@
 ---
+id: "v1-picker"
 title : "Picker"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -36,8 +36,6 @@ View.ContentPage(title ="Picker", content =
     )
 )
 ```
-
-<img src="images/view/Picker-adr-basic.png" width="300">
 
 See also:
 

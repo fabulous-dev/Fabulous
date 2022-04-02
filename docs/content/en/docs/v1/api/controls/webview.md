@@ -1,4 +1,5 @@
 ---
+id: "v1-webview"
 title : "WebView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -26,8 +26,6 @@ View.ContentPage(
 )
 ```
 
-<img src="images/view/WebView-adr-basic.png" width="300">
-
 ### Basic example with styling
 
 ```fs
@@ -42,8 +40,6 @@ View.ContentPage(
         )
 )
 ```
-
-<img src="images/view/WebView-adr-styled.png" width="300">
 
 See also:
 

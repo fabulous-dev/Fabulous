@@ -1,4 +1,5 @@
 ---
+id: "v1-path"
 title : "Path"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -22,8 +22,6 @@ View.Path(
 )
 ```
 
-<img src="images/view/Path-adr-basic.png" width="300">
-
 ## Basic example with styling
 
 ```fs
@@ -35,8 +33,6 @@ View.Path(
     data = Content.fromString "M 10,100 C 100,0 200,200 300,100"
 )
 ```
-
-<img src="images/view/Path-adr-styled.png" width="300">
 
 See also:
 

@@ -1,4 +1,5 @@
 ---
+id: "v1-navigationpage"
 title : "NavigationPage"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -23,8 +23,6 @@ View.NavigationPage([
     )
 ])
 ```
-
-<img src="images/pages/navigation-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -43,8 +41,6 @@ View.NavigationPage([
     )
 ])
 ```
-
-<img src="images/pages/navigation-adr-styled.png" width="300">
 
 See also:
 

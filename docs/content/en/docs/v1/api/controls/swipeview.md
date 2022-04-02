@@ -1,4 +1,5 @@
 ---
+id: "v1-swipeview"
 title : "SwipeView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -37,8 +37,6 @@ View.SwipeView(
         )
 )
 ```
-
-<img src="images/view/SwipeView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -86,8 +84,6 @@ View.SwipeView(
         )
 )
 ```
-
-<img src="images/view/SwipeView-adr-styled.png" width="300">
 
 See also:
 

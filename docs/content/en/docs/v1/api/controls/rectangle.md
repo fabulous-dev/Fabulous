@@ -1,4 +1,5 @@
 ---
+id: "v1-rectangle"
 title : "Rectangle"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -24,8 +24,6 @@ View.Rectangle(
     height = 50.
 )
 ```
-
-<img src="images/view/Rectangle-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -42,8 +40,6 @@ View.Rectangle(
     height = 50.
 )
 ```
-
-<img src="images/view/Rectangle-adr-styled.png" width="300">
 
 See also:
 

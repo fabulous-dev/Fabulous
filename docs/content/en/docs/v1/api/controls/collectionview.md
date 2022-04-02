@@ -1,4 +1,5 @@
 ---
+id: "v1-collectionview"
 title : "CollectionView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -26,8 +26,6 @@ View.CollectionView([
     View.Label("Third CollectionView")
 ])
 ```
-
-<img src="images/view/CollectionView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -61,8 +59,6 @@ View.CollectionView(
     ] 
 )
 ```
-
-<img src="images/view/CollectionView-adr-styled.png" width="300">
 
 See also:
 

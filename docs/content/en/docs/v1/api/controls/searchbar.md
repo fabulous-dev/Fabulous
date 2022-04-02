@@ -1,4 +1,5 @@
 ---
+id: "v1-searchbar"
 title : "SearchBar"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -18,8 +18,6 @@ toc: true
 ```fs
 View.SearchBar(placeholder = "SearchBar")
 ```
-
-<img src="images/view/SearchBar-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -31,8 +29,6 @@ View.SearchBar(
     placeholder = "SearchBar"
 )
 ```
-
-<img src="images/view/SearchBar-adr-styled.png" width="300">
 
 See also:
 

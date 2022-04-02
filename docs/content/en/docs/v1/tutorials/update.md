@@ -1,5 +1,6 @@
 ---
-title : "The Init and Update Functions"
+id: "v1-update"
+title: "The Init and Update Functions"
 description: ""
 lead: ""
 date: 2022-03-31T00:00:00+00:00
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "tutorials"
-weight: 101
 toc: true
 ---
 

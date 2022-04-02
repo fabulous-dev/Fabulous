@@ -1,5 +1,6 @@
 ---
-title : "fabulous-cli"
+id: "v1-dev-tools"
+title : "Using the Fabulous command line"
 description: ""
 lead: ""
 date: 2022-03-31T00:00:00+00:00
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "tutorials"
-weight: 101
 toc: true
 ---
 

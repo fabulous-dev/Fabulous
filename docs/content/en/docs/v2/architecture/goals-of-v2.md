@@ -1,4 +1,5 @@
 ---
+id: "v2-goals"
 title: "Reasonable goals of v2"
 description: ""
 lead: ""

@@ -1,4 +1,5 @@
 ---
+id: "about-fabulous-xf"
 title : "Fabulous for Xamarin.Forms"
 description: "Write cross-platform apps with Xamarin.Forms, using MVU architecture and dynamic UI"
 lead: ""

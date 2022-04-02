@@ -1,4 +1,5 @@
 ---
+id: "v1-flyoutpage"
 title : "FlyoutPage"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -40,8 +40,6 @@ View.FlyoutPage(
         )
 )
 ```
-
-<img src="images/pages/flyout-adr-basic.png" width="300">
 
 See also:
 

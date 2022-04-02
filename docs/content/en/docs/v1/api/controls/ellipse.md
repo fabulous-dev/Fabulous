@@ -1,4 +1,5 @@
 ---
+id: "v1-ellipse"
 title : "Ellipse"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -23,8 +23,6 @@ View.Ellipse(
 )
 ```
 
-<img src="images/view/Ellipse-adr-basic.png" width="300">
-
 ## Basic example with styling
 
 ```fs
@@ -37,8 +35,6 @@ View.Ellipse(
     height = 50.
 )
 ```
-
-<img src="images/view/Ellipse-adr-styled.png" width="300">
 
 See also:
 

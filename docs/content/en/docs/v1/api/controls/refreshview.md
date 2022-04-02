@@ -1,4 +1,5 @@
 ---
+id: "v1-refreshview"
 title : "RefreshVIew"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -24,8 +24,6 @@ View.RefreshView(
     ])
 )
 ```
-
-<img src="images/view/RefreshView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -48,8 +46,6 @@ View.RefreshView(
         )
 )
 ```
-
-<img src="images/view/RefreshView-adr-styled.png" width="300">
 
 See also:
 

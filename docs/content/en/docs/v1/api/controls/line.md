@@ -1,4 +1,5 @@
 ---
+id: "v1-line"
 title : "Line"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -25,8 +25,6 @@ View.Line(
 )
 ```
 
-<img src="images/view/Line-adr-basic.png" width="300">
-
 ## Basic example with styling
 
 ```fs
@@ -41,8 +39,6 @@ View.Line(
     y2 = 120.
 )
 ```
-
-<img src="images/view/Line-adr-styled.png" width="300">
 
 See also:
 

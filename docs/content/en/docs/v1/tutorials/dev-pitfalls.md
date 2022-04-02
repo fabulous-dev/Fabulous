@@ -1,4 +1,5 @@
 ---
+id: "v1-dev-pitfalls"
 title : "Pitfalls and F# 5.0 support"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "tutorials"
-weight: 101
 toc: true
 ---
 

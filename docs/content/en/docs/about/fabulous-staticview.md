@@ -1,4 +1,5 @@
 ---
+id: "about-fabulous-staticview"
 title : "Fabulous.StaticView (deprecated)"
 description: ""
 lead: ""

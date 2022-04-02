@@ -1,4 +1,5 @@
 ---
+id: "v1-effects"
 title : "Effects"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "api"
-weight: 101
 toc: true
 ---
 

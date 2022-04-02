@@ -1,4 +1,5 @@
 ---
+id: "v1-indicatorview"
 title : "IndicatorView"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -33,8 +33,6 @@ View.StackLayout([
     )
 ])
 ```
-
-<img src="images/view/IndicatorView-adr-basic.png" width="300">
 
 ## Basic example with styling
 
@@ -78,8 +76,6 @@ View.StackLayout([
     )
 ])
 ```
-
-<img src="images/view/IndicatorView-adr-styled.png" width="300">
 
 See also:
 

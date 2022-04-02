@@ -1,4 +1,5 @@
 ---
+id: "v1-listview"
 title : "ListView and ListViewGrouped"
 description: ""
 lead: ""
@@ -9,7 +10,6 @@ images: []
 menu:
     docs:
         parent: "controls"
-weight: 101
 toc: true
 ---
 
@@ -25,8 +25,6 @@ View.ListView(
     ]
 )
 ```
-
-<img src="images/view/ListView-adr-basic.png" width="300">
 
 The `itemSelected` callback uses integers indexes for keys to identify the elements.
 
@@ -52,8 +50,6 @@ View.ListViewGrouped(
     ]
 )
 ```
-
-<img src="images/view/ListGroupView-adr-basic.png" width="300">
 
 See also:
 

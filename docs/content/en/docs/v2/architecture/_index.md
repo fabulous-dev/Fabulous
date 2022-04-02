@@ -1,4 +1,5 @@
 ---
+id: "v2-architecture"
 title : "Architecture"
 description: "Architecture"
 lead: ""
