@@ -15,7 +15,7 @@ toc: true
 
 Xamarin.Forms user interfaces are rendered using the native controls of the target platform, allowing Xamarin.Forms applications to retain the appropriate look and feel for each platform. Effects allow the native controls on each platform to be customized without having to resort to a custom renderer implementation.
 
-### Using Effects in Fabulous.XamarinForms
+## Using Effects in Fabulous.XamarinForms
 
 The recommended way to use an effect in Fabulous is by using the dedicated `View.Effect`.  
 This control accepts the effect's exported full name (`"SomeResolutionGroup.SomeEffectName"`) and it can be attached to any control with the `effects` properties.
@@ -28,7 +28,7 @@ View.Button(effects = [
 
 This way is only suitable if your effect doesn't need any external values.
 
-### Create wrapper for custom effects with properties
+## Create wrapper for custom effects with properties
 
 If you want to use your own effects with properties in Fabulous.XamarinForms, you will need to write an extension.  
 For more information, please read about [View Extensions](view-a-extensions.html)
@@ -95,6 +95,7 @@ View.Label(effects = [
 ```
 
 Alternatively you can do it without an extension, and use both the `created` event and the `Effects` collection of the Xamarin.Forms control.
+
 ```fs
 View.Label(created = fun e ->
     let effect = new ShadowEffect()
@@ -106,9 +107,8 @@ View.Label(created = fun e ->
 
 This way is not recommended because it can't make use of the incremental update mecanism.
 
-
 See also:
+
 * [Xamarin.Forms - Effects](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/effects/)
 * [Xamarin.Forms - Creating an Effect](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/effects/creating)
 * [Xamarin.Forms - Introduction to Effects](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/effects/introduction)
-

@@ -13,45 +13,38 @@ weight: 101
 toc: true
 ---
 
-A Page that manages the navigation and user-experience of a stack of other pages.
+## Basic example
 
-### Basic example
-```fs 
-View.NavigationPage
-    (
-        pages = [
-            View.ContentPage(title = "ContentPage", content = View.Label("NavigationPage with a single Label"))
-        ]
+```fs
+View.NavigationPage([
+    View.ContentPage(
+        title = "ContentPage",
+        content = View.Label("NavigationPage with a single Label")
     )
+])
 ```
 
 <img src="images/pages/navigation-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-```fs 
-View.NavigationPage
-    (
-        pages = [
-            View.ContentPage(
-                title = "ContentPage", 
-                content = 
-                    View.Label
-                        (
-                            horizontalOptions = model.MyStyle.Position,
-                            verticalOptions = model.MyStyle.Position,
-                            backgroundColor = model.MyStyle.ViewColor,
-                            padding = model.MyStyle.Padding,
-                            text = "NavigationPage with a single Label" "
-                        )
-        ]
+```fs
+View.NavigationPage([
+    View.ContentPage(
+        title = "ContentPage", 
+        content = 
+            View.Label(
+                horizontalOptions = model.MyStyle.Position,
+                verticalOptions = model.MyStyle.Position,
+                backgroundColor = model.MyStyle.ViewColor,
+                padding = model.MyStyle.Padding,
+                text = "NavigationPage with a single Label"
+            )
     )
+])
 ```
 
 <img src="images/pages/navigation-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 

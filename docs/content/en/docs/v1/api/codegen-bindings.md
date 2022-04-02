@@ -97,6 +97,7 @@ toc: true
 | UpdateCode | string | ❌ No | Function to use instead of the generated view diffing for this property | Expects a signature of type `prev: ViewElement -> curr: ViewElement -> target: ControlType -> unit`. Function can be written directly inside the json, or make a reference to a function. If not specified, the default view diffing code will be used. |
 
 There is 3 different categories of property:
+
 - Existing scalar property: A property present in one of the dlls to include with a simple data type
 - Existing collection property: A property present in one of the dlls to include which is a collection (e.g. `Xamarin.Forms.View list`)
 - Dummy property: A non-existent property to include which can be either of type scalar or collection
@@ -146,13 +147,13 @@ See examples for these categories below.
 
 | Field      | Type      | Required | Description | Remarks |
 | ---------- | --------- | ----------- | -- | -- |
-| Source | string | ❓Depends | Name of the attached property to include (and overwrite) | |
+| Source | string | ❓ Depends | Name of the attached property to include (and overwrite) | |
 | TargetType | string | ❌ No | Type to which this attached property will be applied to | If not specified, a default base target type will be applied |
-| Name | string | ❓Depends | Name of the property used in the generated code (e.g. `buttonViewElement.MyProperty(value)`) | If not specified, `Source` will be used instead |
+| Name | string | ❓ Depends | Name of the property used in the generated code (e.g. `buttonViewElement.MyProperty(value)`) | If not specified, `Source` will be used instead |
 | UniqueName | string | ❌ No | Name to uniquely identify the property in the generated code | Use with caution. If not specified, `Type` and `Name` will be concatenated to create a unique name. (e.g. `ButtonText`). Subject to optimization |
-| DefaultValue | string | ❓Depends | Default value to apply to the property if none is given by the user (e.g. `0.0f`) | If not specified, `Name` will be used in lower camel case |
-| ElementType | string | ❓Depends | (Apply only if attached property is a collection) Full name of the item type of the collection | If `null`, the attached property is not considered to be a collection |
-| InputType | string | ❓Depends | Type expected in the constructor (e.g. `string` => `View.Button(text = "some string")`) | |
+| DefaultValue | string | ❓ Depends | Default value to apply to the property if none is given by the user (e.g. `0.0f`) | If not specified, `Name` will be used in lower camel case |
+| ElementType | string | ❓ Depends | (Apply only if attached property is a collection) Full name of the item type of the collection | If `null`, the attached property is not considered to be a collection |
+| InputType | string | ❓ Depends | Type expected in the constructor (e.g. `string` => `View.Button(text = "some string")`) | |
 | ModelType | string | ❌ No | Type as which the value will be stored in the ViewElement attributes dictionary | Make sure this type is efficient |
 | ConvertInputToModel | string | ❌ No | Function to convert the input value to the model type | Expects a signature of type `'Input -> 'Model`. Function can be written directly inside the json, or make a reference to a function. If not specified, no conversion will be applied. |
 | ConvertModelToValue | string | ❌ No | Function to convert the model value to the expected type of the real property | Expects a signature of type `'Model -> 'Value`. Function can be written directly inside the json, or make a reference to a function. If not specified, no conversion will be applied. |
@@ -210,7 +211,7 @@ See examples for these categories below.
 | Name                | string | ❌ No     |         |
 | UniqueName          | string | ❌ No     |         |
 | ShortName           | string | ❌ No     |         |
-| ElementType         | string | ❓Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
+| ElementType         | string | ❓ Depends | Usually automatically detected by the AssemblyReader step. If correct, no need to specify it. |
 | InputType           | string | ❌ No     |         |
 | ModelType           | string | ❌ No     |         |
 | ConvertInputToModel | string | ❌ No     |         |
@@ -233,7 +234,7 @@ See examples for these categories below.
 | Name                | string | ✅ Yes    |         |
 | UniqueName          | string | ❌ No     |         |
 | ShortName           | string | ❌ No     |         |
-| ElementType         | string | ❓Depends | Must be declared if property is a collection |
+| ElementType         | string | ❓ Depends | Must be declared if property is a collection |
 | InputType           | string | ✅ Yes    |         |
 | ModelType           | string | ❌ No     |         |
 | ConvertInputToModel | string | ❌ No     |         |

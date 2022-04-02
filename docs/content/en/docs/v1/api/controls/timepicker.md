@@ -13,44 +13,34 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.TimePicker()
 ```
 
 <img src="images/view/TimePicker-adr-basic.png" width="300">
 
-<br /> <br /> 
-
 ### Basic example with styling
 
-```fs 
-View.TimePicker
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.ViewColor
-    )
+```fs
+View.TimePicker(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.ViewColor
+)
 ```
 
-
 <img src="images/view/TimePicker-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [`Xamarin.Forms.TimePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TimePicker)
 
-<br /> 
+## More examples
 
-### More examples
-
-### TimePicker
-```fs 
+```fs
 View.TimePicker(
-    time = TimeSpan (12, 22, 0)                
+    time = TimeSpan(12, 22, 0)
 )
 ```

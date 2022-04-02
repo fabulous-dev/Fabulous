@@ -13,45 +13,37 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.Label("Label")
 ```
 
 <img src="images/view/Label-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Label
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.ViewColor,
-        padding = style.Padding,
-        text = "Label"
-    )
+```fs
+View.Label(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.ViewColor,
+    padding = style.Padding,
+    text = "Label"
+)
 ```
 
-
 <img src="images/view/Label-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [Label in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/text/Label)
 * [`Xamarin.Forms.Label`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Label)
 
-<br /> 
-
-### More examples
+## More examples
 
 The Label view is used for displaying text, both single and multi-line. Labels can have text decorations, colored text, and use custom fonts (families, sizes, and options).
 
-```fs 
+```fs
 View.Label(text = "this is a label")
+```

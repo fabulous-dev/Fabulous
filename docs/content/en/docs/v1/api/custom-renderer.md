@@ -13,7 +13,7 @@ weight: 101
 toc: true
 ---
 
-### Custom renderers
+## Custom renderers
 
 In Xamarin.Forms, custom renderers define how a control is rendered on the UI, and are specific to a platform (iOS, Android, etc.).  
 For example, the default iOSButtonRenderer will render a Xamarin.Forms.Button as a UIKit.UIButton and will handle all the properties such as `Text`, `Color`, etc.
@@ -25,11 +25,12 @@ With Fabulous for Xamarin.Forms, you can still use custom renderers like you wou
 Please read the [custom renderer official documentation](https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/custom-renderer/) to learn more about them.
 
 Here's an example of a custom renderer for displaying a Label with underlined text, which is not supported by Xamarin.Forms but the native platforms can do it:
+
 - [UnderlinedLabel](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/UnderlinedLabel.fs)
 - [UnderlinedLabelRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/UnderlinedLabelRenderer.fs)
 - [UnderlinedLabelRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/UnderlinedLabelRenderer.fs)
 
-### Custom controls
+## Custom controls
 
 In Xamarin.Forms, custom controls are controls that not part of the default controls of Xamarin.Forms.  
 They can either be extended controls (like the UnderlinedLabel above) or brand new ones.
@@ -39,6 +40,7 @@ Those custom controls necessarily have custom renderers attached to them, becaus
 When using with Fabulous, you'll need to both create the control class and its wrapper for Fabulous.
 
 Here's an example where we extend the Xamarin.Forms Entry control to add a `BorderColor` property:
+
 ```fs
 type BorderedEntry() =
     inherit Xamarin.Forms.Entry()
@@ -54,6 +56,7 @@ type BorderedEntry() =
 ```
 
 Along with this control, we create the wrapper (like defined in the [View Extensions documentation](Fabulous.XamarinForms/views-extending.html)) so we can use it in our Fabulous application:
+
 ```fs
 [<AutoOpen>]
 module FabulousBorderedEntry =
@@ -84,6 +87,7 @@ module FabulousBorderedEntry =
 Once this is done, we'll need a custom renderer _per platform_ for that control to handle the new BorderColor property.
 
 Here's the example for iOS:
+
 ```fs
 type BorderedEntryRenderer() =
     inherit EntryRenderer()
@@ -116,6 +120,7 @@ module Dummy_BorderedEntryRenderer =
 ```
 
 Complete example:
+
 - [BorderedEntry](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts/Controls/BorderedEntry.fs)
 - [BorderedEntryRenderer - iOS](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.iOS/BorderedEntryRenderer.fs)
 - [BorderedEntryRenderer - Android](https://github.com/TimLariviere/FabulousContacts/blob/master/FabulousContacts.Android/BorderedEntryRenderer.fs)

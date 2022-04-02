@@ -13,44 +13,34 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.CheckBox(true)
 ```
 
 <img src="images/view/CheckBox-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.CheckBox
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.LayoutColor,
-        isChecked = true
-    )
+```fs
+View.CheckBox(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.LayoutColor,
+    isChecked = true
+)
 ```
 
-
 <img src="images/view/CheckBox-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [`Xamarin.Forms.CheckBox`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.CheckBox)
 
-<br /> 
+## More examples
 
-### More examples
-
-```fs 
-
+```fs
 View.CheckBox(
     isChecked = true,
     checkedChanged = (fun on -> dispatch (...))

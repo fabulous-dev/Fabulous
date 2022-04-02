@@ -17,29 +17,38 @@ The performance of your app may in some cases be dominated by your view function
 This is particularly the case if many  message updates are being generated and processed, though not if other operations dominate such as network latency.
 Improving the performance of your view function should be done with respect to your overall performance targets and needs.
 
-On each update to the model, the view function is executed. The resulting view is then compared item by item with the previous view
-and updates are made to the underlying controls.
+On each update to the model, the view function is executed. The resulting view is then compared item by item with the previous view and updates are made to the underlying controls.
 
-As a result, views functions that are frequently executed (because of many message updates) are generally only
-efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
-objects on each invocation of the `view` function. 
+As a result, views functions that are frequently executed (because of many message updates) are generally only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical objects on each invocation of the `view` function.  
 This must be done explicitly. One way of doing this is to use `dependsOn`.
 Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
+
 ```fs
 let view model dispatch =
     ...
     dependsOn () (fun model () -> 
-        View.StackLayout(
-          children=
-            [ View.Label(text=sprintf "Grid (6x6, auto):")
-              View.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
-                coldefs=[for i in 1 .. 6 -> box "auto"], 
-                children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                                View.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
-                                        .GridRow(i-1).GridColumn(j-1) ] )
-            ])
+        View.StackLayout([
+            View.Label("Grid (6x6, auto):")
+
+            View.Grid(
+                rowdefs = [for i in 1 .. 6 -> box "auto"],
+                coldefs = [for i in 1 .. 6 -> box "auto"],
+                children = [
+                    for i in 1 .. 6 do
+                        for j in 1 .. 6 do
+                            View.BoxView(
+                                Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
+                            )
+                             .GridRow(i-1)
+                             .GridColumn(j-1)
+                ]
+            )
+        ]
+    )
 ```
+
 Inside the function - the one passed to `dependsOn` - the `model` is rebound to be inaccessbile with a `DoNotUseMe` type so you can't use it. Here is an example where some of the model is extracted:
+
 ```fs
 let view model dispatch =
     ...
@@ -48,14 +57,16 @@ let view model dispatch =
                     valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))))) 
     ...
 ```
+
 In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
 If not, this section of the view will be reused. This helps ensure that this part of the view description only depends on the parts of the model extracted.
 
-You can also use 
+You can also use
+
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
-### Optimizing view performance in advanced scenarios: the `key` property
+## Optimizing view performance in advanced scenarios: the `key` property
 
 Each time the `view` function is called, Fabulous will try to update the UI the most efficiently possible by reusing existing controls as much as possible (for exact details, see [Views: Differential Update of Lists of Things](#views-differential-update-of-lists-of-things)).  
 This is fine in the majority of scenarios, but some times Fabulous might reuse controls that don't really match the expectations we can have from the code.  
@@ -102,10 +113,11 @@ Now, Fabulous will be aware that `second-player` should remain the same between 
 
 `key` must be unique among its sibling inside a collection (e.g. `items`, `children`).  
 Using the same key at different places is ok.
-   
-### Views: Differential Update of Lists of Things
+
+## Views: Differential Update of Lists of Things
 
 There are a few different kinds of list in view descriptions:
+
 1. lists of raw data (e.g. data for a chart control, though there are no samples like that yet in this library)
 2. long lists of UI elements that are used to produce cells (e.g. `ListView`, see above)
 3. short lists of UI elements (e.g. StackLayout `children`)
@@ -118,14 +130,16 @@ instance on each invocation. The incremental update of dynamic views maintains a
 (e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.
 
 Fabulous prioritizes reuse in the following order:
+
 1. Same ViewElement instance (when using dependsOn)
+
 ```fs
 View.Grid([
     dependsOn () (fun _ _ -> View.Label(text = "Hello, World!"))
 ])
 ```
 
-2. Same key and control type (aka. `canReuseView` returns true)
+1. Same key and control type (aka. `canReuseView` returns true)
 
 ```fs
 // Previous View
@@ -141,16 +155,18 @@ View.Grid([
 ])
 ```
 
-3. If none of the above, Fabulous will select the first element that returns `canReuseView = true` among the eligible remaining previous elements.
+1. If none of the above, Fabulous will select the first element that returns `canReuseView = true` among the eligible remaining previous elements.
 
-4. If no previous element can be reused, a new one is created
+1. If no previous element can be reused, a new one is created
 
 Note that old keyed elements that didn't had a matching key in the new list will be destroyed instead of being reused by new unkeyed elements to help developers avoid undesired animations, such as fade-in/fade-out on Button Text changes on iOS ([#308](https://github.com/fsprojects/Fabulous/issues/308)) or ripple effects on Android Button.
 
 In the end, controls that weren't reused are destroyed.
 
 This means
+
 1. Incremental update costs minimally one transition of the whole list.
+
 2. Incremental update recycles controls as much as possible if you use the same instance or `key` property.  
    Otherwise, there is no guarantee that you get same control next time.
 
@@ -158,5 +174,3 @@ NOTE: The list diffing will limit mutations to only Move, Remove, and Insert, ev
 This is to support the limitations imposed by how Xamarin.Forms reacts to changes in `System.Collections.ObjectModel.ObservableCollection<'T>`.
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
-
-

@@ -13,45 +13,37 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
+
 A single page app typically returns a `ContentPage`. For example:
 
-```fs 
-View.ContentPage(title = "ContentPage", content = View.Label("ContentPage with a single Label"))
+```fs
+View.ContentPage(
+    title = "ContentPage",
+    content = View.Label("ContentPage with a single Label")
+)
 ```
+
 <img src="images/pages/content-adr-basic.png" width="300">
-<br /> <br /> 
 
-### Basic example with styling
+## Basic example with styling
 
-```fs 
+```fs
 View.ContentPage(
     backgroundColor = style.PageColor,
     title = "ContentPage",
-    content = 
-        View.Label
-            (   
-                horizontalOptions = style.Position,
-                verticalOptions = style.Position,
-                backgroundColor = style.ViewColor,
-                padding = style.Padding,
-                text = sprintf "ContentPage with a single Label" 
-            )
+    content = View.Label(
+        horizontalOptions = style.Position,
+        verticalOptions = style.Position,
+        backgroundColor = style.ViewColor,
+        padding = style.Padding,
+        text = "ContentPage with a single Label"
+    )
 )
 ```
-<img src="images/pages/content-adr-styled.png" width="300">
 
-<br /> <br /> 
+<img src="images/pages/content-adr-styled.png" width="300">
 
 See also:
 
 * [`Xamarin.Forms.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
-
-
-
-
-
-
-
-
-

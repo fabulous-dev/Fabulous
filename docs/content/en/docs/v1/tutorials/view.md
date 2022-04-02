@@ -30,7 +30,8 @@ in the model. Differential update is used to efficiently update the Xamarin.Form
 and current view descriptions.
 
 Here is a larger example:
-```fs 
+
+```fs
 type Model =
     { Balance : decimal
         CurrencySymbol : string
@@ -46,7 +47,7 @@ let init() =
     { Balance = 2m
         CurrencySymbol = "$"
         User = Some "user"
-    }, Cmd.none    
+    }, Cmd.none
 
 let update msg model =
     match msg with
@@ -72,7 +73,9 @@ let view model dispatch =
                     yield View.Button(text="Login", command=(fun () -> dispatch (Login (Some "user"))))
             ]))
 ```
-The four main control groups used to create the user interface of a Xamarin.Forms application are: 
+
+The four main control groups used to create the user interface of a Xamarin.Forms application are:
+
 * [Pages](view-pages.html)
 * [Layouts](view-layouts.html)
 * [Interface objects](view-interface-objects.html)

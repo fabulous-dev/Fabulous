@@ -18,6 +18,7 @@ Pop-ups are a special case in Fabulous for Xamarin.Forms: they are part of the v
 In Fabulous for Xamarin.Forms we only describe what a page should look like and have no access to UI elements. As such, there is no direct implementation of those 2 methods in Fabulous but instead we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
 
 Here is an example of the use of a confirmation pop-up - note the requirement of `Cmd.AsyncMsg` so as not to block on the UI thread:
+
 ```fs
 type Msg =
     | DisplayAlert

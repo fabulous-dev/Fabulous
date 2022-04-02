@@ -13,60 +13,50 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
-View.Polygon
-    (                           
-        points = Points.fromString "40,10 70,80 10,50",
-        fill = View.SolidColorBrush(Color.Black),
-        stroke = View.SolidColorBrush(Color.Orange),
-        strokeThickness = 5.            
-    )
+```fs
+View.Polygon(
+    points = Points.fromString "40,10 70,80 10,50",
+    fill = View.SolidColorBrush(Color.Black),
+    stroke = View.SolidColorBrush(Color.Orange),
+    strokeThickness = 5.
+)
 ```
 
 <img src="images/view/Polygon-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Polygon
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.ViewColor,     
-        margin = style.Thickness,                             
-        points = Points.fromString "40,10 70,80 10,50",
-        fill = View.SolidColorBrush(Color.Black),
-        stroke = View.SolidColorBrush(Color.Orange),
-        strokeThickness = 5.            
-    )
+```fs
+View.Polygon(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.ViewColor,
+    margin = style.Thickness,
+    points = Points.fromString "40,10 70,80 10,50",
+    fill = View.SolidColorBrush(Color.Black),
+    stroke = View.SolidColorBrush(Color.Orange),
+    strokeThickness = 5.
+)
 ```
 
-
 <img src="images/view/Polygon-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [Polygon in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/polygon)
 * [`Xamarin.Forms.Polygon`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Polygon)
 
-<br /> 
+## More examples
 
-### More examples
+`Polygon` can be used to draw polygons, which are connected series of lines that form closed shapes.
 
-`Polygon` can be used to draw polygons, which are connected series of lines that form closed shapes. 
-
-```fs 
+```fs
 let polygonPoints1 = "40,10 70,80 10,50"
 let polygonPoints2 = "0 48, 0 144, 96 150, 100 0, 192 0, 192 96, 50 96, 48 192, 150 200 144 48"
 
-View.Label("Polygon")
+// Polygon"
 View.Polygon(
     points = Points.fromString polygonPoints1,
     fill = View.SolidColorBrush(Color.AliceBlue),
@@ -74,7 +64,7 @@ View.Polygon(
     strokeThickness = 5.
 )
 
-View.Label("Polygon with dashed stroke")
+// Polygon with dashed stroke
 View.Polygon(
     points = Points.fromString polygonPoints1,
     fill = View.SolidColorBrush(Color.AliceBlue),
@@ -84,7 +74,7 @@ View.Polygon(
     strokeDashOffset = 6.
 )
 
-View.Label("EvenOdd polygon")
+// EvenOdd polygon
 View.Polygon(
     points = Points.fromString polygonPoints2,
     fill = View.SolidColorBrush(Color.Blue),
@@ -93,7 +83,7 @@ View.Polygon(
     strokeThickness = 3.
 )
 
-View.Label("NonZero polygon")
+// NonZero polygon
 View.Polygon(
     points = Points.fromString polygonPoints2,
     fill = View.SolidColorBrush(Color.Black),

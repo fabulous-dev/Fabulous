@@ -13,59 +13,49 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
-View.Rectangle
-    (                   
-        fill = View.SolidColorBrush(Color.Black),
-        stroke = View.SolidColorBrush(Color.Orange),
-        strokeThickness = 5.,                                
-        width = 150.,
-        height = 50.
-    )
+```fs
+View.Rectangle(
+    fill = View.SolidColorBrush(Color.Black),
+    stroke = View.SolidColorBrush(Color.Orange),
+    strokeThickness = 5.,
+    width = 150.,
+    height = 50.
+)
 ```
 
 <img src="images/view/Rectangle-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Rectangle
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.ViewColor,      
-        margin = style.Thickness,                            
-        fill = View.SolidColorBrush(Color.Black),
-        stroke = View.SolidColorBrush(Color.Orange),
-        strokeThickness = 5.,                                
-        width = 150.,
-        height = 50.
-    )
+```fs
+View.Rectangle(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.ViewColor,
+    margin = style.Thickness,
+    fill = View.SolidColorBrush(Color.Black),
+    stroke = View.SolidColorBrush(Color.Orange),
+    strokeThickness = 5.,
+    width = 150.,
+    height = 50.
+)
 ```
 
-
 <img src="images/view/Rectangle-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [Rectangle in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/shapes/Rectangle)
 * [`Xamarin.Forms.Rectangle`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Rectangle)
 
-<br /> 
+## More examples
 
-### More examples
+`Rectangle` can be used to draw rectangles and squares.
 
-`Rectangle` can be used to draw rectangles and squares. 
-
-```fs 
-View.Label("Filled rectangle")
+```fs
+// Filled rectangle
 View.Rectangle(
     fill = View.SolidColorBrush(Color.Red),
     width = 150.,
@@ -73,7 +63,7 @@ View.Rectangle(
     horizontalOptions = LayoutOptions.Start
 )
 
-View.Label("Square")
+// Square
 View.Rectangle(
     stroke = View.SolidColorBrush(Color.Red),
     strokeThickness = 4.,
@@ -82,7 +72,7 @@ View.Rectangle(
     horizontalOptions = LayoutOptions.Start
 )
 
-View.Label("Rectangle with stroke")
+// Rectangle with stroke
 View.Rectangle(
     stroke = View.SolidColorBrush(Color.Red),
     strokeThickness = 4.,
@@ -91,7 +81,7 @@ View.Rectangle(
     horizontalOptions = LayoutOptions.Start
 )
 
-View.Label("Filled rectangle with stroke")
+// Filled rectangle with stroke
 View.Rectangle(
     fill = View.SolidColorBrush(Color.DarkBlue),
     stroke = View.SolidColorBrush(Color.Red),
@@ -101,7 +91,7 @@ View.Rectangle(
     horizontalOptions = LayoutOptions.Start
 )
 
-View.Label("Filled rectangle with dashed stroke")
+// Filled rectangle with dashed stroke
 View.Rectangle(
     fill = View.SolidColorBrush(Color.DarkBlue),
     stroke = View.SolidColorBrush(Color.Red),
@@ -113,7 +103,7 @@ View.Rectangle(
     horizontalOptions = LayoutOptions.Start
 )
 
-View.Label("Rectangle with rounded corners")
+// Rectangle with rounded corners
 View.Rectangle(
     fill = View.SolidColorBrush(Color.Blue),
     stroke = View.SolidColorBrush(Color.Black),

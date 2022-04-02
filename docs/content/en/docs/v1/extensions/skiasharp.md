@@ -47,6 +47,7 @@ View.SKCanvasView(enableTouchEvents = true,
 ```
 
 By default, the view will not be redrawn when the model changes. You should set `invalidate` to true when you know that a redraw is needed. Set it back to false when done, otherwise it will be redrawn at each update.
+
 ```fs
 View.SKCanvasView(..., invalidate = true)
 ```

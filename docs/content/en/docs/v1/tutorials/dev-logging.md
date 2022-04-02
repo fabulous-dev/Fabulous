@@ -37,10 +37,10 @@ type App () as app =
         |> Program.withErrorHandler (fun (message, exn) -> writeToDisk exn)
         |> XamarinFormsProgram.run app
 ```
+
 In this example, logs will be written to the console before the error handler can write the exceptions to the disk.
 
-Writing a custom trace function
-------
+## Writing a custom trace function
 
 Writing a custom trace function is simple.  
 You need to make a function that accepts a `Program<'model, 'msg, 'view>` and that outputs another `Program<'model, 'msg, 'view>`.
@@ -96,8 +96,7 @@ let withSimpleTrace (program: Program<'model, 'msg, _>) =
     { program with update = traceUpdate }
 ```
 
-AppCenter
-------
+## AppCenter
 
 Here's a good example of implementing our own trace function.
 
@@ -108,10 +107,12 @@ We can define our own trace functions to send analytics and crashes to AppCenter
 
 AppCenter provides us with a really simple way to report to it.  
 We only need to install the following packages:
+
 - [`Microsoft.AppCenter.Analytics`](https://www.nuget.org/packages/Microsoft.AppCenter.Analytics/)
 - [`Microsoft.AppCenter.Crashes`](https://www.nuget.org/packages/Microsoft.AppCenter.Crashes/)
 
 Once the packages added, we can access 3 methods:
+
 - `Start`: Initialize AppCenter by providing our app secrets
 - `Analytics.TrackEvent`: Track a custom event with associated data
 - `Crashes.TrackError`: Track an exception.

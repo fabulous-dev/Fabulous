@@ -17,7 +17,7 @@ The Model-View-Update architecture used by Fabulous makes it simple to unit test
 Apps are composed of 3 key pure F# functions: `init`, `update` and `view`  
 They take some parameters and return a value. Ideal for unit testing.
 
-### Testing `init`
+## Testing `init`
 
 `init` is the easiest one to test.  
 It usually takes nothing and returns a value.
@@ -42,7 +42,7 @@ let ``Init should return a valid initial state``() =
     App.init () |> should equal { Count = 0; Step = 1 }
 ```
 
-### Testing `update`
+## Testing `update`
 
 `update` can be more complex but it remains a pure F# function.  
 Testing it is equivalent to what we just did with `init`.
@@ -88,14 +88,14 @@ let ``Given the message Reset, Update should reset the state``() =
     App.update Reset initialModel |> should equal expectedModel
 ```
 
-### Testing `init` and `update` when using commands
+## Testing `init` and `update` when using commands
 
 Testing `Cmd<'msg>` can be hard, because there's no way of knowing what the functions inside `Cmd` really are before executing them.
 
 The recommended way is to apply the `CmdMsg` pattern.  
 See [Replacing commands with command messages for better testability](Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability)
 
-### Testing view
+## Testing view
 
 Views in Fabulous are testable as well, which makes it a clear advantage over more classic OOP frameworks (like C#/MVVM).  
 The `view` function returns a `ViewElement` value (which is a dictionary of attribute-value pairs). So we can check against that dictionary if we find the property we want, with the value we want.
@@ -111,8 +111,9 @@ The Viewer only takes a `ViewElement` as a parameter.
 (If you pass a `ViewElement` that represents a different control than the Viewer expects, the Viewer will throw an exception)
 
 Let's take this code for example:
+
 ```fs
-let view (model: Model) dispatch =  
+let view (model: Model) dispatch =
     View.ContentPage(
         content=View.StackLayout(
             automationId="stackLayoutId"
@@ -140,8 +141,9 @@ From there, we create the Viewers to help us read the properties of the controls
 
 And finally, we assert that the properties have the expected values.
 
-#### Viewer API
-The following approach uses the Viewer API. This is a way but with this you have to know exactly at which position the child you need is. 
+### Viewer API
+
+The following approach uses the Viewer API. This is a way but with this you have to know exactly at which position the child you need is.
 
 ```fs
 [<Test>]
@@ -156,11 +158,13 @@ let ``View should generate a label showing the count number of the model``() =
     countLabel.Text |> should equal "5"
 ```
 
-#### FindViewElement / TryFindViewElement
-With `findViewElement` and `tryFindViewElement` you don't need to know where exactly the child is positioned. You have to set `automationId` on the ViewElements which will be used by those functions to find the element in the tree. 
+### FindViewElement / TryFindViewElement
+
+With `findViewElement` and `tryFindViewElement` you don't need to know where exactly the child is positioned. You have to set `automationId` on the ViewElements which will be used by those functions to find the element in the tree.
 This approach is the recommended way for testing and to get the ViewElements in a View.
 
-##### findViewElement
+#### findViewElement
+
 ```fs
 [<Test>]
 let ``View should generate a label showing the count number of the model``() =
@@ -172,8 +176,9 @@ let ``View should generate a label showing the count number of the model``() =
     countLabel.Text |> should equal "5"
 ```
 
-##### tryFindViewElement
-`tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement. 
+#### tryFindViewElement
+
+`tryFindViewElement` delivers a quickaccess to a ViewElement as findViewElement but here you get an Option Type. With this you can also check for the existence of a ViewElement.
 
 ```fs
 [<Test>]
@@ -182,9 +187,9 @@ let ``When user is authenticated, View should not include a connection button``(
     let actualView = App.view model ignore
     
     tryFindViewElement "ConnectionButton" actualView |> should equal None
-``` 
+```
 
-### Testing if a control dispatches the correct message
+## Testing if a control dispatches the correct message
 
 If you want to test your event handlers, you can retrieve them in the same way than a regular property.  
 Then, you can execute the event handler like a normal function and check its result through a mocked dispatch.
@@ -205,6 +210,6 @@ let ``Clicking the button Increment should send the message Increment``() =
     incrementButton.Command ()
 ```
 
+## See also
 
-### See also
 - [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)

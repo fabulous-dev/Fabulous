@@ -13,46 +13,37 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.Slider( 5.0 )
 ```
 
 <img src="images/view/Slider-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Slider
-(
+```fs
+View.Slider(
     backgroundColor = style.ViewColor,
     minimumMaximum = (0.0, 10.0),
     value = 5.0
 )
 ```
 
-
 <img src="images/view/Slider-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [`Xamarin.Forms.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider)
 
-<br /> 
-
-### More examples
+## More examples
 
 ```fs
 View.Slider(
     minimumMaximum = (0.0, 10.0),
-    value= double step,
-    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))
+    value = double step,
+    valueChanged = (fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))
 )
 ```
 

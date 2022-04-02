@@ -17,18 +17,45 @@ Xamarin.Forms Shell reduces the complexity of mobile application development by 
 
 `Unfortunately Shell is only partially supported in Fabulous for technical reasons, so it is recommended not to use it for the moment.`
 
-```fs     
-View.Shell(title = "TitleShell", items = [
-    View.FlyoutItem(  title = "Flyout", flyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems, items = [
-        View.Tab( title = "Seiten", items = [
-            View.ShellContent( title = "welcome", content = View.ContentPage(View.Label("welcome ...")))                    
-            View.ShellContent( title = "stuff", content = View.ContentPage(View.Label("stuff ...")))
-        ])   
-        View.ShellContent( title = "more", content = View.ContentPage(View.Label("more stuff ...")))
-    ])
-    View.MenuItem( text = "config")
-])   
-  
+```fs
+View.Shell(
+    title = "TitleShell",
+    items = [
+        View.FlyoutItem(
+            title = "Flyout",
+            flyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+            items = [
+                View.Tab(
+                    title = "Seiten",
+                    items = [
+                        View.ShellContent(
+                            title = "welcome",
+                            content =
+                                View.ContentPage(
+                                    View.Label("welcome ...")
+                                )
+                        )
+                        View.ShellContent(
+                            title = "stuff",
+                            content =
+                                View.ContentPage(
+                                    View.Label("stuff ...")
+                                )
+                        )
+                    ]
+                )
+                View.ShellContent(
+                    title = "more",
+                    content =
+                        View.ContentPage(
+                            View.Label("more stuff ...")
+                        )
+                )
+            ]
+        )
+        View.MenuItem(text = "config")
+    ]
+)
 ```
 
 See also:

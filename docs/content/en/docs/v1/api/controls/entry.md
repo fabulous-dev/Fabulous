@@ -13,41 +13,33 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.Entry("Entry")
 ```
 
 <img src="images/view/Entry-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Entry
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.LayoutColor,
-        text = "Entry"
-    )
+```fs
+View.Entry(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.LayoutColor,
+    text = "Entry"
+)
 ```
 
 <img src="images/view/Entry-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [Entry in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/text/Entry)
 * [`Xamarin.Forms.`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.)
 
-<br />
-
-### More examples
+## More examples
 
 An example `Entry` is as follows:
 

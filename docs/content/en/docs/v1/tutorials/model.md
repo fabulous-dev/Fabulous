@@ -18,7 +18,7 @@ It is common for the desgin of the model to grow "organically" as you prototype 
 
 The init function returns your initial model.  The update function updates the model as messages are received.
 
-### Messages and Validation
+## Messages and Validation
 
 Validation is generally done on updates to the model storing error messages from validation logic in the model so they can be correctly and simply displayed to the user. Here is a very basic example:
 
@@ -118,7 +118,7 @@ let init () = { AnimalName = validateAnimal "Emu" }
 
 Note that the same validation logic can be used in both your app and a service back-end.
 
-### Saving Application State
+## Saving Application State
 
 Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using `Json.NET`:
 
@@ -154,4 +154,3 @@ type Application() =
         Debug.WriteLine "OnStart: using same logic as OnResume()"
         this.OnResume()
 ```
-

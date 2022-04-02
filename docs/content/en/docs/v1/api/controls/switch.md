@@ -13,47 +13,38 @@ weight: 101
 toc: true
 ---
 
-### Basic example
+## Basic example
 
-
-```fs 
+```fs
 View.Switch()
 ```
 
 <img src="images/view/Switch-adr-basic.png" width="300">
 
-<br /> <br /> 
+## Basic example with styling
 
-### Basic example with styling
-
-```fs 
-View.Switch
-    (
-        horizontalOptions = style.Position,
-        verticalOptions = style.Position,
-        backgroundColor = style.ViewColor,
-        isToggled = false
-    )
+```fs
+View.Switch(
+    horizontalOptions = style.Position,
+    verticalOptions = style.Position,
+    backgroundColor = style.ViewColor,
+    isToggled = false
+)
 ```
 
-
 <img src="images/view/Switch-adr-styled.png" width="300">
-
-<br /> <br /> 
 
 See also:
 
 * [`Xamarin.Forms.Switch`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Switch)
 
-<br /> 
+## More examples
 
-### More examples
+`Switch` is a horizontal toggle button that can be manipulated by the user to toggle between on and off states, which are represented by a boolean value.
 
-`Switch` is a horizontal toggle button that can be manipulated by the user to toggle between on and off states, which are represented by a boolean value. 
-
-```fs 
+```fs
 View.Switch(
-    isToggled = false, 
+    isToggled = false,
     toggled = fun on -> dispatch (SwitchToggled (...))
 )
 ```

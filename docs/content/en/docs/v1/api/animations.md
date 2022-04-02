@@ -15,7 +15,7 @@ toc: true
 
 Animations and focus are specified by accessing the underlying Xamarin.Forms control and using
 Xamarin.Forms animation specifications. The underlying control is usually accessed
-via a `ViewRef`, akin to a `ref` in HTML/JavaScript and React. 
+via a `ViewRef`, akin to a `ref` in HTML/JavaScript and React.
 
 * A `ViewRef` must have a sufficient scope that it lives long enough, e.g. a global scope
   or the scope of the model.  The `ViewRef` can be held in the model itself if necessary.
@@ -45,10 +45,9 @@ View.Label(text="hello", created=(fun l ->  label <- Some l))
 The `Value` property may thus fail if the underlying control has been collected.  
 As a result it is often sensible to use the `TryValue` property which returns an option.
 
-Animations
-------
+## Animations
 
-Animations are specified by using a Xamarin.Forms animation specification on the underlying control, e.g. 
+Animations are specified by using a Xamarin.Forms animation specification on the underlying control, e.g.
 
 ```fs
 let animatedLabelRef = ViewRef<Label>()
@@ -74,16 +73,16 @@ and `Async.StartAsTask`, or by using `task { ... }` from the F# community `TaskB
 Examples of custom tasks are shown in C# syntax in [Animation in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/animation/).  
 
 See also
+
 * [Animation in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/animation/)
 * [Simple Animations in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/animation/simple)
 * [Easing Functions in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/animation/easing)
 * [Custom Animations in Xamarin.Forms](https://docs.microsoft.com/xamarin/xamarin-forms/user-interface/animation/custom)
 
-
-Focus
-------
+## Focus
 
 ViewRefs can be used to give focus to particular elements using `.Focus()`.
 
 See also
+
 * [VisualElement.Focus Method](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.visualelement.focus?view=xamarin-forms)
