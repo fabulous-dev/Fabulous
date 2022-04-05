@@ -28,7 +28,7 @@ module App =
                         .font(namedSize = NamedSize.Title)
                         .centerTextHorizontal ()
 
-                    (VerticalStackLayout() {
+                    (VStack() {
                         Label($"Count is {model.Count}")
                             .centerTextHorizontal ()
 
