@@ -193,12 +193,12 @@ type ButtonModifiers =
         ButtonModifiers.image (this, light, ?dark = dark)
 
     [<Extension>]
-    static member inline onPressed(this: WidgetBuilder<'msg, #IButton>, msg: 'msg) =
-        this.AddScalar(Button.Pressed.WithValue(msg))
+    static member inline onPressed(this: WidgetBuilder<'msg, #IButton>, onPressed: 'msg) =
+        this.AddScalar(Button.Pressed.WithValue(onPressed))
 
     [<Extension>]
-    static member inline onReleased(this: WidgetBuilder<'msg, #IButton>, msg: 'msg) =
-        this.AddScalar(Button.Released.WithValue(msg))
+    static member inline onReleased(this: WidgetBuilder<'msg, #IButton>, onReleased: 'msg) =
+        this.AddScalar(Button.Released.WithValue(onReleased))
 
     /// <summary>Link a ViewRef to access the direct Button control instance</summary>
     [<Extension>]
