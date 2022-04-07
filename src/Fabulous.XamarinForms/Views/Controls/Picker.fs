@@ -51,6 +51,9 @@ module Picker =
                 | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
                 | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
+    let SelectedIndex =
+        Attributes.defineBindable<int> Picker.SelectedIndexProperty
+
     let SelectedIndexChanged =
         Attributes.defineEventWithAdditionalStep
             "Picker_SelectedIndexChanged"
@@ -72,10 +75,11 @@ module Picker =
 [<AutoOpen>]
 module PickerBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline Picker<'msg>(items: string list, onSelectedIndexChanged: int -> 'msg) =
+        static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
                 Picker.ItemSource.WithValue(items |> Array.ofList),
+                Picker.SelectedIndex.WithValue(selectedIndex),
                 Picker.SelectedIndexChanged.WithValue
                     (fun sender ->
                         let picker = sender :?> Picker
