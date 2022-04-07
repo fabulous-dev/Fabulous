@@ -3,8 +3,8 @@ id: "v2-button"
 title: "Button"
 description: ""
 lead: ""
-date: 2022-03-24T00:00:00+00:00
-lastmod: 2022-03-24T00:00:00+00:00
+date: 2022-04-06T00:00:00+00:00
+lastmod: 2022-04-06T00:00:00+00:00
 draft: false
 images: []
 menu:
@@ -70,7 +70,6 @@ Button("Press me!", ClickMsg)
     .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
     .onPressed(PressedMsg)
     .onReleased(ReleasedMsg)
-    
 ```
 
 ### Get access to the underlying Xamarin.Forms.Label
