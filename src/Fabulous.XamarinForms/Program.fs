@@ -32,7 +32,7 @@ module ViewHelpers =
         if ViewHelpers.canReuseView prev curr then
             canReuseAutomationId prev curr
         else
-            true
+            false
 
 module Program =
     let inline private define
