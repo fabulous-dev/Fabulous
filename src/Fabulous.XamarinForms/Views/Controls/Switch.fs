@@ -8,7 +8,7 @@ type ISwitch =
     inherit IView
 
 module Switch =
-    let WidgetKey = Widgets.register<Switch> ()
+    let WidgetKey = Widgets.register<Switch>()
 
     let IsToggled =
         Attributes.defineBindable<bool> Switch.IsToggledProperty

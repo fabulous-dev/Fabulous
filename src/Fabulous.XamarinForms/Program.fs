@@ -8,7 +8,7 @@ module ViewHelpers =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
         | ValueSome scalarAttrs ->
-            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = def.Key) scalarAttrs with
+            match Array.tryFind(fun (attr: ScalarAttribute) -> attr.Key = def.Key) scalarAttrs with
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'modelType> attr.Value)
 
@@ -47,14 +47,14 @@ module Program =
           SyncAction = Device.BeginInvokeOnMainThread }
 
     let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
-        define (fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
+        define(fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
 
     let statefulApplication
         (init: 'arg -> 'model)
         (update: 'msg -> 'model -> 'model)
         (view: 'model -> WidgetBuilder<'msg, #IApplication>)
         =
-        define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
+        define(fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
     let statefulApplicationWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)

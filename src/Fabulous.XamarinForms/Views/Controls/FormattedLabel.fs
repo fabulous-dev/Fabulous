@@ -9,7 +9,7 @@ type IFormattedLabel =
     inherit ILabel
 
 module FormattedLabel =
-    let WidgetKey = Widgets.register<Label> ()
+    let WidgetKey = Widgets.register<Label>()
 
     let Spans =
         Attributes.defineWidgetCollection

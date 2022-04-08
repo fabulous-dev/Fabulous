@@ -8,7 +8,7 @@ type IRotateTransform =
     inherit ITransform
 
 module RotateTransform =
-    let WidgetKey = Widgets.register<RotateTransform> ()
+    let WidgetKey = Widgets.register<RotateTransform>()
 
     let Angle =
         Attributes.defineBindable<float> RotateTransform.AngleProperty

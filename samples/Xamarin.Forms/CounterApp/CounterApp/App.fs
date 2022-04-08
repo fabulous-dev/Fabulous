@@ -41,13 +41,13 @@ module App =
                   Count = model.Count - model.Step },
             Cmd.none
         | Reset -> initModel, Cmd.none
-        | SetStep n -> { model with Step = int (n + 0.5) }, Cmd.none
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd () else Cmd.none)
+        | SetStep n -> { model with Step = int(n + 0.5) }, Cmd.none
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
         | TimedTick ->
             if model.TimerOn then
                 { model with
                       Count = model.Count + model.Step },
-                timerCmd ()
+                timerCmd()
             else
                 model, Cmd.none
 
@@ -56,7 +56,7 @@ module App =
             ContentPage(
                 "CounterApp",
                 (VStack() {
-                    Label($"%d{model.Count}").centerTextHorizontal ()
+                    Label($"%d{model.Count}").centerTextHorizontal()
 
                     Button("Increment", Increment)
 
@@ -68,17 +68,17 @@ module App =
                         Switch(model.TimerOn, TimerToggled)
                      })
                         .padding(20.)
-                        .centerHorizontal ()
+                        .centerHorizontal()
 
                     Slider(0.0, 10.0, double model.Step, SetStep)
 
                     Label($"Step size: %d{model.Step}")
-                        .centerTextHorizontal ()
+                        .centerTextHorizontal()
 
                     Button("Reset", Reset)
                  })
                     .padding(30.)
-                    .centerVertical ()
+                    .centerVertical()
             )
         )
 

@@ -9,7 +9,7 @@ type ISwipeGestureRecognizer =
 
 module SwipeGestureRecognizer =
     let WidgetKey =
-        Widgets.register<SwipeGestureRecognizer> ()
+        Widgets.register<SwipeGestureRecognizer>()
 
     let Direction =
         Attributes.defineBindable<SwipeDirection> SwipeGestureRecognizer.DirectionProperty

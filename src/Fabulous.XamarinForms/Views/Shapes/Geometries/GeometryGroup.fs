@@ -10,7 +10,7 @@ type IGeometryGroup =
 
 module GeometryGroup =
 
-    let WidgetKey = Widgets.register<GeometryGroup> ()
+    let WidgetKey = Widgets.register<GeometryGroup>()
 
     let Children =
         Attributes.defineWidgetCollection

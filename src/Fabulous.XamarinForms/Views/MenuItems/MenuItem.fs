@@ -10,7 +10,7 @@ type IMenuItem =
     inherit IElement
 
 module MenuItem =
-    let WidgetKey = Widgets.register<MenuItem> ()
+    let WidgetKey = Widgets.register<MenuItem>()
 
     let Accelerator =
         Attributes.defineBindable<Accelerator> MenuItem.AcceleratorProperty
@@ -70,7 +70,7 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        MenuItemModifiers.iconImageSource (this, light, ?dark = dark)
+        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the icon image.</summary>
     /// <param name="light">The source of the icon image in the light theme.</param>
@@ -84,7 +84,7 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        MenuItemModifiers.iconImageSource (this, light, ?dark = dark)
+        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the icon image.</summary>
     /// <param name="light">The source of the icon image in the light theme.</param>
@@ -98,7 +98,7 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        MenuItemModifiers.iconImageSource (this, light, ?dark = dark)
+        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline isDestructive(this: WidgetBuilder<'msg, #IMenuItem>, value: bool) =

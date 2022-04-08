@@ -8,7 +8,7 @@ type IApplication =
     inherit IElement
 
 module Application =
-    let WidgetKey = Widgets.register<Application> ()
+    let WidgetKey = Widgets.register<Application>()
 
     let MainPage =
         Attributes.defineWidget

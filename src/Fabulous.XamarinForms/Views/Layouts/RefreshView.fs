@@ -9,7 +9,7 @@ type IRefreshView =
     inherit IContentView
 
 module RefreshView =
-    let WidgetKey = Widgets.register<RefreshView> ()
+    let WidgetKey = Widgets.register<RefreshView>()
 
     let IsRefreshing =
         Attributes.defineBindable<bool> RefreshView.IsRefreshingProperty
@@ -32,7 +32,7 @@ module RefreshViewBuilders =
             WidgetBuilder<'msg, IRefreshView>(
                 RefreshView.WidgetKey,
                 AttributesBundle(
-                    StackList.two (
+                    StackList.two(
                         RefreshView.IsRefreshing.WithValue(isRefreshing),
                         RefreshView.Refreshing.WithValue(onRefreshing)
                     ),

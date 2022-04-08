@@ -12,7 +12,7 @@ type IEllipse =
 
 module Ellipse =
 
-    let WidgetKey = Widgets.register<Ellipse> ()
+    let WidgetKey = Widgets.register<Ellipse>()
 
 [<AutoOpen>]
 module EllipseBuilders =

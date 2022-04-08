@@ -8,7 +8,7 @@ type ISearchBar =
     inherit IInputView
 
 module SearchBar =
-    let WidgetKey = Widgets.register<SearchBar> ()
+    let WidgetKey = Widgets.register<SearchBar>()
 
     let CancelButtonColor =
         Attributes.defineAppThemeBindable<Color> SearchBar.CancelButtonColorProperty

@@ -9,7 +9,7 @@ type IQuadraticBezierSegment =
 
 module QuadraticBezierSegment =
     let WidgetKey =
-        Widgets.register<QuadraticBezierSegment> ()
+        Widgets.register<QuadraticBezierSegment>()
 
     let Point1 =
         Attributes.defineBindable<Point> QuadraticBezierSegment.Point1Property

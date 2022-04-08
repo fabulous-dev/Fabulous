@@ -9,7 +9,7 @@ type ICompositeTransform =
     inherit ITransform
 
 module CompositeTransform =
-    let WidgetKey = Widgets.register<CompositeTransform> ()
+    let WidgetKey = Widgets.register<CompositeTransform>()
 
     let CenterXY =
         Attributes.define<struct (float * float)>

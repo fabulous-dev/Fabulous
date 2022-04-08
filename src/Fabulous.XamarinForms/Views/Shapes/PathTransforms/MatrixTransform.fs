@@ -11,7 +11,7 @@ type IMatrixTransform =
 // FIXME Should we expose some of the Matrix methods? ie Invert or RotateAt ...? as extension methods
 // https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.shapes.matrix?view=xamarin-forms
 module MatrixTransform =
-    let WidgetKey = Widgets.register<MatrixTransform> ()
+    let WidgetKey = Widgets.register<MatrixTransform>()
 
     let Matrix =
         Attributes.define<struct (float * float * float * float * float * float)>

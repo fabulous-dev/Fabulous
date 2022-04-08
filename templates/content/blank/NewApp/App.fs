@@ -26,16 +26,16 @@ module App =
                 VStack() {
                     Label("Hello from Fabulous v2!")
                         .font(namedSize = NamedSize.Title)
-                        .centerTextHorizontal ()
+                        .centerTextHorizontal()
 
                     (VStack() {
                         Label($"Count is {model.Count}")
-                            .centerTextHorizontal ()
+                            .centerTextHorizontal()
 
                         Button("Increment", Increment)
                         Button("Decrement", Decrement)
                      })
-                        .centerVertical (expand = true)
+                        .centerVertical(expand = true)
                 }
             )
         )

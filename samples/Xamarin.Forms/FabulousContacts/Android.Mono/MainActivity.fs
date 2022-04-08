@@ -56,7 +56,7 @@ type MainActivity() =
         Xamarin.Essentials.Platform.Init(this, bundle)
         Xamarin.Forms.Forms.Init(this, bundle)
 
-        let dbPath = getDbPath ()
+        let dbPath = getDbPath()
 
         let application =
             Program.createApplication App.program dbPath

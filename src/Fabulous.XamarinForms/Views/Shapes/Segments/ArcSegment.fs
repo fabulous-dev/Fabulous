@@ -10,7 +10,7 @@ type IArcSegment =
     inherit IPathSegment
 
 module ArcSegment =
-    let WidgetKey = Widgets.register<ArcSegment> ()
+    let WidgetKey = Widgets.register<ArcSegment>()
 
     let IsLargeArc =
         Attributes.defineBindable<bool> ArcSegment.IsLargeArcProperty

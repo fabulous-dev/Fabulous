@@ -25,21 +25,19 @@ module NestedTreeCreation =
         //        printfn $"view on {depth}"
 
         Stack() {
-            if (depth > 0) then
-                viewInner (depth - 1)
+            if (depth > 0) then viewInner(depth - 1)
 
             Label($"label1:{depth}")
                 .textColor("red")
-                .automationId ($"label1:{depth}")
+                .automationId($"label1:{depth}")
 
             Label($"label2:{depth}")
                 .textColor("green")
-                .automationId ($"label2:{depth}")
+                .automationId($"label2:{depth}")
 
             Button($"btn: {depth}", Depth depth)
 
-            if (depth > 0) then
-                viewInner (depth - 2)
+            if (depth > 0) then viewInner(depth - 2)
         }
 
     let view d = viewInner d
@@ -72,19 +70,19 @@ module DiffingAttributes =
         Stack() {
             Label($"label1:{counter} {depth}")
                 .textColor("red")
-                .automationId ($"label1:{depth}")
+                .automationId($"label1:{depth}")
 
             Label($"label2:{counter} {depth}")
                 .textColor("green")
-                .automationId ($"label2:{depth}")
+                .automationId($"label2:{depth}")
 
             Button($"btn: {depth}", IncBy 2)
 
             if (depth > 0) then
-                viewInner (depth - 1) counter
+                viewInner(depth - 1) counter
 
             if (depth > 0) then
-                viewInner (depth - 2) counter
+                viewInner(depth - 2) counter
         }
 
     let view model = viewInner model.depth model.counter
@@ -98,7 +96,7 @@ module DiffingAttributes =
         [<Benchmark>]
         member x.ProcessMessages() =
             let program =
-                StatefulWidget.mkSimpleView (fun () -> { depth = x.depth; counter = 0 }) update view
+                StatefulWidget.mkSimpleView(fun () -> { depth = x.depth; counter = 0 }) update view
 
             let instance = Run.Instance program
 

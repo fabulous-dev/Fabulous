@@ -9,7 +9,7 @@ type IContentPage =
     inherit IPage
 
 module ContentPage =
-    let WidgetKey = Widgets.register<FabulousContentPage> ()
+    let WidgetKey = Widgets.register<FabulousContentPage>()
 
     let Content =
         Attributes.defineBindableWidget ContentPage.ContentProperty
@@ -30,7 +30,7 @@ module ContentPageBuilders =
             WidgetBuilder<'msg, IContentPage>(
                 ContentPage.WidgetKey,
                 AttributesBundle(
-                    StackList.one (Page.Title.WithValue(title)),
+                    StackList.one(Page.Title.WithValue(title)),
                     ValueSome [| ContentPage.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )

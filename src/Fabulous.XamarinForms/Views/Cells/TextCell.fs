@@ -8,7 +8,7 @@ type ITextCell =
     inherit ICell
 
 module TextCell =
-    let WidgetKey = Widgets.register<TextCell> ()
+    let WidgetKey = Widgets.register<TextCell>()
 
     let Text =
         Attributes.defineBindable<string> TextCell.TextProperty

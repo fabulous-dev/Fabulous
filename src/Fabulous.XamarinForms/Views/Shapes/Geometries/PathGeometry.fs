@@ -10,7 +10,7 @@ type IPathGeometry =
     inherit IGeometry
 
 module PathGeometry =
-    let WidgetKey = Widgets.register<PathGeometry> ()
+    let WidgetKey = Widgets.register<PathGeometry>()
 
     let FiguresWidgets =
         Attributes.defineWidgetCollection

@@ -11,7 +11,7 @@ type ISlider =
     inherit IView
 
 module Slider =
-    let WidgetKey = Widgets.register<Slider> ()
+    let WidgetKey = Widgets.register<Slider>()
 
     let MinimumMaximum =
         Attributes.define<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
@@ -96,7 +96,7 @@ type SliderModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
+        SliderModifiers.thumbImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the thumbImage.</summary>
     /// <param name="light">The source of the thumbImage in the light theme.</param>
@@ -110,7 +110,7 @@ type SliderModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
+        SliderModifiers.thumbImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the thumbImage.</summary>
     /// <param name="light">The source of the thumbImage in the light theme.</param>
@@ -124,7 +124,7 @@ type SliderModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        SliderModifiers.thumbImageSource (this, light, ?dark = dark)
+        SliderModifiers.thumbImageSource(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline onDragCompleted(this: WidgetBuilder<'msg, #ISlider>, onDragCompleted: 'msg) =

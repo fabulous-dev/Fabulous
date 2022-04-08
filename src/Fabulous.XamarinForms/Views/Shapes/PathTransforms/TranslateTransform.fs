@@ -8,7 +8,7 @@ type ITranslateTransform =
     inherit ITransform
 
 module TranslateTransform =
-    let WidgetKey = Widgets.register<TranslateTransform> ()
+    let WidgetKey = Widgets.register<TranslateTransform>()
 
     let X =
         Attributes.defineBindable<float> TranslateTransform.XProperty

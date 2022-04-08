@@ -11,7 +11,7 @@ type IPath =
     inherit IShape
 
 module Path =
-    let WidgetKey = Widgets.register<Path> ()
+    let WidgetKey = Widgets.register<Path>()
 
     let DataWidget =
         Attributes.defineBindableWidget Path.DataProperty

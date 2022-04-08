@@ -8,7 +8,7 @@ type IEditor =
     inherit IInputView
 
 module Editor =
-    let WidgetKey = Widgets.register<Editor> ()
+    let WidgetKey = Widgets.register<Editor>()
 
     let AutoSize =
         Attributes.defineBindable<EditorAutoSizeOption> Editor.AutoSizeProperty

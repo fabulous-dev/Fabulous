@@ -8,7 +8,7 @@ type IScaleTransform =
     inherit ITransform
 
 module ScaleTransform =
-    let WidgetKey = Widgets.register<ScaleTransform> ()
+    let WidgetKey = Widgets.register<ScaleTransform>()
 
     let ScaleXY =
         Attributes.define<struct (float * float)>

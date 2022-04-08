@@ -37,7 +37,7 @@ type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Wi
         let onBindingContextChanged =
             BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView templateFn bindableObject
 
-        bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged ())
+        bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged())
 
         bindableObject :> obj)
 

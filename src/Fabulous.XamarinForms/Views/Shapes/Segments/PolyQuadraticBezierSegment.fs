@@ -9,7 +9,7 @@ type IPolyQuadraticBezierSegment =
 
 module PolyQuadraticBezierSegment =
     let WidgetKey =
-        Widgets.register<PolyQuadraticBezierSegment> ()
+        Widgets.register<PolyQuadraticBezierSegment>()
 
     let PointsString =
         Attributes.define<string>

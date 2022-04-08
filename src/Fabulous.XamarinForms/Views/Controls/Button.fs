@@ -11,7 +11,7 @@ type IButton =
     inherit IView
 
 module Button =
-    let WidgetKey = Widgets.register<Button> ()
+    let WidgetKey = Widgets.register<Button>()
 
     let BorderColor =
         Attributes.defineAppThemeBindable<Color> Button.BorderColorProperty
@@ -99,7 +99,7 @@ type ButtonModifiers =
 
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IButton>, value: float) =
-        ButtonModifiers.padding (this, Thickness(value))
+        ButtonModifiers.padding(this, Thickness(value))
 
     [<Extension>]
     static member inline padding
@@ -110,7 +110,7 @@ type ButtonModifiers =
             right: float,
             bottom: float
         ) =
-        ButtonModifiers.padding (this, Thickness(left, top, right, bottom))
+        ButtonModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IButton>, value: float) =
@@ -168,7 +168,7 @@ type ButtonModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        ButtonModifiers.image (this, light, ?dark = dark)
+        ButtonModifiers.image(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline image(this: WidgetBuilder<'msg, #IButton>, light: Uri, ?dark: Uri) =
@@ -179,7 +179,7 @@ type ButtonModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        ButtonModifiers.image (this, light, ?dark = dark)
+        ButtonModifiers.image(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline image(this: WidgetBuilder<'msg, #IButton>, light: Stream, ?dark: Stream) =
@@ -190,7 +190,7 @@ type ButtonModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        ButtonModifiers.image (this, light, ?dark = dark)
+        ButtonModifiers.image(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline onPressed(this: WidgetBuilder<'msg, #IButton>, onPressed: 'msg) =

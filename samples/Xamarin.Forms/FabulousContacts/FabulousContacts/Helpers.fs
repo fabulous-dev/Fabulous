@@ -53,7 +53,7 @@ module Helpers =
                 if status = PermissionStatus.Granted then
                     return true
                 else
-                    return! requestPermissionAsync<'a> ()
+                    return! requestPermissionAsync<'a>()
             with
             | _ -> return false
         }
@@ -101,7 +101,7 @@ module Helpers =
 
 module Cmd =
     let performAsync asyncUnit =
-        Cmd.ofAsyncMsgOption (
+        Cmd.ofAsyncMsgOption(
             async {
                 do! asyncUnit
                 return None

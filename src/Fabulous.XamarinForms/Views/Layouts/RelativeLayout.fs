@@ -10,7 +10,7 @@ type IRelativeLayout =
     inherit ILayoutOfView
 
 module RelativeLayout =
-    let WidgetKey = Widgets.register<RelativeLayout> ()
+    let WidgetKey = Widgets.register<RelativeLayout>()
 
     let XConstraint =
         Attributes.defineBindable<Constraint> RelativeLayout.XConstraintProperty

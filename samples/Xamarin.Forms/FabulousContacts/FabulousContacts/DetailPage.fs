@@ -38,12 +38,12 @@ module DetailPage =
             with
             | :? FeatureNotSupportedException ->
                 do!
-                    displayAlert (
+                    displayAlert(
                         Strings.DetailPage_DialNumberFailed,
                         Strings.DetailPage_CapabilityNotSupported "Phone Dialer",
                         Strings.Common_OK
                     )
-            | _ -> do! displayAlert (Strings.DetailPage_DialNumberFailed, Strings.Common_Error, Strings.Common_OK)
+            | _ -> do! displayAlert(Strings.DetailPage_DialNumberFailed, Strings.Common_Error, Strings.Common_OK)
         }
 
     let tryComposeSmsAsync (phoneNumber: string) =
@@ -54,12 +54,12 @@ module DetailPage =
             with
             | :? FeatureNotSupportedException ->
                 do!
-                    displayAlert (
+                    displayAlert(
                         Strings.DetailPage_ComposeSmsFailed,
                         Strings.DetailPage_CapabilityNotSupported "SMS",
                         Strings.Common_OK
                     )
-            | _ -> do! displayAlert (Strings.DetailPage_ComposeSmsFailed, Strings.Common_Error, Strings.Common_OK)
+            | _ -> do! displayAlert(Strings.DetailPage_ComposeSmsFailed, Strings.Common_Error, Strings.Common_OK)
         }
 
     let tryComposeEmailAsync emailAddress =
@@ -70,12 +70,12 @@ module DetailPage =
             with
             | :? FeatureNotSupportedException ->
                 do!
-                    displayAlert (
+                    displayAlert(
                         Strings.DetailPage_ComposeEmailFailed,
                         Strings.DetailPage_CapabilityNotSupported "Email",
                         Strings.Common_OK
                     )
-            | _ -> do! displayAlert (Strings.DetailPage_ComposeEmailFailed, Strings.Common_Error, Strings.Common_OK)
+            | _ -> do! displayAlert(Strings.DetailPage_ComposeEmailFailed, Strings.Common_Error, Strings.Common_OK)
         }
 
     // Lifecycle
@@ -86,17 +86,17 @@ module DetailPage =
         | EditTapped -> model, Cmd.none, ExternalMsg.EditContact model.Contact
         | CallTapped ->
             let dialCmd =
-                Cmd.performAsync (tryDialNumberAsync model.Contact.Phone)
+                Cmd.performAsync(tryDialNumberAsync model.Contact.Phone)
 
             model, dialCmd, ExternalMsg.NoOp
         | SmsTapped ->
             let smsCmd =
-                Cmd.performAsync (tryComposeSmsAsync model.Contact.Phone)
+                Cmd.performAsync(tryComposeSmsAsync model.Contact.Phone)
 
             model, smsCmd, ExternalMsg.NoOp
         | EmailTapped ->
             let emailCmd =
-                Cmd.performAsync (tryComposeEmailAsync model.Contact.Email)
+                Cmd.performAsync(tryComposeEmailAsync model.Contact.Email)
 
             model, emailCmd, ExternalMsg.NoOp
         | ContactUpdated contact -> { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
@@ -106,7 +106,7 @@ module DetailPage =
             Label(contact.FirstName + " " + contact.LastName)
                 .font(size = 20., attributes = FontAttributes.Bold)
                 .textColor(accentTextColor)
-                .centerHorizontal ()
+                .centerHorizontal()
 
             (Grid() {
                 getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
@@ -115,11 +115,11 @@ module DetailPage =
                     .isVisible(contact.IsFavorite)
                     .size(height = 35., width = 35.)
                     .alignStartHorizontal()
-                    .alignStartVertical ()
+                    .alignStartVertical()
              })
                 .size(height = 125., width = 125.)
                 .backgroundColor(Color.White)
-                .centerHorizontal ()
+                .centerHorizontal()
 
             (HStack(spacing = 20.) {
                 if hasSetField contact.Phone then
@@ -130,10 +130,10 @@ module DetailPage =
                     detailActionButton "email.png" EmailTapped
              })
                 .centerHorizontal()
-                .margin (0., 10., 0., 10.)
+                .margin(0., 10., 0., 10.)
          })
             .backgroundColor(Color.FromHex("#448cb8"))
-            .padding (20., 10., 20., 10.)
+            .padding(20., 10., 20., 10.)
 
     let body contact =
         (VStack(spacing = 10.) {
@@ -144,7 +144,7 @@ module DetailPage =
             detailFieldTitle "Address"
             optionalLabel contact.Address
          })
-            .padding (20., 10., 20., 20.)
+            .padding(20., 10., 20., 20.)
 
     let view model =
         ContentPage(
@@ -156,7 +156,7 @@ module DetailPage =
                 }
             )
         )
-            .toolbarItems () {
+            .toolbarItems() {
             ToolbarItem(Strings.DetailPage_Toolbar_EditContact, EditTapped)
-                .order (ToolbarItemOrder.Primary)
+                .order(ToolbarItemOrder.Primary)
         }

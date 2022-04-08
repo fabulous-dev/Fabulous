@@ -22,7 +22,7 @@ type AppDelegate() =
         let libFolder =
             Path.Combine(docFolder, "..", "Library", "Databases")
 
-        if not (Directory.Exists libFolder) then
+        if not(Directory.Exists libFolder) then
             Directory.CreateDirectory(libFolder) |> ignore
         else
             ()
@@ -37,7 +37,7 @@ type AppDelegate() =
         |> Async.AwaitTask
         |> ignore
 
-        let dbPath = getDbPath ()
+        let dbPath = getDbPath()
 
         let application =
             Program.createApplication App.program dbPath

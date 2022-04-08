@@ -260,7 +260,7 @@ type ViewModifiers =
 
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: float) =
-        ViewModifiers.margin (this, Thickness(value))
+        ViewModifiers.margin(this, Thickness(value))
 
     [<Extension>]
     static member inline margin
@@ -271,7 +271,7 @@ type ViewModifiers =
             right: float,
             bottom: float
         ) =
-        ViewModifiers.margin (this, Thickness(left, top, right, bottom))
+        ViewModifiers.margin(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline gestureRecognizers<'msg, 'marker when 'marker :> IView>(this: WidgetBuilder<'msg, 'marker>) =

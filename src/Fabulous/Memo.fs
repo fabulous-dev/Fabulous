@@ -24,8 +24,8 @@ module Memo =
 
     type Memoized<'t> = { phantom: 't }
 
-    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey ()
-    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey ()
+    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey()
+    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     let inline private getMemoData (widget: Widget) : MemoData =
         match widget.ScalarAttributes with

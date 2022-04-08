@@ -11,7 +11,7 @@ type IImageCell =
     inherit ITextCell
 
 module ImageCell =
-    let WidgetKey = Widgets.register<ImageCell> ()
+    let WidgetKey = Widgets.register<ImageCell>()
 
     let ImageSource =
         Attributes.defineAppThemeBindable<ImageSource> ImageCell.ImageSourceProperty

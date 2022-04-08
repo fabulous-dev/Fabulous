@@ -28,7 +28,7 @@ module Attributes =
         (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         (updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition =
             { Key = key
@@ -47,7 +47,7 @@ module Attributes =
         (applyDiff: WidgetDiff -> IViewNode -> unit)
         (updateNode: Widget voption -> Widget voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: WidgetAttributeDefinition =
             { Key = key
@@ -64,7 +64,7 @@ module Attributes =
         (applyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit)
         =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: WidgetCollectionAttributeDefinition =
             { Key = key
@@ -168,7 +168,7 @@ module Attributes =
         defineScalarWithConverter<'T, 'T, 'T> name id id ScalarAttributeComparers.equalityCompare updateTarget
 
     let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
             { Key = key
@@ -198,7 +198,7 @@ module Attributes =
         definition
 
     let defineEventWithAdditionalStep name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<_, _, _> =
             { Key = key
@@ -231,7 +231,7 @@ module Attributes =
 
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<_, _, _> =
             { Key = key

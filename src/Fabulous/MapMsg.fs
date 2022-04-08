@@ -6,7 +6,7 @@ module MapMsg =
     /// Store a map function to convert a child message to a parent message.
     /// Help compose independent views using different MVU cycle and messages
     let MapMsg: ScalarAttributeDefinition<obj -> obj, obj -> obj, obj -> obj> =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition =
             { Key = key

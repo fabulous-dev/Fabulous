@@ -8,7 +8,7 @@ type IStackLayout =
     inherit ILayoutOfView
 
 module StackLayout =
-    let WidgetKey = Widgets.register<StackLayout> ()
+    let WidgetKey = Widgets.register<StackLayout>()
 
     let Orientation =
         Attributes.defineBindable<StackOrientation> StackLayout.OrientationProperty

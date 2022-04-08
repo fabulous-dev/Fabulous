@@ -16,7 +16,7 @@ module Widgets =
     let registerWithAdditionalSetup<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new: unit -> 'T)>
         (additionalSetup: 'T -> IViewNode -> unit)
         =
-        let key = WidgetDefinitionStore.getNextKey ()
+        let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
             { Key = key
@@ -49,16 +49,16 @@ module Widgets =
         key
 
     let register<'T when 'T :> Xamarin.Forms.BindableObject and 'T: (new: unit -> 'T)> () =
-        registerWithAdditionalSetup<'T> (fun _ _ -> ())
+        registerWithAdditionalSetup<'T>(fun _ _ -> ())
 
 module WidgetHelpers =
     let inline compileSeq (items: seq<WidgetBuilder<'msg, 'marker>>) =
         items
-        |> Seq.map (fun item -> item.Compile())
+        |> Seq.map(fun item -> item.Compile())
         |> Seq.toArray
 
     let inline buildWidgets<'msg, 'marker> (key: WidgetKey) (attrs: WidgetAttribute []) =
-        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty (), ValueSome attrs, ValueNone))
+        WidgetBuilder<'msg, 'marker>(key, struct (StackList.empty(), ValueSome attrs, ValueNone))
 
     let inline buildAttributeCollection<'msg, 'marker, 'item>
         (collectionAttributeDefinition: WidgetCollectionAttributeDefinition)

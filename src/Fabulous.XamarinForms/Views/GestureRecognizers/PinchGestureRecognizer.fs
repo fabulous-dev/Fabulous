@@ -8,7 +8,7 @@ type IPinchGestureRecognizer =
 
 module PinchGestureRecognizer =
     let WidgetKey =
-        Widgets.register<PinchGestureRecognizer> ()
+        Widgets.register<PinchGestureRecognizer>()
 
     let PinchUpdated =
         Attributes.defineEvent<PinchGestureUpdatedEventArgs>

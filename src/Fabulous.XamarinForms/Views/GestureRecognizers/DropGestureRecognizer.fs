@@ -9,7 +9,7 @@ type IDropGestureRecognizer =
 
 module DropGestureRecognizer =
     let WidgetKey =
-        Widgets.register<DropGestureRecognizer> ()
+        Widgets.register<DropGestureRecognizer>()
 
     let AllowDrop =
         Attributes.defineBindable<bool> DropGestureRecognizer.AllowDropProperty

@@ -8,7 +8,7 @@ type ILineSegment =
     inherit IPathSegment
 
 module LineSegment =
-    let WidgetKey = Widgets.register<LineSegment> ()
+    let WidgetKey = Widgets.register<LineSegment>()
 
     let Point =
         Attributes.defineBindable<Point> LineSegment.PointProperty
