@@ -28,7 +28,7 @@ module Cmd =
     /// When emitting the message, map to another type
     let map (f: 'a -> 'msg) (cmd: Cmd<'a>) : Cmd<'msg> =
         cmd
-        |> List.map (fun g -> (fun dispatch -> f >> dispatch) >> g)
+        |> List.map(fun g -> (fun dispatch -> f >> dispatch) >> g)
 
     /// Aggregate multiple commands
     let batch (cmds: #seq<Cmd<'msg>>) : Cmd<'msg> = cmds |> List.concat

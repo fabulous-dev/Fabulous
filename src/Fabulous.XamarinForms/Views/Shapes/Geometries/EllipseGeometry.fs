@@ -8,7 +8,7 @@ type IEllipseGeometry =
     inherit IGeometry
 
 module EllipseGeometry =
-    let WidgetKey = Widgets.register<EllipseGeometry> ()
+    let WidgetKey = Widgets.register<EllipseGeometry>()
 
     let Center =
         Attributes.defineBindable<Point> EllipseGeometry.CenterProperty

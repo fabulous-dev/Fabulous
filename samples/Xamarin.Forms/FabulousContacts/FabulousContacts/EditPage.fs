@@ -60,7 +60,7 @@ module EditPage =
                 let title =
                     Strings.EditPage_DeleteContact contact.FirstName contact.LastName
 
-                displayAlertWithConfirm (
+                displayAlertWithConfirm(
                     title,
                     Strings.EditPage_DeleteContactConfirmation,
                     Strings.Common_Yes,
@@ -76,10 +76,10 @@ module EditPage =
 
     let doAsync<'a when 'a: (new: unit -> 'a) and 'a :> BasePermission> action =
         async {
-            let! permissionGranted = askPermissionAsync<'a> ()
+            let! permissionGranted = askPermissionAsync<'a>()
 
             if permissionGranted then
-                let! pictureOpt = action ()
+                let! pictureOpt = action()
 
                 match pictureOpt with
                 | None -> return None
@@ -101,7 +101,7 @@ module EditPage =
             let hasPreviousPicture = previousValue.IsSome
 
             let! action =
-                displayActionSheet (
+                displayActionSheet(
                     None,
                     Some Strings.Common_Cancel,
                     (if hasPreviousPicture then
@@ -128,7 +128,7 @@ module EditPage =
         }
 
     let sayContactNotValidAsync () =
-        displayAlert (
+        displayAlert(
             Strings.EditPage_InvalidContactTitle,
             Strings.EditPage_InvalidContactDescription,
             Strings.Common_OK
@@ -149,7 +149,7 @@ module EditPage =
         async {
             if not model.IsFirstNameValid
                || not model.IsLastNameValid then
-                do! sayContactNotValidAsync ()
+                do! sayContactNotValidAsync()
                 return None
             else
                 let id =
@@ -232,7 +232,7 @@ module EditPage =
 
         | UpdatePicture ->
             let cmd =
-                Cmd.ofAsyncMsgOption (tryUpdatePictureAsync model.Picture)
+                Cmd.ofAsyncMsgOption(tryUpdatePictureAsync model.Picture)
 
             model, cmd, ExternalMsg.NoOp
 
@@ -240,13 +240,13 @@ module EditPage =
 
         | SaveContact ->
             let cmd =
-                Cmd.ofAsyncMsgOption (trySaveAsync model dbPath)
+                Cmd.ofAsyncMsgOption(trySaveAsync model dbPath)
 
             model, cmd, ExternalMsg.NoOp
 
         | DeleteContact contact ->
             let cmd =
-                Cmd.ofAsyncMsgOption (tryDeleteAsync dbPath contact)
+                Cmd.ofAsyncMsgOption(tryDeleteAsync dbPath contact)
 
             model, cmd, ExternalMsg.NoOp
 
@@ -280,7 +280,7 @@ module EditPage =
                             model.IsFirstNameValid
                             UpdateFirstName)
                             .centerVertical()
-                            .gridColumn (1)
+                            .gridColumn(1)
 
                         (formEntry
                             Strings.EditPage_LastNameField_Label
@@ -290,10 +290,10 @@ module EditPage =
                             UpdateLastName)
                             .centerVertical()
                             .gridColumn(1)
-                            .gridRow (1)
+                            .gridRow(1)
                      })
                         .columnSpacing(10.)
-                        .rowSpacing (0.)
+                        .rowSpacing(0.)
 
                     favoriteField model.IsFavorite UpdateIsFavorite
                     formLabel Strings.EditPage_EmailField_Label
@@ -308,7 +308,7 @@ module EditPage =
                     | Some x when x.Id = 0 -> ()
                     | Some contact -> destroyButton Strings.EditPage_DeleteButtonText (DeleteContact contact)
                  })
-                    .padding (Thickness(20.))
+                    .padding(Thickness(20.))
             )
         )
-            .toolbarItems () { toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact }
+            .toolbarItems() { toolbarButton Strings.EditPage_Toolbar_SaveContact SaveContact }

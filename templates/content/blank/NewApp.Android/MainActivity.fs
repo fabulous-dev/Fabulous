@@ -30,7 +30,7 @@ type MainActivity() =
         base.OnCreate(bundle)
         Xamarin.Essentials.Platform.Init(this, bundle)
         Xamarin.Forms.Forms.Init(this, bundle)
-        let application: Xamarin.Forms.Application = unbox (Program.create App.program ())
+        let application = Program.createApplication App.program ()
         this.LoadApplication(application)
 
     override this.OnRequestPermissionsResult

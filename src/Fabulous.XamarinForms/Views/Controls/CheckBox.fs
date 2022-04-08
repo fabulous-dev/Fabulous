@@ -9,7 +9,7 @@ type ICheckBox =
 
 module CheckBox =
 
-    let WidgetKey = Widgets.register<CheckBox> ()
+    let WidgetKey = Widgets.register<CheckBox>()
 
     let IsChecked =
         Attributes.defineBindable<bool> CheckBox.IsCheckedProperty

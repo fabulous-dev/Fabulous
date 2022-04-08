@@ -10,7 +10,7 @@ type IPathFigure =
     inherit IElement
 
 module PathFigure =
-    let WidgetKey = Widgets.register<PathFigure> ()
+    let WidgetKey = Widgets.register<PathFigure>()
 
     let Segments =
         Attributes.defineWidgetCollection

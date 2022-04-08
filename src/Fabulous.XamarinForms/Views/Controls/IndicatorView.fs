@@ -9,7 +9,7 @@ type IIndicatorView =
     inherit ITemplatedView
 
 module IndicatorView =
-    let WidgetKey = Widgets.register<IndicatorView> ()
+    let WidgetKey = Widgets.register<IndicatorView>()
 
     let ItemsSource<'T> =
         Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>

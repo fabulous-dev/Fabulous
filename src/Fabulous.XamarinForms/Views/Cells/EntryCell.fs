@@ -8,7 +8,7 @@ type IEntryCell =
     inherit ICell
 
 module EntryCell =
-    let WidgetKey = Widgets.register<CustomEntryCell> ()
+    let WidgetKey = Widgets.register<CustomEntryCell>()
 
     let Text =
         Attributes.defineBindable<string> EntryCell.TextProperty

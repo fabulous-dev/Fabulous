@@ -56,9 +56,11 @@ type MainActivity() =
         Xamarin.Essentials.Platform.Init(this, bundle)
         Xamarin.Forms.Forms.Init(this, bundle)
 
-        let dbPath = getDbPath ()
-        let app = App.program (dbPath)
-        let application: Xamarin.Forms.Application = unbox (Program.create app ())
+        let dbPath = getDbPath()
+
+        let application =
+            Program.createApplication App.program dbPath
+
         this.LoadApplication(application)
 
     override this.OnRequestPermissionsResult

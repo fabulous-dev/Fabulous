@@ -11,7 +11,7 @@ type IImage =
     inherit IView
 
 module Image =
-    let WidgetKey = Widgets.register<Image> ()
+    let WidgetKey = Widgets.register<Image>()
 
     let Aspect =
         Attributes.defineBindable<Aspect> Image.AspectProperty

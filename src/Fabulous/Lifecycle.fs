@@ -2,7 +2,7 @@ namespace Fabulous
 
 module Lifecycle =
     let private createAttribute name : ScalarAttributeDefinition<obj, obj, obj> =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition =
             { Key = key

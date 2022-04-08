@@ -131,7 +131,7 @@ module AttributeHelpers =
         | ValueNone -> ValueNone
         | ValueSome attrs ->
             match attrs
-                  |> Array.tryFind (fun attr -> attr.Key = definition.Key)
+                  |> Array.tryFind(fun attr -> attr.Key = definition.Key)
                 with
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'modelType> attr.Value)

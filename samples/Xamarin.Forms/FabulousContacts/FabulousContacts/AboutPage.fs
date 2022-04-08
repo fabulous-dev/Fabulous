@@ -44,18 +44,18 @@ module AboutPage =
         VStack() {
             Label(Strings.AboutPage_AboutFabulousContacts_NameAndVersion)
                 .font(attributes = FontAttributes.Bold)
-                .centerHorizontal ()
+                .centerHorizontal()
 
             Label(Strings.AboutPage_AboutFabulousContacts_DescriptionTitle)
                 .font(attributes = FontAttributes.Bold)
-                .margin (Thickness(0., 20., 0., 0.))
+                .margin(Thickness(0., 20., 0., 0.))
 
             Label(Strings.AboutPage_AboutFabulousContacts_Description)
 
             UnderlinedLabel(
                 fabulousContactsRepositoryUrl
             )
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser fabulousContactsRepositoryUrl) }
         }
 
     let aboutFSharp (openBrowser: string -> Msg) =
@@ -64,87 +64,87 @@ module AboutPage =
 
             (VStack() {
                 Image(Aspect.AspectFit, "fsharp.png")
-                    .size (height = 50., width = 50.)
+                    .size(height = 50., width = 50.)
 
                 Label(Strings.AboutPage_AboutFSharp_FSharp)
-                    .centerTextHorizontal ()
+                    .centerTextHorizontal()
              })
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser fsharpOrgUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser fsharpOrgUrl) }
 
             (VStack() {
                 Image(Aspect.AspectFit, "xamarin.png")
-                    .size (height = 50., width = 50.)
+                    .size(height = 50., width = 50.)
 
                 Label(Strings.AboutPage_AboutFSharp_FabulousXamarinForms)
-                    .centerTextHorizontal ()
+                    .centerTextHorizontal()
              })
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser fabulousXamarinFormsUrl) }
         }
 
     let credits (openBrowser: string -> Msg) =
         VStack() {
             Label(Strings.AboutPage_Credits_Title)
                 .font(attributes = FontAttributes.Bold)
-                .margin (Thickness(0., 20., 0., 0.))
+                .margin(Thickness(0., 20., 0., 0.))
 
             UnderlinedLabel(
                 Strings.AboutPage_Credits_Freepik
             )
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser freepikUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser freepikUrl) }
 
             UnderlinedLabel(
                 Strings.AboutPage_Credits_XamarinEssentials
             )
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser xamarinEssentialsUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser xamarinEssentialsUrl) }
         }
 
     let aboutAuthor (openBrowser: string -> Msg) =
         VStack() {
             Label(Strings.AboutPage_AboutAuthor_Title)
                 .font(attributes = FontAttributes.Bold)
-                .margin (Thickness(0., 20., 0., 0.))
+                .margin(Thickness(0., 20., 0., 0.))
 
             Label(Strings.AboutPage_AboutAuthor_AuthorName)
 
             (HStack(spacing = 15.) {
                 Image(Aspect.AspectFit, "blog.png")
-                    .size (height = 35., width = 35.)
+                    .size(height = 35., width = 35.)
 
-                UnderlinedLabel(authorBlogUrl).centerVertical ()
+                UnderlinedLabel(authorBlogUrl).centerVertical()
              })
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser authorBlogUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser authorBlogUrl) }
 
             Label(Strings.AboutPage_AboutAuthor_ReachOut)
-                .margin (Thickness(0., 10., 0., 0.))
+                .margin(Thickness(0., 10., 0., 0.))
 
             (HStack(spacing = 15.) {
                 Image(Aspect.AspectFit, "github.png")
-                    .size (height = 35., width = 35.)
+                    .size(height = 35., width = 35.)
 
                 UnderlinedLabel(authorGitHubHandle)
-                    .centerVertical ()
+                    .centerVertical()
              })
-                .gestureRecognizers () { TapGestureRecognizer(openBrowser authorGitHubUrl) }
+                .gestureRecognizers() { TapGestureRecognizer(openBrowser authorGitHubUrl) }
 
             (HStack(spacing = 15.) {
                 (VStack() {
                     Image(Aspect.AspectFit, "twitter.png")
-                        .size (height = 50., width = 50.)
+                        .size(height = 50., width = 50.)
 
-                    Label(authorTwitterHandle).centerTextHorizontal ()
+                    Label(authorTwitterHandle).centerTextHorizontal()
                  })
-                    .gestureRecognizers () { TapGestureRecognizer(openBrowser authorTwitterUrl) }
+                    .gestureRecognizers() { TapGestureRecognizer(openBrowser authorTwitterUrl) }
 
                 (VStack() {
                     Image(Aspect.AspectFit, "slack.png")
-                        .size (height = 50., width = 50.)
+                        .size(height = 50., width = 50.)
 
-                    Label(authorSlackHandle).centerTextHorizontal ()
+                    Label(authorSlackHandle).centerTextHorizontal()
                  })
-                    .gestureRecognizers () { TapGestureRecognizer(openBrowser authorSlackUrl) }
+                    .gestureRecognizers() { TapGestureRecognizer(openBrowser authorSlackUrl) }
              })
                 .centerHorizontal()
-                .margin (Thickness(0., 10., 0., 0.))
+                .margin(Thickness(0., 10., 0., 0.))
         }
 
     let view () =
@@ -156,13 +156,13 @@ module AboutPage =
                         .backgroundColor(accentColor)
                         .size(height = 100., width = 100.)
                         .centerHorizontal()
-                        .padding (15.)
+                        .padding(15.)
 
                     aboutFabulousContacts OpenBrowser
                     aboutFSharp OpenBrowser
                     credits OpenBrowser
                     aboutAuthor OpenBrowser
                  })
-                    .padding (Thickness(20., 10., 20., 20.))
+                    .padding(Thickness(20., 10., 20., 20.))
             )
         )

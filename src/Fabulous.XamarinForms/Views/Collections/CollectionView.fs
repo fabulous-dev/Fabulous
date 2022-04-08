@@ -9,7 +9,7 @@ type ICollectionView =
     inherit IItemsView
 
 module CollectionView =
-    let WidgetKey = Widgets.register<CollectionView> ()
+    let WidgetKey = Widgets.register<CollectionView>()
 
     let GroupedItemsSource<'groupData, 'itemData> =
         Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>

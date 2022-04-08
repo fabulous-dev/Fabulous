@@ -6,7 +6,7 @@ open Tests.Platform
 module Attributes =
 
     let definePressable name =
-        let key = AttributeDefinitionStore.getNextKey ()
+        let key = AttributeDefinitionStore.getNextKey()
 
         let definition: ScalarAttributeDefinition<obj, obj, obj> =
             { Key = key

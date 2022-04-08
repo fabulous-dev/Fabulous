@@ -10,7 +10,7 @@ type IListView =
 
 module ListView =
 
-    let WidgetKey = Widgets.register<FabulousListView> ()
+    let WidgetKey = Widgets.register<FabulousListView>()
 
     let GroupedItemsSource<'groupData, 'itemData> =
         Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>

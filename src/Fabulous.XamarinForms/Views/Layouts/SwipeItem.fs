@@ -10,7 +10,7 @@ type ISwipeItem =
 
 module SwipeItem =
 
-    let WidgetKey = Widgets.register<SwipeItem> ()
+    let WidgetKey = Widgets.register<SwipeItem>()
 
     let BackgroundColor =
         Attributes.defineAppThemeBindable<Color> SwipeItem.BackgroundColorProperty

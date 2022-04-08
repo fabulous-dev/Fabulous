@@ -8,7 +8,7 @@ type ILineGeometry =
     inherit IGeometry
 
 module LineGeometry =
-    let WidgetKey = Widgets.register<LineGeometry> ()
+    let WidgetKey = Widgets.register<LineGeometry>()
 
     let StartPoint =
         Attributes.defineBindable<Point> LineGeometry.StartPointProperty

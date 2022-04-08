@@ -11,7 +11,7 @@ type ISwipeItems =
 
 module SwipeItems =
 
-    let WidgetKey = Widgets.register<SwipeItems> ()
+    let WidgetKey = Widgets.register<SwipeItems>()
 
     let SwipeItems =
         Attributes.defineWidgetCollection

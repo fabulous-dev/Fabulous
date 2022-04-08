@@ -61,17 +61,17 @@ module Runners =
                     let rec processMsg () =
                         async {
                             let! msg = inbox.Receive()
-                            let model = unbox (StateStore.get key)
+                            let model = unbox(StateStore.get key)
                             let newModel, cmd = program.Update(msg, model)
                             StateStore.set key newModel
 
                             for sub in cmd do
                                 sub inbox.Post
 
-                            return! processMsg ()
+                            return! processMsg()
                         }
 
-                    processMsg ())
+                    processMsg())
 
         let start arg =
             let model, cmd = program.Init(arg)
@@ -94,7 +94,7 @@ module Runners =
         member _.Stop() = ()
 
     let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) =
-        let key = StateStore.getNextKey ()
+        let key = StateStore.getNextKey()
         let runner = Runner(key, program)
         RunnerStore.set key runner
         runner
@@ -125,10 +125,10 @@ module ViewAdapters =
 
         member private _.Dispatch(msg) =
             //if _allowDispatch then
-            dispatch (unbox msg)
+            dispatch(unbox msg)
 
         member this.CreateView() =
-            let state = unbox (StateStore.get stateKey)
+            let state = unbox(StateStore.get stateKey)
             let widget = view state
             _widget <- widget
 
@@ -157,7 +157,7 @@ module ViewAdapters =
 
                 let node = getViewNode _root
 
-                syncAction (fun () -> Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node)
+                syncAction(fun () -> Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node)
 
         member _.Dispose() = _stateSubscription.Dispose()
 
@@ -168,7 +168,7 @@ module ViewAdapters =
             member _.Detach(shouldDestroyNode) = ()
 
     let create<'arg, 'model, 'msg> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg>) =
-        let key = ViewAdapterStore.getNextKey ()
+        let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
             new ViewAdapter<'model, 'msg>(

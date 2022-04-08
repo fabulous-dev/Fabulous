@@ -12,7 +12,7 @@ type IScrollView =
     inherit Fabulous.XamarinForms.ILayout
 
 module ScrollView =
-    let WidgetKey = Widgets.register<ScrollView> ()
+    let WidgetKey = Widgets.register<ScrollView>()
 
     let Orientation =
         Attributes.defineBindable<ScrollOrientation> ScrollView.OrientationProperty

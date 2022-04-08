@@ -10,7 +10,7 @@ type ICarouselView =
     inherit IItemsView
 
 module CarouselView =
-    let WidgetKey = Widgets.register<CarouselView> ()
+    let WidgetKey = Widgets.register<CarouselView>()
 
     let IsBounceEnabled =
         Attributes.defineBindable<bool> CarouselView.IsBounceEnabledProperty
@@ -102,7 +102,7 @@ type CarouselViewModifiers =
 
     [<Extension>]
     static member inline peekAreaInsets(this: WidgetBuilder<'msg, #ICarouselView>, value: float) =
-        CarouselViewModifiers.peekAreaInsets (this, Thickness(value))
+        CarouselViewModifiers.peekAreaInsets(this, Thickness(value))
 
     [<Extension>]
     static member inline peekAreaInsets
@@ -113,7 +113,7 @@ type CarouselViewModifiers =
             right: float,
             bottom: float
         ) =
-        CarouselViewModifiers.peekAreaInsets (this, Thickness(left, top, right, bottom))
+        CarouselViewModifiers.peekAreaInsets(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline indicatorView(this: WidgetBuilder<'msg, #ICarouselView>, value: ViewRef<IndicatorView>) =

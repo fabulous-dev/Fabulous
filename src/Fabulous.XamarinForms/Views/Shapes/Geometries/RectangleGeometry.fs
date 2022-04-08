@@ -8,7 +8,7 @@ type IRectangleGeometry =
     inherit IGeometry
 
 module RectangleGeometry =
-    let WidgetKey = Widgets.register<RectangleGeometry> ()
+    let WidgetKey = Widgets.register<RectangleGeometry>()
 
     let Rect =
         Attributes.defineBindable<Rect> RectangleGeometry.RectProperty

@@ -8,7 +8,7 @@ type IGrid =
     inherit ILayoutOfView
 
 module Grid =
-    let WidgetKey = Widgets.register<Grid> ()
+    let WidgetKey = Widgets.register<Grid>()
 
     let ColumnDefinitions =
         Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array>

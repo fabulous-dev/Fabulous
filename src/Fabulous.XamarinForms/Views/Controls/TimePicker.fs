@@ -9,7 +9,7 @@ type ITimePicker =
     inherit IView
 
 module TimePicker =
-    let WidgetKey = Widgets.register<FabulousTimePicker> ()
+    let WidgetKey = Widgets.register<FabulousTimePicker>()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> TimePicker.CharacterSpacingProperty

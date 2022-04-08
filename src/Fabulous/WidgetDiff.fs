@@ -179,7 +179,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
             while ValueOption.isNone res do
 
-                if not (prevIndex >= prevLength && nextIndex >= nextLength) then
+                if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
                         e.current <- ScalarChange.Added next.[nextIndex]
@@ -288,7 +288,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
             // that needs to be in a loop until we have a change
 
             while ValueOption.isNone res do
-                if not (prevIndex >= prevLength && nextIndex >= nextLength) then
+                if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
                         e.current <- WidgetChange.Added next.[nextIndex]
@@ -337,7 +337,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
                                 let change =
                                     if canReuseView prevWidget nextWidget then
                                         let diff =
-                                            WidgetDiff.create (
+                                            WidgetDiff.create(
                                                 (ValueSome prevWidget),
                                                 nextWidget,
                                                 canReuseView,
@@ -409,7 +409,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
             // that needs to be in a loop until we have a change
 
             let res =
-                if not (prevIndex >= prevLength && nextIndex >= nextLength) then
+                if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
                         e.current <- WidgetCollectionChange.Added next.[nextIndex]
@@ -512,7 +512,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
             | ValueSome prevItem when canReuseView prevItem currItem ->
 
                 let diff =
-                    WidgetDiff.create (ValueSome prevItem, currItem, canReuseView, compareScalars)
+                    WidgetDiff.create(ValueSome prevItem, currItem, canReuseView, compareScalars)
 
                 e.current <- WidgetCollectionItemChange.Update(i, diff)
 

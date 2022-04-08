@@ -10,7 +10,7 @@ type ISwipeView =
 
 module SwipeView =
 
-    let WidgetKey = Widgets.register<SwipeView> ()
+    let WidgetKey = Widgets.register<SwipeView>()
 
     let LeftSwipeItems =
         Attributes.defineBindableWidget SwipeView.LeftItemsProperty

@@ -25,11 +25,11 @@ module CityView =
             Label(cityName.ToUpper())
                 .font(namedSize = NamedSize.Title)
                 .centerTextHorizontal()
-                .padding (0., 20., 0., 0.)
+                .padding(0., 20., 0., 0.)
 
             ActivityIndicator(true)
                 .centerHorizontal()
-                .centerVertical (expand = true)
+                .centerVertical(expand = true)
         }
 
     let loadedView (index, cityName: string, isRefreshing, data) onRefreshing =
@@ -42,20 +42,20 @@ module CityView =
                 VStack() {
                     Label(cityName.ToUpper())
                         .font(Styles.CityNameFontSize)
-                        .centerTextHorizontal ()
+                        .centerTextHorizontal()
 
                     Image(Aspect.AspectFit, $"{sanitizedCityName}.png")
-                        .opacity (0.8)
+                        .opacity(0.8)
 
                     Label($"{Helpers.kelvinToRoundedFahrenheit data.Temperature}°")
                         .font(Styles.CurrentTemperatureFontSize)
                         .centerTextHorizontal()
-                        .margin (Thickness(30., 0., 0., 0.))
+                        .margin(Thickness(30., 0., 0., 0.))
 
                     Label(data.WeatherKind.ToString().ToUpper())
                         .font(Styles.CurrentWeatherKindFontSize)
                         .centerTextHorizontal()
-                        .margin (Thickness(0., 10., 0., 0.))
+                        .margin(Thickness(0., 10., 0., 0.))
 
                     Label(
                         data
@@ -64,7 +64,7 @@ module CityView =
                             .ToUpper()
                     )
                         .font(Styles.CurrentDateFontSize)
-                        .centerTextHorizontal ()
+                        .centerTextHorizontal()
 
                     (HStack() {
                         for forecast in data.HourlyForecast do
@@ -73,23 +73,23 @@ module CityView =
                                 //    Styles.HourlyForecastGradientStops,
                                 VStack() {
                                     Label(forecast.Date.ToString("h tt").ToLower())
-                                        .centerTextHorizontal ()
+                                        .centerTextHorizontal()
 
                                     Image(
                                         Xamarin.Forms.Aspect.AspectFit,
                                         Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png")
                                     )
                                         .centerHorizontal()
-                                        .centerVertical (expand = true)
+                                        .centerVertical(expand = true)
 
                                     Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
-                                        .centerTextHorizontal ()
+                                        .centerTextHorizontal()
                                 }
                             )
-                                .backgroundColor (Styles.HourlyForecastStartColor)
+                                .backgroundColor(Styles.HourlyForecastStartColor)
                      })
                         .centerHorizontal()
-                        .margin (0., 30., 0., 0.)
+                        .margin(0., 30., 0., 0.)
                 }
             )
         )
@@ -103,8 +103,8 @@ module CityView =
 
         match city.Data with
         | Some data ->
-            ContentView(loadedView (index, city.Name, city.IsRefreshing, data) onRefreshing)
-                .padding (padding)
+            ContentView(loadedView(index, city.Name, city.IsRefreshing, data) onRefreshing)
+                .padding(padding)
         | None ->
             ContentView(loadingView city.Name)
-                .padding (padding)
+                .padding(padding)

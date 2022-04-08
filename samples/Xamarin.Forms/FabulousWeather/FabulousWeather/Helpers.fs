@@ -11,7 +11,7 @@ type fahrenheit
 module Helpers =
     let kelvinToRoundedFahrenheit K =
         let realValue =
-            (9. / 5. * (float (K - 273<kelvin>)) + 32.)
+            (9. / 5. * (float(K - 273<kelvin>)) + 32.)
 
         let roundedValue = Math.Round realValue |> int
         roundedValue * 1<fahrenheit>

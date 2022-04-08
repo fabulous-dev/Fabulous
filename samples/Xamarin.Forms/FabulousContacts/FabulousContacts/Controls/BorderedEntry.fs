@@ -19,7 +19,7 @@ type IBorderedEntry =
     inherit IEntry
 
 module BorderedEntry =
-    let WidgetKey = Widgets.register<BorderedEntry> ()
+    let WidgetKey = Widgets.register<BorderedEntry>()
 
     let BorderColor =
         Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty

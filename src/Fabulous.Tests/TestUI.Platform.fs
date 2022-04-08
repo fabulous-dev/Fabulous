@@ -64,8 +64,8 @@ type TestButton() =
     let handlers = Dictionary<int, ButtonHandler>()
 
     member _.Press() =
-        for handler in Array.ofSeq (handlers.Values) do
-            handler ()
+        for handler in Array.ofSeq(handlers.Values) do
+            handler()
 
     interface IText with
         member val Text = "" with get, set

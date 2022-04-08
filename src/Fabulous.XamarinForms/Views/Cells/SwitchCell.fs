@@ -9,7 +9,7 @@ type ISwitchCell =
     inherit ICell
 
 module SwitchCell =
-    let WidgetKey = Widgets.register<SwitchCell> ()
+    let WidgetKey = Widgets.register<SwitchCell>()
 
     let On =
         Attributes.defineBindable<bool> SwitchCell.OnProperty

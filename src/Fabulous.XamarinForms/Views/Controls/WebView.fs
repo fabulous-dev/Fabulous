@@ -12,7 +12,7 @@ type IWebView =
 
 module WebView =
 
-    let WidgetKey = Widgets.register<WebView> ()
+    let WidgetKey = Widgets.register<WebView>()
 
     let CanGoBack =
         Attributes.defineBindable<bool> WebView.CanGoBackProperty

@@ -12,7 +12,7 @@ type ILine =
 
 module Line =
 
-    let WidgetKey = Widgets.register<Line> ()
+    let WidgetKey = Widgets.register<Line>()
 
     let Points =
         Attributes.define<struct (Point * Point)>

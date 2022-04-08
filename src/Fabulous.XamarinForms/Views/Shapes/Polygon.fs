@@ -11,7 +11,7 @@ type IPolygon =
 
 module Polygon =
 
-    let WidgetKey = Widgets.register<Polygon> ()
+    let WidgetKey = Widgets.register<Polygon>()
 
     let PointsString =
         Attributes.define<string>

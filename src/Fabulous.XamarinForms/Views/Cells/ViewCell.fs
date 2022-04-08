@@ -9,7 +9,7 @@ type IViewCell =
     inherit ICell
 
 module ViewCell =
-    let WidgetKey = Widgets.register<ViewCell> ()
+    let WidgetKey = Widgets.register<ViewCell>()
 
     let View =
         Attributes.defineWidget

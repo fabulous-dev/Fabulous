@@ -44,12 +44,12 @@ module ContactsListPage =
             | "" -> contacts
             | s ->
                 contacts
-                |> List.filter (fun c -> c.FirstName.Contains s || c.LastName.Contains s)
+                |> List.filter(fun c -> c.FirstName.Contains s || c.LastName.Contains s)
 
         filteredContacts
-        |> List.groupBy (fun c -> c.LastName.[0].ToString().ToUpper())
-        |> List.map (fun (k, cs) -> ContactGroup(k, cs |> List.sortBy (fun c -> c.FirstName)))
-        |> List.sortBy (fun cg -> cg.Name)
+        |> List.groupBy(fun c -> c.LastName.[0].ToString().ToUpper())
+        |> List.map(fun (k, cs) -> ContactGroup(k, cs |> List.sortBy(fun c -> c.FirstName)))
+        |> List.sortBy(fun cg -> cg.Name)
         |> ObservableCollection<_>
 
     let findContactIn (groupedContacts: ObservableCollection<ContactGroup>) (index: int) =
@@ -111,7 +111,7 @@ module ContactsListPage =
             (VStack(spacing = 0.) {
                 SearchBar(model.FilterText, UpdateFilterText, Search)
                     .backgroundColor(accentColor)
-                    .cancelButtonColor (accentTextColor)
+                    .cancelButtonColor(accentTextColor)
 
                 (GroupedListView
                     (model.ContactGroups)
@@ -125,10 +125,10 @@ module ContactsListPage =
                     .rowHeight(60)
                     .selectionMode(ListViewSelectionMode.None)
                     .onItemTapped(ContactSelected)
-                    .fillVertical (expand = true)
+                    .fillVertical(expand = true)
              })
         )
-            .toolbarItems () {
+            .toolbarItems() {
             ToolbarItem(Strings.Common_About, AboutTapped)
             ToolbarItem("+", AddNewContactTapped)
         }

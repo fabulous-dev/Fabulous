@@ -9,7 +9,7 @@ type IDatePicker =
     inherit IView
 
 module DatePicker =
-    let WidgetKey = Widgets.register<DatePicker> ()
+    let WidgetKey = Widgets.register<DatePicker>()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> DatePicker.CharacterSpacingProperty

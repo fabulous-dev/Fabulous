@@ -9,7 +9,7 @@ type ILabel =
     inherit IView
 
 module Label =
-    let WidgetKey = Widgets.register<Label> ()
+    let WidgetKey = Widgets.register<Label>()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> Label.CharacterSpacingProperty
@@ -122,7 +122,7 @@ type LabelModifiers =
 
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #ILabel>, value: float) =
-        LabelModifiers.padding (this, Thickness(value))
+        LabelModifiers.padding(this, Thickness(value))
 
     [<Extension>]
     static member inline padding
@@ -133,7 +133,7 @@ type LabelModifiers =
             right: float,
             bottom: float
         ) =
-        LabelModifiers.padding (this, Thickness(left, top, right, bottom))
+        LabelModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: Color, ?dark: Color) =

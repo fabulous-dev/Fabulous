@@ -11,7 +11,7 @@ type IRectangle =
 
 module Rectangle =
 
-    let WidgetKey = Widgets.register<Rectangle> ()
+    let WidgetKey = Widgets.register<Rectangle>()
 
     let RadiusX =
         Attributes.defineBindable<float> Rectangle.RadiusXProperty

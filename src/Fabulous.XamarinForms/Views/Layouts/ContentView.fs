@@ -8,7 +8,7 @@ type IContentView =
     inherit ITemplatedView
 
 module ContentView =
-    let WidgetKey = Widgets.register<ContentView> ()
+    let WidgetKey = Widgets.register<ContentView>()
 
     let Content =
         Attributes.defineBindableWidget ContentView.ContentProperty

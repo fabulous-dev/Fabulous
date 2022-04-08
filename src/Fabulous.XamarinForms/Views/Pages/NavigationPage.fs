@@ -12,7 +12,7 @@ type INavigationPage =
     inherit IPage
 
 module NavigationPage =
-    let WidgetKey = Widgets.register<NavigationPage> ()
+    let WidgetKey = Widgets.register<NavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindable<string> NavigationPage.BackButtonTitleProperty
@@ -173,7 +173,7 @@ type NavigationPageAttachedModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        NavigationPageAttachedModifiers.titleIconImageSource (this, light, ?dark = dark)
+        NavigationPageAttachedModifiers.titleIconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the TitleIconImageSource.</summary>
     /// <param name="light">The source of the titleIconImageSource in the light theme.</param>
@@ -187,7 +187,7 @@ type NavigationPageAttachedModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        NavigationPageAttachedModifiers.titleIconImageSource (this, light, ?dark = dark)
+        NavigationPageAttachedModifiers.titleIconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the TitleIconImageSource.</summary>
     /// <param name="light">The source of the titleIconImageSource in the light theme.</param>
@@ -201,7 +201,7 @@ type NavigationPageAttachedModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        NavigationPageAttachedModifiers.titleIconImageSource (this, light, ?dark = dark)
+        NavigationPageAttachedModifiers.titleIconImageSource(this, light, ?dark = dark)
 
     /// <summary>Sets the value for TitleView</summary>
     /// <param name= "content">View to use as a title for the navigation page.</param>

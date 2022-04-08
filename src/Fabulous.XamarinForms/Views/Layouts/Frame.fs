@@ -9,7 +9,7 @@ type IFrame =
     inherit IContentView
 
 module Frame =
-    let WidgetKey = Widgets.register<Frame> ()
+    let WidgetKey = Widgets.register<Frame>()
 
     let BorderColor =
         Attributes.defineAppThemeBindable<Color> Frame.BorderColorProperty

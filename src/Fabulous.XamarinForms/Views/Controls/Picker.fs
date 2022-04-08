@@ -9,7 +9,7 @@ type IPicker =
     inherit IView
 
 module Picker =
-    let WidgetKey = Widgets.register<Picker> ()
+    let WidgetKey = Widgets.register<Picker>()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> Picker.CharacterSpacingProperty

@@ -83,7 +83,7 @@ module App =
 
     /// Check if there are any more moves available in the game
     let anyMoreMoves m =
-        m.Board |> Map.exists (fun _ c -> c = Empty)
+        m.Board |> Map.exists(fun _ c -> c = Empty)
 
     let lines =
         [
@@ -98,7 +98,7 @@ module App =
           yield [ (0, 2); (1, 1); (2, 0) ] ]
 
     /// Determine if a line is a winning line.
-    let getLine (board: Board) line = line |> List.map (fun p -> board.[p])
+    let getLine (board: Board) line = line |> List.map(fun p -> board.[p])
 
     /// Determine if a line is a winning line.
     let getLineWinner line =
@@ -121,7 +121,7 @@ module App =
     let getGameResult model =
         match
             lines
-            |> Seq.tryPick (getLine model.Board >> getLineWinner)
+            |> Seq.tryPick(getLine model.Board >> getLineWinner)
             with
         | Some p -> Win p
         | _ ->
@@ -150,7 +150,7 @@ module App =
             let result = getGameResult newModel
 
             if result <> StillPlaying then
-                gameOver (getMessage newModel)
+                gameOver(getMessage newModel)
 
             let newModel2 =
                 let x, y = newModel.GameScore
@@ -215,51 +215,51 @@ module App =
                                               Star
                                               Absolute 5.0
                                               Star ]) {
-                                BoxView(Color.Black).gridRow(1).gridColumnSpan (5)
-                                BoxView(Color.Black).gridRow(3).gridColumnSpan (5)
-                                BoxView(Color.Black).gridColumn(1).gridRowSpan (5)
-                                BoxView(Color.Black).gridColumn(3).gridRowSpan (5)
+                                BoxView(Color.Black).gridRow(1).gridColumnSpan(5)
+                                BoxView(Color.Black).gridRow(3).gridColumnSpan(5)
+                                BoxView(Color.Black).gridColumn(1).gridRowSpan(5)
+                                BoxView(Color.Black).gridColumn(3).gridRowSpan(5)
 
                                 for row, col as pos in positions do
                                     if canPlay model model.Board.[pos] then
                                         Button("", Play pos)
                                             .backgroundColor(Color.LightBlue)
                                             .gridRow(row * 2)
-                                            .gridColumn (col * 2)
+                                            .gridColumn(col * 2)
                                     else
                                         Image(Aspect.AspectFit, imageForPos model.Board.[pos])
                                             .center()
                                             .margin(10.)
                                             .gridRow(row * 2)
-                                            .gridColumn (col * 2)
+                                            .gridColumn(col * 2)
                              })
                                 .rowSpacing(0.)
                                 .columnSpacing(0.)
                                 .center()
                                 .size(?width = model.VisualBoardSize, ?height = model.VisualBoardSize)
-                                .gridRow (0)
+                                .gridRow(0)
 
                             Label(getMessage model)
                                 .textColor(Color.Black)
                                 .font(namedSize = NamedSize.Large)
                                 .center()
                                 .margin(10.)
-                                .gridRow (1)
+                                .gridRow(1)
 
                             Button("Restart game", Restart)
                                 .textColor(Color.Black)
                                 .backgroundColor(Color.LightBlue)
                                 .font(namedSize = NamedSize.Large)
-                                .gridRow (2)
+                                .gridRow(2)
                         }
                     )
 
                 match model.VisualBoardSize with
-                | None -> contentPage.onSizeAllocated (VisualBoardSizeChanged)
+                | None -> contentPage.onSizeAllocated(VisualBoardSizeChanged)
                 | Some _ -> contentPage
              })
                 .barBackgroundColor(Color.LightBlue)
-                .barTextColor (Color.Black)
+                .barTextColor(Color.Black)
         )
 
     // Display a modal message giving the game result. This is doing a UI

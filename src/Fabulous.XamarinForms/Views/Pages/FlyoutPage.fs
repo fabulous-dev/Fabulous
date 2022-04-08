@@ -9,7 +9,7 @@ type IFlyoutPage =
     inherit IPage
 
 module FlyoutPage =
-    let WidgetKey = Widgets.register<FlyoutPage> ()
+    let WidgetKey = Widgets.register<FlyoutPage>()
 
     let CanChangeIsPresented =
         Attributes.define<bool>

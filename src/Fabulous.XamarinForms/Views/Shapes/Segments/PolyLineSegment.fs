@@ -8,7 +8,7 @@ type IPolyLineSegment =
     inherit IPathSegment
 
 module PolyLineSegment =
-    let WidgetKey = Widgets.register<PolyLineSegment> ()
+    let WidgetKey = Widgets.register<PolyLineSegment>()
 
     let PointsString =
         Attributes.define<string>

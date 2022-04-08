@@ -10,7 +10,7 @@ type IRadioButton =
     inherit ITemplatedView
 
 module RadioButton =
-    let WidgetKey = Widgets.register<RadioButton> ()
+    let WidgetKey = Widgets.register<RadioButton>()
 
     let BorderColor =
         Attributes.defineAppThemeBindable<Color> RadioButton.BorderColorProperty
@@ -83,7 +83,7 @@ module RadioButtonBuilders =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
                 AttributesBundle(
-                    StackList.two (
+                    StackList.two(
                         RadioButton.IsChecked.WithValue(isChecked),
                         RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
                     ),

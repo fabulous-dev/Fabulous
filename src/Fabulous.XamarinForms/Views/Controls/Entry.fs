@@ -10,7 +10,7 @@ type IEntry =
     inherit IInputView
 
 module Entry =
-    let WidgetKey = Widgets.register<Entry> ()
+    let WidgetKey = Widgets.register<Entry>()
 
     let ClearButtonVisibility =
         Attributes.defineBindable<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty

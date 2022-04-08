@@ -16,7 +16,7 @@ type ProgressToData =
 
 module ProgressBar =
 
-    let WidgetKey = Widgets.register<ProgressBar> ()
+    let WidgetKey = Widgets.register<ProgressBar>()
 
     let ProgressColor =
         Attributes.defineAppThemeBindable<Color> ProgressBar.ProgressColorProperty

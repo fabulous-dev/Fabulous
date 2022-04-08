@@ -11,7 +11,7 @@ type IPolyline =
 
 module Polyline =
 
-    let WidgetKey = Widgets.register<Polyline> ()
+    let WidgetKey = Widgets.register<Polyline>()
 
     let PointsString =
         Attributes.define<string>

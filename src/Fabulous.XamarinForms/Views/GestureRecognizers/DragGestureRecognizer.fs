@@ -9,7 +9,7 @@ type IDragGestureRecognizer =
 
 module DragGestureRecognizer =
     let WidgetKey =
-        Widgets.register<DragGestureRecognizer> ()
+        Widgets.register<DragGestureRecognizer>()
 
     let CanDrag =
         Attributes.defineBindable<bool> DragGestureRecognizer.CanDragProperty

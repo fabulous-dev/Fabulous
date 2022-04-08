@@ -8,7 +8,7 @@ type ISkewTransform =
     inherit ITransform
 
 module SkewTransform =
-    let WidgetKey = Widgets.register<SkewTransform> ()
+    let WidgetKey = Widgets.register<SkewTransform>()
 
     let AnglesXY =
         Attributes.define<struct (float * float)>

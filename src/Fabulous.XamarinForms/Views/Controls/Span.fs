@@ -9,7 +9,7 @@ type ISpan =
     inherit IElement
 
 module Span =
-    let WidgetKey = Widgets.register<Span> ()
+    let WidgetKey = Widgets.register<Span>()
 
     let BackgroundColor =
         Attributes.defineAppThemeBindable<Color> Span.BackgroundColorProperty

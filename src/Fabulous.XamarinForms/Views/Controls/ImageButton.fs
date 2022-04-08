@@ -10,7 +10,7 @@ type IImageButton =
     inherit IView
 
 module ImageButton =
-    let WidgetKey = Widgets.register<ImageButton> ()
+    let WidgetKey = Widgets.register<ImageButton>()
 
     let Aspect =
         Attributes.defineBindable<Xamarin.Forms.Aspect> ImageButton.AspectProperty
@@ -134,7 +134,7 @@ type ImageButtonModifiers =
 
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IImageButton>, value: float) =
-        ImageButtonModifiers.padding (this, Thickness(value))
+        ImageButtonModifiers.padding(this, Thickness(value))
 
     [<Extension>]
     static member inline padding
@@ -145,7 +145,7 @@ type ImageButtonModifiers =
             right: float,
             bottom: float
         ) =
-        ImageButtonModifiers.padding (this, Thickness(left, top, right, bottom))
+        ImageButtonModifiers.padding(this, Thickness(left, top, right, bottom))
 
     /// <summary>Event that is fired when image button is pressed.</summary>
     /// <param name="onPressed">Msg to dispatch when image button is pressed</param>

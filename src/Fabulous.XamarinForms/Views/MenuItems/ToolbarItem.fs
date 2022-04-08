@@ -8,7 +8,7 @@ type IToolbarItem =
     inherit IMenuItem
 
 module ToolbarItem =
-    let WidgetKey = Widgets.register<ToolbarItem> ()
+    let WidgetKey = Widgets.register<ToolbarItem>()
 
     let Order =
         Attributes.define<ToolbarItemOrder>

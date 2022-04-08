@@ -10,7 +10,7 @@ type ITransformGroup =
 
 module TransformGroup =
 
-    let WidgetKey = Widgets.register<TransformGroup> ()
+    let WidgetKey = Widgets.register<TransformGroup>()
 
     let Children =
         Attributes.defineWidgetCollection

@@ -8,8 +8,7 @@ type IPanGestureRecognizer =
     inherit Fabulous.XamarinForms.IGestureRecognizer
 
 module PanGestureRecognizer =
-    let WidgetKey =
-        Widgets.register<PanGestureRecognizer> ()
+    let WidgetKey = Widgets.register<PanGestureRecognizer>()
 
     let TouchPoints =
         Attributes.defineBindable<int> PanGestureRecognizer.TouchPointsProperty

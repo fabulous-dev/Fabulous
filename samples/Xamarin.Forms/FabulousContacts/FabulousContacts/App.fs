@@ -21,7 +21,8 @@ module App =
         | NavigationPopped
 
     type Model =
-        { MainPageModel: MainPage.Model
+        { DbPath: string
+          MainPageModel: MainPage.Model
           DetailPageModel: DetailPage.Model option
           EditPageModel: EditPage.Model option
           AboutPageModel: unit option
@@ -31,11 +32,12 @@ module App =
           /// Xamarin.Forms doesn't tell us the difference
           PoppingCount: int }
 
-    let init dbPath () =
+    let init dbPath =
         let mainModel, mainMsg = MainPage.init dbPath ()
 
         let initialModel =
-            { MainPageModel = mainModel
+            { DbPath = dbPath
+              MainPageModel = mainModel
               DetailPageModel = None
               EditPageModel = None
               AboutPageModel = None
@@ -47,20 +49,20 @@ module App =
         match externalMsg with
         | MainPage.ExternalMsg.NoOp -> Cmd.none
         | MainPage.ExternalMsg.NavigateToAbout -> Cmd.ofMsg GoToAbout
-        | MainPage.ExternalMsg.NavigateToNewContact -> Cmd.ofMsg (GoToEdit None)
-        | MainPage.ExternalMsg.NavigateToDetail contact -> Cmd.ofMsg (GoToDetail contact)
+        | MainPage.ExternalMsg.NavigateToNewContact -> Cmd.ofMsg(GoToEdit None)
+        | MainPage.ExternalMsg.NavigateToDetail contact -> Cmd.ofMsg(GoToDetail contact)
 
     let handleDetailPageExternalMsg externalMsg =
         match externalMsg with
         | DetailPage.ExternalMsg.NoOp -> Cmd.none
-        | DetailPage.ExternalMsg.EditContact contact -> Cmd.ofMsg (GoToEdit(Some contact))
+        | DetailPage.ExternalMsg.EditContact contact -> Cmd.ofMsg(GoToEdit(Some contact))
 
     let handleEditPageExternalMsg externalMsg =
         match externalMsg with
         | EditPage.ExternalMsg.NoOp -> Cmd.none
-        | EditPage.ExternalMsg.GoBackAfterContactAdded contact -> Cmd.ofMsg (UpdateWhenContactAdded contact)
-        | EditPage.ExternalMsg.GoBackAfterContactUpdated contact -> Cmd.ofMsg (UpdateWhenContactUpdated contact)
-        | EditPage.ExternalMsg.GoBackAfterContactDeleted contact -> Cmd.ofMsg (UpdateWhenContactDeleted contact)
+        | EditPage.ExternalMsg.GoBackAfterContactAdded contact -> Cmd.ofMsg(UpdateWhenContactAdded contact)
+        | EditPage.ExternalMsg.GoBackAfterContactUpdated contact -> Cmd.ofMsg(UpdateWhenContactUpdated contact)
+        | EditPage.ExternalMsg.GoBackAfterContactDeleted contact -> Cmd.ofMsg(UpdateWhenContactDeleted contact)
 
     let navigationMapper (model: Model) =
         let aboutModel = model.AboutPageModel
@@ -73,7 +75,7 @@ module App =
         | _, Some _, None -> { model with DetailPageModel = None }
         | _, _, Some _ -> { model with EditPageModel = None }
 
-    let update dbPath msg model =
+    let update msg model =
         match msg with
         | MainPageMsg msg ->
             let m, cmd, externalMsg = MainPage.update msg model.MainPageModel
@@ -99,7 +101,7 @@ module App =
 
         | EditPageMsg msg ->
             let m, cmd, externalMsg =
-                EditPage.update dbPath msg model.EditPageModel.Value
+                EditPage.update model.DbPath msg model.EditPageModel.Value
 
             let cmd2 = handleEditPageExternalMsg externalMsg
 
@@ -138,7 +140,7 @@ module App =
 
         | UpdateWhenContactAdded contact ->
             let mainMsg =
-                Cmd.ofMsg (MainPageMsg(MainPage.Msg.ContactAdded contact))
+                Cmd.ofMsg(MainPageMsg(MainPage.Msg.ContactAdded contact))
 
             let m =
                 { model with
@@ -149,8 +151,8 @@ module App =
 
         | UpdateWhenContactUpdated contact ->
             let pendingCmds =
-                Cmd.batch [ Cmd.ofMsg (MainPageMsg(MainPage.Msg.ContactUpdated contact))
-                            Cmd.ofMsg (DetailPageMsg(DetailPage.Msg.ContactUpdated contact)) ]
+                Cmd.batch [ Cmd.ofMsg(MainPageMsg(MainPage.Msg.ContactUpdated contact))
+                            Cmd.ofMsg(DetailPageMsg(DetailPage.Msg.ContactUpdated contact)) ]
 
             let m =
                 { model with
@@ -161,7 +163,7 @@ module App =
 
         | UpdateWhenContactDeleted contact ->
             let mainMsg =
-                Cmd.ofMsg (MainPageMsg(MainPage.Msg.ContactDeleted contact))
+                Cmd.ofMsg(MainPageMsg(MainPage.Msg.ContactDeleted contact))
 
             let m =
                 { model with
@@ -190,8 +192,8 @@ module App =
              })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
-                .onPopped (NavigationPopped)
+                .onPopped(NavigationPopped)
         )
 
-    let program dbPath =
-        Program.statefulApplicationWithCmd (init dbPath) (update dbPath) view
+    let program =
+        Program.statefulApplicationWithCmd init update view

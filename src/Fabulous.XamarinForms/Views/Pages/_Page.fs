@@ -80,7 +80,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        PageModifiers.iconImageSource (this, light, ?dark = dark)
+        PageModifiers.iconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the IconImageSource.</summary>
     /// <param name="light">The source of the iconImageSource in the light theme.</param>
@@ -94,7 +94,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        PageModifiers.iconImageSource (this, light, ?dark = dark)
+        PageModifiers.iconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the IconImageSource.</summary>
     /// <param name="light">The source of the iconImageSource in the light theme.</param>
@@ -108,7 +108,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        PageModifiers.iconImageSource (this, light, ?dark = dark)
+        PageModifiers.iconImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
     /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
@@ -134,7 +134,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        PageModifiers.backgroundImageSource (this, light, ?dark = dark)
+        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
     /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
@@ -148,7 +148,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        PageModifiers.backgroundImageSource (this, light, ?dark = dark)
+        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
     /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
@@ -162,7 +162,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        PageModifiers.backgroundImageSource (this, light, ?dark = dark)
+        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
 
     /// <summary>Event that is fired when the page is appearing.</summary>
     /// <param name="onAppearing">Msg to dispatch when then page is appearing.</param>
@@ -198,7 +198,7 @@ type PageModifiers =
 
     [<Extension>]
     static member inline padding(this: WidgetBuilder<'msg, #IPage>, value: float) =
-        PageModifiers.padding (this, Thickness(value))
+        PageModifiers.padding(this, Thickness(value))
 
     [<Extension>]
     static member inline padding
@@ -209,7 +209,7 @@ type PageModifiers =
             right: float,
             bottom: float
         ) =
-        PageModifiers.padding (this, Thickness(left, top, right, bottom))
+        PageModifiers.padding(this, Thickness(left, top, right, bottom))
 
 [<Extension>]
 type PagePlatformModifiers =

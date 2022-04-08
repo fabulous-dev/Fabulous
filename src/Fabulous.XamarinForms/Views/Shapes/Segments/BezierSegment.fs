@@ -8,7 +8,7 @@ type IBezierSegment =
     inherit IPathSegment
 
 module BezierSegment =
-    let WidgetKey = Widgets.register<BezierSegment> ()
+    let WidgetKey = Widgets.register<BezierSegment>()
 
     let Point1 =
         Attributes.defineBindable<Point> BezierSegment.Point1Property

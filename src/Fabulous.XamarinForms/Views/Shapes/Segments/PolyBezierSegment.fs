@@ -8,7 +8,7 @@ type IPolyBezierSegment =
     inherit IPathSegment
 
 module PolyBezierSegment =
-    let WidgetKey = Widgets.register<PolyBezierSegment> ()
+    let WidgetKey = Widgets.register<PolyBezierSegment>()
 
     let PointsString =
         Attributes.define<string>

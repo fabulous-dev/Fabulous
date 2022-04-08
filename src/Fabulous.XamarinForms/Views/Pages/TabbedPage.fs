@@ -9,7 +9,7 @@ type ITabbedPage =
     inherit IMultiPageOfPage
 
 module TabbedPage =
-    let WidgetKey = Widgets.register<TabbedPage> ()
+    let WidgetKey = Widgets.register<TabbedPage>()
 
     let BarBackgroundColor =
         Attributes.defineAppThemeBindable<Color> TabbedPage.BarBackgroundColorProperty

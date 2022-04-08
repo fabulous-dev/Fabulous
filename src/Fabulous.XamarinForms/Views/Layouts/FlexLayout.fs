@@ -9,7 +9,7 @@ type IFlexLayout =
 
 module FlexLayout =
 
-    let WidgetKey = Widgets.register<FlexLayout> ()
+    let WidgetKey = Widgets.register<FlexLayout>()
 
     let AlignContent =
         Attributes.defineBindable<FlexAlignContent> FlexLayout.AlignContentProperty
@@ -111,7 +111,7 @@ type FlexLayoutAttachedModifiers =
     /// <param name="value">Value that controls the element's relative or absolute basis.</param>
     [<Extension>]
     static member inline flexBasis(this: WidgetBuilder<'msg, #IView>, value: float) =
-        this.AddScalar(FlexLayout.Basis.WithValue(FlexBasis.op_Implicit (float32 value)))
+        this.AddScalar(FlexLayout.Basis.WithValue(FlexBasis.op_Implicit(float32 value)))
 
     /// <summary>Sets a value that that determines the proportional growth that this element will accept to accommodate the layout in the row or column.</summary>
     /// <param name="value">Value that determines the proportional growth.</param>
