@@ -38,7 +38,9 @@ type AppDelegate() =
         |> ignore
 
         let dbPath = getDbPath ()
-        let appx = (App.program dbPath)
-        let application: Xamarin.Forms.Application = unbox (Program.create appx ())
+
+        let application =
+            Program.createApplication App.program dbPath
+
         this.LoadApplication(application)
         base.FinishedLaunching(app, options)

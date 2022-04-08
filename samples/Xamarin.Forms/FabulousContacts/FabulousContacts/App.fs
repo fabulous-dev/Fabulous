@@ -21,7 +21,8 @@ module App =
         | NavigationPopped
 
     type Model =
-        { MainPageModel: MainPage.Model
+        { DbPath: string
+          MainPageModel: MainPage.Model
           DetailPageModel: DetailPage.Model option
           EditPageModel: EditPage.Model option
           AboutPageModel: unit option
@@ -31,11 +32,12 @@ module App =
           /// Xamarin.Forms doesn't tell us the difference
           PoppingCount: int }
 
-    let init dbPath () =
+    let init dbPath =
         let mainModel, mainMsg = MainPage.init dbPath ()
 
         let initialModel =
-            { MainPageModel = mainModel
+            { DbPath = dbPath
+              MainPageModel = mainModel
               DetailPageModel = None
               EditPageModel = None
               AboutPageModel = None
@@ -73,7 +75,7 @@ module App =
         | _, Some _, None -> { model with DetailPageModel = None }
         | _, _, Some _ -> { model with EditPageModel = None }
 
-    let update dbPath msg model =
+    let update msg model =
         match msg with
         | MainPageMsg msg ->
             let m, cmd, externalMsg = MainPage.update msg model.MainPageModel
@@ -99,7 +101,7 @@ module App =
 
         | EditPageMsg msg ->
             let m, cmd, externalMsg =
-                EditPage.update dbPath msg model.EditPageModel.Value
+                EditPage.update model.DbPath msg model.EditPageModel.Value
 
             let cmd2 = handleEditPageExternalMsg externalMsg
 
@@ -193,5 +195,5 @@ module App =
                 .onPopped (NavigationPopped)
         )
 
-    let program dbPath =
-        Program.statefulApplicationWithCmd (init dbPath) (update dbPath) view
+    let program =
+        Program.statefulApplicationWithCmd init update view

@@ -16,8 +16,10 @@ type AppDelegate() =
 
     override this.FinishedLaunching(app, options) =
         Forms.Init()
-        let application: Xamarin.Forms.Application = unbox (Program.create App.program ())
+
+        let application = Program.createApplication App.program ()
         this.LoadApplication(application)
+
         base.FinishedLaunching(app, options)
 
 module Main =
