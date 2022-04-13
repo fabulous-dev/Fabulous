@@ -28,7 +28,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="MainPage.fs" />
         <Compile Include="App.fs" />
         <Compile Include="MauiProgram.fs" />
     </ItemGroup>
@@ -90,5 +89,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
+      <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
     </ItemGroup>
 </Project>
