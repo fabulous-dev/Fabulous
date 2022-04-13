@@ -106,6 +106,6 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
             if not targetRef.IsAlive then
                 ()
             else
-                x.ApplyScalarDiffs(&diff.ScalarChanges)
                 x.ApplyWidgetDiffs(&diff.WidgetChanges)
                 x.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
+                x.ApplyScalarDiffs(&diff.ScalarChanges)
