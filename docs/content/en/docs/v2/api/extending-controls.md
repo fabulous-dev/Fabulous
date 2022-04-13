@@ -1,6 +1,6 @@
 ---
 id: "v2-extending-controls"
-title: "Extending controls"
+title: "Creating and extending controls"
 description: ""
 lead: ""
 date: 2022-04-12T00:00:00+00:00
@@ -71,60 +71,73 @@ let view model =
 
 ## Important considerations
 
-Attributes are assigned an automatically-incremented key. Fabulous sorts those keys by ascending order to ensure consistency during updates.
-
 Depending on the internal implementation of a control (e.g. in Xamarin.Forms), sometimes a property needs to be updated before another one.
 
-An example of this: the Picker control has an `Items` property and a `SelectedIndex` property.  
-The `Items` should be set before we can set the `SelectedIndex`.
+An example of this: the Stepper control has a `Minimum` and `Maximum` property.
 
-In Fabulous, this is done by defining the attribute `Items` before `SelectedIndex`.
+According to the Xamarin.Forms implementation, those properties follow some rules:
+
+- `Minimum` is required to be less than or equal to `Maximum`
+- `Maximum` is required to be more than or equal to `Minimum`
+- If any of those 2 conditions are not true, `InvalidOperationException` is thrown
+
+This means if the new minimum value is more than the old maximum value, we need to update maximum first. Same in the other direction.
+
+To ensure consistency, Fabulous doesn't take into account the order of declaration. Hence the 2 following codes will have the same behavior:
 
 ```fs
-module Picker =
-    let Items = Attributes.define(...) // Will be assigned a key X
+Stepper()
+    .minimum(1)
+    .maximum(5)
 
-    let SelectedIndex = Attributes.define(...) // Will be assigned a key (X + 1)
+Stepper()
+    .maximum(5)
+    .minimum(1)
 ```
 
-Now, let's take an other example.  
-Say we have a custom control that has 2 properties: `A` and `B`.  
-`A` needs to be set _after_ `B`.
+This could throw an exception if we try to set the minimum to a value superior to the current maximum.
 
-To do that, we need to define `B` before `A`:
+To be able to guarantee the order of property updates, we need to store those 2 properties in a single Attribute.
 
 ```fs
-module CustomControl =
-    let B = Attributes.define(...)
-    let A = Attributes.define(...)
-```
+// Step 1 - create a struct holding both values
+type [<Struct>] MinMaxValue =
+    { Minimum: float
+      Maximum: float }
 
-### Special case: reusing attributes and sorting order
+module Stepper =
+    // Step 2 - define an attribute that will apply the correct update logic
+    let MinimumMaximum =
+        Attributes.define<MinMaxValue>
+            "Stepper_MinimumMaximum"
+            (fun _ newValueOpt node ->
+                let stepper = node.Target :?> Stepper
 
-It is important to notice that attributes defined in your app will be the first to get a key; before the attributes defined in Fabulous.
+                match newValueOpt with
+                | ValueNone ->
+                    stepper.ClearValue(Stepper.MinimumProperty)
+                    stepper.ClearValue(Stepper.MaximumProperty)
+                | ValueSome { Minimum = min; Maximum = max } ->
+                    let currMax =
+                        stepper.GetValue(Stepper.MaximumProperty) :?> float
 
-This means if you need to update an attribute defined by Fabulous _before_ one of your custom attribute, then you'll need to redefine the existing attributes to ensure order is correct:
-
-```fs
-// In Fabulous
-module Picker =
-    let Items = Attributes.define(...)
-
-// In your app
-module CustomPicker =
-    let WidgetKey = Widgets.register<CustomPicker>()
-    let Items = Attributes.define(...)
-    let SelectedIndex = Attributes.define(...)
-
-    type Fabulous.XamarinForms.View with
-        static member inline CustomPicker<'msg>(items, selectedIndex) =
-            WidgetBuilder<'msg, ICustomPicker>(
-                WidgetKey,
-                CustomPicker.Items.WithValue(items),
-                CustomPicker.SelectedIndex.WithValue(selectedIndex)
+                    if min > currMax then
+                        stepper.SetValue(Stepper.MaximumProperty, max)
+                        stepper.SetValue(Stepper.MinimumProperty, min)
+                    else
+                        stepper.SetValue(Stepper.MinimumProperty, min)
+                        stepper.SetValue(Stepper.MaximumProperty, max)
             )
 
-// CustomPicker.Items.Key = 0
-// CustomPicker.SelectedIndex.Key = 1
-// Picker.Items.Key = 2 -- this would not work because CustomPicker.SelectedIndex would be applied first
+    // Step 3 - add a constructor or a modifier that will take the 2 values at the same time
+    type Fabulous.XamarinForms.View with
+        static member inline Stepper<'msg>(min: float, max: float) =
+            WidgetBuilder<'msg, IStepper>(
+                WidgetKey,
+                MinimumMaximum.WithValue({ Minimum = min; Maximum = max })
+            )
+
+// Step 4 - use it
+let view model =
+    Stepper(model.Min, model.Max)
 ```
