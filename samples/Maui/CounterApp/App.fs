@@ -1,8 +1,22 @@
 namespace CounterApp
 
-open Microsoft.Maui.Controls
+open Fabulous
+open Fabulous.Maui
 
-type App() as this =
-    inherit Application()
+module App =
+    type Model = { Text: string }
 
-    do this.MainPage <- MainPage()
+    type Msg = Nope
+
+    let init () =
+        { Text = "Hello from Fabulous.Maui!" }
+
+    let update msg model =
+        match msg with
+        | Nope -> model
+
+    let view model =
+        Unchecked.defaultof<WidgetBuilder<Msg, IApplication>>
+
+    let program =
+        Program.statefulApplication init update view

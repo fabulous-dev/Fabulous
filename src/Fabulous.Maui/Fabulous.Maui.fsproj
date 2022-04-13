@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs" />
+        <Compile Include="AppHostBuilderExtensions.fs" />
+        <Compile Include="ViewNode.fs" />
+        <Compile Include="Views\Element.fs" />
+        <Compile Include="Views\Application.fs" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>

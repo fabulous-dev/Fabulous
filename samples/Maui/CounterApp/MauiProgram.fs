@@ -1,13 +1,13 @@
 namespace CounterApp
 
+open Fabulous.Maui
 open Microsoft.Maui.Hosting
-open Microsoft.Maui.Controls.Hosting
 
 type MauiProgram =
     static member CreateMauiApp() =
         MauiApp
             .CreateBuilder()
-            .UseMauiApp<App>()
+            .UseFabulousApp(App.program)
             .ConfigureFonts(fun fonts ->
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular") |> ignore
             )
