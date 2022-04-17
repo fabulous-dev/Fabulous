@@ -112,10 +112,12 @@ module DiffingSmallScalars =
                   counter = model.counter + amount }
 
     let rec viewBoxedInner depth counter =
+        // this is to emulate changing value only once per 5 updates
+        let value = counter / 20UL
         Stack() {
-            BoxedNumericBag(counter, counter, counter)
-            BoxedNumericBag(counter, counter, counter)
-            BoxedNumericBag(counter, counter, counter)
+            BoxedNumericBag(value, value, value)
+            BoxedNumericBag(value, value, value)
+            BoxedNumericBag(value, value, value)
             
             if (depth > 0) then
                 viewBoxedInner(depth - 1) counter
@@ -125,10 +127,12 @@ module DiffingSmallScalars =
         }
 
     let rec viewInlineInner depth counter =
+        // this is to emulate changing value only once per 5 updates
+        let value = counter / 20UL
         Stack() {
-            InlineNumericBag(counter, counter, counter)
-            InlineNumericBag(counter, counter, counter)
-            InlineNumericBag(counter, counter, counter)
+            InlineNumericBag(value, value, value)
+            InlineNumericBag(value, value, value)
+            InlineNumericBag(value, value, value)
             
             if (depth > 0) then
                 viewInlineInner(depth - 1) counter
@@ -161,8 +165,8 @@ module DiffingSmallScalars =
 
             let _tree = (instance.Start())
 
-            for i in 1UL .. 100UL do
-                instance.ProcessMessage(IncBy i)
+            for i in 1 .. 100 do
+                instance.ProcessMessage(IncBy 1UL)
 
 
 

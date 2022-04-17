@@ -21,6 +21,7 @@ type attributeKey
 type AttributeKey = uint32<attributeKey>
 
 module AttributeKey =
+    [<Struct>]
     type Kind =
         | Boxed // 1
         | Inline // 2
@@ -41,13 +42,16 @@ module AttributeKey =
         [<Literal>]
         // System.UInt32.MaxValue >>> 2
         let KeyMask = 1073741823u
-        
-    let getKind (key: uint32<attributeKey>): Kind =
-        match (uint32 key) &&& Code.Inline with 
+
+    let inline getKind (key: AttributeKey) : Kind =
+        match (uint32 key) &&& Code.Inline with
         | Code.Inline -> Inline
         | _ -> Boxed
 
-    let inline compare (a: uint32<attributeKey>) (b: uint32<attributeKey>) =
+    let inline getKeyValue (key: AttributeKey) : int = int ((uint32 key) &&& Code.KeyMask)
+
+
+    let inline compare (a: AttributeKey) (b: AttributeKey) =
         let a = uint32 a
         let b = uint32 b
         a.CompareTo b
@@ -55,7 +59,6 @@ module AttributeKey =
 type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
-
 
 /// Represents a value for a property of a widget.
 /// Can map to a real property (such as Label.Text) or to a non-existent one.
@@ -68,7 +71,6 @@ type ScalarAttribute =
 #endif
       Value: obj
 
-      // use System.BitConverter
       NumericValue: uint64 }
 
 

@@ -140,20 +140,21 @@ type WidgetCollectionAttributeDefinition =
 
 module AttributeDefinitionStore =
     let private _attributes =
-        Dictionary<AttributeKey, AttributeDefinition>()
+        ResizeArray<AttributeDefinition>()
 
     let mutable private _nextKey: uint32 = 0u
 
-    let get key = _attributes.[key]
-    let set key value = _attributes.[key] <- value
-    let remove key = _attributes.Remove(key) |> ignore
+    let get (key:AttributeKey) = _attributes.[AttributeKey.getKeyValue key]
+    let set (key:AttributeKey) value = _attributes.[AttributeKey.getKeyValue key] <- value
 
     let getNextKey () : AttributeKey =
+        _attributes.Add(Unchecked.defaultof<AttributeDefinition>)
         let key = _nextKey
         _nextKey <- _nextKey + 1u
         (key ||| AttributeKey.Code.Boxed) * 1u<attributeKey>
         
     let getInlineNextKey () : AttributeKey =
+        _attributes.Add(Unchecked.defaultof<AttributeDefinition>)
         let key = _nextKey
         _nextKey <- _nextKey + 1u
         (key ||| AttributeKey.Code.Inline) * 1u<attributeKey>
