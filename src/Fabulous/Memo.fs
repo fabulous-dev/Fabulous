@@ -67,7 +67,7 @@ module Memo =
           Compare = compareAttributes
           UpdateNode = updateNode }
 
-    AttributeDefinitionStore.set MemoAttributeKey MemoAttribute
+    AttributeDefinitionStore.set MemoAttributeKey (MemoAttribute.ToAttributeDefinition())
 
 
 

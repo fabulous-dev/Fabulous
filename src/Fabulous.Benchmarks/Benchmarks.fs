@@ -4,6 +4,7 @@ open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Jobs
 
 open BenchmarkDotNet.Running
+open Tests.TestUI_Attributes.Attributes
 open Tests.TestUI_Widgets
 
 open type View
@@ -13,13 +14,6 @@ module NestedTreeCreation =
     type Model = { depth: int }
 
     type Msg = Depth of int
-
-    //    let cond d =
-//        let r = d > 0
-//
-//        printfn $"cond %A{r}"
-//        r
-
 
     let rec viewInner (depth: int) =
         //        printfn $"view on {depth}"
@@ -106,12 +100,81 @@ module DiffingAttributes =
                 instance.ProcessMessage(IncBy i)
 
 
+module DiffingSmallScalars =
+    type Model = { depth: int; counter: uint64 }
+
+    type Msg = IncBy of uint64
+
+    let update msg model =
+        match msg with
+        | IncBy amount ->
+            { model with
+                  counter = model.counter + amount }
+
+    let rec viewBoxedInner depth counter =
+        Stack() {
+            BoxedNumericBag(counter, counter, counter)
+            BoxedNumericBag(counter, counter, counter)
+            BoxedNumericBag(counter, counter, counter)
+            
+            if (depth > 0) then
+                viewBoxedInner(depth - 1) counter
+
+            if (depth > 0) then
+                viewBoxedInner(depth - 2) counter
+        }
+
+    let rec viewInlineInner depth counter =
+        Stack() {
+            InlineNumericBag(counter, counter, counter)
+            InlineNumericBag(counter, counter, counter)
+            InlineNumericBag(counter, counter, counter)
+            
+            if (depth > 0) then
+                viewInlineInner(depth - 1) counter
+
+            if (depth > 0) then
+                viewInlineInner(depth - 2) counter
+        }
+        
+    let viewBoxed model = viewBoxedInner model.depth model.counter
+    let viewInline model = viewInlineInner model.depth model.counter
+
+    [<MemoryDiagnoser>]
+    [<SimpleJob(RuntimeMoniker.Net60)>]
+    type Benchmarks() =
+        [<Params(15)>]
+        member val depth = 0 with get, set
+
+        [<Params(true, false)>]
+        member val boxed = true with get, set
+        
+        [<Benchmark>]
+        member x.ProcessMessages() =
+            let program =
+                
+                let view = if x.boxed then viewBoxed else viewInline
+                
+                StatefulWidget.mkSimpleView(fun () -> { depth = x.depth; counter = 0UL }) update view
+
+            let instance = Run.Instance program
+
+            let _tree = (instance.Start())
+
+            for i in 1UL .. 100UL do
+                instance.ProcessMessage(IncBy i)
+
+
+
 [<EntryPoint>]
 let main argv =
-    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
-    |> ignore
-
-    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
+//    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
+//    |> ignore
+//
+//    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
+//    |> ignore
+    
+    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
     |> ignore
 
     0 // return an integer exit code

@@ -19,7 +19,7 @@ open Tests.TestUI_ViewNode
 //-------Widgets
 
 module Widgets =
-    let register<'T when 'T :> TestViewElement and 'T: (new: unit -> 'T)> () =
+    let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
         let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
@@ -72,6 +72,10 @@ type TestButtonMarker =
 
 type TestStackMarker =
     inherit IMarker
+
+type TestNumericBagMarker =
+    inherit IMarker
+
 //----------------
 
 /// ------------ Extensions
@@ -102,7 +106,6 @@ type WidgetExtensions() =
         ) =
         this.AddScalar(Attributes.Text.Record.WithValue(value))
 
-
 ///----------------
 
 [<AbstractClass; Sealed>]
@@ -110,6 +113,7 @@ type View private () =
     static let TestLabelKey = Widgets.register<TestLabel>()
     static let TestButtonKey = Widgets.register<TestButton>()
     static let TestStackKey = Widgets.register<TestStack>()
+    static let TestNumericBagKey = Widgets.register<TestNumericBag>()
 
     static member Label<'msg>(text: string) =
         WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
@@ -122,12 +126,30 @@ type View private () =
             Attributes.Button.Pressed.WithValue(onClicked)
         )
 
+    static member BoxedNumericBag<'msg>(one, two, three) =
+        WidgetBuilder<'msg, TestNumericBagMarker>(
+            TestNumericBagKey,
+            Attributes.NumericBag.BoxedValueOne.WithValue(one),
+            Attributes.NumericBag.BoxedValueTwo.WithValue(two),
+            Attributes.NumericBag.BoxedValueThree.WithValue(three)
+        )
+        
+    static member InlineNumericBag<'msg>(one, two, three) =
+        WidgetBuilder<'msg, TestNumericBagMarker>(
+            TestNumericBagKey,
+            Attributes.NumericBag.InlineValueOne.WithValue(one),
+            Attributes.NumericBag.InlineValueTwo.WithValue(two),
+            Attributes.NumericBag.InlineValueThree.WithValue(three)
+        )
+
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(
             TestStackKey,
             StackList.empty(),
             Attributes.Container.Children
         )
+
+
 
 [<Extension>]
 type CollectionBuilderExtensions =

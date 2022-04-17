@@ -3,14 +3,31 @@
 open System.Collections.Generic
 open Fabulous
 
-type IAttributeDefinition =
-    abstract member Key: AttributeKey
-    abstract member UpdateNode: obj voption -> obj voption -> IViewNode -> unit
+type ScalarAttributeData =
+    { Key: AttributeKey
+      UpdateNode: obj voption -> obj voption -> IViewNode -> unit
+      CompareBoxed: obj -> obj -> ScalarAttributeComparison }
 
-type IScalarAttributeDefinition =
-    inherit IAttributeDefinition
-    abstract member CompareBoxed: a: obj -> b: obj -> ScalarAttributeComparison
+type NumericAttributeData =
+    { Key: AttributeKey
+      UpdateNode: uint64 voption -> uint64 voption -> IViewNode -> unit }
 
+type WidgetAttributeData =
+    { Key: AttributeKey
+      ApplyDiff: WidgetDiff -> IViewNode -> unit
+      UpdateNode: Widget voption -> Widget voption -> IViewNode -> unit }
+
+type WidgetCollectionAttributeData =
+    { Key: AttributeKey
+      ApplyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit
+      UpdateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit }
+
+[<RequireQualifiedAccess>]
+type AttributeDefinition =
+    | Numeric of NumericAttributeData
+    | Scalar of ScalarAttributeData
+    | Widget of WidgetAttributeData
+    | WidgetCollection of WidgetCollectionAttributeData
 
 /// Attribute definition for scalar properties
 type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
@@ -26,26 +43,60 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
 #if DEBUG
           DebugName = x.Name
 #endif
+          NumericValue = 0UL
           Value = x.Convert(value) }
 
-    interface IScalarAttributeDefinition with
-        member x.Key = x.Key
+    member x.ToAttributeDefinition() : AttributeDefinition =
+        AttributeDefinition.Scalar
+            { Key = x.Key
+              CompareBoxed = (fun a b -> x.Compare(unbox<'modelType> a) (unbox<'modelType> b))
+              UpdateNode =
+                  (fun oldValueOpt newValueOpt node ->
+                      let oldValueOpt =
+                          match oldValueOpt with
+                          | ValueNone -> ValueNone
+                          | ValueSome v -> ValueSome(x.ConvertValue(unbox<'modelType> v))
 
-        member x.CompareBoxed a b =
-            x.Compare(unbox<'modelType> a) (unbox<'modelType> b)
+                      let newValueOpt =
+                          match newValueOpt with
+                          | ValueNone -> ValueNone
+                          | ValueSome v -> ValueSome(x.ConvertValue(unbox<'modelType> v))
 
-        member x.UpdateNode oldValueOpt newValueOpt node =
-            let oldValueOpt =
-                match oldValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(x.ConvertValue(unbox<'modelType> v))
+                      x.UpdateNode oldValueOpt newValueOpt node) }
 
-            let newValueOpt =
-                match newValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(x.ConvertValue(unbox<'modelType> v))
+/// Attribute definition for scalar properties
+type SmallScalarAttributeDefinition<'inputType, 'valueType> =
+    { Key: AttributeKey
+      Name: string
+      Convert: 'inputType -> uint64
+      ConvertValue: uint64 -> 'valueType
+      UpdateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit }
 
-            x.UpdateNode oldValueOpt newValueOpt node
+    member x.WithValue(value: 'inputType) : ScalarAttribute =
+        { Key = x.Key
+#if DEBUG
+          DebugName = x.Name
+#endif
+          NumericValue = x.Convert(value)
+          Value = null }
+
+    member x.ToAttributeDefinition() : AttributeDefinition =
+        AttributeDefinition.Numeric
+            { Key = x.Key
+              UpdateNode =
+                  (fun oldValueOpt newValueOpt node ->
+                      let oldValueOpt =
+                          match oldValueOpt with
+                          | ValueNone -> ValueNone
+                          | ValueSome v -> ValueSome(x.ConvertValue(v))
+
+                      let newValueOpt =
+                          match newValueOpt with
+                          | ValueNone -> ValueNone
+                          | ValueSome v -> ValueSome(x.ConvertValue(v))
+
+                      x.UpdateNode oldValueOpt newValueOpt node) }
+
 
 /// Attribute definition for widget properties
 type WidgetAttributeDefinition =
@@ -61,21 +112,11 @@ type WidgetAttributeDefinition =
 #endif
           Value = value }
 
-    interface IAttributeDefinition with
-        member x.Key = x.Key
-
-        member x.UpdateNode oldValueOpt newValueOpt node =
-            let oldValueOpt =
-                match oldValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<Widget> v)
-
-            let newValueOpt =
-                match newValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<Widget> v)
-
-            x.UpdateNode oldValueOpt newValueOpt node
+    member x.ToAttributeDefinition() : AttributeDefinition =
+        AttributeDefinition.Widget
+            { Key = x.Key
+              ApplyDiff = x.ApplyDiff
+              UpdateNode = x.UpdateNode }
 
 /// Attribute definition for collection properties
 type WidgetCollectionAttributeDefinition =
@@ -91,27 +132,17 @@ type WidgetCollectionAttributeDefinition =
 #endif
           Value = value }
 
-    interface IAttributeDefinition with
-        member x.Key = x.Key
-
-        member x.UpdateNode oldValueOpt newValueOpt node =
-            let oldValueOpt =
-                match oldValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<ArraySlice<Widget>> v)
-
-            let newValueOpt =
-                match newValueOpt with
-                | ValueNone -> ValueNone
-                | ValueSome v -> ValueSome(unbox<ArraySlice<Widget>> v)
-
-            x.UpdateNode oldValueOpt newValueOpt node
+    member x.ToAttributeDefinition() : AttributeDefinition =
+        AttributeDefinition.WidgetCollection
+            { Key = x.Key
+              ApplyDiff = x.ApplyDiff
+              UpdateNode = x.UpdateNode }
 
 module AttributeDefinitionStore =
     let private _attributes =
-        Dictionary<AttributeKey, IAttributeDefinition>()
+        Dictionary<AttributeKey, AttributeDefinition>()
 
-    let mutable private _nextKey = 0
+    let mutable private _nextKey: uint32 = 0u
 
     let get key = _attributes.[key]
     let set key value = _attributes.[key] <- value
@@ -119,8 +150,13 @@ module AttributeDefinitionStore =
 
     let getNextKey () : AttributeKey =
         let key = _nextKey
-        _nextKey <- _nextKey + 1
-        key
+        _nextKey <- _nextKey + 1u
+        (key ||| AttributeKey.Code.Boxed) * 1u<attributeKey>
+        
+    let getInlineNextKey () : AttributeKey =
+        let key = _nextKey
+        _nextKey <- _nextKey + 1u
+        (key ||| AttributeKey.Code.Inline) * 1u<attributeKey>
 
 module AttributeHelpers =
     let tryFindScalarAttribute
@@ -131,7 +167,6 @@ module AttributeHelpers =
         | ValueNone -> ValueNone
         | ValueSome attrs ->
             match attrs
-                  |> Array.tryFind(fun attr -> attr.Key = definition.Key)
-                with
+                  |> Array.tryFind (fun attr -> attr.Key = definition.Key) with
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'modelType> attr.Value)

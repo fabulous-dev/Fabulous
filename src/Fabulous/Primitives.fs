@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+open System
 open Fabulous
 
 /// Dev notes:
@@ -14,7 +15,43 @@ open Fabulous
 /// Having those performance constraints prevents us for using inheritance
 /// or using interfaces on these structs
 
-type AttributeKey = int
+[<Measure>]
+type attributeKey
+
+type AttributeKey = uint32<attributeKey>
+
+module AttributeKey =
+    type Kind =
+        | Boxed // 1
+        | Inline // 2
+
+    module Code =
+        [<Literal>]
+        // 1u <<< 30
+        let Boxed = 1073741824u
+
+        [<Literal>]
+        // 2u <<< 30
+        let Inline = 2147483648u
+
+        [<Literal>]
+        // 3u <<< 30
+        let CodeMask = 3221225472u
+
+        [<Literal>]
+        // System.UInt32.MaxValue >>> 2
+        let KeyMask = 1073741823u
+        
+    let getKind (key: uint32<attributeKey>): Kind =
+        match (uint32 key) &&& Code.Inline with 
+        | Code.Inline -> Inline
+        | _ -> Boxed
+
+    let inline compare (a: uint32<attributeKey>) (b: uint32<attributeKey>) =
+        let a = uint32 a
+        let b = uint32 b
+        a.CompareTo b
+
 type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
@@ -29,7 +66,10 @@ type ScalarAttribute =
 #if DEBUG
       DebugName: string
 #endif
-      Value: obj }
+      Value: obj
+
+      // use System.BitConverter
+      NumericValue: uint64 }
 
 
 and [<Struct>] WidgetAttribute =

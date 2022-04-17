@@ -38,8 +38,25 @@ module Attributes =
               Compare = compare
               UpdateNode = updateNode }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
+    let defineSmallScalarWithConverter<'inputType, 'valueType>
+        name
+        (convert: 'inputType -> uint64)
+        (convertValue: uint64 -> 'valueType)
+        (updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit): SmallScalarAttributeDefinition<'inputType, 'valueType>
+        =
+        let key = AttributeDefinitionStore.getInlineNextKey()
+
+        let definition =
+            { Key = key
+              Name = name
+              Convert = convert
+              ConvertValue = convertValue
+              UpdateNode = updateNode }
+
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
+        definition   
 
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter
@@ -55,7 +72,7 @@ module Attributes =
               ApplyDiff = applyDiff
               UpdateNode = updateNode }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
 
     /// Define a custom attribute storing a widget collection
@@ -72,7 +89,7 @@ module Attributes =
               ApplyDiff = applyDiff
               UpdateNode = updateNode }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
 
     /// Define an attribute storing a Widget for a CLR property
@@ -194,7 +211,7 @@ module Attributes =
                           event.AddHandler handler
                           node.SetHandler(key, ValueSome handler) }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
 
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
@@ -227,5 +244,5 @@ module Attributes =
                           node.SetHandler(key, ValueSome handler)
                           event.AddHandler handler }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition

@@ -78,3 +78,10 @@ type TestButton() =
             counter - 1
 
         member this.RemovePressListener(id) = handlers.Remove(id) |> ignore
+
+
+type TestNumericBag() =
+    inherit TestViewElement()
+    member val valueOne = 0UL with get, set
+    member val valueTwo = 0UL with get, set
+    member val valueThree = 0UL with get, set

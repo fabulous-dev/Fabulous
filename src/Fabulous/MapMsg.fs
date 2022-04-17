@@ -20,5 +20,5 @@ module MapMsg =
                       | ValueNone -> node.MapMsg <- None
                       | ValueSome fn -> node.MapMsg <- Some fn }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition

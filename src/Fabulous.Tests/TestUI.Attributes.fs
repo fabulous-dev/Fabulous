@@ -32,7 +32,8 @@ module Attributes =
                           let handlerId = btn.AddPressListener handler
                           node.SetHandler<int>(key, ValueSome handlerId) }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
+
         definition
 
     // --------------- Actual Properties ---------------
@@ -57,7 +58,6 @@ module Attributes =
                 TestUI_ViewNode.ViewNode.getViewNode
                 (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
-
     module Button =
         let Pressed = definePressable "Button_Pressed"
 
@@ -65,3 +65,35 @@ module Attributes =
     module Automation =
         let AutomationId =
             Attributes.define<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
+
+    module NumericBag =
+        let InlineValueOne =
+            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+                "InlineValueOne"
+                id
+                id
+                TestUI_ViewUpdaters.updateNumericValueOne
+
+        let InlineValueTwo =
+            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+                "InlineValueTwo"
+                id
+                id
+                TestUI_ViewUpdaters.updateNumericValueTwo
+        
+        let InlineValueThree =
+            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+                "InlineValueThree"
+                id
+                id
+                TestUI_ViewUpdaters.updateNumericValueThree
+                
+                
+        let BoxedValueOne =
+            Attributes.define<uint64> "BoxedValueOne" TestUI_ViewUpdaters.updateNumericValueOne
+            
+        let BoxedValueTwo =
+            Attributes.define<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
+        
+        let BoxedValueThree =
+            Attributes.define<uint64> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree

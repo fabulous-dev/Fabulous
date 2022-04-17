@@ -12,7 +12,7 @@ module Lifecycle =
               Compare = fun _ _ -> ScalarAttributeComparison.Identical
               UpdateNode = fun _oldValueOpt _newValueOpt _node -> () }
 
-        AttributeDefinitionStore.set key definition
+        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
 
     /// Store an event that will be triggered when a Widget has been mounted in the UI tree

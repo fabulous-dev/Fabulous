@@ -200,7 +200,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                         let prevKey = prevAttr.Key
                         let nextKey = nextAttr.Key
 
-                        match prevKey.CompareTo nextKey with
+                        match AttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- ScalarChange.Removed prev.[prevIndex]
@@ -215,15 +215,21 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                         | _ ->
                             // means that we are targeting the same attribute
+                            match AttributeKey.getKind prevKey with 
+                            | AttributeKey.Kind.Inline ->
+                                if prevAttr.NumericValue <> nextAttr.NumericValue then
+                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    res <- ValueSome true
+                                    
+                            | AttributeKey.Kind.Boxed ->
+                                match compareScalars struct (prevKey, prevAttr.Value, nextAttr.Value) with
+                                // Previous and next values are identical, we don't need to do anything
+                                | ScalarAttributeComparison.Identical -> ()
 
-                            match compareScalars struct (prevKey, prevAttr.Value, nextAttr.Value) with
-                            // Previous and next values are identical, we don't need to do anything
-                            | ScalarAttributeComparison.Identical -> ()
-
-                            // New value completely replaces the old value
-                            | ScalarAttributeComparison.Different ->
-                                e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
-                                res <- ValueSome true
+                                // New value completely replaces the old value
+                                | ScalarAttributeComparison.Different ->
+                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    res <- ValueSome true
 
                             // move both pointers
                             prevIndex <- prevIndex + 1
@@ -311,7 +317,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
                         let prevWidget = prevAttr.Value
                         let nextWidget = nextAttr.Value
 
-                        match prevKey.CompareTo nextKey with
+                        match AttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- WidgetChange.Removed prevAttr
@@ -429,7 +435,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
                         let prevWidgetColl = prevAttr.Value
                         let nextWidgetColl = nextAttr.Value
 
-                        match prevKey.CompareTo nextKey with
+                        match AttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- WidgetCollectionChange.Removed prevAttr
