@@ -28,8 +28,8 @@ let updateNumericValueTwo _ (newValueOpt: uint64 voption) (node: IViewNode) =
     let el = node.Target :?> TestNumericBag
     el.valueTwo <- ValueOption.defaultValue 0UL newValueOpt
     
-let updateNumericValueThree _ (newValueOpt: uint64 voption) (node: IViewNode) =
+let updateNumericValueThree _ (newValueOpt: float voption) (node: IViewNode) =
     let el = node.Target :?> TestNumericBag
-    el.valueThree <- ValueOption.defaultValue 0UL newValueOpt
+    el.valueThree <- ValueOption.defaultValue 0. newValueOpt
     
 

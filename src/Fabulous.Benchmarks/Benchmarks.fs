@@ -113,11 +113,11 @@ module DiffingSmallScalars =
 
     let rec viewBoxedInner depth counter =
         // this is to emulate changing value only once per 5 updates
-        let value = counter / 20UL
+        let value = counter / 5UL
         Stack() {
-            BoxedNumericBag(value, value, value)
-            BoxedNumericBag(value, value, value)
-            BoxedNumericBag(value, value, value)
+            BoxedNumericBag(value, value, float value)
+            BoxedNumericBag(value, value, float value)
+            BoxedNumericBag(value, value, float value)
             
             if (depth > 0) then
                 viewBoxedInner(depth - 1) counter
@@ -128,11 +128,11 @@ module DiffingSmallScalars =
 
     let rec viewInlineInner depth counter =
         // this is to emulate changing value only once per 5 updates
-        let value = counter / 20UL
+        let value = counter / 5UL
         Stack() {
-            InlineNumericBag(value, value, value)
-            InlineNumericBag(value, value, value)
-            InlineNumericBag(value, value, value)
+            InlineNumericBag(value, value, float value)
+            InlineNumericBag(value, value, float value)
+            InlineNumericBag(value, value, float value)
             
             if (depth > 0) then
                 viewInlineInner(depth - 1) counter
@@ -154,7 +154,7 @@ module DiffingSmallScalars =
         member val boxed = true with get, set
         
         [<Benchmark>]
-        member x.ProcessMessages() =
+        member x.ProcessIncrements() =
             let program =
                 
                 let view = if x.boxed then viewBoxed else viewInline

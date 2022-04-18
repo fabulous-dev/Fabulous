@@ -21,7 +21,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 | AttributeDefinition.Scalar scalarAttributeData -> 
                     scalarAttributeData.UpdateNode ValueNone (ValueSome added.Value) this
                 
-                | AttributeDefinition.Numeric definition -> 
+                | AttributeDefinition.SmallScalar definition -> 
                     definition.UpdateNode ValueNone (ValueSome added.NumericValue) this
                     
                 | _ -> ()
@@ -31,7 +31,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 | AttributeDefinition.Scalar definition -> 
                     definition.UpdateNode(ValueSome removed.Value) ValueNone this
                     
-                 | AttributeDefinition.Numeric definition -> 
+                 | AttributeDefinition.SmallScalar definition -> 
                     definition.UpdateNode(ValueSome removed.NumericValue) ValueNone this
                     
                 | _ -> ()
@@ -40,7 +40,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 match AttributeDefinitionStore.get oldAttr.Key with
                 | AttributeDefinition.Scalar definition -> 
                     definition.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) this
-                | AttributeDefinition.Numeric definition -> 
+                | AttributeDefinition.SmallScalar definition -> 
                     definition.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) this
                 | _ -> ()
     

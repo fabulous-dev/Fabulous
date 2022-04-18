@@ -8,7 +8,7 @@ type ScalarAttributeData =
       UpdateNode: obj voption -> obj voption -> IViewNode -> unit
       CompareBoxed: obj -> obj -> ScalarAttributeComparison }
 
-type NumericAttributeData =
+type SmallScalarAttributeData =
     { Key: AttributeKey
       UpdateNode: uint64 voption -> uint64 voption -> IViewNode -> unit }
 
@@ -24,7 +24,7 @@ type WidgetCollectionAttributeData =
 
 [<RequireQualifiedAccess>]
 type AttributeDefinition =
-    | Numeric of NumericAttributeData
+    | SmallScalar of SmallScalarAttributeData
     | Scalar of ScalarAttributeData
     | Widget of WidgetAttributeData
     | WidgetCollection of WidgetCollectionAttributeData
@@ -65,14 +65,14 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
                       x.UpdateNode oldValueOpt newValueOpt node) }
 
 /// Attribute definition for scalar properties
-type SmallScalarAttributeDefinition<'inputType, 'valueType> =
+type SmallScalarAttributeDefinition<'modelType> =
     { Key: AttributeKey
       Name: string
-      Convert: 'inputType -> uint64
-      ConvertValue: uint64 -> 'valueType
-      UpdateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit }
+      Convert: 'modelType -> uint64
+      ConvertValue: uint64 -> 'modelType
+      UpdateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit }
 
-    member x.WithValue(value: 'inputType) : ScalarAttribute =
+    member x.WithValue(value: 'modelType) : ScalarAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -81,7 +81,7 @@ type SmallScalarAttributeDefinition<'inputType, 'valueType> =
           Value = null }
 
     member x.ToAttributeDefinition() : AttributeDefinition =
-        AttributeDefinition.Numeric
+        AttributeDefinition.SmallScalar
             { Key = x.Key
               UpdateNode =
                   (fun oldValueOpt newValueOpt node ->

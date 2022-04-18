@@ -300,36 +300,6 @@ module ComputationExpressionTest =
 
             Assert.AreEqual(label.Text, i.ToString())
 
-
-
-
-
-
-//module ReconcilerTests =
-//    let a = Attributes.define<int> "A" (fun () -> 0)
-//
-//    let b =
-//        Attributes.define<string> "B" (fun () -> "")
-//
-//    let c =
-//        Attributes.define<bool> "C" (fun () -> true)
-//
-//    [<Test>]
-//    let CompareAttributes () =
-//        let prev = [| a.WithValue(1); b.WithValue("yo") |]
-//
-//        let next =
-//            [|
-//                c.WithValue(false)
-//                b.WithValue("aha!")
-//            |]
-//
-//        let res = compareAttributes prev next
-//        Assert.AreEqual([], res, "this should fail for now, not a real test")
-//        ()
-//
-
-
 module MapViewTests =
     type ParentMsg = Add of int
 
@@ -561,6 +531,45 @@ module MemoTests =
                   TextSet "two" ],
                 label.changeList
             )
+
+
+
+module SmallScalars =
+    type Msg =
+        | Inc of uint64
+
+    type Model = { value: uint64 }
+
+    let update msg model =
+        match msg with
+        | Inc value -> { model with value = model.value + value }
+
+    let view model =
+        InlineNumericBag(model.value, model.value + 1UL, float (model.value + 2UL) )
+            .automationId("numbers")
+
+    let init () = { value = 0UL }
+
+    [<Test>]
+    let UpdatesCorrectly () =
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+
+        let el = (instance.Start())
+
+        let numbers = find<TestNumericBag> el "numbers"
+
+        Assert.AreEqual(numbers.valueOne, 0UL)
+        Assert.AreEqual(numbers.valueTwo, 1UL)
+        Assert.AreEqual(numbers.valueThree, 2.)
+        instance.ProcessMessage(Inc 4UL)
+        
+        Assert.AreEqual(numbers.valueOne, 4UL)
+        Assert.AreEqual(numbers.valueTwo, 5UL)
+        Assert.AreEqual(numbers.valueThree, 6.)
+        
 
 /// https://github.com/TimLariviere/Fabulous-new/issues/99
 module Issue99 =

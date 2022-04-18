@@ -40,13 +40,16 @@ module Attributes =
 
         AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
         definition
-    let defineSmallScalarWithConverter<'inputType, 'valueType>
+
+    /// Define a custom attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
+    let defineSmallScalarWithConverter<'modelType>
         name
-        (convert: 'inputType -> uint64)
-        (convertValue: uint64 -> 'valueType)
-        (updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit): SmallScalarAttributeDefinition<'inputType, 'valueType>
-        =
-        let key = AttributeDefinitionStore.getInlineNextKey()
+        (convert: 'modelType -> uint64)
+        (convertValue: uint64 -> 'modelType)
+        (updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<'modelType> =
+        let key =
+            AttributeDefinitionStore.getInlineNextKey()
 
         let definition =
             { Key = key
@@ -56,8 +59,32 @@ module Attributes =
               UpdateNode = updateNode }
 
         AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
-        definition   
+        definition
 
+//    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+//    let defineFloat
+//        name
+//        (updateNode: float voption -> float voption -> IViewNode -> unit)
+//        : SmallScalarAttributeDefinition<float> =
+//
+//        defineSmallScalarWithConverter
+//            name
+//            BitConverter.DoubleToUInt64Bits
+//            BitConverter.UInt64BitsToDouble
+//            updateNode
+
+    /// Define a custom bool attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+    let defineBool
+        name
+        (updateNode: bool voption -> bool voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<bool> =
+
+        defineSmallScalarWithConverter
+            name
+            (fun (input:bool) -> if input then 1UL else 0UL )
+            (fun (encoded:uint64) -> encoded = 1UL )
+            updateNode
+            
     /// Define a custom attribute storing a widget
     let defineWidgetWithConverter
         name

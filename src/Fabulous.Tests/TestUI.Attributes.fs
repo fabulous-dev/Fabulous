@@ -1,5 +1,6 @@
 module Tests.TestUI_Attributes
 
+open System
 open Fabulous
 open Tests.Platform
 
@@ -68,24 +69,24 @@ module Attributes =
 
     module NumericBag =
         let InlineValueOne =
-            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+            Attributes.defineSmallScalarWithConverter<uint64>
                 "InlineValueOne"
                 id
                 id
                 TestUI_ViewUpdaters.updateNumericValueOne
 
         let InlineValueTwo =
-            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+            Attributes.defineSmallScalarWithConverter<uint64>
                 "InlineValueTwo"
                 id
                 id
                 TestUI_ViewUpdaters.updateNumericValueTwo
         
         let InlineValueThree =
-            Attributes.defineSmallScalarWithConverter<uint64, uint64>
+            Attributes.defineSmallScalarWithConverter<float>
                 "InlineValueThree"
-                id
-                id
+                BitConverter.DoubleToUInt64Bits
+                BitConverter.UInt64BitsToDouble
                 TestUI_ViewUpdaters.updateNumericValueThree
                 
                 
@@ -96,4 +97,4 @@ module Attributes =
             Attributes.define<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
         
         let BoxedValueThree =
-            Attributes.define<uint64> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree
+            Attributes.define<float> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree

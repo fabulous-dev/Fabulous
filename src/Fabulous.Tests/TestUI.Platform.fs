@@ -84,4 +84,4 @@ type TestNumericBag() =
     inherit TestViewElement()
     member val valueOne = 0UL with get, set
     member val valueTwo = 0UL with get, set
-    member val valueThree = 0UL with get, set
+    member val valueThree = 0.0 with get, set
