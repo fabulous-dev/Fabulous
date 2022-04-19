@@ -1,19 +1,16 @@
 namespace Fabulous
 
 module Lifecycle =
-    let private createAttribute name : ScalarAttributeDefinition<obj, obj, obj> =
-        let key = AttributeDefinitionStore.getNextKey()
+    let inline private createAttribute name : ScalarAttributeDefinition<obj, obj, obj> =
+        let key =
+            ScalarAttributeDefinition.CreateAttributeData<obj -> obj, obj -> obj>(
+                (fun (x: obj -> obj) -> x),
+                (fun _ _ -> ScalarAttributeComparison.Identical),
+                (fun _oldValueOpt _newValueOpt _node -> ())
+            )
+            |> AttributeDefinitionStore.registerScalar
 
-        let definition =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = fun _ _ -> ScalarAttributeComparison.Identical
-              UpdateNode = fun _oldValueOpt _newValueOpt _node -> () }
-
-        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
-        definition
+        { Key = key; Name = name; Convert = id }
 
     /// Store an event that will be triggered when a Widget has been mounted in the UI tree
     let Mounted = createAttribute "Mounted"

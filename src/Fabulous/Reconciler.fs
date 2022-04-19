@@ -4,10 +4,11 @@ open Fabulous
 
 module Reconciler =
 
-    let private compareScalars (struct (key, a, b): struct (AttributeKey * obj * obj)) : ScalarAttributeComparison =
-        match AttributeDefinitionStore.get key with
-        |  AttributeDefinition.Scalar data -> data.CompareBoxed a b
-        | _ -> ScalarAttributeComparison.Different
+    let private compareScalars
+        (struct (key, a, b): struct (ScalarAttributeKey * obj * obj))
+        : ScalarAttributeComparison =
+        let data = AttributeDefinitionStore.getScalar key
+        data.CompareBoxed a b
 
     let update
         (canReuseView: Widget -> Widget -> bool)

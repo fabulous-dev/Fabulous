@@ -24,18 +24,7 @@ module Memo =
 
     type Memoized<'t> = { phantom: 't }
 
-    let private MemoAttributeKey = AttributeDefinitionStore.getNextKey()
-    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
-
-    let inline private getMemoData (widget: Widget) : MemoData =
-        match widget.ScalarAttributes with
-        | ValueSome attrs when attrs.Length = 1 -> attrs.[0].Value :?> MemoData
-        | _ -> failwith "Memo widget cannot have extra attributes"
-
-    let internal canReuseMemoizedWidget prev next =
-        (getMemoData prev).MarkerType = (getMemoData next).MarkerType
-
-    let private compareAttributes (prev: MemoData) (next: MemoData) : ScalarAttributeComparison =
+    let inline private compareAttributes (prev: MemoData) (next: MemoData) : ScalarAttributeComparison =
         match (prev.KeyType = next.KeyType, prev.MarkerType = next.MarkerType) with
         | true, true ->
             match next.KeyComparer next.KeyData prev.KeyData with
@@ -43,7 +32,7 @@ module Memo =
             | false -> ScalarAttributeComparison.Different
         | _ -> ScalarAttributeComparison.Different
 
-    let private updateNode _ (data: MemoData voption) (node: IViewNode) : unit =
+    let inline private updateNode _ (data: MemoData voption) (node: IViewNode) : unit =
         match data with
         | ValueSome memoData ->
             let memoizedWidget = memoData.CreateWidget memoData.KeyData
@@ -59,18 +48,24 @@ module Memo =
 
         | ValueNone -> ()
 
+    let private MemoAttributeKey =
+        ScalarAttributeDefinition.CreateAttributeData<MemoData, MemoData>((fun x -> x), compareAttributes, updateNode)
+        |> AttributeDefinitionStore.registerScalar
+
+    let inline private getMemoData (widget: Widget) : MemoData =
+        match widget.ScalarAttributes with
+        | ValueSome attrs when attrs.Length = 1 -> attrs.[0].Value :?> MemoData
+        | _ -> failwith "Memo widget cannot have extra attributes"
+
+    let internal canReuseMemoizedWidget prev next =
+        (getMemoData prev).MarkerType = (getMemoData next).MarkerType
+
     let internal MemoAttribute =
         { Key = MemoAttributeKey
           Name = "MemoAttribute"
-          Convert = id
-          ConvertValue = id
-          Compare = compareAttributes
-          UpdateNode = updateNode }
+          Convert = id }
 
-    AttributeDefinitionStore.set MemoAttributeKey (MemoAttribute.ToAttributeDefinition())
-
-
-
+    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
 
     // Memo isn't allowed in lists, TargetType will never get called,
     // so Unchecked.defaultof is an acceptable value

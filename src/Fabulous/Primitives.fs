@@ -15,12 +15,21 @@ open Fabulous
 /// Having those performance constraints prevents us for using inheritance
 /// or using interfaces on these structs
 
+
 [<Measure>]
 type attributeKey
 
-type AttributeKey = uint32<attributeKey>
+[<Measure>]
+type attributeWidgetKey
 
-module AttributeKey =
+[<Measure>]
+type attributeWidgetCollectionKey
+
+type ScalarAttributeKey = int<attributeKey>
+type WidgetAttributeKey = int<attributeWidgetKey>
+type WidgetCollectionAttributeKey = int<attributeWidgetCollectionKey>
+
+module ScalarAttributeKey =
     [<Struct>]
     type Kind =
         | Boxed // 1
@@ -28,32 +37,45 @@ module AttributeKey =
 
     module Code =
         [<Literal>]
-        // 1u <<< 30
-        let Boxed = 1073741824u
+        // 1 <<< 30
+        let Boxed = 1073741824
 
         [<Literal>]
-        // 2u <<< 30
-        let Inline = 2147483648u
+        // 2 <<< 30
+        let Inline = -2147483648
 
         [<Literal>]
-        // 3u <<< 30
-        let CodeMask = 3221225472u
+        // 3 <<< 30
+        let CodeMask = -1073741824
 
         [<Literal>]
-        // System.UInt32.MaxValue >>> 2
-        let KeyMask = 1073741823u
+        // System.Int32.MaxValue >>> 2
+        let KeyMask = 536870911
 
-    let inline getKind (key: AttributeKey) : Kind =
-        match (uint32 key) &&& Code.Inline with
+    let inline getKind (key: ScalarAttributeKey) : Kind =
+        match (int key) &&& Code.Inline with
         | Code.Inline -> Inline
         | _ -> Boxed
 
-    let inline getKeyValue (key: AttributeKey) : int = int ((uint32 key) &&& Code.KeyMask)
+    let inline getKeyValue (key: ScalarAttributeKey) : int = int((int key) &&& Code.KeyMask)
 
 
-    let inline compare (a: AttributeKey) (b: AttributeKey) =
-        let a = uint32 a
-        let b = uint32 b
+    let inline compare (a: ScalarAttributeKey) (b: ScalarAttributeKey) =
+        let a = int a
+        let b = int b
+        a.CompareTo b
+
+
+module WidgetAttributeKey =
+    let inline compare (a: WidgetAttributeKey) (b: WidgetAttributeKey) =
+        let a = int a
+        let b = int b
+        a.CompareTo b
+
+module WidgetCollectionAttributeKey =
+    let inline compare (a: WidgetCollectionAttributeKey) (b: WidgetCollectionAttributeKey) =
+        let a = int a
+        let b = int b
         a.CompareTo b
 
 type WidgetKey = int
@@ -65,7 +87,7 @@ type ViewAdapterKey = int
 /// It will be up to the AttributeDefinition to decide how to apply the value.
 [<Struct>]
 type ScalarAttribute =
-    { Key: AttributeKey
+    { Key: ScalarAttributeKey
 #if DEBUG
       DebugName: string
 #endif
@@ -75,14 +97,14 @@ type ScalarAttribute =
 
 
 and [<Struct>] WidgetAttribute =
-    { Key: AttributeKey
+    { Key: WidgetAttributeKey
 #if DEBUG
       DebugName: string
 #endif
       Value: Widget }
 
 and [<Struct>] WidgetCollectionAttribute =
-    { Key: AttributeKey
+    { Key: WidgetCollectionAttributeKey
 #if DEBUG
       DebugName: string
 #endif

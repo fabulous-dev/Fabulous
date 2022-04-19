@@ -6,36 +6,34 @@ open Tests.Platform
 
 module Attributes =
 
-    let definePressable name =
-        let key = AttributeDefinitionStore.getNextKey()
+    let definePressable name : ScalarAttributeDefinition<obj, obj, obj> =
+        let key =
+            ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
+                (fun x -> x),
+                ScalarAttributeComparers.noCompare,
+                (fun _ newValueOpt node ->
 
-        let definition: ScalarAttributeDefinition<obj, obj, obj> =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = ScalarAttributeComparers.noCompare
-              UpdateNode =
-                  fun _ newValueOpt node ->
+                    let btn = node.Target :?> IButton
 
-                      let btn = node.Target :?> IButton
+                    match node.TryGetHandler<int>(name) with
+                    | ValueNone -> ()
+                    | ValueSome handlerId -> btn.RemovePressListener handlerId
 
-                      match node.TryGetHandler<int>(key) with
-                      | ValueNone -> ()
-                      | ValueSome handlerId -> btn.RemovePressListener handlerId
+                    match newValueOpt with
+                    | ValueNone -> node.SetHandler(name, ValueNone)
 
-                      match newValueOpt with
-                      | ValueNone -> node.SetHandler(key, ValueNone)
+                    | ValueSome msg ->
+                        let handler () = Dispatcher.dispatch node msg
 
-                      | ValueSome msg ->
-                          let handler () = Dispatcher.dispatch node msg
+                        let handlerId = btn.AddPressListener handler
+                        node.SetHandler<int>(name, ValueSome handlerId))
+            )
+            |> AttributeDefinitionStore.registerScalar
 
-                          let handlerId = btn.AddPressListener handler
-                          node.SetHandler<int>(key, ValueSome handlerId) }
+        { Key = key; Name = name; Convert = id }
 
-        AttributeDefinitionStore.set key (definition.ToAttributeDefinition())
 
-        definition
+
 
     // --------------- Actual Properties ---------------
     //    open Fabulous.Attributes
@@ -69,32 +67,32 @@ module Attributes =
 
     module NumericBag =
         let InlineValueOne =
-            Attributes.defineSmallScalarWithConverter<uint64>
+            Attributes.defineSmallScalar<uint64>
                 "InlineValueOne"
                 id
                 id
                 TestUI_ViewUpdaters.updateNumericValueOne
 
         let InlineValueTwo =
-            Attributes.defineSmallScalarWithConverter<uint64>
+            Attributes.defineSmallScalar<uint64>
                 "InlineValueTwo"
                 id
                 id
                 TestUI_ViewUpdaters.updateNumericValueTwo
-        
+
         let InlineValueThree =
-            Attributes.defineSmallScalarWithConverter<float>
+            Attributes.defineSmallScalar<float>
                 "InlineValueThree"
                 BitConverter.DoubleToUInt64Bits
                 BitConverter.UInt64BitsToDouble
                 TestUI_ViewUpdaters.updateNumericValueThree
-                
-                
+
+
         let BoxedValueOne =
             Attributes.define<uint64> "BoxedValueOne" TestUI_ViewUpdaters.updateNumericValueOne
-            
+
         let BoxedValueTwo =
             Attributes.define<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
-        
+
         let BoxedValueThree =
             Attributes.define<float> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree

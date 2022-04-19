@@ -58,10 +58,10 @@ and IViewNode =
     abstract member MapMsg: (obj -> obj) option with get, set
 
     /// If set, returns the event handler for a given attribute key
-    abstract member TryGetHandler<'T> : AttributeKey -> 'T voption
+    abstract member TryGetHandler<'T> : string -> 'T voption
 
-    /// Set the event handler for a given attribute key
-    abstract member SetHandler<'T> : AttributeKey * 'T voption -> unit
+    /// Set the event handler for a given attribute name
+    abstract member SetHandler<'T> : string * 'T voption -> unit
 
     /// Disconnect the node from the tree
     abstract member Disconnect: unit -> unit

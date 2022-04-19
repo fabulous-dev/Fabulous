@@ -11,8 +11,10 @@ open type View
 
 
 module NestedTreeCreation =
+    [<Struct>]
     type Model = { depth: int }
 
+    [<Struct>]
     type Msg = Depth of int
 
     let rec viewInner (depth: int) =
@@ -50,8 +52,10 @@ module NestedTreeCreation =
 
 
 module DiffingAttributes =
+//    [<Struct>]
     type Model = { depth: int; counter: int }
 
+//    [<Struct>]
     type Msg = IncBy of int
 
     let update msg model =
@@ -101,8 +105,10 @@ module DiffingAttributes =
 
 
 module DiffingSmallScalars =
+    [<Struct>]
     type Model = { depth: int; counter: uint64 }
 
+    [<Struct>]
     type Msg = IncBy of uint64
 
     let update msg model =
@@ -113,7 +119,7 @@ module DiffingSmallScalars =
 
     let rec viewBoxedInner depth counter =
         // this is to emulate changing value only once per 5 updates
-        let value = counter / 5UL
+        let value = counter / 2UL
         Stack() {
             BoxedNumericBag(value, value, float value)
             BoxedNumericBag(value, value, float value)
@@ -128,7 +134,7 @@ module DiffingSmallScalars =
 
     let rec viewInlineInner depth counter =
         // this is to emulate changing value only once per 5 updates
-        let value = counter / 5UL
+        let value = counter / 2UL
         Stack() {
             InlineNumericBag(value, value, float value)
             InlineNumericBag(value, value, float value)
@@ -175,11 +181,11 @@ let main argv =
 //    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
 //    |> ignore
 //
-//    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
-//    |> ignore
-    
-    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
+    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
     |> ignore
+    
+//    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
+//    |> ignore
 
     0 // return an integer exit code
 
