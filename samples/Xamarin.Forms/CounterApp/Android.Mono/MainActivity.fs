@@ -15,7 +15,7 @@ open Fabulous.XamarinForms
 open CounterApp
 open Xamarin.Forms.Platform.Android
 
-[<Activity(Label = "CounterApp.Android",
+[<Activity(Label = "CounterApp",
            Icon = "@drawable/icon",
            Theme = "@style/MainTheme",
            MainLauncher = true,
@@ -25,8 +25,8 @@ type MainActivity() =
     inherit FormsAppCompatActivity()
 
     override this.OnCreate(bundle: Bundle) =
-        FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
-        FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
+        FormsAppCompatActivity.TabLayoutResource <- CounterApp.Android.Resource.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- CounterApp.Android.Resource.Layout.Toolbar
 
         base.OnCreate(bundle)
         Xamarin.Essentials.Platform.Init(this, bundle)

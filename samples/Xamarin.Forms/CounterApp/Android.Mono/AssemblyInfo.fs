@@ -5,11 +5,6 @@ open System.Runtime.CompilerServices
 open System.Runtime.InteropServices
 open Android.App
 
-// the name of the type here needs to match the name inside the ResourceDesigner attribute
-type Resources = CounterApp.Android.Resource
-
-[<assembly: Android.Runtime.ResourceDesigner("CounterApp.Android.Resources", IsApplication = true)>]
-
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.

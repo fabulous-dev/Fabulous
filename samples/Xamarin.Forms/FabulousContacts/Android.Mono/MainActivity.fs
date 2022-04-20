@@ -46,10 +46,10 @@ type MainActivity() =
         Path.Combine(path, "Contacts.db3")
 
     override this.OnCreate(bundle) =
-        Resource.UpdateIdValues()
+        FabulousContacts.Android.Resource.UpdateIdValues()
 
-        FormsAppCompatActivity.TabLayoutResource <- Resource.Layout.Tabbar
-        FormsAppCompatActivity.ToolbarResource <- Resource.Layout.Toolbar
+        FormsAppCompatActivity.TabLayoutResource <- FabulousContacts.Android.Resource.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- FabulousContacts.Android.Resource.Layout.Toolbar
 
         base.OnCreate(bundle)
 

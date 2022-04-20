@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{7FFFADDB-2EF4-4E63-B555-0C49D6679BC3}</ProjectGuid>
+        <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
+        <UseStandardResourceNames>true</UseStandardResourceNames>
+        <OutputType>Library</OutputType>
+        <RootNamespace>TicTacToe.Android</RootNamespace>
+        <AssemblyName>TicTacToe.Android</AssemblyName>
+        <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
+        <AndroidApplication>True</AndroidApplication>
+        <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+        <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+        <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <AndroidLinkMode>None</AndroidLinkMode>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug</OutputPath>
+        <DefineConstants>DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <PlatformTarget>
+        </PlatformTarget>
+        <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
+        <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release</OutputPath>
+        <DefineConstants>
+        </DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <AndroidManagedSymbols>true</AndroidManagedSymbols>
+        <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+        <GenerateTailCalls>true</GenerateTailCalls>
+        <PlatformTarget>
+        </PlatformTarget>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="Assets\AboutAssets.txt" />
+        <None Include="Properties\AndroidManifest.xml" />
+        <None Include="Resources\AboutResources.txt" />
+        <AndroidResource Include="Resources\drawable\Cross.png" />
+        <AndroidResource Include="Resources\drawable\icon.png" />
+        <AndroidResource Include="Resources\drawable\Nought.png" />
+        <AndroidResource Include="Resources\drawable-hdpi\Cross.png" />
+        <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+        <AndroidResource Include="Resources\drawable-hdpi\Nought.png" />
+        <AndroidResource Include="Resources\drawable-xhdpi\Cross.png" />
+        <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+        <AndroidResource Include="Resources\drawable-xhdpi\Nought.png" />
+        <AndroidResource Include="Resources\drawable-xxhdpi\Cross.png" />
+        <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+        <AndroidResource Include="Resources\drawable-xxhdpi\Nought.png" />
+        <AndroidResource Include="Resources\layout\Tabbar.axml" />
+        <AndroidResource Include="Resources\layout\Toolbar.axml" />
+        <AndroidResource Include="Resources\values\Colors.xml" />
+        <AndroidResource Include="Resources\values\styles.xml" />
+        <Compile Include="AssemblyInfo.fs" />
+        <Compile Include="MainActivity.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+          <Project>{50366fac-4301-4efb-99ca-b511d7d3d782}</Project>
+          <Name>Fabulous.XamarinForms</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+          <Project>{6c7591cf-8023-4867-9c60-a9a770d0e218}</Project>
+          <Name>Fabulous</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
+          <Project>{303c2043-1b9d-4bcd-8c18-addfa9533288}</Project>
+          <Name>TicTacToe</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Java.Interop" />
+        <Reference Include="Mono.Android" />
+        <Reference Include="mscorlib" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.Numerics.Vectors" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Android.Resource" Version="1.0.0" />
+        <PackageReference Include="Xamarin.CommunityToolkit" Version="1.3.1" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+    </ItemGroup>
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+</Project>

@@ -5,19 +5,14 @@ open System.Runtime.CompilerServices
 open System.Runtime.InteropServices
 open Android.App
 
-// the name of the type here needs to match the name inside the ResourceDesigner attribute
-type Resources = FabulousContacts.Android.Resource
-
-[<assembly: Android.Runtime.ResourceDesigner("FabulousContacts.Android.Resources", IsApplication = true)>]
-
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[<assembly: AssemblyTitle("CounterApp.Android")>]
+[<assembly: AssemblyTitle("FabulousContacts.Android")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
-[<assembly: AssemblyProduct("CounterApp.Android")>]
+[<assembly: AssemblyProduct("FabulousContacts.Android")>]
 [<assembly: AssemblyCopyright("Copyright ©  2014")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
