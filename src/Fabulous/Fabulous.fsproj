@@ -6,7 +6,6 @@
         <PackageIcon>nuget-icon.png</PackageIcon>
         <VersionPrefix>2.0.0</VersionPrefix>
         <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
-        <TargetProfile>netcore</TargetProfile>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
     <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace CounterApp.Android
+namespace TicTacToe.Android
 
 open System
 
@@ -12,10 +12,10 @@ open Android.Widget
 open Android.OS
 
 open Fabulous.XamarinForms
-open CounterApp
+open TicTacToe
 open Xamarin.Forms.Platform.Android
 
-[<Activity(Label = "CounterApp",
+[<Activity(Label = "TicTacToe",
            Icon = "@drawable/icon",
            Theme = "@style/MainTheme",
            MainLauncher = true,
@@ -25,8 +25,8 @@ type MainActivity() =
     inherit FormsAppCompatActivity()
 
     override this.OnCreate(bundle: Bundle) =
-        FormsAppCompatActivity.TabLayoutResource <- CounterApp.Android.Resource.Layout.Tabbar
-        FormsAppCompatActivity.ToolbarResource <- CounterApp.Android.Resource.Layout.Toolbar
+        FormsAppCompatActivity.TabLayoutResource <- TicTacToe.Android.Resource.Layout.Tabbar
+        FormsAppCompatActivity.ToolbarResource <- TicTacToe.Android.Resource.Layout.Toolbar
 
         base.OnCreate(bundle)
         Xamarin.Essentials.Platform.Init(this, bundle)

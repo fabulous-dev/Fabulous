@@ -69,22 +69,23 @@ module CityView =
                     (HStack() {
                         for forecast in data.HourlyForecast do
                             ContentView(
-                                //PancakeView(
-                                //    Styles.HourlyForecastGradientStops,
-                                VStack() {
-                                    Label(forecast.Date.ToString("h tt").ToLower())
-                                        .centerTextHorizontal()
+                                PancakeView(
+                                    Styles.HourlyForecastGradientStops,
+                                    VStack() {
+                                        Label(forecast.Date.ToString("h tt").ToLower())
+                                            .centerTextHorizontal()
 
-                                    Image(
-                                        Xamarin.Forms.Aspect.AspectFit,
-                                        Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png")
-                                    )
-                                        .centerHorizontal()
-                                        .centerVertical(expand = true)
+                                        Image(
+                                            Aspect.AspectFit,
+                                            Uri($"http://openweathermap.org/img/wn/{forecast.IconName}@2x.png")
+                                        )
+                                            .centerHorizontal()
+                                            .centerVertical(expand = true)
 
-                                    Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
-                                        .centerTextHorizontal()
-                                }
+                                        Label($"{Helpers.kelvinToRoundedFahrenheit forecast.Temperature}°")
+                                            .centerTextHorizontal()
+                                    }
+                                )
                             )
                                 .backgroundColor(Styles.HourlyForecastStartColor)
                      })

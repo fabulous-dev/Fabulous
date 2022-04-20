@@ -123,9 +123,7 @@ module ViewAdapters =
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
 
-        member private _.Dispatch(msg) =
-            //if _allowDispatch then
-            dispatch(unbox msg)
+        member private _.Dispatch(msg) = dispatch(unbox msg)
 
         member this.CreateView() =
             let state = unbox(StateStore.get stateKey)
