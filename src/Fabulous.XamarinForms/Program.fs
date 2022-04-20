@@ -2,6 +2,7 @@
 
 open Fabulous
 open Xamarin.Forms
+open System.Diagnostics
 
 module ViewHelpers =
     let private tryGetScalarValue (widget: Widget) (def: ScalarAttributeDefinition<_, 'modelType, _>) =
@@ -81,3 +82,43 @@ module Program =
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
+
+    /// Trace all the updates to the debug output.
+    let withDebugTrace (program: Program<'arg, 'model, 'msg>) =
+        let traceInit arg =
+            try
+                let initModel, cmd = program.Init(arg)
+                //Debug.Print("Initial model: {0}", $"%0A{initModel}")
+                initModel, cmd
+            with
+            | e ->
+                Debug.Print("Error in init function: {0}", $"%0A{e}")
+                reraise()
+
+        let traceUpdate (msg, model) =
+            Debug.Print("Message: {0}", $"%0A{msg}")
+
+            try
+                let newModel, cmd = program.Update(msg, model)
+                //Debug.Print("Updated model: {0}", $"%0A{newModel}")
+                newModel, cmd
+            with
+            | e ->
+                Debug.Print("Error in model function: {0}", $"%0A{e}")
+                reraise()
+
+        let traceView model =
+            //Debug.Print("View, model = {0}", $"%0A{model}")
+            try
+                let info = program.View(model)
+                //Debug.Print("View result: {0}", $"%0A{info}")
+                info
+            with
+            | e ->
+                Debug.Print("Error in view function: {0}", $"%0A{e}")
+                reraise()
+
+        { program with
+              Init = traceInit
+              Update = traceUpdate
+              View = traceView }

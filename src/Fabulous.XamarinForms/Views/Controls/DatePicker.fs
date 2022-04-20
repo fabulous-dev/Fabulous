@@ -14,9 +14,6 @@ module DatePicker =
     let CharacterSpacing =
         Attributes.defineBindable<float> DatePicker.CharacterSpacingProperty
 
-    let Date =
-        Attributes.defineBindable<System.DateTime> DatePicker.DateProperty
-
     let FontAttributes =
         Attributes.defineBindable<Xamarin.Forms.FontAttributes> DatePicker.FontAttributesProperty
 
@@ -41,9 +38,10 @@ module DatePicker =
     let TextTransform =
         Attributes.defineBindable<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
 
-    let DateSelected =
-        Attributes.defineEvent<DateChangedEventArgs>
+    let DateWithEvent =
+        Attributes.defineValueWithEventArgs
             "DatePicker_DateSelected"
+            DatePicker.DateProperty
             (fun target -> (target :?> DatePicker).DateSelected)
 
     let UpdateMode =
@@ -65,8 +63,9 @@ module DatePickerBuilders =
         static member inline DatePicker<'msg>(date: System.DateTime, onDateSelected: System.DateTime -> 'msg) =
             WidgetBuilder<'msg, IDatePicker>(
                 DatePicker.WidgetKey,
-                DatePicker.Date.WithValue(date),
-                DatePicker.DateSelected.WithValue(fun args -> onDateSelected args.NewDate |> box)
+                DatePicker.DateWithEvent.WithValue(
+                    ValueEventData.create date (fun args -> onDateSelected args.NewDate |> box)
+                )
             )
 
 [<Extension>]

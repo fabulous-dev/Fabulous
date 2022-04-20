@@ -14,11 +14,11 @@ module TimePicker =
     let CharacterSpacing =
         Attributes.defineBindable<float> TimePicker.CharacterSpacingProperty
 
-    let Time =
-        Attributes.defineBindable<System.TimeSpan> TimePicker.TimeProperty
-
-    let TimeSelected =
-        Attributes.defineEvent "TimePicker_TimeSelected" (fun target -> (target :?> FabulousTimePicker).TimeSelected)
+    let TimeWithEvent =
+        Attributes.defineValueWithEventArgs
+            "TimePicker_TimeSelected"
+            TimePicker.TimeProperty
+            (fun target -> (target :?> FabulousTimePicker).TimeSelected)
 
     let FontAttributes =
         Attributes.defineBindable<Xamarin.Forms.FontAttributes> TimePicker.FontAttributesProperty
@@ -57,8 +57,9 @@ module TimePickerBuilders =
         static member inline TimePicker<'msg>(time: System.TimeSpan, onTimeSelected: System.TimeSpan -> 'msg) =
             WidgetBuilder<'msg, ITimePicker>(
                 TimePicker.WidgetKey,
-                TimePicker.Time.WithValue(time),
-                TimePicker.TimeSelected.WithValue(fun args -> onTimeSelected args.NewTime |> box)
+                TimePicker.TimeWithEvent.WithValue(
+                    ValueEventData.create time (fun args -> onTimeSelected args.NewTime |> box)
+                )
             )
 
 [<Extension>]

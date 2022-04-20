@@ -30,18 +30,16 @@ module InputView =
     let TextColor =
         Attributes.defineAppThemeBindable<Color> InputView.TextColorProperty
 
-    let Text =
-        Attributes.defineBindable<string> InputView.TextProperty
-
     let Keyboard =
         Attributes.defineBindable<Keyboard> InputView.KeyboardProperty
 
     let TextTransform =
         Attributes.defineBindable<TextTransform> InputView.TextTransformProperty
 
-    let TextChanged =
-        Attributes.defineEvent<TextChangedEventArgs>
+    let TextWithEvent =
+        Attributes.defineValueWithEventArgs<string, TextChangedEventArgs>
             "InputView_TextChanged"
+            InputView.TextProperty
             (fun target -> (target :?> InputView).TextChanged)
 
 [<Extension>]

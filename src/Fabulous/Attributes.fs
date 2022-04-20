@@ -197,39 +197,6 @@ module Attributes =
         AttributeDefinitionStore.set key definition
         definition
 
-    let defineEventWithAdditionalStep name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey()
-
-        let definition: ScalarAttributeDefinition<_, _, _> =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = ScalarAttributeComparers.noCompare
-              UpdateNode =
-                  fun _ (newValueOpt: (obj -> obj) voption) node ->
-                      let event = getEvent node.Target
-
-                      match node.TryGetHandler(key) with
-                      | ValueNone -> ()
-                      | ValueSome handler -> event.RemoveHandler handler
-
-                      match newValueOpt with
-                      | ValueNone -> node.SetHandler(key, ValueNone)
-                      | ValueSome fn ->
-                          let handler =
-                              EventHandler
-                                  (fun sender _ ->
-                                      let r = fn sender
-                                      Dispatcher.dispatch node r)
-
-                          node.SetHandler(key, ValueSome handler)
-                          event.AddHandler handler }
-
-        AttributeDefinitionStore.set key definition
-        definition
-
-
     let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
         let key = AttributeDefinitionStore.getNextKey()
 

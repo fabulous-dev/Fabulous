@@ -11,15 +11,13 @@ module CheckBox =
 
     let WidgetKey = Widgets.register<CheckBox>()
 
-    let IsChecked =
-        Attributes.defineBindable<bool> CheckBox.IsCheckedProperty
-
     let Color =
         Attributes.defineAppThemeBindable<Color> CheckBox.ColorProperty
 
-    let CheckedChanged =
-        Attributes.defineEvent<CheckedChangedEventArgs>
+    let IsCheckedWithEvent =
+        Attributes.defineValueWithEventArgs
             "CheckBox_CheckedChanged"
+            CheckBox.IsCheckedProperty
             (fun target -> (target :?> CheckBox).CheckedChanged)
 
 [<AutoOpen>]
@@ -28,8 +26,9 @@ module CheckBoxBuilders =
         static member inline CheckBox<'msg>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
             WidgetBuilder<'msg, ICheckBox>(
                 CheckBox.WidgetKey,
-                CheckBox.IsChecked.WithValue(isChecked),
-                CheckBox.CheckedChanged.WithValue(fun args -> onCheckedChanged args.Value |> box)
+                CheckBox.IsCheckedWithEvent.WithValue(
+                    ValueEventData.create isChecked (fun args -> onCheckedChanged args.Value |> box)
+                )
             )
 
 [<Extension>]
