@@ -16,7 +16,7 @@ type AppDelegate() =
 
     override this.FinishedLaunching(app, options) =
         UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.LightContent, true)
-        
+
         Forms.Init()
 
         let application = Program.createApplication App.program ()

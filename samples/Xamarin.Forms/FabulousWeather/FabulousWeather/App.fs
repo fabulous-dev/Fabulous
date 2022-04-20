@@ -128,10 +128,7 @@ module App =
         Application(
             ContentPage(
                 "Weather",
-                PancakeView(
-                    Styles.gradientStops temperatureOfCurrentCity,
-                    ContentView(previousNextView model)
-                )
+                PancakeView(Styles.gradientStops temperatureOfCurrentCity, ContentView(previousNextView model))
             )
                 .ignoreSafeArea()
         )

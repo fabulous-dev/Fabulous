@@ -267,10 +267,10 @@ module App =
     // this dependency out to allow unit testing of the 'update' function.
 
     let gameOver msg =
-        Application.Current.Dispatcher.BeginInvokeOnMainThread(fun () ->
-            Application.Current.MainPage.DisplayAlert("Game over", msg, "OK")
-            |> ignore
-        )
+        Application.Current.Dispatcher.BeginInvokeOnMainThread
+            (fun () ->
+                Application.Current.MainPage.DisplayAlert("Game over", msg, "OK")
+                |> ignore)
 
     let program =
         Program.statefulApplication init (update gameOver) view

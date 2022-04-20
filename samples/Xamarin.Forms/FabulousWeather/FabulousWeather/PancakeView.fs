@@ -10,7 +10,7 @@ type IPancakeView =
 
 module PancakeView =
     let WidgetKey =
-        Widgets.register<Xamarin.Forms.PancakeView.PancakeView> ()
+        Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
 
     let BackgroundGradientStops =
         Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection>
@@ -30,7 +30,7 @@ module PancakeViewBuilders =
             WidgetBuilder<'msg, IPancakeView>(
                 PancakeView.WidgetKey,
                 AttributesBundle(
-                    StackList.one (PancakeView.BackgroundGradientStops.WithValue(backgroundGradientStops)),
+                    StackList.one(PancakeView.BackgroundGradientStops.WithValue(backgroundGradientStops)),
                     ValueSome [| PancakeView.Content.WithValue(content.Compile()) |],
                     ValueNone
                 )
