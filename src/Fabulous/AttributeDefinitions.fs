@@ -23,12 +23,13 @@ type WidgetCollectionAttributeData =
       UpdateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit }
 
 /// Attribute definition for scalar properties
+[<Struct>]
 type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
     { Key: ScalarAttributeKey
       Name: string
       Convert: 'inputType -> 'modelType }
 
-    member inline x.WithValue(value) : ScalarAttribute =
+    member inline x.WithValue(value: 'inputType) : ScalarAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -57,12 +58,12 @@ type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
 
                   updateNode oldValueOpt newValueOpt node) }
 
-
-type SimpleScalarAttributeDefinition<'modelType> =
+[<Struct>]
+type SimpleScalarAttributeDefinition<'T> =
     { Key: ScalarAttributeKey
       Name: string }
 
-    member inline x.WithValue(value: 'modelType) : ScalarAttribute =
+    member inline x.WithValue(value: 'T) : ScalarAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -70,34 +71,35 @@ type SimpleScalarAttributeDefinition<'modelType> =
           NumericValue = 0UL
           Value = value }
 
-    static member inline CreateAttributeData<'modelType>
+    static member inline CreateAttributeData<'T>
         (
-            [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
-            [<InlineIfLambda>] updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit
+            [<InlineIfLambda>] compare: 'T -> 'T -> ScalarAttributeComparison,
+            [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
         ) : ScalarAttributeData =
-        { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
+        { CompareBoxed = (fun a b -> compare(unbox<'T> a) (unbox<'T> b))
           UpdateNode =
               (fun oldValueOpt newValueOpt node ->
                   let oldValueOpt =
                       match oldValueOpt with
                       | ValueNone -> ValueNone
-                      | ValueSome v -> ValueSome(unbox<'modelType> v)
+                      | ValueSome v -> ValueSome(unbox<'T> v)
 
                   let newValueOpt =
                       match newValueOpt with
                       | ValueNone -> ValueNone
-                      | ValueSome v -> ValueSome(unbox<'modelType> v)
+                      | ValueSome v -> ValueSome(unbox<'T> v)
 
                   updateNode oldValueOpt newValueOpt node) }
 
 
 /// Attribute definition for scalar properties
-type SmallScalarAttributeDefinition<'modelType> =
+[<Struct>]
+type SmallScalarAttributeDefinition<'T> =
     { Key: ScalarAttributeKey
       Name: string
-      Encode: 'modelType -> uint64 }
+      Encode: 'T -> uint64 }
 
-    member x.WithValue(value: 'modelType) : ScalarAttribute =
+    member inline x.WithValue(value: 'T) : ScalarAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -105,10 +107,10 @@ type SmallScalarAttributeDefinition<'modelType> =
           NumericValue = x.Encode(value)
           Value = null }
 
-    static member inline CreateAttributeData<'modelType>
+    static member inline CreateAttributeData<'T>
         (
-            [<InlineIfLambda>] decode: uint64 -> 'modelType,
-            [<InlineIfLambda>] updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit
+            [<InlineIfLambda>] decode: uint64 -> 'T,
+            [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
         ) : SmallScalarAttributeData =
         { UpdateNode =
               (fun oldValueOpt newValueOpt node ->
@@ -126,11 +128,12 @@ type SmallScalarAttributeDefinition<'modelType> =
 
 
 /// Attribute definition for widget properties
+[<Struct>]
 type WidgetAttributeDefinition =
     { Key: WidgetAttributeKey
       Name: string }
 
-    member x.WithValue(value: Widget) : WidgetAttribute =
+    member inline x.WithValue(value: Widget) : WidgetAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -140,11 +143,12 @@ type WidgetAttributeDefinition =
 
 
 /// Attribute definition for collection properties
+[<Struct>]
 type WidgetCollectionAttributeDefinition =
     { Key: WidgetCollectionAttributeKey
       Name: string }
 
-    member x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =
+    member inline x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =
         { Key = x.Key
 #if DEBUG
           DebugName = x.Name
@@ -200,8 +204,8 @@ module AttributeDefinitionStore =
         _widgetCollections.[int key]
 
 module AttributeHelpers =
-    let tryFindScalarAttribute
-        (definition: ScalarAttributeDefinition<'inputType, 'modelType, 'valueType>)
+    let tryFindSimpleScalarAttribute
+        (definition: SimpleScalarAttributeDefinition<'T>)
         (widget: Widget)
         =
         match widget.ScalarAttributes with
@@ -210,4 +214,4 @@ module AttributeHelpers =
             match attrs
                   |> Array.tryFind(fun attr -> attr.Key = definition.Key) with
             | None -> ValueNone
-            | Some attr -> ValueSome(unbox<'modelType> attr.Value)
+            | Some attr -> ValueSome(unbox<'T> attr.Value)

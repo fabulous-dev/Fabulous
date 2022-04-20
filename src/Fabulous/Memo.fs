@@ -6,8 +6,7 @@ open Fabulous
 module Memo =
 
     type internal MemoData =
-        {
-          /// Captures data that memoization depends on
+        { /// Captures data that memoization depends on
           KeyData: obj
 
           // comparer that remembers KeyType internally
@@ -35,7 +34,8 @@ module Memo =
     let inline private updateNode _ (data: MemoData voption) (node: IViewNode) : unit =
         match data with
         | ValueSome memoData ->
-            let memoizedWidget = memoData.CreateWidget memoData.KeyData
+            let memoizedWidget =
+                memoData.CreateWidget memoData.KeyData
 
             let prevWidget =
                 match node.MemoizedWidget with
@@ -49,7 +49,7 @@ module Memo =
         | ValueNone -> ()
 
     let private MemoAttributeKey =
-        ScalarAttributeDefinition.CreateAttributeData<MemoData, MemoData>((fun x -> x), compareAttributes, updateNode)
+        SimpleScalarAttributeDefinition.CreateAttributeData<MemoData>(compareAttributes, updateNode)
         |> AttributeDefinitionStore.registerScalar
 
     let inline private getMemoData (widget: Widget) : MemoData =
@@ -60,12 +60,12 @@ module Memo =
     let internal canReuseMemoizedWidget prev next =
         (getMemoData prev).MarkerType = (getMemoData next).MarkerType
 
-    let internal MemoAttribute =
+    let internal MemoAttribute: SimpleScalarAttributeDefinition<MemoData> =
         { Key = MemoAttributeKey
-          Name = "MemoAttribute"
-          Convert = id }
+          Name = "MemoAttribute" }
 
-    let internal MemoWidgetKey = WidgetDefinitionStore.getNextKey()
+    let internal MemoWidgetKey =
+        WidgetDefinitionStore.getNextKey()
 
     // Memo isn't allowed in lists, TargetType will never get called,
     // so Unchecked.defaultof is an acceptable value
@@ -74,21 +74,22 @@ module Memo =
           Name = "Memo"
           TargetType = Unchecked.defaultof<_>
           CreateView =
-              fun (widget, context, parentNode) ->
+            fun (widget, context, parentNode) ->
 
-                  let memoData = getMemoData widget
+                let memoData = getMemoData widget
 
-                  let memoizedWidget = memoData.CreateWidget memoData.KeyData
+                let memoizedWidget =
+                    memoData.CreateWidget memoData.KeyData
 
-                  let memoizedDef =
-                      WidgetDefinitionStore.get memoizedWidget.Key
+                let memoizedDef =
+                    WidgetDefinitionStore.get memoizedWidget.Key
 
-                  let struct (node, view) =
-                      memoizedDef.CreateView(memoizedWidget, context, parentNode)
+                let struct (node, view) =
+                    memoizedDef.CreateView(memoizedWidget, context, parentNode)
 
-                  // store widget that was used to produce this node
-                  // to pass it to reconciler later on
-                  node.MemoizedWidget <- Some memoizedWidget
-                  struct (node, view) }
+                // store widget that was used to produce this node
+                // to pass it to reconciler later on
+                node.MemoizedWidget <- Some memoizedWidget
+                struct (node, view) }
 
     WidgetDefinitionStore.set MemoWidgetKey widgetDefinition

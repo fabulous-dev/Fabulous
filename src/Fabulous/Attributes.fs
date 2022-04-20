@@ -216,12 +216,12 @@ module Attributes =
         { Key = key; Name = name }
 
 
-    let inline defineEventNoArg<'msg>
+    let inline defineEventNoArg
         name
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
-        : SimpleScalarAttributeDefinition<'msg> =
+        : SimpleScalarAttributeDefinition<obj> =
         let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData<'msg>(
+            SimpleScalarAttributeDefinition.CreateAttributeData<_>(
                 ScalarAttributeComparers.noCompare,
                 (fun _ newValueOpt node ->
                     let event = getEvent node.Target
@@ -243,15 +243,14 @@ module Attributes =
 
             |> AttributeDefinitionStore.registerScalar
 
-
         { Key = key; Name = name }
 
     let inline defineEvent<'args>
         name
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<_> =
+        : SimpleScalarAttributeDefinition<'args -> obj> =
         let key =
-            SimpleScalarAttributeDefinition<'args -> obj>.CreateAttributeData
+            SimpleScalarAttributeDefinition.CreateAttributeData
                 (ScalarAttributeComparers.noCompare,
                  (fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
                      let event = getEvent node.Target

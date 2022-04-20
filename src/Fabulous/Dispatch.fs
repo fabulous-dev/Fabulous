@@ -33,7 +33,7 @@ module Dispatcher =
     let dispatchEventForAllChildren
         (node: IViewNode)
         (rootWidget: Widget)
-        (definition: ScalarAttributeDefinition<obj, obj, obj>)
+        (definition: SimpleScalarAttributeDefinition<obj>)
         =
         let rec dispatchAndVisitChildren skipMapMsg dispatch widget =
             // Check if the current widget has a MapMsg function and apply it before dispatch
@@ -41,11 +41,11 @@ module Dispatcher =
                 if skipMapMsg then
                     dispatch
                 else
-                    match AttributeHelpers.tryFindScalarAttribute MapMsg.MapMsg widget with
+                    match AttributeHelpers.tryFindSimpleScalarAttribute MapMsg.MapMsg widget with
                     | ValueNone -> dispatch
                     | ValueSome fn -> fn >> dispatch
 
-            match AttributeHelpers.tryFindScalarAttribute definition widget with
+            match AttributeHelpers.tryFindSimpleScalarAttribute definition widget with
             | ValueNone -> ()
             | ValueSome msg -> dispatch msg
 
