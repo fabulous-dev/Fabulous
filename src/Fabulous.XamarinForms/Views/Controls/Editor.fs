@@ -34,8 +34,9 @@ module EditorBuilders =
         static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IEditor>(
                 Editor.WidgetKey,
-                InputView.Text.WithValue(text),
-                InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
+                InputView.TextWithEvent.WithValue(
+                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
+                )
             )
 
 [<Extension>]

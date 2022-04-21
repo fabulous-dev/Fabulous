@@ -10,17 +10,17 @@ type ISwitch =
 module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
-    let IsToggled =
-        Attributes.defineBindable<bool> Switch.IsToggledProperty
-
     let ColorOn =
         Attributes.defineAppThemeBindable<Color> Switch.OnColorProperty
 
     let ThumbColor =
         Attributes.defineAppThemeBindable<Color> Switch.ThumbColorProperty
 
-    let Toggled =
-        Attributes.defineEvent<ToggledEventArgs> "Switch_Toggled" (fun target -> (target :?> Switch).Toggled)
+    let IsToggledWithEvent =
+        Attributes.defineBindableWithEvent
+            "Switch_Toggled"
+            Switch.IsToggledProperty
+            (fun target -> (target :?> Switch).Toggled)
 
 [<AutoOpen>]
 module SwitchBuilders =
@@ -28,8 +28,9 @@ module SwitchBuilders =
         static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
             WidgetBuilder<'msg, ISwitch>(
                 Switch.WidgetKey,
-                Switch.IsToggled.WithValue(isToggled),
-                Switch.Toggled.WithValue(fun args -> onToggled args.Value |> box)
+                Switch.IsToggledWithEvent.WithValue(
+                    ValueEventData.create isToggled (fun args -> onToggled args.Value |> box)
+                )
             )
 
 [<Extension>]

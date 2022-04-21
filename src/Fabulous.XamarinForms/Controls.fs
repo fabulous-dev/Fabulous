@@ -77,3 +77,23 @@ type CustomEntryCell() =
     override this.OnPropertyChanging(propertyName) =
         if propertyName = EntryCell.TextProperty.PropertyName then
             oldText <- this.Text
+
+/// Xamarin.Forms doesn't have an event args on the SelectedIndexChanged event, so we implement it
+type CustomPicker() =
+    inherit Picker()
+
+    let mutable oldSelectedIndex = -1
+
+    let selectedIndexChanged =
+        Event<EventHandler<PositionChangedEventArgs>, _>()
+
+    [<CLIEvent>]
+    member _.CustomSelectedIndexChanged = selectedIndexChanged.Publish
+
+    override this.OnPropertyChanged(propertyName) =
+        if propertyName = Picker.SelectedIndexProperty.PropertyName then
+            selectedIndexChanged.Trigger(this, PositionChangedEventArgs(oldSelectedIndex, this.SelectedIndex))
+
+    override this.OnPropertyChanging(propertyName) =
+        if propertyName = Picker.SelectedIndexProperty.PropertyName then
+            oldSelectedIndex <- this.SelectedIndex

@@ -30,8 +30,9 @@ module EntryBuilders =
         static member inline BorderedEntry<'msg>(text, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IBorderedEntry>(
                 BorderedEntry.WidgetKey,
-                InputView.Text.WithValue(text),
-                InputView.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
+                InputView.TextWithEvent.WithValue(
+                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
+                )
             )
 
 [<AutoOpen>]

@@ -28,12 +28,10 @@ module Slider =
     let ThumbImageSource =
         Attributes.defineAppThemeBindable<ImageSource> Slider.ThumbImageSourceProperty
 
-    let Value =
-        Attributes.defineBindable<float> Slider.ValueProperty
-
-    let ValueChanged =
-        Attributes.defineEvent<ValueChangedEventArgs>
-            "Slider_ValueChanged"
+    let ValueWithEvent =
+        Attributes.defineBindableWithEvent
+            "Slider_ValueWithEvent"
+            Slider.ValueProperty
             (fun target -> (target :?> Slider).ValueChanged)
 
     let DragCompleted =
@@ -48,9 +46,10 @@ module SliderBuilders =
         static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, ISlider>(
                 Slider.WidgetKey,
-                Slider.Value.WithValue(value),
-                Slider.ValueChanged.WithValue(fun args -> onValueChanged args.NewValue |> box),
-                Slider.MinimumMaximum.WithValue(struct (min, max))
+                Slider.MinimumMaximum.WithValue(struct (min, max)),
+                Slider.ValueWithEvent.WithValue(
+                    ValueEventData.create value (fun args -> onValueChanged args.NewValue |> box)
+                )
             )
 
 [<Extension>]

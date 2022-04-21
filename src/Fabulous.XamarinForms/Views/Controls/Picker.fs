@@ -9,7 +9,7 @@ type IPicker =
     inherit IView
 
 module Picker =
-    let WidgetKey = Widgets.register<Picker>()
+    let WidgetKey = Widgets.register<CustomPicker>()
 
     let CharacterSpacing =
         Attributes.defineBindable<float> Picker.CharacterSpacingProperty
@@ -51,13 +51,13 @@ module Picker =
                 | ValueNone -> target.ClearValue(Picker.ItemsSourceProperty)
                 | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
-    let SelectedIndex =
-        Attributes.defineBindable<int> Picker.SelectedIndexProperty
-
-    let SelectedIndexChanged =
-        Attributes.defineEventWithAdditionalStep
+    let SelectedIndexWithEvent =
+        Attributes.defineBindableWithEvent
             "Picker_SelectedIndexChanged"
-            (fun target -> (target :?> Picker).SelectedIndexChanged)
+            Picker.SelectedIndexProperty
+            (fun target ->
+                (target :?> CustomPicker)
+                    .CustomSelectedIndexChanged)
 
     let UpdateMode =
         Attributes.define<iOSSpecific.UpdateMode>
@@ -79,12 +79,9 @@ module PickerBuilders =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
                 Picker.ItemSource.WithValue(items |> Array.ofList),
-                Picker.SelectedIndex.WithValue(selectedIndex),
-                Picker.SelectedIndexChanged.WithValue
-                    (fun sender ->
-                        let picker = sender :?> Picker
-
-                        onSelectedIndexChanged picker.SelectedIndex |> box)
+                Picker.SelectedIndexWithEvent.WithValue(
+                    ValueEventData.create selectedIndex (fun args -> onSelectedIndexChanged args.CurrentPosition |> box)
+                )
             )
 
 [<Extension>]

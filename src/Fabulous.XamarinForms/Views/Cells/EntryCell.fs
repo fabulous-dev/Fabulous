@@ -10,9 +10,6 @@ type IEntryCell =
 module EntryCell =
     let WidgetKey = Widgets.register<CustomEntryCell>()
 
-    let Text =
-        Attributes.defineBindable<string> EntryCell.TextProperty
-
     let Label =
         Attributes.defineBindable<string> EntryCell.LabelProperty
 
@@ -31,9 +28,10 @@ module EntryCell =
     let Keyboard =
         Attributes.defineBindable<Keyboard> EntryCell.KeyboardProperty
 
-    let TextChanged =
-        Attributes.defineEvent<TextChangedEventArgs>
+    let TextWithEvent =
+        Attributes.defineBindableWithEvent
             "EntryCell_TextChanged"
+            EntryCell.TextProperty
             (fun target -> (target :?> CustomEntryCell).TextChanged)
 
     let OnCompleted =
@@ -47,8 +45,9 @@ module EntryCellBuilders =
             WidgetBuilder<'msg, IEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),
-                EntryCell.Text.WithValue(text),
-                EntryCell.TextChanged.WithValue(fun args -> onTextChanged args.NewTextValue |> box)
+                EntryCell.TextWithEvent.WithValue(
+                    ValueEventData.create text (fun args -> onTextChanged args.NewTextValue |> box)
+                )
             )
 
 [<Extension>]

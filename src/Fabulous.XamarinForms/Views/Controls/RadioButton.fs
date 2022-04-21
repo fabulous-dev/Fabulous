@@ -42,9 +42,6 @@ module RadioButton =
     let FontSize =
         Attributes.defineBindable<float> RadioButton.FontSizeProperty
 
-    let IsChecked =
-        Attributes.defineBindable<bool> RadioButton.IsCheckedProperty
-
     let TextColor =
         Attributes.defineAppThemeBindable<Color> RadioButton.TextColorProperty
 
@@ -57,9 +54,10 @@ module RadioButton =
     let RadioButtonGroupName =
         Attributes.defineBindable<string> RadioButtonGroup.GroupNameProperty
 
-    let CheckedChanged =
-        Attributes.defineEvent<CheckedChangedEventArgs>
+    let IsCheckedWithEvent =
+        Attributes.defineBindableWithEvent
             "RadioButton_CheckedChanged"
+            RadioButton.IsCheckedProperty
             (fun target -> (target :?> RadioButton).CheckedChanged)
 
 [<AutoOpen>]
@@ -69,9 +67,10 @@ module RadioButtonBuilders =
         static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
-                RadioButton.IsChecked.WithValue(isChecked),
-                RadioButton.ContentString.WithValue(content),
-                RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
+                RadioButton.IsCheckedWithEvent.WithValue(
+                    ValueEventData.create isChecked (fun args -> onChecked args.Value |> box)
+                ),
+                RadioButton.ContentString.WithValue(content)
             )
 
         static member inline RadioButton<'msg, 'marker when 'marker :> IView>
@@ -83,9 +82,10 @@ module RadioButtonBuilders =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
                 AttributesBundle(
-                    StackList.two(
-                        RadioButton.IsChecked.WithValue(isChecked),
-                        RadioButton.CheckedChanged.WithValue(fun args -> onChecked args.Value |> box)
+                    StackList.one(
+                        RadioButton.IsCheckedWithEvent.WithValue(
+                            ValueEventData.create isChecked (fun args -> onChecked args.Value |> box)
+                        )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
                     ValueNone

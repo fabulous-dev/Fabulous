@@ -11,15 +11,13 @@ type ISwitchCell =
 module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
-    let On =
-        Attributes.defineBindable<bool> SwitchCell.OnProperty
-
     let Text =
         Attributes.defineBindable<string> SwitchCell.TextProperty
 
-    let OnChanged =
-        Attributes.defineEvent<ToggledEventArgs>
+    let OnWithEvent =
+        Attributes.defineBindableWithEvent
             "SwitchCell_OnChanged"
+            SwitchCell.OnProperty
             (fun target -> (target :?> SwitchCell).OnChanged)
 
     let OnColor =
@@ -31,9 +29,8 @@ module SwitchCellBuilders =
         static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, ISwitchCell>(
                 SwitchCell.WidgetKey,
-                SwitchCell.On.WithValue(value),
-                SwitchCell.Text.WithValue(text),
-                SwitchCell.OnChanged.WithValue(fun args -> onChanged args.Value |> box)
+                SwitchCell.OnWithEvent.WithValue(ValueEventData.create value (fun args -> onChanged args.Value |> box)),
+                SwitchCell.Text.WithValue(text)
             )
 
 [<Extension>]
