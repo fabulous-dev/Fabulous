@@ -1,6 +1,6 @@
 # <img src="logo/logo-title.png" height="120px" alt="Fabulous" />
 
-*F# Functional App Development, using declarative dynamic UI*
+*F# Functional App Development, using declarative dynamic UI.*
 
 [![.NET](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml/badge.svg)](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
 
