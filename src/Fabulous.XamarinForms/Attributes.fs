@@ -81,7 +81,7 @@ module Attributes =
     /// Update both a property and its related event.
     /// This definition makes sure that the event is only raised when the property is changed by the user,
     /// and not when the property is set by the code
-    let defineValueWithEventArgs<'data, 'args>
+    let defineBindableWithEvent<'data, 'args>
         name
         (bindableProperty: BindableProperty)
         (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)

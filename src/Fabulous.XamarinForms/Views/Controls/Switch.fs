@@ -17,7 +17,7 @@ module Switch =
         Attributes.defineAppThemeBindable<Color> Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "Switch_Toggled"
             Switch.IsToggledProperty
             (fun target -> (target :?> Switch).Toggled)

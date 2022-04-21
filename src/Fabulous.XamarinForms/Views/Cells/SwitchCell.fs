@@ -15,7 +15,7 @@ module SwitchCell =
         Attributes.defineBindable<string> SwitchCell.TextProperty
 
     let OnWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "SwitchCell_OnChanged"
             SwitchCell.OnProperty
             (fun target -> (target :?> SwitchCell).OnChanged)

@@ -37,7 +37,7 @@ module InputView =
         Attributes.defineBindable<TextTransform> InputView.TextTransformProperty
 
     let TextWithEvent =
-        Attributes.defineValueWithEventArgs<string, TextChangedEventArgs>
+        Attributes.defineBindableWithEvent<string, TextChangedEventArgs>
             "InputView_TextChanged"
             InputView.TextProperty
             (fun target -> (target :?> InputView).TextChanged)

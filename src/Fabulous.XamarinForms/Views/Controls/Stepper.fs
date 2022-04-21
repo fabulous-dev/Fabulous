@@ -17,7 +17,7 @@ module Stepper =
         Attributes.define<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
 
     let ValueWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "Stepper_ValueChanged"
             Stepper.ValueProperty
             (fun target -> (target :?> Stepper).ValueChanged)

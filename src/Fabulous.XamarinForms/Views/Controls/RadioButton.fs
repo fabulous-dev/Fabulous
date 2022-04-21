@@ -55,7 +55,7 @@ module RadioButton =
         Attributes.defineBindable<string> RadioButtonGroup.GroupNameProperty
 
     let IsCheckedWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "RadioButton_CheckedChanged"
             RadioButton.IsCheckedProperty
             (fun target -> (target :?> RadioButton).CheckedChanged)

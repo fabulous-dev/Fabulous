@@ -29,7 +29,7 @@ module Slider =
         Attributes.defineAppThemeBindable<ImageSource> Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "Slider_ValueWithEvent"
             Slider.ValueProperty
             (fun target -> (target :?> Slider).ValueChanged)

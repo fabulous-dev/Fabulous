@@ -15,7 +15,7 @@ module CheckBox =
         Attributes.defineAppThemeBindable<Color> CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "CheckBox_CheckedChanged"
             CheckBox.IsCheckedProperty
             (fun target -> (target :?> CheckBox).CheckedChanged)

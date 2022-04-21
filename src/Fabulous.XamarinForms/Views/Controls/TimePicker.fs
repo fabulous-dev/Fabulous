@@ -15,7 +15,7 @@ module TimePicker =
         Attributes.defineBindable<float> TimePicker.CharacterSpacingProperty
 
     let TimeWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "TimePicker_TimeSelected"
             TimePicker.TimeProperty
             (fun target -> (target :?> FabulousTimePicker).TimeSelected)

@@ -29,7 +29,7 @@ module EntryCell =
         Attributes.defineBindable<Keyboard> EntryCell.KeyboardProperty
 
     let TextWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "EntryCell_TextChanged"
             EntryCell.TextProperty
             (fun target -> (target :?> CustomEntryCell).TextChanged)

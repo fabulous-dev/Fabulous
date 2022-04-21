@@ -52,7 +52,7 @@ module Picker =
                 | ValueSome value -> target.SetValue(Picker.ItemsSourceProperty, value))
 
     let SelectedIndexWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "Picker_SelectedIndexChanged"
             Picker.SelectedIndexProperty
             (fun target ->

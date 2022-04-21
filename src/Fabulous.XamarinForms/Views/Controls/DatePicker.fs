@@ -39,7 +39,7 @@ module DatePicker =
         Attributes.defineBindable<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
 
     let DateWithEvent =
-        Attributes.defineValueWithEventArgs
+        Attributes.defineBindableWithEvent
             "DatePicker_DateSelected"
             DatePicker.DateProperty
             (fun target -> (target :?> DatePicker).DateSelected)
