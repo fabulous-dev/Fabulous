@@ -50,7 +50,7 @@ Example: User wants to write "Hello"
 4) Android raises event "TextChanged: He" -> Fabulous will change the Entry's text to `He` (was `H`)
 5) Android raises event "TextChanged: H" (because of (3)) -> Fabulous will change to `H` (was `He`)
 6) Android raises event "TextChanged: He" (because of (4)) -> Fabulous will change the Entry's text to `He` (was `H`)
-7) etc. 
+7) etc.
 
 To avoid this from happening, the only way is to ignore the events triggered by programmatic changes.
 This is done by removing the event handler before updating the value and reset it after.
@@ -59,7 +59,7 @@ To guarantee the order of execution, we need to handle both the property and the
 
 1) Remove old handler if any
 2) Update the value (it will trigger an event, but we don't listen to it anymore)
-    - If attribute was removed, then we clean the old value 
+    - If attribute was removed, then we clean the old value
     - Otherwise we set the new value
 3) Set the new handler if any
 
@@ -86,6 +86,7 @@ type Fabulous.XamarinForms.View with
 ```
 
 Now, there is a new attribute definition to update both the property and the event in a single attribute.
+
 ```fs
 module Slider =
     let ValueWithEvent =
