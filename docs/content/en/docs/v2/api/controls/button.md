@@ -72,7 +72,7 @@ Button("Press me!", ClickMsg)
     .onReleased(ReleasedMsg)
 ```
 
-### Get access to the underlying Xamarin.Forms.Label
+### Get access to the underlying Xamarin.Forms.Button
 
 ```fs
 let buttonRef = ViewRef<Button>()
