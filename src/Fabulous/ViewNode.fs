@@ -14,6 +14,8 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
     let mutable _handlers: Map<string, obj> = Map.empty
 
     member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
+        let node = this :> IViewNode
+        
         for diff in diffs do
             match diff with
             | ScalarChange.Added added ->
@@ -24,12 +26,12 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                     let smallScalar =
                         (AttributeDefinitionStore.getSmallScalar key)
 
-                    smallScalar.UpdateNode ValueNone (ValueSome added.NumericValue) this
+                    smallScalar.UpdateNode ValueNone (ValueSome added.NumericValue) node
 
                 | ScalarAttributeKey.Boxed ->
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
-                    scalar.UpdateNode ValueNone (ValueSome added.Value) this
+                    scalar.UpdateNode ValueNone (ValueSome added.Value) node
 
             | ScalarChange.Removed removed ->
 
@@ -40,12 +42,12 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                     let smallScalar =
                         (AttributeDefinitionStore.getSmallScalar key)
 
-                    smallScalar.UpdateNode(ValueSome removed.NumericValue) ValueNone this
+                    smallScalar.UpdateNode(ValueSome removed.NumericValue) ValueNone node
 
                 | ScalarAttributeKey.Boxed ->
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
-                    scalar.UpdateNode(ValueSome removed.Value) ValueNone this
+                    scalar.UpdateNode(ValueSome removed.Value) ValueNone node
 
 
 
@@ -57,12 +59,12 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                     let smallScalar =
                         (AttributeDefinitionStore.getSmallScalar key)
 
-                    smallScalar.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) this
+                    smallScalar.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) node
 
                 | ScalarAttributeKey.Boxed ->
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
-                    scalar.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) this
+                    scalar.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) node
 
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do

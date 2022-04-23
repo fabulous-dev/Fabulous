@@ -1,7 +1,7 @@
 namespace Fabulous
 
 open System
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 
 module Memo =
 

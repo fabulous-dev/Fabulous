@@ -1,33 +1,34 @@
-﻿namespace Fabulous
+﻿(* Dev notes:
 
-open System
-open Fabulous
+The types in this file will be the ones used the most internally by Fabulous.
 
-/// Dev notes:
-///
-/// The types in this file will be the ones used the most internally by Fabulous.
-///
-/// To enable the best performance possible, we want to avoid allocating them on
-/// the heap as must as possible (meaning they should be structs where possible)
-/// Also we want to avoid cache line misses, in that end, we make sure each struct
-/// can fit on a L1/L2 cache size by making those structs fit on 64 bits.
-///
-/// Having those performance constraints prevents us for using inheritance
-/// or using interfaces on these structs
+To enable the best performance possible, we want to avoid allocating them on
+the heap as must as possible (meaning they should be structs where possible)
+Also we want to avoid cache line misses, in that end, we make sure each struct
+can fit on a L1/L2 cache size by making those structs fit on 64 bits.
 
+Having those performance constraints prevents us for using inheritance
+or using interfaces on these structs *)
 
-[<Measure>]
-type attributeKey
+namespace Fabulous
 
-[<Measure>]
-type attributeWidgetKey
+/// Strongly types a scalar attribute key
+type [<Measure>] scalarAttributeKey
 
-[<Measure>]
-type attributeWidgetCollectionKey
+/// Strongly types a widget attribute key
+type [<Measure>] widgetAttributeKey
 
-type ScalarAttributeKey = int<attributeKey>
-type WidgetAttributeKey = int<attributeWidgetKey>
-type WidgetCollectionAttributeKey = int<attributeWidgetCollectionKey>
+/// Strongly types a widget collection attribute key
+type [<Measure>] widgetCollectionAttributeKey
+
+/// Key identifying a scalar attribute (e.g. Text, Image, etc.)
+type ScalarAttributeKey = int<scalarAttributeKey>
+
+/// Key identifying a widget attribute (e.g. Content, etc.)
+type WidgetAttributeKey = int<widgetAttributeKey>
+
+/// Key identifying a widget collection attribute (e.g. Children, Items, etc.)
+type WidgetCollectionAttributeKey = int<widgetCollectionAttributeKey>
 
 module ScalarAttributeKey =
     [<Struct>]
@@ -59,13 +60,11 @@ module ScalarAttributeKey =
 
     let inline getKeyValue (key: ScalarAttributeKey) : int = int((int key) &&& Code.KeyMask)
 
-
     let inline compare (a: ScalarAttributeKey) (b: ScalarAttributeKey) =
         let a = int a
         let b = int b
         a.CompareTo b
-
-
+        
 module WidgetAttributeKey =
     let inline compare (a: WidgetAttributeKey) (b: WidgetAttributeKey) =
         let a = int a
@@ -82,20 +81,18 @@ type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
 
-/// Represents a value for a property of a widget.
-/// Can map to a real property (such as Label.Text) or to a non-existent one.
-/// It will be up to the AttributeDefinition to decide how to apply the value.
-[<Struct>]
-type ScalarAttribute =
+/// Represents a value for a property of a widget
+type [<Struct>] ScalarAttribute =
     { Key: ScalarAttributeKey
 #if DEBUG
       DebugName: string
 #endif
+      /// Stores the value as object (boxed), prefer NumericValue when possible
       Value: obj
-
+      /// Stores the value in a numeric form for faster performance (no boxing)
       NumericValue: uint64 }
 
-
+/// Represents a single child of a widget
 and [<Struct>] WidgetAttribute =
     { Key: WidgetAttributeKey
 #if DEBUG
@@ -103,6 +100,7 @@ and [<Struct>] WidgetAttribute =
 #endif
       Value: Widget }
 
+/// Represents a collection of children of a widget
 and [<Struct>] WidgetCollectionAttribute =
     { Key: WidgetCollectionAttributeKey
 #if DEBUG

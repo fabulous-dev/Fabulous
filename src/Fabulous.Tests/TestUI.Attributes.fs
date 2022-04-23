@@ -2,6 +2,7 @@ module Tests.TestUI_Attributes
 
 open System
 open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 open Tests.Platform
 
 module Attributes =

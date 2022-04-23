@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 open System
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IRelativeLayout =

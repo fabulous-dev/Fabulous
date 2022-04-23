@@ -1,6 +1,6 @@
 namespace Fabulous
 
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 
 module Lifecycle =
     let inline private createAttribute name : SimpleScalarAttributeDefinition<obj> =

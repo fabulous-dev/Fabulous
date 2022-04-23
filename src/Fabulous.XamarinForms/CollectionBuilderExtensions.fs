@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.StackAllocatedCollections
-open Fabulous.XamarinForms
 
 [<Extension>]
 type CollectionBuilderExtensions =

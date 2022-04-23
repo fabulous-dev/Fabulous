@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 open System
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ICarouselView =
@@ -38,7 +37,7 @@ module CarouselView =
             ScalarAttributeComparers.equalityCompare
             (fun _ newValueOpt node ->
                 let handler =
-                    match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Key) with
+                    match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name) with
                     | ValueSome handler -> handler
                     | ValueNone ->
                         let newHandler =
@@ -48,10 +47,10 @@ module CarouselView =
                         newHandler
 
                 match newValueOpt with
-                | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Key, ValueNone)
+                | ValueNone -> node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
                 | ValueSome curr ->
                     curr.Attached.AddHandler(handler)
-                    node.SetHandler(ViewRefAttributes.ViewRef.Key, ValueSome handler))
+                    node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueSome handler))
 
 [<AutoOpen>]
 module CarouselViewBuilders =

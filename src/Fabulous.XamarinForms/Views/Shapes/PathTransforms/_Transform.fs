@@ -1,6 +1,5 @@
 namespace Fabulous.XamarinForms
 
-open Fabulous.XamarinForms
 open Xamarin.Forms.Shapes
 
 type ITransform =

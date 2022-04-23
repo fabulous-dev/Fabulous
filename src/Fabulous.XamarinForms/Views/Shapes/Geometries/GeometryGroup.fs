@@ -3,7 +3,6 @@ namespace Fabulous.XamarinForms
 open System.Collections.Generic
 open Xamarin.Forms.Shapes
 open Fabulous
-open Fabulous.XamarinForms
 
 type IGeometryGroup =
     inherit IGeometry

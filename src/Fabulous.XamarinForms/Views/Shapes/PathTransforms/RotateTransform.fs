@@ -1,7 +1,6 @@
 namespace Fabulous.XamarinForms
 
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms.Shapes
 
 type IRotateTransform =

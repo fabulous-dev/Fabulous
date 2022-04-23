@@ -20,7 +20,7 @@ module View =
         let memo: Memo.MemoData =
             { KeyData = box key
               KeyComparer = fun (prev: obj) (next: obj) -> unbox<'key> prev = unbox<'key> next
-              CreateWidget = fun k -> (fn(unbox<'key> k)).Compile()
+              CreateWidget = fun k -> fn(unbox<'key> k).Compile()
               KeyType = typeof<'key>
               MarkerType = typeof<'marker> }
 

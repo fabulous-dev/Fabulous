@@ -1,6 +1,7 @@
 namespace Fabulous.XamarinForms
 
 open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 open Xamarin.Forms
 open System
 
@@ -85,24 +86,19 @@ module Attributes =
         name
         (bindableProperty: BindableProperty)
         (getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        =
-        let key = AttributeDefinitionStore.getNextKey()
-
-        let definition: ScalarAttributeDefinition<ValueEventData<'data, 'args>, _, _> =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = ScalarAttributeComparers.noCompare
-              UpdateNode =
-                  fun oldValueOpt newValueOpt node ->
+        : SimpleScalarAttributeDefinition<ValueEventData<'data, 'args>> =
+            
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData<ValueEventData<'data, 'args>>
+                (ScalarAttributeComparers.noCompare,
+                 (fun oldValueOpt newValueOpt node ->
                       let target = node.Target :?> BindableObject
                       let event = getEvent target
 
                       match newValueOpt with
                       | ValueNone ->
                           // The attribute is no longer applied, so we clean up the event
-                          match node.TryGetHandler(key) with
+                          match node.TryGetHandler(name) with
                           | ValueNone -> ()
                           | ValueSome handler -> event.RemoveHandler(handler)
 
@@ -113,7 +109,7 @@ module Attributes =
 
                       | ValueSome curr ->
                           // Clean up the old event handler if any
-                          match node.TryGetHandler(key) with
+                          match node.TryGetHandler(name) with
                           | ValueNone -> ()
                           | ValueSome handler -> event.RemoveHandler(handler)
 
@@ -127,8 +123,8 @@ module Attributes =
                                       let r = curr.Event args
                                       Dispatcher.dispatch node r)
 
-                          node.SetHandler(key, ValueSome handler)
-                          event.AddHandler(handler) }
+                          node.SetHandler(name, ValueSome handler)
+                          event.AddHandler(handler)))
+            |> AttributeDefinitionStore.registerScalar
 
-        AttributeDefinitionStore.set key definition
-        definition
+        { Key = key; Name = name }

@@ -1,6 +1,6 @@
 namespace Fabulous
 
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 
 module MapMsg =
     /// Store a map function to convert a child message to a parent message.

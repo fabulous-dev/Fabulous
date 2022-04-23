@@ -1,7 +1,9 @@
 ﻿namespace Fabulous
 
 open System
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
+open Fabulous.WidgetAttributeDefinitions
+open Fabulous.WidgetCollectionAttributeDefinitions
 
 module Helpers =
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
@@ -27,7 +29,7 @@ module Attributes =
         ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
         ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
         ([<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
-        =
+        : ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
         let key =
             ScalarAttributeDefinition.CreateAttributeData<'modelType, 'valueType>(convertValue, compare, updateNode)
             |> AttributeDefinitionStore.registerScalar

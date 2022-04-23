@@ -1,6 +1,6 @@
 namespace Fabulous
 
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 
 module Dispatcher =
     let private getCanDispatchAndMapMsg (node: IViewNode) : struct (bool * (obj -> obj)) =
