@@ -19,11 +19,13 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/picker).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | Picker(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) | Defines a Picker widget with items list, selected index and onSelectedIndexChanged event |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the picker |
@@ -37,13 +39,10 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;Picker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Picker` instance associated to this widget |
 
 ## iOS-specific Properties
+
 | Properties | Description |
 |--|--|
 | updateMode(value: iOSSpecific.UpdateMode) | Sets the update mode (Immediately or WhenFinished) of the picker |
-
-## Events
-
-None
 
 ## Usages
 
