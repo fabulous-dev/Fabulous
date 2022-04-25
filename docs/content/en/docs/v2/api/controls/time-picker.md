@@ -37,11 +37,6 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | updateMode(value: iOSSpecific.UpdateMode) | Sets the update mode (Immediately or WhenFinished) of the time picker |
-
-## Events
-
-None
-
 ## Usages
 
 ```fs
