@@ -39,11 +39,6 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | updateMode(value: iOSSpecific.UpdateMode) | Sets the update mode (Immediately or WhenFinished) of the date picker |
-
-## Events
-
-None
-
 ## Usages
 
 ```fs
