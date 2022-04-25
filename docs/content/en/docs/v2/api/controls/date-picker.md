@@ -1,6 +1,6 @@
 ---
 id: "v2-date-picker"
-title: "Date Picker"
+title: "DatePicker"
 description: ""
 lead: ""
 date: 2022-04-23T00:00:00+00:00
