@@ -19,11 +19,13 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/timepicker).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | TimePicker(time: TimeSpan, onTimeSelected: TimeSpan -> 'msg) | Defines a TimePicker widget with a time and onTimeSelected event |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the time picker |
@@ -34,9 +36,11 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;TimePicker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.TimePicker` instance associated to this widget |
 
 ## iOS-specific Properties
+
 | Properties | Description |
 |--|--|
 | updateMode(value: iOSSpecific.UpdateMode) | Sets the update mode (Immediately or WhenFinished) of the time picker |
+
 ## Usages
 
 ```fs
