@@ -19,11 +19,13 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/datepicker).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | DatePicker(date: DateTime, onDateSelected: DateTime -> 'msg) | Defines a DatePicker widget with a date and onDateSelected event |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the date picker |
@@ -36,9 +38,11 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;DatePicker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.DatePicker` instance associated to this widget |
 
 ## iOS-specific Properties
+
 | Properties | Description |
 |--|--|
 | updateMode(value: iOSSpecific.UpdateMode) | Sets the update mode (Immediately or WhenFinished) of the date picker |
+
 ## Usages
 
 ```fs
