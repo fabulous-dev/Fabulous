@@ -1,6 +1,6 @@
 ---
 id: "v2-time-picker"
-title: "Time Picker"
+title: "TimePicker"
 description: ""
 lead: ""
 date: 2022-04-23T00:00:00+00:00
