@@ -43,7 +43,6 @@ module Attributes =
     /// Define a custom attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
     let inline defineSmallScalar<'modelType>
         name
-        ([<InlineIfLambda>] encode: 'modelType -> uint64)
         ([<InlineIfLambda>] decode: uint64 -> 'modelType)
         ([<InlineIfLambda>] updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition<'modelType> =
@@ -52,8 +51,7 @@ module Attributes =
             |> AttributeDefinitionStore.registerSmallScalar
 
         { Key = key
-          Name = name
-          Encode = encode }
+          Name = name }
 
 
 
@@ -77,7 +75,6 @@ module Attributes =
 
         defineSmallScalar
             name
-            (fun (input: bool) -> if input then 1UL else 0UL)
             (fun (encoded: uint64) -> encoded = 1UL)
             updateNode
 

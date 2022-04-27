@@ -181,11 +181,13 @@ let main argv =
 //    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
 //    |> ignore
 //
-    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
-    |> ignore
-    
-//    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
+//    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
 //    |> ignore
+    
+    printfn "Hello"
+    
+    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
+    |> ignore
 
     0 // return an integer exit code
 

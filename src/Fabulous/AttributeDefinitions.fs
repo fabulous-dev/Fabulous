@@ -90,17 +90,16 @@ module ScalarAttributeDefinitions =
     [<Struct>]
     type SmallScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
-          Name: string
-          Encode: 'T -> uint64 }
-
-        member inline x.WithValue(value: 'T) : ScalarAttribute =
+          Name: string }
+        
+        member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
               DebugName = x.Name
 #endif
-              NumericValue = x.Encode(value)
+              NumericValue = encode(value)
               Value = null }
-
+            
         static member inline CreateAttributeData<'T>
             (
                 [<InlineIfLambda>] decode: uint64 -> 'T,

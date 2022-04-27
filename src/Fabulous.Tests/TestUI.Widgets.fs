@@ -137,9 +137,9 @@ type View private () =
     static member InlineNumericBag<'msg>(one, two, three) =
         WidgetBuilder<'msg, TestNumericBagMarker>(
             TestNumericBagKey,
-            Attributes.NumericBag.InlineValueOne.WithValue(one),
-            Attributes.NumericBag.InlineValueTwo.WithValue(two),
-            Attributes.NumericBag.InlineValueThree.WithValue(three)
+            Attributes.NumericBag.InlineValueOne.WithValue(one, fun x -> x),
+            Attributes.NumericBag.InlineValueTwo.WithValue(two, fun x -> x),
+            Attributes.NumericBag.InlineValueThree.WithValue(three, BitConverter.DoubleToUInt64Bits)
         )
 
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =

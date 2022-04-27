@@ -71,20 +71,17 @@ module Attributes =
             Attributes.defineSmallScalar<uint64>
                 "InlineValueOne"
                 id
-                id
                 TestUI_ViewUpdaters.updateNumericValueOne
 
         let InlineValueTwo =
             Attributes.defineSmallScalar<uint64>
                 "InlineValueTwo"
                 id
-                id
                 TestUI_ViewUpdaters.updateNumericValueTwo
 
         let InlineValueThree =
             Attributes.defineSmallScalar<float>
                 "InlineValueThree"
-                BitConverter.DoubleToUInt64Bits
                 BitConverter.UInt64BitsToDouble
                 TestUI_ViewUpdaters.updateNumericValueThree
 
