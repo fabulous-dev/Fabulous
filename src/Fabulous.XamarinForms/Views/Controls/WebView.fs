@@ -6,6 +6,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
 
 type IWebView =
     inherit IView
@@ -36,6 +37,32 @@ module WebView =
 
     let ReloadRequested =
         Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
+        
+    let EnableZoomControls =
+        Attributes.define<bool>
+            "WebView_EnableZoomControls"
+            (fun _ newValueOpt node ->
+                let webview = node.Target :?> WebView
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+            
+    let DisplayZoomControls =
+        Attributes.define<bool>
+            "WebView_DisplayZoomControls"
+            (fun _ newValueOpt node ->
+                let webview = node.Target :?> WebView
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
 [<AutoOpen>]
 module WebViewBuilders =
@@ -99,3 +126,13 @@ type WebViewModifiers() =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IWebView>, value: ViewRef<WebView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+        
+[<Extension>]
+type WebViewPlatformModifiers =
+    [<Extension>]
+    static member inline enableZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+        this.AddScalar(WebView.EnableZoomControls.WithValue(value))
+
+    [<Extension>]
+    static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+        this.AddScalar(WebView.DisplayZoomControls.WithValue(value))    
