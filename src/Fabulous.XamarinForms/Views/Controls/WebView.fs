@@ -28,41 +28,36 @@ module WebView =
         Attributes.defineBindable<CookieContainer> WebView.CookiesProperty
 
     let Navigating =
-        Attributes.defineEvent<WebNavigatingEventArgs>
-            "WebView_Navigating"
-            (fun target -> (target :?> WebView).Navigating)
+        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target ->
+            (target :?> WebView).Navigating)
 
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
     let ReloadRequested =
         Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
-        
+
     let EnableZoomControls =
-        Attributes.define<bool>
-            "WebView_EnableZoomControls"
-            (fun _ newValueOpt node ->
-                let webview = node.Target :?> WebView
+        Attributes.define<bool> "WebView_EnableZoomControls" (fun _ newValueOpt node ->
+            let webview = node.Target :?> WebView
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
-            
+            AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+
     let DisplayZoomControls =
-        Attributes.define<bool>
-            "WebView_DisplayZoomControls"
-            (fun _ newValueOpt node ->
-                let webview = node.Target :?> WebView
+        Attributes.define<bool> "WebView_DisplayZoomControls" (fun _ newValueOpt node ->
+            let webview = node.Target :?> WebView
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> false
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> false
+                | ValueSome v -> v
 
-                AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
+            AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
 [<AutoOpen>]
 module WebViewBuilders =
@@ -126,7 +121,7 @@ type WebViewModifiers() =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IWebView>, value: ViewRef<WebView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-        
+
 [<Extension>]
 type WebViewPlatformModifiers =
     [<Extension>]
@@ -135,4 +130,4 @@ type WebViewPlatformModifiers =
 
     [<Extension>]
     static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
-        this.AddScalar(WebView.DisplayZoomControls.WithValue(value))    
+        this.AddScalar(WebView.DisplayZoomControls.WithValue(value))
