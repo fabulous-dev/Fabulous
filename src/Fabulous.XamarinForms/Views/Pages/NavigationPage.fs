@@ -75,6 +75,32 @@ module NavigationPage =
 
                 iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
+    let IsNavigationBarTranslucent =
+        Attributes.define<bool>
+            "NavigationPage_IsNavigationBarTranslucent"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+
+    let PrefersLargeTitles =
+        Attributes.define<bool>
+            "NavigationPage_PrefersLargeTitles"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
+
 [<AutoOpen>]
 module NavigationPageBuilders =
     type Fabulous.XamarinForms.View with
@@ -225,3 +251,11 @@ type NavigationPagePlatformModifiers =
     [<Extension>]
     static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
         this.AddScalar(NavigationPage.HideNavigationBarSeparator.WithValue(value))
+
+    [<Extension>]
+    static member inline isNavigationBarTranslucent(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.IsNavigationBarTranslucent.WithValue(value))
+
+    [<Extension>]
+    static member inline prefersLargeTitles(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.PrefersLargeTitles.WithValue(value))
