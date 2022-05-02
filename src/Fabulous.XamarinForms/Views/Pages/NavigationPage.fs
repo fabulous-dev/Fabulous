@@ -12,8 +12,7 @@ type INavigationPage =
     inherit IPage
 
 module NavigationPage =
-    let WidgetKey =
-        Widgets.register<NavigationPage>()
+    let WidgetKey = Widgets.register<NavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindable<string> NavigationPage.BackButtonTitleProperty
@@ -46,52 +45,61 @@ module NavigationPage =
         Attributes.defineAppThemeBindable<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let Popped =
-        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Popped" (fun target ->
-            (target :?> NavigationPage).Popped)
+        Attributes.defineEvent<NavigationEventArgs>
+            "NavigationPage_Popped"
+            (fun target -> (target :?> NavigationPage).Popped)
 
     let Pushed =
-        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_Pushed" (fun target ->
-            (target :?> NavigationPage).Pushed)
+        Attributes.defineEvent<NavigationEventArgs>
+            "NavigationPage_Pushed"
+            (fun target -> (target :?> NavigationPage).Pushed)
 
     let PoppedToRoot =
-        Attributes.defineEvent<NavigationEventArgs> "NavigationPage_PoppedToRoot" (fun target ->
-            (target :?> NavigationPage).PoppedToRoot)
+        Attributes.defineEvent<NavigationEventArgs>
+            "NavigationPage_PoppedToRoot"
+            (fun target -> (target :?> NavigationPage).PoppedToRoot)
 
     let TitleView =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
     let HideNavigationBarSeparator =
-        Attributes.define<bool> "NavigationPage_HideNavigationBarSeparator" (fun _ newValueOpt node ->
-            let page = node.Target :?> NavigationPage
+        Attributes.define<bool>
+            "NavigationPage_HideNavigationBarSeparator"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
 
-            let value =
-                match newValueOpt with
-                | ValueNone -> false
-                | ValueSome v -> v
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
 
-            iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
+                iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
     let IsNavigationBarTranslucent =
-        Attributes.define<bool> "NavigationPage_IsNavigationBarTranslucent" (fun _ newValueOpt node ->
-            let page = node.Target :?> NavigationPage
+        Attributes.define<bool>
+            "NavigationPage_IsNavigationBarTranslucent"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
 
-            let value =
-                match newValueOpt with
-                | ValueNone -> false
-                | ValueSome v -> v
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
 
-            iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+                iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
 
     let PrefersLargeTitles =
-        Attributes.define<bool> "NavigationPage_PrefersLargeTitles" (fun _ newValueOpt node ->
-            let page = node.Target :?> NavigationPage
+        Attributes.define<bool>
+            "NavigationPage_PrefersLargeTitles"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
 
-            let value =
-                match newValueOpt with
-                | ValueNone -> false
-                | ValueSome v -> v
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
 
-            iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
+                iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
 
 [<AutoOpen>]
 module NavigationPageBuilders =
@@ -212,8 +220,7 @@ type NavigationPageAttachedModifiers =
     /// <param name="dark">The source of the titleIconImageSource in the dark theme.</param>
     [<Extension>]
     static member inline titleIconImageSource(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
-        let light =
-            ImageSource.FromStream(fun () -> light)
+        let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
             match dark with
