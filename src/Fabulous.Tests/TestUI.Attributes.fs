@@ -68,16 +68,10 @@ module Attributes =
 
     module NumericBag =
         let InlineValueOne =
-            Attributes.defineSmallScalar<uint64>
-                "InlineValueOne"
-                id
-                TestUI_ViewUpdaters.updateNumericValueOne
+            Attributes.defineSmallScalar<uint64> "InlineValueOne" id TestUI_ViewUpdaters.updateNumericValueOne
 
         let InlineValueTwo =
-            Attributes.defineSmallScalar<uint64>
-                "InlineValueTwo"
-                id
-                TestUI_ViewUpdaters.updateNumericValueTwo
+            Attributes.defineSmallScalar<uint64> "InlineValueTwo" id TestUI_ViewUpdaters.updateNumericValueTwo
 
         let InlineValueThree =
             Attributes.defineSmallScalar<float>

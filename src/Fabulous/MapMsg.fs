@@ -7,7 +7,7 @@ module MapMsg =
     /// Help compose independent views using different MVU cycle and messages
     let MapMsg: SimpleScalarAttributeDefinition<obj -> obj> =
         let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData<obj -> obj>(
+            SimpleScalarAttributeDefinition.CreateAttributeData(
                 (fun _ _ -> ScalarAttributeComparison.Different),
                 (fun _oldValueOpt newValueOpt node ->
                     match newValueOpt with

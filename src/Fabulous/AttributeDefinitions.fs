@@ -7,7 +7,7 @@ module ScalarAttributeDefinitions =
     [<Struct>]
     type SmallScalarAttributeData =
         { UpdateNode: uint64 voption -> uint64 voption -> IViewNode -> unit }
-        
+
     /// A regular scalar attribute.
     /// The value will be boxed and put on the heap, which can trigger GC to pass.
     /// Prefer small scalar attribute when possible.
@@ -66,7 +66,7 @@ module ScalarAttributeDefinitions =
               NumericValue = 0UL
               Value = value }
 
-        static member CreateAttributeData<'T>
+        static member CreateAttributeData
             (
                 compare: 'T -> 'T -> ScalarAttributeComparison,
                 updateNode: 'T voption -> 'T voption -> IViewNode -> unit
@@ -91,7 +91,7 @@ module ScalarAttributeDefinitions =
     type SmallScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
           Name: string }
-        
+
         member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
@@ -99,7 +99,7 @@ module ScalarAttributeDefinitions =
 #endif
               NumericValue = encode(value)
               Value = null }
-            
+
         static member inline CreateAttributeData<'T>
             (
                 [<InlineIfLambda>] decode: uint64 -> 'T,
@@ -152,16 +152,16 @@ module WidgetCollectionAttributeDefinitions =
 
         member inline x.WithValue(value: ArraySlice<Widget>) : WidgetCollectionAttribute =
             { Key = x.Key
-    #if DEBUG
+#if DEBUG
               DebugName = x.Name
-    #endif
+#endif
               Value = value }
 
 module AttributeDefinitionStore =
     open ScalarAttributeDefinitions
     open WidgetAttributeDefinitions
     open WidgetCollectionAttributeDefinitions
-    
+
     let private _scalars = ResizeArray<ScalarAttributeData>()
     let private _smallScalars = ResizeArray<SmallScalarAttributeData>()
     let private _widgets = ResizeArray<WidgetAttributeData>()
@@ -209,15 +209,13 @@ module AttributeDefinitionStore =
 
 module AttributeHelpers =
     open ScalarAttributeDefinitions
-    
-    let tryFindSimpleScalarAttribute
-        (definition: SimpleScalarAttributeDefinition<'T>)
-        (widget: Widget)
-        =
+
+    let tryFindSimpleScalarAttribute (definition: SimpleScalarAttributeDefinition<'T>) (widget: Widget) =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
         | ValueSome attrs ->
             match attrs
-                  |> Array.tryFind(fun attr -> attr.Key = definition.Key) with
+                  |> Array.tryFind(fun attr -> attr.Key = definition.Key)
+                with
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'T> attr.Value)

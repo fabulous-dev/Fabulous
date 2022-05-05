@@ -50,8 +50,7 @@ module Attributes =
             SmallScalarAttributeDefinition.CreateAttributeData<'modelType>(decode, updateNode)
             |> AttributeDefinitionStore.registerSmallScalar
 
-        { Key = key
-          Name = name }
+        { Key = key; Name = name }
 
 
 
@@ -73,10 +72,7 @@ module Attributes =
         ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition<bool> =
 
-        defineSmallScalar
-            name
-            (fun (encoded: uint64) -> encoded = 1UL)
-            updateNode
+        defineSmallScalar name (fun (encoded: uint64) -> encoded = 1UL) updateNode
 
     /// Define a custom attribute storing a widget
     let inline defineWidgetWithConverter
@@ -220,7 +216,7 @@ module Attributes =
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
         : SimpleScalarAttributeDefinition<obj> =
         let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData<_>(
+            SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
                 (fun _ newValueOpt node ->
                     let event = getEvent node.Target
@@ -249,27 +245,28 @@ module Attributes =
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
         : SimpleScalarAttributeDefinition<'args -> obj> =
         let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData
-                (ScalarAttributeComparers.noCompare,
-                 (fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
-                     let event = getEvent node.Target
+            SimpleScalarAttributeDefinition.CreateAttributeData(
+                ScalarAttributeComparers.noCompare,
+                (fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
+                    let event = getEvent node.Target
 
-                     match node.TryGetHandler(name) with
-                     | ValueNone -> ()
-                     | ValueSome handler -> event.RemoveHandler handler
+                    match node.TryGetHandler(name) with
+                    | ValueNone -> ()
+                    | ValueSome handler -> event.RemoveHandler handler
 
-                     match newValueOpt with
-                     | ValueNone -> node.SetHandler(name, ValueNone)
+                    match newValueOpt with
+                    | ValueNone -> node.SetHandler(name, ValueNone)
 
-                     | ValueSome fn ->
-                         let handler =
-                             EventHandler<'args>
-                                 (fun _ args ->
-                                     let r = fn args
-                                     Dispatcher.dispatch node r)
+                    | ValueSome fn ->
+                        let handler =
+                            EventHandler<'args>
+                                (fun _ args ->
+                                    let r = fn args
+                                    Dispatcher.dispatch node r)
 
-                         node.SetHandler(name, ValueSome handler)
-                         event.AddHandler handler))
+                        node.SetHandler(name, ValueSome handler)
+                        event.AddHandler handler)
+            )
             |> AttributeDefinitionStore.registerScalar
 
         { Key = key; Name = name }

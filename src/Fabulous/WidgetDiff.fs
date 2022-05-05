@@ -215,12 +215,12 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                         | _ ->
                             // means that we are targeting the same attribute
-                            match ScalarAttributeKey.getKind prevKey with 
+                            match ScalarAttributeKey.getKind prevKey with
                             | ScalarAttributeKey.Kind.Inline ->
                                 if prevAttr.NumericValue <> nextAttr.NumericValue then
                                     e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
                                     res <- ValueSome true
-                                    
+
                             | ScalarAttributeKey.Kind.Boxed ->
                                 match compareScalars struct (prevKey, prevAttr.Value, nextAttr.Value) with
                                 // Previous and next values are identical, we don't need to do anything

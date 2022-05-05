@@ -5,7 +5,7 @@ open Fabulous.ScalarAttributeDefinitions
 module Lifecycle =
     let inline private createAttribute name : SimpleScalarAttributeDefinition<obj> =
         let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData<obj -> obj>(
+            SimpleScalarAttributeDefinition.CreateAttributeData(
                 (fun _ _ -> ScalarAttributeComparison.Identical),
                 (fun _oldValueOpt _newValueOpt _node -> ())
             )

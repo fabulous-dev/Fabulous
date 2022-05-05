@@ -13,13 +13,16 @@ or using interfaces on these structs *)
 namespace Fabulous
 
 /// Strongly types a scalar attribute key
-type [<Measure>] scalarAttributeKey
+[<Measure>]
+type scalarAttributeKey
 
 /// Strongly types a widget attribute key
-type [<Measure>] widgetAttributeKey
+[<Measure>]
+type widgetAttributeKey
 
 /// Strongly types a widget collection attribute key
-type [<Measure>] widgetCollectionAttributeKey
+[<Measure>]
+type widgetCollectionAttributeKey
 
 /// Key identifying a scalar attribute (e.g. Text, Image, etc.)
 type ScalarAttributeKey = int<scalarAttributeKey>
@@ -64,7 +67,7 @@ module ScalarAttributeKey =
         let a = int a
         let b = int b
         a.CompareTo b
-        
+
 module WidgetAttributeKey =
     let inline compare (a: WidgetAttributeKey) (b: WidgetAttributeKey) =
         let a = int a
@@ -82,7 +85,8 @@ type StateKey = int
 type ViewAdapterKey = int
 
 /// Represents a value for a property of a widget
-type [<Struct>] ScalarAttribute =
+[<Struct>]
+type ScalarAttribute =
     { Key: ScalarAttributeKey
 #if DEBUG
       DebugName: string

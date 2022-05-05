@@ -15,7 +15,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
 
     member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
         let node = this :> IViewNode
-        
+
         for diff in diffs do
             match diff with
             | ScalarChange.Added added ->

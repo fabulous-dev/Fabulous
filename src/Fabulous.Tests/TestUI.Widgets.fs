@@ -19,7 +19,7 @@ open Tests.TestUI_ViewNode
 //-------Widgets
 
 module Widgets =
-    let register<'T when 'T :> TestViewElement and 'T: (new : unit -> 'T)> () =
+    let register<'T when 'T :> TestViewElement and 'T: (new: unit -> 'T)> () =
         let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
@@ -133,12 +133,12 @@ type View private () =
             Attributes.NumericBag.BoxedValueTwo.WithValue(two),
             Attributes.NumericBag.BoxedValueThree.WithValue(three)
         )
-        
+
     static member InlineNumericBag<'msg>(one, two, three) =
         WidgetBuilder<'msg, TestNumericBagMarker>(
             TestNumericBagKey,
-            Attributes.NumericBag.InlineValueOne.WithValue(one, fun x -> x),
-            Attributes.NumericBag.InlineValueTwo.WithValue(two, fun x -> x),
+            Attributes.NumericBag.InlineValueOne.WithValue(one, (fun x -> x)),
+            Attributes.NumericBag.InlineValueTwo.WithValue(two, (fun x -> x)),
             Attributes.NumericBag.InlineValueThree.WithValue(three, BitConverter.DoubleToUInt64Bits)
         )
 

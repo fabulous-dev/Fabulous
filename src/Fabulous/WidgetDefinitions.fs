@@ -12,8 +12,7 @@ type WidgetDefinition =
       CreateView: Widget * ViewTreeContext * IViewNode voption -> struct (IViewNode * obj) }
 
 module WidgetDefinitionStore =
-    let private _widgets =
-        ResizeArray<WidgetDefinition>()
+    let private _widgets = ResizeArray<WidgetDefinition>()
 
     let mutable private _nextKey = 0
 

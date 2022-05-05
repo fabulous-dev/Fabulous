@@ -535,17 +535,18 @@ module MemoTests =
 
 
 module SmallScalars =
-    type Msg =
-        | Inc of uint64
+    type Msg = Inc of uint64
 
     type Model = { value: uint64 }
 
     let update msg model =
         match msg with
-        | Inc value -> { model with value = model.value + value }
+        | Inc value ->
+            { model with
+                  value = model.value + value }
 
     let view model =
-        InlineNumericBag(model.value, model.value + 1UL, float (model.value + 2UL) )
+        InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
             .automationId("numbers")
 
     let init () = { value = 0UL }
@@ -565,11 +566,11 @@ module SmallScalars =
         Assert.AreEqual(numbers.valueTwo, 1UL)
         Assert.AreEqual(numbers.valueThree, 2.)
         instance.ProcessMessage(Inc 4UL)
-        
+
         Assert.AreEqual(numbers.valueOne, 4UL)
         Assert.AreEqual(numbers.valueTwo, 5UL)
         Assert.AreEqual(numbers.valueThree, 6.)
-        
+
 
 /// https://github.com/TimLariviere/Fabulous-new/issues/99
 module Issue99 =
