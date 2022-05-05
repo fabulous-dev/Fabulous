@@ -56,7 +56,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
             prevOpt: Widget voption,
             next: Widget,
             canReuseView: Widget -> Widget -> bool,
-            compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+            compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
         ) : WidgetDiff =
 
         let prevScalarAttributes =
@@ -88,7 +88,7 @@ and [<Struct; NoComparison; NoEquality>] ScalarChanges
     (
         prev: ScalarAttribute [] voption,
         next: ScalarAttribute [] voption,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
         ScalarChangesEnumerator(EnumerationMode.fromOptions prev next, compareScalars)
@@ -98,7 +98,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetChanges
         prev: WidgetAttribute [] voption,
         next: WidgetAttribute [] voption,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
         WidgetChangesEnumerator(EnumerationMode.fromOptions prev next, canReuseView, compareScalars)
@@ -108,7 +108,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionChanges
         prev: WidgetCollectionAttribute [] voption,
         next: WidgetCollectionAttribute [] voption,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
         WidgetCollectionChangesEnumerator(EnumerationMode.fromOptions prev next, canReuseView, compareScalars)
@@ -119,7 +119,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionItemChanges
         prev: ArraySlice<Widget>,
         next: ArraySlice<Widget>,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
         WidgetCollectionItemChangesEnumerator(
@@ -133,7 +133,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionItemChanges
 and [<Struct; IsByRefLike>] ScalarChangesEnumerator
     (
         mode: EnumerationMode<ScalarAttribute>,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
 
     [<DefaultValue(false)>]
@@ -200,7 +200,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                         let prevKey = prevAttr.Key
                         let nextKey = nextAttr.Key
 
-                        match prevKey.CompareTo nextKey with
+                        match ScalarAttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- ScalarChange.Removed prev.[prevIndex]
@@ -215,15 +215,21 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                         | _ ->
                             // means that we are targeting the same attribute
+                            match ScalarAttributeKey.getKind prevKey with
+                            | ScalarAttributeKey.Kind.Inline ->
+                                if prevAttr.NumericValue <> nextAttr.NumericValue then
+                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    res <- ValueSome true
 
-                            match compareScalars struct (prevKey, prevAttr.Value, nextAttr.Value) with
-                            // Previous and next values are identical, we don't need to do anything
-                            | ScalarAttributeComparison.Identical -> ()
+                            | ScalarAttributeKey.Kind.Boxed ->
+                                match compareScalars struct (prevKey, prevAttr.Value, nextAttr.Value) with
+                                // Previous and next values are identical, we don't need to do anything
+                                | ScalarAttributeComparison.Identical -> ()
 
-                            // New value completely replaces the old value
-                            | ScalarAttributeComparison.Different ->
-                                e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
-                                res <- ValueSome true
+                                // New value completely replaces the old value
+                                | ScalarAttributeComparison.Different ->
+                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    res <- ValueSome true
 
                             // move both pointers
                             prevIndex <- prevIndex + 1
@@ -243,7 +249,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
     (
         mode: EnumerationMode<WidgetAttribute>,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
 
     [<DefaultValue(false)>]
@@ -311,7 +317,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
                         let prevWidget = prevAttr.Value
                         let nextWidget = nextAttr.Value
 
-                        match prevKey.CompareTo nextKey with
+                        match WidgetAttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- WidgetChange.Removed prevAttr
@@ -365,7 +371,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
     (
         mode: EnumerationMode<WidgetCollectionAttribute>,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
 
     [<DefaultValue(false)>]
@@ -429,7 +435,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
                         let prevWidgetColl = prevAttr.Value
                         let nextWidgetColl = nextAttr.Value
 
-                        match prevKey.CompareTo nextKey with
+                        match WidgetCollectionAttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
                             e.current <- WidgetCollectionChange.Removed prevAttr
@@ -471,7 +477,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         prev: Span<Widget>,
         next: Span<Widget>,
         canReuseView: Widget -> Widget -> bool,
-        compareScalars: struct (AttributeKey * obj * obj) -> ScalarAttributeComparison
+        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     [<DefaultValue(false)>]
     val mutable private current: WidgetCollectionItemChange

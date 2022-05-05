@@ -2,6 +2,8 @@
 
 open System
 open Fabulous
+open Fabulous.ScalarAttributeDefinitions
+open Fabulous.WidgetCollectionAttributeDefinitions
 open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
 open Fabulous.XamarinForms

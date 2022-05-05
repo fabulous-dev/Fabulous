@@ -1,7 +1,9 @@
 ﻿namespace Fabulous
 
 open System
-open Fabulous
+open Fabulous.ScalarAttributeDefinitions
+open Fabulous.WidgetAttributeDefinitions
+open Fabulous.WidgetCollectionAttributeDefinitions
 
 module Helpers =
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
@@ -11,9 +13,9 @@ module Helpers =
         widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
-    let noCompare _ _ = ScalarAttributeComparison.Different
+    let inline noCompare _ _ = ScalarAttributeComparison.Different
 
-    let equalityCompare a b =
+    let inline equalityCompare a b =
         if a = b then
             ScalarAttributeComparison.Identical
         else
@@ -21,62 +23,96 @@ module ScalarAttributeComparers =
 
 module Attributes =
     /// Define a custom attribute storing any value
-    let defineScalarWithConverter<'inputType, 'modelType, 'valueType>
+    let inline defineScalarWithConverter<'inputType, 'modelType, 'valueType>
         name
-        (convert: 'inputType -> 'modelType)
-        (convertValue: 'modelType -> 'valueType)
-        (compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
-        (updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
-        =
-        let key = AttributeDefinitionStore.getNextKey()
+        ([<InlineIfLambda>] convert: 'inputType -> 'modelType)
+        ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
+        ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
+        ([<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
+        : ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
+        let key =
+            ScalarAttributeDefinition.CreateAttributeData<'modelType, 'valueType>(convertValue, compare, updateNode)
+            |> AttributeDefinitionStore.registerScalar
 
-        let definition =
-            { Key = key
-              Name = name
-              Convert = convert
-              ConvertValue = convertValue
-              Compare = compare
-              UpdateNode = updateNode }
+        { Key = key
+          Name = name
+          Convert = convert }
 
-        AttributeDefinitionStore.set key definition
-        definition
+
+
+    /// Define a custom attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
+    let inline defineSmallScalar<'modelType>
+        name
+        ([<InlineIfLambda>] decode: uint64 -> 'modelType)
+        ([<InlineIfLambda>] updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<'modelType> =
+        let key =
+            SmallScalarAttributeDefinition.CreateAttributeData<'modelType>(decode, updateNode)
+            |> AttributeDefinitionStore.registerSmallScalar
+
+        { Key = key; Name = name }
+
+
+
+    //    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+//    let defineFloat
+//        name
+//        (updateNode: float voption -> float voption -> IViewNode -> unit)
+//        : SmallScalarAttributeDefinition<float> =
+//
+//        defineSmallScalarWithConverter
+//            name
+//            BitConverter.DoubleToUInt64Bits
+//            BitConverter.UInt64BitsToDouble
+//            updateNode
+
+    /// Define a custom bool attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+    let inline defineBool
+        name
+        ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<bool> =
+
+        defineSmallScalar name (fun (encoded: uint64) -> encoded = 1UL) updateNode
 
     /// Define a custom attribute storing a widget
-    let defineWidgetWithConverter
+    let inline defineWidgetWithConverter
         name
         (applyDiff: WidgetDiff -> IViewNode -> unit)
         (updateNode: Widget voption -> Widget voption -> IViewNode -> unit)
-        =
-        let key = AttributeDefinitionStore.getNextKey()
+        : WidgetAttributeDefinition =
 
-        let definition: WidgetAttributeDefinition =
-            { Key = key
-              Name = name
-              ApplyDiff = applyDiff
-              UpdateNode = updateNode }
+        let key =
+            AttributeDefinitionStore.registerWidget
+                { ApplyDiff = applyDiff
+                  UpdateNode = updateNode }
 
-        AttributeDefinitionStore.set key definition
-        definition
+        { Key = key; Name = name }
+
+
 
     /// Define a custom attribute storing a widget collection
-    let defineWidgetCollectionWithConverter
+    let inline defineWidgetCollectionWithConverter
         name
         (applyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit)
-        =
-        let key = AttributeDefinitionStore.getNextKey()
+        : WidgetCollectionAttributeDefinition =
 
-        let definition: WidgetCollectionAttributeDefinition =
-            { Key = key
-              Name = name
-              ApplyDiff = applyDiff
-              UpdateNode = updateNode }
+        let key =
+            AttributeDefinitionStore.registerWidgetCollection
+                { ApplyDiff = applyDiff
+                  UpdateNode = updateNode }
 
-        AttributeDefinitionStore.set key definition
-        definition
+        { Key = key; Name = name }
+
+
+
 
     /// Define an attribute storing a Widget for a CLR property
-    let defineWidget<'T when 'T: null> (name: string) (get: obj -> IViewNode) (set: obj -> 'T -> unit) =
+    let inline defineWidget<'T when 'T: null>
+        (name: string)
+        ([<InlineIfLambda>] get: obj -> IViewNode)
+        ([<InlineIfLambda>] set: obj -> 'T -> unit)
+        =
         let applyDiff (diff: WidgetDiff) (node: IViewNode) =
             let childNode = get node.Target
 
@@ -164,68 +200,73 @@ module Attributes =
 
         defineWidgetCollectionWithConverter name applyDiff updateNode
 
-    let inline define<'T when 'T: equality> name updateTarget =
-        defineScalarWithConverter<'T, 'T, 'T> name id id ScalarAttributeComparers.equalityCompare updateTarget
+    let inline define<'T when 'T: equality>
+        name
+        ([<InlineIfLambda>] updateTarget: 'T voption -> 'T voption -> IViewNode -> unit)
+        : SimpleScalarAttributeDefinition<'T> =
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(ScalarAttributeComparers.equalityCompare, updateTarget)
+            |> AttributeDefinitionStore.registerScalar
 
-    let defineEventNoArg name (getEvent: obj -> IEvent<EventHandler, EventArgs>) =
-        let key = AttributeDefinitionStore.getNextKey()
+        { Key = key; Name = name }
 
-        let definition: ScalarAttributeDefinition<obj, obj, obj> =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = ScalarAttributeComparers.noCompare
-              UpdateNode =
-                  fun _ newValueOpt node ->
-                      let event = getEvent node.Target
 
-                      match node.TryGetHandler(key) with
-                      | ValueNone -> ()
-                      | ValueSome handler -> event.RemoveHandler handler
+    let inline defineEventNoArg
+        name
+        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
+        : SimpleScalarAttributeDefinition<obj> =
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(
+                ScalarAttributeComparers.noCompare,
+                (fun _ newValueOpt node ->
+                    let event = getEvent node.Target
 
-                      match newValueOpt with
-                      | ValueNone -> node.SetHandler(key, ValueNone)
+                    match node.TryGetHandler(name) with
+                    | ValueNone -> ()
+                    | ValueSome handler -> event.RemoveHandler handler
 
-                      | ValueSome msg ->
-                          let handler =
-                              EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
+                    match newValueOpt with
+                    | ValueNone -> node.SetHandler(name, ValueNone)
 
-                          event.AddHandler handler
-                          node.SetHandler(key, ValueSome handler) }
+                    | ValueSome msg ->
+                        let handler =
+                            EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
 
-        AttributeDefinitionStore.set key definition
-        definition
+                        event.AddHandler handler
+                        node.SetHandler(name, ValueSome handler))
+            )
 
-    let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) =
-        let key = AttributeDefinitionStore.getNextKey()
+            |> AttributeDefinitionStore.registerScalar
 
-        let definition: ScalarAttributeDefinition<_, _, _> =
-            { Key = key
-              Name = name
-              Convert = id
-              ConvertValue = id
-              Compare = ScalarAttributeComparers.noCompare
-              UpdateNode =
-                  fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
-                      let event = getEvent node.Target
+        { Key = key; Name = name }
 
-                      match node.TryGetHandler(key) with
-                      | ValueNone -> ()
-                      | ValueSome handler -> event.RemoveHandler handler
+    let inline defineEvent<'args>
+        name
+        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+        : SimpleScalarAttributeDefinition<'args -> obj> =
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(
+                ScalarAttributeComparers.noCompare,
+                (fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
+                    let event = getEvent node.Target
 
-                      match newValueOpt with
-                      | ValueNone -> node.SetHandler(key, ValueNone)
+                    match node.TryGetHandler(name) with
+                    | ValueNone -> ()
+                    | ValueSome handler -> event.RemoveHandler handler
 
-                      | ValueSome fn ->
-                          let handler =
-                              EventHandler<'args>
-                                  (fun _ args ->
-                                      let r = fn args
-                                      Dispatcher.dispatch node r)
+                    match newValueOpt with
+                    | ValueNone -> node.SetHandler(name, ValueNone)
 
-                          node.SetHandler(key, ValueSome handler)
-                          event.AddHandler handler }
+                    | ValueSome fn ->
+                        let handler =
+                            EventHandler<'args>
+                                (fun _ args ->
+                                    let r = fn args
+                                    Dispatcher.dispatch node r)
 
-        AttributeDefinitionStore.set key definition
-        definition
+                        node.SetHandler(name, ValueSome handler)
+                        event.AddHandler handler)
+            )
+            |> AttributeDefinitionStore.registerScalar
+
+        { Key = key; Name = name }

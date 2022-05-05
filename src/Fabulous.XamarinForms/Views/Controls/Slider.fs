@@ -4,7 +4,6 @@ open System
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type ISlider =

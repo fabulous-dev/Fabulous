@@ -2,8 +2,6 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.StackAllocatedCollections.StackList
-open Fabulous.XamarinForms
 open Xamarin.Forms
 open Xamarin.Forms.Shapes
 

@@ -1,6 +1,5 @@
 namespace Fabulous.XamarinForms
 
-open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms

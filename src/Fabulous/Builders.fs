@@ -1,11 +1,10 @@
 namespace Fabulous
 
 open System.ComponentModel
-open Fabulous
+open Fabulous.WidgetCollectionAttributeDefinitions
 open Fabulous.StackAllocatedCollections
 open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.FSharp.Core
-
 
 type AttributesBundle =
     (struct (StackList<ScalarAttribute> * WidgetAttribute [] voption * WidgetCollectionAttribute [] voption))

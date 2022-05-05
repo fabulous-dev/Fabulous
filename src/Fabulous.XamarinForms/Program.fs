@@ -1,17 +1,18 @@
 ﻿namespace Fabulous.XamarinForms
 
 open Fabulous
+open Fabulous.ScalarAttributeDefinitions
 open Xamarin.Forms
 open System.Diagnostics
 
 module ViewHelpers =
-    let private tryGetScalarValue (widget: Widget) (def: ScalarAttributeDefinition<_, 'modelType, _>) =
+    let private tryGetScalarValue (widget: Widget) (def: SimpleScalarAttributeDefinition<'data>) =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
         | ValueSome scalarAttrs ->
             match Array.tryFind(fun (attr: ScalarAttribute) -> attr.Key = def.Key) scalarAttrs with
             | None -> ValueNone
-            | Some attr -> ValueSome(unbox<'modelType> attr.Value)
+            | Some attr -> ValueSome(unbox<'data> attr.Value)
 
     /// Check whether widgets have compatible automation ids.
     /// Xamarin.Forms only allows setting the automation id once so we can't reuse a control if the id is not the same.

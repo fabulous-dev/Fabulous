@@ -2,9 +2,7 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms
-open Xamarin.Forms.Shapes
 
 type IVisualElement =
     inherit INavigableElement

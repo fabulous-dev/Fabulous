@@ -2,7 +2,6 @@ namespace Fabulous.XamarinForms
 
 open System.Collections.Generic
 open Fabulous
-open Fabulous.XamarinForms
 open Xamarin.Forms.Shapes
 
 type ITransformGroup =

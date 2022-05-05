@@ -11,28 +11,60 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
     // TODO consider combine handlers mapMsg and property bag
     // also we can probably use just Dictionary instead of Map because
     // ViewNode is supposed to be mutable, stateful and persistent object
-    let mutable _handlers: Map<AttributeKey, obj> = Map.empty
+    let mutable _handlers: Map<string, obj> = Map.empty
 
-    member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) =
+    member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
+        let node = this :> IViewNode
+
         for diff in diffs do
             match diff with
             | ScalarChange.Added added ->
-                let definition =
-                    AttributeDefinitionStore.get added.Key :?> IScalarAttributeDefinition
+                let key = added.Key
 
-                definition.UpdateNode ValueNone (ValueSome added.Value) this
+                match ScalarAttributeKey.getKind key with
+                | ScalarAttributeKey.Inline ->
+                    let smallScalar =
+                        (AttributeDefinitionStore.getSmallScalar key)
+
+                    smallScalar.UpdateNode ValueNone (ValueSome added.NumericValue) node
+
+                | ScalarAttributeKey.Boxed ->
+                    let scalar = (AttributeDefinitionStore.getScalar key)
+
+                    scalar.UpdateNode ValueNone (ValueSome added.Value) node
 
             | ScalarChange.Removed removed ->
-                let definition =
-                    AttributeDefinitionStore.get removed.Key :?> IScalarAttributeDefinition
 
-                definition.UpdateNode(ValueSome removed.Value) ValueNone this
+                let key = removed.Key
+
+                match ScalarAttributeKey.getKind key with
+                | ScalarAttributeKey.Inline ->
+                    let smallScalar =
+                        (AttributeDefinitionStore.getSmallScalar key)
+
+                    smallScalar.UpdateNode(ValueSome removed.NumericValue) ValueNone node
+
+                | ScalarAttributeKey.Boxed ->
+                    let scalar = (AttributeDefinitionStore.getScalar key)
+
+                    scalar.UpdateNode(ValueSome removed.Value) ValueNone node
+
+
 
             | ScalarChange.Updated (oldAttr, newAttr) ->
-                let definition =
-                    AttributeDefinitionStore.get newAttr.Key :?> IScalarAttributeDefinition
+                let key = oldAttr.Key
 
-                definition.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) this
+                match ScalarAttributeKey.getKind key with
+                | ScalarAttributeKey.Inline ->
+                    let smallScalar =
+                        (AttributeDefinitionStore.getSmallScalar key)
+
+                    smallScalar.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) node
+
+                | ScalarAttributeKey.Boxed ->
+                    let scalar = (AttributeDefinitionStore.getScalar key)
+
+                    scalar.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) node
 
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do
@@ -40,19 +72,19 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
             | WidgetChange.Added newWidget
             | WidgetChange.ReplacedBy newWidget ->
                 let definition =
-                    AttributeDefinitionStore.get newWidget.Key :?> WidgetAttributeDefinition
+                    (AttributeDefinitionStore.getWidget newWidget.Key)
 
                 definition.UpdateNode ValueNone (ValueSome newWidget.Value) (this :> IViewNode)
 
             | WidgetChange.Removed removed ->
                 let definition =
-                    AttributeDefinitionStore.get removed.Key :?> WidgetAttributeDefinition
+                    (AttributeDefinitionStore.getWidget removed.Key)
 
                 definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
 
             | WidgetChange.Updated struct (newAttr, diffs) ->
                 let definition =
-                    AttributeDefinitionStore.get newAttr.Key :?> WidgetAttributeDefinition
+                    (AttributeDefinitionStore.getWidget newAttr.Key)
 
                 definition.ApplyDiff diffs (this :> IViewNode)
 
@@ -61,19 +93,21 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
             match diff with
             | WidgetCollectionChange.Added added ->
                 let definition =
-                    AttributeDefinitionStore.get added.Key :?> WidgetCollectionAttributeDefinition
+                    (AttributeDefinitionStore.getWidgetCollection added.Key)
 
                 definition.UpdateNode ValueNone (ValueSome added.Value) (this :> IViewNode)
 
+
             | WidgetCollectionChange.Removed removed ->
                 let definition =
-                    AttributeDefinitionStore.get removed.Key :?> WidgetCollectionAttributeDefinition
+                    (AttributeDefinitionStore.getWidgetCollection removed.Key)
 
                 definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
 
+
             | WidgetCollectionChange.Updated struct (oldAttr, newAttr, diffs) ->
                 let definition =
-                    AttributeDefinitionStore.get newAttr.Key :?> WidgetCollectionAttributeDefinition
+                    (AttributeDefinitionStore.getWidgetCollection newAttr.Key)
 
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 
@@ -85,12 +119,12 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
         member val MapMsg: (obj -> obj) option = None with get, set
         member _.IsDisconnected = _isDisconnected
 
-        member _.TryGetHandler<'T>(key: AttributeKey) =
+        member _.TryGetHandler<'T>(key: string) =
             match Map.tryFind key _handlers with
             | None -> ValueNone
             | Some v -> ValueSome(unbox<'T> v)
 
-        member _.SetHandler<'T>(key: AttributeKey, handlerOpt: 'T voption) =
+        member _.SetHandler<'T>(key: string, handlerOpt: 'T voption) =
             _handlers <-
                 _handlers
                 |> Map.change
