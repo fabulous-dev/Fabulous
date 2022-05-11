@@ -123,3 +123,10 @@ module Program =
               Init = traceInit
               Update = traceUpdate
               View = traceView }
+
+[<RequireQualifiedAccess>]
+module CmdMsg =
+    let batch mapCmdMsgFn mapCmdFn cmdMsgs =
+        cmdMsgs
+        |> List.map(mapCmdMsgFn >> Cmd.map mapCmdFn)
+        |> Cmd.batch

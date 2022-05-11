@@ -1,5 +1,7 @@
 ﻿namespace Fabulous
 
+open System.Threading.Tasks
+
 /// Dispatch - feed new message into the processing loop
 type Dispatch<'msg> = 'msg -> unit
 
@@ -60,3 +62,37 @@ module Cmd =
                   | Some msg -> dispatch msg
               }
               |> Async.StartImmediate ]
+
+    /// Command to issue a message at the end of an asynchronous task
+    let ofTaskMsg (p: Task<'msg>) : Cmd<'msg> =
+        [ fun dispatch ->
+              task {
+                  try
+                      let! result = p
+                      dispatch result
+                  with
+                  | _ex ->
+                      // TODO: log exception
+                      ()
+              }
+              |> ignore ]
+
+    /// Command to issue a message at the end of an asynchronous task
+    let ofTaskResult
+        (p: Task<Result<'data, 'exn>>)
+        (success: 'data -> 'msg)
+        (error: 'exn -> 'msg)
+        (failure: exn -> 'msg)
+        : Cmd<'msg> =
+        [ fun dispatch ->
+              task {
+                  try
+                      let! result = p
+
+                      match result with
+                      | Ok x -> dispatch(success x)
+                      | Error x -> dispatch(error x)
+                  with
+                  | ex -> dispatch(failure ex)
+              }
+              |> ignore ]
