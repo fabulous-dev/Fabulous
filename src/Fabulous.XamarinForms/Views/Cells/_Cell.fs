@@ -9,20 +9,18 @@ type ICell =
 
 module Cell =
     let IsEnabled =
-        Attributes.defineBindable<bool> Cell.IsEnabledProperty
+        Attributes.defineSmallBindable<bool> Cell.IsEnabledProperty SmallScalars.Bool.decode
 
     let Height =
-        Attributes.define<float>
-            "Cell_Height"
-            (fun _ newValueOpt node ->
-                let cell = node.Target :?> Cell
+        Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->
+            let cell = node.Target :?> Cell
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> cell.Height
-                    | ValueSome v -> v
+            let value =
+                match newValueOpt with
+                | ValueNone -> cell.Height
+                | ValueSome v -> v
 
-                cell.Height <- value)
+            cell.Height <- value)
 
     let Appearing =
         Attributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
@@ -40,13 +38,13 @@ type CellModifiers =
     /// <param name="value">true if the cell IsEnabled; otherwise, false.</param>
     [<Extension>]
     static member inline isEnabled(this: WidgetBuilder<'msg, #ICell>, value: bool) =
-        this.AddScalar(Cell.IsEnabled.WithValue(value))
+        this.AddScalar(Cell.IsEnabled.WithValue(value, SmallScalars.Bool.encode))
 
     /// <summary>Sets the height of the cell</summary>
     /// <param name="value">The height of the cell</param>
     [<Extension>]
     static member inline height(this: WidgetBuilder<'msg, #ICell>, value: float) =
-        this.AddScalar(Cell.Height.WithValue(value))
+        this.AddScalar(Cell.Height.WithValue(value, SmallScalars.Float.encode))
 
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #ICell>, onAppearing: 'msg) =

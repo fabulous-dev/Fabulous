@@ -24,6 +24,70 @@ type ValueEventData<'data, 'eventArgs> =
 module ValueEventData =
     let create (value: 'data) (event: 'eventArgs -> obj) = { Value = value; Event = event }
 
+/// Xamarin Forms specific attributes that can be encoded as 8 bytes
+module SmallScalars =
+    /// In reality XF takes 7 values of 4 bytes each.
+    /// Which is larger than 8 bytes an unusual to represent a color
+    /// So we are just going to bluntly convert it into 8 bytes in rgba form
+    /// note that we allocate 2 bytes for each channel in RGBA format to improve precision
+    /// That being said, it is a lossy conversion
+    module Color =
+        let inline encode (v: Color) : uint64 =
+            let r: uint64 = (uint64 (uint16 (v.R * 65535.0))) <<< 6
+            let g: uint64 = (uint64 (uint16 (v.G * 65535.0))) <<< 4
+            let b: uint64 = (uint64 (uint16 (v.B * 65535.0))) <<< 2
+            let a: uint64 = (uint64 (uint16 (v.A * 65535.0)))
+            r ||| g ||| b ||| a  
+            
+        let inline decode (encoded: uint64) : Color =
+            let r = (encoded &&& 0xFFFF000000000000UL) >>> 6 
+            let g = (encoded &&& 0x0000FFFF00000000UL) >>> 4
+            let b = (encoded &&& 0x00000000FFFF0000UL) >>> 2
+            let a = (encoded &&& 0x000000000000FFFFUL)
+            let inline toFloat value = (float value) / 65535.0
+            Color.FromRgba(toFloat r, toFloat g, toFloat b, toFloat a)
+            
+    module TextAlignment =
+        let inline encode (v: TextAlignment) : uint64 =
+            match v with
+            | TextAlignment.Start -> 0UL
+            | TextAlignment.Center -> 1UL
+            | TextAlignment.End -> 2UL
+            | _ -> 1UL
+            
+        let inline decode (encoded: uint64) : TextAlignment =
+            match encoded with
+            | 0UL -> TextAlignment.Start
+            | 1UL -> TextAlignment.Center
+            | 2UL -> TextAlignment.End
+            | _ -> TextAlignment.Center
+            
+    module LayoutOptions =
+        let inline encode (v: LayoutOptions) : uint64 =
+            let alignment:uint64 =
+                match v.Alignment with
+                | LayoutAlignment.Start -> 0UL
+                | LayoutAlignment.Center -> 1UL
+                | LayoutAlignment.End -> 2UL
+                | LayoutAlignment.Fill -> 3UL
+                | _ -> 3UL 
+            
+            let expands: uint64 = if v.Expands then 1UL else 0UL
+            
+            (alignment <<< 4) ||| expands  
+            
+        let inline decode (encoded: uint64) : LayoutOptions =
+            let alignment =
+                match (encoded &&& 0xFFFFFFFF00000000UL) >>> 4 with
+                |0UL -> LayoutAlignment.Start  
+                |1UL -> LayoutAlignment.Center  
+                |2UL -> LayoutAlignment.End  
+                |3UL -> LayoutAlignment.Fill  
+                | _ -> LayoutAlignment.Fill
+            let expands = (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
+            
+            LayoutOptions(alignment, expands)
+
 module Attributes =
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =
@@ -64,6 +128,17 @@ module Attributes =
     let inline defineBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
         Attributes.define<'T>
             bindableProperty.PropertyName
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v))
+    
+    let inline defineSmallBindable<'T> (bindableProperty: BindableProperty) ([<InlineIfLambda>] decode: uint64 -> 'T) =
+        Attributes.defineSmallScalar<'T>
+            bindableProperty.PropertyName
+            decode
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
@@ -133,3 +208,13 @@ module Attributes =
             |> AttributeDefinitionStore.registerScalar
 
         { Key = key; Name = name }
+
+
+    /// Defines a Color attribute and encodes it as a small scalar  
+    let inline defineColor
+        name
+        ([<InlineIfLambda>] updateNode: Color voption -> Color voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<Color> =
+
+        Attributes.defineSmallScalar name SmallScalars.Color.decode updateNode
+

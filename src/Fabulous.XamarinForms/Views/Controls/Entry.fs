@@ -24,16 +24,16 @@ module Entry =
         Attributes.defineBindable<string> Entry.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Entry.FontSizeProperty
+        Attributes.defineSmallBindable<float> Entry.FontSizeProperty SmallScalars.Float.decode
 
     let HorizontalTextAlignment =
         Attributes.defineBindable<TextAlignment> Entry.HorizontalTextAlignmentProperty
 
     let IsPassword =
-        Attributes.defineBindable<bool> Entry.IsPasswordProperty
+        Attributes.defineSmallBindable<bool> Entry.IsPasswordProperty SmallScalars.Bool.decode
 
     let IsTextPredictionEnabled =
-        Attributes.defineBindable<bool> Entry.IsTextPredictionEnabledProperty
+        Attributes.defineSmallBindable<bool> Entry.IsTextPredictionEnabledProperty SmallScalars.Bool.decode
 
     let ReturnType =
         Attributes.defineBindable<ReturnType> Entry.ReturnTypeProperty
@@ -42,14 +42,15 @@ module Entry =
         Attributes.defineBindable<int> Entry.SelectionLengthProperty
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Entry.VerticalTextAlignmentProperty
+        Attributes.defineSmallBindable<TextAlignment> Entry.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
 
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.define<Color>
+        Attributes.defineSmallScalar<Color>
             "Entry_CursorColor"
+            SmallScalars.Color.decode
             (fun _ newValueOpt node ->
                 let entry = node.Target :?> Entry
 
@@ -95,11 +96,11 @@ type EntryModifiers =
 
         match size with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(v))
+        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(v, SmallScalars.Float.encode))
 
         match namedSize with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(Device.GetNamedSize(v, typeof<Entry>)))
+        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(Device.GetNamedSize(v, typeof<Entry>), SmallScalars.Float.encode))
 
         match attributes with
         | None -> ()
@@ -117,11 +118,11 @@ type EntryModifiers =
 
     [<Extension>]
     static member inline isPassword(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
-        this.AddScalar(Entry.IsPassword.WithValue(value))
+        this.AddScalar(Entry.IsPassword.WithValue(value, SmallScalars.Bool.encode))
 
     [<Extension>]
     static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
-        this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value))
+        this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value, SmallScalars.Bool.encode))
 
     [<Extension>]
     static member inline returnType(this: WidgetBuilder<'msg, #IEntry>, value: ReturnType) =
@@ -133,7 +134,7 @@ type EntryModifiers =
 
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IEntry>, value: TextAlignment) =
-        this.AddScalar(Entry.VerticalTextAlignment.WithValue(value))
+        this.AddScalar(Entry.VerticalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
 
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEntry>, onCompleted: 'msg) =
@@ -150,4 +151,4 @@ type EntryPlatformModifiers =
     /// <param name="value">The new cursor color.</param>
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: Color) =
-        this.AddScalar(Entry.CursorColor.WithValue(value))
+        this.AddScalar(Entry.CursorColor.WithValue(value, SmallScalars.Color.encode))

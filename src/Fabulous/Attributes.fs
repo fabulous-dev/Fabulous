@@ -9,7 +9,9 @@ module Helpers =
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
-        let widgetDefinition = WidgetDefinitionStore.get widget.Key
+        let widgetDefinition =
+            WidgetDefinitionStore.get widget.Key
+
         widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
@@ -21,7 +23,25 @@ module ScalarAttributeComparers =
         else
             ScalarAttributeComparison.Different
 
+module SmallScalars =
+    module Bool =
+        let inline encode (v: bool) : uint64 = if v then 1UL else 0UL
+        let inline decode (encoded: uint64) : bool = encoded = 1UL
+
+    module Float =
+        let inline encode (v: float) : uint64 = BitConverter.DoubleToUInt64Bits v
+        let inline decode (encoded: uint64) : float = BitConverter.UInt64BitsToDouble encoded
+
+    // TODO is there a better conversion algorithm?
+    module Int =
+        let inline encode (v: int) : uint64 =
+            uint64 v
+
+        let inline decode (encoded: uint64) : int =
+            int encoded
+
 module Attributes =
+
     /// Define a custom attribute storing any value
     let inline defineScalarWithConverter<'inputType, 'modelType, 'valueType>
         name
@@ -53,18 +73,13 @@ module Attributes =
         { Key = key; Name = name }
 
 
+    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+    let inline defineFloat
+        name
+        (updateNode: float voption -> float voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<float> =
 
-    //    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
-//    let defineFloat
-//        name
-//        (updateNode: float voption -> float voption -> IViewNode -> unit)
-//        : SmallScalarAttributeDefinition<float> =
-//
-//        defineSmallScalarWithConverter
-//            name
-//            BitConverter.DoubleToUInt64Bits
-//            BitConverter.UInt64BitsToDouble
-//            updateNode
+        defineSmallScalar name SmallScalars.Float.decode updateNode
 
     /// Define a custom bool attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
     let inline defineBool
@@ -72,7 +87,7 @@ module Attributes =
         ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition<bool> =
 
-        defineSmallScalar name (fun (encoded: uint64) -> encoded = 1UL) updateNode
+        defineSmallScalar name SmallScalars.Bool.decode updateNode
 
     /// Define a custom attribute storing a widget
     let inline defineWidgetWithConverter
@@ -123,7 +138,8 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let struct (_, view) = Helpers.createViewForWidget node widget
+                let struct (_, view) =
+                    Helpers.createViewForWidget node widget
 
                 set node.Target (unbox view)
 
@@ -141,7 +157,8 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove (index, widget) ->
-                    let itemNode = getViewNode targetColl.[index]
+                    let itemNode =
+                        getViewNode targetColl.[index]
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -155,7 +172,8 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let struct (itemNode, view) = Helpers.createViewForWidget node widget
+                    let struct (itemNode, view) =
+                        Helpers.createViewForWidget node widget
 
                     // Insert the new child into the UI tree
                     targetColl.Insert(index, unbox view)
@@ -170,7 +188,8 @@ module Attributes =
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
-                    let prevItemNode = getViewNode targetColl.[index]
+                    let prevItemNode =
+                        getViewNode targetColl.[index]
 
                     let struct (nextItemNode, view) =
                         Helpers.createViewForWidget node newWidget
@@ -195,7 +214,9 @@ module Attributes =
             | ValueNone -> ()
             | ValueSome widgets ->
                 for widget in ArraySlice.toSpan widgets do
-                    let struct (_, view) = Helpers.createViewForWidget node widget
+                    let struct (_, view) =
+                        Helpers.createViewForWidget node widget
+
                     targetColl.Add(unbox view)
 
         defineWidgetCollectionWithConverter name applyDiff updateNode
@@ -259,10 +280,9 @@ module Attributes =
 
                     | ValueSome fn ->
                         let handler =
-                            EventHandler<'args>
-                                (fun _ args ->
-                                    let r = fn args
-                                    Dispatcher.dispatch node r)
+                            EventHandler<'args> (fun _ args ->
+                                let r = fn args
+                                Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler handler)

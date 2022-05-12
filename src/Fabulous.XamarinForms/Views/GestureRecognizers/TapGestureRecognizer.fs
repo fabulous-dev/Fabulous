@@ -16,7 +16,7 @@ module TapGestureRecognizer =
             (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
     let NumberOfTapsRequired =
-        Attributes.defineBindable<int> TapGestureRecognizer.NumberOfTapsRequiredProperty
+        Attributes.defineSmallBindable<int> TapGestureRecognizer.NumberOfTapsRequiredProperty SmallScalars.Int.decode
 
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
@@ -34,4 +34,4 @@ type TapGestureRecognizerModifiers =
     /// <param name="value">The number of taps required</param>
     [<Extension>]
     static member inline numberOfTapsRequired(this: WidgetBuilder<'msg, #ITapGestureRecognizer>, value: int) =
-        this.AddScalar(TapGestureRecognizer.NumberOfTapsRequired.WithValue(value))
+        this.AddScalar(TapGestureRecognizer.NumberOfTapsRequired.WithValue(value, SmallScalars.Int.encode))

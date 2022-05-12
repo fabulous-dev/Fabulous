@@ -41,7 +41,7 @@ module Attributes =
 
     module Text =
         let Record =
-            Attributes.define<bool> "Text" TestUI_ViewUpdaters.updateRecord
+            Attributes.defineBool "Text" TestUI_ViewUpdaters.updateRecord
 
         let Text =
             Attributes.define<string> "Text" TestUI_ViewUpdaters.updateText
@@ -65,7 +65,7 @@ module Attributes =
     module Automation =
         let AutomationId =
             Attributes.define<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
-
+   
     module NumericBag =
         let InlineValueOne =
             Attributes.defineSmallScalar<uint64> "InlineValueOne" id TestUI_ViewUpdaters.updateNumericValueOne

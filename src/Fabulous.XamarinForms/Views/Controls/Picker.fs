@@ -12,13 +12,13 @@ module Picker =
     let WidgetKey = Widgets.register<CustomPicker>()
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> Picker.CharacterSpacingProperty
+        Attributes.defineSmallBindable<float> Picker.CharacterSpacingProperty SmallScalars.Float.decode
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Picker.HorizontalTextAlignmentProperty
+        Attributes.defineSmallBindable<TextAlignment> Picker.HorizontalTextAlignmentProperty SmallScalars.TextAlignment.decode
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Picker.VerticalTextAlignmentProperty
+        Attributes.defineSmallBindable<TextAlignment> Picker.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Picker.FontAttributesProperty
@@ -27,7 +27,7 @@ module Picker =
         Attributes.defineBindable<string> Picker.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Picker.FontSizeProperty
+        Attributes.defineSmallBindable<float> Picker.FontSizeProperty SmallScalars.Float.decode
 
     let TextColor =
         Attributes.defineAppThemeBindable<Color> Picker.TextColorProperty
@@ -88,15 +88,15 @@ module PickerBuilders =
 type PickerModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IPicker>, value: float) =
-        this.AddScalar(Picker.CharacterSpacing.WithValue(value))
+        this.AddScalar(Picker.CharacterSpacing.WithValue(value, SmallScalars.Float.encode))
 
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value))
+        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
 
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
+        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
 
     [<Extension>]
     static member inline font
@@ -112,11 +112,11 @@ type PickerModifiers =
 
         match size with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v))
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v, SmallScalars.Float.encode))
 
         match namedSize with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>)))
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>), SmallScalars.Float.encode))
 
         match attributes with
         | None -> ()
