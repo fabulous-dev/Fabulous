@@ -24,7 +24,7 @@ module SwipeView =
         Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
     let SwipeThreshold =
-        Attributes.defineBindable<int> SwipeView.ThresholdProperty
+        Attributes.defineBindableInt SwipeView.ThresholdProperty
 
     let SwipeStarted =
         Attributes.defineEvent<SwipeStartedEventArgs>

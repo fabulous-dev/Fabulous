@@ -36,10 +36,10 @@
 //         Attributes.defineWidgetCollection<Pin> "Map_Pins" (fun target -> (target :?> Map).Pins)
 
 //     let HasZoomEnabled =
-//         Attributes.defineBindable<bool> Map.HasZoomEnabledProperty
+//         Attributes.defineBindableBool Map.HasZoomEnabledProperty
 
 //     let HasScrollEnabled =
-//         Attributes.defineBindable<bool> Map.HasScrollEnabledProperty
+//         Attributes.defineBindableBool Map.HasScrollEnabledProperty
 
 //     let MapKey = Widgets.register<Map> ()
 

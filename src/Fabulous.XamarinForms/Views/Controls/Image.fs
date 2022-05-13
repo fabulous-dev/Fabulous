@@ -13,13 +13,13 @@ module Image =
     let WidgetKey = Widgets.register<Image>()
 
     let Aspect =
-        Attributes.defineBindable<Aspect> Image.AspectProperty
+        Attributes.defineBindableEnum<Aspect> Image.AspectProperty
 
     let IsAnimationPlaying =
-        Attributes.defineBindable<bool> Image.IsAnimationPlayingProperty
+        Attributes.defineBindableBool Image.IsAnimationPlayingProperty
 
     let IsOpaque =
-        Attributes.defineBindable<bool> Image.IsOpaqueProperty
+        Attributes.defineBindableBool Image.IsOpaqueProperty
 
     let Source =
         Attributes.defineAppThemeBindable<ImageSource> Image.SourceProperty

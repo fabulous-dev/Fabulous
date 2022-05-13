@@ -14,10 +14,10 @@ module EllipseGeometry =
         Attributes.defineBindable<Point> EllipseGeometry.CenterProperty
 
     let RadiusX =
-        Attributes.defineBindable<float> EllipseGeometry.RadiusXProperty
+        Attributes.defineBindableFloat EllipseGeometry.RadiusXProperty
 
     let RadiusY =
-        Attributes.defineBindable<float> EllipseGeometry.RadiusYProperty
+        Attributes.defineBindableFloat EllipseGeometry.RadiusYProperty
 
 [<AutoOpen>]
 module EllipseGeometryBuilders =

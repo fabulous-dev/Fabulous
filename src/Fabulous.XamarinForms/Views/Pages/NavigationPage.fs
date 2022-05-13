@@ -35,10 +35,10 @@ module NavigationPage =
         Attributes.defineAppThemeBindable<Color> NavigationPage.IconColorProperty
 
     let HasNavigationBar =
-        Attributes.defineBindable<bool> NavigationPage.HasNavigationBarProperty
+        Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
 
     let HasBackButton =
-        Attributes.defineBindable<bool> NavigationPage.HasBackButtonProperty
+        Attributes.defineBindableBool NavigationPage.HasBackButtonProperty
 
     let TitleIconImageSource =
         Attributes.defineAppThemeBindable<ImageSource> NavigationPage.TitleIconImageSourceProperty

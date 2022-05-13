@@ -24,10 +24,10 @@ module ScaleTransform =
                     line.ScaleY <- y)
 
     let CenterX =
-        Attributes.defineBindable<float> ScaleTransform.CenterXProperty
+        Attributes.defineBindableFloat ScaleTransform.CenterXProperty
 
     let CenterY =
-        Attributes.defineBindable<float> ScaleTransform.CenterYProperty
+        Attributes.defineBindableFloat ScaleTransform.CenterYProperty
 
 [<AutoOpen>]
 module ScaleTransformBuilders =

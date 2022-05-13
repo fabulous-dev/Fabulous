@@ -11,7 +11,7 @@ module Editor =
     let WidgetKey = Widgets.register<Editor>()
 
     let AutoSize =
-        Attributes.defineBindable<EditorAutoSizeOption> Editor.AutoSizeProperty
+        Attributes.defineBindableEnum<EditorAutoSizeOption> Editor.AutoSizeProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Editor.FontAttributesProperty
@@ -20,10 +20,10 @@ module Editor =
         Attributes.defineBindable<string> Editor.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Editor.FontSizeProperty
+        Attributes.defineBindableFloat Editor.FontSizeProperty
 
     let IsTextPredictionEnabled =
-        Attributes.defineBindable<bool> Editor.IsTextPredictionEnabledProperty
+        Attributes.defineBindableBool Editor.IsTextPredictionEnabledProperty
 
     let Completed =
         Attributes.defineEventNoArg "Editor_Completed" (fun target -> (target :?> Editor).Completed)

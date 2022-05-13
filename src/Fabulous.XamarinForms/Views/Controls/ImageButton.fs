@@ -13,25 +13,25 @@ module ImageButton =
     let WidgetKey = Widgets.register<ImageButton>()
 
     let Aspect =
-        Attributes.defineBindable<Xamarin.Forms.Aspect> ImageButton.AspectProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.Aspect> ImageButton.AspectProperty
 
     let BorderColor =
         Attributes.defineAppThemeBindable<Color> ImageButton.BorderColorProperty
 
     let BorderWidth =
-        Attributes.defineBindable<float> ImageButton.BorderWidthProperty
+        Attributes.defineBindableFloat ImageButton.BorderWidthProperty
 
     let CornerRadius =
-        Attributes.defineBindable<float> ImageButton.CornerRadiusProperty
+        Attributes.defineBindableFloat ImageButton.CornerRadiusProperty
 
     let IsLoading =
-        Attributes.defineBindable<bool> ImageButton.IsLoadingProperty
+        Attributes.defineBindableBool ImageButton.IsLoadingProperty
 
     let IsOpaque =
-        Attributes.defineBindable<bool> ImageButton.IsOpaqueProperty
+        Attributes.defineBindableBool ImageButton.IsOpaqueProperty
 
     let IsPressed =
-        Attributes.defineBindable<bool> ImageButton.IsPressedProperty
+        Attributes.defineBindableBool ImageButton.IsPressedProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> ImageButton.PaddingProperty

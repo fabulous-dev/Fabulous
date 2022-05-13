@@ -8,7 +8,8 @@ type IEntryCell =
     inherit ICell
 
 module EntryCell =
-    let WidgetKey = Widgets.register<CustomEntryCell>()
+    let WidgetKey =
+        Widgets.register<CustomEntryCell>()
 
     let Label =
         Attributes.defineBindable<string> EntryCell.LabelProperty
@@ -20,19 +21,17 @@ module EntryCell =
         Attributes.defineBindable<string> EntryCell.PlaceholderProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineSmallBindable<TextAlignment> EntryCell.HorizontalTextAlignmentProperty SmallScalars.TextAlignment.decode
+        Attributes.defineBindableEnum<TextAlignment> EntryCell.HorizontalTextAlignmentProperty
 
     let VerticalTextAlignment =
-        Attributes.defineSmallBindable<TextAlignment> EntryCell.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
+        Attributes.defineBindableEnum<TextAlignment> EntryCell.VerticalTextAlignmentProperty
 
     let Keyboard =
         Attributes.defineBindable<Keyboard> EntryCell.KeyboardProperty
 
     let TextWithEvent =
-        Attributes.defineBindableWithEvent
-            "EntryCell_TextChanged"
-            EntryCell.TextProperty
-            (fun target -> (target :?> CustomEntryCell).TextChanged)
+        Attributes.defineBindableWithEvent "EntryCell_TextChanged" EntryCell.TextProperty (fun target ->
+            (target :?> CustomEntryCell).TextChanged)
 
     let OnCompleted =
         Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)

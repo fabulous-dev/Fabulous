@@ -24,10 +24,10 @@ module FlyoutPage =
                 flyoutPage.CanChangeIsPresented <- value)
 
     let IsGestureEnabled =
-        Attributes.defineBindable<bool> FlyoutPage.IsGestureEnabledProperty
+        Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
     let IsPresented =
-        Attributes.defineBindable<bool> FlyoutPage.IsPresentedProperty
+        Attributes.defineBindableBool FlyoutPage.IsPresentedProperty
 
     let Flyout =
         Attributes.defineWidget
@@ -49,7 +49,7 @@ module FlyoutPage =
                 flyoutPage.FlyoutBounds <- value)
 
     let FlyoutLayoutBehavior =
-        Attributes.defineBindable<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
+        Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
     let Detail =
         Attributes.defineWidget

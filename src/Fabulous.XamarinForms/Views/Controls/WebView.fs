@@ -15,10 +15,10 @@ module WebView =
     let WidgetKey = Widgets.register<WebView>()
 
     let CanGoBack =
-        Attributes.defineBindable<bool> WebView.CanGoBackProperty
+        Attributes.defineBindableBool WebView.CanGoBackProperty
 
     let CanGoForward =
-        Attributes.defineBindable<bool> WebView.CanGoForwardProperty
+        Attributes.defineBindableBool WebView.CanGoForwardProperty
 
     let Source =
         Attributes.defineBindable<WebViewSource> WebView.SourceProperty

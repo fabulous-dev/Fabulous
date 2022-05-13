@@ -12,7 +12,7 @@ module DropGestureRecognizer =
         Widgets.register<DropGestureRecognizer>()
 
     let AllowDrop =
-        Attributes.defineBindable<bool> DropGestureRecognizer.AllowDropProperty
+        Attributes.defineBindableBool DropGestureRecognizer.AllowDropProperty
 
     let Drop =
         Attributes.defineEvent<DropEventArgs>

@@ -13,10 +13,10 @@ module Rectangle =
     let WidgetKey = Widgets.register<Rectangle>()
 
     let RadiusX =
-        Attributes.defineBindable<float> Rectangle.RadiusXProperty
+        Attributes.defineBindableFloat Rectangle.RadiusXProperty
 
     let RadiusY =
-        Attributes.defineBindable<float> Rectangle.RadiusYProperty
+        Attributes.defineBindableFloat Rectangle.RadiusYProperty
 
 [<AutoOpen>]
 module RectangleBuilders =

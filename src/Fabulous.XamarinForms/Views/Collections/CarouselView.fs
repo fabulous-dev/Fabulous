@@ -12,19 +12,19 @@ module CarouselView =
     let WidgetKey = Widgets.register<CarouselView>()
 
     let IsBounceEnabled =
-        Attributes.defineBindable<bool> CarouselView.IsBounceEnabledProperty
+        Attributes.defineBindableBool CarouselView.IsBounceEnabledProperty
 
     let IsDragging =
-        Attributes.defineBindable<bool> CarouselView.IsDraggingProperty
+        Attributes.defineBindableBool CarouselView.IsDraggingProperty
 
     let IsScrollAnimated =
-        Attributes.defineBindable<bool> CarouselView.IsScrollAnimatedProperty
+        Attributes.defineBindableBool CarouselView.IsScrollAnimatedProperty
 
     let IsSwipeEnabled =
-        Attributes.defineBindable<bool> CarouselView.IsSwipeEnabledProperty
+        Attributes.defineBindableBool CarouselView.IsSwipeEnabledProperty
 
     let Loop =
-        Attributes.defineBindable<bool> CarouselView.LoopProperty
+        Attributes.defineBindableBool CarouselView.LoopProperty
 
     let PeekAreaInsets =
         Attributes.defineBindable<Thickness> CarouselView.PeekAreaInsetsProperty

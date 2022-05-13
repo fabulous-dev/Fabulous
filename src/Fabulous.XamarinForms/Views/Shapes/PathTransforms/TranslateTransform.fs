@@ -10,10 +10,10 @@ module TranslateTransform =
     let WidgetKey = Widgets.register<TranslateTransform>()
 
     let X =
-        Attributes.defineBindable<float> TranslateTransform.XProperty
+        Attributes.defineBindableFloat TranslateTransform.XProperty
 
     let Y =
-        Attributes.defineBindable<float> TranslateTransform.YProperty
+        Attributes.defineBindableFloat TranslateTransform.YProperty
 
 [<AutoOpen>]
 module TranslateTransformBuilders =

@@ -18,11 +18,12 @@ let rec findOptional (root: TestViewElement) (id: string) : TestViewElement opti
     else
         match root with
         | :? TestStack as stack ->
-            let children = (stack :> IContainer).Children
+            let children =
+                (stack :> IContainer).Children
 
             children
             |> Array.ofSeq
-            |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
+            |> Array.fold (fun res child -> res |> Option.orElse(findOptional child id)) None
 
         | _ -> None
 
@@ -60,7 +61,8 @@ module SimpleLabelTests =
 
         let el = (instance.Start())
 
-        let label = find<TestLabel> el "label" :> IText
+        let label =
+            find<TestLabel> el "label" :> IText
 
         Assert.AreEqual(label.Text, "hi")
         instance.ProcessMessage(SetText "yo")
@@ -117,19 +119,18 @@ module SimpleStackTests =
         | AddNew (id, text) -> (id, text) :: model
         | ChangeText (id, text) ->
             model
-            |> List.map
-                (fun (id_, text_) ->
-                    if id = id_ then
-                        (id, text)
-                    else
-                        (id_, text_))
+            |> List.map (fun (id_, text_) ->
+                if id = id_ then
+                    (id, text)
+                else
+                    (id_, text_))
 
     let view model =
         (Stack() {
             yield!
                 model
                 |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
-         })
+        })
             .automationId("stack")
 
 
@@ -202,12 +203,13 @@ module ComputationExpressionTest =
             Stack() { Button("inc", Inc).automationId("inc") }
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            StatefulWidget.mkSimpleView (fun () -> 0) update view
             |> Run.Instance
 
         let tree = (instance.Start())
 
-        let btn = find<TestButton> tree "inc" :> IText
+        let btn =
+            find<TestButton> tree "inc" :> IText
 
         Assert.AreEqual(btn.Text, "inc")
 
@@ -221,12 +223,12 @@ module ComputationExpressionTest =
                     Label("label").automationId("label")
                 else
                     Button("btn", Inc).automationId("btn")
-             })
+            })
                 .automationId("stack")
 
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> 0) update view
+            StatefulWidget.mkSimpleView (fun () -> 0) update view
             |> Run.Instance
 
         let tree = (instance.Start())
@@ -237,7 +239,8 @@ module ComputationExpressionTest =
         Assert.AreEqual(1, stack.Children.Count)
 
         // we start with zero, thus label should be present
-        let label = find<TestLabel> tree "label" :> IText
+        let label =
+            find<TestLabel> tree "label" :> IText
 
         Assert.AreEqual(label.Text, "label")
 
@@ -247,7 +250,8 @@ module ComputationExpressionTest =
         Assert.AreEqual(1, stack.Children.Count)
 
         // but now Button should be present
-        let btn = find<TestButton> tree "btn" :> IText
+        let btn =
+            find<TestButton> tree "btn" :> IText
 
         Assert.AreEqual(btn.Text, "btn")
 
@@ -260,17 +264,17 @@ module ComputationExpressionTest =
             Stack() {
                 // requires implemented "YieldFrom"
                 yield!
-                    [ for i in 0 .. model -> i.ToString() ]
+                    [ for i in 0..model -> i.ToString() ]
                     |> List.map(fun i -> Label(i).automationId(i))
             }
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> count) update view
+            StatefulWidget.mkSimpleView (fun () -> count) update view
             |> Run.Instance
 
         let tree = (instance.Start())
 
-        for i in 0 .. count do
+        for i in 0..count do
             let label =
                 find<TestLabel> tree (i.ToString()) :> IText
 
@@ -285,16 +289,16 @@ module ComputationExpressionTest =
         let view model =
             Stack() {
                 // requires implemented "For"
-                for i in 0 .. model -> Label(i.ToString()).automationId(i.ToString())
+                for i in 0..model -> Label(i.ToString()).automationId(i.ToString())
             }
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> count) update view
+            StatefulWidget.mkSimpleView (fun () -> count) update view
             |> Run.Instance
 
         let tree = (instance.Start())
 
-        for i in 0 .. count do
+        for i in 0..count do
             let label =
                 find<TestLabel> tree (i.ToString()) :> IText
 
@@ -345,8 +349,12 @@ module MapViewTests =
         let tree = (instance.Start())
 
         let addBtn = find<TestButton> tree "add"
-        let removeBtn = find<TestButton> tree "remove"
-        let label = find<TestLabel> tree "label" :> IText
+
+        let removeBtn =
+            find<TestButton> tree "remove"
+
+        let label =
+            find<TestLabel> tree "label" :> IText
 
         Assert.AreEqual("0", label.Text)
 
@@ -402,8 +410,11 @@ module MemoTests =
             // executed just once to construct the tree
             Assert.AreEqual(1, renderCount)
 
-            let notMemoLabel = find<TestLabel> tree "not_memo" :> IText
-            let memoLabel = find<TestLabel> tree "memo" :> IText
+            let notMemoLabel =
+                find<TestLabel> tree "not_memo" :> IText
+
+            let memoLabel =
+                find<TestLabel> tree "memo" :> IText
 
             Assert.AreEqual("0", memoLabel.Text)
 
@@ -436,9 +447,9 @@ module MemoTests =
         let view model =
             (Stack() {
                 match model with
-                | Btn -> View.lazy'(fun i -> Button(string i, Change).automationId("btn")) model
-                | Lbl -> View.lazy'(fun i -> Label(string i).automationId("label")) model
-             })
+                | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId("btn")) model
+                | Lbl -> View.lazy' (fun i -> Label(string i).automationId("label")) model
+            })
                 .automationId("stack")
 
         [<Test>]
@@ -465,7 +476,9 @@ module MemoTests =
             Assert.AreEqual(1, stack.Children.Count)
 
             // but it is label now
-            let label = find<TestLabel> tree "label" :> IText
+            let label =
+                find<TestLabel> tree "label" :> IText
+
             Assert.AreEqual(string Lbl, label.Text)
 
     module ViewNodeInstanceCanBeReused =
@@ -519,7 +532,8 @@ module MemoTests =
 
             instance.ProcessMessage(Change)
 
-            let labelAgain = find<TestLabel> tree "label"
+            let labelAgain =
+                find<TestLabel> tree "label"
 
             // same instance
             Assert.AreSame(label, labelAgain)
@@ -541,9 +555,7 @@ module SmallScalars =
 
     let update msg model =
         match msg with
-        | Inc value ->
-            { model with
-                  value = model.value + value }
+        | Inc value -> { model with value = model.value + value }
 
     let view model =
         InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
@@ -560,7 +572,8 @@ module SmallScalars =
 
         let el = (instance.Start())
 
-        let numbers = find<TestNumericBag> el "numbers"
+        let numbers =
+            find<TestNumericBag> el "numbers"
 
         Assert.AreEqual(numbers.valueOne, 0UL)
         Assert.AreEqual(numbers.valueTwo, 1UL)
@@ -599,13 +612,18 @@ module Issue99 =
         let instance = Run.Instance program
         let tree = instance.Start()
 
-        let button1Start = find<TestButton> tree "button1"
+        let button1Start =
+            find<TestButton> tree "button1"
 
         instance.ProcessMessage(Toggle)
-        let button1Toggled = find<TestButton> tree "button1"
+
+        let button1Toggled =
+            find<TestButton> tree "button1"
 
         instance.ProcessMessage(Toggle)
-        let button1Untoggled = find<TestButton> tree "button1"
+
+        let button1Untoggled =
+            find<TestButton> tree "button1"
 
         Assert.AreSame(button1Start, button1Toggled)
         Assert.AreSame(button1Start, button1Untoggled)
@@ -635,7 +653,8 @@ module Issue104 =
     let Attr5 =
         Attributes.define<string> "Attr5" (fun _ _ _ -> ())
 
-    let ControlWidgetKey = Widgets.register<TestButton>()
+    let ControlWidgetKey =
+        Widgets.register<TestButton>()
 
     let Control<'msg> () =
         WidgetBuilder<'msg, TestButtonMarker>(
@@ -705,3 +724,22 @@ module Issue104 =
         let tree = instance.Start()
 
         instance.ProcessMessage(Toggle)
+
+module Attributes =
+
+    type MyEnum =
+        | One = 1
+        | MinusOne = -1
+
+    let MyEnumAttr =
+        Attributes.defineEnum<MyEnum> "hey" (fun _ _ _ -> ())
+
+    [<Test>]
+    let IntEnumCodecForSmallScalars () =
+        let one = MyEnumAttr.WithValue(MyEnum.One)
+
+        let minusOne =
+            MyEnumAttr.WithValue(MyEnum.MinusOne)
+
+        Assert.AreEqual(MyEnum.One, SmallScalars.IntEnum.decode<MyEnum> one.NumericValue)
+        Assert.AreEqual(MyEnum.MinusOne, SmallScalars.IntEnum.decode<MyEnum> minusOne.NumericValue)

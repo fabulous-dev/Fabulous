@@ -55,10 +55,6 @@ module SmallScalars =
             let inline toFloat value = (float value) / 65535.0
             Color.FromRgba(toFloat r, toFloat g, toFloat b, toFloat a)
 
-    module TextAlignment =
-        let inline encode (v: TextAlignment) : uint64 = uint64 v
-        let inline decode (encoded: uint64) : TextAlignment = enum<TextAlignment>(int encoded)
-
     module LayoutOptions =
         let inline encode (v: LayoutOptions) : uint64 =
             let alignment = uint64 v.Alignment
@@ -77,19 +73,6 @@ module SmallScalars =
 
             LayoutOptions(alignment, expands)
 
-    module ReturnType =
-        let inline encode (v: ReturnType) : uint64 = uint64 v
-        let inline decode (encoded: uint64) : ReturnType = enum<ReturnType>(int encoded)
-
-    module FlowDirection =
-        let inline encode (v: FlowDirection) : uint64 = uint64 v
-        let inline decode (encoded: uint64) : FlowDirection = enum<FlowDirection>(int encoded)
-        
-    module SwipeDirection =
-        let inline encode (v: SwipeDirection) : uint64 = uint64 v
-        let inline decode (encoded: uint64) : SwipeDirection = enum<SwipeDirection>(int encoded)
-
-
 [<Extension>]
 type SmallScalarExtensions() =
     [<Extension>]
@@ -97,24 +80,8 @@ type SmallScalarExtensions() =
         this.WithValue(value, SmallScalars.LayoutOptions.encode)
 
     [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<TextAlignment>, value) =
-        this.WithValue(value, SmallScalars.TextAlignment.encode)
-
-    [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<Color>, value) =
         this.WithValue(value, SmallScalars.Color.encode)
-
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<ReturnType>, value) =
-        this.WithValue(value, SmallScalars.ReturnType.encode)
-
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<FlowDirection>, value) =
-        this.WithValue(value, SmallScalars.FlowDirection.encode)
-        
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<SwipeDirection>, value) =
-        this.WithValue(value, SmallScalars.SwipeDirection.encode)
 
 module Attributes =
     /// Define an attribute storing a Widget for a bindable property
@@ -135,6 +102,7 @@ module Attributes =
                     bindableObject.ClearValue(bindableProperty)
                 else
                     bindableObject.SetValue(bindableProperty, value))
+
 
     let inline defineBindableWithComparer<'inputType, 'modelType, 'valueType>
         (bindableProperty: BindableProperty)
@@ -162,6 +130,17 @@ module Attributes =
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v))
 
+    let inline defineBindableEnum< ^T when ^T: enum<int>>
+        (bindableProperty: BindableProperty)
+        : SmallScalarAttributeDefinition< ^T > =
+        Attributes.defineEnum< ^T> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
+
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
+
+
     let inline defineSmallBindable<'T> (bindableProperty: BindableProperty) ([<InlineIfLambda>] decode: uint64 -> 'T) =
         Attributes.defineSmallScalar<'T> bindableProperty.PropertyName decode (fun _ newValueOpt node ->
             let target = node.Target :?> BindableObject
@@ -169,6 +148,19 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> target.ClearValue(bindableProperty)
             | ValueSome v -> target.SetValue(bindableProperty, v))
+
+    let inline defineBindableFloat (bindableProperty: BindableProperty) =
+        defineSmallBindable bindableProperty SmallScalars.Float.decode
+
+    let inline defineBindableBool (bindableProperty: BindableProperty) =
+        defineSmallBindable bindableProperty SmallScalars.Bool.decode
+
+    let inline defineBindableInt (bindableProperty: BindableProperty) =
+        defineSmallBindable bindableProperty SmallScalars.Int.decode
+
+    /// Defines a bindable Color attribute and encodes it as a small scalar (8 bytes)
+    let inline defineBindableColor (bindableProperty: BindableProperty) =
+        defineSmallBindable bindableProperty SmallScalars.Color.decode
 
     let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
         Attributes.define<AppThemeValues<'T>> bindableProperty.PropertyName (fun _ newValueOpt node ->
@@ -228,12 +220,3 @@ module Attributes =
             |> AttributeDefinitionStore.registerScalar
 
         { Key = key; Name = name }
-
-
-    /// Defines a Color attribute and encodes it as a small scalar
-    let inline defineColor
-        name
-        ([<InlineIfLambda>] updateNode: Color voption -> Color voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition<Color> =
-
-        Attributes.defineSmallScalar name SmallScalars.Color.decode updateNode

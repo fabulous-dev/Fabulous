@@ -10,16 +10,16 @@ type IInputView =
 module InputView =
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> InputView.CharacterSpacingProperty
+        Attributes.defineBindableFloat InputView.CharacterSpacingProperty
 
     let IsReadOnly =
-        Attributes.defineBindable<bool> InputView.IsReadOnlyProperty
+        Attributes.defineBindableBool InputView.IsReadOnlyProperty
 
     let IsSpellCheckEnabled =
-        Attributes.defineBindable<bool> InputView.IsSpellCheckEnabledProperty
+        Attributes.defineBindableBool InputView.IsSpellCheckEnabledProperty
 
     let MaxLength =
-        Attributes.defineBindable<int> InputView.MaxLengthProperty
+        Attributes.defineBindableInt InputView.MaxLengthProperty
 
     let Placeholder =
         Attributes.defineBindable<string> InputView.PlaceholderProperty
@@ -34,7 +34,7 @@ module InputView =
         Attributes.defineBindable<Keyboard> InputView.KeyboardProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> InputView.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> InputView.TextTransformProperty
 
     let TextWithEvent =
         Attributes.defineBindableWithEvent<string, TextChangedEventArgs>

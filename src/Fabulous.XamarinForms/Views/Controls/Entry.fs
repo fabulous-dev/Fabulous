@@ -15,7 +15,7 @@ module Entry =
         Attributes.defineBindable<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
     let CursorPosition =
-        Attributes.defineSmallBindable<int> Entry.CursorPositionProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Entry.FontAttributesProperty
@@ -24,42 +24,39 @@ module Entry =
         Attributes.defineBindable<string> Entry.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineSmallBindable<float> Entry.FontSizeProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat Entry.FontSizeProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Entry.HorizontalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> Entry.HorizontalTextAlignmentProperty
 
     let IsPassword =
-        Attributes.defineSmallBindable<bool> Entry.IsPasswordProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool Entry.IsPasswordProperty
 
     let IsTextPredictionEnabled =
-        Attributes.defineSmallBindable<bool> Entry.IsTextPredictionEnabledProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool Entry.IsTextPredictionEnabledProperty
 
     let ReturnType =
-        Attributes.defineSmallBindable<ReturnType> Entry.ReturnTypeProperty SmallScalars.ReturnType.decode
+        Attributes.defineBindableEnum<ReturnType> Entry.ReturnTypeProperty
 
     let SelectionLength =
-        Attributes.defineSmallBindable<int> Entry.SelectionLengthProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt Entry.SelectionLengthProperty
 
     let VerticalTextAlignment =
-        Attributes.defineSmallBindable<TextAlignment> Entry.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
+        Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
 
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.defineSmallScalar<Color>
-            "Entry_CursorColor"
-            SmallScalars.Color.decode
-            (fun _ newValueOpt node ->
-                let entry = node.Target :?> Entry
+        Attributes.defineSmallScalar<Color> "Entry_CursorColor" SmallScalars.Color.decode (fun _ newValueOpt node ->
+            let entry = node.Target :?> Entry
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> Color.Default
-                    | ValueSome x -> x
+            let value =
+                match newValueOpt with
+                | ValueNone -> Color.Default
+                | ValueSome x -> x
 
-                iOSSpecific.Entry.SetCursorColor(entry, value))
+            iOSSpecific.Entry.SetCursorColor(entry, value))
 
 [<AutoOpen>]
 module EntryBuilders =

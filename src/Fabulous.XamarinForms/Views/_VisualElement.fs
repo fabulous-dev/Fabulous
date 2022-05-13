@@ -9,10 +9,10 @@ type IVisualElement =
 
 module VisualElement =
     let AnchorX =
-        Attributes.defineSmallBindable<float> VisualElement.AnchorXProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.AnchorXProperty
 
     let AnchorY =
-        Attributes.defineSmallBindable<float> VisualElement.AnchorYProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.AnchorYProperty
 
     let BackgroundColor =
         Attributes.defineAppThemeBindable<Color> VisualElement.BackgroundColorProperty
@@ -24,61 +24,61 @@ module VisualElement =
         Attributes.defineBindableWidget VisualElement.ClipProperty
 
     let FlowDirection =
-        Attributes.defineSmallBindable<FlowDirection> VisualElement.FlowDirectionProperty SmallScalars.FlowDirection.decode
+        Attributes.defineBindableEnum<FlowDirection> VisualElement.FlowDirectionProperty
 
     let HeightRequest =
-        Attributes.defineSmallBindable<float> VisualElement.HeightRequestProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.HeightRequestProperty
 
     let WidthRequest =
-        Attributes.defineSmallBindable<float> VisualElement.WidthRequestProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.WidthRequestProperty
 
     let InputTransparent =
-        Attributes.defineSmallBindable<bool> VisualElement.InputTransparentProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool VisualElement.InputTransparentProperty
 
     let IsEnabled =
-        Attributes.defineSmallBindable<bool> VisualElement.IsEnabledProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool VisualElement.IsEnabledProperty
 
     let IsTabStop =
-        Attributes.defineSmallBindable<bool> VisualElement.IsTabStopProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool VisualElement.IsTabStopProperty
 
     let IsVisible =
-        Attributes.defineSmallBindable<bool> VisualElement.IsVisibleProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool VisualElement.IsVisibleProperty
 
     let MinimumHeightRequest =
-        Attributes.defineSmallBindable<float> VisualElement.MinimumHeightRequestProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.MinimumHeightRequestProperty
 
     let MinimumWidthRequest =
-        Attributes.defineSmallBindable<float> VisualElement.MinimumWidthRequestProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.MinimumWidthRequestProperty
 
     let Opacity =
-        Attributes.defineSmallBindable<float> VisualElement.OpacityProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.OpacityProperty
 
     let Rotation =
-        Attributes.defineSmallBindable<float> VisualElement.RotationProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.RotationProperty
 
     let RotationX =
-        Attributes.defineSmallBindable<float> VisualElement.RotationXProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.RotationXProperty
 
     let RotationY =
-        Attributes.defineSmallBindable<float> VisualElement.RotationYProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.RotationYProperty
 
     let Scale =
-        Attributes.defineSmallBindable<float> VisualElement.ScaleProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.ScaleProperty
 
     let ScaleX =
-        Attributes.defineSmallBindable<float> VisualElement.ScaleXProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.ScaleXProperty
 
     let ScaleY =
-        Attributes.defineSmallBindable<float> VisualElement.ScaleYProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.ScaleYProperty
 
     let TabIndex =
-        Attributes.defineSmallBindable<int> VisualElement.TabIndexProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt VisualElement.TabIndexProperty
 
     let TranslationX =
-        Attributes.defineSmallBindable<float> VisualElement.TranslationXProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.TranslationXProperty
 
     let TranslationY =
-        Attributes.defineSmallBindable<float> VisualElement.TranslationYProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat VisualElement.TranslationYProperty
 
     let Visual =
         Attributes.defineBindable<IVisual> VisualElement.VisualProperty

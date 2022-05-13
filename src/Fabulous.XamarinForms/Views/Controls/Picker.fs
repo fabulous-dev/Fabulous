@@ -12,13 +12,13 @@ module Picker =
     let WidgetKey = Widgets.register<CustomPicker>()
 
     let CharacterSpacing =
-        Attributes.defineSmallBindable<float> Picker.CharacterSpacingProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat Picker.CharacterSpacingProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineSmallBindable<TextAlignment> Picker.HorizontalTextAlignmentProperty SmallScalars.TextAlignment.decode
+        Attributes.defineBindableEnum<TextAlignment> Picker.HorizontalTextAlignmentProperty
 
     let VerticalTextAlignment =
-        Attributes.defineSmallBindable<TextAlignment> Picker.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
+        Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Picker.FontAttributesProperty
@@ -27,7 +27,7 @@ module Picker =
         Attributes.defineBindable<string> Picker.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineSmallBindable<float> Picker.FontSizeProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat Picker.FontSizeProperty
 
     let TextColor =
         Attributes.defineAppThemeBindable<Color> Picker.TextColorProperty

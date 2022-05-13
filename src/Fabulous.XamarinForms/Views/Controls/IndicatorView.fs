@@ -22,19 +22,19 @@ module IndicatorView =
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
 
     let HideSingle =
-        Attributes.defineBindable<bool> IndicatorView.HideSingleProperty
+        Attributes.defineBindableBool IndicatorView.HideSingleProperty
 
     let IndicatorColor =
         Attributes.defineAppThemeBindable<Color> IndicatorView.IndicatorColorProperty
 
     let IndicatorSize =
-        Attributes.defineBindable<float> IndicatorView.IndicatorSizeProperty
+        Attributes.defineBindableFloat IndicatorView.IndicatorSizeProperty
 
     let IndicatorsShape =
-        Attributes.defineBindable<IndicatorShape> IndicatorView.IndicatorsShapeProperty
+        Attributes.defineBindableEnum<IndicatorShape> IndicatorView.IndicatorsShapeProperty
 
     let MaximumVisible =
-        Attributes.defineBindable<int> IndicatorView.MaximumVisibleProperty
+        Attributes.defineBindableInt IndicatorView.MaximumVisibleProperty
 
     let SelectedIndicatorColor =
         Attributes.defineAppThemeBindable<Color> IndicatorView.SelectedIndicatorColorProperty

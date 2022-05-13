@@ -9,7 +9,7 @@ type ICell =
 
 module Cell =
     let IsEnabled =
-        Attributes.defineSmallBindable<bool> Cell.IsEnabledProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Height =
         Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->

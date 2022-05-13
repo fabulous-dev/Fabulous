@@ -22,10 +22,10 @@ module PathFigure =
         Attributes.defineBindable<Point> PathFigure.StartPointProperty
 
     let IsClosed =
-        Attributes.defineBindable<bool> PathFigure.IsClosedProperty
+        Attributes.defineBindableBool PathFigure.IsClosedProperty
 
     let IsFilled =
-        Attributes.defineBindable<bool> PathFigure.IsFilledProperty
+        Attributes.defineBindableBool PathFigure.IsFilledProperty
 
 [<AutoOpen>]
 module PathFigureBuilders =

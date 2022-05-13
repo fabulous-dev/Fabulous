@@ -12,19 +12,19 @@ module ArcSegment =
     let WidgetKey = Widgets.register<ArcSegment>()
 
     let IsLargeArc =
-        Attributes.defineSmallBindable<bool> ArcSegment.IsLargeArcProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool ArcSegment.IsLargeArcProperty
 
     let Point =
         Attributes.defineBindable<Point> ArcSegment.SizeProperty
 
     let RotationAngle =
-        Attributes.defineSmallBindable<float> ArcSegment.RotationAngleProperty SmallScalars.Float.decode
+        Attributes.defineBindableFloat ArcSegment.RotationAngleProperty
 
     let Size =
         Attributes.defineBindable<Size> ArcSegment.SizeProperty
 
     let SweepDirection =
-        Attributes.defineBindable<SweepDirection> ArcSegment.SweepDirectionProperty
+        Attributes.defineBindableEnum<SweepDirection> ArcSegment.SweepDirectionProperty
 
 [<AutoOpen>]
 module ArcSegmentBuilders =

@@ -11,7 +11,7 @@ module PanGestureRecognizer =
     let WidgetKey = Widgets.register<PanGestureRecognizer>()
 
     let TouchPoints =
-        Attributes.defineSmallBindable<int> PanGestureRecognizer.TouchPointsProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt PanGestureRecognizer.TouchPointsProperty
 
     let PanUpdated =
         Attributes.defineEvent<PanUpdatedEventArgs>

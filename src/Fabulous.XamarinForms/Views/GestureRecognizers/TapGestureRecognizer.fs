@@ -16,7 +16,7 @@ module TapGestureRecognizer =
             (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
     let NumberOfTapsRequired =
-        Attributes.defineSmallBindable<int> TapGestureRecognizer.NumberOfTapsRequiredProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
 
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =

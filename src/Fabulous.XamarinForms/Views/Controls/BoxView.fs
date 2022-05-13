@@ -14,7 +14,7 @@ module BoxView =
         Attributes.defineAppThemeBindable<Color> BoxView.ColorProperty
 
     let CornerRadius =
-        Attributes.defineBindable<float> BoxView.CornerRadiusProperty
+        Attributes.defineBindableFloat BoxView.CornerRadiusProperty
 
 [<AutoOpen>]
 module BoxViewBuilders =

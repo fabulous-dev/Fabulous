@@ -22,7 +22,7 @@ module BorderedEntry =
     let WidgetKey = Widgets.register<BorderedEntry>()
 
     let BorderColor =
-        Attributes.defineBindable<Color> BorderedEntry.BorderColorProperty
+        Attributes.defineBindableColor BorderedEntry.BorderColorProperty
 
 [<AutoOpen>]
 module EntryBuilders =

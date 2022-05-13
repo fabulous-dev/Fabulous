@@ -49,22 +49,22 @@ module ListView =
         Attributes.defineBindableWidget ListView.FooterProperty
 
     let RowHeight =
-        Attributes.defineSmallBindable<int> ListView.RowHeightProperty SmallScalars.Int.decode
+        Attributes.defineBindableInt ListView.RowHeightProperty
 
     let SelectionMode =
-        Attributes.defineBindable<ListViewSelectionMode> ListView.SelectionModeProperty
+        Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
 
     let IsPullToRefreshEnabled =
-        Attributes.defineSmallBindable<bool> ListView.IsPullToRefreshEnabledProperty SmallScalars.Bool.decode 
+        Attributes.defineBindableBool ListView.IsPullToRefreshEnabledProperty 
 
     let IsRefreshing =
-        Attributes.defineSmallBindable<bool> ListView.IsRefreshingProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool ListView.IsRefreshingProperty
 
     let HasUnevenRows =
-        Attributes.defineSmallBindable<bool> ListView.HasUnevenRowsProperty SmallScalars.Bool.decode
+        Attributes.defineBindableBool ListView.HasUnevenRowsProperty
 
     let SeparatorVisibility =
-        Attributes.defineBindable<SeparatorVisibility> ListView.SeparatorVisibilityProperty
+        Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let SeparatorColor =
         Attributes.defineAppThemeBindable<Color> ListView.SeparatorColorProperty
@@ -73,10 +73,10 @@ module ListView =
         Attributes.defineAppThemeBindable<Color> ListView.RefreshControlColorProperty
 
     let HorizontalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty
 
     let VerticalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
 
     let ItemAppearing =
         Attributes.defineEvent<ItemVisibilityEventArgs>

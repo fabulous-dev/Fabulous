@@ -22,7 +22,7 @@ module ProgressBar =
         Attributes.defineAppThemeBindable<Color> ProgressBar.ProgressColorProperty
 
     let Progress =
-        Attributes.defineBindable<float> ProgressBar.ProgressProperty
+        Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
     let ProgressTo =
         Attributes.define<ProgressToData>
