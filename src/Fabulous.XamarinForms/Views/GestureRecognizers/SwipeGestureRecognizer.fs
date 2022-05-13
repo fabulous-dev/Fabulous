@@ -12,10 +12,10 @@ module SwipeGestureRecognizer =
         Widgets.register<SwipeGestureRecognizer>()
 
     let Direction =
-        Attributes.defineBindable<SwipeDirection> SwipeGestureRecognizer.DirectionProperty
+        Attributes.defineSmallBindable<SwipeDirection> SwipeGestureRecognizer.DirectionProperty SmallScalars.SwipeDirection.decode
 
     let Threshold =
-        Attributes.defineBindable<int> SwipeGestureRecognizer.ThresholdProperty
+        Attributes.defineSmallBindable<int> SwipeGestureRecognizer.ThresholdProperty SmallScalars.Int.decode
 
     let Swiped =
         Attributes.defineEvent<SwipedEventArgs>

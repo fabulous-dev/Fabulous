@@ -63,13 +63,13 @@ type EntryCellModifiers =
     /// param name="alignment">The horizontal text alignment</summary>
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IEntryCell>, alignment: TextAlignment) =
-        this.AddScalar(EntryCell.HorizontalTextAlignment.WithValue(alignment, SmallScalars.TextAlignment.encode))
+        this.AddScalar(EntryCell.HorizontalTextAlignment.WithValue(alignment))
 
     /// <summary>Set the vertical text alignment</summary>
     /// param name="alignment">The vertical text alignment</summary>
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IEntryCell>, alignment: TextAlignment) =
-        this.AddScalar(EntryCell.VerticalTextAlignment.WithValue(alignment, SmallScalars.TextAlignment.encode))
+        this.AddScalar(EntryCell.VerticalTextAlignment.WithValue(alignment))
 
     /// <summary>Set the keyboard</summary>
     /// param name="keyboard">The keyboard type</summary>

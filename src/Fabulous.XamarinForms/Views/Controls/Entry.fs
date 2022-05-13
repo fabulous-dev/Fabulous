@@ -15,7 +15,7 @@ module Entry =
         Attributes.defineBindable<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
     let CursorPosition =
-        Attributes.defineBindable<int> Entry.CursorPositionProperty
+        Attributes.defineSmallBindable<int> Entry.CursorPositionProperty SmallScalars.Int.decode
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Entry.FontAttributesProperty
@@ -36,10 +36,10 @@ module Entry =
         Attributes.defineSmallBindable<bool> Entry.IsTextPredictionEnabledProperty SmallScalars.Bool.decode
 
     let ReturnType =
-        Attributes.defineBindable<ReturnType> Entry.ReturnTypeProperty
+        Attributes.defineSmallBindable<ReturnType> Entry.ReturnTypeProperty SmallScalars.ReturnType.decode
 
     let SelectionLength =
-        Attributes.defineBindable<int> Entry.SelectionLengthProperty
+        Attributes.defineSmallBindable<int> Entry.SelectionLengthProperty SmallScalars.Int.decode
 
     let VerticalTextAlignment =
         Attributes.defineSmallBindable<TextAlignment> Entry.VerticalTextAlignmentProperty SmallScalars.TextAlignment.decode
@@ -96,11 +96,11 @@ type EntryModifiers =
 
         match size with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(v, SmallScalars.Float.encode))
+        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(v))
 
         match namedSize with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(Device.GetNamedSize(v, typeof<Entry>), SmallScalars.Float.encode))
+        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(Device.GetNamedSize(v, typeof<Entry>)))
 
         match attributes with
         | None -> ()
@@ -118,11 +118,11 @@ type EntryModifiers =
 
     [<Extension>]
     static member inline isPassword(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
-        this.AddScalar(Entry.IsPassword.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(Entry.IsPassword.WithValue(value))
 
     [<Extension>]
     static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
-        this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(Entry.IsTextPredictionEnabled.WithValue(value))
 
     [<Extension>]
     static member inline returnType(this: WidgetBuilder<'msg, #IEntry>, value: ReturnType) =
@@ -134,7 +134,7 @@ type EntryModifiers =
 
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IEntry>, value: TextAlignment) =
-        this.AddScalar(Entry.VerticalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
+        this.AddScalar(Entry.VerticalTextAlignment.WithValue(value))
 
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEntry>, onCompleted: 'msg) =
@@ -151,4 +151,4 @@ type EntryPlatformModifiers =
     /// <param name="value">The new cursor color.</param>
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: Color) =
-        this.AddScalar(Entry.CursorColor.WithValue(value, SmallScalars.Color.encode))
+        this.AddScalar(Entry.CursorColor.WithValue(value))

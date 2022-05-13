@@ -34,4 +34,4 @@ type TapGestureRecognizerModifiers =
     /// <param name="value">The number of taps required</param>
     [<Extension>]
     static member inline numberOfTapsRequired(this: WidgetBuilder<'msg, #ITapGestureRecognizer>, value: int) =
-        this.AddScalar(TapGestureRecognizer.NumberOfTapsRequired.WithValue(value, SmallScalars.Int.encode))
+        this.AddScalar(TapGestureRecognizer.NumberOfTapsRequired.WithValue(value))

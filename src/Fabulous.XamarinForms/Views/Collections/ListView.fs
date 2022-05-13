@@ -147,7 +147,7 @@ type ListViewModifiers =
 
     [<Extension>]
     static member inline hasUnevenRows(this: WidgetBuilder<'msg, #IListView>, value: bool) =
-        this.AddScalar(ListView.HasUnevenRows.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(ListView.HasUnevenRows.WithValue(value))
 
     [<Extension>]
     static member inline horizontalScrollBarVisibility
@@ -167,11 +167,11 @@ type ListViewModifiers =
 
     [<Extension>]
     static member inline isPullToRefreshEnabled(this: WidgetBuilder<'msg, #IListView>, value: bool) =
-        this.AddScalar(ListView.IsPullToRefreshEnabled.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(ListView.IsPullToRefreshEnabled.WithValue(value))
 
     [<Extension>]
     static member inline isRefreshing(this: WidgetBuilder<'msg, #IListView>, value: bool) =
-        this.AddScalar(ListView.IsRefreshing.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(ListView.IsRefreshing.WithValue(value))
 
     [<Extension>]
     static member inline refreshControlColor(this: WidgetBuilder<'msg, #IListView>, light: Color, ?dark: Color) =
@@ -187,7 +187,7 @@ type ListViewModifiers =
 
     [<Extension>]
     static member inline rowHeight(this: WidgetBuilder<'msg, #IListView>, value: int) =
-        this.AddScalar(ListView.RowHeight.WithValue(value, SmallScalars.Int.encode))
+        this.AddScalar(ListView.RowHeight.WithValue(value))
 
     [<Extension>]
     static member inline selectionMode(this: WidgetBuilder<'msg, #IListView>, value: ListViewSelectionMode) =

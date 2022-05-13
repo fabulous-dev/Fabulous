@@ -88,15 +88,15 @@ module PickerBuilders =
 type PickerModifiers =
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IPicker>, value: float) =
-        this.AddScalar(Picker.CharacterSpacing.WithValue(value, SmallScalars.Float.encode))
+        this.AddScalar(Picker.CharacterSpacing.WithValue(value))
 
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
+        this.AddScalar(Picker.HorizontalTextAlignment.WithValue(value))
 
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IPicker>, value: TextAlignment) =
-        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value, SmallScalars.TextAlignment.encode))
+        this.AddScalar(Picker.VerticalTextAlignment.WithValue(value))
 
     [<Extension>]
     static member inline font
@@ -112,11 +112,11 @@ type PickerModifiers =
 
         match size with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v, SmallScalars.Float.encode))
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v))
 
         match namedSize with
         | None -> ()
-        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>), SmallScalars.Float.encode))
+        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>)))
 
         match attributes with
         | None -> ()

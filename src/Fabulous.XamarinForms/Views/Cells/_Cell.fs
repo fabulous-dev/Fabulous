@@ -38,13 +38,13 @@ type CellModifiers =
     /// <param name="value">true if the cell IsEnabled; otherwise, false.</param>
     [<Extension>]
     static member inline isEnabled(this: WidgetBuilder<'msg, #ICell>, value: bool) =
-        this.AddScalar(Cell.IsEnabled.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(Cell.IsEnabled.WithValue(value))
 
     /// <summary>Sets the height of the cell</summary>
     /// <param name="value">The height of the cell</param>
     [<Extension>]
     static member inline height(this: WidgetBuilder<'msg, #ICell>, value: float) =
-        this.AddScalar(Cell.Height.WithValue(value, SmallScalars.Float.encode))
+        this.AddScalar(Cell.Height.WithValue(value))
 
     [<Extension>]
     static member inline onAppearing(this: WidgetBuilder<'msg, #ICell>, onAppearing: 'msg) =

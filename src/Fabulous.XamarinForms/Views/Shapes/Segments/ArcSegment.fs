@@ -12,13 +12,13 @@ module ArcSegment =
     let WidgetKey = Widgets.register<ArcSegment>()
 
     let IsLargeArc =
-        Attributes.defineBindable<bool> ArcSegment.IsLargeArcProperty
+        Attributes.defineSmallBindable<bool> ArcSegment.IsLargeArcProperty SmallScalars.Bool.decode
 
     let Point =
         Attributes.defineBindable<Point> ArcSegment.SizeProperty
 
     let RotationAngle =
-        Attributes.defineBindable<float> ArcSegment.RotationAngleProperty
+        Attributes.defineSmallBindable<float> ArcSegment.RotationAngleProperty SmallScalars.Float.decode
 
     let Size =
         Attributes.defineBindable<Size> ArcSegment.SizeProperty

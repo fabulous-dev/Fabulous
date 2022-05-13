@@ -103,7 +103,7 @@ type WidgetExtensions() =
             this: WidgetBuilder<'msg, 'marker>,
             value: bool
         ) =
-        this.AddScalar(Attributes.Text.Record.WithValue(value, SmallScalars.Bool.encode))
+        this.AddScalar(Attributes.Text.Record.WithValue(value))
 
 ///----------------
 ///----------------

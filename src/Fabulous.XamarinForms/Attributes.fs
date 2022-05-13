@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Xamarin.Forms
@@ -12,9 +13,9 @@ module AppTheme =
     let inline create<'T> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
-              match dark with
-              | None -> ValueNone
-              | Some v -> ValueSome v }
+            match dark with
+            | None -> ValueNone
+            | Some v -> ValueSome v }
 
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
@@ -33,60 +34,87 @@ module SmallScalars =
     /// That being said, it is a lossy conversion
     module Color =
         let inline encode (v: Color) : uint64 =
-            let r: uint64 = (uint64 (uint16 (v.R * 65535.0))) <<< 6
-            let g: uint64 = (uint64 (uint16 (v.G * 65535.0))) <<< 4
-            let b: uint64 = (uint64 (uint16 (v.B * 65535.0))) <<< 2
-            let a: uint64 = (uint64 (uint16 (v.A * 65535.0)))
-            r ||| g ||| b ||| a  
-            
+            let r = uint64(uint16(v.R * 65535.0)) <<< 6
+            let g = uint64(uint16(v.G * 65535.0)) <<< 4
+            let b = uint64(uint16(v.B * 65535.0)) <<< 2
+            let a = uint64(uint16(v.A * 65535.0))
+
+            r ||| g ||| b ||| a
+
         let inline decode (encoded: uint64) : Color =
-            let r = (encoded &&& 0xFFFF000000000000UL) >>> 6 
-            let g = (encoded &&& 0x0000FFFF00000000UL) >>> 4
-            let b = (encoded &&& 0x00000000FFFF0000UL) >>> 2
+            let r =
+                (encoded &&& 0xFFFF000000000000UL) >>> 6
+
+            let g =
+                (encoded &&& 0x0000FFFF00000000UL) >>> 4
+
+            let b =
+                (encoded &&& 0x00000000FFFF0000UL) >>> 2
+
             let a = (encoded &&& 0x000000000000FFFFUL)
             let inline toFloat value = (float value) / 65535.0
             Color.FromRgba(toFloat r, toFloat g, toFloat b, toFloat a)
-            
+
     module TextAlignment =
-        let inline encode (v: TextAlignment) : uint64 =
-            match v with
-            | TextAlignment.Start -> 0UL
-            | TextAlignment.Center -> 1UL
-            | TextAlignment.End -> 2UL
-            | _ -> 1UL
-            
-        let inline decode (encoded: uint64) : TextAlignment =
-            match encoded with
-            | 0UL -> TextAlignment.Start
-            | 1UL -> TextAlignment.Center
-            | 2UL -> TextAlignment.End
-            | _ -> TextAlignment.Center
-            
+        let inline encode (v: TextAlignment) : uint64 = uint64 v
+        let inline decode (encoded: uint64) : TextAlignment = enum<TextAlignment>(int encoded)
+
     module LayoutOptions =
         let inline encode (v: LayoutOptions) : uint64 =
-            let alignment:uint64 =
-                match v.Alignment with
-                | LayoutAlignment.Start -> 0UL
-                | LayoutAlignment.Center -> 1UL
-                | LayoutAlignment.End -> 2UL
-                | LayoutAlignment.Fill -> 3UL
-                | _ -> 3UL 
-            
-            let expands: uint64 = if v.Expands then 1UL else 0UL
-            
-            (alignment <<< 4) ||| expands  
-            
+            let alignment = uint64 v.Alignment
+
+            let expands: uint64 =
+                if v.Expands then 1UL else 0UL
+
+            (alignment <<< 4) ||| expands
+
         let inline decode (encoded: uint64) : LayoutOptions =
             let alignment =
-                match (encoded &&& 0xFFFFFFFF00000000UL) >>> 4 with
-                |0UL -> LayoutAlignment.Start  
-                |1UL -> LayoutAlignment.Center  
-                |2UL -> LayoutAlignment.End  
-                |3UL -> LayoutAlignment.Fill  
-                | _ -> LayoutAlignment.Fill
-            let expands = (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
-            
+                enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFF00000000UL) >>> 4))
+
+            let expands =
+                (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
+
             LayoutOptions(alignment, expands)
+
+    module ReturnType =
+        let inline encode (v: ReturnType) : uint64 = uint64 v
+        let inline decode (encoded: uint64) : ReturnType = enum<ReturnType>(int encoded)
+
+    module FlowDirection =
+        let inline encode (v: FlowDirection) : uint64 = uint64 v
+        let inline decode (encoded: uint64) : FlowDirection = enum<FlowDirection>(int encoded)
+        
+    module SwipeDirection =
+        let inline encode (v: SwipeDirection) : uint64 = uint64 v
+        let inline decode (encoded: uint64) : SwipeDirection = enum<SwipeDirection>(int encoded)
+
+
+[<Extension>]
+type SmallScalarExtensions() =
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<LayoutOptions>, value) =
+        this.WithValue(value, SmallScalars.LayoutOptions.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<TextAlignment>, value) =
+        this.WithValue(value, SmallScalars.TextAlignment.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<Color>, value) =
+        this.WithValue(value, SmallScalars.Color.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<ReturnType>, value) =
+        this.WithValue(value, SmallScalars.ReturnType.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<FlowDirection>, value) =
+        this.WithValue(value, SmallScalars.FlowDirection.encode)
+        
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<SwipeDirection>, value) =
+        this.WithValue(value, SmallScalars.SwipeDirection.encode)
 
 module Attributes =
     /// Define an attribute storing a Widget for a bindable property
@@ -100,7 +128,8 @@ module Attributes =
 
                 ViewNode.get childTarget)
             (fun target value ->
-                let bindableObject = target :?> BindableObject
+                let bindableObject =
+                    target :?> BindableObject
 
                 if value = null then
                     bindableObject.ClearValue(bindableProperty)
@@ -126,37 +155,29 @@ module Attributes =
                 | ValueSome v -> target.SetValue(bindableProperty, v))
 
     let inline defineBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.define<'T>
-            bindableProperty.PropertyName
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.define<'T> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
-    
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
+
     let inline defineSmallBindable<'T> (bindableProperty: BindableProperty) ([<InlineIfLambda>] decode: uint64 -> 'T) =
-        Attributes.defineSmallScalar<'T>
-            bindableProperty.PropertyName
-            decode
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.defineSmallScalar<'T> bindableProperty.PropertyName decode (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome v -> target.SetValue(bindableProperty, v))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome v -> target.SetValue(bindableProperty, v))
 
     let inline defineAppThemeBindable<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.define<AppThemeValues<'T>>
-            bindableProperty.PropertyName
-            (fun _ newValueOpt node ->
-                let target = node.Target :?> BindableObject
+        Attributes.define<AppThemeValues<'T>> bindableProperty.PropertyName (fun _ newValueOpt node ->
+            let target = node.Target :?> BindableObject
 
-                match newValueOpt with
-                | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
-                | ValueSome { Light = light; Dark = ValueSome dark } ->
-                    target.SetOnAppTheme(bindableProperty, light, dark))
+            match newValueOpt with
+            | ValueNone -> target.ClearValue(bindableProperty)
+            | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
+            | ValueSome { Light = light; Dark = ValueSome dark } -> target.SetOnAppTheme(bindableProperty, light, dark))
 
     /// Update both a property and its related event.
     /// This definition makes sure that the event is only raised when the property is changed by the user,
@@ -197,10 +218,9 @@ module Attributes =
 
                         // Set the new event handler
                         let handler =
-                            EventHandler<'args>
-                                (fun _ args ->
-                                    let r = curr.Event args
-                                    Dispatcher.dispatch node r)
+                            EventHandler<'args> (fun _ args ->
+                                let r = curr.Event args
+                                Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler(handler))
@@ -210,11 +230,10 @@ module Attributes =
         { Key = key; Name = name }
 
 
-    /// Defines a Color attribute and encodes it as a small scalar  
+    /// Defines a Color attribute and encodes it as a small scalar
     let inline defineColor
         name
         ([<InlineIfLambda>] updateNode: Color voption -> Color voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition<Color> =
 
         Attributes.defineSmallScalar name SmallScalars.Color.decode updateNode
-

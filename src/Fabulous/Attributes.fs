@@ -1,6 +1,7 @@
 ﻿namespace Fabulous
 
 open System
+open System.Runtime.CompilerServices
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
@@ -27,7 +28,7 @@ module SmallScalars =
     module Bool =
         let inline encode (v: bool) : uint64 = if v then 1UL else 0UL
         let inline decode (encoded: uint64) : bool = encoded = 1UL
-
+        
     module Float =
         let inline encode (v: float) : uint64 = BitConverter.DoubleToUInt64Bits v
         let inline decode (encoded: uint64) : float = BitConverter.UInt64BitsToDouble encoded
@@ -39,9 +40,22 @@ module SmallScalars =
 
         let inline decode (encoded: uint64) : int =
             int encoded
-
+    
+[<Extension>]
+type SmallScalarExtensions () =
+    [<Extension>]
+    static member inline WithValue (this: SmallScalarAttributeDefinition<bool>, value) =
+        this.WithValue(value, SmallScalars.Bool.encode)
+        
+    [<Extension>]
+    static member inline WithValue (this: SmallScalarAttributeDefinition<float>, value) =
+        this.WithValue(value, SmallScalars.Float.encode)
+        
+    [<Extension>]
+    static member inline WithValue (this: SmallScalarAttributeDefinition<int>, value) =
+        this.WithValue(value, SmallScalars.Int.encode)
+        
 module Attributes =
-
     /// Define a custom attribute storing any value
     let inline defineScalarWithConverter<'inputType, 'modelType, 'valueType>
         name
