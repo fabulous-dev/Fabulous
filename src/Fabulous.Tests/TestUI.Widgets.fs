@@ -20,33 +20,34 @@ open Tests.TestUI_ViewNode
 
 module Widgets =
     let register<'T when 'T :> TestViewElement and 'T: (new: unit -> 'T)> () =
-        let key = WidgetDefinitionStore.getNextKey ()
+        let key = WidgetDefinitionStore.getNextKey()
 
         let definition =
             { Key = key
               Name = typeof<'T>.Name
               TargetType = typeof<'T>
               CreateView =
-                fun (widget, context, parentNode) ->
-                    let name = typeof<'T>.Name
-                    //                      printfn $"Creating view for {name}"
+                  fun (widget, context, parentNode) ->
+                      let name = typeof<'T>.Name
+                      //                      printfn $"Creating view for {name}"
 
-                    let view = new 'T()
-                    let weakReference = WeakReference(view)
+                      let view = new 'T()
+                      let weakReference = WeakReference(view)
 
-                    let parentNode =
-                        match parentNode with
-                        | ValueNone -> None
-                        | ValueSome parent -> Some parent
+                      let parentNode =
+                          match parentNode with
+                          | ValueNone -> None
+                          | ValueSome parent -> Some parent
 
-                    let viewNode = ViewNode(parentNode, context, weakReference)
+                      let viewNode =
+                          ViewNode(parentNode, context, weakReference)
 
-                    view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
+                      view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                    let oldWidget: Widget voption = ValueNone
+                      let oldWidget: Widget voption = ValueNone
 
-                    Reconciler.update context.CanReuseView oldWidget widget viewNode
-                    struct (viewNode :> IViewNode, box view) }
+                      Reconciler.update context.CanReuseView oldWidget widget viewNode
+                      struct (viewNode :> IViewNode, box view) }
 
         WidgetDefinitionStore.set key definition
         key
@@ -110,10 +111,10 @@ type WidgetExtensions() =
 
 [<AbstractClass; Sealed>]
 type View private () =
-    static let TestLabelKey = Widgets.register<TestLabel> ()
-    static let TestButtonKey = Widgets.register<TestButton> ()
-    static let TestStackKey = Widgets.register<TestStack> ()
-    static let TestNumericBagKey = Widgets.register<TestNumericBag> ()
+    static let TestLabelKey = Widgets.register<TestLabel>()
+    static let TestButtonKey = Widgets.register<TestButton>()
+    static let TestStackKey = Widgets.register<TestStack>()
+    static let TestNumericBagKey = Widgets.register<TestNumericBag>()
 
     static member Label<'msg>(text: string) =
         WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
@@ -139,7 +140,7 @@ type View private () =
             TestNumericBagKey,
             Attributes.NumericBag.InlineValueOne.WithValue(one, (fun x -> x)),
             Attributes.NumericBag.InlineValueTwo.WithValue(two, (fun x -> x)),
-//            Attributes.NumericBag.InlineValueOne.WithValue(one, Attributes.func),
+            //            Attributes.NumericBag.InlineValueOne.WithValue(one, Attributes.func),
 //            Attributes.NumericBag.InlineValueTwo.WithValue(two, Attributes.func),
             Attributes.NumericBag.InlineValueThree.WithValue(three, BitConverter.DoubleToUInt64Bits)
         )
@@ -147,7 +148,7 @@ type View private () =
     static member Stack<'msg, 'marker when 'marker :> IMarker>() =
         CollectionBuilder<'msg, TestStackMarker, 'marker>(
             TestStackKey,
-            StackList.empty (),
+            StackList.empty(),
             Attributes.Container.Children
         )
 
@@ -179,10 +180,10 @@ type CollectionBuilderExtensions =
         ) : Content<'msg> =
         // TODO optimize this one with addMut
         { Widgets =
-            x
-            |> Seq.map (fun wb -> wb.Compile())
-            |> Seq.toArray
-            |> MutStackArray1.fromArray }
+              x
+              |> Seq.map(fun wb -> wb.Compile())
+              |> Seq.toArray
+              |> MutStackArray1.fromArray }
 
 
 
@@ -237,7 +238,8 @@ module Run =
             let widget = program.View(model).Compile()
             let widgetDef = WidgetDefinitionStore.get widget.Key
 
-            let struct (_node, view) = widgetDef.CreateView(widget, x.viewContext, ValueNone)
+            let struct (_node, view) =
+                widgetDef.CreateView(widget, x.viewContext, ValueNone)
 
             state <- Some(model, view, widget)
 

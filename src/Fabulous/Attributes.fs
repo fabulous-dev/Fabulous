@@ -10,8 +10,7 @@ module Helpers =
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
-        let widgetDefinition =
-            WidgetDefinitionStore.get widget.Key
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
         widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
@@ -30,19 +29,24 @@ module SmallScalars =
         let inline decode (encoded: uint64) : bool = encoded = 1UL
 
     module Float =
-        let inline encode (v: float) : uint64 = BitConverter.DoubleToInt64Bits v |> uint64
-        let inline decode (encoded: uint64) : float = encoded |> int64 |> BitConverter.Int64BitsToDouble 
+        let inline encode (v: float) : uint64 =
+            BitConverter.DoubleToInt64Bits v |> uint64
+
+        let inline decode (encoded: uint64) : float =
+            encoded |> int64 |> BitConverter.Int64BitsToDouble
 
     // TODO is there a better conversion algorithm?
     module Int =
         let inline encode (v: int) : uint64 = uint64 v
 
         let inline decode (encoded: uint64) : int = int encoded
-        
+
     module IntEnum =
-        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 = uint64 v
-        let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded) 
-        
+        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 =
+            uint64 v
+
+        let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
+
 
 [<Extension>]
 type SmallScalarExtensions() =
@@ -169,8 +173,7 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let struct (_, view) =
-                    Helpers.createViewForWidget node widget
+                let struct (_, view) = Helpers.createViewForWidget node widget
 
                 set node.Target (unbox view)
 
@@ -188,8 +191,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove (index, widget) ->
-                    let itemNode =
-                        getViewNode targetColl.[index]
+                    let itemNode = getViewNode targetColl.[index]
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -203,8 +205,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let struct (itemNode, view) =
-                        Helpers.createViewForWidget node widget
+                    let struct (itemNode, view) = Helpers.createViewForWidget node widget
 
                     // Insert the new child into the UI tree
                     targetColl.Insert(index, unbox view)
@@ -219,8 +220,7 @@ module Attributes =
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
-                    let prevItemNode =
-                        getViewNode targetColl.[index]
+                    let prevItemNode = getViewNode targetColl.[index]
 
                     let struct (nextItemNode, view) =
                         Helpers.createViewForWidget node newWidget
@@ -245,8 +245,7 @@ module Attributes =
             | ValueNone -> ()
             | ValueSome widgets ->
                 for widget in ArraySlice.toSpan widgets do
-                    let struct (_, view) =
-                        Helpers.createViewForWidget node widget
+                    let struct (_, view) = Helpers.createViewForWidget node widget
 
                     targetColl.Add(unbox view)
 
@@ -311,9 +310,10 @@ module Attributes =
 
                     | ValueSome fn ->
                         let handler =
-                            EventHandler<'args> (fun _ args ->
-                                let r = fn args
-                                Dispatcher.dispatch node r)
+                            EventHandler<'args>
+                                (fun _ args ->
+                                    let r = fn args
+                                    Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler handler)

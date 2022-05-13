@@ -65,7 +65,7 @@ module Attributes =
     module Automation =
         let AutomationId =
             Attributes.define<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
-   
+
     module NumericBag =
         let InlineValueOne =
             Attributes.defineSmallScalar<uint64> "InlineValueOne" id TestUI_ViewUpdaters.updateNumericValueOne

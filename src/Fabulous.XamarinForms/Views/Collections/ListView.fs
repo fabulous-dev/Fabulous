@@ -55,7 +55,7 @@ module ListView =
         Attributes.defineBindableEnum<ListViewSelectionMode> ListView.SelectionModeProperty
 
     let IsPullToRefreshEnabled =
-        Attributes.defineBindableBool ListView.IsPullToRefreshEnabledProperty 
+        Attributes.defineBindableBool ListView.IsPullToRefreshEnabledProperty
 
     let IsRefreshing =
         Attributes.defineBindableBool ListView.IsRefreshingProperty
