@@ -159,7 +159,12 @@ module Attributes =
     let inline defineBindableInt (bindableProperty: BindableProperty) =
         defineSmallBindable bindableProperty SmallScalars.Int.decode
 
-    /// Defines a bindable Color attribute and encodes it as a small scalar (8 bytes)
+    /// Defines a bindable Color attribute and encodes it as a small scalar (8 bytes).
+    /// Note that this uses a faster but a technically lossy internal representation
+    /// that is, it allocates 2 bytes for each of channel of RGBA.
+    /// Technically it might loose precision of (0.0 .. 1.0) float range used in XF.Color.
+    /// If you want to avoid any potential loss of accuracy you can use "defineBindable" instead.
+    /// It is 100% accurate but allocates XF.Color values on the heap (thus slower) 
     let inline defineBindableColor (bindableProperty: BindableProperty) =
         defineSmallBindable bindableProperty SmallScalars.Color.decode
 
