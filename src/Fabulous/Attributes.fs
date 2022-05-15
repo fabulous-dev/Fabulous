@@ -1,6 +1,7 @@
 ﻿namespace Fabulous
 
 open System
+open System.Runtime.CompilerServices
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
@@ -10,6 +11,7 @@ module Helpers =
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
+
         widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
 module ScalarAttributeComparers =
@@ -20,6 +22,53 @@ module ScalarAttributeComparers =
             ScalarAttributeComparison.Identical
         else
             ScalarAttributeComparison.Different
+
+module SmallScalars =
+    module Bool =
+        let inline encode (v: bool) : uint64 = if v then 1UL else 0UL
+        let inline decode (encoded: uint64) : bool = encoded = 1UL
+
+    module Float =
+        let inline encode (v: float) : uint64 =
+            BitConverter.DoubleToInt64Bits v |> uint64
+
+        let inline decode (encoded: uint64) : float =
+            encoded |> int64 |> BitConverter.Int64BitsToDouble
+
+    // TODO is there a better conversion algorithm?
+    module Int =
+        let inline encode (v: int) : uint64 = uint64 v
+
+        let inline decode (encoded: uint64) : int = int encoded
+
+    module IntEnum =
+        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 =
+            uint64 v
+
+        let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
+
+
+[<Extension>]
+type SmallScalarExtensions() =
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<bool>, value) =
+        this.WithValue(value, SmallScalars.Bool.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<float>, value) =
+        this.WithValue(value, SmallScalars.Float.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<int>, value) =
+        this.WithValue(value, SmallScalars.Int.encode)
+
+    [<Extension>]
+    static member inline WithValue< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)>
+        (
+            this: SmallScalarAttributeDefinition< ^T >,
+            value
+        ) =
+        this.WithValue(value, SmallScalars.IntEnum.encode)
 
 module Attributes =
     /// Define a custom attribute storing any value
@@ -53,18 +102,19 @@ module Attributes =
         { Key = key; Name = name }
 
 
+    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+    let inline defineFloat
+        name
+        ([<InlineIfLambda>] updateNode: float voption -> float voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<float> =
 
-    //    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
-//    let defineFloat
-//        name
-//        (updateNode: float voption -> float voption -> IViewNode -> unit)
-//        : SmallScalarAttributeDefinition<float> =
-//
-//        defineSmallScalarWithConverter
-//            name
-//            BitConverter.DoubleToUInt64Bits
-//            BitConverter.UInt64BitsToDouble
-//            updateNode
+        defineSmallScalar name SmallScalars.Float.decode updateNode
+
+    let inline defineEnum< ^T when ^T: enum<int>>
+        name
+        ([<InlineIfLambda>] updateNode: ^T voption -> ^T voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition< ^T > =
+        defineSmallScalar name SmallScalars.IntEnum.decode updateNode
 
     /// Define a custom bool attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
     let inline defineBool
@@ -72,7 +122,7 @@ module Attributes =
         ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition<bool> =
 
-        defineSmallScalar name (fun (encoded: uint64) -> encoded = 1UL) updateNode
+        defineSmallScalar name SmallScalars.Bool.decode updateNode
 
     /// Define a custom attribute storing a widget
     let inline defineWidgetWithConverter
@@ -196,6 +246,7 @@ module Attributes =
             | ValueSome widgets ->
                 for widget in ArraySlice.toSpan widgets do
                     let struct (_, view) = Helpers.createViewForWidget node widget
+
                     targetColl.Add(unbox view)
 
         defineWidgetCollectionWithConverter name applyDiff updateNode

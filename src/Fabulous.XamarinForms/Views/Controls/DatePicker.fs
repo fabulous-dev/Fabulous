@@ -12,7 +12,7 @@ module DatePicker =
     let WidgetKey = Widgets.register<DatePicker>()
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> DatePicker.CharacterSpacingProperty
+        Attributes.defineBindableFloat DatePicker.CharacterSpacingProperty
 
     let FontAttributes =
         Attributes.defineBindable<Xamarin.Forms.FontAttributes> DatePicker.FontAttributesProperty
@@ -21,7 +21,7 @@ module DatePicker =
         Attributes.defineBindable<string> DatePicker.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> DatePicker.FontSizeProperty
+        Attributes.defineBindableFloat DatePicker.FontSizeProperty
 
     let Format =
         Attributes.defineBindable<string> DatePicker.FormatProperty
@@ -36,7 +36,7 @@ module DatePicker =
         Attributes.defineAppThemeBindable<Color> DatePicker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindable<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
 
     let DateWithEvent =
         Attributes.defineBindableWithEvent

@@ -14,10 +14,10 @@ module Frame =
         Attributes.defineAppThemeBindable<Color> Frame.BorderColorProperty
 
     let CornerRadius =
-        Attributes.defineBindable<float> Frame.CornerRadiusProperty
+        Attributes.defineBindableFloat Frame.CornerRadiusProperty
 
     let HasShadow =
-        Attributes.defineBindable<bool> Frame.HasShadowProperty
+        Attributes.defineBindableBool Frame.HasShadowProperty
 
 [<AutoOpen>]
 module FrameBuilders =

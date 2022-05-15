@@ -20,13 +20,13 @@ module SearchBar =
         Attributes.defineBindable<string> SearchBar.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> SearchBar.FontSizeProperty
+        Attributes.defineBindableFloat SearchBar.FontSizeProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> SearchBar.HorizontalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> SearchBar.HorizontalTextAlignmentProperty
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> SearchBar.VerticalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> SearchBar.VerticalTextAlignmentProperty
 
     let SearchButtonPressed =
         Attributes.defineEventNoArg

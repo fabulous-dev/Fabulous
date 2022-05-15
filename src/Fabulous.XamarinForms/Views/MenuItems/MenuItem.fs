@@ -19,10 +19,10 @@ module MenuItem =
         Attributes.defineAppThemeBindable<ImageSource> MenuItem.IconImageSourceProperty
 
     let IsDestructive =
-        Attributes.defineBindable<bool> MenuItem.IsDestructiveProperty
+        Attributes.defineBindableBool MenuItem.IsDestructiveProperty
 
     let IsEnabled =
-        Attributes.defineBindable<bool> MenuItem.IsEnabledProperty
+        Attributes.defineBindableBool MenuItem.IsEnabledProperty
 
     let Text =
         Attributes.defineBindable<string> MenuItem.TextProperty

@@ -33,7 +33,7 @@ module ItemsView =
         Attributes.defineBindableWidget ItemsView.EmptyViewProperty
 
     let RemainingItemsThreshold =
-        Attributes.defineBindable<int> ItemsView.RemainingItemsThresholdProperty
+        Attributes.defineBindableInt ItemsView.RemainingItemsThresholdProperty
 
     let RemainingItemsThresholdReached =
         Attributes.defineEventNoArg
@@ -43,13 +43,13 @@ module ItemsView =
                     .RemainingItemsThresholdReached)
 
     let HorizontalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ItemsView.HorizontalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.HorizontalScrollBarVisibilityProperty
 
     let VerticalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty
 
     let ItemsUpdatingScrollMode =
-        Attributes.defineBindable<ItemsUpdatingScrollMode> ItemsView.ItemsUpdatingScrollModeProperty
+        Attributes.defineBindableEnum<ItemsUpdatingScrollMode> ItemsView.ItemsUpdatingScrollModeProperty
 
     let ScrollToRequested =
         Attributes.defineEvent<ScrollToRequestEventArgs>

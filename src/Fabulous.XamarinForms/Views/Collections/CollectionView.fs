@@ -49,7 +49,7 @@ module CollectionView =
                     collectionView.SetValue(CollectionView.ItemsSourceProperty, value.OriginalItems))
 
     let SelectionMode =
-        Attributes.defineBindable<SelectionMode> CollectionView.SelectionModeProperty
+        Attributes.defineBindableEnum<SelectionMode> CollectionView.SelectionModeProperty
 
     let Header =
         Attributes.defineBindableWidget CollectionView.HeaderProperty
@@ -58,7 +58,7 @@ module CollectionView =
         Attributes.defineBindableWidget CollectionView.FooterProperty
 
     let ItemSizingStrategy =
-        Attributes.defineBindable<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
+        Attributes.defineBindableEnum<ItemSizingStrategy> CollectionView.ItemSizingStrategyProperty
 
     let SelectionChanged =
         Attributes.defineEvent<SelectionChangedEventArgs>

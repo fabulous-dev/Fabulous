@@ -12,37 +12,37 @@ module FlexLayout =
     let WidgetKey = Widgets.register<FlexLayout>()
 
     let AlignContent =
-        Attributes.defineBindable<FlexAlignContent> FlexLayout.AlignContentProperty
+        Attributes.defineBindableEnum<FlexAlignContent> FlexLayout.AlignContentProperty
 
     let AlignItems =
-        Attributes.defineBindable<FlexAlignItems> FlexLayout.AlignItemsProperty
+        Attributes.defineBindableEnum<FlexAlignItems> FlexLayout.AlignItemsProperty
 
     let AlignSelf =
-        Attributes.defineBindable<FlexAlignSelf> FlexLayout.AlignSelfProperty
+        Attributes.defineBindableEnum<FlexAlignSelf> FlexLayout.AlignSelfProperty
 
     let Basis =
         Attributes.defineBindable<FlexBasis> FlexLayout.BasisProperty
 
     let Direction =
-        Attributes.defineBindable<FlexDirection> FlexLayout.DirectionProperty
+        Attributes.defineBindableEnum<FlexDirection> FlexLayout.DirectionProperty
 
     let Grow =
-        Attributes.defineBindable<float> FlexLayout.GrowProperty
+        Attributes.defineBindableFloat FlexLayout.GrowProperty
 
     let JustifyContent =
-        Attributes.defineBindable<FlexJustify> FlexLayout.JustifyContentProperty
+        Attributes.defineBindableEnum<FlexJustify> FlexLayout.JustifyContentProperty
 
     let Order =
-        Attributes.defineBindable<int> FlexLayout.OrderProperty
+        Attributes.defineBindableInt FlexLayout.OrderProperty
 
     let Position =
-        Attributes.defineBindable<FlexPosition> FlexLayout.PositionProperty
+        Attributes.defineBindableEnum<FlexPosition> FlexLayout.PositionProperty
 
     let Shrink =
-        Attributes.defineBindable<float> FlexLayout.ShrinkProperty
+        Attributes.defineBindableFloat FlexLayout.ShrinkProperty
 
     let Wrap =
-        Attributes.defineBindable<FlexWrap> FlexLayout.WrapProperty
+        Attributes.defineBindableEnum<FlexWrap> FlexLayout.WrapProperty
 
 [<AutoOpen>]
 module FlexLayoutBuilders =

@@ -12,7 +12,7 @@ module TimePicker =
     let WidgetKey = Widgets.register<FabulousTimePicker>()
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> TimePicker.CharacterSpacingProperty
+        Attributes.defineBindableFloat TimePicker.CharacterSpacingProperty
 
     let TimeWithEvent =
         Attributes.defineBindableWithEvent
@@ -27,7 +27,7 @@ module TimePicker =
         Attributes.defineBindable<string> TimePicker.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> TimePicker.FontSizeProperty
+        Attributes.defineBindableFloat TimePicker.FontSizeProperty
 
     let Format =
         Attributes.defineBindable<string> TimePicker.FormatProperty
@@ -36,7 +36,7 @@ module TimePicker =
         Attributes.defineAppThemeBindable<Color> TimePicker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindable<Xamarin.Forms.TextTransform> TimePicker.TextTransformProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> TimePicker.TextTransformProperty
 
     let UpdateMode =
         Attributes.define<iOSSpecific.UpdateMode>

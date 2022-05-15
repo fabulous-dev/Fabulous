@@ -67,7 +67,7 @@ module CompositeTransform =
                     line.TranslateY <- y)
 
     let Rotation =
-        Attributes.defineBindable<float> CompositeTransform.RotationProperty
+        Attributes.defineBindableFloat CompositeTransform.RotationProperty
 
 [<AutoOpen>]
 module CompositeTransformBuilders =

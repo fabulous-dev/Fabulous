@@ -19,10 +19,10 @@ module SwipeItems =
             (fun target -> (target :?> SwipeItems) :> IList<_>)
 
     let SwipeMode =
-        Attributes.defineBindable<SwipeMode> Xamarin.Forms.SwipeItems.ModeProperty
+        Attributes.defineBindableEnum<SwipeMode> Xamarin.Forms.SwipeItems.ModeProperty
 
     let SwipeBehaviorOnInvoked =
-        Attributes.defineBindable<SwipeBehaviorOnInvoked> Xamarin.Forms.SwipeItems.SwipeBehaviorOnInvokedProperty
+        Attributes.defineBindableEnum<SwipeBehaviorOnInvoked> Xamarin.Forms.SwipeItems.SwipeBehaviorOnInvokedProperty
 
 [<AutoOpen>]
 module SwipeItemsBuilders =

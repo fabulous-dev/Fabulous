@@ -9,10 +9,10 @@ type ICell =
 
 module Cell =
     let IsEnabled =
-        Attributes.defineBindable<bool> Cell.IsEnabledProperty
+        Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Height =
-        Attributes.define<float>
+        Attributes.defineFloat
             "Cell_Height"
             (fun _ newValueOpt node ->
                 let cell = node.Target :?> Cell

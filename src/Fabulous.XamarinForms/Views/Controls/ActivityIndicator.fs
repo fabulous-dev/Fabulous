@@ -11,7 +11,7 @@ module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()
 
     let IsRunning =
-        Attributes.defineBindable<bool> ActivityIndicator.IsRunningProperty
+        Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 
     let Color =
         Attributes.defineAppThemeBindable<Color> ActivityIndicator.ColorProperty

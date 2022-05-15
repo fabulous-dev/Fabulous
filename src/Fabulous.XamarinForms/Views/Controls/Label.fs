@@ -11,7 +11,7 @@ module Label =
     let WidgetKey = Widgets.register<Label>()
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> Label.CharacterSpacingProperty
+        Attributes.defineBindableFloat Label.CharacterSpacingProperty
 
     let FontAttributes =
         Attributes.defineBindable<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
@@ -20,19 +20,19 @@ module Label =
         Attributes.defineBindable<string> Label.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Label.FontSizeProperty
+        Attributes.defineBindableFloat Label.FontSizeProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Label.HorizontalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> Label.HorizontalTextAlignmentProperty
 
     let LineBreakMode =
-        Attributes.defineBindable<Xamarin.Forms.LineBreakMode> Label.LineBreakModeProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.LineBreakMode> Label.LineBreakModeProperty
 
     let LineHeight =
-        Attributes.defineBindable<float> Label.LineHeightProperty
+        Attributes.defineBindableFloat Label.LineHeightProperty
 
     let MaxLines =
-        Attributes.defineBindable<int> Label.MaxLinesProperty
+        Attributes.defineBindableInt Label.MaxLinesProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> Label.PaddingProperty
@@ -47,13 +47,13 @@ module Label =
         Attributes.defineBindable<string> Label.TextProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> Label.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> Label.TextTransformProperty
 
     let TextType =
-        Attributes.defineBindable<TextType> Label.TextTypeProperty
+        Attributes.defineBindableEnum<TextType> Label.TextTypeProperty
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Label.VerticalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> Label.VerticalTextAlignmentProperty
 
 
 [<AutoOpen>]

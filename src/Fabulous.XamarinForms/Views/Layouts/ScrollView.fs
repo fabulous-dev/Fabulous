@@ -14,19 +14,19 @@ module ScrollView =
     let WidgetKey = Widgets.register<ScrollView>()
 
     let Orientation =
-        Attributes.defineBindable<ScrollOrientation> ScrollView.OrientationProperty
+        Attributes.defineBindableEnum<ScrollOrientation> ScrollView.OrientationProperty
 
     let ScrollX =
-        Attributes.defineBindable<float> ScrollView.ScrollXProperty
+        Attributes.defineBindableFloat ScrollView.ScrollXProperty
 
     let ScrollY =
-        Attributes.defineBindable<float> ScrollView.ScrollYProperty
+        Attributes.defineBindableFloat ScrollView.ScrollYProperty
 
     let HorizontalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ScrollView.HorizontalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ScrollView.HorizontalScrollBarVisibilityProperty
 
     let VerticalScrollBarVisibility =
-        Attributes.defineBindable<ScrollBarVisibility> ScrollView.VerticalScrollBarVisibilityProperty
+        Attributes.defineBindableEnum<ScrollBarVisibility> ScrollView.VerticalScrollBarVisibilityProperty
 
     let Content =
         Attributes.defineWidget

@@ -18,13 +18,13 @@ module RadioButton =
         Attributes.defineBindable<string> RadioButton.GroupNameProperty
 
     let BorderWidth =
-        Attributes.defineBindable<float> RadioButton.BorderWidthProperty
+        Attributes.defineBindableFloat RadioButton.BorderWidthProperty
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> RadioButton.CharacterSpacingProperty
+        Attributes.defineBindableFloat RadioButton.CharacterSpacingProperty
 
     let CornerRadius =
-        Attributes.defineBindable<float> RadioButton.CornerRadiusProperty
+        Attributes.defineBindableFloat RadioButton.CornerRadiusProperty
 
     let ContentString =
         Attributes.defineBindable<string> RadioButton.ContentProperty
@@ -39,13 +39,13 @@ module RadioButton =
         Attributes.defineBindable<string> RadioButton.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> RadioButton.FontSizeProperty
+        Attributes.defineBindableFloat RadioButton.FontSizeProperty
 
     let TextColor =
         Attributes.defineAppThemeBindable<Color> RadioButton.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> RadioButton.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
 
     let Value =
         Attributes.defineBindable<obj> RadioButton.ValueProperty

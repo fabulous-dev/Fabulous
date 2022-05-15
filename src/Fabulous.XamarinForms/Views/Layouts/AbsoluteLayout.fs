@@ -15,7 +15,7 @@ module AbsoluteLayout =
         Attributes.defineBindable<Rectangle> AbsoluteLayout.LayoutBoundsProperty
 
     let LayoutFlags =
-        Attributes.defineBindable<AbsoluteLayoutFlags> AbsoluteLayout.LayoutFlagsProperty
+        Attributes.defineBindableEnum<AbsoluteLayoutFlags> AbsoluteLayout.LayoutFlagsProperty
 
 [<AutoOpen>]
 module AbsoluteLayoutBuilders =

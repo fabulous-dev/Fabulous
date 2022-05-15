@@ -34,10 +34,10 @@ type RotateToData =
 
 module XFView =
     let HorizontalOptions =
-        Attributes.defineBindable<LayoutOptions> View.HorizontalOptionsProperty
+        Attributes.defineSmallBindable<LayoutOptions> View.HorizontalOptionsProperty SmallScalars.LayoutOptions.decode
 
     let VerticalOptions =
-        Attributes.defineBindable<LayoutOptions> View.VerticalOptionsProperty
+        Attributes.defineSmallBindable<LayoutOptions> View.VerticalOptionsProperty SmallScalars.LayoutOptions.decode
 
     let Margin =
         Attributes.defineBindable<Thickness> View.MarginProperty

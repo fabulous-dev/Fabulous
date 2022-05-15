@@ -11,10 +11,10 @@ module StackLayout =
     let WidgetKey = Widgets.register<StackLayout>()
 
     let Orientation =
-        Attributes.defineBindable<StackOrientation> StackLayout.OrientationProperty
+        Attributes.defineBindableEnum<StackOrientation> StackLayout.OrientationProperty
 
     let Spacing =
-        Attributes.defineBindable<float> StackLayout.SpacingProperty
+        Attributes.defineBindableFloat StackLayout.SpacingProperty
 
 [<AutoOpen>]
 module StackLayoutBuilders =

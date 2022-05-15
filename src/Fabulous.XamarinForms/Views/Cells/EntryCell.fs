@@ -20,10 +20,10 @@ module EntryCell =
         Attributes.defineBindable<string> EntryCell.PlaceholderProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> EntryCell.HorizontalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> EntryCell.HorizontalTextAlignmentProperty
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> EntryCell.VerticalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> EntryCell.VerticalTextAlignmentProperty
 
     let Keyboard =
         Attributes.defineBindable<Keyboard> EntryCell.KeyboardProperty

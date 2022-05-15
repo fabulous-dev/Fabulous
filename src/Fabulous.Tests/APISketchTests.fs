@@ -345,7 +345,9 @@ module MapViewTests =
         let tree = (instance.Start())
 
         let addBtn = find<TestButton> tree "add"
+
         let removeBtn = find<TestButton> tree "remove"
+
         let label = find<TestLabel> tree "label" :> IText
 
         Assert.AreEqual("0", label.Text)
@@ -403,6 +405,7 @@ module MemoTests =
             Assert.AreEqual(1, renderCount)
 
             let notMemoLabel = find<TestLabel> tree "not_memo" :> IText
+
             let memoLabel = find<TestLabel> tree "memo" :> IText
 
             Assert.AreEqual("0", memoLabel.Text)
@@ -466,6 +469,7 @@ module MemoTests =
 
             // but it is label now
             let label = find<TestLabel> tree "label" :> IText
+
             Assert.AreEqual(string Lbl, label.Text)
 
     module ViewNodeInstanceCanBeReused =
@@ -602,9 +606,11 @@ module Issue99 =
         let button1Start = find<TestButton> tree "button1"
 
         instance.ProcessMessage(Toggle)
+
         let button1Toggled = find<TestButton> tree "button1"
 
         instance.ProcessMessage(Toggle)
+
         let button1Untoggled = find<TestButton> tree "button1"
 
         Assert.AreSame(button1Start, button1Toggled)
@@ -705,3 +711,21 @@ module Issue104 =
         let tree = instance.Start()
 
         instance.ProcessMessage(Toggle)
+
+module Attributes =
+
+    type MyEnum =
+        | One = 1
+        | MinusOne = -1
+
+    let MyEnumAttr =
+        Attributes.defineEnum<MyEnum> "hey" (fun _ _ _ -> ())
+
+    [<Test>]
+    let IntEnumCodecForSmallScalars () =
+        let one = MyEnumAttr.WithValue(MyEnum.One)
+
+        let minusOne = MyEnumAttr.WithValue(MyEnum.MinusOne)
+
+        Assert.AreEqual(MyEnum.One, SmallScalars.IntEnum.decode<MyEnum> one.NumericValue)
+        Assert.AreEqual(MyEnum.MinusOne, SmallScalars.IntEnum.decode<MyEnum> minusOne.NumericValue)

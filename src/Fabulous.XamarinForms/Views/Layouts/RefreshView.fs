@@ -12,7 +12,7 @@ module RefreshView =
     let WidgetKey = Widgets.register<RefreshView>()
 
     let IsRefreshing =
-        Attributes.defineBindable<bool> RefreshView.IsRefreshingProperty
+        Attributes.defineBindableBool RefreshView.IsRefreshingProperty
 
     let RefreshColor =
         Attributes.defineAppThemeBindable<Color> RefreshView.RefreshColorProperty

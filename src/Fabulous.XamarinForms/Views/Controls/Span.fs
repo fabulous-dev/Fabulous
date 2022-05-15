@@ -14,7 +14,7 @@ module Span =
         Attributes.defineAppThemeBindable<Color> Span.BackgroundColorProperty
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> Span.CharacterSpacingProperty
+        Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Span.FontAttributesProperty
@@ -23,10 +23,10 @@ module Span =
         Attributes.defineBindable<string> Span.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Span.FontSizeProperty
+        Attributes.defineBindableFloat Span.FontSizeProperty
 
     let LineHeight =
-        Attributes.defineBindable<float> Span.LineHeightProperty
+        Attributes.defineBindableFloat Span.LineHeightProperty
 
     let Style =
         Attributes.defineBindable<Style> Span.StyleProperty
@@ -35,10 +35,10 @@ module Span =
         Attributes.defineAppThemeBindable<Color> Span.TextColorProperty
 
     let TextDecorations =
-        Attributes.defineBindable<TextDecorations> Span.TextDecorationsProperty
+        Attributes.defineBindableEnum<TextDecorations> Span.TextDecorationsProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> Span.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> Span.TextTransformProperty
 
     let Text =
         Attributes.defineBindable<string> Span.TextProperty

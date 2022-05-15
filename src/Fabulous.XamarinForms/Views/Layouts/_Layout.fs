@@ -12,10 +12,10 @@ module Layout =
         Attributes.defineBindable<Thickness> Layout.PaddingProperty
 
     let CascadeInputTransparent =
-        Attributes.defineBindable<bool> Layout.CascadeInputTransparentProperty
+        Attributes.defineBindableBool Layout.CascadeInputTransparentProperty
 
     let IsClippedToBounds =
-        Attributes.defineBindable<bool> Layout.IsClippedToBoundsProperty
+        Attributes.defineBindableBool Layout.IsClippedToBoundsProperty
 
     let LayoutChanged =
         Attributes.defineEventNoArg "Layout_LayoutChanged" (fun target -> (target :?> Layout).LayoutChanged)

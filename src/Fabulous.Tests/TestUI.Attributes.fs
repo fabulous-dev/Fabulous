@@ -41,7 +41,7 @@ module Attributes =
 
     module Text =
         let Record =
-            Attributes.define<bool> "Text" TestUI_ViewUpdaters.updateRecord
+            Attributes.defineBool "Record" TestUI_ViewUpdaters.updateRecord
 
         let Text =
             Attributes.define<string> "Text" TestUI_ViewUpdaters.updateText

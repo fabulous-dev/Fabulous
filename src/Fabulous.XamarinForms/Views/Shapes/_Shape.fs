@@ -17,7 +17,7 @@ module Shape =
         Attributes.defineAppThemeBindable<Brush> Shape.StrokeProperty
 
     let StrokeThickness =
-        Attributes.defineBindable<float> Shape.StrokeThicknessProperty
+        Attributes.defineBindableFloat Shape.StrokeThicknessProperty
 
     let StrokeDashArrayString =
         Attributes.define<string>
@@ -48,7 +48,7 @@ module Shape =
                     target.SetValue(Shape.StrokeDashArrayProperty, coll))
 
     let StrokeDashOffset =
-        Attributes.defineBindable<float> Shape.StrokeDashOffsetProperty
+        Attributes.defineBindableFloat Shape.StrokeDashOffsetProperty
 
     let StrokeLineCap =
         Attributes.defineBindable<PenLineCap> Shape.StrokeLineCapProperty
@@ -57,7 +57,7 @@ module Shape =
         Attributes.defineBindable<PenLineJoin> Shape.StrokeLineJoinProperty
 
     let StrokeMiterLimit =
-        Attributes.defineBindable<float> Shape.StrokeMiterLimitProperty
+        Attributes.defineBindableFloat Shape.StrokeMiterLimitProperty
 
     let Aspect =
         Attributes.defineBindable<Stretch> Shape.AspectProperty

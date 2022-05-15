@@ -27,22 +27,22 @@ module Grid =
             ViewUpdaters.updateGridRowDefinitions
 
     let Column =
-        Attributes.defineBindable<int> Grid.ColumnProperty
+        Attributes.defineBindableInt Grid.ColumnProperty
 
     let Row =
-        Attributes.defineBindable<int> Grid.RowProperty
+        Attributes.defineBindableInt Grid.RowProperty
 
     let ColumnSpacing =
-        Attributes.defineBindable<float> Grid.ColumnSpacingProperty
+        Attributes.defineBindableFloat Grid.ColumnSpacingProperty
 
     let RowSpacing =
-        Attributes.defineBindable<float> Grid.RowSpacingProperty
+        Attributes.defineBindableFloat Grid.RowSpacingProperty
 
     let ColumnSpan =
-        Attributes.defineBindable<int> Grid.ColumnSpanProperty
+        Attributes.defineBindableInt Grid.ColumnSpanProperty
 
     let RowSpan =
-        Attributes.defineBindable<int> Grid.RowSpanProperty
+        Attributes.defineBindableInt Grid.RowSpanProperty
 
 [<AutoOpen>]
 module GridBuilders =

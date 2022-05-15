@@ -15,7 +15,7 @@ module Entry =
         Attributes.defineBindable<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
     let CursorPosition =
-        Attributes.defineBindable<int> Entry.CursorPositionProperty
+        Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
         Attributes.defineBindable<FontAttributes> Entry.FontAttributesProperty
@@ -24,32 +24,33 @@ module Entry =
         Attributes.defineBindable<string> Entry.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Entry.FontSizeProperty
+        Attributes.defineBindableFloat Entry.FontSizeProperty
 
     let HorizontalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Entry.HorizontalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> Entry.HorizontalTextAlignmentProperty
 
     let IsPassword =
-        Attributes.defineBindable<bool> Entry.IsPasswordProperty
+        Attributes.defineBindableBool Entry.IsPasswordProperty
 
     let IsTextPredictionEnabled =
-        Attributes.defineBindable<bool> Entry.IsTextPredictionEnabledProperty
+        Attributes.defineBindableBool Entry.IsTextPredictionEnabledProperty
 
     let ReturnType =
-        Attributes.defineBindable<ReturnType> Entry.ReturnTypeProperty
+        Attributes.defineBindableEnum<ReturnType> Entry.ReturnTypeProperty
 
     let SelectionLength =
-        Attributes.defineBindable<int> Entry.SelectionLengthProperty
+        Attributes.defineBindableInt Entry.SelectionLengthProperty
 
     let VerticalTextAlignment =
-        Attributes.defineBindable<TextAlignment> Entry.VerticalTextAlignmentProperty
+        Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
 
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.define<Color>
+        Attributes.defineSmallScalar<Color>
             "Entry_CursorColor"
+            SmallScalars.Color.decode
             (fun _ newValueOpt node ->
                 let entry = node.Target :?> Entry
 

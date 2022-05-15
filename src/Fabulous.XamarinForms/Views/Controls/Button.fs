@@ -16,16 +16,16 @@ module Button =
         Attributes.defineAppThemeBindable<Color> Button.BorderColorProperty
 
     let BorderWidth =
-        Attributes.defineBindable<float> Button.BorderWidthProperty
+        Attributes.defineBindableFloat Button.BorderWidthProperty
 
     let CharacterSpacing =
-        Attributes.defineBindable<float> Button.CharacterSpacingProperty
+        Attributes.defineBindableFloat Button.CharacterSpacingProperty
 
     let ContentLayout =
         Attributes.defineBindable<Xamarin.Forms.Button.ButtonContentLayout> Button.ContentLayoutProperty
 
     let CornerRadius =
-        Attributes.defineBindable<int> Button.CornerRadiusProperty
+        Attributes.defineBindableInt Button.CornerRadiusProperty
 
     let FontAttributes =
         Attributes.defineBindable<Xamarin.Forms.FontAttributes> Button.FontAttributesProperty
@@ -34,7 +34,7 @@ module Button =
         Attributes.defineBindable<string> Button.FontFamilyProperty
 
     let FontSize =
-        Attributes.defineBindable<float> Button.FontSizeProperty
+        Attributes.defineBindableFloat Button.FontSizeProperty
 
     let ImageSource =
         Attributes.defineAppThemeBindable<ImageSource> Button.ImageSourceProperty

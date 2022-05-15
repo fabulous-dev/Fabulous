@@ -10,13 +10,13 @@ module RotateTransform =
     let WidgetKey = Widgets.register<RotateTransform>()
 
     let Angle =
-        Attributes.defineBindable<float> RotateTransform.AngleProperty
+        Attributes.defineBindableFloat RotateTransform.AngleProperty
 
     let CenterX =
-        Attributes.defineBindable<float> RotateTransform.CenterXProperty
+        Attributes.defineBindableFloat RotateTransform.CenterXProperty
 
     let CenterY =
-        Attributes.defineBindable<float> RotateTransform.CenterYProperty
+        Attributes.defineBindableFloat RotateTransform.CenterYProperty
 
 [<AutoOpen>]
 module RotateTransformBuilders =

@@ -12,7 +12,7 @@ module DragGestureRecognizer =
         Widgets.register<DragGestureRecognizer>()
 
     let CanDrag =
-        Attributes.defineBindable<bool> DragGestureRecognizer.CanDragProperty
+        Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
 
     let DragStarting =
         Attributes.defineEvent<DragStartingEventArgs>

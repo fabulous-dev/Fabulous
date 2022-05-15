@@ -9,10 +9,10 @@ type IVisualElement =
 
 module VisualElement =
     let AnchorX =
-        Attributes.defineBindable<float> VisualElement.AnchorXProperty
+        Attributes.defineBindableFloat VisualElement.AnchorXProperty
 
     let AnchorY =
-        Attributes.defineBindable<float> VisualElement.AnchorYProperty
+        Attributes.defineBindableFloat VisualElement.AnchorYProperty
 
     let BackgroundColor =
         Attributes.defineAppThemeBindable<Color> VisualElement.BackgroundColorProperty
@@ -24,61 +24,61 @@ module VisualElement =
         Attributes.defineBindableWidget VisualElement.ClipProperty
 
     let FlowDirection =
-        Attributes.defineBindable<FlowDirection> VisualElement.FlowDirectionProperty
+        Attributes.defineBindableEnum<FlowDirection> VisualElement.FlowDirectionProperty
 
     let HeightRequest =
-        Attributes.defineBindable<float> VisualElement.HeightRequestProperty
+        Attributes.defineBindableFloat VisualElement.HeightRequestProperty
 
     let WidthRequest =
-        Attributes.defineBindable<float> VisualElement.WidthRequestProperty
+        Attributes.defineBindableFloat VisualElement.WidthRequestProperty
 
     let InputTransparent =
-        Attributes.defineBindable<bool> VisualElement.InputTransparentProperty
+        Attributes.defineBindableBool VisualElement.InputTransparentProperty
 
     let IsEnabled =
-        Attributes.defineBindable<bool> VisualElement.IsEnabledProperty
+        Attributes.defineBindableBool VisualElement.IsEnabledProperty
 
     let IsTabStop =
-        Attributes.defineBindable<bool> VisualElement.IsTabStopProperty
+        Attributes.defineBindableBool VisualElement.IsTabStopProperty
 
     let IsVisible =
-        Attributes.defineBindable<bool> VisualElement.IsVisibleProperty
+        Attributes.defineBindableBool VisualElement.IsVisibleProperty
 
     let MinimumHeightRequest =
-        Attributes.defineBindable<float> VisualElement.MinimumHeightRequestProperty
+        Attributes.defineBindableFloat VisualElement.MinimumHeightRequestProperty
 
     let MinimumWidthRequest =
-        Attributes.defineBindable<float> VisualElement.MinimumWidthRequestProperty
+        Attributes.defineBindableFloat VisualElement.MinimumWidthRequestProperty
 
     let Opacity =
-        Attributes.defineBindable<float> VisualElement.OpacityProperty
+        Attributes.defineBindableFloat VisualElement.OpacityProperty
 
     let Rotation =
-        Attributes.defineBindable<float> VisualElement.RotationProperty
+        Attributes.defineBindableFloat VisualElement.RotationProperty
 
     let RotationX =
-        Attributes.defineBindable<float> VisualElement.RotationXProperty
+        Attributes.defineBindableFloat VisualElement.RotationXProperty
 
     let RotationY =
-        Attributes.defineBindable<float> VisualElement.RotationYProperty
+        Attributes.defineBindableFloat VisualElement.RotationYProperty
 
     let Scale =
-        Attributes.defineBindable<float> VisualElement.ScaleProperty
+        Attributes.defineBindableFloat VisualElement.ScaleProperty
 
     let ScaleX =
-        Attributes.defineBindable<float> VisualElement.ScaleXProperty
+        Attributes.defineBindableFloat VisualElement.ScaleXProperty
 
     let ScaleY =
-        Attributes.defineBindable<float> VisualElement.ScaleYProperty
+        Attributes.defineBindableFloat VisualElement.ScaleYProperty
 
     let TabIndex =
-        Attributes.defineBindable<int> VisualElement.TabIndexProperty
+        Attributes.defineBindableInt VisualElement.TabIndexProperty
 
     let TranslationX =
-        Attributes.defineBindable<float> VisualElement.TranslationXProperty
+        Attributes.defineBindableFloat VisualElement.TranslationXProperty
 
     let TranslationY =
-        Attributes.defineBindable<float> VisualElement.TranslationYProperty
+        Attributes.defineBindableFloat VisualElement.TranslationYProperty
 
     let Visual =
         Attributes.defineBindable<IVisual> VisualElement.VisualProperty

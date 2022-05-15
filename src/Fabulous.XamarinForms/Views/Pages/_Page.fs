@@ -18,7 +18,7 @@ module Page =
         Attributes.defineAppThemeBindable<ImageSource> Page.IconImageSourceProperty
 
     let IsBusy =
-        Attributes.defineBindable<bool> Page.IsBusyProperty
+        Attributes.defineBindableBool Page.IsBusyProperty
 
     let Padding =
         Attributes.defineBindable<Thickness> Page.PaddingProperty

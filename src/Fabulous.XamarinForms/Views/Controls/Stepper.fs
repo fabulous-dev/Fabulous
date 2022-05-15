@@ -11,7 +11,7 @@ module Stepper =
     let WidgetKey = Widgets.register<Stepper>()
 
     let Increment =
-        Attributes.defineBindable<float> Stepper.IncrementProperty
+        Attributes.defineBindableFloat Stepper.IncrementProperty
 
     let MinimumMaximum =
         Attributes.define<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax

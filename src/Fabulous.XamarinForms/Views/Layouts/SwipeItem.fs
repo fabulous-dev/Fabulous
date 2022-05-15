@@ -15,7 +15,7 @@ module SwipeItem =
         Attributes.defineAppThemeBindable<Color> SwipeItem.BackgroundColorProperty
 
     let IsVisible =
-        Attributes.defineBindable<bool> SwipeItem.IsVisibleProperty
+        Attributes.defineBindableBool SwipeItem.IsVisibleProperty
 
     let Clicked =
         Attributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)

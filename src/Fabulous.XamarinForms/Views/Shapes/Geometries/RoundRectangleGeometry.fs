@@ -14,7 +14,7 @@ module RoundRectangleGeometry =
         Widgets.register<RoundRectangleGeometry>()
 
     let CornerRadius =
-        Attributes.defineBindable<float> RoundRectangleGeometry.CornerRadiusProperty
+        Attributes.defineBindableFloat RoundRectangleGeometry.CornerRadiusProperty
 
     let Rect =
         Attributes.defineBindable<Rect> RoundRectangleGeometry.RectProperty
