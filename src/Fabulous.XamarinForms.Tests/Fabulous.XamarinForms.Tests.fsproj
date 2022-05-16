@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Generators.fs" />
+        <Compile Include="AttributesTests.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FsCheck.NUnit" Version="2.16.4" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    </ItemGroup>
+</Project>
