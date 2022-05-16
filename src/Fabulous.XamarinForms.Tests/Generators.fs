@@ -25,4 +25,5 @@ type Generators =
 
 [<SetUpFixture>]
 type Setup() =
+    [<OneTimeSetUp>]
     member _.Setup() = do Arb.register<Generators>() |> ignore
