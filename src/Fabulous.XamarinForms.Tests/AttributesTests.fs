@@ -25,8 +25,8 @@ type ``Small scalar encode tests``() =
 
         // We lose a bit of accuracy when encoding/decoding colors, so we account for that here
         let assertWithin expected actual =
-            Assert.GreaterOrEqual(actual, expected * 0.999)
-            Assert.LessOrEqual(actual, expected * 1.001)
+            Assert.GreaterOrEqual(actual, expected * 0.995)
+            Assert.LessOrEqual(actual, expected * 1.005)
 
         assertWithin value.R decoded.R
         assertWithin value.G decoded.G
