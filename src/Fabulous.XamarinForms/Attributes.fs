@@ -62,9 +62,9 @@ module SmallScalars =
 
         let inline decode (encoded: uint64) : LayoutOptions =
             let alignment =
-                enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFF00000000UL) >>> 4))
+                enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFFFFFFFFF0UL) >>> 4))
 
-            let expands = (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
+            let expands = (encoded &&& 0x000000000000000FUL) = 1UL
 
             LayoutOptions(alignment, expands)
 
