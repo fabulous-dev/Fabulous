@@ -34,19 +34,22 @@ module SmallScalars =
     /// That being said, it is a lossy conversion
     module Color =
         let inline encode (v: Color) : uint64 =
-            let r = uint64(uint16(v.R * 65535.0)) <<< 6
-            let g = uint64(uint16(v.G * 65535.0)) <<< 4
-            let b = uint64(uint16(v.B * 65535.0)) <<< 2
+            let r = uint64(uint16(v.R * 65535.0)) <<< 48
+            let g = uint64(uint16(v.G * 65535.0)) <<< 32
+            let b = uint64(uint16(v.B * 65535.0)) <<< 16
             let a = uint64(uint16(v.A * 65535.0))
 
             r ||| g ||| b ||| a
 
         let inline decode (encoded: uint64) : Color =
-            let r = (encoded &&& 0xFFFF000000000000UL) >>> 6
+            let r =
+                (encoded &&& 0xFFFF000000000000UL) >>> 48
 
-            let g = (encoded &&& 0x0000FFFF00000000UL) >>> 4
+            let g =
+                (encoded &&& 0x0000FFFF00000000UL) >>> 32
 
-            let b = (encoded &&& 0x00000000FFFF0000UL) >>> 2
+            let b =
+                (encoded &&& 0x00000000FFFF0000UL) >>> 16
 
             let a = (encoded &&& 0x000000000000FFFFUL)
             let inline toFloat value = (float value) / 65535.0
@@ -58,13 +61,13 @@ module SmallScalars =
 
             let expands: uint64 = if v.Expands then 1UL else 0UL
 
-            (alignment <<< 4) ||| expands
+            (alignment <<< 32) ||| expands
 
         let inline decode (encoded: uint64) : LayoutOptions =
             let alignment =
-                enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFFFFFFFFF0UL) >>> 4))
+                enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFF00000000UL) >>> 32))
 
-            let expands = (encoded &&& 0x000000000000000FUL) = 1UL
+            let expands = (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
 
             LayoutOptions(alignment, expands)
 
