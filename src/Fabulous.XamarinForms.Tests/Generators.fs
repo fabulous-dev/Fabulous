@@ -17,11 +17,28 @@ module SmallScalarGenerators =
             return LayoutOptions(layoutAlignment, expands)
         }
 
+    let colorGenerator =
+        gen {
+            let colorGen =
+                Arb.generate<float>
+                |> Gen.where(fun x -> x >= 0.0 && x <= 1.0)
+
+            let! red = colorGen
+            let! green = colorGen
+            let! blue = colorGen
+            let! alpha = colorGen
+            return Color(red, green, blue, alpha)
+        }
+
 type Generators =
     static member LayoutOptions() =
         { new Arbitrary<LayoutOptions>() with
             member this.Generator =
                 SmallScalarGenerators.layoutOptionsGenerator }
+
+    static member Color() =
+        { new Arbitrary<Color>() with
+            member this.Generator = SmallScalarGenerators.colorGenerator }
 
 [<SetUpFixture>]
 type Setup() =
