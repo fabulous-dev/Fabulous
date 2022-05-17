@@ -81,7 +81,7 @@ module Cmd =
                   with
                   | ex -> dispatch(failure ex)
               }
-              |> ignore ]
+              |> Async.StartImmediate ]
 
     /// Command to issue a message at the end of an asynchronous task
     let ofTaskMsg (p: Task<'msg>) : Cmd<'msg> =
