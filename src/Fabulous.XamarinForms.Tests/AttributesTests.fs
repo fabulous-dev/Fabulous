@@ -28,7 +28,13 @@ type ``Small scalar encode tests``() =
         let assertAsU16 (expected: float) (actual: float) =
             let expectedU16 = uint16(expected * 65535.0)
             let actualU16 = uint16(actual * 65535.0)
-            let lowerBound = if expectedU16 = 0us then 0us else expectedU16 - 1us
+
+            let lowerBound =
+                if expectedU16 = 0us then
+                    0us
+                else
+                    expectedU16 - 1us
+
             Assert.GreaterOrEqual(actualU16, lowerBound)
             Assert.LessOrEqual(actualU16, expectedU16)
 

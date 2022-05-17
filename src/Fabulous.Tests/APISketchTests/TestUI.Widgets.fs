@@ -142,7 +142,7 @@ module TestUI_Widgets =
                 Attributes.NumericBag.InlineValueOne.WithValue(one, (fun x -> x)),
                 Attributes.NumericBag.InlineValueTwo.WithValue(two, (fun x -> x)),
                 //            Attributes.NumericBag.InlineValueOne.WithValue(one, Attributes.func),
-    //            Attributes.NumericBag.InlineValueTwo.WithValue(two, Attributes.func),
+                //            Attributes.NumericBag.InlineValueTwo.WithValue(two, Attributes.func),
                 Attributes.NumericBag.InlineValueThree.WithValue(three, BitConverter.DoubleToUInt64Bits)
             )
 
@@ -246,6 +246,6 @@ module TestUI_Widgets =
 
                 view :?> TestViewElement
 
-    //module View =
-    //    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
-    //        this.MapMsg fn
+//module View =
+//    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+//        this.MapMsg fn
