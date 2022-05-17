@@ -14,4 +14,10 @@ weight: 1
 toc: true
 ---
 
-TBD
+- Brief intro to Fabulous
+- Requirements: dotnet CLI, VS / VS mac / Rider with Xamarin workload
+- Install templates
+- Create a solution from template
+- Open project
+- Quick tour of the template code with very quick MVU explanation
+- Build & run
