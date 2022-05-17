@@ -4,8 +4,7 @@ open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Jobs
 
 open BenchmarkDotNet.Running
-open Tests.TestUI_Attributes.Attributes
-open Tests.TestUI_Widgets
+open Fabulous.Tests.APISketchTests.TestUI_Widgets
 
 open type View
 
