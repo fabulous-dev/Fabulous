@@ -23,12 +23,22 @@ type ``Small scalar encode tests``() =
         let encoded = SmallScalars.Color.encode value
         let decoded = SmallScalars.Color.decode encoded
 
-        // We lose a bit of accuracy when encoding/decoding colors, so we account for that here
-        let assertWithin expected actual =
-            Assert.GreaterOrEqual(actual, expected * 0.995)
-            Assert.LessOrEqual(actual, expected * 1.005)
+        // We lose a bit of accuracy when encoding/decoding colors, so we account for that by comparing only on 16 bits
+        // Because of a rounding loss, we can't be sure that the values are equal, so we'll just check that they're close by 1 bit
+        let assertAsU16 (expected: float) (actual: float) =
+            let expectedU16 = uint16(expected * 65535.0)
+            let actualU16 = uint16(actual * 65535.0)
 
-        assertWithin value.R decoded.R
-        assertWithin value.G decoded.G
-        assertWithin value.B decoded.B
-        assertWithin value.A decoded.A
+            let lowerBound =
+                if expectedU16 = 0us then
+                    0us
+                else
+                    expectedU16 - 1us
+
+            Assert.GreaterOrEqual(actualU16, lowerBound)
+            Assert.LessOrEqual(actualU16, expectedU16)
+
+        assertAsU16 value.R decoded.R
+        assertAsU16 value.G decoded.G
+        assertAsU16 value.B decoded.B
+        assertAsU16 value.A decoded.A

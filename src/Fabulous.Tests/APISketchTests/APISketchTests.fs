@@ -1,35 +1,36 @@
-module Fabulous.Tests.Run
+namespace Fabulous.Tests.APISketchTests
 
 open Fabulous.StackAllocatedCollections
 open NUnit.Framework
 
-open Tests.Platform
-open Tests.TestUI_Widgets
+open Platform
+open TestUI_Widgets
 open Fabulous
 
 open type View
 
+[<AutoOpen>]
+module Helpers =
+    //System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName
 
-//System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName
+    let rec findOptional (root: TestViewElement) (id: string) : TestViewElement option =
+        if root.AutomationId = id then
+            Some root
+        else
+            match root with
+            | :? TestStack as stack ->
+                let children = (stack :> IContainer).Children
 
-let rec findOptional (root: TestViewElement) (id: string) : TestViewElement option =
-    if root.AutomationId = id then
-        Some root
-    else
-        match root with
-        | :? TestStack as stack ->
-            let children = (stack :> IContainer).Children
+                children
+                |> Array.ofSeq
+                |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
 
-            children
-            |> Array.ofSeq
-            |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
+            | _ -> None
 
-        | _ -> None
-
-let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
-    findOptional root id
-    |> Option.defaultWith(fun () -> failwith "not found")
-    :?> 'a
+    let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
+        findOptional root id
+        |> Option.defaultWith(fun () -> failwith "not found")
+        :?> 'a
 
 
 module SimpleLabelTests =
@@ -58,7 +59,7 @@ module SimpleLabelTests =
 
         let instance = Run.Instance program
 
-        let el = (instance.Start())
+        let el = instance.Start()
 
         let label = find<TestLabel> el "label" :> IText
 
@@ -93,7 +94,7 @@ module ButtonTests =
             StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         let btn = find<TestButton> tree "btn"
         let btnText = btn :> IText
@@ -128,7 +129,7 @@ module SimpleStackTests =
         (Stack() {
             yield!
                 model
-                |> List.map(fun (id, text) -> (Label(text).automationId(id.ToString())))
+                |> List.map(fun (id, text) -> Label(text).automationId(id.ToString()))
          })
             .automationId("stack")
 
@@ -142,7 +143,7 @@ module SimpleStackTests =
 
         let instance = Run.Instance program
 
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         let stack =
             find<TestStack> tree "stack" :> IContainer
@@ -197,7 +198,7 @@ module ComputationExpressionTest =
 
     [<Test>]
     let JustValue () =
-        let view model =
+        let view _ =
             // requires implemented "Yield"
             Stack() { Button("inc", Inc).automationId("inc") }
 
@@ -205,7 +206,7 @@ module ComputationExpressionTest =
             StatefulWidget.mkSimpleView(fun () -> 0) update view
             |> Run.Instance
 
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         let btn = find<TestButton> tree "inc" :> IText
 
@@ -229,7 +230,7 @@ module ComputationExpressionTest =
             StatefulWidget.mkSimpleView(fun () -> 0) update view
             |> Run.Instance
 
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         let stack =
             find<TestStack> tree "stack" :> IContainer
@@ -268,7 +269,7 @@ module ComputationExpressionTest =
             StatefulWidget.mkSimpleView(fun () -> count) update view
             |> Run.Instance
 
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         for i in 0 .. count do
             let label =
@@ -292,7 +293,7 @@ module ComputationExpressionTest =
             StatefulWidget.mkSimpleView(fun () -> count) update view
             |> Run.Instance
 
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         for i in 0 .. count do
             let label =
@@ -342,7 +343,7 @@ module MapViewTests =
             StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
-        let tree = (instance.Start())
+        let tree = instance.Start()
 
         let addBtn = find<TestButton> tree "add"
 
@@ -399,7 +400,7 @@ module MemoTests =
                 StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
-            let tree = (instance.Start())
+            let tree = instance.Start()
 
             // executed just once to construct the tree
             Assert.AreEqual(1, renderCount)
@@ -453,7 +454,7 @@ module MemoTests =
                 StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
-            let tree = (instance.Start())
+            let tree = instance.Start()
 
             let stack =
                 find<TestStack> tree "stack" :> IContainer
@@ -516,7 +517,7 @@ module MemoTests =
                 StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
-            let tree = (instance.Start())
+            let tree = instance.Start()
 
             let label = find<TestLabel> tree "label"
             Assert.AreEqual([ TextSet "one"; ColorSet "blue" ], label.changeList)
@@ -562,7 +563,7 @@ module SmallScalars =
 
         let instance = Run.Instance program
 
-        let el = (instance.Start())
+        let el = instance.Start()
 
         let numbers = find<TestNumericBag> el "numbers"
 
@@ -708,7 +709,7 @@ module Issue104 =
             StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
-        let tree = instance.Start()
+        let _ = instance.Start()
 
         instance.ProcessMessage(Toggle)
 
