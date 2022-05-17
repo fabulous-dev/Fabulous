@@ -5,15 +5,18 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="TestUI.Platform.fs" />
-        <Compile Include="TestUI.ViewNode.fs" />
-        <Compile Include="TestUI.ViewUpdaters.fs" />
-        <Compile Include="TestUI.Attributes.fs" />
-        <Compile Include="TestUI.Widgets.fs" />
-        <Compile Include="APISketchTests.fs" />
+        <Compile Include="APISketchTests\TestUI.Platform.fs" />
+        <Compile Include="APISketchTests\TestUI.ViewNode.fs" />
+        <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
+        <Compile Include="APISketchTests\TestUI.Attributes.fs" />
+        <Compile Include="APISketchTests\TestUI.Widgets.fs" />
+        <Compile Include="APISketchTests\APISketchTests.fs" />
+        <Compile Include="Generators.fs" />
+        <Compile Include="AttributesTests.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+        <PackageReference Include="FsCheck.NUnit" Version="2.16.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
