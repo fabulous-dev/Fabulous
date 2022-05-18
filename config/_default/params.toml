@@ -36,7 +36,7 @@ schemaImageWidth = 1280
 schemaImageHeight = 640
 schemaTwitter = "https://twitter.com/Tim_Lariviere"
 schemaLinkedIn = ""
-schemaGitHub = "https://github.com/Tim_Lariviere/Fabulous-new"
+schemaGitHub = "https://github.com/fsprojects/Fabulous"
 schemaSection = "blog"
 
 ## Sitelinks Search Box
@@ -67,7 +67,7 @@ alertDismissable = true
 # repoHost [Github | Gitea | GitLab | Bitbucket | BitbucketServer ] is used for building the edit link based on git hoster
 repoHost = "GitHub"
 #repoHost = "Gitea"
-docsRepo = "https://github.com/TimLariviere/Fabulous-new"
+docsRepo = "https://github.com/fsprojects/Fabulous"
 docsRepoBranch = "main"
 docsRepoSubPath = ""
 editPage = true

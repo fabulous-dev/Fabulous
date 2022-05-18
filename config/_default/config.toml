@@ -1,4 +1,4 @@
-baseurl = "https://timothelariviere.com/Fabulous-new/"
+baseurl = "https://docs.fabulous.dev/"
 canonifyURLs = true
 disableAliases = true
 disableHugoGeneratorInject = true
