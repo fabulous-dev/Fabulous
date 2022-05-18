@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fsprojects.github.io/Fabulous/sitemap.xml
+Sitemap: https://docs.fabulous.dev/sitemap.xml
