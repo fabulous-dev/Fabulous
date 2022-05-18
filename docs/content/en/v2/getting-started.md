@@ -23,7 +23,7 @@ Working with Fabulous requires a few different tools:
   - Visual Studio 2019 for Mac or newer ([link](https://visualstudio.microsoft.com/vs/mac/))
   - JetBrains Rider ([link](https://www.jetbrains.com/rider/) - Windows and macOS)  
 - During installation, you will be asked to choose the workloads you want. Be sure to select the mobile development workload and F#.  
-  Note if you choose JetBrains Rider, you will also need to install either VS or VS Mac since Rider doesn't install workloads.
+  Note if you choose JetBrains Rider, you will also need to install either VS or VS Mac since Rider doesn't install those workloads.
 
 ## Creating a new Fabulous project
 
