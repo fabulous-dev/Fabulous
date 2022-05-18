@@ -1,6 +1,6 @@
 # <img src="logo/logo-title.png" height="120px" alt="Fabulous" />
 
-*F# Functional App Development, using declarative dynamic UI.*
+*F# Functional App Development, using declarative dynamic UI*
 
 [![.NET](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml/badge.svg)](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
 
@@ -10,7 +10,7 @@ Fabulous allows you to combine the power of functional programming and the simpl
 
 ## Documentation
 
-See also the [goals](https://fsprojects.github.io/Fabulous/docs/v2/architecture/goals-of-v2/) for the future of Fabulous v2.
+See also the [goals](https://docs.fabulous.dev/docs/v2/architecture/goals-of-v2/) for the future of Fabulous v2.
 
 ## About Fabulous
 
