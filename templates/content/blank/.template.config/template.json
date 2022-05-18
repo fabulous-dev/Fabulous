@@ -2,12 +2,11 @@
     "author": "fsprojects",
     "classifications": [
       "Fabulous",
-      "Xamarin.Forms",
-      "Mono"
+      "Xamarin.Forms"
     ],
-    "name": "Fabulous XF Mono",
-    "groupIdentity": "Fabulous.XamarinForms.App.Mono",
-    "identity": "Fabulous.XamarinForms.Mono",
+    "name": "Fabulous XF Blank",
+    "groupIdentity": "Fabulous.XamarinForms.App.Blank",
+    "identity": "Fabulous.XamarinForms.Blank",
     "shortName": "fabulous-xf",
     "tags": {
       "language": "F#",
