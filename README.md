@@ -10,7 +10,7 @@ Fabulous allows you to combine the power of functional programming and the simpl
 
 ## Documentation
 
-See also the [goals](docs/goals-of-v2.md) for the future of Fabulous v2.
+See also the [goals](https://fsprojects.github.io/Fabulous/docs/v2/architecture/goals-of-v2/) for the future of Fabulous v2.
 
 ## About Fabulous
 
