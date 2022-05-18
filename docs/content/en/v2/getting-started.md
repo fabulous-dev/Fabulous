@@ -36,7 +36,7 @@ Open a terminal in the folder where you want to store the new solution, and type
 dotnet new -i Fabulous.XamarinForms.Templates
 ```
 
-This will add `fabulous-xf-app` to the templates available for `dotnet new`.
+This will add Fabulous.XamarinForms to the templates available for `dotnet new`.
 
 ```sh
 dotnet new --list
@@ -49,7 +49,7 @@ dotnet new --list
 Now, we can create the solution using the newly installed template:
 
 ```sh
-dotnet new fabulous-xf-app -n FabHelloWorld
+dotnet new fabulous-xf -n FabHelloWorld
 ```
 
 TBD: Show what it looks like in an IDE
@@ -59,6 +59,59 @@ TBD: Show what it looks like in an IDE
 TBD: Show the selection of Debug|AnyCPU + Android project vs Debug|iPhone/iPhoneSimulator + iOS Project to debug  
 TBD: Show interaction with the default app
 
+![Selecting Android for debugging](android-debug.png)
+![Selecting iPhoneSimulator for debugging](iphone-simulator-debug.png)
+![Selecting iPhone for debugging](iphone-debug.png)
+
 ## Understanding the default structure
 
 TBD: Give a quick tour of the code with a very quick MVU explanation
+
+```fs
+type Model =
+    { Count: int }
+
+type Msg =
+    | Increment
+    | Decrement
+```
+
+```fs
+let init () =
+    { Count = 0 }
+```
+
+```fs
+let update msg model =
+    match msg with
+    | Increment -> { model with Count = model.Count + 1 }
+    | Decrement -> { model with Count = model.Count - 1 }
+```
+
+```fs
+let view model =
+    Application(
+        ContentPage(
+            "FabHelloWorld",
+            VStack() {
+                Label("Hello from Fabulous v2!")
+                    .font(namedSize = NamedSize.Title)
+                    .centerTextHorizontal()
+
+                (VStack() {
+                    Label($"Count is {model.Count}")
+                        .centerTextHorizontal()
+
+                    Button("Increment", Increment)
+                    Button("Decrement", Decrement)
+                  })
+                    .centerVertical(expand = true)
+            }
+        )
+    )
+```
+
+```fs
+let program =
+    Program.statefulApplication init update view
+```
