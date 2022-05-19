@@ -21,7 +21,7 @@ Working with Fabulous requires a few different tools:
 - A compatible IDE:
   - Visual Studio 2021 or newer ([link](https://visualstudio.microsoft.com/vs/))
   - Visual Studio 2019 for Mac or newer ([link](https://visualstudio.microsoft.com/vs/mac/))
-  - JetBrains Rider ([link](https://www.jetbrains.com/rider/) - Windows and macOS)  
+  - JetBrains Rider ([link](https://www.jetbrains.com/rider/) - available for Windows and macOS)  
 - During installation, you will be asked to choose the workloads you want. Be sure to select the mobile development workload and F#.  
   Note if you choose JetBrains Rider, you will also need to install either VS or VS Mac since Rider doesn't install those workloads.
 
@@ -52,34 +52,63 @@ Now, we can create the solution using the newly installed template:
 dotnet new fabulous-xf -n FabHelloWorld
 ```
 
-TBD: Show what it looks like in an IDE
-
 ### 3) Build and run
 
-TBD: Show the selection of Debug|AnyCPU + Android project vs Debug|iPhone/iPhoneSimulator + iOS Project to debug  
-TBD: Show interaction with the default app
+Depending on your favorite IDE, you will be able to choose the configuration profile, the project to start and the device or simulator to use.
+
+#### Debugging on Android device or emulator
+
+For debugging Android, select Android project and the profile `Debug | Any CPU`, then select any device or emulator you want.
 
 ![Selecting Android for debugging](android-debug.png)
-![Selecting iPhoneSimulator for debugging](iphone-simulator-debug.png)
+
+#### Debugging on a iPhone device
+
+For debugging iOS on a real iPhone device, select the iOS project and the profile `Debug | iPhone`, then select any connected device you want.
+
 ![Selecting iPhone for debugging](iphone-debug.png)
 
-## Understanding the default structure
+#### Debugging on an iPhone simulator
+
+For debugging iOS on a simulator, select the iOS project and the profile `Debug | iPhoneSimulator`, then select any simulator you want.
+
+![Selecting iPhoneSimulator for debugging](iphone-simulator-debug.png)
+
+Once you made your choice, you can starting debugging like usual and the app will launch.
+
+![Interacting with the Hello World application](hello-world.gif)
+
+## Understanding the project structure
+
+Fabulous implements the MVU design pattern. MVU stands for Model-Update-View.
 
 TBD: Give a quick tour of the code with a very quick MVU explanation
+
+In the blank template, you will find everything inside the `App.fs` file of the `FabHelloWorld` shared project.
+
+The `Model` type defines the application state. You can store any value you need for the lifetime of the application inside it.
 
 ```fs
 type Model =
     { Count: int }
+```
 
+The `Msg` discriminated union lets you define all events that will change the current application state.
+
+```fs
 type Msg =
     | Increment
     | Decrement
 ```
 
+`init` is a function called at the start of the application to get the default application state.
+
 ```fs
 let init () =
     { Count = 0 }
 ```
+
+`update` is a function called whenever a `Msg` is received. Inside you can update the current `Model` to change the application state.
 
 ```fs
 let update msg model =
@@ -87,6 +116,9 @@ let update msg model =
     | Increment -> { model with Count = model.Count + 1 }
     | Decrement -> { model with Count = model.Count - 1 }
 ```
+
+`view` is a function returning a view description for the current `Model`.  
+You can notice that controls that can be interacted with can dispatch a `Msg`, e.g. `Button("Increment", Increment)`.
 
 ```fs
 let view model =
@@ -110,6 +142,8 @@ let view model =
         )
     )
 ```
+
+`Program.statefulApplication` bootstraps your Fabulous application by linking together the 3 functions `init`, `update` and `view`.
 
 ```fs
 let program =
