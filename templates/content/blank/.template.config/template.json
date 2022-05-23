@@ -2,12 +2,11 @@
     "author": "fsprojects",
     "classifications": [
       "Fabulous",
-      "Xamarin.Forms",
-      "Mono"
+      "Xamarin.Forms"
     ],
-    "name": "Fabulous XF Mono",
-    "groupIdentity": "Fabulous.XamarinForms.App.Mono",
-    "identity": "Fabulous.XamarinForms.Mono",
+    "name": "Fabulous XF Blank",
+    "groupIdentity": "Fabulous.XamarinForms.App.Blank",
+    "identity": "Fabulous.XamarinForms.Blank",
     "shortName": "fabulous-xf",
     "tags": {
       "language": "F#",
@@ -26,14 +25,6 @@
     "defaultName": "App",
     "preferNameDirectory": "true",
     "postActions": [
-      {
-        "description": "Manual actions required",
-        "manualInstructions": [{
-          "text": "This template uses nightly builds from the GitHub repo. Please follow instructions at https://timothelariviere.com/Fabulous-new//userguide/using-nightly-builds.html"
-        }],
-        "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
-        "continueOnError": true
-      }
     ],
     "guids": [
       "99E19497-29A6-4B77-B773-BEC55F9B55DC",
