@@ -36,6 +36,9 @@ module ViewHelpers =
         else
             false
 
+    let traceException (ex: exn) =
+        Trace.WriteLine("Exception: {0}", $"%0A{ex}")
+
 module Program =
     let inline private define
         (init: 'arg -> 'model * Cmd<'msg>)
@@ -46,7 +49,8 @@ module Program =
           Update = (fun (msg, model) -> update msg model)
           View = fun model -> (view model).Compile()
           CanReuseView = ViewHelpers.canReuseView
-          SyncAction = Device.BeginInvokeOnMainThread }
+          SyncAction = Device.BeginInvokeOnMainThread
+          OnException = ViewHelpers.traceException }
 
     let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
         define(fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
@@ -85,44 +89,49 @@ module Program =
         adapter.CreateView() |> unbox
 
     /// Trace all the updates to the debug output.
-    let withDebugTrace (program: Program<'arg, 'model, 'msg>) =
+    let withTrace (program: Program<'arg, 'model, 'msg>) =
         let traceInit arg =
             try
                 let initModel, cmd = program.Init(arg)
-                //Debug.Print("Initial model: {0}", $"%0A{initModel}")
+                Trace.WriteLine("Initial model: {0}", $"%0A{initModel}")
                 initModel, cmd
             with
             | e ->
-                Debug.Print("Error in init function: {0}", $"%0A{e}")
+                Trace.WriteLine("Error in init function: {0}", $"%0A{e}")
                 reraise()
 
         let traceUpdate (msg, model) =
-            Debug.Print("Message: {0}", $"%0A{msg}")
+            Trace.WriteLine("Message: {0}", $"%0A{msg}")
 
             try
                 let newModel, cmd = program.Update(msg, model)
-                //Debug.Print("Updated model: {0}", $"%0A{newModel}")
+                Trace.WriteLine("Updated model: {0}", $"%0A{newModel}")
                 newModel, cmd
             with
             | e ->
-                Debug.Print("Error in model function: {0}", $"%0A{e}")
+                Trace.WriteLine("Error in model function: {0}", $"%0A{e}")
                 reraise()
 
         let traceView model =
-            //Debug.Print("View, model = {0}", $"%0A{model}")
+            Trace.WriteLine("View, model = {0}", $"%0A{model}")
+
             try
                 let info = program.View(model)
-                //Debug.Print("View result: {0}", $"%0A{info}")
+                Trace.WriteLine("View result: {0}", $"%0A{info}")
                 info
             with
             | e ->
-                Debug.Print("Error in view function: {0}", $"%0A{e}")
+                Trace.WriteLine("Error in view function: {0}", $"%0A{e}")
                 reraise()
 
         { program with
               Init = traceInit
               Update = traceUpdate
               View = traceView }
+
+    let withExceptionHandler (onException: exn -> unit) (program: Program<'arg, 'model, 'msg>) =
+        { program with
+              OnException = onException }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =
