@@ -16,14 +16,15 @@ toc: true
 
 ## Requirements
 
-Working with Fabulous requires a few different tools:
+You will need to install a few different tools to work with Fabulous:
 - .NET 6.0 SDK or newer ([link](https://dotnet.microsoft.com/))
 - A compatible IDE:
   - Visual Studio 2021 or newer ([link](https://visualstudio.microsoft.com/vs/))
   - Visual Studio 2019 for Mac or newer ([link](https://visualstudio.microsoft.com/vs/mac/))
   - JetBrains Rider ([link](https://www.jetbrains.com/rider/) - available for Windows and macOS)  
-- During installation, you will be asked to choose the workloads you want. Be sure to select the mobile development workload and F#.  
-  Note if you choose JetBrains Rider, you will also need to install either VS or VS Mac since Rider doesn't install those workloads.
+- During installation, you will be asked to choose the workloads you want. Be sure to select the mobile development workload and F#.
+
+_Note: if you choose JetBrains Rider, you will also need to install either Visual Studio or Visual Studio Mac since Rider won't install those workloads by itself._
 
 ## Creating a new Fabulous project
 
@@ -54,7 +55,7 @@ dotnet new fabulous-xf -n FabHelloWorld
 
 ### 3) Build and run
 
-Depending on your favorite IDE, you will be able to choose the configuration profile, the project to start and the device or simulator to use.
+In your IDE, you will be able to choose the configuration profile, the project to start and the device or simulator to use.
 
 #### Debugging on Android device or emulator
 
@@ -74,15 +75,33 @@ For debugging iOS on a simulator, select the iOS project and the profile `Debug 
 
 ![Selecting iPhoneSimulator for debugging](iphone-simulator-debug.png)
 
-Once you made your choice, you can starting debugging like usual and the app will launch.
+You can start debugging like usual and the app will launch.
 
 ![Interacting with the Hello World application](hello-world.gif)
 
 ## Understanding the project structure
 
-Fabulous implements the MVU design pattern. MVU stands for Model-Update-View.
+Fabulous implements the MVU design pattern. MVU stands for Model-View-Update.
 
-TBD: Give a quick tour of the code with a very quick MVU explanation
+![Diagram explaining the MVU cycle](MVU.png)
+
+_Credits: Beginnnig Elm - https://elmprogramming.com_
+
+MVU is a simple state machine for making reliable UI applications.
+
+We have a `Model` storing the state of the application.  
+This state is immutable, it can only be mutated during the evaluation of the `update` function.  
+This is done to help prevent side effects from making your app unstable.
+
+To trigger an update, we have `Msg` (messages) that are dispatched from the user interface or from internal subscriptions (like a timer).  
+Upon dispatch, Fabulous will call the `update` function to know how the state will change.
+
+Everytime the state changes, Fabulous will also call the `view` function.  
+This function returns a virtual view (much like Virtual Dom if you're used to React) that Fabulous will compare with the current UI to determine which changes to make. Thus we can understand the UI as a function of the state, like shown in this image:
+
+![UI equals function of state](ui-equals-function-of-state.png)
+
+_Credits: Flutter docs - [Start thinking declaratively](https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative)_
 
 In the blank template, you will find everything inside the `App.fs` file of the `FabHelloWorld` shared project.
 
@@ -93,7 +112,7 @@ type Model =
     { Count: int }
 ```
 
-The `Msg` discriminated union lets you define all events that will change the current application state.
+The `Msg` discriminated union lets you define all events that will change the application state.
 
 ```fs
 type Msg =
@@ -136,7 +155,7 @@ let view model =
 
                     Button("Increment", Increment)
                     Button("Decrement", Decrement)
-                  })
+                })
                     .centerVertical(expand = true)
             }
         )
