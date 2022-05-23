@@ -164,12 +164,12 @@ module ViewAdapters =
 
                     let node = getViewNode _root
 
-                    syncAction(fun () ->
-                        try
-                            Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
-                        with
-                        | ex -> onException(ex)
-                    )
+                    syncAction
+                        (fun () ->
+                            try
+                                Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
+                            with
+                            | ex -> onException(ex))
             with
             | ex -> onException(ex)
 
