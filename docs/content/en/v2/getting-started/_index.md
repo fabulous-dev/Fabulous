@@ -17,6 +17,7 @@ toc: true
 ## Requirements
 
 You will need to install a few different tools to work with Fabulous:
+
 - .NET 6.0 SDK or newer ([link](https://dotnet.microsoft.com/))
 - A compatible IDE:
   - Visual Studio 2021 or newer ([link](https://visualstudio.microsoft.com/vs/))
@@ -84,7 +85,6 @@ You can start debugging like usual and the app will launch.
 Fabulous implements the MVU design pattern. MVU stands for Model-View-Update.
 
 ![Diagram explaining the MVU cycle](MVU.png)
-
 _Credits: Beginnnig Elm - https://elmprogramming.com_
 
 MVU is a simple state machine for making reliable UI applications.
@@ -100,7 +100,6 @@ Everytime the state changes, Fabulous will also call the `view` function.
 This function returns a virtual view (much like Virtual Dom if you're used to React) that Fabulous will compare with the current UI to determine which changes to make. Thus we can understand the UI as a function of the state, like shown in this image:
 
 ![UI equals function of state](ui-equals-function-of-state.png)
-
 _Credits: Flutter docs - [Start thinking declaratively](https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative)_
 
 In the blank template, you will find everything inside the `App.fs` file of the `FabHelloWorld` shared project.
