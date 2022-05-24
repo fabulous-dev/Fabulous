@@ -18,7 +18,7 @@ module GeometryGroup =
             (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
 
     let FillRule =
-        Attributes.defineBindableWithEquality<FillRule> GeometryGroup.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> GeometryGroup.FillRuleProperty
 
 [<AutoOpen>]
 module GeometryGroupBuilders =

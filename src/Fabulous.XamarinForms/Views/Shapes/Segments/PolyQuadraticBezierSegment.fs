@@ -27,7 +27,7 @@ module PolyQuadraticBezierSegment =
                     ))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point array>
             "PolyQuadraticBezierSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -36,7 +36,7 @@ module PolyQuadraticBezierSegment =
                 | ValueNone -> target.ClearValue(PolyQuadraticBezierSegment.PointsProperty)
                 | ValueSome points ->
                     let coll = PointCollection()
-                    points |> List.iter coll.Add
+                    points |> Array.iter coll.Add
                     target.SetValue(PolyQuadraticBezierSegment.PointsProperty, coll))
 
 [<AutoOpen>]
@@ -52,5 +52,5 @@ module PolyQuadraticBezierSegmentBuilders =
         static member inline PolyQuadraticBezierSegment<'msg>(points: Point list) =
             WidgetBuilder<'msg, IPolyQuadraticBezierSegment>(
                 PolyQuadraticBezierSegment.WidgetKey,
-                PolyQuadraticBezierSegment.PointsList.WithValue(points)
+                PolyQuadraticBezierSegment.PointsList.WithValue(Array.ofList points)
             )

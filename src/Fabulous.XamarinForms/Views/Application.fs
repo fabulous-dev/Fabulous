@@ -30,7 +30,7 @@ module Application =
                 application.Resources <- value)
 
     let UserAppTheme =
-        Attributes.defineSimpleScalarWithEquality<OSAppTheme>
+        Attributes.defineEnum<OSAppTheme>
             "Application_UserAppTheme"
             (fun _ newValueOpt node ->
                 let application = node.Target :?> Application

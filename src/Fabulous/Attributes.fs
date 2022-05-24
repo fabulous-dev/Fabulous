@@ -112,6 +112,14 @@ module Attributes =
 
         { Key = key; Name = name }
 
+    /// Define an int attribute that is encoded into uint64
+    let inline defineInt
+        name
+        ([<InlineIfLambda>] updateNode: int voption -> int voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<int> =
+
+        defineSmallScalar name SmallScalars.Int.decode updateNode
+
     /// Define a float attribute that is encoded into uint64
     let inline defineFloat
         name

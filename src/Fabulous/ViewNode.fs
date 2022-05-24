@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+open System.Collections.Generic
 open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
@@ -11,7 +12,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
     // TODO consider combine handlers mapMsg and property bag
     // also we can probably use just Dictionary instead of Map because
     // ViewNode is supposed to be mutable, stateful and persistent object
-    let mutable _handlers: Map<string, obj> = Map.empty
+    let _handlers = Dictionary<string, obj>()
 
     member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
         let node = this :> IViewNode
@@ -120,19 +121,14 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
         member _.IsDisconnected = _isDisconnected
 
         member _.TryGetHandler<'T>(key: string) =
-            match Map.tryFind key _handlers with
-            | None -> ValueNone
-            | Some v -> ValueSome(unbox<'T> v)
+            match _handlers.TryGetValue(key) with
+            | false, _ -> ValueNone
+            | true, v -> ValueSome(unbox<'T> v)
 
         member _.SetHandler<'T>(key: string, handlerOpt: 'T voption) =
-            _handlers <-
-                _handlers
-                |> Map.change
-                    key
-                    (fun _ ->
-                        match handlerOpt with
-                        | ValueNone -> None
-                        | ValueSome h -> Some(box h))
+            match handlerOpt with
+            | ValueNone -> _handlers.Remove(key) |> ignore
+            | ValueSome v -> _handlers.[key] <- box v
 
         member _.Disconnect() = _isDisconnected <- true
 

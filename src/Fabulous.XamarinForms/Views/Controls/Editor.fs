@@ -14,7 +14,7 @@ module Editor =
         Attributes.defineBindableEnum<EditorAutoSizeOption> Editor.AutoSizeProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> Editor.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Editor.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Editor.FontFamilyProperty

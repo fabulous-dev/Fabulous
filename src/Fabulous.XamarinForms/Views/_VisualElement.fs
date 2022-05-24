@@ -83,7 +83,6 @@ module VisualElement =
     let Visual =
         Attributes.defineBindableWithEquality<IVisual> VisualElement.VisualProperty
 
-
     let Focused =
         Attributes.defineEvent<FocusEventArgs>
             "VisualElement_Focused"

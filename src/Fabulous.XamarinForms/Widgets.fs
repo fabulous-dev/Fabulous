@@ -8,7 +8,6 @@ open Fabulous.StackAllocatedCollections.StackList
 open Fabulous.StackAllocatedCollections
 open Fabulous.XamarinForms
 open Microsoft.FSharp.Core
-open System.Diagnostics
 
 [<AbstractClass; Sealed>]
 type View =
@@ -27,7 +26,7 @@ module Widgets =
               TargetType = typeof<'T>
               CreateView =
                   fun (widget, treeContext, parentNode) ->
-                      Trace.TraceInformation("Creating view for {0}", typeof<'T>.Name)
+                      treeContext.Logger.Debug("Creating view for {0}", typeof<'T>.Name)
 
                       let view = new 'T()
                       let weakReference = WeakReference(view)

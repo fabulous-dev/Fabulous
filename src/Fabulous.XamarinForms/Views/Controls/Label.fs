@@ -14,7 +14,7 @@ module Label =
         Attributes.defineBindableFloat Label.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Label.FontFamilyProperty
@@ -41,7 +41,7 @@ module Label =
         Attributes.defineBindableAppTheme<Color> Label.TextColorProperty
 
     let TextDecorations =
-        Attributes.defineBindableWithEquality<TextDecorations> Label.TextDecorationsProperty
+        Attributes.defineBindableEnum<TextDecorations> Label.TextDecorationsProperty
 
     let Text =
         Attributes.defineBindableWithEquality<string> Label.TextProperty

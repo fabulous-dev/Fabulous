@@ -20,7 +20,7 @@ module RoundRectangleGeometry =
         Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
 
     let FillRule =
-        Attributes.defineBindableWithEquality<FillRule> RoundRectangleGeometry.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> RoundRectangleGeometry.FillRuleProperty
 
 [<AutoOpen>]
 module RoundRectangleGeometryBuilders =

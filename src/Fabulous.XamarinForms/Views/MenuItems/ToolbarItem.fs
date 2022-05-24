@@ -11,7 +11,7 @@ module ToolbarItem =
     let WidgetKey = Widgets.register<ToolbarItem>()
 
     let Order =
-        Attributes.defineSimpleScalarWithEquality<ToolbarItemOrder>
+        Attributes.defineEnum<ToolbarItemOrder>
             "ToolbarItem_Order"
             (fun _ newValueOpt node ->
                 let toolbarItem = node.Target :?> ToolbarItem
@@ -21,7 +21,7 @@ module ToolbarItem =
                 | ValueSome order -> toolbarItem.Order <- order)
 
     let Priority =
-        Attributes.defineSimpleScalarWithEquality<int>
+        Attributes.defineInt
             "ToolbarItem_Priority"
             (fun _ newValueOpt node ->
                 let toolbarItem = node.Target :?> ToolbarItem

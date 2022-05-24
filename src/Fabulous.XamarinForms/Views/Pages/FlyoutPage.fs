@@ -11,7 +11,7 @@ module FlyoutPage =
     let WidgetKey = Widgets.register<FlyoutPage>()
 
     let CanChangeIsPresented =
-        Attributes.defineSimpleScalarWithEquality<bool>
+        Attributes.defineBool
             "FlyoutPage_CanChangeIsPresented"
             (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage

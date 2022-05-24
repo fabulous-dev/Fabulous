@@ -28,7 +28,7 @@ module Polygon =
                     ))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point array>
             "Polygon_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -37,11 +37,11 @@ module Polygon =
                 | ValueNone -> target.ClearValue(Polygon.PointsProperty)
                 | ValueSome points ->
                     let coll = PointCollection()
-                    points |> List.iter coll.Add
+                    points |> Array.iter coll.Add
                     target.SetValue(Polygon.PointsProperty, coll))
 
     let FillRule =
-        Attributes.defineBindableWithEquality<FillRule> Polygon.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> Polygon.FillRuleProperty
 
 [<AutoOpen>]
 module PolygonBuilders =
@@ -70,7 +70,7 @@ module PolygonBuilders =
             ) =
             WidgetBuilder<'msg, IPolygon>(
                 Polygon.WidgetKey,
-                Polygon.PointsList.WithValue(points),
+                Polygon.PointsList.WithValue(Array.ofList points),
                 Shape.StrokeThickness.WithValue(strokeThickness),
                 Shape.Stroke.WithValue(AppTheme.create strokeLight strokeDark)
             )

@@ -38,7 +38,7 @@ module WebView =
         Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
     let EnableZoomControls =
-        Attributes.defineSimpleScalarWithEquality<bool>
+        Attributes.defineBool
             "WebView_EnableZoomControls"
             (fun _ newValueOpt node ->
                 let webview = node.Target :?> WebView
@@ -51,7 +51,7 @@ module WebView =
                 AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
 
     let DisplayZoomControls =
-        Attributes.defineSimpleScalarWithEquality<bool>
+        Attributes.defineBool
             "WebView_DisplayZoomControls"
             (fun _ newValueOpt node ->
                 let webview = node.Target :?> WebView

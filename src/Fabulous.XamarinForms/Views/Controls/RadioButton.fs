@@ -33,7 +33,7 @@ module RadioButton =
         Attributes.defineBindableWidget RadioButton.ContentProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> RadioButton.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> RadioButton.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> RadioButton.FontFamilyProperty
@@ -46,9 +46,6 @@ module RadioButton =
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
-
-    let Value =
-        Attributes.defineBindableWithEquality<obj> RadioButton.ValueProperty
 
     let RadioButtonGroupName =
         Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
@@ -164,12 +161,6 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IRadioButton>, value: TextTransform) =
         this.AddScalar(RadioButton.TextTransform.WithValue(value))
-
-    /// <summary>Sets an optional unique value associated with the RadioButton.</summary>
-    /// <param value="value">An optional unique value associated with the RadioButton.</param>
-    [<Extension>]
-    static member inline value(this: WidgetBuilder<'msg, #IRadioButton>, value: obj) =
-        this.AddScalar(RadioButton.Value.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RadioButton control instance</summary>
     [<Extension>]

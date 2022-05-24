@@ -21,7 +21,7 @@ module TimePicker =
             (fun target -> (target :?> FabulousTimePicker).TimeSelected)
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<Xamarin.Forms.FontAttributes> TimePicker.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> TimePicker.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> TimePicker.FontFamilyProperty
@@ -36,10 +36,10 @@ module TimePicker =
         Attributes.defineBindableAppTheme<Color> TimePicker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> TimePicker.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
 
     let UpdateMode =
-        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
+        Attributes.defineEnum<iOSSpecific.UpdateMode>
             "TimePicker_UpdateMode"
             (fun _ newValueOpt node ->
                 let timePicker = node.Target :?> TimePicker

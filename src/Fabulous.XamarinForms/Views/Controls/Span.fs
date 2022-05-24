@@ -17,7 +17,7 @@ module Span =
         Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> Span.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Span.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Span.FontFamilyProperty

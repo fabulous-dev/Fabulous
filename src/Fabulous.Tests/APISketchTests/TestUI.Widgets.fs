@@ -208,8 +208,11 @@ module TestUI_Widgets =
 
             member private x.viewContext: ViewTreeContext =
                 { CanReuseView = ViewHelpers.canReuseView
-                  Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-                  GetViewNode = ViewNode.getViewNode }
+                  GetViewNode = ViewNode.getViewNode
+                  Logger =
+                      { Log = fun _ -> ()
+                        MinLogLevel = LogLevel.Fatal }
+                  Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage }
 
             member x.ProcessMessage(msg: 'msg) =
                 match state with

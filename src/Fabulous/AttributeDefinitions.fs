@@ -2,7 +2,7 @@
 
 module ScalarAttributeDefinitions =
     /// A small scalar attribute.
-    /// When we can encode the value as a uint64, we should prefer this type.
+    /// When we can encode the value as a uint64 (64 bits), we should prefer this type.
     /// The value will be kept on the stack avoiding GC pressure.
     [<Struct>]
     type SmallScalarAttributeData =
@@ -16,7 +16,7 @@ module ScalarAttributeDefinitions =
         { UpdateNode: obj voption -> obj voption -> IViewNode -> unit
           CompareBoxed: obj -> obj -> ScalarAttributeComparison }
 
-    /// Attribute definition for small scalar properties (encodable as int)
+    /// Attribute definition for small scalar properties (encodable on 64 bits)
     [<Struct>]
     type SmallScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
@@ -49,7 +49,7 @@ module ScalarAttributeDefinitions =
 
                       updateNode oldValueOpt newValueOpt node) }
 
-    /// Attribute definition for regular scalar properties that don't require conversion between input and model types
+    /// Attribute definition for boxed scalar properties
     [<Struct>]
     type SimpleScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
@@ -83,7 +83,7 @@ module ScalarAttributeDefinitions =
 
                       updateNode oldValueOpt newValueOpt node) }
 
-    /// Attribute definition for regular scalar properties
+    /// Attribute definition for boxed scalar properties with a custom conversion before being applied to the view
     [<Struct>]
     type ScalarAttributeDefinition<'modelType, 'valueType> =
         { Key: ScalarAttributeKey
@@ -168,18 +168,18 @@ module AttributeDefinitionStore =
     let private _widgetCollections =
         ResizeArray<WidgetCollectionAttributeData>()
 
-    let registerScalar (data: ScalarAttributeData) : ScalarAttributeKey =
-        let index = _scalars.Count
-        _scalars.Add(data)
-
-        (index ||| ScalarAttributeKey.Code.Boxed)
-        * 1<scalarAttributeKey>
-
     let registerSmallScalar (data: SmallScalarAttributeData) : ScalarAttributeKey =
         let index = _smallScalars.Count
         _smallScalars.Add(data)
 
         (index ||| ScalarAttributeKey.Code.Inline)
+        * 1<scalarAttributeKey>
+
+    let registerScalar (data: ScalarAttributeData) : ScalarAttributeKey =
+        let index = _scalars.Count
+        _scalars.Add(data)
+
+        (index ||| ScalarAttributeKey.Code.Boxed)
         * 1<scalarAttributeKey>
 
     let registerWidget (data: WidgetAttributeData) : WidgetAttributeKey =
@@ -199,7 +199,6 @@ module AttributeDefinitionStore =
     let getSmallScalar (key: ScalarAttributeKey) : SmallScalarAttributeData =
         let index = ScalarAttributeKey.getKeyValue key
         _smallScalars.[index]
-
 
     let getWidget (key: WidgetAttributeKey) : WidgetAttributeData = _widgets.[int key]
 

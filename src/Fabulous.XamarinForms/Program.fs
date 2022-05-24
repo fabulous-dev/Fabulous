@@ -36,8 +36,20 @@ module ViewHelpers =
         else
             false
 
-    let traceException (ex: exn) =
-        Trace.WriteLine("Exception: {0}", $"%0A{ex}")
+    let defaultLogger () =
+        let log (level, message) =
+            let traceLevel =
+                match level with
+                | LogLevel.Debug -> "Debug"
+                | LogLevel.Info -> "Information"
+                | LogLevel.Warn -> "Warning"
+                | LogLevel.Error -> "Error"
+                | _ -> "Error"
+
+            Trace.WriteLine(message, traceLevel)
+
+        { Log = log
+          MinLogLevel = LogLevel.Error }
 
 module Program =
     let inline private define
@@ -51,7 +63,7 @@ module Program =
           View = view
           CanReuseView = ViewHelpers.canReuseView
           SyncAction = Device.BeginInvokeOnMainThread
-          OnException = ViewHelpers.traceException }
+          Logger = ViewHelpers.defaultLogger() }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
@@ -98,6 +110,18 @@ module Program =
     let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : Application =
         startApplicationWithArgs() program
 
+    /// Subscribe to external source of events.
+    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
+        let sub model =
+            Cmd.batch [ program.Subscribe model
+                        subscribe model ]
+
+        { program with Subscribe = sub }
+
+    /// Configure how the output messages from Fabulous will be handled
+    let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg, 'marker>) = { program with Logger = logger }
+
     /// Trace all the updates to the debug output
     let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
         let traceInit arg =
@@ -138,20 +162,6 @@ module Program =
               Init = traceInit
               Update = traceUpdate
               View = traceView }
-
-    /// Handle exceptions thrown by the program
-    let withExceptionHandler (onException: exn -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        { program with
-              OnException = onException }
-
-    /// Subscribe to external source of events.
-    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
-    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
-        let sub model =
-            Cmd.batch [ program.Subscribe model
-                        subscribe model ]
-
-        { program with Subscribe = sub }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =

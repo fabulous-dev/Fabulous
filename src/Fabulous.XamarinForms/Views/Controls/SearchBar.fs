@@ -14,7 +14,7 @@ module SearchBar =
         Attributes.defineBindableAppTheme<Color> SearchBar.CancelButtonColorProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> SearchBar.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> SearchBar.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> SearchBar.FontFamilyProperty

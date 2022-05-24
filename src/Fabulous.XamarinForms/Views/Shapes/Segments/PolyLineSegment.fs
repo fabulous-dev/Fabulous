@@ -26,7 +26,7 @@ module PolyLineSegment =
                     ))
 
     let PointsList =
-        Attributes.defineSimpleScalarWithEquality<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point array>
             "PolyLineSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -35,7 +35,7 @@ module PolyLineSegment =
                 | ValueNone -> target.ClearValue(PolyLineSegment.PointsProperty)
                 | ValueSome points ->
                     let coll = PointCollection()
-                    points |> List.iter coll.Add
+                    points |> Array.iter coll.Add
                     target.SetValue(PolyLineSegment.PointsProperty, coll))
 
 [<AutoOpen>]
@@ -51,5 +51,5 @@ module PolyLineSegmentBuilders =
         static member inline PolyLineSegment<'msg>(points: Point list) =
             WidgetBuilder<'msg, IPolyLineSegment>(
                 PolyLineSegment.WidgetKey,
-                PolyLineSegment.PointsList.WithValue(points)
+                PolyLineSegment.PointsList.WithValue(Array.ofList points)
             )

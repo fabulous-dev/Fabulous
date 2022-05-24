@@ -22,13 +22,13 @@ module Button =
         Attributes.defineBindableFloat Button.CharacterSpacingProperty
 
     let ContentLayout =
-        Attributes.defineBindableWithEquality<Xamarin.Forms.Button.ButtonContentLayout> Button.ContentLayoutProperty
+        Attributes.defineBindableWithEquality<Button.ButtonContentLayout> Button.ContentLayoutProperty
 
     let CornerRadius =
         Attributes.defineBindableInt Button.CornerRadiusProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<Xamarin.Forms.FontAttributes> Button.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Button.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Button.FontFamilyProperty
@@ -49,7 +49,7 @@ module Button =
         Attributes.defineBindableWithEquality<string> Button.TextProperty
 
     let TextTransform =
-        Attributes.defineBindableWithEquality<TextTransform> Button.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> Button.TextTransformProperty
 
     let Clicked =
         Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)

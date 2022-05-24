@@ -33,7 +33,7 @@ module PathGeometry =
                     ))
 
     let FillRule =
-        Attributes.defineBindableWithEquality<FillRule> PathGeometry.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> PathGeometry.FillRuleProperty
 
 [<AutoOpen>]
 module PathGeometryBuilders =

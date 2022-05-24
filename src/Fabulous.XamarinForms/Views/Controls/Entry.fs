@@ -18,7 +18,7 @@ module Entry =
         Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> Entry.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Entry.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Entry.FontFamilyProperty

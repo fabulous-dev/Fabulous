@@ -18,8 +18,8 @@ type Program<'arg, 'model, 'msg, 'marker> =
       CanReuseView: Widget -> Widget -> bool
       /// Runs the View function on the main thread
       SyncAction: (unit -> unit) -> unit
-      /// Handle exceptions thrown by the application
-      OnException: exn -> unit }
+      /// Configuration for logging all output messages from Fabulous
+      Logger: Logger }
 
 type IRunner =
     interface
@@ -81,7 +81,7 @@ module Runners =
 
                                 return! processMsg()
                             with
-                            | ex -> program.OnException(ex)
+                            | ex -> program.Logger.Fatal(ex)
                         }
 
                     processMsg())
@@ -99,7 +99,7 @@ module Runners =
                 for sub in cmd do
                     sub mailbox.Post
             with
-            | ex -> program.OnException(ex)
+            | ex -> program.Logger.Fatal(ex)
 
         interface IRunner
 
@@ -133,7 +133,7 @@ module ViewAdapters =
             view: 'model -> WidgetBuilder<'msg, 'marker>,
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
-            onException: exn -> unit,
+            logger: Logger,
             dispatch: 'msg -> unit,
             getViewNode: obj -> IViewNode
         ) as this =
@@ -156,6 +156,7 @@ module ViewAdapters =
             let treeContext =
                 { CanReuseView = canReuseView
                   GetViewNode = getViewNode
+                  Logger = logger
                   Dispatch = this.Dispatch }
 
             let definition = WidgetDefinitionStore.get widget.Key
@@ -185,9 +186,9 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex -> onException(ex))
+                            | ex -> logger.Fatal(ex))
             with
-            | ex -> onException(ex)
+            | ex -> logger.Fatal(ex)
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()
@@ -210,7 +211,7 @@ module ViewAdapters =
                 runner.Program.View,
                 runner.Program.CanReuseView,
                 runner.Program.SyncAction,
-                runner.Program.OnException,
+                runner.Program.Logger,
                 runner.Dispatch,
                 getViewNode
             )

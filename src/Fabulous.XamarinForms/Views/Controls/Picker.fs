@@ -21,7 +21,7 @@ module Picker =
         Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
 
     let FontAttributes =
-        Attributes.defineBindableWithEquality<FontAttributes> Picker.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Picker.FontAttributesProperty
 
     let FontFamily =
         Attributes.defineBindableWithEquality<string> Picker.FontFamilyProperty
@@ -33,7 +33,7 @@ module Picker =
         Attributes.defineBindableAppTheme<Color> Picker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindableWithEquality<TextTransform> Picker.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> Picker.TextTransformProperty
 
     let Title =
         Attributes.defineBindableWithEquality<string> Picker.TitleProperty
@@ -41,7 +41,7 @@ module Picker =
     let TitleColor =
         Attributes.defineBindableAppTheme<Color> Picker.TitleColorProperty
 
-    let ItemSource =
+    let ItemsSource =
         Attributes.defineSimpleScalarWithEquality<string array>
             "Picker_ItemSource"
             (fun _ newValueOpt node ->
@@ -60,7 +60,7 @@ module Picker =
                     .CustomSelectedIndexChanged)
 
     let UpdateMode =
-        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
+        Attributes.defineEnum<iOSSpecific.UpdateMode>
             "Picker_UpdateMode"
             (fun _ newValueOpt node ->
                 let picker = node.Target :?> Picker
@@ -78,7 +78,7 @@ module PickerBuilders =
         static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
-                Picker.ItemSource.WithValue(items |> Array.ofList),
+                Picker.ItemsSource.WithValue(Array.ofList items),
                 Picker.SelectedIndexWithEvent.WithValue(
                     ValueEventData.create selectedIndex (fun args -> onSelectedIndexChanged args.CurrentPosition |> box)
                 )
