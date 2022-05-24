@@ -5,13 +5,15 @@ open System.Collections.Generic
 open Fabulous
 
 /// Configuration of the Fabulous application
-type Program<'arg, 'model, 'msg> =
+type Program<'arg, 'model, 'msg, 'marker> =
     { /// Give the initial state for the application
       Init: 'arg -> 'model * Cmd<'msg>
       /// Update the application state based on a message
       Update: 'msg * 'model -> 'model * Cmd<'msg>
+      /// Add a subscription that can dispatch messages
+      Subscribe: 'model -> Cmd<'msg>
       /// Render the application state
-      View: 'model -> Widget
+      View: 'model -> WidgetBuilder<'msg, 'marker>
       /// Indicates if a previous Widget's view can be reused
       CanReuseView: Widget -> Widget -> bool
       /// Runs the View function on the main thread
@@ -61,7 +63,7 @@ module ViewAdapterStore =
 module Runners =
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
-    type Runner<'arg, 'model, 'msg>(key: StateKey, program: Program<'arg, 'model, 'msg>) =
+    type Runner<'arg, 'model, 'msg, 'marker>(key: StateKey, program: Program<'arg, 'model, 'msg, 'marker>) =
 
         let mailbox =
             MailboxProcessor.Start
@@ -89,6 +91,11 @@ module Runners =
                 let model, cmd = program.Init(arg)
                 StateStore.set key model
 
+                let subs = program.Subscribe(model)
+
+                for sub in subs do
+                    sub mailbox.Post
+
                 for sub in cmd do
                     sub mailbox.Post
             with
@@ -106,7 +113,7 @@ module Runners =
         member _.Dispatch(msg) = mailbox.Post msg
 
     /// Create a new Runner for the component
-    let create<'arg, 'model, 'msg> (program: Program<'arg, 'model, 'msg>) =
+    let create<'arg, 'model, 'msg, 'marker> (program: Program<'arg, 'model, 'msg, 'marker>) =
         let key = StateStore.getNextKey()
         let runner = Runner(key, program)
         RunnerStore.set key runner
@@ -119,11 +126,11 @@ module ViewAdapters =
     open Runners
 
     /// Create a new ViewAdapter handling view updates for the component
-    type ViewAdapter<'model, 'msg>
+    type ViewAdapter<'model, 'msg, 'marker>
         (
             key: ViewAdapterKey,
             stateKey: StateKey,
-            view: 'model -> Widget,
+            view: 'model -> WidgetBuilder<'msg, 'marker>,
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
             onException: exn -> unit,
@@ -143,7 +150,7 @@ module ViewAdapters =
         /// Instantiates a new view using the current state associated with this ViewAdapter
         member this.CreateView() =
             let state = unbox(StateStore.get stateKey)
-            let widget = view state
+            let widget = (view state).Compile()
             _widget <- widget
 
             let treeContext =
@@ -168,7 +175,7 @@ module ViewAdapters =
                     let state = unbox args.NewState
 
                     let prevWidget = _widget
-                    let currentWidget = view state
+                    let currentWidget = (view state).Compile()
                     _widget <- currentWidget
 
                     let node = getViewNode _root
@@ -190,11 +197,14 @@ module ViewAdapters =
             member x.CreateView() = x.CreateView()
 
     /// Create a new ViewAdapter for the component
-    let create<'arg, 'model, 'msg> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg>) =
+    let create<'arg, 'model, 'msg, 'marker>
+        (getViewNode: obj -> IViewNode)
+        (runner: Runner<'arg, 'model, 'msg, 'marker>)
+        =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
-            new ViewAdapter<'model, 'msg>(
+            new ViewAdapter<'model, 'msg, 'marker>(
                 key,
                 runner.Key,
                 runner.Program.View,

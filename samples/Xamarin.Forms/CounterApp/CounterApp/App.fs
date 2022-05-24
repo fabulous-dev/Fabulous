@@ -83,4 +83,4 @@ module App =
         )
 
     let program =
-        Program.statefulApplicationWithCmd init update view
+        Program.statefulWithCmd init update view

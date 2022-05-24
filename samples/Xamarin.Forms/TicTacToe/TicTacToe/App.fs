@@ -273,4 +273,4 @@ module App =
                 |> ignore)
 
     let program =
-        Program.statefulApplication init (update gameOver) view
+        Program.stateful init (update gameOver) view

@@ -40,7 +40,7 @@ type AppDelegate() =
         let dbPath = getDbPath()
 
         let application =
-            Program.createApplication App.program dbPath
+            Program.startApplicationWithArgs dbPath App.program
 
         this.LoadApplication(application)
         base.FinishedLaunching(app, options)
