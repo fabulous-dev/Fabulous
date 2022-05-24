@@ -13,7 +13,9 @@ module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
     let MinimumMaximum =
-        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
+            "Slider_MinimumMaximum"
+            ViewUpdaters.updateSliderMinMax
 
     let MaximumTrackColor =
         Attributes.defineBindableAppTheme<Color> Slider.MaximumTrackColorProperty

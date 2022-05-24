@@ -14,7 +14,9 @@ module Stepper =
         Attributes.defineBindableFloat Stepper.IncrementProperty
 
     let MinimumMaximum =
-        Attributes.defineSimpleScalarWithEquality<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
+            "Stepper_MinimumMaximum"
+            ViewUpdaters.updateStepperMinMax
 
     let ValueWithEvent =
         Attributes.defineBindableWithEvent

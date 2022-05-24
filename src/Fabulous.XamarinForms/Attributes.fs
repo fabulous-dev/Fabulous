@@ -168,7 +168,7 @@ module Attributes =
                 | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
                 | ValueSome { Light = light; Dark = ValueSome dark } ->
                     target.SetOnAppTheme(bindableProperty, light, dark))
-            
+
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =
         Attributes.definePropertyWidget

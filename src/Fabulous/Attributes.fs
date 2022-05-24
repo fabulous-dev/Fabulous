@@ -95,9 +95,8 @@ module Attributes =
             SimpleScalarAttributeDefinition.CreateAttributeData(compare, updateNode)
             |> AttributeDefinitionStore.registerScalar
 
-        { Key = key
-          Name = name }
-            
+        { Key = key; Name = name }
+
     /// Define an attribute that can store any value with a conversion.
     /// The value will be boxed and allocated on the heap.
     /// For better performance, use defineSmallScalar instead.
@@ -111,8 +110,7 @@ module Attributes =
             ScalarAttributeDefinition.CreateAttributeData<'modelType, 'valueType>(convertValue, compare, updateNode)
             |> AttributeDefinitionStore.registerScalar
 
-        { Key = key
-          Name = name }
+        { Key = key; Name = name }
 
     /// Define a float attribute that is encoded into uint64
     let inline defineFloat

@@ -6,7 +6,7 @@ open Fabulous
 
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg> =
-    { /// Give the initial state for the application 
+    { /// Give the initial state for the application
       Init: 'arg -> 'model * Cmd<'msg>
       /// Update the application state based on a message
       Update: 'msg * 'model -> 'model * Cmd<'msg>
@@ -101,7 +101,7 @@ module Runners =
 
         /// Start the Runner loop
         member _.Start(arg) = start arg
-        
+
         /// Dispatch a message to the Runner loop
         member _.Dispatch(msg) = mailbox.Post msg
 
