@@ -10,7 +10,7 @@ module SkewTransform =
     let WidgetKey = Widgets.register<SkewTransform>()
 
     let AnglesXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "SkewTransform_Angles"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> SkewTransform

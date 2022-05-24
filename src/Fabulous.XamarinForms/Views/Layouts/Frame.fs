@@ -11,7 +11,7 @@ module Frame =
     let WidgetKey = Widgets.register<Frame>()
 
     let BorderColor =
-        Attributes.defineAppThemeBindable<Color> Frame.BorderColorProperty
+        Attributes.defineBindableAppTheme<Color> Frame.BorderColorProperty
 
     let CornerRadius =
         Attributes.defineBindableFloat Frame.CornerRadiusProperty

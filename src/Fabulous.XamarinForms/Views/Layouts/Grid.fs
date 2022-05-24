@@ -11,19 +11,13 @@ module Grid =
     let WidgetKey = Widgets.register<Grid>()
 
     let ColumnDefinitions =
-        Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array>
+        Attributes.defineSimpleScalarWithEquality<Dimension array>
             "Grid_ColumnDefinitions"
-            Array.ofSeq
-            id
-            ScalarAttributeComparers.equalityCompare
             ViewUpdaters.updateGridColumnDefinitions
 
     let RowDefinitions =
-        Attributes.defineScalarWithConverter<seq<Dimension>, Dimension array, Dimension array>
+        Attributes.defineSimpleScalarWithEquality<Dimension array>
             "Grid_RowDefinitions"
-            Array.ofSeq
-            id
-            ScalarAttributeComparers.equalityCompare
             ViewUpdaters.updateGridRowDefinitions
 
     let Column =
@@ -51,8 +45,8 @@ module GridBuilders =
             CollectionBuilder<'msg, IGrid, IView>(
                 Grid.WidgetKey,
                 LayoutOfView.Children,
-                Grid.ColumnDefinitions.WithValue(coldefs),
-                Grid.RowDefinitions.WithValue(rowdefs)
+                Grid.ColumnDefinitions.WithValue(Array.ofSeq coldefs),
+                Grid.RowDefinitions.WithValue(Array.ofSeq rowdefs)
             )
 
         static member inline Grid<'msg>() = View.Grid<'msg>([ Star ], [ Star ])

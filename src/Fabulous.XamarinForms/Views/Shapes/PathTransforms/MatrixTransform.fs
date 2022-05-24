@@ -12,7 +12,7 @@ module MatrixTransform =
     let WidgetKey = Widgets.register<MatrixTransform>()
 
     let Matrix =
-        Attributes.define<struct (float * float * float * float * float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float * float * float * float * float)>
             "MatrixTransform_Matrix"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> MatrixTransform

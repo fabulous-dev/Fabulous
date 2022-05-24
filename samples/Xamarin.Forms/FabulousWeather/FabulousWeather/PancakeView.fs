@@ -13,7 +13,7 @@ module PancakeView =
         Widgets.register<Xamarin.Forms.PancakeView.PancakeView>()
 
     let BackgroundGradientStops =
-        Attributes.defineBindable<Xamarin.Forms.PancakeView.GradientStopCollection>
+        Attributes.defineBindableWithEquality<Xamarin.Forms.PancakeView.GradientStopCollection>
             Xamarin.Forms.PancakeView.PancakeView.BackgroundGradientStopsProperty
 
     let Content =

@@ -14,25 +14,25 @@ module NavigationPage =
     let WidgetKey = Widgets.register<NavigationPage>()
 
     let BackButtonTitle =
-        Attributes.defineBindable<string> NavigationPage.BackButtonTitleProperty
+        Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
 
     let Pages =
-        Attributes.defineWidgetCollectionWithConverter
+        Attributes.defineWidgetCollection
             "NavigationPage_Pages"
             ViewUpdaters.applyDiffNavigationPagePages
             ViewUpdaters.updateNavigationPagePages
 
     let BarBackgroundColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.BarBackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.BarBackgroundColorProperty
 
     let BarBackground =
-        Attributes.defineAppThemeBindable<Brush> NavigationPage.BarBackgroundProperty
+        Attributes.defineBindableAppTheme<Brush> NavigationPage.BarBackgroundProperty
 
     let BarTextColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.BarTextColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.BarTextColorProperty
 
     let IconColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.IconColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.IconColorProperty
 
     let HasNavigationBar =
         Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
@@ -41,7 +41,7 @@ module NavigationPage =
         Attributes.defineBindableBool NavigationPage.HasBackButtonProperty
 
     let TitleIconImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> NavigationPage.TitleIconImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let Popped =
         Attributes.defineEvent<NavigationEventArgs>
@@ -62,7 +62,7 @@ module NavigationPage =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
     let HideNavigationBarSeparator =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "NavigationPage_HideNavigationBarSeparator"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage
@@ -75,7 +75,7 @@ module NavigationPage =
                 iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
     let IsNavigationBarTranslucent =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "NavigationPage_IsNavigationBarTranslucent"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage
@@ -88,7 +88,7 @@ module NavigationPage =
                 iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
 
     let PrefersLargeTitles =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "NavigationPage_PrefersLargeTitles"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage

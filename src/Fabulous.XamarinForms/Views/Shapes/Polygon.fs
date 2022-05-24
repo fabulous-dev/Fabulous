@@ -13,7 +13,7 @@ module Polygon =
     let WidgetKey = Widgets.register<Polygon>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Polygon_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -28,7 +28,7 @@ module Polygon =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point list>
             "Polygon_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -41,7 +41,7 @@ module Polygon =
                     target.SetValue(Polygon.PointsProperty, coll))
 
     let FillRule =
-        Attributes.defineBindable<FillRule> Polygon.FillRuleProperty
+        Attributes.defineBindableWithEquality<FillRule> Polygon.FillRuleProperty
 
 [<AutoOpen>]
 module PolygonBuilders =

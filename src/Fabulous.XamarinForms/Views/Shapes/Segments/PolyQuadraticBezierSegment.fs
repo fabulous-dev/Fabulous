@@ -12,7 +12,7 @@ module PolyQuadraticBezierSegment =
         Widgets.register<PolyQuadraticBezierSegment>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "PolyQuadraticBezierSegment_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -27,7 +27,7 @@ module PolyQuadraticBezierSegment =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point list>
             "PolyQuadraticBezierSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject

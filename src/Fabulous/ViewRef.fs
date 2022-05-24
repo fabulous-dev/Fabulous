@@ -31,11 +31,8 @@ type ViewRef<'T when 'T: not struct>() =
 
 module ViewRefAttributes =
     let ViewRef =
-        Attributes.defineScalarWithConverter<ViewRef, _, _>
+        Attributes.defineSimpleScalarWithEquality<ViewRef>
             "Fabulous_ViewRef"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
             (fun oldValueOpt newValueOpt node ->
                 match oldValueOpt with
                 | ValueNone -> ()

@@ -11,16 +11,16 @@ type IShape =
 module Shape =
 
     let Fill =
-        Attributes.defineAppThemeBindable<Brush> Shape.FillProperty
+        Attributes.defineBindableAppTheme<Brush> Shape.FillProperty
 
     let Stroke =
-        Attributes.defineAppThemeBindable<Brush> Shape.StrokeProperty
+        Attributes.defineBindableAppTheme<Brush> Shape.StrokeProperty
 
     let StrokeThickness =
         Attributes.defineBindableFloat Shape.StrokeThicknessProperty
 
     let StrokeDashArrayString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Shape_StrokeDashArrayString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -35,7 +35,7 @@ module Shape =
                     ))
 
     let StrokeDashArrayList =
-        Attributes.define<float list>
+        Attributes.defineSimpleScalarWithEquality<float list>
             "Shape_StrokeDashArrayList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -51,16 +51,16 @@ module Shape =
         Attributes.defineBindableFloat Shape.StrokeDashOffsetProperty
 
     let StrokeLineCap =
-        Attributes.defineBindable<PenLineCap> Shape.StrokeLineCapProperty
+        Attributes.defineBindableWithEquality<PenLineCap> Shape.StrokeLineCapProperty
 
     let StrokeLineJoin =
-        Attributes.defineBindable<PenLineJoin> Shape.StrokeLineJoinProperty
+        Attributes.defineBindableWithEquality<PenLineJoin> Shape.StrokeLineJoinProperty
 
     let StrokeMiterLimit =
         Attributes.defineBindableFloat Shape.StrokeMiterLimitProperty
 
     let Aspect =
-        Attributes.defineBindable<Stretch> Shape.AspectProperty
+        Attributes.defineBindableWithEquality<Stretch> Shape.AspectProperty
 
 
 [<Extension>]

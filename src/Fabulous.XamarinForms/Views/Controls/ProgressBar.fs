@@ -19,13 +19,13 @@ module ProgressBar =
     let WidgetKey = Widgets.register<ProgressBar>()
 
     let ProgressColor =
-        Attributes.defineAppThemeBindable<Color> ProgressBar.ProgressColorProperty
+        Attributes.defineBindableAppTheme<Color> ProgressBar.ProgressColorProperty
 
     let Progress =
         Attributes.defineBindableFloat ProgressBar.ProgressProperty
 
     let ProgressTo =
-        Attributes.define<ProgressToData>
+        Attributes.defineSimpleScalarWithEquality<ProgressToData>
             "ProgressBar_ProgressTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> ProgressBar

@@ -27,14 +27,11 @@ module CarouselView =
         Attributes.defineBindableBool CarouselView.LoopProperty
 
     let PeekAreaInsets =
-        Attributes.defineBindable<Thickness> CarouselView.PeekAreaInsetsProperty
+        Attributes.defineBindableWithEquality<Thickness> CarouselView.PeekAreaInsetsProperty
 
     let IndicatorView =
-        Attributes.defineScalarWithConverter<ViewRef<IndicatorView>, _, _>
+        Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>>
             "CarouselView_IndicatorView"
-            id
-            id
-            ScalarAttributeComparers.equalityCompare
             (fun _ newValueOpt node ->
                 let handler =
                     match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name) with

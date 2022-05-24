@@ -51,13 +51,13 @@ and IViewNode =
     /// The parent node
     abstract member Parent: IViewNode option
 
-    /// Indicates if the node has been disconnected from the tree
+    /// Indicate if the node has been disconnected from the tree
     abstract member IsDisconnected: bool
 
     /// Convert the node messages to its parent's message type
     abstract member MapMsg: (obj -> obj) option with get, set
 
-    /// If set, returns the event handler for a given attribute key
+    /// Return the event handler for a given attribute key if set
     abstract member TryGetHandler<'T> : string -> 'T voption
 
     /// Set the event handler for a given attribute name

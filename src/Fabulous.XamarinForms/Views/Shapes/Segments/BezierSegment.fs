@@ -11,13 +11,13 @@ module BezierSegment =
     let WidgetKey = Widgets.register<BezierSegment>()
 
     let Point1 =
-        Attributes.defineBindable<Point> BezierSegment.Point1Property
+        Attributes.defineBindableWithEquality<Point> BezierSegment.Point1Property
 
     let Point2 =
-        Attributes.defineBindable<Point> BezierSegment.Point2Property
+        Attributes.defineBindableWithEquality<Point> BezierSegment.Point2Property
 
     let Point3 =
-        Attributes.defineBindable<Point> BezierSegment.Point3Property
+        Attributes.defineBindableWithEquality<Point> BezierSegment.Point3Property
 
 [<AutoOpen>]
 module BezierSegmentBuilders =

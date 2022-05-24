@@ -12,10 +12,10 @@ module QuadraticBezierSegment =
         Widgets.register<QuadraticBezierSegment>()
 
     let Point1 =
-        Attributes.defineBindable<Point> QuadraticBezierSegment.Point1Property
+        Attributes.defineBindableWithEquality<Point> QuadraticBezierSegment.Point1Property
 
     let Point2 =
-        Attributes.defineBindable<Point> QuadraticBezierSegment.Point2Property
+        Attributes.defineBindableWithEquality<Point> QuadraticBezierSegment.Point2Property
 
 [<AutoOpen>]
 module QuadraticBezierSegmentBuilders =

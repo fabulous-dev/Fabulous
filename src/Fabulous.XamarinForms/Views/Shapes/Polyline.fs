@@ -13,7 +13,7 @@ module Polyline =
     let WidgetKey = Widgets.register<Polyline>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Polyline_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -28,7 +28,7 @@ module Polyline =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point list>
             "Polyline_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -41,7 +41,7 @@ module Polyline =
                     target.SetValue(Polyline.PointsProperty, coll))
 
     let FillRule =
-        Attributes.defineBindable<FillRule> Polyline.FillRuleProperty
+        Attributes.defineBindableWithEquality<FillRule> Polyline.FillRuleProperty
 
 [<AutoOpen>]
 module PolylineBuilders =

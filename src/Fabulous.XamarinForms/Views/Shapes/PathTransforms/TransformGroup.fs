@@ -12,7 +12,7 @@ module TransformGroup =
     let WidgetKey = Widgets.register<TransformGroup>()
 
     let Children =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "TransformGroup_Children"
             ViewNode.get
             (fun target -> (target :?> TransformGroup).Children :> IList<_>)

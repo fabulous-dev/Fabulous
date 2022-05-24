@@ -8,22 +8,22 @@
 
 // module Pin =
 //     let PinType =
-//         Attributes.defineBindable<PinType> Pin.TypeProperty
+//         Attributes.defineBindableWithEquality<PinType> Pin.TypeProperty
 
 //     let Label =
-//         Attributes.defineBindable<string> Pin.LabelProperty
+//         Attributes.defineBindableWithEquality<string> Pin.LabelProperty
 
 //     let Position =
-//         Attributes.defineBindable<Position> Pin.PositionProperty
+//         Attributes.defineBindableWithEquality<Position> Pin.PositionProperty
 
 //     let Address =
-//         Attributes.defineBindable<string> Pin.AddressProperty
+//         Attributes.defineBindableWithEquality<string> Pin.AddressProperty
 
 //     let PinKey = Widgets.register<Pin> ()
 
 // module Map =
 //     let RequestedRegion =
-//         Attributes.define<MapSpan>
+//         Attributes.defineSimpleScalarWithEquality<MapSpan>
 //             "Map_RequestedRegion"
 //             (fun (newValueOpt, node) ->
 //                 let map = node.Target :?> Map

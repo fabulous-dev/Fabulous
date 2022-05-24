@@ -13,7 +13,7 @@ module Button =
     let WidgetKey = Widgets.register<Button>()
 
     let BorderColor =
-        Attributes.defineAppThemeBindable<Color> Button.BorderColorProperty
+        Attributes.defineBindableAppTheme<Color> Button.BorderColorProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat Button.BorderWidthProperty
@@ -22,34 +22,34 @@ module Button =
         Attributes.defineBindableFloat Button.CharacterSpacingProperty
 
     let ContentLayout =
-        Attributes.defineBindable<Xamarin.Forms.Button.ButtonContentLayout> Button.ContentLayoutProperty
+        Attributes.defineBindableWithEquality<Xamarin.Forms.Button.ButtonContentLayout> Button.ContentLayoutProperty
 
     let CornerRadius =
         Attributes.defineBindableInt Button.CornerRadiusProperty
 
     let FontAttributes =
-        Attributes.defineBindable<Xamarin.Forms.FontAttributes> Button.FontAttributesProperty
+        Attributes.defineBindableWithEquality<Xamarin.Forms.FontAttributes> Button.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Button.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Button.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Button.FontSizeProperty
 
     let ImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> Button.ImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> Button.ImageSourceProperty
 
     let Padding =
-        Attributes.defineBindable<Thickness> Button.PaddingProperty
+        Attributes.defineBindableWithEquality<Thickness> Button.PaddingProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> Button.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> Button.TextColorProperty
 
     let Text =
-        Attributes.defineBindable<string> Button.TextProperty
+        Attributes.defineBindableWithEquality<string> Button.TextProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> Button.TextTransformProperty
+        Attributes.defineBindableWithEquality<TextTransform> Button.TextTransformProperty
 
     let Clicked =
         Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)

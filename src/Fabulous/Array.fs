@@ -1,3 +1,8 @@
+(* Dev notes:
+
+This file contains array implementations optimized for stack-based values.
+This reduce the number of allocations on the heap required, reducing the GC pressure. *)
+
 namespace Fabulous
 
 open System

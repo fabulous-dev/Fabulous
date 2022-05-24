@@ -11,10 +11,10 @@ module LineGeometry =
     let WidgetKey = Widgets.register<LineGeometry>()
 
     let StartPoint =
-        Attributes.defineBindable<Point> LineGeometry.StartPointProperty
+        Attributes.defineBindableWithEquality<Point> LineGeometry.StartPointProperty
 
     let EndPoint =
-        Attributes.defineBindable<Point> LineGeometry.EndPointProperty
+        Attributes.defineBindableWithEquality<Point> LineGeometry.EndPointProperty
 
 [<AutoOpen>]
 module LineGeometryBuilders =

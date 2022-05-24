@@ -17,7 +17,7 @@ module Path =
         Attributes.defineBindableWidget Path.DataProperty
 
     let DataString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Path_DataString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -35,7 +35,7 @@ module Path =
         Attributes.defineBindableWidget Path.RenderTransformProperty
 
     let RenderTransformString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Path_RenderTransformString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject

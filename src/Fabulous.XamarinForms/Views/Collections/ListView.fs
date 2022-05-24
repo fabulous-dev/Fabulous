@@ -12,10 +12,8 @@ module ListView =
     let WidgetKey = Widgets.register<FabulousListView>()
 
     let GroupedItemsSource<'groupData, 'itemData> =
-        Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>
+        Attributes.defineSimpleScalar<GroupedWidgetItems<'groupData, 'itemData>>
             "ListView_GroupedItemsSource"
-            id
-            id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
             (fun _ newValueOpt node ->
                 let listView = node.Target :?> ListView
@@ -67,10 +65,10 @@ module ListView =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let SeparatorColor =
-        Attributes.defineAppThemeBindable<Color> ListView.SeparatorColorProperty
+        Attributes.defineBindableAppTheme<Color> ListView.SeparatorColorProperty
 
     let RefreshControlColor =
-        Attributes.defineAppThemeBindable<Color> ListView.RefreshControlColorProperty
+        Attributes.defineBindableAppTheme<Color> ListView.RefreshControlColorProperty
 
     let HorizontalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty

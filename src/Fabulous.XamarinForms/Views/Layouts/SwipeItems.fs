@@ -13,7 +13,7 @@ module SwipeItems =
     let WidgetKey = Widgets.register<SwipeItems>()
 
     let SwipeItems =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "SwipeItems_SwipeItems"
             ViewNode.get
             (fun target -> (target :?> SwipeItems) :> IList<_>)

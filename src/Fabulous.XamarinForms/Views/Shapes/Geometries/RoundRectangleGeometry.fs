@@ -17,10 +17,10 @@ module RoundRectangleGeometry =
         Attributes.defineBindableFloat RoundRectangleGeometry.CornerRadiusProperty
 
     let Rect =
-        Attributes.defineBindable<Rect> RoundRectangleGeometry.RectProperty
+        Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
 
     let FillRule =
-        Attributes.defineBindable<FillRule> RoundRectangleGeometry.FillRuleProperty
+        Attributes.defineBindableWithEquality<FillRule> RoundRectangleGeometry.FillRuleProperty
 
 [<AutoOpen>]
 module RoundRectangleGeometryBuilders =

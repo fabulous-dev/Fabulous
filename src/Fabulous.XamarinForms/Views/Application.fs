@@ -11,13 +11,13 @@ module Application =
     let WidgetKey = Widgets.register<Application>()
 
     let MainPage =
-        Attributes.defineWidget
+        Attributes.definePropertyWidget
             "Application_MainPage"
             (fun target -> ViewNode.get (target :?> Application).MainPage)
             (fun target value -> (target :?> Application).MainPage <- value)
 
     let Resources =
-        Attributes.define<ResourceDictionary>
+        Attributes.defineSimpleScalarWithEquality<ResourceDictionary>
             "Application_Resources"
             (fun _ newValueOpt node ->
                 let application = node.Target :?> Application
@@ -30,7 +30,7 @@ module Application =
                 application.Resources <- value)
 
     let UserAppTheme =
-        Attributes.define<OSAppTheme>
+        Attributes.defineSimpleScalarWithEquality<OSAppTheme>
             "Application_UserAppTheme"
             (fun _ newValueOpt node ->
                 let application = node.Target :?> Application

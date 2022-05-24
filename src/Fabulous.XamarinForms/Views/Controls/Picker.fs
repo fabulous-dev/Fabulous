@@ -21,28 +21,28 @@ module Picker =
         Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> Picker.FontAttributesProperty
+        Attributes.defineBindableWithEquality<FontAttributes> Picker.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Picker.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Picker.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Picker.FontSizeProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> Picker.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> Picker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> Picker.TextTransformProperty
+        Attributes.defineBindableWithEquality<TextTransform> Picker.TextTransformProperty
 
     let Title =
-        Attributes.defineBindable<string> Picker.TitleProperty
+        Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
     let TitleColor =
-        Attributes.defineAppThemeBindable<Color> Picker.TitleColorProperty
+        Attributes.defineBindableAppTheme<Color> Picker.TitleColorProperty
 
     let ItemSource =
-        Attributes.define<string array>
+        Attributes.defineSimpleScalarWithEquality<string array>
             "Picker_ItemSource"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -60,7 +60,7 @@ module Picker =
                     .CustomSelectedIndexChanged)
 
     let UpdateMode =
-        Attributes.define<iOSSpecific.UpdateMode>
+        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
             "Picker_UpdateMode"
             (fun _ newValueOpt node ->
                 let picker = node.Target :?> Picker

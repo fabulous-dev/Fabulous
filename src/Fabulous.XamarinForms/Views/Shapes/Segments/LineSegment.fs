@@ -11,7 +11,7 @@ module LineSegment =
     let WidgetKey = Widgets.register<LineSegment>()
 
     let Point =
-        Attributes.defineBindable<Point> LineSegment.PointProperty
+        Attributes.defineBindableWithEquality<Point> LineSegment.PointProperty
 
 [<AutoOpen>]
 module LineSegmentBuilders =

@@ -9,7 +9,7 @@ type ILayout =
 
 module Layout =
     let Padding =
-        Attributes.defineBindable<Thickness> Layout.PaddingProperty
+        Attributes.defineBindableWithEquality<Thickness> Layout.PaddingProperty
 
     let CascadeInputTransparent =
         Attributes.defineBindableBool Layout.CascadeInputTransparentProperty

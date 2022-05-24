@@ -21,10 +21,10 @@ module WebView =
         Attributes.defineBindableBool WebView.CanGoForwardProperty
 
     let Source =
-        Attributes.defineBindable<WebViewSource> WebView.SourceProperty
+        Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
 
     let Cookies =
-        Attributes.defineBindable<CookieContainer> WebView.CookiesProperty
+        Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
 
     let Navigating =
         Attributes.defineEvent<WebNavigatingEventArgs>
@@ -38,7 +38,7 @@ module WebView =
         Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
     let EnableZoomControls =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "WebView_EnableZoomControls"
             (fun _ newValueOpt node ->
                 let webview = node.Target :?> WebView
@@ -51,7 +51,7 @@ module WebView =
                 AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
 
     let DisplayZoomControls =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "WebView_DisplayZoomControls"
             (fun _ newValueOpt node ->
                 let webview = node.Target :?> WebView

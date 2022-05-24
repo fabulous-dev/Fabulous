@@ -11,7 +11,7 @@ module CompositeTransform =
     let WidgetKey = Widgets.register<CompositeTransform>()
 
     let CenterXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "CompositeTransform_CenterXY"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
@@ -25,7 +25,7 @@ module CompositeTransform =
                     line.CenterY <- y)
 
     let ScaleXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "CompositeTransform_ScaleXY"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
@@ -39,7 +39,7 @@ module CompositeTransform =
                     line.ScaleY <- y)
 
     let SkewXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "CompositeTransform_SkewXY"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform
@@ -53,7 +53,7 @@ module CompositeTransform =
                     line.SkewY <- y)
 
     let TranslateXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "CompositeTransform_TranslateXY"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> CompositeTransform

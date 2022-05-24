@@ -70,7 +70,7 @@ module WidgetHelpers =
 
     let buildItems<'msg, 'marker, 'itemData, 'itemMarker>
         key
-        (attrDef: ScalarAttributeDefinition<WidgetItems<'itemData>, WidgetItems<'itemData>, WidgetItems<'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<WidgetItems<'itemData>>)
         (items: seq<'itemData>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
         =
@@ -86,7 +86,7 @@ module WidgetHelpers =
 
     let buildGroupItems<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>>)
         (items: seq<'groupData>)
         (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)
@@ -102,7 +102,7 @@ module WidgetHelpers =
 
     let buildGroupItemsNoFooter<'msg, 'marker, 'groupData, 'itemData, 'groupMarker, 'itemMarker when 'groupData :> seq<'itemData>>
         key
-        (attrDef: ScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>)
+        (attrDef: SimpleScalarAttributeDefinition<GroupedWidgetItems<'groupData, 'itemData>>)
         (items: seq<'groupData>)
         (groupHeaderTemplate: 'groupData -> WidgetBuilder<'msg, 'groupMarker>)
         (itemTemplate: 'itemData -> WidgetBuilder<'msg, 'itemMarker>)

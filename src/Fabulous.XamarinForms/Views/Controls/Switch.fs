@@ -11,10 +11,10 @@ module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
     let ColorOn =
-        Attributes.defineAppThemeBindable<Color> Switch.OnColorProperty
+        Attributes.defineBindableAppTheme<Color> Switch.OnColorProperty
 
     let ThumbColor =
-        Attributes.defineAppThemeBindable<Color> Switch.ThumbColorProperty
+        Attributes.defineBindableAppTheme<Color> Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
         Attributes.defineBindableWithEvent

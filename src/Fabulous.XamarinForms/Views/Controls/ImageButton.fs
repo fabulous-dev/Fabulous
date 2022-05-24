@@ -16,7 +16,7 @@ module ImageButton =
         Attributes.defineBindableEnum<Xamarin.Forms.Aspect> ImageButton.AspectProperty
 
     let BorderColor =
-        Attributes.defineAppThemeBindable<Color> ImageButton.BorderColorProperty
+        Attributes.defineBindableAppTheme<Color> ImageButton.BorderColorProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat ImageButton.BorderWidthProperty
@@ -34,10 +34,10 @@ module ImageButton =
         Attributes.defineBindableBool ImageButton.IsPressedProperty
 
     let Padding =
-        Attributes.defineBindable<Thickness> ImageButton.PaddingProperty
+        Attributes.defineBindableWithEquality<Thickness> ImageButton.PaddingProperty
 
     let Source =
-        Attributes.defineAppThemeBindable<ImageSource> ImageButton.SourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> ImageButton.SourceProperty
 
     let Clicked =
         Attributes.defineEventNoArg "ImageButton_Clicked" (fun target -> (target :?> ImageButton).Clicked)

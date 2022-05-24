@@ -11,13 +11,13 @@ module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()
 
     let CancelButtonColor =
-        Attributes.defineAppThemeBindable<Color> SearchBar.CancelButtonColorProperty
+        Attributes.defineBindableAppTheme<Color> SearchBar.CancelButtonColorProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> SearchBar.FontAttributesProperty
+        Attributes.defineBindableWithEquality<FontAttributes> SearchBar.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> SearchBar.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> SearchBar.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat SearchBar.FontSizeProperty

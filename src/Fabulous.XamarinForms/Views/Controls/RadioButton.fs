@@ -12,10 +12,10 @@ module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
     let BorderColor =
-        Attributes.defineAppThemeBindable<Color> RadioButton.BorderColorProperty
+        Attributes.defineBindableAppTheme<Color> RadioButton.BorderColorProperty
 
     let GroupName =
-        Attributes.defineBindable<string> RadioButton.GroupNameProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.GroupNameProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat RadioButton.BorderWidthProperty
@@ -27,31 +27,31 @@ module RadioButton =
         Attributes.defineBindableFloat RadioButton.CornerRadiusProperty
 
     let ContentString =
-        Attributes.defineBindable<string> RadioButton.ContentProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.ContentProperty
 
     let ContentWidget =
         Attributes.defineBindableWidget RadioButton.ContentProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> RadioButton.FontAttributesProperty
+        Attributes.defineBindableWithEquality<FontAttributes> RadioButton.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> RadioButton.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat RadioButton.FontSizeProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> RadioButton.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> RadioButton.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
 
     let Value =
-        Attributes.defineBindable<obj> RadioButton.ValueProperty
+        Attributes.defineBindableWithEquality<obj> RadioButton.ValueProperty
 
     let RadioButtonGroupName =
-        Attributes.defineBindable<string> RadioButtonGroup.GroupNameProperty
+        Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
 
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent

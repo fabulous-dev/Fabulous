@@ -11,16 +11,16 @@ module TextCell =
     let WidgetKey = Widgets.register<TextCell>()
 
     let Text =
-        Attributes.defineBindable<string> TextCell.TextProperty
+        Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> TextCell.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> TextCell.TextColorProperty
 
     let Detail =
-        Attributes.defineBindable<string> TextCell.DetailProperty
+        Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
     let DetailColor =
-        Attributes.defineAppThemeBindable<Color> TextCell.DetailColorProperty
+        Attributes.defineBindableAppTheme<Color> TextCell.DetailColorProperty
 
 [<AutoOpen>]
 module TextCellBuilders =

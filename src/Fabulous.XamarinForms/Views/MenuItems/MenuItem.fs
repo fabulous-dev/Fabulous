@@ -13,10 +13,10 @@ module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()
 
     let Accelerator =
-        Attributes.defineBindable<Accelerator> MenuItem.AcceleratorProperty
+        Attributes.defineBindableWithEquality<Accelerator> MenuItem.AcceleratorProperty
 
     let IconImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> MenuItem.IconImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> MenuItem.IconImageSourceProperty
 
     let IsDestructive =
         Attributes.defineBindableBool MenuItem.IsDestructiveProperty
@@ -25,7 +25,7 @@ module MenuItem =
         Attributes.defineBindableBool MenuItem.IsEnabledProperty
 
     let Text =
-        Attributes.defineBindable<string> MenuItem.TextProperty
+        Attributes.defineBindableWithEquality<string> MenuItem.TextProperty
 
     let Clicked =
         Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)

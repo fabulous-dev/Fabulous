@@ -9,7 +9,7 @@ module TestUI_Attributes =
 
     module Attributes =
 
-        let definePressable name : ScalarAttributeDefinition<obj, obj, obj> =
+        let definePressable name : ScalarAttributeDefinition<obj, obj> =
             let key =
                 ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
                     (fun x -> x),
@@ -33,7 +33,7 @@ module TestUI_Attributes =
                 )
                 |> AttributeDefinitionStore.registerScalar
 
-            { Key = key; Name = name; Convert = id }
+            { Key = key; Name = name }
 
 
 
@@ -46,16 +46,16 @@ module TestUI_Attributes =
                 Attributes.defineBool "Record" TestUI_ViewUpdaters.updateRecord
 
             let Text =
-                Attributes.define<string> "Text" TestUI_ViewUpdaters.updateText
+                Attributes.defineSimpleScalarWithEquality<string> "Text" TestUI_ViewUpdaters.updateText
 
 
         module TextStyle =
             let TextColor =
-                Attributes.define<string> "TextColor" TestUI_ViewUpdaters.updateTextColor
+                Attributes.defineSimpleScalarWithEquality<string> "TextColor" TestUI_ViewUpdaters.updateTextColor
 
         module Container =
             let Children =
-                Attributes.defineWidgetCollection
+                Attributes.defineListWidgetCollection
                     "Container_Children"
                     TestUI_ViewNode.ViewNode.getViewNode
                     (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
@@ -66,7 +66,7 @@ module TestUI_Attributes =
 
         module Automation =
             let AutomationId =
-                Attributes.define<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
+                Attributes.defineSimpleScalarWithEquality<string> "AutomationId" TestUI_ViewUpdaters.updateAutomationId
 
         module NumericBag =
             let InlineValueOne =
@@ -83,10 +83,10 @@ module TestUI_Attributes =
 
 
             let BoxedValueOne =
-                Attributes.define<uint64> "BoxedValueOne" TestUI_ViewUpdaters.updateNumericValueOne
+                Attributes.defineSimpleScalarWithEquality<uint64> "BoxedValueOne" TestUI_ViewUpdaters.updateNumericValueOne
 
             let BoxedValueTwo =
-                Attributes.define<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
+                Attributes.defineSimpleScalarWithEquality<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
 
             let BoxedValueThree =
-                Attributes.define<float> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree
+                Attributes.defineSimpleScalarWithEquality<float> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree

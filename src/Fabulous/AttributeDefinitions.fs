@@ -2,7 +2,7 @@
 
 module ScalarAttributeDefinitions =
     /// A small scalar attribute.
-    /// When we can encode the value as an integer, we should prefer this type.
+    /// When we can encode the value as a uint64, we should prefer this type.
     /// The value will be kept on the stack avoiding GC pressure.
     [<Struct>]
     type SmallScalarAttributeData =
@@ -16,39 +16,36 @@ module ScalarAttributeDefinitions =
         { UpdateNode: obj voption -> obj voption -> IViewNode -> unit
           CompareBoxed: obj -> obj -> ScalarAttributeComparison }
 
-    /// Attribute definition for regular scalar properties
+    /// Attribute definition for small scalar properties (encodable as int)
     [<Struct>]
-    type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
+    type SmallScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
-          Name: string
-          Convert: 'inputType -> 'modelType }
+          Name: string }
 
-        member inline x.WithValue(value: 'inputType) : ScalarAttribute =
+        member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
               DebugName = x.Name
 #endif
-              NumericValue = 0UL
-              Value = x.Convert(value) }
+              NumericValue = encode(value)
+              Value = null }
 
-        static member inline CreateAttributeData<'modelType, 'valueType>
+        static member inline CreateAttributeData<'T>
             (
-                [<InlineIfLambda>] convertValue: 'modelType -> 'valueType,
-                [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
-                [<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit
-            ) : ScalarAttributeData =
-            { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
-              UpdateNode =
+                [<InlineIfLambda>] decode: uint64 -> 'T,
+                [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
+            ) : SmallScalarAttributeData =
+            { UpdateNode =
                   (fun oldValueOpt newValueOpt node ->
                       let oldValueOpt =
                           match oldValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                          | ValueSome v -> ValueSome(decode(v))
 
                       let newValueOpt =
                           match newValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                          | ValueSome v -> ValueSome(decode(v))
 
                       updateNode oldValueOpt newValueOpt node) }
 
@@ -86,36 +83,38 @@ module ScalarAttributeDefinitions =
 
                       updateNode oldValueOpt newValueOpt node) }
 
-    /// Attribute definition for small scalar properties (encodable as int)
+    /// Attribute definition for regular scalar properties
     [<Struct>]
-    type SmallScalarAttributeDefinition<'T> =
+    type ScalarAttributeDefinition<'modelType, 'valueType> =
         { Key: ScalarAttributeKey
           Name: string }
 
-        member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
+        member inline x.WithValue(value: 'modelType) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
               DebugName = x.Name
 #endif
-              NumericValue = encode(value)
-              Value = null }
+              NumericValue = 0UL
+              Value = value }
 
-        static member inline CreateAttributeData<'T>
+        static member inline CreateAttributeData<'modelType, 'valueType>
             (
-                [<InlineIfLambda>] decode: uint64 -> 'T,
-                [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
-            ) : SmallScalarAttributeData =
-            { UpdateNode =
+                [<InlineIfLambda>] convertValue: 'modelType -> 'valueType,
+                [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
+                [<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit
+            ) : ScalarAttributeData =
+            { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
+              UpdateNode =
                   (fun oldValueOpt newValueOpt node ->
                       let oldValueOpt =
                           match oldValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
                       let newValueOpt =
                           match newValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
                       updateNode oldValueOpt newValueOpt node) }
 

@@ -15,25 +15,25 @@ module DatePicker =
         Attributes.defineBindableFloat DatePicker.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindable<Xamarin.Forms.FontAttributes> DatePicker.FontAttributesProperty
+        Attributes.defineBindableWithEquality<Xamarin.Forms.FontAttributes> DatePicker.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> DatePicker.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> DatePicker.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat DatePicker.FontSizeProperty
 
     let Format =
-        Attributes.defineBindable<string> DatePicker.FormatProperty
+        Attributes.defineBindableWithEquality<string> DatePicker.FormatProperty
 
     let MaximumDate =
-        Attributes.defineBindable<System.DateTime> DatePicker.MaximumDateProperty
+        Attributes.defineBindableWithEquality<System.DateTime> DatePicker.MaximumDateProperty
 
     let MinimumDate =
-        Attributes.defineBindable<System.DateTime> DatePicker.MinimumDateProperty
+        Attributes.defineBindableWithEquality<System.DateTime> DatePicker.MinimumDateProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> DatePicker.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> DatePicker.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
@@ -45,7 +45,7 @@ module DatePicker =
             (fun target -> (target :?> DatePicker).DateSelected)
 
     let UpdateMode =
-        Attributes.define<iOSSpecific.UpdateMode>
+        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
             "DatePicker_UpdateMode"
             (fun _ newValueOpt node ->
                 let datePicker = node.Target :?> DatePicker

@@ -11,7 +11,7 @@ module PolyLineSegment =
     let WidgetKey = Widgets.register<PolyLineSegment>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "PolyLineSegment_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -26,7 +26,7 @@ module PolyLineSegment =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point list>
             "PolyLineSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject

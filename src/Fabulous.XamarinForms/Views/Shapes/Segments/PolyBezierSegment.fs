@@ -11,7 +11,7 @@ module PolyBezierSegment =
     let WidgetKey = Widgets.register<PolyBezierSegment>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "PolyBezierSegment_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -26,7 +26,7 @@ module PolyBezierSegment =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point list>
             "PolyBezierSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
