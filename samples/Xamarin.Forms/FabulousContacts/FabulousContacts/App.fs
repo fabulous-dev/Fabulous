@@ -195,5 +195,4 @@ module App =
                 .onPopped(NavigationPopped)
         )
 
-    let program =
-        Program.statefulWithCmd init update view
+    let program = Program.statefulWithCmd init update view
