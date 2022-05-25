@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
@@ -15,25 +16,25 @@ module DatePicker =
         Attributes.defineBindableFloat DatePicker.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindable<Xamarin.Forms.FontAttributes> DatePicker.FontAttributesProperty
+        Attributes.defineBindableWithEquality<FontAttributes> DatePicker.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> DatePicker.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> DatePicker.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat DatePicker.FontSizeProperty
 
     let Format =
-        Attributes.defineBindable<string> DatePicker.FormatProperty
+        Attributes.defineBindableWithEquality<string> DatePicker.FormatProperty
 
     let MaximumDate =
-        Attributes.defineBindable<System.DateTime> DatePicker.MaximumDateProperty
+        Attributes.defineBindableWithEquality<DateTime> DatePicker.MaximumDateProperty
 
     let MinimumDate =
-        Attributes.defineBindable<System.DateTime> DatePicker.MinimumDateProperty
+        Attributes.defineBindableWithEquality<DateTime> DatePicker.MinimumDateProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> DatePicker.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> DatePicker.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
@@ -45,7 +46,7 @@ module DatePicker =
             (fun target -> (target :?> DatePicker).DateSelected)
 
     let UpdateMode =
-        Attributes.define<iOSSpecific.UpdateMode>
+        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
             "DatePicker_UpdateMode"
             (fun _ newValueOpt node ->
                 let datePicker = node.Target :?> DatePicker
@@ -60,7 +61,7 @@ module DatePicker =
 [<AutoOpen>]
 module DatePickerBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline DatePicker<'msg>(date: System.DateTime, onDateSelected: System.DateTime -> 'msg) =
+        static member inline DatePicker<'msg>(date: DateTime, onDateSelected: DateTime -> 'msg) =
             WidgetBuilder<'msg, IDatePicker>(
                 DatePicker.WidgetKey,
                 DatePicker.DateWithEvent.WithValue(
@@ -109,11 +110,11 @@ type DatePickerModifiers =
         this.AddScalar(DatePicker.Format.WithValue(value))
 
     [<Extension>]
-    static member inline minimumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: System.DateTime) =
+    static member inline minimumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MinimumDate.WithValue(value))
 
     [<Extension>]
-    static member inline maximumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: System.DateTime) =
+    static member inline maximumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
 
     [<Extension>]

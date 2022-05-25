@@ -11,16 +11,16 @@ type IShape =
 module Shape =
 
     let Fill =
-        Attributes.defineAppThemeBindable<Brush> Shape.FillProperty
+        Attributes.defineBindableAppTheme<Brush> Shape.FillProperty
 
     let Stroke =
-        Attributes.defineAppThemeBindable<Brush> Shape.StrokeProperty
+        Attributes.defineBindableAppTheme<Brush> Shape.StrokeProperty
 
     let StrokeThickness =
         Attributes.defineBindableFloat Shape.StrokeThicknessProperty
 
     let StrokeDashArrayString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "Shape_StrokeDashArrayString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -35,7 +35,7 @@ module Shape =
                     ))
 
     let StrokeDashArrayList =
-        Attributes.define<float list>
+        Attributes.defineSimpleScalarWithEquality<float array>
             "Shape_StrokeDashArrayList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -44,23 +44,23 @@ module Shape =
                 | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
                 | ValueSome points ->
                     let coll = DoubleCollection()
-                    points |> List.iter coll.Add
+                    points |> Array.iter coll.Add
                     target.SetValue(Shape.StrokeDashArrayProperty, coll))
 
     let StrokeDashOffset =
         Attributes.defineBindableFloat Shape.StrokeDashOffsetProperty
 
     let StrokeLineCap =
-        Attributes.defineBindable<PenLineCap> Shape.StrokeLineCapProperty
+        Attributes.defineBindableWithEquality<PenLineCap> Shape.StrokeLineCapProperty
 
     let StrokeLineJoin =
-        Attributes.defineBindable<PenLineJoin> Shape.StrokeLineJoinProperty
+        Attributes.defineBindableWithEquality<PenLineJoin> Shape.StrokeLineJoinProperty
 
     let StrokeMiterLimit =
         Attributes.defineBindableFloat Shape.StrokeMiterLimitProperty
 
     let Aspect =
-        Attributes.defineBindable<Stretch> Shape.AspectProperty
+        Attributes.defineBindableWithEquality<Stretch> Shape.AspectProperty
 
 
 [<Extension>]
@@ -84,7 +84,7 @@ type ShapeModifiers =
 
     [<Extension>]
     static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: float list) =
-        this.AddScalar(Shape.StrokeDashArrayList.WithValue(value))
+        this.AddScalar(Shape.StrokeDashArrayList.WithValue(Array.ofList value))
 
     [<Extension>]
     static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IShape>, value: float) =

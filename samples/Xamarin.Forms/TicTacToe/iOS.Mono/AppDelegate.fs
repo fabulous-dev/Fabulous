@@ -1,13 +1,10 @@
 ﻿namespace TicTacToe.iOS.Mono
 
-open System
 open UIKit
 open Foundation
-open Xamarin.Essentials
 open Xamarin.Forms
 open Xamarin.Forms.Platform.iOS
 open TicTacToe
-open Fabulous
 open Fabulous.XamarinForms
 
 [<Register("AppDelegate")>]
@@ -16,10 +13,7 @@ type AppDelegate() =
 
     override this.FinishedLaunching(app, options) =
         Forms.Init()
-
-        let application = Program.createApplication App.program ()
-        this.LoadApplication(application)
-
+        this.LoadApplication(Program.startApplication App.program)
         base.FinishedLaunching(app, options)
 
 module Main =

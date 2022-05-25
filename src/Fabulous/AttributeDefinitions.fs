@@ -2,7 +2,7 @@
 
 module ScalarAttributeDefinitions =
     /// A small scalar attribute.
-    /// When we can encode the value as an integer, we should prefer this type.
+    /// When we can encode the value as a uint64 (64 bits), we should prefer this type.
     /// The value will be kept on the stack avoiding GC pressure.
     [<Struct>]
     type SmallScalarAttributeData =
@@ -16,43 +16,40 @@ module ScalarAttributeDefinitions =
         { UpdateNode: obj voption -> obj voption -> IViewNode -> unit
           CompareBoxed: obj -> obj -> ScalarAttributeComparison }
 
-    /// Attribute definition for regular scalar properties
+    /// Attribute definition for small scalar properties (encodable on 64 bits)
     [<Struct>]
-    type ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
+    type SmallScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
-          Name: string
-          Convert: 'inputType -> 'modelType }
+          Name: string }
 
-        member inline x.WithValue(value: 'inputType) : ScalarAttribute =
+        member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
               DebugName = x.Name
 #endif
-              NumericValue = 0UL
-              Value = x.Convert(value) }
+              NumericValue = encode(value)
+              Value = null }
 
-        static member inline CreateAttributeData<'modelType, 'valueType>
+        static member inline CreateAttributeData<'T>
             (
-                [<InlineIfLambda>] convertValue: 'modelType -> 'valueType,
-                [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
-                [<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit
-            ) : ScalarAttributeData =
-            { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
-              UpdateNode =
+                [<InlineIfLambda>] decode: uint64 -> 'T,
+                [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
+            ) : SmallScalarAttributeData =
+            { UpdateNode =
                   (fun oldValueOpt newValueOpt node ->
                       let oldValueOpt =
                           match oldValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                          | ValueSome v -> ValueSome(decode(v))
 
                       let newValueOpt =
                           match newValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                          | ValueSome v -> ValueSome(decode(v))
 
                       updateNode oldValueOpt newValueOpt node) }
 
-    /// Attribute definition for regular scalar properties that don't require conversion between input and model types
+    /// Attribute definition for boxed scalar properties
     [<Struct>]
     type SimpleScalarAttributeDefinition<'T> =
         { Key: ScalarAttributeKey
@@ -86,36 +83,38 @@ module ScalarAttributeDefinitions =
 
                       updateNode oldValueOpt newValueOpt node) }
 
-    /// Attribute definition for small scalar properties (encodable as int)
+    /// Attribute definition for boxed scalar properties with a custom conversion before being applied to the view
     [<Struct>]
-    type SmallScalarAttributeDefinition<'T> =
+    type ScalarAttributeDefinition<'modelType, 'valueType> =
         { Key: ScalarAttributeKey
           Name: string }
 
-        member inline x.WithValue(value: 'T, [<InlineIfLambda>] encode: 'T -> uint64) : ScalarAttribute =
+        member inline x.WithValue(value: 'modelType) : ScalarAttribute =
             { Key = x.Key
 #if DEBUG
               DebugName = x.Name
 #endif
-              NumericValue = encode(value)
-              Value = null }
+              NumericValue = 0UL
+              Value = value }
 
-        static member inline CreateAttributeData<'T>
+        static member inline CreateAttributeData<'modelType, 'valueType>
             (
-                [<InlineIfLambda>] decode: uint64 -> 'T,
-                [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
-            ) : SmallScalarAttributeData =
-            { UpdateNode =
+                [<InlineIfLambda>] convertValue: 'modelType -> 'valueType,
+                [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
+                [<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit
+            ) : ScalarAttributeData =
+            { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
+              UpdateNode =
                   (fun oldValueOpt newValueOpt node ->
                       let oldValueOpt =
                           match oldValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
                       let newValueOpt =
                           match newValueOpt with
                           | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
                       updateNode oldValueOpt newValueOpt node) }
 
@@ -169,18 +168,18 @@ module AttributeDefinitionStore =
     let private _widgetCollections =
         ResizeArray<WidgetCollectionAttributeData>()
 
-    let registerScalar (data: ScalarAttributeData) : ScalarAttributeKey =
-        let index = _scalars.Count
-        _scalars.Add(data)
-
-        (index ||| ScalarAttributeKey.Code.Boxed)
-        * 1<scalarAttributeKey>
-
     let registerSmallScalar (data: SmallScalarAttributeData) : ScalarAttributeKey =
         let index = _smallScalars.Count
         _smallScalars.Add(data)
 
         (index ||| ScalarAttributeKey.Code.Inline)
+        * 1<scalarAttributeKey>
+
+    let registerScalar (data: ScalarAttributeData) : ScalarAttributeKey =
+        let index = _scalars.Count
+        _scalars.Add(data)
+
+        (index ||| ScalarAttributeKey.Code.Boxed)
         * 1<scalarAttributeKey>
 
     let registerWidget (data: WidgetAttributeData) : WidgetAttributeKey =
@@ -200,7 +199,6 @@ module AttributeDefinitionStore =
     let getSmallScalar (key: ScalarAttributeKey) : SmallScalarAttributeData =
         let index = ScalarAttributeKey.getKeyValue key
         _smallScalars.[index]
-
 
     let getWidget (key: WidgetAttributeKey) : WidgetAttributeData = _widgets.[int key]
 

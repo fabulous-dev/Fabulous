@@ -12,13 +12,13 @@ module PathGeometry =
     let WidgetKey = Widgets.register<PathGeometry>()
 
     let FiguresWidgets =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "PathGeometry_FiguresWidgets"
             ViewNode.get
             (fun target -> (target :?> PathGeometry).Figures :> IList<_>)
 
     let FiguresString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "PathGeometry_FiguresString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -33,7 +33,7 @@ module PathGeometry =
                     ))
 
     let FillRule =
-        Attributes.defineBindable<FillRule> PathGeometry.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> PathGeometry.FillRuleProperty
 
 [<AutoOpen>]
 module PathGeometryBuilders =

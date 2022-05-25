@@ -11,7 +11,7 @@ module PolyBezierSegment =
     let WidgetKey = Widgets.register<PolyBezierSegment>()
 
     let PointsString =
-        Attributes.define<string>
+        Attributes.defineSimpleScalarWithEquality<string>
             "PolyBezierSegment_PointsString"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -26,7 +26,7 @@ module PolyBezierSegment =
                     ))
 
     let PointsList =
-        Attributes.define<Point list>
+        Attributes.defineSimpleScalarWithEquality<Point array>
             "PolyBezierSegment_PointsList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -35,7 +35,7 @@ module PolyBezierSegment =
                 | ValueNone -> target.ClearValue(PolyBezierSegment.PointsProperty)
                 | ValueSome points ->
                     let coll = PointCollection()
-                    points |> List.iter coll.Add
+                    points |> Array.iter coll.Add
                     target.SetValue(PolyBezierSegment.PointsProperty, coll))
 
 [<AutoOpen>]
@@ -51,5 +51,5 @@ module PolyBezierSegmentBuilders =
         static member inline PolyBezierSegment<'msg>(points: Point list) =
             WidgetBuilder<'msg, IPolyBezierSegment>(
                 PolyBezierSegment.WidgetKey,
-                PolyBezierSegment.PointsList.WithValue(points)
+                PolyBezierSegment.PointsList.WithValue(Array.ofList points)
             )

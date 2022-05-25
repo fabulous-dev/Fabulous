@@ -11,13 +11,13 @@ module EntryCell =
     let WidgetKey = Widgets.register<CustomEntryCell>()
 
     let Label =
-        Attributes.defineBindable<string> EntryCell.LabelProperty
+        Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
     let LabelColor =
-        Attributes.defineAppThemeBindable<Color> EntryCell.LabelColorProperty
+        Attributes.defineBindableAppTheme<Color> EntryCell.LabelColorProperty
 
     let Placeholder =
-        Attributes.defineBindable<string> EntryCell.PlaceholderProperty
+        Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
 
     let HorizontalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> EntryCell.HorizontalTextAlignmentProperty
@@ -26,7 +26,7 @@ module EntryCell =
         Attributes.defineBindableEnum<TextAlignment> EntryCell.VerticalTextAlignmentProperty
 
     let Keyboard =
-        Attributes.defineBindable<Keyboard> EntryCell.KeyboardProperty
+        Attributes.defineBindableWithEquality<Keyboard> EntryCell.KeyboardProperty
 
     let TextWithEvent =
         Attributes.defineBindableWithEvent

@@ -71,38 +71,56 @@ type SmallScalarExtensions() =
         this.WithValue(value, SmallScalars.IntEnum.encode)
 
 module Attributes =
-    /// Define a custom attribute storing any value
-    let inline defineScalarWithConverter<'inputType, 'modelType, 'valueType>
+    /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
+    let inline defineSmallScalar<'T>
         name
-        ([<InlineIfLambda>] convert: 'inputType -> 'modelType)
-        ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
-        ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
-        ([<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
-        : ScalarAttributeDefinition<'inputType, 'modelType, 'valueType> =
+        ([<InlineIfLambda>] decode: uint64 -> 'T)
+        ([<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<'T> =
         let key =
-            ScalarAttributeDefinition.CreateAttributeData<'modelType, 'valueType>(convertValue, compare, updateNode)
-            |> AttributeDefinitionStore.registerScalar
-
-        { Key = key
-          Name = name
-          Convert = convert }
-
-
-
-    /// Define a custom attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
-    let inline defineSmallScalar<'modelType>
-        name
-        ([<InlineIfLambda>] decode: uint64 -> 'modelType)
-        ([<InlineIfLambda>] updateNode: 'modelType voption -> 'modelType voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition<'modelType> =
-        let key =
-            SmallScalarAttributeDefinition.CreateAttributeData<'modelType>(decode, updateNode)
+            SmallScalarAttributeDefinition.CreateAttributeData<'T>(decode, updateNode)
             |> AttributeDefinitionStore.registerSmallScalar
 
         { Key = key; Name = name }
 
+    /// Define an attribute that can store any value with no conversion.
+    /// The value will be boxed and allocated on the heap.
+    /// For better performance, use defineSmallScalar instead.
+    let inline defineSimpleScalar<'T>
+        name
+        ([<InlineIfLambda>] compare: 'T -> 'T -> ScalarAttributeComparison)
+        ([<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit)
+        : SimpleScalarAttributeDefinition<'T> =
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(compare, updateNode)
+            |> AttributeDefinitionStore.registerScalar
 
-    /// Define a custom float attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+        { Key = key; Name = name }
+
+    /// Define an attribute that can store any value with a conversion.
+    /// The value will be boxed and allocated on the heap.
+    /// For better performance, use defineSmallScalar instead.
+    let inline defineScalar<'modelType, 'valueType>
+        name
+        ([<InlineIfLambda>] convertValue: 'modelType -> 'valueType)
+        ([<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison)
+        ([<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit)
+        : ScalarAttributeDefinition<'modelType, 'valueType> =
+        let key =
+            ScalarAttributeDefinition.CreateAttributeData<'modelType, 'valueType>(convertValue, compare, updateNode)
+            |> AttributeDefinitionStore.registerScalar
+
+        { Key = key; Name = name }
+
+    /// Define an int attribute that is encoded into uint64
+    let inline defineInt
+        name
+        ([<InlineIfLambda>] updateNode: int voption -> int voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<int> =
+
+        defineSmallScalar name SmallScalars.Int.decode updateNode
+
+    /// Define a float attribute that is encoded into uint64
     let inline defineFloat
         name
         ([<InlineIfLambda>] updateNode: float voption -> float voption -> IViewNode -> unit)
@@ -110,13 +128,14 @@ module Attributes =
 
         defineSmallScalar name SmallScalars.Float.decode updateNode
 
+    /// Define a enum attribute that is encoded into uint64
     let inline defineEnum< ^T when ^T: enum<int>>
         name
         ([<InlineIfLambda>] updateNode: ^T voption -> ^T voption -> IViewNode -> unit)
         : SmallScalarAttributeDefinition< ^T > =
         defineSmallScalar name SmallScalars.IntEnum.decode updateNode
 
-    /// Define a custom bool attribute that is encoded into uint64, wrapper on top of defineSmallScalarWithConverter
+    /// Define a boolean attribute that is encoded into uint64
     let inline defineBool
         name
         ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
@@ -124,8 +143,9 @@ module Attributes =
 
         defineSmallScalar name SmallScalars.Bool.decode updateNode
 
-    /// Define a custom attribute storing a widget
-    let inline defineWidgetWithConverter
+    /// Define an attribute storing a single Widget.
+    /// Used for storing the single child of a view
+    let inline defineWidget
         name
         (applyDiff: WidgetDiff -> IViewNode -> unit)
         (updateNode: Widget voption -> Widget voption -> IViewNode -> unit)
@@ -138,10 +158,9 @@ module Attributes =
 
         { Key = key; Name = name }
 
-
-
-    /// Define a custom attribute storing a widget collection
-    let inline defineWidgetCollectionWithConverter
+    /// Define an attribute storing a collection of Widgets
+    /// Used for storing children of a view
+    let inline defineWidgetCollection
         name
         (applyDiff: ArraySlice<Widget> -> WidgetCollectionItemChanges -> IViewNode -> unit)
         (updateNode: ArraySlice<Widget> voption -> ArraySlice<Widget> voption -> IViewNode -> unit)
@@ -154,11 +173,8 @@ module Attributes =
 
         { Key = key; Name = name }
 
-
-
-
     /// Define an attribute storing a Widget for a CLR property
-    let inline defineWidget<'T when 'T: null>
+    let inline definePropertyWidget<'T when 'T: null>
         (name: string)
         ([<InlineIfLambda>] get: obj -> IViewNode)
         ([<InlineIfLambda>] set: obj -> 'T -> unit)
@@ -168,7 +184,6 @@ module Attributes =
 
             childNode.ApplyDiff(&diff)
 
-
         let updateNode _ (newValueOpt: Widget voption) (node: IViewNode) =
             match newValueOpt with
             | ValueNone -> set node.Target null
@@ -177,13 +192,13 @@ module Attributes =
 
                 set node.Target (unbox view)
 
-        defineWidgetWithConverter name applyDiff updateNode
+        defineWidget name applyDiff updateNode
 
-    /// Define an attribute storing a collection of Widget
-    let defineWidgetCollection<'itemType>
+    /// Define an attribute storing a collection of Widget for a List<T> property
+    let inline defineListWidgetCollection<'itemType>
         name
-        (getViewNode: obj -> IViewNode)
-        (getCollection: obj -> System.Collections.Generic.IList<'itemType>)
+        ([<InlineIfLambda>] getViewNode: obj -> IViewNode)
+        ([<InlineIfLambda>] getCollection: obj -> System.Collections.Generic.IList<'itemType>)
         =
         let applyDiff _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
@@ -249,9 +264,10 @@ module Attributes =
 
                     targetColl.Add(unbox view)
 
-        defineWidgetCollectionWithConverter name applyDiff updateNode
+        defineWidgetCollection name applyDiff updateNode
 
-    let inline define<'T when 'T: equality>
+    /// Define an attribute for a value supporting equality comparison
+    let inline defineSimpleScalarWithEquality<'T when 'T: equality>
         name
         ([<InlineIfLambda>] updateTarget: 'T voption -> 'T voption -> IViewNode -> unit)
         : SimpleScalarAttributeDefinition<'T> =
@@ -261,7 +277,7 @@ module Attributes =
 
         { Key = key; Name = name }
 
-
+    /// Define an attribute for EventHandler
     let inline defineEventNoArg
         name
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
@@ -291,6 +307,7 @@ module Attributes =
 
         { Key = key; Name = name }
 
+    /// Define an attribute for EventHandler<'T>
     let inline defineEvent<'args>
         name
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)

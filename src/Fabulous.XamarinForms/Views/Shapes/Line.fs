@@ -13,7 +13,7 @@ module Line =
     let WidgetKey = Widgets.register<Line>()
 
     let Points =
-        Attributes.define<struct (Point * Point)>
+        Attributes.defineSimpleScalarWithEquality<struct (Point * Point)>
             "Line_Point1"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> Line

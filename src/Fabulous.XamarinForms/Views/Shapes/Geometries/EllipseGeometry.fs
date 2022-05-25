@@ -11,7 +11,7 @@ module EllipseGeometry =
     let WidgetKey = Widgets.register<EllipseGeometry>()
 
     let Center =
-        Attributes.defineBindable<Point> EllipseGeometry.CenterProperty
+        Attributes.defineBindableWithEquality<Point> EllipseGeometry.CenterProperty
 
     let RadiusX =
         Attributes.defineBindableFloat EllipseGeometry.RadiusXProperty

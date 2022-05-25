@@ -21,7 +21,7 @@ module FlexLayout =
         Attributes.defineBindableEnum<FlexAlignSelf> FlexLayout.AlignSelfProperty
 
     let Basis =
-        Attributes.defineBindable<FlexBasis> FlexLayout.BasisProperty
+        Attributes.defineBindableWithEquality<FlexBasis> FlexLayout.BasisProperty
 
     let Direction =
         Attributes.defineBindableEnum<FlexDirection> FlexLayout.DirectionProperty

@@ -11,7 +11,7 @@ module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()
 
     let Text =
-        Attributes.defineBindable<string> SwitchCell.TextProperty
+        Attributes.defineBindableWithEquality<string> SwitchCell.TextProperty
 
     let OnWithEvent =
         Attributes.defineBindableWithEvent
@@ -20,7 +20,7 @@ module SwitchCell =
             (fun target -> (target :?> SwitchCell).OnChanged)
 
     let OnColor =
-        Attributes.defineAppThemeBindable<Color> SwitchCell.OnColorProperty
+        Attributes.defineBindableAppTheme<Color> SwitchCell.OnColorProperty
 
 [<AutoOpen>]
 module SwitchCellBuilders =

@@ -11,16 +11,16 @@ module Span =
     let WidgetKey = Widgets.register<Span>()
 
     let BackgroundColor =
-        Attributes.defineAppThemeBindable<Color> Span.BackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> Span.BackgroundColorProperty
 
     let CharacterSpacing =
         Attributes.defineBindableFloat Span.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> Span.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Span.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Span.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Span.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Span.FontSizeProperty
@@ -29,10 +29,10 @@ module Span =
         Attributes.defineBindableFloat Span.LineHeightProperty
 
     let Style =
-        Attributes.defineBindable<Style> Span.StyleProperty
+        Attributes.defineBindableWithEquality<Style> Span.StyleProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> Span.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> Span.TextColorProperty
 
     let TextDecorations =
         Attributes.defineBindableEnum<TextDecorations> Span.TextDecorationsProperty
@@ -41,10 +41,10 @@ module Span =
         Attributes.defineBindableEnum<TextTransform> Span.TextTransformProperty
 
     let Text =
-        Attributes.defineBindable<string> Span.TextProperty
+        Attributes.defineBindableWithEquality<string> Span.TextProperty
 
     let GestureRecognizers =
-        Attributes.defineWidgetCollection<IGestureRecognizer>
+        Attributes.defineListWidgetCollection<IGestureRecognizer>
             "Span_GestureRecognizers"
             ViewNode.get
             (fun target -> (target :?> Span).GestureRecognizers)

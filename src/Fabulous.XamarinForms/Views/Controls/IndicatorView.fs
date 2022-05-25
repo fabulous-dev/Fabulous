@@ -11,9 +11,8 @@ module IndicatorView =
     let WidgetKey = Widgets.register<IndicatorView>()
 
     let ItemsSource<'T> =
-        Attributes.defineBindableWithComparer<WidgetItems<'T>, WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>
+        Attributes.defineBindable<WidgetItems<'T>, System.Collections.Generic.IEnumerable<Widget>>
             IndicatorView.ItemsSourceProperty
-            id
             (fun modelValue ->
                 seq {
                     for x in modelValue.OriginalItems do
@@ -25,7 +24,7 @@ module IndicatorView =
         Attributes.defineBindableBool IndicatorView.HideSingleProperty
 
     let IndicatorColor =
-        Attributes.defineAppThemeBindable<Color> IndicatorView.IndicatorColorProperty
+        Attributes.defineBindableAppTheme<Color> IndicatorView.IndicatorColorProperty
 
     let IndicatorSize =
         Attributes.defineBindableFloat IndicatorView.IndicatorSizeProperty
@@ -37,7 +36,7 @@ module IndicatorView =
         Attributes.defineBindableInt IndicatorView.MaximumVisibleProperty
 
     let SelectedIndicatorColor =
-        Attributes.defineAppThemeBindable<Color> IndicatorView.SelectedIndicatorColorProperty
+        Attributes.defineBindableAppTheme<Color> IndicatorView.SelectedIndicatorColorProperty
 
 [<AutoOpen>]
 module IndicatorViewBuilders =

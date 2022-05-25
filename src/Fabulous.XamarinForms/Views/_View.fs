@@ -40,16 +40,16 @@ module XFView =
         Attributes.defineSmallBindable<LayoutOptions> View.VerticalOptionsProperty SmallScalars.LayoutOptions.decode
 
     let Margin =
-        Attributes.defineBindable<Thickness> View.MarginProperty
+        Attributes.defineBindableWithEquality<Thickness> View.MarginProperty
 
     let GestureRecognizers =
-        Attributes.defineWidgetCollection<IGestureRecognizer>
+        Attributes.defineListWidgetCollection<IGestureRecognizer>
             "View_GestureRecognizers"
             ViewNode.get
             (fun target -> (target :?> View).GestureRecognizers)
 
     let TranslateTo =
-        Attributes.define<TranslateToData>
+        Attributes.defineSimpleScalarWithEquality<TranslateToData>
             "View_TranslateTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -63,7 +63,7 @@ module XFView =
                     |> ignore)
 
     let ScaleTo =
-        Attributes.define<ScaleToData>
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
             "View_ScaleTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -75,7 +75,7 @@ module XFView =
                     |> ignore)
 
     let ScaleXTo =
-        Attributes.define<ScaleToData>
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
             "View_ScaleXTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -87,7 +87,7 @@ module XFView =
                     |> ignore)
 
     let ScaleYTo =
-        Attributes.define<ScaleToData>
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
             "View_ScaleYTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -99,7 +99,7 @@ module XFView =
                     |> ignore)
 
     let FadeTo =
-        Attributes.define<FadeToData>
+        Attributes.defineSimpleScalarWithEquality<FadeToData>
             "View_FadeTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -111,7 +111,7 @@ module XFView =
                     |> ignore)
 
     let RotateTo =
-        Attributes.define<RotateToData>
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
             "View_RotateTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -123,7 +123,7 @@ module XFView =
                     |> ignore)
 
     let RotateXTo =
-        Attributes.define<RotateToData>
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
             "View_RotateXTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View
@@ -137,7 +137,7 @@ module XFView =
                     |> ignore)
 
     let RotateYTo =
-        Attributes.define<RotateToData>
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
             "View_RotateYTo"
             (fun _ newValueOpt node ->
                 let view = node.Target :?> View

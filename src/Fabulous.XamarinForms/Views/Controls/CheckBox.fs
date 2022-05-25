@@ -12,7 +12,7 @@ module CheckBox =
     let WidgetKey = Widgets.register<CheckBox>()
 
     let Color =
-        Attributes.defineAppThemeBindable<Color> CheckBox.ColorProperty
+        Attributes.defineBindableAppTheme<Color> CheckBox.ColorProperty
 
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent

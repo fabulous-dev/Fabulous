@@ -15,10 +15,10 @@ module VisualElement =
         Attributes.defineBindableFloat VisualElement.AnchorYProperty
 
     let BackgroundColor =
-        Attributes.defineAppThemeBindable<Color> VisualElement.BackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> VisualElement.BackgroundColorProperty
 
     let Background =
-        Attributes.defineAppThemeBindable<Brush> VisualElement.BackgroundProperty
+        Attributes.defineBindableAppTheme<Brush> VisualElement.BackgroundProperty
 
     let Clip =
         Attributes.defineBindableWidget VisualElement.ClipProperty
@@ -81,8 +81,7 @@ module VisualElement =
         Attributes.defineBindableFloat VisualElement.TranslationYProperty
 
     let Visual =
-        Attributes.defineBindable<IVisual> VisualElement.VisualProperty
-
+        Attributes.defineBindableWithEquality<IVisual> VisualElement.VisualProperty
 
     let Focused =
         Attributes.defineEvent<FocusEventArgs>

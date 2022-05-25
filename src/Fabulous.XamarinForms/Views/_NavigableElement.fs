@@ -9,7 +9,7 @@ type INavigableElement =
 
 module NavigableElement =
     let Style =
-        Attributes.defineBindable<Xamarin.Forms.Style> NavigableElement.StyleProperty
+        Attributes.defineBindableWithEquality<Xamarin.Forms.Style> NavigableElement.StyleProperty
 
 [<Extension>]
 type NavigableElementModifiers =

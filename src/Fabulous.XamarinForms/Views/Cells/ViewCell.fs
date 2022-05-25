@@ -11,7 +11,7 @@ module ViewCell =
     let WidgetKey = Widgets.register<ViewCell>()
 
     let View =
-        Attributes.defineWidget
+        Attributes.definePropertyWidget
             "ViewCell_View"
             (fun target -> ViewNode.get (target :?> ViewCell).View)
             (fun target value -> (target :?> ViewCell).View <- value)

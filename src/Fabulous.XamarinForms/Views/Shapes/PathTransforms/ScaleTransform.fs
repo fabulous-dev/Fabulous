@@ -10,7 +10,7 @@ module ScaleTransform =
     let WidgetKey = Widgets.register<ScaleTransform>()
 
     let ScaleXY =
-        Attributes.define<struct (float * float)>
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
             "ScaleTransform_Scale"
             (fun _ newValueOpt node ->
                 let line = node.Target :?> ScaleTransform

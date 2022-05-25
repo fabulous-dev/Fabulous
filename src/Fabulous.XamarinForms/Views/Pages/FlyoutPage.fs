@@ -11,7 +11,7 @@ module FlyoutPage =
     let WidgetKey = Widgets.register<FlyoutPage>()
 
     let CanChangeIsPresented =
-        Attributes.define<bool>
+        Attributes.defineBool
             "FlyoutPage_CanChangeIsPresented"
             (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage
@@ -30,13 +30,13 @@ module FlyoutPage =
         Attributes.defineBindableBool FlyoutPage.IsPresentedProperty
 
     let Flyout =
-        Attributes.defineWidget
+        Attributes.definePropertyWidget
             "FlyoutPage_Flyout"
             (fun target -> ViewNode.get (target :?> FlyoutPage).Flyout)
             (fun target value -> (target :?> FlyoutPage).Flyout <- value)
 
     let FlyoutBounds =
-        Attributes.define<Rectangle>
+        Attributes.defineSimpleScalarWithEquality<Rectangle>
             "FlyoutPage_FlyoutBounds"
             (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage
@@ -52,13 +52,13 @@ module FlyoutPage =
         Attributes.defineBindableEnum<FlyoutLayoutBehavior> FlyoutPage.FlyoutLayoutBehaviorProperty
 
     let Detail =
-        Attributes.defineWidget
+        Attributes.definePropertyWidget
             "FlyoutPage_Detail"
             (fun target -> ViewNode.get (target :?> FlyoutPage).Detail)
             (fun target value -> (target :?> FlyoutPage).Detail <- value)
 
     let DetailBounds =
-        Attributes.define<Rectangle>
+        Attributes.defineSimpleScalarWithEquality<Rectangle>
             "FlyoutPage_DetailBounds"
             (fun _ newValueOpt node ->
                 let flyoutPage = node.Target :?> FlyoutPage

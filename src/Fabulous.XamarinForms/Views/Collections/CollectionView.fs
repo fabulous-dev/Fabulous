@@ -11,10 +11,8 @@ module CollectionView =
     let WidgetKey = Widgets.register<CollectionView>()
 
     let GroupedItemsSource<'groupData, 'itemData> =
-        Attributes.defineScalarWithConverter<GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>, GroupedWidgetItems<'groupData, 'itemData>>
+        Attributes.defineSimpleScalar<GroupedWidgetItems<'groupData, 'itemData>>
             "CollectionView_GroupedItemsSource"
-            id
-            id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
             (fun _ newValueOpt node ->
                 let collectionView = node.Target :?> CollectionView

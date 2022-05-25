@@ -22,7 +22,7 @@ module Image =
         Attributes.defineBindableBool Image.IsOpaqueProperty
 
     let Source =
-        Attributes.defineAppThemeBindable<ImageSource> Image.SourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> Image.SourceProperty
 
 [<AutoOpen>]
 module ImageBuilders =

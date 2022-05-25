@@ -12,19 +12,19 @@ module TabbedPage =
     let WidgetKey = Widgets.register<TabbedPage>()
 
     let BarBackgroundColor =
-        Attributes.defineAppThemeBindable<Color> TabbedPage.BarBackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> TabbedPage.BarBackgroundColorProperty
 
     let BarTextColor =
-        Attributes.defineAppThemeBindable<Color> TabbedPage.BarTextColorProperty
+        Attributes.defineBindableAppTheme<Color> TabbedPage.BarTextColorProperty
 
     let SelectedTabColor =
-        Attributes.defineAppThemeBindable<Color> TabbedPage.SelectedTabColorProperty
+        Attributes.defineBindableAppTheme<Color> TabbedPage.SelectedTabColorProperty
 
     let UnselectedTabColor =
-        Attributes.defineAppThemeBindable<Color> TabbedPage.UnselectedTabColorProperty
+        Attributes.defineBindableAppTheme<Color> TabbedPage.UnselectedTabColorProperty
 
     let ToolbarPlacement =
-        Attributes.define<AndroidSpecific.ToolbarPlacement>
+        Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
             "TabbedPage_ToolbarPlacement"
             (fun _ newValueOpt node ->
                 let tabbedPage = node.Target :?> TabbedPage

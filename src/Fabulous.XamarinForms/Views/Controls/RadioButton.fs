@@ -12,10 +12,10 @@ module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
     let BorderColor =
-        Attributes.defineAppThemeBindable<Color> RadioButton.BorderColorProperty
+        Attributes.defineBindableAppTheme<Color> RadioButton.BorderColorProperty
 
     let GroupName =
-        Attributes.defineBindable<string> RadioButton.GroupNameProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.GroupNameProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat RadioButton.BorderWidthProperty
@@ -27,31 +27,28 @@ module RadioButton =
         Attributes.defineBindableFloat RadioButton.CornerRadiusProperty
 
     let ContentString =
-        Attributes.defineBindable<string> RadioButton.ContentProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.ContentProperty
 
     let ContentWidget =
         Attributes.defineBindableWidget RadioButton.ContentProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> RadioButton.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> RadioButton.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> RadioButton.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> RadioButton.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat RadioButton.FontSizeProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> RadioButton.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> RadioButton.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
 
-    let Value =
-        Attributes.defineBindable<obj> RadioButton.ValueProperty
-
     let RadioButtonGroupName =
-        Attributes.defineBindable<string> RadioButtonGroup.GroupNameProperty
+        Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
 
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent
@@ -164,12 +161,6 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IRadioButton>, value: TextTransform) =
         this.AddScalar(RadioButton.TextTransform.WithValue(value))
-
-    /// <summary>Sets an optional unique value associated with the RadioButton.</summary>
-    /// <param value="value">An optional unique value associated with the RadioButton.</param>
-    [<Extension>]
-    static member inline value(this: WidgetBuilder<'msg, #IRadioButton>, value: obj) =
-        this.AddScalar(RadioButton.Value.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RadioButton control instance</summary>
     [<Extension>]

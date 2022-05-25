@@ -140,5 +140,4 @@ module App =
     //        .textColor(Styles.AccentTextColor)
     //])
 
-    let program =
-        Program.statefulApplicationWithCmd init update view
+    let program = Program.statefulWithCmd init update view

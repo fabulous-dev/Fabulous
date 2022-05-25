@@ -13,7 +13,7 @@ module ImageCell =
     let WidgetKey = Widgets.register<ImageCell>()
 
     let ImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> ImageCell.ImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> ImageCell.ImageSourceProperty
 
 [<AutoOpen>]
 module ImageCellBuilders =

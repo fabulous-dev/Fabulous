@@ -10,29 +10,129 @@ open Xamarin.Forms.PlatformConfiguration
 type INavigationPage =
     inherit IPage
 
+module NavigationPageUpdaters =
+    /// NOTE: Would be better to have a custom diff logic for Navigation
+    /// because it's a Stack and not a random access collection
+    let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+        let navigationPage = node.Target :?> NavigationPage
+        let pages = Array.ofSeq navigationPage.Pages
+
+        let mutable pagesLength =
+            let struct (size, _) = prev
+            int size
+
+        for diff in diffs do
+            match diff with
+            | WidgetCollectionItemChange.Insert (index, widget) ->
+                if index >= pagesLength then
+                    let struct (_, page) = Helpers.createViewForWidget node widget
+
+                    navigationPage.PushAsync(page :?> Page) |> ignore
+                    pagesLength <- pagesLength + 1
+                else
+                    let temp = System.Collections.Generic.Stack<Page>()
+
+                    for i = pagesLength - 1 to index do
+                        temp.Push(pages.[i])
+                        navigationPage.PopAsync() |> ignore
+
+                    let struct (_, page) = Helpers.createViewForWidget node widget
+
+                    navigationPage.PushAsync(page :?> Page, false)
+                    |> ignore
+
+                    while temp.Count > 0 do
+                        navigationPage.PushAsync(temp.Pop(), false)
+                        |> ignore
+
+                    pagesLength <- pagesLength + 1
+
+            | WidgetCollectionItemChange.Update (index, diff) ->
+                let childNode =
+                    node.TreeContext.GetViewNode(box pages.[index])
+
+                childNode.ApplyDiff(&diff)
+
+
+            | WidgetCollectionItemChange.Replace (index, _, newWidget) ->
+                if index = pagesLength - 1 then
+                    navigationPage.PopAsync() |> ignore
+
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node newWidget
+
+                    navigationPage.PushAsync(page :?> Page) |> ignore
+                else
+                    let temp = System.Collections.Generic.Stack<Page>()
+
+                    for i = pagesLength - 1 to index do
+                        temp.Push(pages.[i])
+                        navigationPage.PopAsync() |> ignore
+
+                    let struct (_, page) =
+                        Helpers.createViewForWidget node newWidget
+
+                    navigationPage.PushAsync(page :?> Page, false)
+                    |> ignore
+
+                    while temp.Count > 1 do
+                        navigationPage.PushAsync(temp.Pop(), false)
+                        |> ignore
+
+            | WidgetCollectionItemChange.Remove (index, _) ->
+                if index > pagesLength - 1 then
+                    () // Do nothing, page has already been popped
+                elif index = pagesLength - 1 then
+                    navigationPage.PopAsync() |> ignore
+                    pagesLength <- pagesLength - 1
+                else
+                    let temp = System.Collections.Generic.Stack<Page>()
+
+                    for i = pagesLength - 1 to index do
+                        temp.Push(pages.[i])
+                        navigationPage.PopAsync() |> ignore
+
+                    while temp.Count > 1 do
+                        navigationPage.PushAsync(temp.Pop(), false)
+                        |> ignore
+
+                    pagesLength <- pagesLength - 1
+
+    let updateNavigationPagePages _ (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+        let navigationPage = node.Target :?> NavigationPage
+        navigationPage.PopToRootAsync(false) |> ignore
+
+        match newValueOpt with
+        | ValueNone -> ()
+        | ValueSome widgets ->
+            for widget in ArraySlice.toSpan widgets do
+                let struct (_, page) = Helpers.createViewForWidget node widget
+
+                navigationPage.PushAsync(page :?> Page) |> ignore
+
 module NavigationPage =
     let WidgetKey = Widgets.register<NavigationPage>()
 
     let BackButtonTitle =
-        Attributes.defineBindable<string> NavigationPage.BackButtonTitleProperty
+        Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
 
     let Pages =
-        Attributes.defineWidgetCollectionWithConverter
+        Attributes.defineWidgetCollection
             "NavigationPage_Pages"
-            ViewUpdaters.applyDiffNavigationPagePages
-            ViewUpdaters.updateNavigationPagePages
+            NavigationPageUpdaters.applyDiffNavigationPagePages
+            NavigationPageUpdaters.updateNavigationPagePages
 
     let BarBackgroundColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.BarBackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.BarBackgroundColorProperty
 
     let BarBackground =
-        Attributes.defineAppThemeBindable<Brush> NavigationPage.BarBackgroundProperty
+        Attributes.defineBindableAppTheme<Brush> NavigationPage.BarBackgroundProperty
 
     let BarTextColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.BarTextColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.BarTextColorProperty
 
     let IconColor =
-        Attributes.defineAppThemeBindable<Color> NavigationPage.IconColorProperty
+        Attributes.defineBindableAppTheme<Color> NavigationPage.IconColorProperty
 
     let HasNavigationBar =
         Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
@@ -41,7 +141,7 @@ module NavigationPage =
         Attributes.defineBindableBool NavigationPage.HasBackButtonProperty
 
     let TitleIconImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> NavigationPage.TitleIconImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
     let Popped =
         Attributes.defineEvent<NavigationEventArgs>
@@ -62,7 +162,7 @@ module NavigationPage =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
     let HideNavigationBarSeparator =
-        Attributes.define<bool>
+        Attributes.defineBool
             "NavigationPage_HideNavigationBarSeparator"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage
@@ -75,7 +175,7 @@ module NavigationPage =
                 iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
     let IsNavigationBarTranslucent =
-        Attributes.define<bool>
+        Attributes.defineBool
             "NavigationPage_IsNavigationBarTranslucent"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage
@@ -88,7 +188,7 @@ module NavigationPage =
                 iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
 
     let PrefersLargeTitles =
-        Attributes.define<bool>
+        Attributes.defineBool
             "NavigationPage_PrefersLargeTitles"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> NavigationPage

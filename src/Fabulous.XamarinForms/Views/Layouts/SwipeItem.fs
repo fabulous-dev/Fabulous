@@ -12,7 +12,7 @@ module SwipeItem =
     let WidgetKey = Widgets.register<SwipeItem>()
 
     let BackgroundColor =
-        Attributes.defineAppThemeBindable<Color> SwipeItem.BackgroundColorProperty
+        Attributes.defineBindableAppTheme<Color> SwipeItem.BackgroundColorProperty
 
     let IsVisible =
         Attributes.defineBindableBool SwipeItem.IsVisibleProperty

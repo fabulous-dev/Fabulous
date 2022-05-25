@@ -36,8 +36,20 @@ module ViewHelpers =
         else
             false
 
-    let traceException (ex: exn) =
-        Trace.WriteLine("Exception: {0}", $"%0A{ex}")
+    let defaultLogger () =
+        let log (level, message) =
+            let traceLevel =
+                match level with
+                | LogLevel.Debug -> "Debug"
+                | LogLevel.Info -> "Information"
+                | LogLevel.Warn -> "Warning"
+                | LogLevel.Error -> "Error"
+                | _ -> "Error"
+
+            Trace.WriteLine(message, traceLevel)
+
+        { Log = log
+          MinLogLevel = LogLevel.Error }
 
 module Program =
     let inline private define
@@ -47,32 +59,37 @@ module Program =
         =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
-          View = fun model -> (view model).Compile()
+          Subscribe = fun _ -> Cmd.none
+          View = view
           CanReuseView = ViewHelpers.canReuseView
           SyncAction = Device.BeginInvokeOnMainThread
-          OnException = ViewHelpers.traceException }
+          Logger = ViewHelpers.defaultLogger() }
 
-    let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
+    /// Create a program for a static view
+    let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
         define(fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
 
-    let statefulApplication
+    /// Create a program using an MVU loop
+    let stateful
         (init: 'arg -> 'model)
         (update: 'msg -> 'model -> 'model)
-        (view: 'model -> WidgetBuilder<'msg, #IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         =
         define(fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
-    let statefulApplicationWithCmd
+    /// Create a program using an MVU loop. Add support for Cmd
+    let statefulWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
         (view: 'model -> WidgetBuilder<'msg, #IApplication>)
         =
         define init update view
 
-    let statefulApplicationWithCmdMsg
+    /// Create a program using an MVU loop. Add support for CmdMsg
+    let statefulWithCmdMsg
         (init: 'arg -> 'model * 'cmdMsg list)
         (update: 'msg -> 'model -> 'model * 'cmdMsg list)
-        (view: 'model -> WidgetBuilder<'msg, #IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         (mapCmd: 'cmdMsg -> Cmd<'msg>)
         =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
@@ -82,56 +99,69 @@ module Program =
             (fun msg model -> let m, c = update msg model in m, mapCmds c)
             view
 
-    let createApplication (program: Program<'arg, 'model, 'msg>) (arg: 'arg) : Application =
+    /// Start the program
+    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IApplication>) : Application =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
 
-    /// Trace all the updates to the debug output.
-    let withTrace (program: Program<'arg, 'model, 'msg>) =
+    /// Start the program
+    let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : Application =
+        startApplicationWithArgs() program
+
+    /// Subscribe to external source of events.
+    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
+        let sub model =
+            Cmd.batch [ program.Subscribe model
+                        subscribe model ]
+
+        { program with Subscribe = sub }
+
+    /// Configure how the output messages from Fabulous will be handled
+    let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg, 'marker>) = { program with Logger = logger }
+
+    /// Trace all the updates to the debug output
+    let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg, 'marker>) =
         let traceInit arg =
             try
                 let initModel, cmd = program.Init(arg)
-                Trace.WriteLine("Initial model: {0}", $"%0A{initModel}")
+                trace("Initial model: {0}", $"%0A{initModel}")
                 initModel, cmd
             with
             | e ->
-                Trace.WriteLine("Error in init function: {0}", $"%0A{e}")
+                trace("Error in init function: {0}", $"%0A{e}")
                 reraise()
 
         let traceUpdate (msg, model) =
-            Trace.WriteLine("Message: {0}", $"%0A{msg}")
+            trace("Message: {0}", $"%0A{msg}")
 
             try
                 let newModel, cmd = program.Update(msg, model)
-                Trace.WriteLine("Updated model: {0}", $"%0A{newModel}")
+                trace("Updated model: {0}", $"%0A{newModel}")
                 newModel, cmd
             with
             | e ->
-                Trace.WriteLine("Error in model function: {0}", $"%0A{e}")
+                trace("Error in model function: {0}", $"%0A{e}")
                 reraise()
 
         let traceView model =
-            Trace.WriteLine("View, model = {0}", $"%0A{model}")
+            trace("View, model = {0}", $"%0A{model}")
 
             try
                 let info = program.View(model)
-                Trace.WriteLine("View result: {0}", $"%0A{info}")
+                trace("View result: {0}", $"%0A{info}")
                 info
             with
             | e ->
-                Trace.WriteLine("Error in view function: {0}", $"%0A{e}")
+                trace("Error in view function: {0}", $"%0A{e}")
                 reraise()
 
         { program with
               Init = traceInit
               Update = traceUpdate
               View = traceView }
-
-    let withExceptionHandler (onException: exn -> unit) (program: Program<'arg, 'model, 'msg>) =
-        { program with
-              OnException = onException }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =

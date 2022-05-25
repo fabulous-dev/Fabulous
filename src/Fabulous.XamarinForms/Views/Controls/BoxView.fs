@@ -11,7 +11,7 @@ module BoxView =
     let WidgetKey = Widgets.register<BoxView>()
 
     let Color =
-        Attributes.defineAppThemeBindable<Color> BoxView.ColorProperty
+        Attributes.defineBindableAppTheme<Color> BoxView.ColorProperty
 
     let CornerRadius =
         Attributes.defineBindableFloat BoxView.CornerRadiusProperty

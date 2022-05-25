@@ -15,13 +15,13 @@ module ArcSegment =
         Attributes.defineBindableBool ArcSegment.IsLargeArcProperty
 
     let Point =
-        Attributes.defineBindable<Point> ArcSegment.SizeProperty
+        Attributes.defineBindableWithEquality<Point> ArcSegment.SizeProperty
 
     let RotationAngle =
         Attributes.defineBindableFloat ArcSegment.RotationAngleProperty
 
     let Size =
-        Attributes.defineBindable<Size> ArcSegment.SizeProperty
+        Attributes.defineBindableWithEquality<Size> ArcSegment.SizeProperty
 
     let SweepDirection =
         Attributes.defineBindableEnum<SweepDirection> ArcSegment.SweepDirectionProperty

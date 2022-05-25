@@ -13,13 +13,13 @@ module PathFigure =
     let WidgetKey = Widgets.register<PathFigure>()
 
     let Segments =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "PathGeometry_Segments"
             ViewNode.get
             (fun target -> (target :?> PathFigure).Segments :> IList<_>)
 
     let StartPoint =
-        Attributes.defineBindable<Point> PathFigure.StartPointProperty
+        Attributes.defineBindableWithEquality<Point> PathFigure.StartPointProperty
 
     let IsClosed =
         Attributes.defineBindableBool PathFigure.IsClosedProperty

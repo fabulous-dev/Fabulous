@@ -12,13 +12,13 @@ module GeometryGroup =
     let WidgetKey = Widgets.register<GeometryGroup>()
 
     let Children =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "GeometryGroup_Children"
             ViewNode.get
             (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
 
     let FillRule =
-        Attributes.defineBindable<FillRule> GeometryGroup.FillRuleProperty
+        Attributes.defineBindableEnum<FillRule> GeometryGroup.FillRuleProperty
 
 [<AutoOpen>]
 module GeometryGroupBuilders =

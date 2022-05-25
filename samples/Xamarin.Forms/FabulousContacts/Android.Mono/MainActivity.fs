@@ -3,7 +3,6 @@
 open Android.App
 open Android.Content.PM
 open Android.Runtime
-open Android.Widget
 open Xamarin.Forms.Platform.Android
 open System.IO
 
@@ -59,7 +58,7 @@ type MainActivity() =
         let dbPath = getDbPath()
 
         let application =
-            Program.createApplication App.program dbPath
+            Program.startApplicationWithArgs dbPath App.program
 
         this.LoadApplication(application)
 
@@ -67,7 +66,7 @@ type MainActivity() =
         (
             requestCode: int,
             permissions: string [],
-            [<GeneratedEnum>] grantResults: Android.Content.PM.Permission []
+            [<GeneratedEnum>] grantResults: Permission []
         ) =
         Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults)
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults)

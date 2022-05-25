@@ -22,16 +22,16 @@ module InputView =
         Attributes.defineBindableInt InputView.MaxLengthProperty
 
     let Placeholder =
-        Attributes.defineBindable<string> InputView.PlaceholderProperty
+        Attributes.defineBindableWithEquality<string> InputView.PlaceholderProperty
 
     let PlaceholderColor =
-        Attributes.defineAppThemeBindable<Color> InputView.PlaceholderColorProperty
+        Attributes.defineBindableAppTheme<Color> InputView.PlaceholderColorProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> InputView.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> InputView.TextColorProperty
 
     let Keyboard =
-        Attributes.defineBindable<Keyboard> InputView.KeyboardProperty
+        Attributes.defineBindableWithEquality<Keyboard> InputView.KeyboardProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> InputView.TextTransformProperty

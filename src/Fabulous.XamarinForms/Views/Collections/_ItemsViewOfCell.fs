@@ -8,10 +8,8 @@ type IItemsViewOfCell =
 
 module ItemsViewOfCell =
     let ItemsSource<'T> =
-        Attributes.defineScalarWithConverter<WidgetItems<'T>, WidgetItems<'T>, WidgetItems<'T>>
+        Attributes.defineSimpleScalar<WidgetItems<'T>>
             "ItemsViewOfCell_ItemsSource"
-            id
-            id
             (fun a b -> ScalarAttributeComparers.equalityCompare a.OriginalItems b.OriginalItems)
             (fun _ newValueOpt node ->
                 let itemsView = node.Target :?> ItemsView<Cell>

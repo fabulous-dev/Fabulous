@@ -7,6 +7,25 @@ open Xamarin.Forms
 type IStepper =
     inherit IView
 
+module StepperUpdaters =
+    let updateStepperMinMax _ (newValueOpt: struct (float * float) voption) (node: IViewNode) =
+        let stepper = node.Target :?> Stepper
+
+        match newValueOpt with
+        | ValueNone ->
+            stepper.ClearValue(Stepper.MinimumProperty)
+            stepper.ClearValue(Stepper.MaximumProperty)
+        | ValueSome (min, max) ->
+            let currMax =
+                stepper.GetValue(Stepper.MaximumProperty) :?> float
+
+            if min > currMax then
+                stepper.SetValue(Stepper.MaximumProperty, max)
+                stepper.SetValue(Stepper.MinimumProperty, min)
+            else
+                stepper.SetValue(Stepper.MinimumProperty, min)
+                stepper.SetValue(Stepper.MaximumProperty, max)
+
 module Stepper =
     let WidgetKey = Widgets.register<Stepper>()
 
@@ -14,7 +33,9 @@ module Stepper =
         Attributes.defineBindableFloat Stepper.IncrementProperty
 
     let MinimumMaximum =
-        Attributes.define<struct (float * float)> "Stepper_MinimumMaximum" ViewUpdaters.updateStepperMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
+            "Stepper_MinimumMaximum"
+            StepperUpdaters.updateStepperMinMax
 
     let ValueWithEvent =
         Attributes.defineBindableWithEvent

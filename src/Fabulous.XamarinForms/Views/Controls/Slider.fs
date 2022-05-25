@@ -9,23 +9,44 @@ open Xamarin.Forms
 type ISlider =
     inherit IView
 
+module SliderUpdaters =
+    let updateSliderMinMax _ (newValueOpt: struct (float * float) voption) (node: IViewNode) =
+        let slider = node.Target :?> Slider
+
+        match newValueOpt with
+        | ValueNone ->
+            slider.ClearValue(Slider.MinimumProperty)
+            slider.ClearValue(Slider.MaximumProperty)
+        | ValueSome (min, max) ->
+            let currMax =
+                slider.GetValue(Slider.MaximumProperty) :?> float
+
+            if min > currMax then
+                slider.SetValue(Slider.MaximumProperty, max)
+                slider.SetValue(Slider.MinimumProperty, min)
+            else
+                slider.SetValue(Slider.MinimumProperty, min)
+                slider.SetValue(Slider.MaximumProperty, max)
+
 module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
     let MinimumMaximum =
-        Attributes.define<struct (float * float)> "Slider_MinimumMaximum" ViewUpdaters.updateSliderMinMax
+        Attributes.defineSimpleScalarWithEquality<struct (float * float)>
+            "Slider_MinimumMaximum"
+            SliderUpdaters.updateSliderMinMax
 
     let MaximumTrackColor =
-        Attributes.defineAppThemeBindable<Color> Slider.MaximumTrackColorProperty
+        Attributes.defineBindableAppTheme<Color> Slider.MaximumTrackColorProperty
 
     let MinimumTrackColor =
-        Attributes.defineAppThemeBindable<Color> Slider.MinimumTrackColorProperty
+        Attributes.defineBindableAppTheme<Color> Slider.MinimumTrackColorProperty
 
     let ThumbColor =
-        Attributes.defineAppThemeBindable<Color> Slider.ThumbColorProperty
+        Attributes.defineBindableAppTheme<Color> Slider.ThumbColorProperty
 
     let ThumbImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> Slider.ThumbImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> Slider.ThumbImageSourceProperty
 
     let ValueWithEvent =
         Attributes.defineBindableWithEvent

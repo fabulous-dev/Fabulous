@@ -21,28 +21,28 @@ module Picker =
         Attributes.defineBindableEnum<TextAlignment> Picker.VerticalTextAlignmentProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> Picker.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Picker.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Picker.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Picker.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Picker.FontSizeProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> Picker.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> Picker.TextColorProperty
 
     let TextTransform =
-        Attributes.defineBindable<TextTransform> Picker.TextTransformProperty
+        Attributes.defineBindableEnum<TextTransform> Picker.TextTransformProperty
 
     let Title =
-        Attributes.defineBindable<string> Picker.TitleProperty
+        Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
     let TitleColor =
-        Attributes.defineAppThemeBindable<Color> Picker.TitleColorProperty
+        Attributes.defineBindableAppTheme<Color> Picker.TitleColorProperty
 
-    let ItemSource =
-        Attributes.define<string array>
+    let ItemsSource =
+        Attributes.defineSimpleScalarWithEquality<string array>
             "Picker_ItemSource"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -60,7 +60,7 @@ module Picker =
                     .CustomSelectedIndexChanged)
 
     let UpdateMode =
-        Attributes.define<iOSSpecific.UpdateMode>
+        Attributes.defineEnum<iOSSpecific.UpdateMode>
             "Picker_UpdateMode"
             (fun _ newValueOpt node ->
                 let picker = node.Target :?> Picker
@@ -78,7 +78,7 @@ module PickerBuilders =
         static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IPicker>(
                 Picker.WidgetKey,
-                Picker.ItemSource.WithValue(items |> Array.ofList),
+                Picker.ItemsSource.WithValue(Array.ofList items),
                 Picker.SelectedIndexWithEvent.WithValue(
                     ValueEventData.create selectedIndex (fun args -> onSelectedIndexChanged args.CurrentPosition |> box)
                 )

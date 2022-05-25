@@ -10,7 +10,7 @@ type IElement =
 
 module Element =
     let AutomationId =
-        Attributes.defineBindable<string> Element.AutomationIdProperty
+        Attributes.defineBindableWithEquality<string> Element.AutomationIdProperty
 
 [<Extension>]
 type ElementModifiers =

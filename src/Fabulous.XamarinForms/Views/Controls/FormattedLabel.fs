@@ -11,14 +11,14 @@ module FormattedLabel =
     let WidgetKey = Widgets.register<Label>()
 
     let Spans =
-        Attributes.defineWidgetCollection
+        Attributes.defineListWidgetCollection
             "FormattedString_Spans"
             ViewNode.get
             (fun target ->
-                let label = target :?> Xamarin.Forms.Label
+                let label = target :?> Label
 
                 if label.FormattedText = null then
-                    label.FormattedText <- Xamarin.Forms.FormattedString()
+                    label.FormattedText <- FormattedString()
 
                 label.FormattedText.Spans)
 

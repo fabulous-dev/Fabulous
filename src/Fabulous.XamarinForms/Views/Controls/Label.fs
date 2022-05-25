@@ -14,10 +14,10 @@ module Label =
         Attributes.defineBindableFloat Label.CharacterSpacingProperty
 
     let FontAttributes =
-        Attributes.defineBindable<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
+        Attributes.defineBindableEnum<Xamarin.Forms.FontAttributes> Label.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Label.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Label.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Label.FontSizeProperty
@@ -35,16 +35,16 @@ module Label =
         Attributes.defineBindableInt Label.MaxLinesProperty
 
     let Padding =
-        Attributes.defineBindable<Thickness> Label.PaddingProperty
+        Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
 
     let TextColor =
-        Attributes.defineAppThemeBindable<Color> Label.TextColorProperty
+        Attributes.defineBindableAppTheme<Color> Label.TextColorProperty
 
     let TextDecorations =
-        Attributes.defineBindable<TextDecorations> Label.TextDecorationsProperty
+        Attributes.defineBindableEnum<TextDecorations> Label.TextDecorationsProperty
 
     let Text =
-        Attributes.defineBindable<string> Label.TextProperty
+        Attributes.defineBindableWithEquality<string> Label.TextProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Label.TextTransformProperty

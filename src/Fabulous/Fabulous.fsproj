@@ -14,6 +14,7 @@
         <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
         <Compile Include="Array.fs" />
         <Compile Include="Primitives.fs" />
+        <Compile Include="Logger.fs" />
         <Compile Include="WidgetDiff.fs" />
         <Compile Include="IViewNode.fs" />
         <Compile Include="AttributeDefinitions.fs" />

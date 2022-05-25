@@ -12,19 +12,19 @@ module RelativeLayout =
     let WidgetKey = Widgets.register<RelativeLayout>()
 
     let XConstraint =
-        Attributes.defineBindable<Constraint> RelativeLayout.XConstraintProperty
+        Attributes.defineBindableWithEquality<Constraint> RelativeLayout.XConstraintProperty
 
     let YConstraint =
-        Attributes.defineBindable<Constraint> RelativeLayout.YConstraintProperty
+        Attributes.defineBindableWithEquality<Constraint> RelativeLayout.YConstraintProperty
 
     let WidthConstraint =
-        Attributes.defineBindable<Constraint> RelativeLayout.WidthConstraintProperty
+        Attributes.defineBindableWithEquality<Constraint> RelativeLayout.WidthConstraintProperty
 
     let HeightConstraint =
-        Attributes.defineBindable<Constraint> RelativeLayout.HeightConstraintProperty
+        Attributes.defineBindableWithEquality<Constraint> RelativeLayout.HeightConstraintProperty
 
     let BoundsConstraint =
-        Attributes.defineBindable<BoundsConstraint> RelativeLayout.BoundsConstraintProperty
+        Attributes.defineBindableWithEquality<BoundsConstraint> RelativeLayout.BoundsConstraintProperty
 
 [<AutoOpen>]
 module RelativeLayoutBuilders =

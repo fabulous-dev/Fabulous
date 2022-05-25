@@ -12,22 +12,22 @@ type IPage =
 
 module Page =
     let BackgroundImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> Page.BackgroundImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> Page.BackgroundImageSourceProperty
 
     let IconImageSource =
-        Attributes.defineAppThemeBindable<ImageSource> Page.IconImageSourceProperty
+        Attributes.defineBindableAppTheme<ImageSource> Page.IconImageSourceProperty
 
     let IsBusy =
         Attributes.defineBindableBool Page.IsBusyProperty
 
     let Padding =
-        Attributes.defineBindable<Thickness> Page.PaddingProperty
+        Attributes.defineBindableWithEquality<Thickness> Page.PaddingProperty
 
     let Title =
-        Attributes.defineBindable<string> Page.TitleProperty
+        Attributes.defineBindableWithEquality<string> Page.TitleProperty
 
     let ToolbarItems =
-        Attributes.defineWidgetCollection<ToolbarItem>
+        Attributes.defineListWidgetCollection<ToolbarItem>
             "Page_ToolbarItems"
             ViewNode.get
             (fun target -> (target :?> Page).ToolbarItems)
@@ -42,7 +42,7 @@ module Page =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
     let UseSafeArea =
-        Attributes.define<bool>
+        Attributes.defineSimpleScalarWithEquality<bool>
             "Page_UseSafeArea"
             (fun _ newValueOpt node ->
                 let page = node.Target :?> Page

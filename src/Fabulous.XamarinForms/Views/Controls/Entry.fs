@@ -12,16 +12,16 @@ module Entry =
     let WidgetKey = Widgets.register<Entry>()
 
     let ClearButtonVisibility =
-        Attributes.defineBindable<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
+        Attributes.defineBindableWithEquality<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
     let CursorPosition =
         Attributes.defineBindableInt Entry.CursorPositionProperty
 
     let FontAttributes =
-        Attributes.defineBindable<FontAttributes> Entry.FontAttributesProperty
+        Attributes.defineBindableEnum<FontAttributes> Entry.FontAttributesProperty
 
     let FontFamily =
-        Attributes.defineBindable<string> Entry.FontFamilyProperty
+        Attributes.defineBindableWithEquality<string> Entry.FontFamilyProperty
 
     let FontSize =
         Attributes.defineBindableFloat Entry.FontSizeProperty

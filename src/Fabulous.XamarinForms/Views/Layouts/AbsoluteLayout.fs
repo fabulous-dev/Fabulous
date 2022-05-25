@@ -12,7 +12,7 @@ module AbsoluteLayout =
     let WidgetKey = Widgets.register<AbsoluteLayout>()
 
     let LayoutBounds =
-        Attributes.defineBindable<Rectangle> AbsoluteLayout.LayoutBoundsProperty
+        Attributes.defineBindableWithEquality<Rectangle> AbsoluteLayout.LayoutBoundsProperty
 
     let LayoutFlags =
         Attributes.defineBindableEnum<AbsoluteLayoutFlags> AbsoluteLayout.LayoutFlagsProperty
