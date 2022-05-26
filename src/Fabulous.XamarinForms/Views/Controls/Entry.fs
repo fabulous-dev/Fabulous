@@ -48,7 +48,7 @@ module Entry =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.defineSmallScalar<Color>
+        Attributes.defineSmallScalar<System.Drawing.Color>
             "Entry_CursorColor"
             SmallScalars.Color.decode
             (fun _ newValueOpt node ->
@@ -57,7 +57,7 @@ module Entry =
                 let value =
                     match newValueOpt with
                     | ValueNone -> Color.Default
-                    | ValueSome x -> x
+                    | ValueSome x -> x.ToXFColor()
 
                 iOSSpecific.Entry.SetCursorColor(entry, value))
 

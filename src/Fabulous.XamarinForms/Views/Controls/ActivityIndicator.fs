@@ -14,7 +14,7 @@ module ActivityIndicator =
         Attributes.defineBindableBool ActivityIndicator.IsRunningProperty
 
     let Color =
-        Attributes.defineBindableAppTheme<Color> ActivityIndicator.ColorProperty
+        Attributes.defineBindableAppThemeColor ActivityIndicator.ColorProperty
 
 [<AutoOpen>]
 module ActivityIndicatorBuilders =
