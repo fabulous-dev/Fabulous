@@ -34,7 +34,7 @@
         <Compile Include="ViewRef.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" Version="6.0.1" />
-        <PackageReference Include="System.Memory" Version="4.5.3" />
+        <PackageReference Include="FSharp.Core" Version="6.0.0" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
     </ItemGroup>
 </Project>

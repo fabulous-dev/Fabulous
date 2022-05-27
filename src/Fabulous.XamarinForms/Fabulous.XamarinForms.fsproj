@@ -10,12 +10,6 @@
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
     <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
     <Compile Include="ViewNode.fs" />
@@ -126,5 +120,12 @@
     <Compile Include="Views\Any.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="6.0.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
 </Project>

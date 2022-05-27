@@ -17,11 +17,14 @@
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
         <PackageReference Include="FsCheck.NUnit" Version="2.16.4" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-        <PackageReference Include="coverlet.collector" Version="3.1.0" />
-        <PackageReference Update="FSharp.Core" Version="6.0.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="FSharp.Core" Version="6.0.4" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
