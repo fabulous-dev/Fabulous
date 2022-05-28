@@ -82,10 +82,10 @@ type SmallScalarExtensions() =
 
     [<Extension>]
     static member inline ToFabColor(this: Color) : FabColor =
-        let a = int(uint8(this.A * 255.0)) <<< 24
-        let r = int(uint8(this.R * 255.0)) <<< 16
-        let g = int(uint8(this.G * 255.0)) <<< 8
-        let b = int(uint8(this.B * 255.0))
+        let r = int(uint8(this.R * 255.0)) <<< 24
+        let g = int(uint8(this.G * 255.0)) <<< 16
+        let b = int(uint8(this.B * 255.0)) <<< 8
+        let a = int(uint8(this.A * 255.0)) <<< 0
         FabColor.fromHex(a ||| r ||| g ||| b)
 
     [<Extension>]

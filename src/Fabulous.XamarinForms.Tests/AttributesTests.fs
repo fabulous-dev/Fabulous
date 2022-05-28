@@ -45,7 +45,7 @@ type ``Small scalar encode tests``() =
         
     [<Property>]
     member _.``Converting to System Color and back should be accurate enough``(value: Color) =
-        let encoded = value.ToSystemColor()
+        let encoded = value.ToFabColor()
         let decoded = encoded.ToXFColor()
 
         // We lose a bit of accuracy when encoding/decoding colors, so we account for that by comparing only on 8 bits
