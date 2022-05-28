@@ -34,7 +34,7 @@ type FrameModifiers =
     /// <param name="dark">The color of the frame border in the dark theme.</param>
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IFrame>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Frame.BorderColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(Frame.BorderColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the corner radius of the frame</summary>
     /// <param name="value">The corner radius of the frame</param>

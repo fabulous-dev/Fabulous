@@ -119,7 +119,7 @@ type DatePickerModifiers =
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(DatePicker.TextColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(DatePicker.TextColor.WithValue(ColorPair.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IDatePicker>, value: TextTransform) =

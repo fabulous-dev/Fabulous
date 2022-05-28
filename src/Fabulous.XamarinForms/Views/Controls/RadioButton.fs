@@ -95,7 +95,7 @@ type RadioButtonModifiers =
     /// <param name="dark">The border color of the radio button in the dark theme.</param>
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IRadioButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(RadioButton.BorderColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(RadioButton.BorderColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Sets the name that specifies which RadioButton controls are mutually exclusive.</summary>
     /// <param name="value">Name that specifies which RadioButton controls are mutually exclusive. This property has a default value of null.</param>
@@ -154,7 +154,7 @@ type RadioButtonModifiers =
     /// <param name="dark">The text color of the radio button in the dark theme.</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IRadioButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(RadioButton.TextColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(RadioButton.TextColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the casing of any displayed text</summary>
     /// <param name="value">The casing of any displayed text.</param>

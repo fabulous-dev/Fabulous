@@ -60,7 +60,7 @@ type SpanModifiers =
 
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #ISpan>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Span.BackgroundColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(Span.BackgroundColor.WithValue(ColorPair.create light dark))
 
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #ISpan>, value: float) =
@@ -106,7 +106,7 @@ type SpanModifiers =
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ISpan>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Span.TextColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(Span.TextColor.WithValue(ColorPair.create light dark))
 
     [<Extension>]
     static member inline textDecorations(this: WidgetBuilder<'msg, #ISpan>, value: TextDecorations) =

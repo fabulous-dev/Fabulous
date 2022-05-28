@@ -74,7 +74,7 @@ type TimePickerModifiers =
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(TimePicker.TextColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(TimePicker.TextColor.WithValue(ColorPair.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #ITimePicker>, value: TextTransform) =

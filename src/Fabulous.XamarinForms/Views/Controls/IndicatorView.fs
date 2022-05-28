@@ -56,10 +56,10 @@ type IndicatorViewModifiers =
     static member inline selectedIndicatorColor
         (
             this: WidgetBuilder<'msg, #IIndicatorView>,
-            light: Color,
-            ?dark: Color
+            light: FabColor,
+            ?dark: FabColor
         ) =
-        this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(AppTheme.create<Color> light dark))
+        this.AddScalar(IndicatorView.SelectedIndicatorColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Sets the indicator size.</summary>
     /// <param name="size">The size of the indicator.</param>
@@ -82,7 +82,7 @@ type IndicatorViewModifiers =
     /// <param name="dark">The color of the indicator in the dark theme.</param>
     [<Extension>]
     static member inline indicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(IndicatorView.IndicatorColor.WithValue(AppTheme.create<Color> light dark))
+        this.AddScalar(IndicatorView.IndicatorColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Sets the maximum number of visible indicators.</summary>
     /// <param name="maximum">The maximum number of visible indicators.</param>

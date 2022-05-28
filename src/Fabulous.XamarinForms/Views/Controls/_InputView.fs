@@ -73,14 +73,14 @@ type InputViewModifiers =
     /// <param name="dark">The color of the placeholder text in the dark theme.</param>
     [<Extension>]
     static member inline placeholderColor(this: WidgetBuilder<'msg, #IInputView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(InputView.PlaceholderColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(InputView.PlaceholderColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Sets the color of the text.</summary>
     /// <param name="light">The color of the text in the light theme.</param>
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IInputView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(InputView.TextColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(InputView.TextColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Sets the Keyboard that is displayed by the control.</summary>
     /// <param name="value">The Keyboard that is displayed by the control.</param>

@@ -1,17 +1,19 @@
 ﻿namespace FabulousWeather
 
+open Fabulous.SmallScalars
 open Xamarin.Forms
+open Fabulous.XamarinForms
 
 module Styles =
     let AccentTextColor = Color.White
-    let HourlyForecastStartColor = Color.FromHex("#22EDEDED")
-    let HourlyForecastEndColor = Color.FromHex("#44EDEDED")
-    let ColdStartColor = Color.FromHex("#BDE3FA")
-    let ColdEndColor = Color.FromHex("#A5C9FD")
-    let WarmStartColor = Color.FromHex("#F6CC66")
-    let WarmEndColor = Color.FromHex("#FCA184")
-    let NightStartColor = Color.FromHex("#172941")
-    let NightEndColor = Color.FromHex("#3C6683")
+    let HourlyForecastStartColor = Color.FromHex("#22EDEDED").ToFabColor()
+    let HourlyForecastEndColor = Color.FromHex("#44EDEDED").ToFabColor()
+    let ColdStartColor = Color.FromHex("#BDE3FA").ToFabColor()
+    let ColdEndColor = Color.FromHex("#A5C9FD").ToFabColor()
+    let WarmStartColor = Color.FromHex("#F6CC66").ToFabColor()
+    let WarmEndColor = Color.FromHex("#FCA184").ToFabColor()
+    let NightStartColor = Color.FromHex("#172941").ToFabColor()
+    let NightEndColor = Color.FromHex("#3C6683").ToFabColor()
 
     let CityNameFontSize = 30.
     let CurrentTemperatureFontSize = 100.
@@ -55,14 +57,14 @@ module Styles =
         let coll =
             Xamarin.Forms.PancakeView.GradientStopCollection()
 
-        coll.Add(PancakeView.GradientStop(Color = getStartGradientColor temp, Offset = float32 0.))
-        coll.Add(PancakeView.GradientStop(Color = getEndGradientColor temp, Offset = float32 1.))
+        coll.Add(PancakeView.GradientStop(Color = (getStartGradientColor temp).ToXFColor(), Offset = float32 0.))
+        coll.Add(PancakeView.GradientStop(Color = (getEndGradientColor temp).ToXFColor(), Offset = float32 1.))
         coll
 
     let HourlyForecastGradientStops =
         let coll =
             Xamarin.Forms.PancakeView.GradientStopCollection()
 
-        coll.Add(PancakeView.GradientStop(Color = HourlyForecastStartColor, Offset = float32 0.))
-        coll.Add(PancakeView.GradientStop(Color = HourlyForecastEndColor, Offset = float32 1.))
+        coll.Add(PancakeView.GradientStop(Color = HourlyForecastStartColor.ToXFColor(), Offset = float32 0.))
+        coll.Add(PancakeView.GradientStop(Color = HourlyForecastEndColor.ToXFColor(), Offset = float32 1.))
         coll

@@ -39,7 +39,7 @@ type SwitchCellModifiers =
     /// <param name="dark">The color of the on state in the dark theme.</param>
     [<Extension>]
     static member inline colorOn(this: WidgetBuilder<'msg, #ISwitchCell>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(SwitchCell.OnColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(SwitchCell.OnColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Link a ViewRef to access the direct SwitchCell control instance</summary>
     [<Extension>]

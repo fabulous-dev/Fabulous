@@ -102,7 +102,7 @@ type ImageButtonModifiers =
     /// <param name="dark">The color of the image button border in the dark theme.</param>
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IImageButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ImageButton.BorderColor.WithValue(AppTheme.create light dark))
+        this.AddScalar(ImageButton.BorderColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the width of the image button border</summary>
     /// <param name="width">The width of the image button border.</param>
