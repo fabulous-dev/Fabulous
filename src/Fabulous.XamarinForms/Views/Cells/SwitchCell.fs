@@ -20,7 +20,7 @@ module SwitchCell =
             (fun target -> (target :?> SwitchCell).OnChanged)
 
     let OnColor =
-        Attributes.defineBindableAppTheme<Color> SwitchCell.OnColorProperty
+        Attributes.defineBindableAppThemeColor SwitchCell.OnColorProperty
 
 [<AutoOpen>]
 module SwitchCellBuilders =
@@ -38,7 +38,7 @@ type SwitchCellModifiers =
     /// <param name="light">The color of the on state in the light theme.</param>
     /// <param name="dark">The color of the on state in the dark theme.</param>
     [<Extension>]
-    static member inline colorOn(this: WidgetBuilder<'msg, #ISwitchCell>, light: Color, ?dark: Color) =
+    static member inline colorOn(this: WidgetBuilder<'msg, #ISwitchCell>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(SwitchCell.OnColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct SwitchCell control instance</summary>

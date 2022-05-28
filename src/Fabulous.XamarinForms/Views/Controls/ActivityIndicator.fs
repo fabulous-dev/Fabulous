@@ -32,7 +32,7 @@ type ActivityIndicatorModifiers =
     /// <param name="light">The color of the activity indicator in the light theme.</param>
     /// <param name="dark">The color of the activity indicator in the dark theme.</param>
     [<Extension>]
-    static member inline color(this: WidgetBuilder<'msg, #IActivityIndicator>, light: Color, ?dark: Color) =
+    static member inline color(this: WidgetBuilder<'msg, #IActivityIndicator>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(ActivityIndicator.Color.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct ActivityIndicator control instance</summary>

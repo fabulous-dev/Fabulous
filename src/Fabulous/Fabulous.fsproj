@@ -12,6 +12,7 @@
     <ItemGroup>
         <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
         <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
+        <Compile Include="FabColor.fs" />
         <Compile Include="Array.fs" />
         <Compile Include="Primitives.fs" />
         <Compile Include="Logger.fs" />

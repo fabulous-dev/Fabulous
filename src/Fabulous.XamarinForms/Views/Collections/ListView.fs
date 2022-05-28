@@ -65,10 +65,10 @@ module ListView =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let SeparatorColor =
-        Attributes.defineBindableAppTheme<Color> ListView.SeparatorColorProperty
+        Attributes.defineBindableAppThemeColor ListView.SeparatorColorProperty
 
     let RefreshControlColor =
-        Attributes.defineBindableAppTheme<Color> ListView.RefreshControlColorProperty
+        Attributes.defineBindableAppThemeColor ListView.RefreshControlColorProperty
 
     let HorizontalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.HorizontalScrollBarVisibilityProperty
@@ -172,11 +172,11 @@ type ListViewModifiers =
         this.AddScalar(ListView.IsRefreshing.WithValue(value))
 
     [<Extension>]
-    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IListView>, light: Color, ?dark: Color) =
+    static member inline refreshControlColor(this: WidgetBuilder<'msg, #IListView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(ListView.RefreshControlColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
-    static member inline separatorColor(this: WidgetBuilder<'msg, #IListView>, light: Color, ?dark: Color) =
+    static member inline separatorColor(this: WidgetBuilder<'msg, #IListView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(ListView.SeparatorColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

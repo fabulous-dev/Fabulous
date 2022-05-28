@@ -11,7 +11,7 @@ module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()
 
     let CancelButtonColor =
-        Attributes.defineBindableAppTheme<Color> SearchBar.CancelButtonColorProperty
+        Attributes.defineBindableAppThemeColor SearchBar.CancelButtonColorProperty
 
     let FontAttributes =
         Attributes.defineBindableEnum<FontAttributes> SearchBar.FontAttributesProperty
@@ -51,7 +51,7 @@ type SearchBarModifiers =
     /// <param name="light">The color of the cancel button text in the light theme.</param>
     /// <param name="dark">The color of the cancel button text in the dark theme.</param>
     [<Extension>]
-    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, light: Color, ?dark: Color) =
+    static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(SearchBar.CancelButtonColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

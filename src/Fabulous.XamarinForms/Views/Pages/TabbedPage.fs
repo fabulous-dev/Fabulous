@@ -12,16 +12,16 @@ module TabbedPage =
     let WidgetKey = Widgets.register<TabbedPage>()
 
     let BarBackgroundColor =
-        Attributes.defineBindableAppTheme<Color> TabbedPage.BarBackgroundColorProperty
+        Attributes.defineBindableAppThemeColor TabbedPage.BarBackgroundColorProperty
 
     let BarTextColor =
-        Attributes.defineBindableAppTheme<Color> TabbedPage.BarTextColorProperty
+        Attributes.defineBindableAppThemeColor TabbedPage.BarTextColorProperty
 
     let SelectedTabColor =
-        Attributes.defineBindableAppTheme<Color> TabbedPage.SelectedTabColorProperty
+        Attributes.defineBindableAppThemeColor TabbedPage.SelectedTabColorProperty
 
     let UnselectedTabColor =
-        Attributes.defineBindableAppTheme<Color> TabbedPage.UnselectedTabColorProperty
+        Attributes.defineBindableAppThemeColor TabbedPage.UnselectedTabColorProperty
 
     let ToolbarPlacement =
         Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
@@ -53,29 +53,29 @@ type TabbedPageModifiers =
     /// <param name="light">The color of the bar background in the light theme.</param>
     /// <param name="dark">The color of the bar background in the dark theme.</param>
     [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: Color, ?dark: Color) =
-        this.AddScalar(TabbedPage.BarBackgroundColor.WithValue(AppTheme.create light dark))
+    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TabbedPage.BarBackgroundColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the color of the bar text</summary>
     /// <param name="light">The color of the bar text in the light theme.</param>
     /// <param name="dark">The color of the bar text in the dark theme.</param>
     [<Extension>]
-    static member inline barTextColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: Color, ?dark: Color) =
-        this.AddScalar(TabbedPage.BarTextColor.WithValue(AppTheme.create light dark))
+    static member inline barTextColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TabbedPage.BarTextColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the color of the selected tab</summary>
     /// <param name="light">The color of the selected tab in the light theme.</param>
     /// <param name="dark">The color of the selected tab in the dark theme.</param>
     [<Extension>]
-    static member inline selectedTabColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: Color, ?dark: Color) =
-        this.AddScalar(TabbedPage.SelectedTabColor.WithValue(AppTheme.create light dark))
+    static member inline selectedTabColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TabbedPage.SelectedTabColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the color of the unselected tab</summary>
     /// <param name="light">The color of the unselected tab in the light theme.</param>
     /// <param name="dark">The color of the unselected tab in the dark theme.</param>
     [<Extension>]
-    static member inline unselectedTabColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: Color, ?dark: Color) =
-        this.AddScalar(TabbedPage.UnselectedTabColor.WithValue(AppTheme.create light dark))
+    static member inline unselectedTabColor(this: WidgetBuilder<'msg, #ITabbedPage>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TabbedPage.UnselectedTabColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Link a ViewRef to access the direct TabbedPage control instance</summary>
     [<Extension>]

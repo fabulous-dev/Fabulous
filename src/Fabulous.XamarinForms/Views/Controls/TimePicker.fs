@@ -33,7 +33,7 @@ module TimePicker =
         Attributes.defineBindableWithEquality<string> TimePicker.FormatProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> TimePicker.TextColorProperty
+        Attributes.defineBindableAppThemeColor TimePicker.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
@@ -73,7 +73,7 @@ type TimePickerModifiers =
         this.AddScalar(TimePicker.Format.WithValue(value))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(TimePicker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

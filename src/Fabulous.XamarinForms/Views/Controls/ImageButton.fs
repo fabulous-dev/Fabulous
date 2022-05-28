@@ -16,7 +16,7 @@ module ImageButton =
         Attributes.defineBindableEnum<Xamarin.Forms.Aspect> ImageButton.AspectProperty
 
     let BorderColor =
-        Attributes.defineBindableAppTheme<Color> ImageButton.BorderColorProperty
+        Attributes.defineBindableAppThemeColor ImageButton.BorderColorProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat ImageButton.BorderWidthProperty
@@ -101,7 +101,7 @@ type ImageButtonModifiers =
     /// <param name="light">The color of the image button border in the light theme.</param>
     /// <param name="dark">The color of the image button border in the dark theme.</param>
     [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IImageButton>, light: Color, ?dark: Color) =
+    static member inline borderColor(this: WidgetBuilder<'msg, #IImageButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(ImageButton.BorderColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the width of the image button border</summary>

@@ -14,13 +14,13 @@ module TextCell =
         Attributes.defineBindableWithEquality<string> TextCell.TextProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> TextCell.TextColorProperty
+        Attributes.defineBindableAppThemeColor TextCell.TextColorProperty
 
     let Detail =
         Attributes.defineBindableWithEquality<string> TextCell.DetailProperty
 
     let DetailColor =
-        Attributes.defineBindableAppTheme<Color> TextCell.DetailColorProperty
+        Attributes.defineBindableAppThemeColor TextCell.DetailColorProperty
 
 [<AutoOpen>]
 module TextCellBuilders =
@@ -34,15 +34,15 @@ type TextCellModifiers =
     /// <param name="light">The color of the text in the light theme.</param>
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ITextCell>, light: Color, ?dark: Color) =
-        this.AddScalar(TextCell.TextColor.WithValue(AppTheme.create light dark))
+    static member inline textColor(this: WidgetBuilder<'msg, #ITextCell>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TextCell.TextColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the color of the detail text.</summary>
     /// <param name="light">The color of the text in the light theme.</param>
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
-    static member inline detailColor(this: WidgetBuilder<'msg, #ITextCell>, light: Color, ?dark: Color) =
-        this.AddScalar(TextCell.DetailColor.WithValue(AppTheme.create light dark))
+    static member inline detailColor(this: WidgetBuilder<'msg, #ITextCell>, light: FabColor, ?dark: FabColor) =
+        this.AddScalar(TextCell.DetailColor.WithValue(ColorPair.create light dark))
 
     /// <summary>Set the text of the detail text cell.</summary>
     /// <param name="text">The text of the detail text cell.</param>

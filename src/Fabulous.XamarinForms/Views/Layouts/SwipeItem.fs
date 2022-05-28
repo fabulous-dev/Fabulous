@@ -12,7 +12,7 @@ module SwipeItem =
     let WidgetKey = Widgets.register<SwipeItem>()
 
     let BackgroundColor =
-        Attributes.defineBindableAppTheme<Color> SwipeItem.BackgroundColorProperty
+        Attributes.defineBindableAppThemeColor SwipeItem.BackgroundColorProperty
 
     let IsVisible =
         Attributes.defineBindableBool SwipeItem.IsVisibleProperty
@@ -31,7 +31,7 @@ module SwipeItemBuilders =
 type SwipeItemModifiers() =
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #ISwipeItem>, light: Color, ?dark: Color) =
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #ISwipeItem>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(SwipeItem.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

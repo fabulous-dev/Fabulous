@@ -24,7 +24,7 @@ module IndicatorView =
         Attributes.defineBindableBool IndicatorView.HideSingleProperty
 
     let IndicatorColor =
-        Attributes.defineBindableAppTheme<Color> IndicatorView.IndicatorColorProperty
+        Attributes.defineBindableAppThemeColor IndicatorView.IndicatorColorProperty
 
     let IndicatorSize =
         Attributes.defineBindableFloat IndicatorView.IndicatorSizeProperty
@@ -36,7 +36,7 @@ module IndicatorView =
         Attributes.defineBindableInt IndicatorView.MaximumVisibleProperty
 
     let SelectedIndicatorColor =
-        Attributes.defineBindableAppTheme<Color> IndicatorView.SelectedIndicatorColorProperty
+        Attributes.defineBindableAppThemeColor IndicatorView.SelectedIndicatorColorProperty
 
 [<AutoOpen>]
 module IndicatorViewBuilders =
@@ -81,7 +81,7 @@ type IndicatorViewModifiers =
     /// <param name="light">The color of the indicator in the light theme.</param>
     /// <param name="dark">The color of the indicator in the dark theme.</param>
     [<Extension>]
-    static member inline indicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: Color, ?dark: Color) =
+    static member inline indicatorColor(this: WidgetBuilder<'msg, #IIndicatorView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(IndicatorView.IndicatorColor.WithValue(AppTheme.create<Color> light dark))
 
     /// <summary>Sets the maximum number of visible indicators.</summary>

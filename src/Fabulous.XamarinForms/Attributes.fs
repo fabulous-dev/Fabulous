@@ -6,8 +6,6 @@ open Fabulous.ScalarAttributeDefinitions
 open Xamarin.Forms
 open System
 
-open System.Drawing
-
 [<Struct>]
 type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
 
@@ -19,6 +17,13 @@ module AppTheme =
             | None -> ValueNone
             | Some v -> ValueSome v }
 
+module ColorPair =
+    let inline create (light: FabColor) (dark: FabColor option) : struct (FabColor * FabColor) =
+        struct (light,
+                match dark with
+                | None -> light
+                | Some v -> v)
+
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
     { Value: 'data
@@ -29,32 +34,21 @@ module ValueEventData =
 
 /// Xamarin Forms specific attributes that can be encoded as 8 bytes
 module SmallScalars =
-    // We use System.Drawing.Color for public API because it fits into 4 bytes
-    // This is important because majority of color uses are theme based
-    // e.g. two colors for light and dark themes.
-    // We have only 8 bytes for small scalars, thus 4 bytes for color is ideal
-    module Color =
-        let inline encode (v: Color) : uint64 = v.ToArgb() |> SmallScalars.Int.encode
-
-        let inline decode (encoded: uint64) : Color =
-            encoded
-            |> SmallScalars.Int.decode
-            |> Color.FromArgb
-
     module ColorPair =
-        let inline encode (v: struct (Color * Color)) : uint64 =
+        let inline encode (v: struct (FabColor * FabColor)) : uint64 =
             let struct (a, b) = v
 
-            ((a |> Color.encode |> uint64) <<< 32)
-            ||| (b |> Color.encode |> uint64)
+            ((a |> SmallScalars.FabColor.encode) <<< 32)
+            ||| (b |> SmallScalars.FabColor.encode |> uint64)
 
-        let inline decode (encoded: uint64) : struct (Color * Color) =
+        let inline decode (encoded: uint64) : struct (FabColor * FabColor) =
             let a =
                 ((encoded &&& 0xFFFFFFFF00000000UL) >>> 32)
-                |> Color.decode
+                |> SmallScalars.FabColor.decode
 
             let b =
-                (encoded &&& 0x00000000FFFFFFFFUL) |> Color.decode
+                (encoded &&& 0x00000000FFFFFFFFUL)
+                |> SmallScalars.FabColor.decode
 
             (a, b)
 
@@ -83,27 +77,23 @@ open SmallScalars
 type SmallScalarExtensions() =
 
     [<Extension>]
-    static member inline ToXFColor(this: System.Drawing.Color) : Xamarin.Forms.Color =
-        Xamarin.Forms.Color.FromUint(this.ToArgb() |> uint32)
+    static member inline ToXFColor(this: FabColor) : Color =
+        Color.FromRgba(int this.R, int this.G, int this.B, int this.A)
 
     [<Extension>]
-    static member inline ToSystemColor(this: Xamarin.Forms.Color) : System.Drawing.Color =
+    static member inline ToFabColor(this: Color) : FabColor =
         let a = int(uint8(this.A * 255.0)) <<< 24
         let r = int(uint8(this.R * 255.0)) <<< 16
         let g = int(uint8(this.G * 255.0)) <<< 8
         let b = int(uint8(this.B * 255.0))
-        Color.FromArgb(a ||| r ||| g ||| b)
+        FabColor.fromHex(a ||| r ||| g ||| b)
 
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<LayoutOptions>, value) =
         this.WithValue(value, SmallScalars.LayoutOptions.encode)
 
     [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<Color>, value) =
-        this.WithValue(value, SmallScalars.Color.encode)
-
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<struct (Color * Color)>, value) =
+    static member inline WithValue(this: SmallScalarAttributeDefinition<struct (FabColor * FabColor)>, value) =
         this.WithValue(value, ColorPair.encode)
 
 module Attributes =
@@ -159,10 +149,10 @@ module Attributes =
     /// But it converts back to Xamarin.Forms.Color when a value is applied
     /// Note if you want to use Xamarin.Forms.Color directly you can do that with "defineBindable".
     /// However, XF.Color will be boxed and thus slower.
-    let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<Color> =
-        Attributes.defineSmallScalar<Color>
+    let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
+        Attributes.defineSmallScalar<FabColor>
             bindableProperty.PropertyName
-            SmallScalars.Color.decode
+            SmallScalars.FabColor.decode
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
 
@@ -198,7 +188,7 @@ module Attributes =
     /// Note that we use System.Drawing.Color here because we can encode two into 8 bytes
     /// Thus we can avoid heap allocations
     let inline defineBindableAppThemeColor (bindableProperty: BindableProperty) =
-        Attributes.defineSmallScalar<struct (Color * Color)>
+        Attributes.defineSmallScalar<struct (FabColor * FabColor)>
             bindableProperty.PropertyName
             ColorPair.decode
             (fun _ newValueOpt node ->
