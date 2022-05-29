@@ -48,7 +48,7 @@ type RefreshViewModifiers =
     /// <param name="dark">The color of the refresh indicator in the dark theme.</param>
     [<Extension>]
     static member inline refreshColor(this: WidgetBuilder<'msg, IRefreshView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(RefreshView.RefreshColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(RefreshView.RefreshColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct RefreshView control instance</summary>
     [<Extension>]

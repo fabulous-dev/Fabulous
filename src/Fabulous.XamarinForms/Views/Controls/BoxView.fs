@@ -20,7 +20,7 @@ module BoxView =
 module BoxViewBuilders =
     type Fabulous.XamarinForms.View with
         static member inline BoxView<'msg>(light: FabColor, ?dark: FabColor) =
-            WidgetBuilder<'msg, IBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(ColorPair.create light dark))
+            WidgetBuilder<'msg, IBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(AppTheme.create light dark))
 
 [<Extension>]
 type BoxViewModifiers =

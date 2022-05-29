@@ -6,14 +6,14 @@ open Fabulous.XamarinForms
 
 module Styles =
     let AccentTextColor = Color.White
-    let HourlyForecastStartColor = Color.FromHex("#22EDEDED").ToFabColor()
-    let HourlyForecastEndColor = Color.FromHex("#44EDEDED").ToFabColor()
-    let ColdStartColor = Color.FromHex("#BDE3FA").ToFabColor()
-    let ColdEndColor = Color.FromHex("#A5C9FD").ToFabColor()
-    let WarmStartColor = Color.FromHex("#F6CC66").ToFabColor()
-    let WarmEndColor = Color.FromHex("#FCA184").ToFabColor()
-    let NightStartColor = Color.FromHex("#172941").ToFabColor()
-    let NightEndColor = Color.FromHex("#3C6683").ToFabColor()
+    let HourlyForecastStartColor = FabColor.fromHex "#22EDEDED"
+    let HourlyForecastEndColor = FabColor.fromHex "#44EDEDED"
+    let ColdStartColor = FabColor.fromHex "#BDE3FA"
+    let ColdEndColor = FabColor.fromHex "#A5C9FD"
+    let WarmStartColor = FabColor.fromHex "#F6CC66"
+    let WarmEndColor = FabColor.fromHex "#FCA184"
+    let NightStartColor = FabColor.fromHex "#172941"
+    let NightEndColor = FabColor.fromHex "#3C6683"
 
     let CityNameFontSize = 30.
     let CurrentTemperatureFontSize = 100.

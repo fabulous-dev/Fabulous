@@ -57,7 +57,7 @@ type EntryCellModifiers =
     /// <param name="dark">The color of the label in the dark theme.</param>
     [<Extension>]
     static member inline labelColor(this: WidgetBuilder<'msg, #IEntryCell>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(EntryCell.LabelColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(EntryCell.LabelColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the horizontal text alignment</summary>
     /// param name="alignment">The horizontal text alignment</summary>

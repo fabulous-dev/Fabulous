@@ -32,7 +32,7 @@ type SwipeItemModifiers() =
 
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #ISwipeItem>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(SwipeItem.BackgroundColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(SwipeItem.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #ISwipeItem>, value: bool) =

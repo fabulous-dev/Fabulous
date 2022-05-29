@@ -1,7 +1,8 @@
 ﻿namespace FabulousContacts
 
 open Xamarin.Forms
+open Fabulous.XamarinForms
 
 module Style =
-    let accentTextColor = Color.White
-    let accentColor = Color.FromHex("#3080b1")
+    let accentTextColor = Color.White.ToFabColor()
+    let accentColor = FabColor.fromHex "#3080b1"

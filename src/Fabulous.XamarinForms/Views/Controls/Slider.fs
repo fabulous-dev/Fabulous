@@ -80,21 +80,21 @@ type SliderModifiers =
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
     static member inline maximumTrackColor(this: WidgetBuilder<'msg, #ISlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.MaximumTrackColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Slider.MaximumTrackColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the minimumTrackColor.</summary>
     /// <param name="light">The color of the minimumTrackColor in the light theme.</param>
     /// <param name="dark">The color of the minimumTrackColor in the dark theme.</param>
     [<Extension>]
     static member inline minimumTrackColor(this: WidgetBuilder<'msg, #ISlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.MinimumTrackColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Slider.MinimumTrackColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the thumbColor.</summary>
     /// <param name="light">The color of the thumbColor in the light theme.</param>
     /// <param name="dark">The color of the thumbColor in the dark theme.</param>
     [<Extension>]
     static member inline thumbColor(this: WidgetBuilder<'msg, #ISlider>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Slider.ThumbColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Slider.ThumbColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the thumbImage.</summary>
     /// <param name="light">The source of the thumbImage in the light theme.</param>

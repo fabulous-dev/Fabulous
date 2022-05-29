@@ -61,7 +61,7 @@ type ProgressBarModifiers =
     /// <param name="dark">The color of the progress bar in the dark theme.</param>
     [<Extension>]
     static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ProgressBar.ProgressColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>
     [<Extension>]

@@ -74,7 +74,7 @@ module ButtonBuilders =
 type ButtonModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Button.TextColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IButton>, value: TextTransform) =
@@ -86,7 +86,7 @@ type ButtonModifiers =
 
     [<Extension>]
     static member inline borderColor(this: WidgetBuilder<'msg, #IButton>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Button.BorderColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Button.BorderColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline borderWidth(this: WidgetBuilder<'msg, #IButton>, value: float) =

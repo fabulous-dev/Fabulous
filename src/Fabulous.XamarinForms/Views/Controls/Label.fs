@@ -136,7 +136,7 @@ type LabelModifiers =
 
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Label.TextColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Label.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textDecoration(this: WidgetBuilder<'msg, #ILabel>, value: TextDecorations) =

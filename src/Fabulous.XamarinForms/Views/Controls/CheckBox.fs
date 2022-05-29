@@ -38,7 +38,7 @@ type CheckBoxModifiers =
     /// <param name="dark">The color of the checkBox in the dark theme.</param>
     [<Extension>]
     static member inline color(this: WidgetBuilder<'msg, #ICheckBox>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(CheckBox.Color.WithValue(ColorPair.create light dark))
+        this.AddScalar(CheckBox.Color.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct CheckBox control instance</summary>
     [<Extension>]

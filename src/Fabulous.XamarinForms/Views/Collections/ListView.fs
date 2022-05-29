@@ -173,11 +173,11 @@ type ListViewModifiers =
 
     [<Extension>]
     static member inline refreshControlColor(this: WidgetBuilder<'msg, #IListView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ListView.RefreshControlColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(ListView.RefreshControlColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline separatorColor(this: WidgetBuilder<'msg, #IListView>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(ListView.SeparatorColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(ListView.SeparatorColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline separatorVisibility(this: WidgetBuilder<'msg, #IListView>, value: SeparatorVisibility) =

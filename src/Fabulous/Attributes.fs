@@ -48,12 +48,6 @@ module SmallScalars =
 
         let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
 
-    module FabColor =
-        let inline encode (v: FabColor) : uint64 = v.RGBA |> Int.encode
-
-        let inline decode (encoded: uint64) : FabColor =
-            encoded |> Int.decode |> FabColor.fromHex
-
 [<Extension>]
 type SmallScalarExtensions() =
     [<Extension>]
@@ -75,10 +69,7 @@ type SmallScalarExtensions() =
             value
         ) =
         this.WithValue(value, SmallScalars.IntEnum.encode)
-        
-    [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<FabColor>, value) =
-        this.WithValue(value, SmallScalars.FabColor.encode)
+       
 
 module Attributes =
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)

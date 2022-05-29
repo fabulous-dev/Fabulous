@@ -52,7 +52,7 @@ type SearchBarModifiers =
     /// <param name="dark">The color of the cancel button text in the dark theme.</param>
     [<Extension>]
     static member inline cancelButtonColor(this: WidgetBuilder<'msg, #ISearchBar>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(SearchBar.CancelButtonColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(SearchBar.CancelButtonColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline font

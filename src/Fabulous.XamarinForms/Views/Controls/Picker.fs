@@ -133,7 +133,7 @@ type PickerModifiers =
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Picker.TextColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IPicker>, value: TextTransform) =
@@ -148,7 +148,7 @@ type PickerModifiers =
     /// <param name="dark">The color of the title in the dark theme.</param>
     [<Extension>]
     static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
-        this.AddScalar(Picker.TitleColor.WithValue(ColorPair.create light dark))
+        this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct Picker control instance</summary>
     [<Extension>]
