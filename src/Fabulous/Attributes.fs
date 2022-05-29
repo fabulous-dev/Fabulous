@@ -10,8 +10,7 @@ module Helpers =
     let canReuse<'T when 'T: equality> (prev: 'T) (curr: 'T) = prev = curr
 
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
-        let widgetDefinition =
-            WidgetDefinitionStore.get widget.Key
+        let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
         widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
 
@@ -69,7 +68,7 @@ type SmallScalarExtensions() =
             value
         ) =
         this.WithValue(value, SmallScalars.IntEnum.encode)
-       
+
 
 module Attributes =
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
@@ -189,8 +188,7 @@ module Attributes =
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
-                let struct (_, view) =
-                    Helpers.createViewForWidget node widget
+                let struct (_, view) = Helpers.createViewForWidget node widget
 
                 set node.Target (unbox view)
 
@@ -208,8 +206,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove (index, widget) ->
-                    let itemNode =
-                        getViewNode targetColl.[index]
+                    let itemNode = getViewNode targetColl.[index]
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -223,8 +220,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Insert (index, widget) ->
-                    let struct (itemNode, view) =
-                        Helpers.createViewForWidget node widget
+                    let struct (itemNode, view) = Helpers.createViewForWidget node widget
 
                     // Insert the new child into the UI tree
                     targetColl.Insert(index, unbox view)
@@ -239,8 +235,7 @@ module Attributes =
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
-                    let prevItemNode =
-                        getViewNode targetColl.[index]
+                    let prevItemNode = getViewNode targetColl.[index]
 
                     let struct (nextItemNode, view) =
                         Helpers.createViewForWidget node newWidget
@@ -265,8 +260,7 @@ module Attributes =
             | ValueNone -> ()
             | ValueSome widgets ->
                 for widget in ArraySlice.toSpan widgets do
-                    let struct (_, view) =
-                        Helpers.createViewForWidget node widget
+                    let struct (_, view) = Helpers.createViewForWidget node widget
 
                     targetColl.Add(unbox view)
 
@@ -333,9 +327,10 @@ module Attributes =
 
                     | ValueSome fn ->
                         let handler =
-                            EventHandler<'args> (fun _ args ->
-                                let r = fn args
-                                Dispatcher.dispatch node r)
+                            EventHandler<'args>
+                                (fun _ args ->
+                                    let r = fn args
+                                    Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler handler)

@@ -18,7 +18,7 @@ type ``Small scalar encode tests``() =
         Assert.AreEqual(value.Alignment, decoded.Alignment)
         Assert.AreEqual(value.Expands, decoded.Expands)
 
-//    [<Property>]
+    //    [<Property>]
 //    member _.``Encoding then decoding a Color should return an identical Color``(value: Color) =
 //        let encoded = SmallScalars.Color.encode value
 //        let decoded = SmallScalars.Color.decode encoded
@@ -42,7 +42,7 @@ type ``Small scalar encode tests``() =
 //        assertAsU16 value.G decoded.G
 //        assertAsU16 value.B decoded.B
 //        assertAsU16 value.A decoded.A
-        
+
     [<Property>]
     member _.``Converting to System Color and back should be accurate enough``(value: Color) =
         let encoded = value.ToFabColor()

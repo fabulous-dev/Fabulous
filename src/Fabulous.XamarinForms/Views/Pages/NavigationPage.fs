@@ -212,7 +212,12 @@ type NavigationPageModifiers =
     /// <param name="light">The color of the barBackgroundColor in the light theme.</param>
     /// <param name="dark">The color of the barBackgroundColor in the dark theme.</param>
     [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #INavigationPage>, light: FabColor, ?dark: FabColor) =
+    static member inline barBackgroundColor
+        (
+            this: WidgetBuilder<'msg, #INavigationPage>,
+            light: FabColor,
+            ?dark: FabColor
+        ) =
         this.AddScalar(NavigationPage.BarBackgroundColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the BarBackground.</summary>

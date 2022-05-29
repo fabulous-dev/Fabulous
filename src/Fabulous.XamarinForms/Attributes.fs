@@ -14,9 +14,9 @@ module AppTheme =
     let inline create<'T when 'T: equality> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
-            match dark with
-            | None -> light
-            | Some v -> v }
+              match dark with
+              | None -> light
+              | Some v -> v }
 
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
@@ -58,8 +58,7 @@ module SmallScalars =
         let inline encode (v: LayoutOptions) : uint64 =
             let alignment = uint64 v.Alignment
 
-            let expands: uint64 =
-                if v.Expands then 1UL else 0UL
+            let expands: uint64 = if v.Expands then 1UL else 0UL
 
             (alignment <<< 32) ||| expands
 
@@ -67,8 +66,7 @@ module SmallScalars =
             let alignment =
                 enum<LayoutAlignment>(int((encoded &&& 0xFFFFFFFF00000000UL) >>> 32))
 
-            let expands =
-                (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
+            let expands = (encoded &&& 0x00000000FFFFFFFFUL) = 1UL
 
             LayoutOptions(alignment, expands)
 
@@ -83,7 +81,7 @@ type SmallScalarExtensions() =
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<FabColor>, value) =
         this.WithValue(value, SmallScalars.FabColor.encode)
-        
+
     [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<AppThemeValues<FabColor>>, value) =
         this.WithValue(value, SmallScalars.ThemedColor.encode)
@@ -108,21 +106,26 @@ module Attributes =
 
     /// Define an attribute for a BindableProperty supporting equality comparison
     let inline defineBindableWithEquality<'T when 'T: equality> (bindableProperty: BindableProperty) =
-        Attributes.defineSimpleScalarWithEquality<'T> bindableProperty.PropertyName (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
+        Attributes.defineSimpleScalarWithEquality<'T>
+            bindableProperty.PropertyName
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
 
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, v))
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool) for a BindableProperty
     let inline defineSmallBindable<'T> (bindableProperty: BindableProperty) ([<InlineIfLambda>] decode: uint64 -> 'T) =
-        Attributes.defineSmallScalar<'T> bindableProperty.PropertyName decode (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
+        Attributes.defineSmallScalar<'T>
+            bindableProperty.PropertyName
+            decode
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
 
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, v))
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define a float attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableFloat (bindableProperty: BindableProperty) =
@@ -156,12 +159,14 @@ module Attributes =
     let inline defineBindableEnum< ^T when ^T: enum<int>>
         (bindableProperty: BindableProperty)
         : SmallScalarAttributeDefinition< ^T > =
-        Attributes.defineEnum< ^T> bindableProperty.PropertyName (fun _ newValueOpt node ->
-            let target = node.Target :?> BindableObject
+        Attributes.defineEnum< ^T>
+            bindableProperty.PropertyName
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
 
-            match newValueOpt with
-            | ValueNone -> target.ClearValue(bindableProperty)
-            | ValueSome v -> target.SetValue(bindableProperty, v))
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v))
 
     /// Define an attribute that supports values for both Light and Dark themes
     let inline defineBindableAppTheme<'T when 'T: equality> (bindableProperty: BindableProperty) =
@@ -187,10 +192,10 @@ module Attributes =
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(bindableProperty)
-                
+
                 | ValueSome { Light = light; Dark = dark } when light = dark ->
                     target.SetValue(bindableProperty, light.ToXFColor())
-                    
+
                 | ValueSome { Light = light; Dark = dark } ->
                     target.SetOnAppTheme(bindableProperty, light.ToXFColor(), dark.ToXFColor()))
 
@@ -205,8 +210,7 @@ module Attributes =
 
                 ViewNode.get childTarget)
             (fun target value ->
-                let bindableObject =
-                    target :?> BindableObject
+                let bindableObject = target :?> BindableObject
 
                 if value = null then
                     bindableObject.ClearValue(bindableProperty)
@@ -252,9 +256,10 @@ module Attributes =
 
                         // Set the new event handler
                         let handler =
-                            EventHandler<'args> (fun _ args ->
-                                let r = curr.Event args
-                                Dispatcher.dispatch node r)
+                            EventHandler<'args>
+                                (fun _ args ->
+                                    let r = curr.Event args
+                                    Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler(handler))

@@ -196,7 +196,7 @@ module App =
     let canPlay model cell =
         (cell = Empty)
         && (getGameResult model = StillPlaying)
-        
+
     module private Colors =
         let black = Color.Black.ToFabColor()
         let lightBlue = Color.LightBlue.ToFabColor()

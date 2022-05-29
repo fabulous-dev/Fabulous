@@ -29,23 +29,22 @@ type ColorConversion() =
 
     [<Extension>]
     static member inline ToFabColor(this: Color) : FabColor =
-        let r = int (uint8 (this.R * 255.0)) <<< 24
-        let g = int (uint8 (this.G * 255.0)) <<< 16
-        let b = int (uint8 (this.B * 255.0)) <<< 8
-        let a = int (uint8 (this.A * 255.0)) <<< 0
+        let r = int(uint8(this.R * 255.0)) <<< 24
+        let g = int(uint8(this.G * 255.0)) <<< 16
+        let b = int(uint8(this.B * 255.0)) <<< 8
+        let a = int(uint8(this.A * 255.0)) <<< 0
         { RGBA = (a ||| r ||| g ||| b) }
 
 module FabColor =
     /// Converts hex string into FabColor.
     /// It uses XamarinForms.Color to parse, thus it expects the same format.
-    /// Expected format: "AARRGGBB","RRGGBB", "ARGB" or "RGB" 
+    /// Expected format: "AARRGGBB","RRGGBB", "ARGB" or "RGB"
     let inline fromHex (hex: string) : FabColor = Color.FromHex(hex).ToFabColor()
-    
+
     /// Creates a FabColor from 4 byte size components. Expects RGBA ordering.
     let inline fromRGBA (r: uint8) (g: uint8) (b: uint8) (a: uint8) : FabColor =
         { RGBA =
-            ((int32 r <<< 24)
-             ||| (int32 g <<< 16)
-             ||| (int32 b <<< 8)
-             ||| int32 a) }
-        
+              ((int32 r <<< 24)
+               ||| (int32 g <<< 16)
+               ||| (int32 b <<< 8)
+               ||| int32 a) }
