@@ -11,7 +11,7 @@ module Span =
     let WidgetKey = Widgets.register<Span>()
 
     let BackgroundColor =
-        Attributes.defineBindableAppTheme<Color> Span.BackgroundColorProperty
+        Attributes.defineBindableAppThemeColor Span.BackgroundColorProperty
 
     let CharacterSpacing =
         Attributes.defineBindableFloat Span.CharacterSpacingProperty
@@ -32,7 +32,7 @@ module Span =
         Attributes.defineBindableWithEquality<Style> Span.StyleProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> Span.TextColorProperty
+        Attributes.defineBindableAppThemeColor Span.TextColorProperty
 
     let TextDecorations =
         Attributes.defineBindableEnum<TextDecorations> Span.TextDecorationsProperty
@@ -59,7 +59,7 @@ module SpanBuilders =
 type SpanModifiers =
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #ISpan>, light: Color, ?dark: Color) =
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #ISpan>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Span.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
@@ -105,7 +105,7 @@ type SpanModifiers =
         this.AddScalar(Span.Style.WithValue(value))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ISpan>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #ISpan>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Span.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

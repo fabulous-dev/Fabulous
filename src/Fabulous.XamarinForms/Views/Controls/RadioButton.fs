@@ -12,7 +12,7 @@ module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()
 
     let BorderColor =
-        Attributes.defineBindableAppTheme<Color> RadioButton.BorderColorProperty
+        Attributes.defineBindableAppThemeColor RadioButton.BorderColorProperty
 
     let GroupName =
         Attributes.defineBindableWithEquality<string> RadioButton.GroupNameProperty
@@ -42,7 +42,7 @@ module RadioButton =
         Attributes.defineBindableFloat RadioButton.FontSizeProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> RadioButton.TextColorProperty
+        Attributes.defineBindableAppThemeColor RadioButton.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> RadioButton.TextTransformProperty
@@ -94,7 +94,7 @@ type RadioButtonModifiers =
     /// <param name="light">The border color of the radio button in the light theme.</param>
     /// <param name="dark">The border color of the radio button in the dark theme.</param>
     [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IRadioButton>, light: Color, ?dark: Color) =
+    static member inline borderColor(this: WidgetBuilder<'msg, #IRadioButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(RadioButton.BorderColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the name that specifies which RadioButton controls are mutually exclusive.</summary>
@@ -153,7 +153,7 @@ type RadioButtonModifiers =
     /// <param name="light">The text color of the radio button in the light theme.</param>
     /// <param name="dark">The text color of the radio button in the dark theme.</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IRadioButton>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IRadioButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(RadioButton.TextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the casing of any displayed text</summary>

@@ -3,19 +3,20 @@ namespace Fabulous.XamarinForms
 open System.Runtime.CompilerServices
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
+open Fabulous.XamarinForms
 open Xamarin.Forms
 open System
 
 [<Struct>]
-type AppThemeValues<'T> = { Light: 'T; Dark: 'T voption }
+type AppThemeValues<'T when 'T: equality> = { Light: 'T; Dark: 'T }
 
 module AppTheme =
-    let inline create<'T> (light: 'T) (dark: 'T option) =
+    let inline create<'T when 'T: equality> (light: 'T) (dark: 'T option) =
         { Light = light
           Dark =
               match dark with
-              | None -> ValueNone
-              | Some v -> ValueSome v }
+              | None -> light
+              | Some v -> v }
 
 [<Struct>]
 type ValueEventData<'data, 'eventArgs> =
@@ -27,33 +28,31 @@ module ValueEventData =
 
 /// Xamarin Forms specific attributes that can be encoded as 8 bytes
 module SmallScalars =
-    /// In reality XF takes 7 values of 4 bytes each.
-    /// Which is larger than 8 bytes an unusual to represent a color
-    /// So we are just going to bluntly convert it into 8 bytes in rgba form
-    /// note that we allocate 2 bytes for each channel in RGBA format to improve precision
-    /// That being said, it is a lossy conversion
-    module Color =
-        let inline encode (v: Color) : uint64 =
-            let r = uint64(uint16(v.R * 65535.0)) <<< 48
-            let g = uint64(uint16(v.G * 65535.0)) <<< 32
-            let b = uint64(uint16(v.B * 65535.0)) <<< 16
-            let a = uint64(uint16(v.A * 65535.0))
+    module FabColor =
+        let inline encode (v: FabColor) : uint64 = SmallScalars.Int.encode v.RGBA
 
-            r ||| g ||| b ||| a
+        let inline decode (encoded: uint64) : FabColor =
+            { RGBA = SmallScalars.Int.decode encoded }
 
-        let inline decode (encoded: uint64) : Color =
-            let r =
-                (encoded &&& 0xFFFF000000000000UL) >>> 48
 
-            let g =
-                (encoded &&& 0x0000FFFF00000000UL) >>> 32
+    module ThemedColor =
+        let inline encode (v: AppThemeValues<FabColor>) : uint64 =
+            let { Light = light; Dark = dark } = v
 
-            let b =
-                (encoded &&& 0x00000000FFFF0000UL) >>> 16
+            ((FabColor.encode light) <<< 32)
+            ||| (FabColor.encode dark)
 
-            let a = (encoded &&& 0x000000000000FFFFUL)
-            let inline toFloat value = (float value) / 65535.0
-            Color.FromRgba(toFloat r, toFloat g, toFloat b, toFloat a)
+        let inline decode (encoded: uint64) : AppThemeValues<FabColor> =
+            let light =
+                ((encoded &&& 0xFFFFFFFF00000000UL) >>> 32)
+                |> FabColor.decode
+
+            let dark =
+                (encoded &&& 0x00000000FFFFFFFFUL)
+                |> FabColor.decode
+
+            { Light = light; Dark = dark }
+
 
     module LayoutOptions =
         let inline encode (v: LayoutOptions) : uint64 =
@@ -78,8 +77,12 @@ type SmallScalarExtensions() =
         this.WithValue(value, SmallScalars.LayoutOptions.encode)
 
     [<Extension>]
-    static member inline WithValue(this: SmallScalarAttributeDefinition<Color>, value) =
-        this.WithValue(value, SmallScalars.Color.encode)
+    static member inline WithValue(this: SmallScalarAttributeDefinition<FabColor>, value) =
+        this.WithValue(value, SmallScalars.FabColor.encode)
+
+    [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<AppThemeValues<FabColor>>, value) =
+        this.WithValue(value, SmallScalars.ThemedColor.encode)
 
 module Attributes =
     /// Define an attribute for a BindableProperty
@@ -135,13 +138,20 @@ module Attributes =
         defineSmallBindable bindableProperty SmallScalars.Int.decode
 
     /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
-    /// Note that this uses a faster but a lossy internal representation
-    /// that is, it allocates 2 bytes for each of channel of RGBA.
-    /// Technically it might loose precision of (0.0 .. 1.0) float range used in XF.Color.
-    /// If you want to avoid any potential loss of accuracy you can use "defineBindable" instead.
-    /// It is 100% accurate but allocates XF.Color values on the heap (thus slower)
-    let inline defineBindableColor (bindableProperty: BindableProperty) =
-        defineSmallBindable bindableProperty SmallScalars.Color.decode
+    /// Note that the input type is FabColor because it is just 4 bytes
+    /// But it converts back to Xamarin.Forms.Color when a value is applied
+    /// Note if you want to use Xamarin.Forms.Color directly you can do that with "defineBindable".
+    /// However, XF.Color will be boxed and thus slower.
+    let inline defineBindableColor (bindableProperty: BindableProperty) : SmallScalarAttributeDefinition<FabColor> =
+        Attributes.defineSmallScalar<FabColor>
+            bindableProperty.PropertyName
+            SmallScalars.FabColor.decode
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+                | ValueSome v -> target.SetValue(bindableProperty, v.ToXFColor()))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
     let inline defineBindableEnum< ^T when ^T: enum<int>>
@@ -165,9 +175,27 @@ module Attributes =
 
                 match newValueOpt with
                 | ValueNone -> target.ClearValue(bindableProperty)
-                | ValueSome { Light = light; Dark = ValueNone } -> target.SetValue(bindableProperty, light)
-                | ValueSome { Light = light; Dark = ValueSome dark } ->
-                    target.SetOnAppTheme(bindableProperty, light, dark))
+                | ValueSome { Light = light; Dark = dark } when dark = light -> target.SetValue(bindableProperty, light)
+                | ValueSome { Light = light; Dark = dark } -> target.SetOnAppTheme(bindableProperty, light, dark))
+
+    /// Define a Color attribute that supports values for both Light and Dark themes
+    /// Note that we use FabColor here because we can encode two into 8 bytes
+    /// Thus we can avoid heap allocations
+    let inline defineBindableAppThemeColor (bindableProperty: BindableProperty) =
+        Attributes.defineSmallScalar<AppThemeValues<FabColor>>
+            bindableProperty.PropertyName
+            SmallScalars.ThemedColor.decode
+            (fun _ newValueOpt node ->
+                let target = node.Target :?> BindableObject
+
+                match newValueOpt with
+                | ValueNone -> target.ClearValue(bindableProperty)
+
+                | ValueSome { Light = light; Dark = dark } when light = dark ->
+                    target.SetValue(bindableProperty, light.ToXFColor())
+
+                | ValueSome { Light = light; Dark = dark } ->
+                    target.SetOnAppTheme(bindableProperty, light.ToXFColor(), dark.ToXFColor()))
 
     /// Define an attribute storing a Widget for a bindable property
     let inline defineBindableWidget (bindableProperty: BindableProperty) =

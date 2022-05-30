@@ -118,7 +118,7 @@ module DetailPage =
                     .alignStartVertical()
              })
                 .size(height = 125., width = 125.)
-                .backgroundColor(Color.White)
+                .backgroundColor(Color.White.ToFabColor())
                 .centerHorizontal()
 
             (HStack(spacing = 20.) {
@@ -132,7 +132,7 @@ module DetailPage =
                 .centerHorizontal()
                 .margin(0., 10., 0., 10.)
          })
-            .backgroundColor(Color.FromHex("#448cb8"))
+            .backgroundColor(FabColor.fromHex "#448cb8")
             .padding(20., 10., 20., 10.)
 
     let body contact =

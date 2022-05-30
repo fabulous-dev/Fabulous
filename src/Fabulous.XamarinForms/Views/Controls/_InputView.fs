@@ -25,10 +25,10 @@ module InputView =
         Attributes.defineBindableWithEquality<string> InputView.PlaceholderProperty
 
     let PlaceholderColor =
-        Attributes.defineBindableAppTheme<Color> InputView.PlaceholderColorProperty
+        Attributes.defineBindableAppThemeColor InputView.PlaceholderColorProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> InputView.TextColorProperty
+        Attributes.defineBindableAppThemeColor InputView.TextColorProperty
 
     let Keyboard =
         Attributes.defineBindableWithEquality<Keyboard> InputView.KeyboardProperty
@@ -72,14 +72,14 @@ type InputViewModifiers =
     /// <param name="light">The color of the placeholder text in the light theme.</param>
     /// <param name="dark">The color of the placeholder text in the dark theme.</param>
     [<Extension>]
-    static member inline placeholderColor(this: WidgetBuilder<'msg, #IInputView>, light: Color, ?dark: Color) =
+    static member inline placeholderColor(this: WidgetBuilder<'msg, #IInputView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(InputView.PlaceholderColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the color of the text.</summary>
     /// <param name="light">The color of the text in the light theme.</param>
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IInputView>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IInputView>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(InputView.TextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the Keyboard that is displayed by the control.</summary>

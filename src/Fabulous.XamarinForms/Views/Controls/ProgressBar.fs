@@ -19,7 +19,7 @@ module ProgressBar =
     let WidgetKey = Widgets.register<ProgressBar>()
 
     let ProgressColor =
-        Attributes.defineBindableAppTheme<Color> ProgressBar.ProgressColorProperty
+        Attributes.defineBindableAppThemeColor ProgressBar.ProgressColorProperty
 
     let Progress =
         Attributes.defineBindableFloat ProgressBar.ProgressProperty
@@ -60,7 +60,7 @@ type ProgressBarModifiers =
     /// <param name="light">The color of the progress bar in the light theme.</param>
     /// <param name="dark">The color of the progress bar in the dark theme.</param>
     [<Extension>]
-    static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: Color, ?dark: Color) =
+    static member inline progressColor(this: WidgetBuilder<'msg, #IProgressBar>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(ProgressBar.ProgressColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct ProgressBar control instance</summary>

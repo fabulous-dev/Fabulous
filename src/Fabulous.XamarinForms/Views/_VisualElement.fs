@@ -15,7 +15,7 @@ module VisualElement =
         Attributes.defineBindableFloat VisualElement.AnchorYProperty
 
     let BackgroundColor =
-        Attributes.defineBindableAppTheme<Color> VisualElement.BackgroundColorProperty
+        Attributes.defineBindableAppThemeColor VisualElement.BackgroundColorProperty
 
     let Background =
         Attributes.defineBindableAppTheme<Brush> VisualElement.BackgroundProperty
@@ -105,7 +105,7 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.AnchorY.WithValue(value))
 
     [<Extension>]
-    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: Color, ?dark: Color) =
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

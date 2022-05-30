@@ -14,7 +14,7 @@ module EntryCell =
         Attributes.defineBindableWithEquality<string> EntryCell.LabelProperty
 
     let LabelColor =
-        Attributes.defineBindableAppTheme<Color> EntryCell.LabelColorProperty
+        Attributes.defineBindableAppThemeColor EntryCell.LabelColorProperty
 
     let Placeholder =
         Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
@@ -56,7 +56,7 @@ type EntryCellModifiers =
     /// <param name="light">The color of the label in the light theme.</param>
     /// <param name="dark">The color of the label in the dark theme.</param>
     [<Extension>]
-    static member inline labelColor(this: WidgetBuilder<'msg, #IEntryCell>, light: Color, ?dark: Color) =
+    static member inline labelColor(this: WidgetBuilder<'msg, #IEntryCell>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(EntryCell.LabelColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the horizontal text alignment</summary>

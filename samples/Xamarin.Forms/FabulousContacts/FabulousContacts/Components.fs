@@ -27,9 +27,9 @@ module Components =
             .keyboard(keyboard)
             .borderColor(
                 if isValid then
-                    Color.Default
+                    Color.Default.ToFabColor()
                 else
-                    Color.Red
+                    Color.Red.ToFabColor()
             )
 
     let formEditor text textChanged =
@@ -37,8 +37,8 @@ module Components =
 
     let destroyButton text onClicked =
         Button(text, onClicked)
-            .backgroundColor(Color.Red)
-            .textColor(Color.White)
+            .backgroundColor(Color.Red.ToFabColor())
+            .textColor(Color.White.ToFabColor())
             .margin(0., 20., 0., 0.)
             .alignEndVertical(expand = true)
 
@@ -73,7 +73,7 @@ module Components =
 
                     Label(address)
                         .font(12.)
-                        .textColor(Color.Gray)
+                        .textColor(Color.Gray.ToFabColor())
                         .lineBreakMode(LineBreakMode.TailTruncation)
                  })
                     .fillHorizontal(expand = true)
@@ -121,7 +121,7 @@ module Components =
         match picture with
         | None ->
             ContentView(ImageButton(Aspect.AspectFit, "addphoto.png", updatePicture))
-                .backgroundColor(Color.White)
+                .backgroundColor(Color.White.ToFabColor())
                 .gridRowSpan(2)
 
         | Some picture ->

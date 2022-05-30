@@ -40,5 +40,5 @@ module BorderedEntryModifiers =
     [<Extension>]
     type BorderedEntryExtensions =
         [<Extension>]
-        static member inline borderColor(this: WidgetBuilder<'msg, #IBorderedEntry>, value: Color) =
+        static member inline borderColor(this: WidgetBuilder<'msg, #IBorderedEntry>, value: FabColor) =
             this.AddScalar(BorderedEntry.BorderColor.WithValue(value))

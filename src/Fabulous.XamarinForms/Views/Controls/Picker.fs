@@ -30,7 +30,7 @@ module Picker =
         Attributes.defineBindableFloat Picker.FontSizeProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> Picker.TextColorProperty
+        Attributes.defineBindableAppThemeColor Picker.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Picker.TextTransformProperty
@@ -39,7 +39,7 @@ module Picker =
         Attributes.defineBindableWithEquality<string> Picker.TitleProperty
 
     let TitleColor =
-        Attributes.defineBindableAppTheme<Color> Picker.TitleColorProperty
+        Attributes.defineBindableAppThemeColor Picker.TitleColorProperty
 
     let ItemsSource =
         Attributes.defineSimpleScalarWithEquality<string array>
@@ -132,7 +132,7 @@ type PickerModifiers =
     /// <param name="light">The color of the text in the light theme.</param>
     /// <param name="dark">The color of the text in the dark theme.</param>
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
@@ -147,7 +147,7 @@ type PickerModifiers =
     /// <param name="light">The color of the title in the light theme.</param>
     /// <param name="dark">The color of the title in the dark theme.</param>
     [<Extension>]
-    static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: Color, ?dark: Color) =
+    static member inline titleColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Picker.TitleColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct Picker control instance</summary>

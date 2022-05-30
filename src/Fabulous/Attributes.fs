@@ -47,7 +47,6 @@ module SmallScalars =
 
         let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
 
-
 [<Extension>]
 type SmallScalarExtensions() =
     [<Extension>]
@@ -69,6 +68,7 @@ type SmallScalarExtensions() =
             value
         ) =
         this.WithValue(value, SmallScalars.IntEnum.encode)
+
 
 module Attributes =
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)

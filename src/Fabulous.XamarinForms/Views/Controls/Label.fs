@@ -38,7 +38,7 @@ module Label =
         Attributes.defineBindableWithEquality<Thickness> Label.PaddingProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> Label.TextColorProperty
+        Attributes.defineBindableAppThemeColor Label.TextColorProperty
 
     let TextDecorations =
         Attributes.defineBindableEnum<TextDecorations> Label.TextDecorationsProperty
@@ -135,7 +135,7 @@ type LabelModifiers =
         LabelModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #ILabel>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Label.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

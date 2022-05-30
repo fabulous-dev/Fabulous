@@ -11,7 +11,7 @@ module BoxView =
     let WidgetKey = Widgets.register<BoxView>()
 
     let Color =
-        Attributes.defineBindableAppTheme<Color> BoxView.ColorProperty
+        Attributes.defineBindableAppThemeColor BoxView.ColorProperty
 
     let CornerRadius =
         Attributes.defineBindableFloat BoxView.CornerRadiusProperty
@@ -19,7 +19,7 @@ module BoxView =
 [<AutoOpen>]
 module BoxViewBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline BoxView<'msg>(light: Color, ?dark: Color) =
+        static member inline BoxView<'msg>(light: FabColor, ?dark: FabColor) =
             WidgetBuilder<'msg, IBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(AppTheme.create light dark))
 
 [<Extension>]

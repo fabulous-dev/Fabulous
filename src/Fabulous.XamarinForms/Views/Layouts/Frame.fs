@@ -11,7 +11,7 @@ module Frame =
     let WidgetKey = Widgets.register<Frame>()
 
     let BorderColor =
-        Attributes.defineBindableAppTheme<Color> Frame.BorderColorProperty
+        Attributes.defineBindableAppThemeColor Frame.BorderColorProperty
 
     let CornerRadius =
         Attributes.defineBindableFloat Frame.CornerRadiusProperty
@@ -33,7 +33,7 @@ type FrameModifiers =
     /// <param name="light">The color of the frame border in the light theme.</param>
     /// <param name="dark">The color of the frame border in the dark theme.</param>
     [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IFrame>, light: Color, ?dark: Color) =
+    static member inline borderColor(this: WidgetBuilder<'msg, #IFrame>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Frame.BorderColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the corner radius of the frame</summary>

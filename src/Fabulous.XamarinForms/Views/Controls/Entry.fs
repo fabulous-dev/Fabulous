@@ -48,16 +48,16 @@ module Entry =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorColor =
-        Attributes.defineSmallScalar<Color>
+        Attributes.defineSmallScalar<FabColor>
             "Entry_CursorColor"
-            SmallScalars.Color.decode
+            SmallScalars.FabColor.decode
             (fun _ newValueOpt node ->
                 let entry = node.Target :?> Entry
 
                 let value =
                     match newValueOpt with
                     | ValueNone -> Color.Default
-                    | ValueSome x -> x
+                    | ValueSome x -> x.ToXFColor()
 
                 iOSSpecific.Entry.SetCursorColor(entry, value))
 
@@ -150,5 +150,5 @@ type EntryPlatformModifiers =
     /// <summary>iOS platform specific. Sets the entry color of the cursor</summary>
     /// <param name="value">The new cursor color.</param>
     [<Extension>]
-    static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: Color) =
+    static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: FabColor) =
         this.AddScalar(Entry.CursorColor.WithValue(value))

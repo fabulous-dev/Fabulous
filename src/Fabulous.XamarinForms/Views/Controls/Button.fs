@@ -13,7 +13,7 @@ module Button =
     let WidgetKey = Widgets.register<Button>()
 
     let BorderColor =
-        Attributes.defineBindableAppTheme<Color> Button.BorderColorProperty
+        Attributes.defineBindableAppThemeColor Button.BorderColorProperty
 
     let BorderWidth =
         Attributes.defineBindableFloat Button.BorderWidthProperty
@@ -43,7 +43,7 @@ module Button =
         Attributes.defineBindableWithEquality<Thickness> Button.PaddingProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> Button.TextColorProperty
+        Attributes.defineBindableAppThemeColor Button.TextColorProperty
 
     let Text =
         Attributes.defineBindableWithEquality<string> Button.TextProperty
@@ -73,7 +73,7 @@ module ButtonBuilders =
 [<Extension>]
 type ButtonModifiers =
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IButton>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
@@ -85,7 +85,7 @@ type ButtonModifiers =
         this.AddScalar(Button.CornerRadius.WithValue(value))
 
     [<Extension>]
-    static member inline borderColor(this: WidgetBuilder<'msg, #IButton>, light: Color, ?dark: Color) =
+    static member inline borderColor(this: WidgetBuilder<'msg, #IButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Button.BorderColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]

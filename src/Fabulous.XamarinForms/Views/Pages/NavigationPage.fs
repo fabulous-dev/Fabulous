@@ -123,16 +123,16 @@ module NavigationPage =
             NavigationPageUpdaters.updateNavigationPagePages
 
     let BarBackgroundColor =
-        Attributes.defineBindableAppTheme<Color> NavigationPage.BarBackgroundColorProperty
+        Attributes.defineBindableAppThemeColor NavigationPage.BarBackgroundColorProperty
 
     let BarBackground =
         Attributes.defineBindableAppTheme<Brush> NavigationPage.BarBackgroundProperty
 
     let BarTextColor =
-        Attributes.defineBindableAppTheme<Color> NavigationPage.BarTextColorProperty
+        Attributes.defineBindableAppThemeColor NavigationPage.BarTextColorProperty
 
     let IconColor =
-        Attributes.defineBindableAppTheme<Color> NavigationPage.IconColorProperty
+        Attributes.defineBindableAppThemeColor NavigationPage.IconColorProperty
 
     let HasNavigationBar =
         Attributes.defineBindableBool NavigationPage.HasNavigationBarProperty
@@ -212,7 +212,12 @@ type NavigationPageModifiers =
     /// <param name="light">The color of the barBackgroundColor in the light theme.</param>
     /// <param name="dark">The color of the barBackgroundColor in the dark theme.</param>
     [<Extension>]
-    static member inline barBackgroundColor(this: WidgetBuilder<'msg, #INavigationPage>, light: Color, ?dark: Color) =
+    static member inline barBackgroundColor
+        (
+            this: WidgetBuilder<'msg, #INavigationPage>,
+            light: FabColor,
+            ?dark: FabColor
+        ) =
         this.AddScalar(NavigationPage.BarBackgroundColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the BarBackground.</summary>
@@ -226,7 +231,7 @@ type NavigationPageModifiers =
     /// <param name="light">The color of the barTextColor in the light theme.</param>
     /// <param name="dark">The color of the barTextColor in the dark theme.</param>
     [<Extension>]
-    static member inline barTextColor(this: WidgetBuilder<'msg, #INavigationPage>, light: Color, ?dark: Color) =
+    static member inline barTextColor(this: WidgetBuilder<'msg, #INavigationPage>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Event that is fired when the page is popped.</summary>
@@ -271,7 +276,7 @@ type NavigationPageAttachedModifiers =
     /// <param name="light">The color of the iconColor in the light theme.</param>
     /// <param name="dark">The color of the iconColor in the dark theme.</param>
     [<Extension>]
-    static member inline iconColor(this: WidgetBuilder<'msg, #IPage>, light: Color, ?dark: Color) =
+    static member inline iconColor(this: WidgetBuilder<'msg, #IPage>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(NavigationPage.IconColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the TitleIconImageSource.</summary>

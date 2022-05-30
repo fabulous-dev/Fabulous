@@ -11,10 +11,10 @@ module Switch =
     let WidgetKey = Widgets.register<Switch>()
 
     let ColorOn =
-        Attributes.defineBindableAppTheme<Color> Switch.OnColorProperty
+        Attributes.defineBindableAppThemeColor Switch.OnColorProperty
 
     let ThumbColor =
-        Attributes.defineBindableAppTheme<Color> Switch.ThumbColorProperty
+        Attributes.defineBindableAppThemeColor Switch.ThumbColorProperty
 
     let IsToggledWithEvent =
         Attributes.defineBindableWithEvent
@@ -39,14 +39,14 @@ type SwitchModifiers =
     /// <param name="light">The color of the thumbColor in the light theme.</param>
     /// <param name="dark">The color of the thumbColor in the dark theme.</param>
     [<Extension>]
-    static member inline thumbColor(this: WidgetBuilder<'msg, #ISwitch>, light: Color, ?dark: Color) =
+    static member inline thumbColor(this: WidgetBuilder<'msg, #ISwitch>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Switch.ThumbColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the on state.</summary>
     /// <param name="light">The color of the on state in the light theme.</param>
     /// <param name="dark">The color of the on state in the dark theme.</param>
     [<Extension>]
-    static member inline colorOn(this: WidgetBuilder<'msg, #ISwitch>, light: Color, ?dark: Color) =
+    static member inline colorOn(this: WidgetBuilder<'msg, #ISwitch>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Switch.ColorOn.WithValue(AppTheme.create light dark))
 
     /// <summary>Link a ViewRef to access the direct Switch control instance</summary>

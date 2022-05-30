@@ -34,7 +34,7 @@ module DatePicker =
         Attributes.defineBindableWithEquality<DateTime> DatePicker.MinimumDateProperty
 
     let TextColor =
-        Attributes.defineBindableAppTheme<Color> DatePicker.TextColorProperty
+        Attributes.defineBindableAppThemeColor DatePicker.TextColorProperty
 
     let TextTransform =
         Attributes.defineBindableEnum<Xamarin.Forms.TextTransform> DatePicker.TextTransformProperty
@@ -118,7 +118,7 @@ type DatePickerModifiers =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
 
     [<Extension>]
-    static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: Color, ?dark: Color) =
+    static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(DatePicker.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
