@@ -70,8 +70,6 @@ module SmallScalars =
 
             LayoutOptions(alignment, expands)
 
-//open SmallScalars
-
 [<Extension>]
 type SmallScalarExtensions() =
     [<Extension>]
@@ -140,7 +138,7 @@ module Attributes =
         defineSmallBindable bindableProperty SmallScalars.Int.decode
 
     /// Define a Color attribute for a BindableProperty and encode it as a small scalar (8 bytes).
-    /// Note that the input type is System.Drawing.Color because it is just 4 bytes
+    /// Note that the input type is FabColor because it is just 4 bytes
     /// But it converts back to Xamarin.Forms.Color when a value is applied
     /// Note if you want to use Xamarin.Forms.Color directly you can do that with "defineBindable".
     /// However, XF.Color will be boxed and thus slower.
@@ -181,7 +179,7 @@ module Attributes =
                 | ValueSome { Light = light; Dark = dark } -> target.SetOnAppTheme(bindableProperty, light, dark))
 
     /// Define a Color attribute that supports values for both Light and Dark themes
-    /// Note that we use System.Drawing.Color here because we can encode two into 8 bytes
+    /// Note that we use FabColor here because we can encode two into 8 bytes
     /// Thus we can avoid heap allocations
     let inline defineBindableAppThemeColor (bindableProperty: BindableProperty) =
         Attributes.defineSmallScalar<AppThemeValues<FabColor>>
