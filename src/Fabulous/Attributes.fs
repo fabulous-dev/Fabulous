@@ -41,6 +41,11 @@ module SmallScalars =
 
         let inline decode (encoded: uint64) : int = int encoded
 
+    module UInt =
+        let inline encode (v: uint) : uint64 = uint64 v
+
+        let inline decode (encoded: uint64) : uint = uint encoded
+
     module IntEnum =
         let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 =
             uint64 v

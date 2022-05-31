@@ -29,11 +29,10 @@ module ValueEventData =
 /// Xamarin Forms specific attributes that can be encoded as 8 bytes
 module SmallScalars =
     module FabColor =
-        let inline encode (v: FabColor) : uint64 = SmallScalars.Int.encode v.RGBA
+        let inline encode (v: FabColor) : uint64 = SmallScalars.UInt.encode v.RGBA
 
         let inline decode (encoded: uint64) : FabColor =
-            { RGBA = SmallScalars.Int.decode encoded }
-
+            { RGBA = SmallScalars.UInt.decode encoded }
 
     module ThemedColor =
         let inline encode (v: AppThemeValues<FabColor>) : uint64 =

@@ -29,8 +29,13 @@ module ViewHelpers =
            && canReuseAutomationId prev curr then
             let def = WidgetDefinitionStore.get curr.Key
 
-            if def.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
-                canReuseNavigationPage prev curr
+            // TargetType can be null for MemoWidget
+            // but it has already been checked by Fabulous.ViewHelpers.canReuseView
+            if def.TargetType <> null then
+                if def.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
+                    canReuseNavigationPage prev curr
+                else
+                    true
             else
                 true
         else
