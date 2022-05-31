@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms.Tests
 
+open Fabulous.XamarinForms
 open FsCheck
 open NUnit.Framework
 open Xamarin.Forms
@@ -15,6 +16,19 @@ module SmallScalarGenerators =
 
             let! expands = Arb.generate<bool>
             return LayoutOptions(layoutAlignment, expands)
+        }
+
+    let fabcolorGenerator =
+        gen {
+            let fabcolorGen =
+                Arb.generate<uint8>
+                |> Gen.where(fun x -> x >= 0uy && x <= 255uy)
+
+            let! red = fabcolorGen
+            let! green = fabcolorGen
+            let! blue = fabcolorGen
+            let! alpha = fabcolorGen
+            return FabColor.fromRGBA red green blue alpha
         }
 
     let colorGenerator =
