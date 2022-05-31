@@ -157,7 +157,7 @@ module MainPage =
         let tabFavContacts =
             (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)
                 .icon("favoritetab.png")
-        
+
         let tabMap =
             (MapPage.view model.TabMapModel)
                 .icon("maptab.png")

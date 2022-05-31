@@ -135,7 +135,8 @@ module DetailPage =
              })
                 .backgroundColor(FabColor.fromHex "#448cb8")
                 .padding(20., 10., 20., 10.)
-        with ex -> raise ex
+        with
+        | ex -> raise ex
 
     let body contact =
         (VStack(spacing = 10.) {

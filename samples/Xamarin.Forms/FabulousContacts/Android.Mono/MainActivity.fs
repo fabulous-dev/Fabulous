@@ -43,7 +43,7 @@ type MainActivity() =
 
     override this.OnCreate(bundle) =
         FabulousContacts.Android.Resource.UpdateIdValues()
-        
+
         base.SetTheme(FabulousContacts.Android.Resource.Style.FabulousContactsTheme)
 
         FormsAppCompatActivity.TabLayoutResource <- FabulousContacts.Android.Resource.Layout.Tabbar

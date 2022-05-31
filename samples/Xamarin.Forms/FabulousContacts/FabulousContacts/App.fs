@@ -177,19 +177,19 @@ module App =
         Application(
             (NavigationPage() {
                 View.map MainPageMsg (MainPage.view model.MainPageModel)
-                
+
                 match model.AboutPageModel with
                 | None -> ()
                 | Some aboutModel -> View.map AboutPageMsg (AboutPage.view aboutModel)
-                
+
                 match model.DetailPageModel with
                 | None -> ()
                 | Some detailModel -> View.map DetailPageMsg (DetailPage.view detailModel)
-                
+
                 match model.EditPageModel with
                 | None -> ()
                 | Some editModel -> View.map EditPageMsg (EditPage.view editModel)
-            })
+             })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
                 .onPopped(NavigationPopped)
