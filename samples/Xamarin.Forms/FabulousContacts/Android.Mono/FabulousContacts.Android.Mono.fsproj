@@ -17,6 +17,7 @@
         <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AndroidLinkMode>None</AndroidLinkMode>
+        <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -27,7 +28,6 @@
         <ErrorReport>prompt</ErrorReport>
         <PlatformTarget>
         </PlatformTarget>
-        <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
         <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,7 +43,6 @@
         <GenerateTailCalls>true</GenerateTailCalls>
         <PlatformTarget>
         </PlatformTarget>
-        <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
     </PropertyGroup>
     <ItemGroup>
         <AndroidResource Include="Resources\drawable\addphoto.png" />
@@ -55,16 +54,22 @@
         <AndroidResource Include="Resources\drawable\fsharp.png" />
         <AndroidResource Include="Resources\drawable\github.png" />
         <AndroidResource Include="Resources\drawable\icon.png" />
+        <AndroidResource Include="Resources\drawable\launcher_foreground.png">
+          <SubType>Designer</SubType>
+        </AndroidResource>
         <AndroidResource Include="Resources\drawable\maptab.png" />
         <AndroidResource Include="Resources\drawable\slack.png" />
         <AndroidResource Include="Resources\drawable\sms.png" />
+        <AndroidResource Include="Resources\drawable\splash_background.xml" />
         <AndroidResource Include="Resources\drawable\star.png" />
         <AndroidResource Include="Resources\drawable\twitter.png" />
         <AndroidResource Include="Resources\drawable\xamarin.png" />
         <AndroidResource Include="Resources\layout\Tabbar.axml" />
         <AndroidResource Include="Resources\layout\Toolbar.axml" />
         <AndroidResource Include="Resources\values\colors.xml" />
+        <AndroidResource Include="Resources\values\keys.xml" />
         <AndroidResource Include="Resources\values\styles.xml" />
+        <AndroidResource Include="Resources\xml\file_paths.xml" />
         <None Include="Properties\AndroidManifest.xml" />
         <Compile Include="AssemblyInfo.fs" />
         <Compile Include="MainActivity.fs" />

@@ -11,8 +11,6 @@ open FabulousContacts
 
 [<assembly: UsesPermission(Android.Manifest.Permission.Internet)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)>]
-[<assembly: UsesPermission(Android.Manifest.Permission.Internet)>]
-[<assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.AccessCoarseLocation)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.AccessFineLocation)>]
@@ -20,7 +18,6 @@ open FabulousContacts
 [<assembly: UsesPermission(Android.Manifest.Permission.AccessMockLocation)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)>]
-[<assembly: UsesPermission(Android.Manifest.Permission.AccessLocationExtraCommands)>]
 [<assembly: UsesPermission(Android.Manifest.Permission.Camera)>]
 [<assembly: UsesFeature("android.hardware.camera", Required = false)>]
 [<assembly: UsesFeature("android.hardware.camera.autofocus", Required = false)>]
@@ -28,7 +25,7 @@ do ()
 
 [<Activity(Label = "FabulousContacts",
            Icon = "@drawable/icon",
-           Theme = "@style/MainTheme",
+           Theme = "@style/FabulousContactsTheme.Splash",
            MainLauncher = true,
            ConfigurationChanges = (ConfigChanges.ScreenSize
                                    ||| ConfigChanges.Orientation
@@ -47,6 +44,8 @@ type MainActivity() =
     override this.OnCreate(bundle) =
         FabulousContacts.Android.Resource.UpdateIdValues()
 
+        base.SetTheme(FabulousContacts.Android.Resource.Style.FabulousContactsTheme)
+
         FormsAppCompatActivity.TabLayoutResource <- FabulousContacts.Android.Resource.Layout.Tabbar
         FormsAppCompatActivity.ToolbarResource <- FabulousContacts.Android.Resource.Layout.Toolbar
 
@@ -54,6 +53,7 @@ type MainActivity() =
 
         Xamarin.Essentials.Platform.Init(this, bundle)
         Xamarin.Forms.Forms.Init(this, bundle)
+        Xamarin.FormsMaps.Init(this, bundle)
 
         let dbPath = getDbPath()
 

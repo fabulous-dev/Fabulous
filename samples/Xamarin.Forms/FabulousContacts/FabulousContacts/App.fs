@@ -112,10 +112,10 @@ module App =
             { model with EditPageModel = Some m }, batchCmd
 
         | AboutPageMsg msg ->
-            let m =
+            let m, cmd =
                 AboutPage.update msg model.AboutPageModel.Value
 
-            { model with AboutPageModel = Some m }, Cmd.none
+            { model with AboutPageModel = Some m }, Cmd.map AboutPageMsg cmd
 
         | NavigationPopped ->
             if model.PoppingCount = 0 then
@@ -176,19 +176,19 @@ module App =
     let view (model: Model) =
         Application(
             (NavigationPage() {
-                View.lazyMap MainPageMsg MainPage.view model.MainPageModel
+                View.map MainPageMsg (MainPage.view model.MainPageModel)
 
                 match model.AboutPageModel with
                 | None -> ()
-                | Some aboutModel -> View.lazyMap AboutPageMsg AboutPage.view aboutModel
+                | Some aboutModel -> View.map AboutPageMsg (AboutPage.view aboutModel)
 
                 match model.DetailPageModel with
                 | None -> ()
-                | Some detailModel -> View.lazyMap DetailPageMsg DetailPage.view detailModel
+                | Some detailModel -> View.map DetailPageMsg (DetailPage.view detailModel)
 
                 match model.EditPageModel with
                 | None -> ()
-                | Some editModel -> View.lazyMap EditPageMsg EditPage.view editModel
+                | Some editModel -> View.map EditPageMsg (EditPage.view editModel)
              })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
