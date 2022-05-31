@@ -50,19 +50,14 @@ type MenuItemModifiers =
     /// <param name="light">The source of the icon image in the light theme.</param>
     /// <param name="dark">The source of the icon image in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource
-        (
-            this: WidgetBuilder<'msg, #IMenuItem>,
-            light: ImageSource,
-            ?dark: ImageSource
-        ) =
+    static member inline icon(this: WidgetBuilder<'msg, #IMenuItem>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(MenuItem.IconImageSource.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the icon image.</summary>
     /// <param name="light">The source of the icon image in the light theme.</param>
     /// <param name="dark">The source of the icon image in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IMenuItem>, light: string, ?dark: string) =
+    static member inline icon(this: WidgetBuilder<'msg, #IMenuItem>, light: string, ?dark: string) =
         let light = ImageSource.FromFile(light)
 
         let dark =
@@ -70,13 +65,13 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
+        MenuItemModifiers.icon(this, light, ?dark = dark)
 
     /// <summary>Set the source of the icon image.</summary>
     /// <param name="light">The source of the icon image in the light theme.</param>
     /// <param name="dark">The source of the icon image in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IMenuItem>, light: Uri, ?dark: Uri) =
+    static member inline icon(this: WidgetBuilder<'msg, #IMenuItem>, light: Uri, ?dark: Uri) =
         let light = ImageSource.FromUri(light)
 
         let dark =
@@ -84,13 +79,13 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
+        MenuItemModifiers.icon(this, light, ?dark = dark)
 
     /// <summary>Set the source of the icon image.</summary>
     /// <param name="light">The source of the icon image in the light theme.</param>
     /// <param name="dark">The source of the icon image in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IMenuItem>, light: Stream, ?dark: Stream) =
+    static member inline icon(this: WidgetBuilder<'msg, #IMenuItem>, light: Stream, ?dark: Stream) =
         let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
@@ -98,7 +93,7 @@ type MenuItemModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        MenuItemModifiers.iconImageSource(this, light, ?dark = dark)
+        MenuItemModifiers.icon(this, light, ?dark = dark)
 
     [<Extension>]
     static member inline isDestructive(this: WidgetBuilder<'msg, #IMenuItem>, value: bool) =

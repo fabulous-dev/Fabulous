@@ -1,6 +1,8 @@
 ﻿namespace FabulousContacts
 
 open System
+open System.Threading.Tasks
+open Fabulous
 open Fabulous.XamarinForms
 open FabulousContacts.Controls
 open FabulousContacts.Style
@@ -32,13 +34,17 @@ module AboutPage =
 
     type Msg = OpenBrowser of string
 
+    let openBrowserCmd url =
+        Device.InvokeOnMainThreadAsync(
+            funcTask = fun () -> task { do! Browser.OpenAsync(Uri url, BrowserLaunchMode.SystemPreferred) }
+        )
+        |> Async.AwaitTask
+
     let init () = ()
 
     let update msg model =
         match msg with
-        | OpenBrowser url ->
-            Browser.OpenAsync(Uri url) |> ignore
-            model
+        | OpenBrowser url -> model, Cmd.performAsync(openBrowserCmd url)
 
     let aboutFabulousContacts (openBrowser: string -> Msg) =
         VStack() {

@@ -102,38 +102,40 @@ module DetailPage =
         | ContactUpdated contact -> { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
 
     let header contact =
-        (VStack(spacing = 10.) {
-            Label(contact.FirstName + " " + contact.LastName)
-                .font(size = 20., attributes = FontAttributes.Bold)
-                .textColor(accentTextColor)
-                .centerHorizontal()
+        try
+            (VStack(spacing = 10.) {
+                Label(contact.FirstName + " " + contact.LastName)
+                    .font(size = 20., attributes = FontAttributes.Bold)
+                    .textColor(accentTextColor)
+                    .centerHorizontal()
 
-            (Grid() {
-                getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
+                (Grid() {
+                    getImageValueOrDefault "addphoto.png" Aspect.AspectFit contact.Picture
 
-                Image(Aspect.AspectFit, "star.png")
-                    .isVisible(contact.IsFavorite)
-                    .size(height = 35., width = 35.)
-                    .alignStartHorizontal()
-                    .alignStartVertical()
+                    Image(Aspect.AspectFit, "star.png")
+                        .isVisible(contact.IsFavorite)
+                        .size(height = 35., width = 35.)
+                        .alignStartHorizontal()
+                        .alignStartVertical()
+                 })
+                    .size(height = 125., width = 125.)
+                    .backgroundColor(Color.White.ToFabColor())
+                    .centerHorizontal()
+
+                (HStack(spacing = 20.) {
+                    if hasSetField contact.Phone then
+                        detailActionButton "call.png" CallTapped
+                        detailActionButton "sms.png" SmsTapped
+
+                    if hasSetField contact.Email then
+                        detailActionButton "email.png" EmailTapped
+                 })
+                    .centerHorizontal()
+                    .margin(0., 10., 0., 10.)
              })
-                .size(height = 125., width = 125.)
-                .backgroundColor(Color.White.ToFabColor())
-                .centerHorizontal()
-
-            (HStack(spacing = 20.) {
-                if hasSetField contact.Phone then
-                    detailActionButton "call.png" CallTapped
-                    detailActionButton "sms.png" SmsTapped
-
-                if hasSetField contact.Email then
-                    detailActionButton "email.png" EmailTapped
-             })
-                .centerHorizontal()
-                .margin(0., 10., 0., 10.)
-         })
-            .backgroundColor(FabColor.fromHex "#448cb8")
-            .padding(20., 10., 20., 10.)
+                .backgroundColor(FabColor.fromHex "#448cb8")
+                .padding(20., 10., 20., 10.)
+        with ex -> raise ex
 
     let body contact =
         (VStack(spacing = 10.) {

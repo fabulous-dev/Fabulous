@@ -5,7 +5,6 @@ open Fabulous.XamarinForms
 open FabulousContacts.Components
 open FabulousContacts.Models
 open FabulousContacts.Repository
-open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
 
 open type Fabulous.XamarinForms.View
@@ -15,7 +14,7 @@ module MainPage =
     type Msg =
         | TabAllContactsMsg of ContactsListPage.Msg
         | TabFavContactsMsg of ContactsListPage.Msg
-        //| TabMapMsg of MapPage.Msg
+        | TabMapMsg of MapPage.Msg
         | ContactsLoaded of Contact list
         | ContactAdded of Contact
         | ContactUpdated of Contact
@@ -32,8 +31,8 @@ module MainPage =
     type Model =
         { Contacts: Contact list option
           TabAllContactsModel: ContactsListPage.Model
-          TabFavContactsModel: ContactsListPage.Model }
-    //TabMapModel: MapPage.Model }
+          TabFavContactsModel: ContactsListPage.Model
+          TabMapModel: MapPage.Model }
 
     // Functions
     let loadAsync dbPath =
@@ -46,19 +45,19 @@ module MainPage =
     let init dbPath () =
         let modelAllContacts, msgAllContacts = ContactsListPage.init()
         let modelFavContacts, msgFavContacts = ContactsListPage.init()
-        //let modelMap, msgMap = MapPage.init ()
+        let modelMap, msgMap = MapPage.init()
 
         let m =
             { Contacts = None
               TabAllContactsModel = modelAllContacts
-              TabFavContactsModel = modelFavContacts }
-        //TabMapModel = modelMap }
+              TabFavContactsModel = modelFavContacts
+              TabMapModel = modelMap }
 
         let batchCmd =
             Cmd.batch [ Cmd.ofAsyncMsg(loadAsync dbPath)
                         Cmd.map TabAllContactsMsg msgAllContacts
-                        Cmd.map TabFavContactsMsg msgFavContacts ]
-        // Cmd.map TabMapMsg msgMap ]
+                        Cmd.map TabFavContactsMsg msgFavContacts
+                        Cmd.map TabMapMsg msgMap ]
 
         m, batchCmd
 
@@ -86,12 +85,12 @@ module MainPage =
             let favMsg =
                 ContactsListPage.Msg.ContactsLoaded(contacts |> List.filter(fun c -> c.IsFavorite))
 
-            //let mapMsg = MapPage.Msg.LoadPins contacts
+            let mapMsg = MapPage.Msg.LoadPins contacts
 
             let batchCmd =
                 Cmd.batch [ Cmd.ofMsg(TabAllContactsMsg allMsg)
-                            Cmd.ofMsg(TabFavContactsMsg favMsg) ]
-            // Cmd.ofMsg (TabMapMsg mapMsg) ]
+                            Cmd.ofMsg(TabFavContactsMsg favMsg)
+                            Cmd.ofMsg(TabMapMsg mapMsg) ]
 
             let m = { model with Contacts = Some contacts }
             m, batchCmd, ExternalMsg.NoOp
@@ -109,9 +108,9 @@ module MainPage =
 
             { model with TabFavContactsModel = m }, cmd, externalMsg
 
-        //| TabMapMsg msg ->
-        //    let m, cmd = MapPage.update msg model.TabMapModel
-        //    { model with TabMapModel = m }, (Cmd.map TabMapMsg cmd), ExternalMsg.NoOp
+        | TabMapMsg msg ->
+            let m, cmd = MapPage.update msg model.TabMapModel
+            { model with TabMapModel = m }, (Cmd.map TabMapMsg cmd), ExternalMsg.NoOp
 
         | ContactsLoaded contacts -> updateContacts model contacts
 
@@ -138,44 +137,42 @@ module MainPage =
         | NoContactAddNewContactTapped -> model, Cmd.none, ExternalMsg.NavigateToNewContact
 
     let loadingView title =
-        TabbedPage(title) { ContentPage("Loading", VStack() { centralLabel Strings.MainPage_Loading }) }
+        ContentPage(title, VStack() { centralLabel Strings.MainPage_Loading })
 
     let emptyView title =
-        TabbedPage(title) {
-            ContentPage(
-                "Empty",
-                VStack() { centralLabel Strings.MainPage_NoContact }
-            )
-                .toolbarItems() {
-                ToolbarItem(Strings.Common_About, NoContactAboutTapped)
-                ToolbarItem("+", NoContactAddNewContactTapped)
-            }
+        ContentPage(
+            title,
+            VStack() { centralLabel Strings.MainPage_NoContact }
+        )
+            .toolbarItems() {
+            ToolbarItem(Strings.Common_About, NoContactAboutTapped)
+            ToolbarItem("+", NoContactAddNewContactTapped)
         }
 
     let regularView title model =
         let tabAllContacts =
             (ContactsListPage.view Strings.MainPage_TabAllTitle model.TabAllContactsModel)
-                .iconImageSource("alltab.png")
+                .icon("alltab.png")
 
         let tabFavContacts =
             (ContactsListPage.view Strings.MainPage_TabFavoritesTitle model.TabFavContactsModel)
-                .iconImageSource("favoritetab.png")
-
-        //let tabMap = MapPage.view model.TabMapModel
+                .icon("favoritetab.png")
+        
+        let tabMap =
+            (MapPage.view model.TabMapModel)
+                .icon("maptab.png")
 
         (TabbedPage(title) {
             View.map TabAllContactsMsg tabAllContacts
             View.map TabAllContactsMsg tabFavContacts
-         //View.map TabMapMsg tabMap
+            View.map TabMapMsg tabMap
          })
+            .toolbarPlacement(ToolbarPlacement.Bottom)
 
     let view model =
         let title = Strings.MainPage_Title
 
-        let tabbedPage =
-            match model.Contacts with
-            | None -> loadingView title
-            | Some [] -> emptyView title
-            | Some _ -> regularView title model
-
-        tabbedPage.toolbarPlacement(ToolbarPlacement.Bottom)
+        match model.Contacts with
+        | None -> AnyPage(loadingView title)
+        | Some [] -> AnyPage(emptyView title)
+        | Some _ -> AnyPage(regularView title model)

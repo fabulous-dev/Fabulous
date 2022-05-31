@@ -62,17 +62,17 @@ type PageModifiers =
         this.AddScalar(Page.Title.WithValue(value))
 
     /// <summary>Set the source of the IconImageSource.</summary>
-    /// <param name="light">The source of the iconImageSource in the light theme.</param>
-    /// <param name="dark">The source of the iconImageSource in the dark theme.</param>
+    /// <param name="light">The source of the icon in the light theme.</param>
+    /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IPage>, light: ImageSource, ?dark: ImageSource) =
+    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Page.IconImageSource.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the IconImageSource.</summary>
-    /// <param name="light">The source of the iconImageSource in the light theme.</param>
-    /// <param name="dark">The source of the iconImageSource in the dark theme.</param>
+    /// <param name="light">The source of the icon in the light theme.</param>
+    /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
+    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
         let light = ImageSource.FromFile(light)
 
         let dark =
@@ -80,13 +80,13 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        PageModifiers.iconImageSource(this, light, ?dark = dark)
+        PageModifiers.icon(this, light, ?dark = dark)
 
     /// <summary>Set the source of the IconImageSource.</summary>
-    /// <param name="light">The source of the iconImageSource in the light theme.</param>
-    /// <param name="dark">The source of the iconImageSource in the dark theme.</param>
+    /// <param name="light">The source of the icon in the light theme.</param>
+    /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
+    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
         let light = ImageSource.FromUri(light)
 
         let dark =
@@ -94,13 +94,13 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        PageModifiers.iconImageSource(this, light, ?dark = dark)
+        PageModifiers.icon(this, light, ?dark = dark)
 
     /// <summary>Set the source of the IconImageSource.</summary>
-    /// <param name="light">The source of the iconImageSource in the light theme.</param>
-    /// <param name="dark">The source of the iconImageSource in the dark theme.</param>
+    /// <param name="light">The source of the icon in the light theme.</param>
+    /// <param name="dark">The source of the icon in the dark theme.</param>
     [<Extension>]
-    static member inline iconImageSource(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
+    static member inline icon(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
         let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
@@ -108,25 +108,20 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        PageModifiers.iconImageSource(this, light, ?dark = dark)
+        PageModifiers.icon(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
-    /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
-    /// <param name="dark">The source of the backgroundImageSource in the dark theme.</param>
+    /// <param name="light">The source of the background in the light theme.</param>
+    /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline backgroundImageSource
-        (
-            this: WidgetBuilder<'msg, #IPage>,
-            light: ImageSource,
-            ?dark: ImageSource
-        ) =
+    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: ImageSource, ?dark: ImageSource) =
         this.AddScalar(Page.BackgroundImageSource.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
-    /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
-    /// <param name="dark">The source of the backgroundImageSource in the dark theme.</param>
+    /// <param name="light">The source of the background in the light theme.</param>
+    /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
+    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: string, ?dark: string) =
         let light = ImageSource.FromFile(light)
 
         let dark =
@@ -134,13 +129,13 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromFile(v))
 
-        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
+        PageModifiers.background(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
-    /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
-    /// <param name="dark">The source of the backgroundImageSource in the dark theme.</param>
+    /// <param name="light">The source of the background in the light theme.</param>
+    /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
+    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: Uri, ?dark: Uri) =
         let light = ImageSource.FromUri(light)
 
         let dark =
@@ -148,13 +143,13 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromUri(v))
 
-        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
+        PageModifiers.background(this, light, ?dark = dark)
 
     /// <summary>Set the source of the BackgroundImageSource.</summary>
-    /// <param name="light">The source of the backgroundImageSource in the light theme.</param>
-    /// <param name="dark">The source of the backgroundImageSource in the dark theme.</param>
+    /// <param name="light">The source of the background in the light theme.</param>
+    /// <param name="dark">The source of the background in the dark theme.</param>
     [<Extension>]
-    static member inline backgroundImageSource(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
+    static member inline background(this: WidgetBuilder<'msg, #IPage>, light: Stream, ?dark: Stream) =
         let light = ImageSource.FromStream(fun () -> light)
 
         let dark =
@@ -162,7 +157,7 @@ type PageModifiers =
             | None -> None
             | Some v -> Some(ImageSource.FromStream(fun () -> v))
 
-        PageModifiers.backgroundImageSource(this, light, ?dark = dark)
+        PageModifiers.background(this, light, ?dark = dark)
 
     /// <summary>Event that is fired when the page is appearing.</summary>
     /// <param name="onAppearing">Msg to dispatch when then page is appearing.</param>

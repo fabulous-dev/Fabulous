@@ -2,6 +2,7 @@
 
 open Fabulous
 open Fabulous.ScalarAttributeDefinitions
+open Fabulous.WidgetCollectionAttributeDefinitions
 open Xamarin.Forms
 open System.Diagnostics
 
@@ -14,27 +15,62 @@ module ViewHelpers =
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'data> attr.Value)
 
+    let private tryGetWidgetCollectionValue (widget: Widget) (def: WidgetCollectionAttributeDefinition) =
+        match widget.WidgetCollectionAttributes with
+        | ValueNone -> ValueNone
+        | ValueSome collectionAttrs ->
+            match Array.tryFind(fun (attr: WidgetCollectionAttribute) -> attr.Key = def.Key) collectionAttrs with
+            | None -> ValueNone
+            | Some attr -> ValueSome attr.Value
+
+    /// Extend the canReuseView function to check Xamarin.Forms specific constraints
+    let rec canReuseView (prev: Widget) (curr: Widget) =
+        if ViewHelpers.canReuseView prev curr
+           && canReuseAutomationId prev curr then
+            let def = WidgetDefinitionStore.get curr.Key
+
+            if def.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
+                canReuseNavigationPage prev curr
+            else
+                true
+        else
+            false
+
     /// Check whether widgets have compatible automation ids.
     /// Xamarin.Forms only allows setting the automation id once so we can't reuse a control if the id is not the same.
-    let private canReuseAutomationId (prev: Widget) (curr: Widget) =
+    and private canReuseAutomationId (prev: Widget) (curr: Widget) =
         let prevIdOpt =
             tryGetScalarValue prev Element.AutomationId
 
         let currIdOpt =
             tryGetScalarValue curr Element.AutomationId
 
-        match struct (prevIdOpt, currIdOpt) with
-        | ValueNone, ValueNone -> true // Ids not set. Can reuse.
-        | ValueNone, ValueSome _ -> true // Id was not set before. Can reuse.
-        | ValueSome _, ValueNone -> false // Id was set before but not anymore. Can't reuse.
-        | ValueSome prevId, ValueSome currId -> prevId = currId // Can only reuse if the ids are the same.
+        match prevIdOpt with
+        | ValueSome _ when prevIdOpt <> currIdOpt -> false
+        | _ -> true
 
-    /// Extend the canReuseView function to check Xamarin.Forms specific constraints
-    let canReuseView (prev: Widget) (curr: Widget) =
-        if ViewHelpers.canReuseView prev curr then
-            canReuseAutomationId prev curr
-        else
-            false
+    /// Checks whether an underlying NavigationPage control can be reused given the previous and new view elements
+    //
+    // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
+    // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
+    and private canReuseNavigationPage (prev: Widget) (curr: Widget) =
+        let prevPages =
+            tryGetWidgetCollectionValue prev NavigationPage.Pages
+
+        let currPages =
+            tryGetWidgetCollectionValue curr NavigationPage.Pages
+
+        match struct (prevPages, currPages) with
+        | ValueSome prevPages, ValueSome currPages ->
+            let struct (prevLength, prevPages) = prevPages
+            let struct (currLength, currPages) = currPages
+
+            if prevLength = currLength then
+                Array.forall2 canReuseView prevPages currPages
+            else
+                true
+
+        | _ -> true
 
     let defaultLogger () =
         let log (level, message) =

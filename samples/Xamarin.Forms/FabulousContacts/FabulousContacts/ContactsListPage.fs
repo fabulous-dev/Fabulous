@@ -100,7 +100,7 @@ module ContactsListPage =
             m, Cmd.none, ExternalMsg.NoOp
 
         | ContactSelected index ->
-            let contact = findContactIn model.ContactGroups index
+            let contact = model.Contacts.[index]// findContactIn model.ContactGroups index
             model, Cmd.none, ExternalMsg.NavigateToDetail(contact)
 
         | Search -> model, Cmd.none, ExternalMsg.NoOp
@@ -112,20 +112,39 @@ module ContactsListPage =
                 SearchBar(model.FilterText, UpdateFilterText, Search)
                     .backgroundColor(accentColor)
                     .cancelButtonColor(accentTextColor)
-
-                (GroupedListView
-                    (model.ContactGroups)
-                    (fun group -> groupView group.Name)
-                    (fun contact ->
-                        cellView
-                            contact.Picture
-                            $"{contact.FirstName} {contact.LastName}"
-                            contact.Address
-                            contact.IsFavorite))
+                    
+                (ListView(model.Contacts) (fun contact ->
+                    cellView
+                        contact.Picture
+                        $"{contact.FirstName} {contact.LastName}"
+                        contact.Address
+                        contact.IsFavorite
+                ))
                     .rowHeight(60)
                     .selectionMode(ListViewSelectionMode.None)
                     .onItemTapped(ContactSelected)
                     .fillVertical(expand = true)
+                    
+                // TODO: For some reason, the GroupedListView triggers a native crash on Android but works perfectly on iOS.
+                // GroupedListView
+                //     model.ContactGroups
+                //     (fun group ->
+                //         TextCell("Hello")
+                //         // groupView group.Name
+                //     )
+                //     (fun contact ->
+                //         TextCell("Hello")
+                //         // cellView
+                //         //     contact.Picture
+                //         //     $"{contact.FirstName} {contact.LastName}"
+                //         //     contact.Address
+                //         //     contact.IsFavorite
+                //     )
+                //
+                //     // .rowHeight(60)
+                //     // .selectionMode(ListViewSelectionMode.None)
+                //     // .onItemTapped(ContactSelected)
+                //     // .fillVertical(expand = true)
              })
         )
             .toolbarItems() {
