@@ -26,6 +26,12 @@ content/*/**/obj/**/*;
 content/*/**/bin/**/*;
         </ExcludeFromPackage>
     </PropertyGroup>
+    <PropertyGroup Condition=" $(IsNightlyBuild) != 'true' ">
+        <ExcludeFromPackage>
+$(ExcludeFromPackage);
+content/*/nuget.config;
+        </ExcludeFromPackage>
+    </PropertyGroup>
     <ItemGroup>
         <Content Include="content/**/*" Exclude="$(ExcludeFromPackage)">
             <PackagePath>content/</PackagePath>
