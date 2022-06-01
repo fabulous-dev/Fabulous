@@ -62,7 +62,7 @@ This version 2 will focus 100% on dynamic views (main selling point).
 Fabulous.StaticViews will be removed completely.  
 Support for Fabulous.AdaptiveViews won't be considered.
 
-**Release target**: Early April 2022 (include v2 architecture and XF 5.0 support)
+**Release target**: Early June 2022 (include v2 architecture and XF 5.0 support)
 
 ## Xamarin.Forms 5.0 support
 
