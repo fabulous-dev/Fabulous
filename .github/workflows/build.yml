@@ -1,4 +1,4 @@
-name: .NET
+name: Build
 on:
    push:
      branches: [ 'v2.0' ]
