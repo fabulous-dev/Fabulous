@@ -35,10 +35,12 @@ module AboutPage =
     type Msg = OpenBrowser of string
 
     let openBrowserCmd url =
-        Device.InvokeOnMainThreadAsync(
-            funcTask = fun () -> task { do! Browser.OpenAsync(Uri url, BrowserLaunchMode.SystemPreferred) }
-        )
-        |> Async.AwaitTask
+        async {
+            do!
+                Browser.OpenAsync(Uri url, BrowserLaunchMode.SystemPreferred)
+                |> Async.AwaitTask
+        }
+        |> Helpers.executeOnMainThread
 
     let init () = ()
 

@@ -59,7 +59,12 @@ module Repository =
                 database.Table<ContactObject>().ToListAsync()
                 |> Async.AwaitTask
 
-            return objs |> Seq.toList |> List.map convertToModel
+            let results =
+                objs |> Seq.toList |> List.map convertToModel
+
+            do! database.CloseAsync() |> Async.AwaitTask
+
+            return results
         }
 
     let insertContact dbPath contact =
@@ -77,6 +82,9 @@ module Repository =
                 |> Async.AwaitTask
 
             let rowId = rowIdObj |> int
+
+            do! database.CloseAsync() |> Async.AwaitTask
+
             return { contact with Id = rowId }
         }
 
@@ -90,6 +98,8 @@ module Repository =
                 |> Async.AwaitTask
                 |> Async.Ignore
 
+            do! database.CloseAsync() |> Async.AwaitTask
+
             return contact
         }
 
@@ -102,4 +112,6 @@ module Repository =
                 database.DeleteAsync(obj)
                 |> Async.AwaitTask
                 |> Async.Ignore
+
+            do! database.CloseAsync() |> Async.AwaitTask
         }

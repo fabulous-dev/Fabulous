@@ -91,61 +91,51 @@ module EditPage =
         }
 
     let tryUpdatePictureAsync (previousValue: _ option) =
-        Device.InvokeOnMainThreadAsync(
-            funcTask =
-                fun () ->
-                    task {
-                        let canTakePicture =
-                            CrossMedia.Current.IsCameraAvailable
-                            && CrossMedia.Current.IsTakePhotoSupported
+        async {
+            let canTakePicture =
+                CrossMedia.Current.IsCameraAvailable
+                && CrossMedia.Current.IsTakePhotoSupported
 
-                        let canPickPicture = CrossMedia.Current.IsPickPhotoSupported
+            let canPickPicture = CrossMedia.Current.IsPickPhotoSupported
 
-                        let hasPreviousPicture = previousValue.IsSome
+            let hasPreviousPicture = previousValue.IsSome
 
-                        let! action =
-                            displayActionSheet(
-                                None,
-                                Some Strings.Common_Cancel,
-                                (if hasPreviousPicture then
-                                     Some Strings.EditPage_PictureContextMenu_Remove
-                                 else
-                                     None),
-                                Some [| if canTakePicture then
-                                            yield Strings.EditPage_PictureContextMenu_TakePicture
-                                        if canPickPicture then
-                                            yield Strings.EditPage_PictureContextMenu_ChooseFromGallery |]
-                            )
+            let! action =
+                displayActionSheet(
+                    None,
+                    Some Strings.Common_Cancel,
+                    (if hasPreviousPicture then
+                         Some Strings.EditPage_PictureContextMenu_Remove
+                     else
+                         None),
+                    Some [| if canTakePicture then
+                                yield Strings.EditPage_PictureContextMenu_TakePicture
+                            if canPickPicture then
+                                yield Strings.EditPage_PictureContextMenu_ChooseFromGallery |]
+                )
 
-                        let setPicture value = Some(SetPicture value)
+            let setPicture value = Some(SetPicture value)
 
-                        match action with
-                        | s when s = Strings.EditPage_PictureContextMenu_Remove -> return setPicture None
-                        | s when s = Strings.EditPage_PictureContextMenu_TakePicture ->
-                            let! bytes = doAsync<CameraPermission> takePictureAsync
-                            return setPicture bytes
-                        | s when s = Strings.EditPage_PictureContextMenu_ChooseFromGallery ->
-                            let! bytes = doAsync<PhotosPermission> pickPictureAsync
-                            return setPicture bytes
-                        | _ -> return None
-                    }
-        )
-        |> Async.AwaitTask
+            match action with
+            | s when s = Strings.EditPage_PictureContextMenu_Remove -> return setPicture None
+            | s when s = Strings.EditPage_PictureContextMenu_TakePicture ->
+                let! bytes = doAsync<CameraPermission> takePictureAsync
+                return setPicture bytes
+            | s when s = Strings.EditPage_PictureContextMenu_ChooseFromGallery ->
+                let! bytes = doAsync<PhotosPermission> pickPictureAsync
+                return setPicture bytes
+            | _ -> return None
+        }
 
     let sayContactNotValidAsync () =
-        Device.InvokeOnMainThreadAsync(
-            funcTask =
-                fun () ->
-                    task {
-                        do!
-                            displayAlert(
-                                Strings.EditPage_InvalidContactTitle,
-                                Strings.EditPage_InvalidContactDescription,
-                                Strings.Common_OK
-                            )
-                    }
-        )
-        |> Async.AwaitTask
+        async {
+            do!
+                displayAlert(
+                    Strings.EditPage_InvalidContactTitle,
+                    Strings.EditPage_InvalidContactDescription,
+                    Strings.Common_OK
+                )
+        }
 
     let createOrUpdateAsync dbPath contact =
         async {
@@ -162,10 +152,7 @@ module EditPage =
         async {
             if not model.IsFirstNameValid
                || not model.IsLastNameValid then
-                do!
-                    Device.InvokeOnMainThreadAsync(funcTask = fun () -> task { do! sayContactNotValidAsync() })
-                    |> Async.AwaitTask
-
+                do! sayContactNotValidAsync()
                 return None
             else
                 let id =

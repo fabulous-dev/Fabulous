@@ -12,13 +12,19 @@ open Fabulous.XamarinForms
 open type Fabulous.XamarinForms.View
 
 module Helpers =
+    let executeOnMainThread (action: Async<'T>) : Async<'T> =
+        Device.InvokeOnMainThreadAsync(funcTask = fun () -> task { return! action })
+        |> Async.AwaitTask
+
     let displayAlert (title, message, cancel) =
         Application.Current.MainPage.DisplayAlert(title, message, cancel)
         |> Async.AwaitTask
+        |> executeOnMainThread
 
     let displayAlertWithConfirm (title, message, accept, cancel) =
         Application.Current.MainPage.DisplayAlert(title = title, message = message, accept = accept, cancel = cancel)
         |> Async.AwaitTask
+        |> executeOnMainThread
 
     let displayActionSheet (title, cancel, destruction, buttons) =
         let title = Option.toObj title
@@ -28,6 +34,7 @@ module Helpers =
 
         Application.Current.MainPage.DisplayActionSheet(title, cancel, destruction, buttons)
         |> Async.AwaitTask
+        |> executeOnMainThread
 
     let requestPermissionAsync<'a when 'a: (new: unit -> 'a) and 'a :> BasePermission> () =
         async {
@@ -42,6 +49,7 @@ module Helpers =
             with
             | _ -> return false
         }
+        |> executeOnMainThread
 
     let askPermissionAsync<'a when 'a: (new: unit -> 'a) and 'a :> BasePermission> () =
         async {
@@ -69,6 +77,7 @@ module Helpers =
 
             return picture |> Option.ofObj
         }
+        |> executeOnMainThread
 
     let pickPictureAsync () =
         async {
@@ -81,6 +90,7 @@ module Helpers =
 
             return picture |> Option.ofObj
         }
+        |> executeOnMainThread
 
     let readBytesAsync (file: MediaFile) =
         async {

@@ -45,6 +45,7 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_DialNumberFailed, Strings.Common_Error, Strings.Common_OK)
         }
+        |> executeOnMainThread
 
     let tryComposeSmsAsync (phoneNumber: string) =
         async {
@@ -61,6 +62,7 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_ComposeSmsFailed, Strings.Common_Error, Strings.Common_OK)
         }
+        |> executeOnMainThread
 
     let tryComposeEmailAsync emailAddress =
         async {
@@ -77,6 +79,7 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_ComposeEmailFailed, Strings.Common_Error, Strings.Common_OK)
         }
+        |> executeOnMainThread
 
     // Lifecycle
     let init (contact: Contact) = { Contact = contact }, Cmd.none
