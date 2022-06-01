@@ -1,0 +1,36 @@
+name: Release
+on:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+    paths-ignore: [ 'docs/**' ]
+
+permissions: write-all
+
+jobs:
+  build:
+    runs-on: macos-latest
+    environment: nuget
+    env:
+      SLN_FILE: Fabulous-NoSamples.sln
+    steps:
+    - name: Extract version from tag
+      uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.300
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build --no-restore --configuration Release ${SLN_FILE}
+    - name: Test
+      run: dotnet test --no-build --configuration Release ${SLN_FILE}
+    - name: Pack
+      run: |
+        sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g" "templates/content/blank/.template.config/template.json"
+        dotnet pack --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
+    - name: Push
+      run: |
+        dotnet nuget push "nupkgs/*.nupkg" -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
