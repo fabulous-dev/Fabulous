@@ -116,7 +116,7 @@ let view model =
 
 ```
 
-**Release target**: Early April 2022 (include v2 architecture and XF 5.0 support)
+**Release target**: Early June 2022 (include v2 architecture and XF 5.0 support)
 
 ## Migration path from version 1
 
@@ -131,7 +131,7 @@ To permit this, here's what we will be done:
   - How to migrate from v1 to v2
   - Add most common migration examples (`StackLayout(orientation = vertical, children = [ (...) ])` to `VStack() { (...) }`, etc.)
 
-**Release target**: May 2022
+**Release target**: TBD
 
 ## Components
 
@@ -151,13 +151,13 @@ Inspiration: https://www.youtube.com/watch?v=YV_qrjN8bRA
 
 We're still discussing how to implement such a library.
 
-**Release target**: July 2022
+**Release target**: TBD
 
 ## .NET 6 / MAUI support
 
 Finally when everything else will be done and .NET 6.0 / MAUI is in a stable state, we will be able to start working on support for MAUI in Fabulous.
 
-**Release target**: Depends on the MAUI team. Earliest possible - May / June 2022
+**Release target**: Autumn 2022
 
 ## What about all the other stuff?
 
