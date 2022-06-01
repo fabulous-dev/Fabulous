@@ -27,7 +27,7 @@ jobs:
       run: |
         sed -i bak "s/FABULOUS_PKG_VERSION/2.0.0-nightly-${GITHUB_RUN_ID}/g" "templates/content/blank/.template.config/template.json"
         dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" ${SLN_FILE}
-        dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
+        dotnet pack -p:IsNightlyBuild=true --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
