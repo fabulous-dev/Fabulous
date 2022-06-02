@@ -15,7 +15,7 @@ type AppDelegate() =
 
     override this.FinishedLaunching(app, options) =
         Forms.Init()
-        this.LoadApplication(Program.createApplication App.program)
+        this.LoadApplication(Program.startApplication App.program)
         base.FinishedLaunching(app, options)
 
 module Main =
