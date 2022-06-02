@@ -31,7 +31,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | characterSpacing(value: float) | Sets the spacing between each character of the time picker |
 | font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
 | format(value: string) | Sets the format of the time picker |
-| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textColor(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
 | textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
 | reference(value: ViewRef&lt;TimePicker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.TimePicker` instance associated to this widget |
 
@@ -44,12 +44,12 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-    TimePicker(TimeSpan.Parse("00:00:01"), TimeChanged)
-        .characterSpacing(1.0)
-        .format("dd/MM/yyyy")
-        .textColor(Color.Red, Color.Blue)
-        .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
-        .textTransform(TextTransform.Lowercase)
+TimePicker(TimeSpan.Parse("00:00:01"), TimeChanged)
+    .characterSpacing(1.0)
+    .format("dd/MM/yyyy")
+    .textColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
+    .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
+    .textTransform(TextTransform.Lowercase)
 ```
 
 ### Get access to the underlying Xamarin.Forms.TimePicker

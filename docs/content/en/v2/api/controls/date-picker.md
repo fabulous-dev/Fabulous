@@ -33,7 +33,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | format(value: string) | Sets the format of the date picker |
 | minimumDate(value: DateTime) | Sets the minimum date of the date picker |
 | maximumDate(value: DateTime) | Sets the maximum date of the date picker |
-| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textColor(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
 | textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
 | reference(value: ViewRef&lt;DatePicker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.DatePicker` instance associated to this widget |
 
@@ -46,14 +46,14 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-    DatePicker(DateTime.Now, DateTimeChanged)
-        .characterSpacing(1.0)
-        .format("dd/MM/yyyy")
-        .minimumDate(DateTime.Now)
-        .maximumDate(DateTime.Now.AddYears(1))
-        .textColor(Color.Red, Color.Blue)
-        .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
-        .textTransform(TextTransform.Lowercase)
+DatePicker(DateTime.Now, DateTimeChanged)
+    .characterSpacing(1.0)
+    .format("dd/MM/yyyy")
+    .minimumDate(DateTime.Now)
+    .maximumDate(DateTime.Now.AddYears(1))
+    .textColor(Color.Red.ToFabColor(), Color.Blue..ToFabColor())
+    .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
+    .textTransform(TextTransform.Lowercase)
 ```
 
 ### Get access to the underlying Xamarin.Forms.DatePicker

@@ -37,7 +37,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | padding(value: Thickness) | Sets the amount of padding around the text |
 | padding(value: float) | Sets a uniform amount of padding around the text |
 | padding(left: float, top: float, right: float, bottom: float) | Sets the amount of padding around the text |
-| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textColor(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
 | textDecoration(value: TextDecorations) | Sets the text decorations (underline, strike, etc) to apply on the text |
 | textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
 | textType(value: TextType) | Sets the text type (plain text, HTML) |
@@ -66,7 +66,7 @@ Label("Hello World")
     .lineHeight(1.5)
     .maxLines(1)
     .padding(10.)
-    .textColor(light = Color.Red, dark = Color.Blue)
+    .textColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
     .textDecoration(TextDecorations.Underline)
     .textTransform(TextTransform.Lowercase)
     .textType(TextType.Text)
