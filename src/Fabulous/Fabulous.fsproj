@@ -5,7 +5,7 @@
         <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <VersionPrefix>2.0.0</VersionPrefix>
+        <VersionPrefix>2.0.1</VersionPrefix>
         <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
