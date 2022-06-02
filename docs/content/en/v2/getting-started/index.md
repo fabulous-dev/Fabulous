@@ -54,6 +54,8 @@ Now, we can create the solution using the newly installed template:
 dotnet new fabulous-xf -n FabHelloWorld
 ```
 
+_Note: if you plan to use Visual Studio on Windows, use `fabulous-xf-vswin` instead. Visual Studio doesn't support the default template._
+
 ### Build and run
 
 In your IDE, you will be able to choose the configuration profile, the project to start and the device or simulator to use.
