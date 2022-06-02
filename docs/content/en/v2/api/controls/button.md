@@ -28,10 +28,10 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Properties | Description |
 |--|--|
-| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textColor(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
 | textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
 | cornerRadius(value: int) | Sets the corner radius of the button |
-| borderColor(light: Color, ?dark: Color) | Sets the border color depending if light or dark mode |
+| borderColor(light: FabColor, ?dark: FabColor) | Sets the border color depending if light or dark mode |
 | borderWidth(value: float) | Sets the border width of the button |
 | padding(value: float) | Sets a uniform amount of padding around the button |
 | padding(value: Thickness) | Sets a uniform amount of padding around the button |
@@ -58,10 +58,10 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 ```fs
 Button("Press me!", ClickMsg)
-    .textColor(light = Color.Red, dark = Color.Blue)
+    .textColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
     .textTransform(TextTransform.Lowercase)
     .cornerRadius(10)
-    .borderColor(light = Color.Red, dark = Color.Blue)
+    .borderColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
     .borderWidth(2.)
     .padding(10.)
     .characterSpacing(1.)

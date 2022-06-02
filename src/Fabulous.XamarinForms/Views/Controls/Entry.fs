@@ -147,7 +147,7 @@ type EntryModifiers =
 
 [<Extension>]
 type EntryPlatformModifiers =
-    /// <summary>iOS platform specific. Sets the entry color of the cursor</summary>
+    /// <summary>iOS platform specific. Sets the cursor color.</summary>
     /// <param name="value">The new cursor color.</param>
     [<Extension>]
     static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: FabColor) =

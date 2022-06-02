@@ -32,10 +32,10 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | horizontalTextAlignment(value: TextAlignment) | Sets the horizontal text alignment of the picker |
 | verticalTextAlignment(value: TextAlignment) | Sets the vertical text alignment of the picker |
 | font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
-| textColor(light: Color, ?dark: Color) | Sets the text color depending if light or dark mode |
+| textColor(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
 | textTransform(value: TextTransform) | Sets the text transformation (lowercase, uppercase) to apply on the text |
 | title(value: string) | Sets the title of the picker |
-| titleColor(light: Color, ?dark: Color) | Sets the title color depending if light or dark mode |
+| titleColor(light: FabColor, ?dark: FabColor) | Sets the title color depending if light or dark mode |
 | reference(value: ViewRef&lt;Picker&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Picker` instance associated to this widget |
 
 ## iOS-specific Properties
@@ -47,14 +47,14 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-    Picker(["Item 1"; "Item 2"; "Item 3"], 0, SelectedIndexChanged)
-        .characterSpacing(1.0)
-        .textColor(Color.Red, Color.Blue)
-        .titleColor(Color.Red, Color.Blue)
-        .verticalTextAlignment(TextAlignment.Center)
-        .horizontalTextAlignment(TextAlignment.Center)
-        .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
-        .textTransform(TextTransform.Lowercase)
+Picker(["Item 1"; "Item 2"; "Item 3"], 0, SelectedIndexChanged)
+    .characterSpacing(1.0)
+    .textColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
+    .titleColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
+    .verticalTextAlignment(TextAlignment.Center)
+    .horizontalTextAlignment(TextAlignment.Center)
+    .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
+    .textTransform(TextTransform.Lowercase)
 ```
 
 ### Get access to the underlying Xamarin.Forms.Picker
