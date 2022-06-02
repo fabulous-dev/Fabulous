@@ -4,8 +4,8 @@
     "Fabulous",
     "Xamarin.Forms"
   ],
-  "name": "Fabulous XF Blank VS Windows",
-  "groupIdentity": "Fabulous.XamarinForms.App.Blank",
+  "name": "Fabulous XF VS Windows",
+  "groupIdentity": "Fabulous.XamarinForms.App.BlankVsWin",
   "identity": "Fabulous.XamarinForms.BlankVsWin",
   "shortName": "fabulous-xf-vswin",
   "tags": {

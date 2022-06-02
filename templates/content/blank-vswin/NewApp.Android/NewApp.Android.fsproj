@@ -70,10 +70,10 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="Fabulous">
-        <HintPath>..\packages\Fabulous.FABULOUS_PKG_VERSION\lib\netstandard2.1\Fabulous.dll</HintPath>
+        <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.1\Fabulous.dll</HintPath>
         </Reference>
         <Reference Include="Fabulous.XamarinForms">
-        <HintPath>..\packages\Fabulous.XamarinForms.FABULOUS_PKG_VERSION\lib\netstandard2.1\Fabulous.XamarinForms.dll</HintPath>
+        <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.1\Fabulous.XamarinForms.dll</HintPath>
         </Reference>
         <Reference Include="FormsViewGroup">
         <HintPath>..\packages\Xamarin.Forms.5.0.0.2401\lib\MonoAndroid10.0\FormsViewGroup.dll</HintPath>
