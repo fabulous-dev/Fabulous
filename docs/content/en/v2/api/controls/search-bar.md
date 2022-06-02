@@ -37,7 +37,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-SearchBar("Enter a description", TexChanged, SearchButtonPressed)
+SearchBar("Enter a description", TextChanged, SearchButtonPressed)
     .keyboard(Keyboard.Email)
     .cancelButtonColor(Color.Green.ToFabColor(), Color.White.ToFabColor())
     .textColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
