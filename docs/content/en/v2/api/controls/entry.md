@@ -55,7 +55,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-Entry("Enter an email", TexChanged)
+Entry("Enter an email", TextChanged)
     .keyboard(Keyboard.Email)
     .textColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
     .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
