@@ -1,0 +1,61 @@
+{
+  "author": "fsprojects",
+  "classifications": [
+    "Fabulous",
+    "Xamarin.Forms"
+  ],
+  "name": "Fabulous XF Blank VS Windows",
+  "groupIdentity": "Fabulous.XamarinForms.App.Blank",
+  "identity": "Fabulous.XamarinForms.BlankVsWin",
+  "shortName": "fabulous-xf-vswin",
+  "tags": {
+    "language": "F#",
+    "type": "project"
+  },
+  "sourceName": "NewApp",
+  "primaryOutputs": [
+    {
+      "path": "NewApp\\NewApp.fs"
+    },
+    {
+      "condition": "iOS",
+      "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+    }
+  ],
+  "defaultName": "App",
+  "preferNameDirectory": "true",
+  "postActions": [],
+  "guids": [
+    "99E19497-29A6-4B77-B773-BEC55F9B55DC",
+    "1069F96F-A42B-4CD8-8FA1-7F047C726B88",
+    "E26BCFA7-B118-4866-875B-F4364DF40545"
+  ],
+  "symbols": {
+    "AppIdentifier": {
+      "type": "parameter",
+      "description": "Overrides the Info.plist's CFBundleIdentifier",
+      "datatype": "string",
+      "defaultValue": "com.companyname"
+    },
+    "iOSAppIdentifier": {
+      "type": "parameter",
+      "description": "Overrides the Info.plist's CFBundleIdentifier",
+      "datatype": "string"
+    },
+    "iOSAppIdentifierReplacer": {
+      "type": "generated",
+      "generator": "coalesce",
+      "parameters": {
+        "sourceVariableName": "iOSAppIdentifier",
+        "fallbackVariableName": "AppIdentifier"
+      },
+      "replaces": "com.companyname.NewApp.iOS"
+    },
+    "FabulousPkgsVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FabulousPkgsVersion",
+      "defaultValue": "FABULOUS_PKG_VERSION"
+    }
+  }
+}

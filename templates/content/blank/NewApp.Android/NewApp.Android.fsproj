@@ -19,6 +19,7 @@
         <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AndroidLinkMode>None</AndroidLinkMode>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -77,8 +78,8 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Android.FSharp.ResourceProvider" Version="XamarinAndroidFSharpResourceProviderSdk" />
-        <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" />
+        <PackageReference Include="FSharp.Android.Resource" Version="FSharpAndroidResourceSdk" />
+        <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
         <PackageReference Include="Xamarin.CommunityToolkit" Version="XamarinCommunityToolkitSdk" />
         <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
         <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
