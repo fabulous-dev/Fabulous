@@ -42,7 +42,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-Editor("Enter a description", TexChanged)
+Editor("Enter a description", TextChanged)
     .keyboard(Keyboard.Email)
     .textColor(Color.Red.ToFabColor(), Color.Blue.ToFabColor())
     .font(namedSize = NamedSize.Large, fontFamily = "Arial", attributes = FontAttributes.Bold)
