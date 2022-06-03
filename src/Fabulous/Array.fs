@@ -179,7 +179,7 @@ module StackAllocatedCollections =
                 static member tryFind<'v>(data: StackList<'v> inref, predicate: 'v -> bool) : 'v voption =
                     let tryFindInItems (items: Items<'v>) (size: uint16) predicate : 'v voption =
                         let struct (v0, v1, v2) = items
-                        let constrainedSize = size % 3us
+                        let constrainedSize = size % 4us
 
                         match constrainedSize with
                         | i when i >= 1us && predicate v0 -> ValueSome v0
@@ -206,7 +206,7 @@ module StackAllocatedCollections =
                 static member replace(data: StackList<'v> inref, predicate: 'v -> bool, v: 'v) =
                     let tryReplaceInItems (items: Items<'v>) (size: uint16) predicate v : struct (bool * Items<'v>) =
                         let struct (v0, v1, v2) = items
-                        let constrainedSize = size % 3us
+                        let constrainedSize = size % 4us
 
                         match constrainedSize with
                         | 1us when predicate v0 -> struct (true, Items.one v)
