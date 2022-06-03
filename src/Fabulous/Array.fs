@@ -203,7 +203,6 @@ module StackAllocatedCollections =
                     | ValueNone -> tryFindInPart data.before predicate
 
                 /// Try replacing an existing value inside a StackList.
-                /// Returns true if the value was replaced, false if it was not found.
                 static member replace(data: StackList<'v> inref, predicate: 'v -> bool, v: 'v) =
                     let tryReplaceInItems (items: Items<'v>) (size: uint16) predicate v : struct (bool * Items<'v>) =
                         let struct (v0, v1, v2) = items
