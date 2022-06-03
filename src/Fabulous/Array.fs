@@ -182,6 +182,7 @@ module StackAllocatedCollections =
                             ValueNone
                         else
                             let struct (v0, v1, v2) = items
+
                             match (size - 1us) % 3us with
                             | i when i >= 0us && predicate v0 -> ValueSome v0
                             | i when i >= 1us && predicate v1 -> ValueSome v1
@@ -193,6 +194,7 @@ module StackAllocatedCollections =
                         | Empty -> ValueNone
                         | Filled (items, before) ->
                             let struct (v0, v1, v2) = items
+
                             if predicate v0 then ValueSome v0
                             elif predicate v1 then ValueSome v1
                             elif predicate v2 then ValueSome v2
@@ -206,9 +208,10 @@ module StackAllocatedCollections =
                 static member replace(data: StackList<'v> inref, predicate: 'v -> bool, v: 'v) =
                     let tryReplaceInItems (items: Items<'v>) (size: uint16) predicate v : struct (bool * Items<'v>) =
                         if size = 0us then
-                            struct(false, items)
+                            struct (false, items)
                         else
                             let struct (v0, v1, v2) = items
+
                             match (size - 1us) % 3us with
                             | 0us when predicate v0 -> struct (true, Items.one v)
                             | 1us when predicate v0 -> struct (true, Items.two(v, v1))
