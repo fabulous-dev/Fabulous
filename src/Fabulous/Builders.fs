@@ -59,6 +59,32 @@ type WidgetBuilder<'msg, 'marker> =
             )
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member inline x.TryAddOrReplace
+            (
+                attrKey: ScalarAttributeKey,
+                [<InlineIfLambda>] replaceWith: ScalarAttribute -> ScalarAttribute,
+                [<InlineIfLambda>] defaultWith: unit -> ScalarAttribute
+            ) =
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+
+            match StackList.tryFind(&scalarAttributes, (fun attr -> attr.Key = attrKey)) with
+            | ValueNone ->
+                let attr = defaultWith()
+
+                WidgetBuilder<'msg, 'marker>(
+                    x.Key,
+                    struct (StackList.add(&scalarAttributes, attr), widgetAttributes, widgetCollectionAttributes)
+                )
+
+            | ValueSome attr ->
+                let newAttr = replaceWith attr
+
+                let newAttrs =
+                    StackList.replace(&scalarAttributes, (fun attr -> attr.Key = attrKey), newAttr)
+
+                WidgetBuilder<'msg, 'marker>(x.Key, struct (newAttrs, widgetAttributes, widgetCollectionAttributes))
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidget(attr: WidgetAttribute) =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
             let attribs = widgetAttributes

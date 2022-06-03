@@ -359,6 +359,77 @@ module MapViewTests =
         removeBtn.Press()
         Assert.AreEqual("-1", label.Text)
 
+module MultipleMapViewTests =
+    type ParentMsg = Add of int
+
+    type ChildMsg =
+        | AddOne
+        | RemoveTwo
+        | Subtract of int
+
+    type ChildChildMsg = | RemoveFour
+
+    type Model = int
+
+    let update msg model =
+        match msg with
+        | Add value -> model + value
+
+    let mapChildMsg childMsg =
+        match childMsg with
+        | AddOne -> Add 1
+        | RemoveTwo -> Add -2
+        | Subtract n -> Add(-1 * n)
+
+    let mapChildChildMsg childChildMsg =
+        match childChildMsg with
+        | RemoveFour -> Subtract 4
+
+    let view model =
+        Stack() {
+            View.map
+                mapChildMsg
+                (Button("+1", AddOne)
+                    .automationId("add")
+                    .textColor("red"))
+
+            Label(model.ToString())
+                .automationId("label")
+                .textColor("blue")
+
+            View.map mapChildMsg (Button("-2", RemoveTwo).automationId("remove"))
+            View.map mapChildMsg (View.map mapChildChildMsg (Button("-4", RemoveFour).automationId("remove4")))
+        }
+
+
+    let init () = 0
+
+    [<Test>]
+    let SketchAPI () =
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let addBtn = find<TestButton> tree "add"
+
+        let removeBtn = find<TestButton> tree "remove"
+
+        let remove4Btn = find<TestButton> tree "remove4"
+
+        let label = find<TestLabel> tree "label" :> IText
+
+        Assert.AreEqual("0", label.Text)
+
+        addBtn.Press()
+        Assert.AreEqual("1", label.Text)
+
+        removeBtn.Press()
+        Assert.AreEqual("-1", label.Text)
+
+        remove4Btn.Press()
+        Assert.AreEqual("-5", label.Text)
 
 module MemoTests =
     module BasicCase =
