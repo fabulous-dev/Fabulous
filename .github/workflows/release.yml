@@ -28,7 +28,7 @@ jobs:
       run: dotnet test --no-build --configuration Release ${SLN_FILE}
     - name: Pack
       run: |
-        sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g" "templates/content/*/.template.config/template.json"
+        sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g" templates/content/**/.template.config/template.json
         dotnet pack --configuration Release --output nupkgs ${SLN_FILE}
         dotnet pack --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     # - name: Push

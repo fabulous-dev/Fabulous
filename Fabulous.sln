@@ -26,8 +26,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution files", "_Solution files", "{FC0E5AD7-D8E8-4DC1-B80D-4E80CCBBBC26}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		dotnet.yml = .github\workflows\dotnet.yml
-		dotnet.yml = .github\workflows\dotnet_pull_request.yml
+		pull_request.yml = .github\workflows\pull_request.yml
+		build.yml = .github\workflows\build.yml
+		release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FabulousContacts", "FabulousContacts", "{1F8DA9C3-3BFA-46AB-AE36-F0FFD6E480B0}"
