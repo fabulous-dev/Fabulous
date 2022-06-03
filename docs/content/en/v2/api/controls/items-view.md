@@ -33,4 +33,4 @@ toc: true
 | Properties | Description |
 |--|--|
 | onScrollToRequested(onScrollToRequested: ScrollToRequestEventArgs -> 'msg) | Event that is fired when one of the ScrollTo methods is invoked. The ScrollToRequestedEventArgs object that accompanies the ScrollToRequested event has many properties, including IsAnimated, Index, Item, and ScrollToPosition. These properties are set from the arguments specified in the ScrollTo method calls. |
-| onScrolled(ItemsViewScrolledEventArgs -> 'msg) | event that is fired to indicate that scrolling occurred. The ItemsViewScrolledEventArgs object that accompanies the Scrolled event has many properties. |
+| onScrolled(ItemsViewScrolledEventArgs -> 'msg) | Event that is fired to indicate that scrolling occurred. The ItemsViewScrolledEventArgs object that accompanies the Scrolled event has many properties. |
