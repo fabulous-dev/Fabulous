@@ -59,7 +59,7 @@ type WidgetBuilder<'msg, 'marker> =
             )
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
-        member inline x.TryAddOrReplaceScalar
+        member inline x.AddOrReplaceScalar
             (
                 attrKey: ScalarAttributeKey,
                 [<InlineIfLambda>] replaceWith: ScalarAttribute -> ScalarAttribute,

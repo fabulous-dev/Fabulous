@@ -42,7 +42,7 @@ module View =
             MapMsg.MapMsg.WithValue(unbox<'oldMsg> >> fn >> box)
 
         let builder =
-            x.TryAddOrReplaceScalar(MapMsg.MapMsg.Key, replaceWith, defaultWith)
+            x.AddOrReplaceScalar(MapMsg.MapMsg.Key, replaceWith, defaultWith)
 
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
 
