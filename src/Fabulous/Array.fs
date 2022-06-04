@@ -175,7 +175,77 @@ module StackAllocatedCollections =
 
                         // 2 items filled
                         | _ -> StackList(size + 1us, Items(v0, v1, v), data.before)
+
+                static member tryFind<'v>(data: StackList<'v> inref, predicate: 'v -> bool) : 'v voption =
+                    let tryFindInItems (items: Items<'v>) (size: uint16) predicate : 'v voption =
+                        if size = 0us then
+                            ValueNone
+                        else
+                            let struct (v0, v1, v2) = items
+
+                            match (size - 1us) % 3us with
+                            | i when i >= 0us && predicate v0 -> ValueSome v0
+                            | i when i >= 1us && predicate v1 -> ValueSome v1
+                            | i when i >= 2us && predicate v2 -> ValueSome v2
+                            | _ -> ValueNone
+
+                    let rec tryFindInPart (part: Part<'v>) (predicate: 'v -> bool) : 'v voption =
+                        match part with
+                        | Empty -> ValueNone
+                        | Filled (items, before) ->
+                            let struct (v0, v1, v2) = items
+
+                            if predicate v0 then ValueSome v0
+                            elif predicate v1 then ValueSome v1
+                            elif predicate v2 then ValueSome v2
+                            else tryFindInPart before predicate
+
+                    match tryFindInItems data.items data.size predicate with
+                    | ValueSome v -> ValueSome v
+                    | ValueNone -> tryFindInPart data.before predicate
+
+                /// Try replacing an existing value inside a StackList.
+                static member replace(data: StackList<'v> inref, predicate: 'v -> bool, v: 'v) =
+                    let tryReplaceInItems (items: Items<'v>) (size: uint16) predicate v : struct (bool * Items<'v>) =
+                        if size = 0us then
+                            struct (false, items)
+                        else
+                            let struct (v0, v1, v2) = items
+
+                            match (size - 1us) % 3us with
+                            | 0us when predicate v0 -> struct (true, Items.one v)
+                            | 1us when predicate v0 -> struct (true, Items.two(v, v1))
+                            | 1us when predicate v1 -> struct (true, Items.two(v0, v))
+                            | 2us when predicate v0 -> struct (true, Items(v, v1, v2))
+                            | 2us when predicate v1 -> struct (true, Items(v0, v, v2))
+                            | 2us when predicate v2 -> struct (true, Items(v0, v1, v))
+                            | _ -> struct (false, items)
+
+                    let rec tryReplaceInPart (part: Part<'v>) predicate v : struct (bool * Part<'v>) =
+                        match part with
+                        | Empty -> struct (false, Empty)
+                        | Filled (items, before) ->
+                            let struct (v0, v1, v2) = items
+
+                            if predicate v0 then
+                                struct (true, Filled(Items(v, v1, v2), before))
+                            elif predicate v1 then
+                                struct (true, Filled(Items(v0, v, v2), before))
+                            elif predicate v2 then
+                                struct (true, Filled(Items(v0, v1, v), before))
+                            else
+                                match tryReplaceInPart before predicate v with
+                                | struct (true, newBefore) -> struct (true, Filled(items, newBefore))
+                                | struct (false, _) -> struct (false, part)
+
+                    match tryReplaceInItems data.items data.size predicate v with
+                    | struct (true, newItems) -> StackList(data.size, newItems, data.before)
+                    | struct (false, _) ->
+                        match tryReplaceInPart data.before predicate v with
+                        | struct (true, newBefore) -> StackList(data.size, data.items, newBefore)
+                        | struct (false, _) -> data
             end
+
 
 
 
