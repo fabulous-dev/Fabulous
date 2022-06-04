@@ -39,7 +39,6 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | selectionLength(value: int) | Sets the text selection length. |
 | reference(value: ViewRef&lt;Entry&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Entry` instance associated to this widget |
 
-
 ## Events
 
 | Properties | Description |
