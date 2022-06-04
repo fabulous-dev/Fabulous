@@ -1,5 +1,5 @@
 ---
-id: "list-view"
+id: "v2-list-view"
 title: "ListView"
 description: ""
 lead: ""
@@ -77,7 +77,7 @@ type Group(headerData: string, footerData: string, items: IEnumerable<int>) =
 
 let groups =
     ObservableCollection<Group>(
-        [ for i = 0 .. 100 do
+        [ for i in 0 .. 100 do
             Group($"Header {i}", $"Footer {i}", [1 .. 100]) ]
     )
 

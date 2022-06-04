@@ -1,5 +1,5 @@
 ---
-id: "items-view"
+id: "v2-items-view"
 title: "ItemsView"
 description: ""
 lead: ""

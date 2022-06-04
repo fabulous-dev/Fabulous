@@ -1,5 +1,5 @@
 ---
-id: "collection-view"
+id: "v2-collection-view"
 title: "CollectionView"
 description: ""
 lead: ""
@@ -60,8 +60,14 @@ type Group(headerData: string, footerData: string, items: IEnumerable<int>) =
     inherit ObservableCollection<int>(items)
     member _.HeaderData = headerData
     member _.FooterData = footerData
+    
+let groups =
+    ObservableCollection<Group>(
+        [ for i in 0 .. 100 do
+            Group($"Header {i}", $"Footer {i}", [1 .. 100]) ]
+    )
 
-GroupedCollectionView(items)
+GroupedCollectionView(groups)
     (fun group -> Label(group.HeaderData))
     (fun item -> Label($"{item}")
     (fun group -> Label(group.FooterData))

@@ -1,5 +1,5 @@
 ---
-id: "carousel-view"
+id: "v2-carousel-view"
 title: "CarouselView"
 description: ""
 lead: ""
