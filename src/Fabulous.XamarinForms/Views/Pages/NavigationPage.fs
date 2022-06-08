@@ -48,10 +48,17 @@ module NavigationPageUpdaters =
 
                 let page = page :?> Page
 
-                if index = pagesLength - 1 then
+                if index = 0 && pagesLength = 1 then
+                    // We are trying to replace the root page
+                    // First we push the new page, then we remove the old one
+                    navigationPage.Push(page, false)
+                    navigationPage.Navigation.RemovePage(pages.[index])
+
+                elif index = pagesLength - 1 then
                     // Last page, we pop it and push the new one
                     navigationPage.Pop()
                     navigationPage.Push(page)
+
                 else
                     // Page is not visible, we just replace it
                     let nextPage = pages.[index + 1]
