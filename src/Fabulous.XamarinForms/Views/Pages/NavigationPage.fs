@@ -20,28 +20,33 @@ module NavigationPageUpdaters =
         let mutable pagesLength =
             let struct (size, _) = prev
             int size
-        
+
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
                 let struct (_, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
-                
+
                 if index >= pagesLength then
-                    navigationPage.Navigation.PushAsync(page) |> ignore
+                    navigationPage.Navigation.PushAsync(page)
+                    |> ignore
                 else
                     navigationPage.Navigation.InsertPageBefore(page, pages.[index])
-                    
+
                 pagesLength <- pagesLength + 1
 
             | WidgetCollectionItemChange.Update (index, diff) ->
-                let childNode = node.TreeContext.GetViewNode(box pages.[index])
+                let childNode =
+                    node.TreeContext.GetViewNode(box pages.[index])
+
                 childNode.ApplyDiff(&diff)
 
             | WidgetCollectionItemChange.Replace (index, _, newWidget) ->
-                let struct (_, page) = Helpers.createViewForWidget node newWidget
+                let struct (_, page) =
+                    Helpers.createViewForWidget node newWidget
+
                 let page = page :?> Page
-                
+
                 if index = pagesLength - 1 then
                     // Last page, we pop it and push the new one
                     navigationPage.PopAsync() |> ignore
@@ -64,21 +69,28 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(pages.[index])
                     pagesLength <- pagesLength - 1
 
-    let updateNavigationPagePages (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+    let updateNavigationPagePages
+        (oldValueOpt: ArraySlice<Widget> voption)
+        (newValueOpt: ArraySlice<Widget> voption)
+        (node: IViewNode)
+        =
         let navigationPage = node.Target :?> NavigationPage
 
         match newValueOpt with
-        | ValueNone ->
-            failwith "NavigationPage requires its Pages modifier to be set"
-            
+        | ValueNone -> failwith "NavigationPage requires its Pages modifier to be set"
+
         | ValueSome widgets ->
             // Push all new pages but only animate the last one
             let mutable i = 0
             let span = ArraySlice.toSpan widgets
+
             for widget in span do
                 let animateIfLastPage = i = span.Length - 1
                 let struct (_, page) = Helpers.createViewForWidget node widget
-                navigationPage.PushAsync(page :?> Page, animateIfLastPage) |> ignore
+
+                navigationPage.PushAsync(page :?> Page, animateIfLastPage)
+                |> ignore
+
                 i <- i + 1
 
             // Silently remove all old pages
@@ -87,9 +99,10 @@ module NavigationPageUpdaters =
             | ValueSome oldWidgets ->
                 let pages = Array.ofSeq navigationPage.Pages
                 let span = ArraySlice.toSpan oldWidgets
+
                 for i = 0 to span.Length - 1 do
                     navigationPage.Navigation.RemovePage(pages.[i])
-            
+
 module NavigationPage =
     let WidgetKey = Widgets.register<NavigationPage>()
 
