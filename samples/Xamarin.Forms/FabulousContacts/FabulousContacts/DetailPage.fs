@@ -45,7 +45,8 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_DialNumberFailed, Strings.Common_Error, Strings.Common_OK)
         }
-        |> executeOnMainThread
+        |> Async.executeOnMainThread
+        |> Cmd.performAsync
 
     let tryComposeSmsAsync (phoneNumber: string) =
         async {
@@ -62,7 +63,8 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_ComposeSmsFailed, Strings.Common_Error, Strings.Common_OK)
         }
-        |> executeOnMainThread
+        |> Async.executeOnMainThread
+        |> Cmd.performAsync
 
     let tryComposeEmailAsync emailAddress =
         async {
@@ -79,7 +81,8 @@ module DetailPage =
                     )
             | _ -> do! displayAlert(Strings.DetailPage_ComposeEmailFailed, Strings.Common_Error, Strings.Common_OK)
         }
-        |> executeOnMainThread
+        |> Async.executeOnMainThread
+        |> Cmd.performAsync
 
     // Lifecycle
     let init (contact: Contact) = { Contact = contact }, Cmd.none
@@ -88,19 +91,13 @@ module DetailPage =
         match msg with
         | EditTapped -> model, Cmd.none, ExternalMsg.EditContact model.Contact
         | CallTapped ->
-            let dialCmd =
-                Cmd.performAsync(tryDialNumberAsync model.Contact.Phone)
-
+            let dialCmd = tryDialNumberAsync model.Contact.Phone
             model, dialCmd, ExternalMsg.NoOp
         | SmsTapped ->
-            let smsCmd =
-                Cmd.performAsync(tryComposeSmsAsync model.Contact.Phone)
-
+            let smsCmd = tryComposeSmsAsync model.Contact.Phone
             model, smsCmd, ExternalMsg.NoOp
         | EmailTapped ->
-            let emailCmd =
-                Cmd.performAsync(tryComposeEmailAsync model.Contact.Email)
-
+            let emailCmd = tryComposeEmailAsync model.Contact.Email
             model, emailCmd, ExternalMsg.NoOp
         | ContactUpdated contact -> { model with Contact = contact }, Cmd.none, ExternalMsg.NoOp
 

@@ -73,6 +73,8 @@ module EditPage =
             else
                 return None
         }
+        |> Async.executeOnMainThread
+        |> Cmd.ofAsyncMsgOption
 
     let doAsync<'a when 'a: (new: unit -> 'a) and 'a :> BasePermission> action =
         async {
@@ -126,6 +128,8 @@ module EditPage =
                 return setPicture bytes
             | _ -> return None
         }
+        |> Async.executeOnMainThread
+        |> Cmd.ofAsyncMsgOption
 
     let sayContactNotValidAsync () =
         async {
@@ -173,6 +177,8 @@ module EditPage =
                 let! msg = createOrUpdateAsync dbPath newContact
                 return Some msg
         }
+        |> Async.executeOnMainThread
+        |> Cmd.ofAsyncMsgOption
 
     // Validations
     let validateFirstName = not << String.IsNullOrWhiteSpace
@@ -234,23 +240,17 @@ module EditPage =
         | UpdateIsFavorite isFavorite -> { model with IsFavorite = isFavorite }, Cmd.none, ExternalMsg.NoOp
 
         | UpdatePicture ->
-            let cmd =
-                Cmd.ofAsyncMsgOption(tryUpdatePictureAsync model.Picture)
-
+            let cmd = tryUpdatePictureAsync model.Picture
             model, cmd, ExternalMsg.NoOp
 
         | SetPicture picture -> { model with Picture = picture }, Cmd.none, ExternalMsg.NoOp
 
         | SaveContact ->
-            let cmd =
-                Cmd.ofAsyncMsgOption(trySaveAsync model dbPath)
-
+            let cmd = trySaveAsync model dbPath
             model, cmd, ExternalMsg.NoOp
 
         | DeleteContact contact ->
-            let cmd =
-                Cmd.ofAsyncMsgOption(tryDeleteAsync dbPath contact)
-
+            let cmd = tryDeleteAsync dbPath contact
             model, cmd, ExternalMsg.NoOp
 
         | ContactAdded contact -> model, Cmd.none, ExternalMsg.GoBackAfterContactAdded contact

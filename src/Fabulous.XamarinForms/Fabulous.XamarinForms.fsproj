@@ -121,6 +121,7 @@
     <Compile Include="Views\Any.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="Async.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="6.0.0" />
