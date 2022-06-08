@@ -24,28 +24,16 @@ module NavigationPageUpdaters =
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
+                let struct (_, page) = Helpers.createViewForWidget node widget
+                let page = page :?> Page
+
                 if index >= pagesLength then
-                    let struct (_, page) = Helpers.createViewForWidget node widget
-
-                    navigationPage.PushAsync(page :?> Page) |> ignore
-                    pagesLength <- pagesLength + 1
-                else
-                    let temp = System.Collections.Generic.Stack<Page>()
-
-                    for i = pagesLength - 1 to index do
-                        temp.Push(pages.[i])
-                        navigationPage.PopAsync() |> ignore
-
-                    let struct (_, page) = Helpers.createViewForWidget node widget
-
-                    navigationPage.PushAsync(page :?> Page, false)
+                    navigationPage.Navigation.PushAsync(page)
                     |> ignore
+                else
+                    navigationPage.Navigation.InsertPageBefore(page, pages.[index])
 
-                    while temp.Count > 0 do
-                        navigationPage.PushAsync(temp.Pop(), false)
-                        |> ignore
-
-                    pagesLength <- pagesLength + 1
+                pagesLength <- pagesLength + 1
 
             | WidgetCollectionItemChange.Update (index, diff) ->
                 let childNode =
@@ -53,62 +41,67 @@ module NavigationPageUpdaters =
 
                 childNode.ApplyDiff(&diff)
 
-
             | WidgetCollectionItemChange.Replace (index, _, newWidget) ->
+                let struct (_, page) =
+                    Helpers.createViewForWidget node newWidget
+
+                let page = page :?> Page
+
                 if index = pagesLength - 1 then
+                    // Last page, we pop it and push the new one
                     navigationPage.PopAsync() |> ignore
-
-                    let struct (_, page) =
-                        Helpers.createViewForWidget node newWidget
-
-                    navigationPage.PushAsync(page :?> Page) |> ignore
+                    navigationPage.PushAsync(page) |> ignore
                 else
-                    let temp = System.Collections.Generic.Stack<Page>()
-
-                    for i = pagesLength - 1 to index do
-                        temp.Push(pages.[i])
-                        navigationPage.PopAsync() |> ignore
-
-                    let struct (_, page) =
-                        Helpers.createViewForWidget node newWidget
-
-                    navigationPage.PushAsync(page :?> Page, false)
-                    |> ignore
-
-                    while temp.Count > 1 do
-                        navigationPage.PushAsync(temp.Pop(), false)
-                        |> ignore
+                    // Page is not visible, we just replace it
+                    let nextPage = pages.[index + 1]
+                    navigationPage.Navigation.RemovePage(pages.[index])
+                    navigationPage.Navigation.InsertPageBefore(page, nextPage)
 
             | WidgetCollectionItemChange.Remove (index, _) ->
                 if index > pagesLength - 1 then
                     () // Do nothing, page has already been popped
                 elif index = pagesLength - 1 then
+                    // Last page, we pop it the right way to get an animation
                     navigationPage.PopAsync() |> ignore
                     pagesLength <- pagesLength - 1
                 else
-                    let temp = System.Collections.Generic.Stack<Page>()
-
-                    for i = pagesLength - 1 to index do
-                        temp.Push(pages.[i])
-                        navigationPage.PopAsync() |> ignore
-
-                    while temp.Count > 1 do
-                        navigationPage.PushAsync(temp.Pop(), false)
-                        |> ignore
-
+                    // Page is not visible, we just remove it
+                    navigationPage.Navigation.RemovePage(pages.[index])
                     pagesLength <- pagesLength - 1
 
-    let updateNavigationPagePages _ (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+    let updateNavigationPagePages
+        (oldValueOpt: ArraySlice<Widget> voption)
+        (newValueOpt: ArraySlice<Widget> voption)
+        (node: IViewNode)
+        =
         let navigationPage = node.Target :?> NavigationPage
-        navigationPage.PopToRootAsync(false) |> ignore
 
         match newValueOpt with
-        | ValueNone -> ()
+        | ValueNone -> failwith "NavigationPage requires its Pages modifier to be set"
+
         | ValueSome widgets ->
-            for widget in ArraySlice.toSpan widgets do
+            // Push all new pages but only animate the last one
+            let mutable i = 0
+            let span = ArraySlice.toSpan widgets
+
+            for widget in span do
+                let animateIfLastPage = i = span.Length - 1
                 let struct (_, page) = Helpers.createViewForWidget node widget
 
-                navigationPage.PushAsync(page :?> Page) |> ignore
+                navigationPage.PushAsync(page :?> Page, animateIfLastPage)
+                |> ignore
+
+                i <- i + 1
+
+            // Silently remove all old pages
+            match oldValueOpt with
+            | ValueNone -> ()
+            | ValueSome oldWidgets ->
+                let pages = Array.ofSeq navigationPage.Pages
+                let span = ArraySlice.toSpan oldWidgets
+
+                for i = 0 to span.Length - 1 do
+                    navigationPage.Navigation.RemovePage(pages.[i])
 
 module NavigationPage =
     let WidgetKey = Widgets.register<NavigationPage>()
