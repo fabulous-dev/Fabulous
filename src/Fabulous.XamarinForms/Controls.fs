@@ -97,3 +97,34 @@ type CustomPicker() =
     override this.OnPropertyChanging(propertyName) =
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             oldSelectedIndex <- this.SelectedIndex
+
+type CustomNavigationPage() as this =
+    inherit NavigationPage()
+
+    let backNavigated = Event<EventHandler, EventArgs>()
+
+    let mutable popCount = 0
+
+    do this.Popped.Add(this.OnPopped)
+
+    [<CLIEvent>]
+    member _.BackNavigated = backNavigated.Publish
+
+    member this.Push(page, ?animated) =
+        let animated =
+            match animated with
+            | Some v -> v
+            | None -> true
+
+        this.PushAsync(page, animated) |> ignore
+
+    member this.Pop() =
+        popCount <- popCount + 1
+        this.PopAsync() |> ignore
+
+    member this.OnPopped(_: NavigationEventArgs) =
+        // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
+        if popCount > 0 then
+            popCount <- popCount - 1
+        else
+            backNavigated.Trigger(this, EventArgs())

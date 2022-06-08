@@ -1,5 +1,7 @@
 namespace Fabulous.XamarinForms
 
+#nowarn "44"
+
 open System
 open System.IO
 open System.Runtime.CompilerServices
@@ -14,7 +16,7 @@ module NavigationPageUpdaters =
     /// NOTE: Would be better to have a custom diff logic for Navigation
     /// because it's a Stack and not a random access collection
     let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
-        let navigationPage = node.Target :?> NavigationPage
+        let navigationPage = node.Target :?> CustomNavigationPage
         let pages = Array.ofSeq navigationPage.Pages
 
         let mutable pagesLength =
@@ -28,8 +30,7 @@ module NavigationPageUpdaters =
                 let page = page :?> Page
 
                 if index >= pagesLength then
-                    navigationPage.Navigation.PushAsync(page)
-                    |> ignore
+                    navigationPage.Push(page)
                 else
                     navigationPage.Navigation.InsertPageBefore(page, pages.[index])
 
@@ -49,8 +50,8 @@ module NavigationPageUpdaters =
 
                 if index = pagesLength - 1 then
                     // Last page, we pop it and push the new one
-                    navigationPage.PopAsync() |> ignore
-                    navigationPage.PushAsync(page) |> ignore
+                    navigationPage.Pop()
+                    navigationPage.Push(page)
                 else
                     // Page is not visible, we just replace it
                     let nextPage = pages.[index + 1]
@@ -58,11 +59,14 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.InsertPageBefore(page, nextPage)
 
             | WidgetCollectionItemChange.Remove (index, _) ->
-                if index > pagesLength - 1 then
+                if pagesLength > pages.Length then
+                    // NavigationPage already popped the page before notifying Fabulous, we do nothing
+                    pagesLength <- pagesLength - 1
+                elif index > pagesLength - 1 then
                     () // Do nothing, page has already been popped
                 elif index = pagesLength - 1 then
                     // Last page, we pop it the right way to get an animation
-                    navigationPage.PopAsync() |> ignore
+                    navigationPage.Pop()
                     pagesLength <- pagesLength - 1
                 else
                     // Page is not visible, we just remove it
@@ -74,7 +78,7 @@ module NavigationPageUpdaters =
         (newValueOpt: ArraySlice<Widget> voption)
         (node: IViewNode)
         =
-        let navigationPage = node.Target :?> NavigationPage
+        let navigationPage = node.Target :?> CustomNavigationPage
 
         match newValueOpt with
         | ValueNone -> failwith "NavigationPage requires its Pages modifier to be set"
@@ -88,9 +92,7 @@ module NavigationPageUpdaters =
                 let animateIfLastPage = i = span.Length - 1
                 let struct (_, page) = Helpers.createViewForWidget node widget
 
-                navigationPage.PushAsync(page :?> Page, animateIfLastPage)
-                |> ignore
-
+                navigationPage.Push(page :?> Page, animateIfLastPage)
                 i <- i + 1
 
             // Silently remove all old pages
@@ -104,7 +106,7 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(pages.[i])
 
 module NavigationPage =
-    let WidgetKey = Widgets.register<NavigationPage>()
+    let WidgetKey = Widgets.register<CustomNavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
@@ -136,16 +138,24 @@ module NavigationPage =
     let TitleIconImageSource =
         Attributes.defineBindableAppTheme<ImageSource> NavigationPage.TitleIconImageSourceProperty
 
+    let BackNavigated =
+        Attributes.defineEventNoArg
+            "NavigationPage_BackNavigated"
+            (fun target -> (target :?> CustomNavigationPage).BackNavigated)
+
+    [<Obsolete("Use BackNavigated instead")>]
     let Popped =
         Attributes.defineEvent<NavigationEventArgs>
             "NavigationPage_Popped"
             (fun target -> (target :?> NavigationPage).Popped)
 
+    [<Obsolete("Will be removed in next major version")>]
     let Pushed =
         Attributes.defineEvent<NavigationEventArgs>
             "NavigationPage_Pushed"
             (fun target -> (target :?> NavigationPage).Pushed)
 
+    [<Obsolete("Use BackNavigated instead")>]
     let PoppedToRoot =
         Attributes.defineEvent<NavigationEventArgs>
             "NavigationPage_PoppedToRoot"
@@ -227,21 +237,27 @@ type NavigationPageModifiers =
     static member inline barTextColor(this: WidgetBuilder<'msg, #INavigationPage>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(AppTheme.create light dark))
 
+    /// <summary>Event that is fired when the user back navigated.</summary>
+    /// <param name="onPopped">Msg to dispatch when the user back navigated.</param>
+    [<Extension>]
+    static member inline onBackNavigated(this: WidgetBuilder<'msg, #INavigationPage>, onBackNavigated: 'msg) =
+        this.AddScalar(NavigationPage.BackNavigated.WithValue(onBackNavigated))
+
     /// <summary>Event that is fired when the page is popped.</summary>
     /// <param name="onPopped">Msg to dispatch when then page is popped.</param>
-    [<Extension>]
+    [<Extension; Obsolete("Use onBackNavigated instead")>]
     static member inline onPopped(this: WidgetBuilder<'msg, #INavigationPage>, onPopped: 'msg) =
         this.AddScalar(NavigationPage.Popped.WithValue(fun _ -> box onPopped))
 
     /// <summary>Event that is fired when the page is pushed.</summary>
     /// <param name="onPushed">Msg to dispatch when then page is pushed.</param>
-    [<Extension>]
+    [<Extension; Obsolete("Will be removed in next major version")>]
     static member inline onPushed(this: WidgetBuilder<'msg, #INavigationPage>, onPushed: 'msg) =
         this.AddScalar(NavigationPage.Pushed.WithValue(fun _ -> box onPushed))
 
     /// <summary>Event that is fired when the page is popped to root.</summary>
     /// <param name="onPoppedToRoot">Msg to dispatch when then page is popped to root.</param>
-    [<Extension>]
+    [<Extension; Obsolete("Use BackNavigated instead")>]
     static member inline onPoppedToRoot(this: WidgetBuilder<'msg, #INavigationPage>, onPoppedToRoot: 'msg) =
         this.AddScalar(NavigationPage.PoppedToRoot.WithValue(fun _ -> box onPoppedToRoot))
 
