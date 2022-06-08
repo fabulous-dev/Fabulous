@@ -46,6 +46,7 @@ module MapPage =
             with
             | _ -> return None
         }
+        |> Cmd.ofAsyncMsgOption
 
     let loadPinsAsync (contacts: Contact list) =
         async {
@@ -91,6 +92,8 @@ module MapPage =
                 do! displayAlert(Strings.MapPage_MapLoadFailed, exn.Message, Strings.Common_OK)
                 return None
         }
+        |> Async.executeOnMainThread
+        |> Cmd.ofAsyncMsgOption
 
     let paris = Position(48.8566, 2.3522)
 
@@ -106,13 +109,9 @@ module MapPage =
 
     let update msg model =
         match msg with
-        | LoadPins contacts ->
-            let msg = loadPinsAsync contacts
-            model, Cmd.ofAsyncMsgOption msg
+        | LoadPins contacts -> model, loadPinsAsync contacts
 
-        | RetrieveUserPosition ->
-            let msg = tryGetUserPositionAsync()
-            model, Cmd.ofAsyncMsgOption msg
+        | RetrieveUserPosition -> model, tryGetUserPositionAsync()
 
         | PinsLoaded pins -> { model with Pins = Some pins }, Cmd.none
 

@@ -40,13 +40,14 @@ module AboutPage =
                 Browser.OpenAsync(Uri url, BrowserLaunchMode.SystemPreferred)
                 |> Async.AwaitTask
         }
-        |> Helpers.executeOnMainThread
+        |> Async.executeOnMainThread
+        |> Cmd.performAsync
 
     let init () = ()
 
     let update msg model =
         match msg with
-        | OpenBrowser url -> model, Cmd.performAsync(openBrowserCmd url)
+        | OpenBrowser url -> model, openBrowserCmd url
 
     let aboutFabulousContacts (openBrowser: string -> Msg) =
         VStack() {
