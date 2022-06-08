@@ -18,19 +18,14 @@ module App =
         | UpdateWhenContactAdded of Contact
         | UpdateWhenContactUpdated of Contact
         | UpdateWhenContactDeleted of Contact
-        | NavigationPopped
+        | BackNavigated
 
     type Model =
         { DbPath: string
           MainPageModel: MainPage.Model
           DetailPageModel: DetailPage.Model option
           EditPageModel: EditPage.Model option
-          AboutPageModel: unit option
-          /// This field counts the number of pages we are popping at once
-          /// This is done to be able to differentiate NavigationPage.onPopped triggered by us
-          /// or by users pressing back button.
-          /// Xamarin.Forms doesn't tell us the difference
-          PoppingCount: int }
+          AboutPageModel: unit option }
 
     let init dbPath =
         let mainModel, mainMsg = MainPage.init dbPath ()
@@ -40,8 +35,7 @@ module App =
               MainPageModel = mainModel
               DetailPageModel = None
               EditPageModel = None
-              AboutPageModel = None
-              PoppingCount = 0 }
+              AboutPageModel = None }
 
         initialModel, (Cmd.map MainPageMsg mainMsg)
 
@@ -117,16 +111,7 @@ module App =
 
             { model with AboutPageModel = Some m }, Cmd.map AboutPageMsg cmd
 
-        | NavigationPopped ->
-            if model.PoppingCount = 0 then
-                // Update the navigation stack because the user pressed the back button
-                navigationMapper model, Cmd.none
-            else
-                // Do nothing since the page has already been popped by us
-                // We decrease the counter for the next popped events
-                { model with
-                      PoppingCount = model.PoppingCount - 1 },
-                Cmd.none
+        | BackNavigated -> navigationMapper model, Cmd.none
 
         | GoToAbout -> { model with AboutPageModel = Some() }, Cmd.none
 
@@ -142,10 +127,7 @@ module App =
             let mainMsg =
                 Cmd.ofMsg(MainPageMsg(MainPage.Msg.ContactAdded contact))
 
-            let m =
-                { model with
-                      EditPageModel = None
-                      PoppingCount = 1 }
+            let m = { model with EditPageModel = None }
 
             m, mainMsg
 
@@ -154,10 +136,7 @@ module App =
                 Cmd.batch [ Cmd.ofMsg(MainPageMsg(MainPage.Msg.ContactUpdated contact))
                             Cmd.ofMsg(DetailPageMsg(DetailPage.Msg.ContactUpdated contact)) ]
 
-            let m =
-                { model with
-                      EditPageModel = None
-                      PoppingCount = 1 }
+            let m = { model with EditPageModel = None }
 
             m, pendingCmds
 
@@ -168,8 +147,7 @@ module App =
             let m =
                 { model with
                       DetailPageModel = None
-                      EditPageModel = None
-                      PoppingCount = 2 }
+                      EditPageModel = None }
 
             m, mainMsg
 
@@ -192,7 +170,7 @@ module App =
              })
                 .barTextColor(Style.accentTextColor)
                 .barBackgroundColor(Style.accentColor)
-                .onPopped(NavigationPopped)
+                .onBackNavigated(BackNavigated)
         )
 
     let program = Program.statefulWithCmd init update view
