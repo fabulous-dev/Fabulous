@@ -6,14 +6,12 @@ on:
 
 permissions: write-all
 
-env:
-  VERSION: "2.0.1-nightly-${GITHUB_RUN_ID}"
-
 jobs:
   build:
     runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
+      VERSION: 2.0.2
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -28,9 +26,9 @@ jobs:
       run: dotnet test --no-build --configuration Release ${SLN_FILE}
     - name: Pack
       run: |
-        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}/g"
-        dotnet pack -p:Version=${VERSION} --configuration Release --output nupkgs ${SLN_FILE}
-        dotnet pack -p:Version=${VERSION} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
+        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
+        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
