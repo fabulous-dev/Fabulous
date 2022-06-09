@@ -33,4 +33,4 @@ jobs:
         dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
-        dotnet nuget push "nupkgs/*.nupkg" -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+        dotnet nuget push "nupkgs/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
