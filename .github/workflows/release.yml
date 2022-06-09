@@ -13,9 +13,9 @@ jobs:
     env:
       SLN_FILE: Fabulous-NoSamples.sln
     steps:
+    - uses: actions/checkout@v2
     - name: Extract version from tag
       uses: damienaicheh/extract-version-from-tag-action@v1.0.0
-    - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
