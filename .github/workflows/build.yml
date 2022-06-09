@@ -6,6 +6,9 @@ on:
 
 permissions: write-all
 
+env:
+  VERSION: "2.0.1-nightly-${GITHUB_RUN_ID}"
+
 jobs:
   build:
     runs-on: macos-latest
@@ -25,9 +28,9 @@ jobs:
       run: dotnet test --no-build --configuration Release ${SLN_FILE}
     - name: Pack
       run: |
-        sed -i bak "s/FABULOUS_PKG_VERSION/2.0.1-nightly-${GITHUB_RUN_ID}/g" templates/content/**/.template.config/template.json
-        dotnet pack --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" ${SLN_FILE}
-        dotnet pack -p:IsNightlyBuild=true --configuration Release --output nupkgs --version-suffix "nightly-${GITHUB_RUN_ID}" templates/Fabulous.XamarinForms.Templates.proj
+        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}/g"
+        dotnet pack -p:Version=${VERSION} --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack -p:Version=${VERSION} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
