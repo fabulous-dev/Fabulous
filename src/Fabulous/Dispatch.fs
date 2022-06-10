@@ -59,9 +59,7 @@ module Dispatcher =
             | ValueNone -> ()
             | ValueSome widgetCollAttrs ->
                 for widgetCollAttr in widgetCollAttrs do
-                    let struct (_, widgets) = widgetCollAttr.Value
-
-                    for childWidget in widgets do
+                    for childWidget in ArraySlice.toSpan widgetCollAttr.Value do
                         dispatchAndVisitChildren false dispatch childWidget
 
         let struct (canDispatch, mapMsg) = getCanDispatchAndMapMsg node
