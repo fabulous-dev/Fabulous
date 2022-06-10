@@ -21,14 +21,14 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build --no-restore --configuration Release ${SLN_FILE}
+      run: dotnet build -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-restore --configuration Release ${SLN_FILE}
     - name: Test
-      run: dotnet test --no-build --configuration Release ${SLN_FILE}
+      run: dotnet test -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-build --configuration Release ${SLN_FILE}
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
-        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
-        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
+        dotnet pack --no-build -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack --no-build -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
