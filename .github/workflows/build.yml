@@ -27,7 +27,7 @@ jobs:
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
-        dotnet pack --no-build -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
         dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |

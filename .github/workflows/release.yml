@@ -29,7 +29,7 @@ jobs:
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g"
-        dotnet pack --no-build -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs ${SLN_FILE}
+        dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs ${SLN_FILE}
         dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs templates/Fabulous.XamarinForms.Templates.proj
     - name: Push
       run: |
