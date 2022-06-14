@@ -19,11 +19,3 @@ toc: true
 ## Constructors
 
 This control can't be instantiated on its own. Its properties and events are inherited by its descendants.
-
-## Properties
-
-TBD
-
-## Events
-
-TBD
