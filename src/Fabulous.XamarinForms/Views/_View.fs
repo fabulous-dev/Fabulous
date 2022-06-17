@@ -61,7 +61,7 @@ module XFView =
                 | ValueSome data ->
                     view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing)
                     |> ignore)
-            
+
     let TranslateXTo =
         Attributes.defineSimpleScalarWithEquality<float>
             "View_TranslateXTo"
@@ -69,11 +69,9 @@ module XFView =
                 let view = node.Target :?> View
 
                 match newValueOpt with
-                | ValueNone ->
-                    view.TranslationX <- 0.
-                | ValueSome value ->
-                    view.TranslationX <- value)
-            
+                | ValueNone -> view.TranslationX <- 0.
+                | ValueSome value -> view.TranslationX <- value)
+
     let TranslateYTo =
         Attributes.defineSimpleScalarWithEquality<float>
             "View_TranslateYTo"
@@ -81,10 +79,8 @@ module XFView =
                 let view = node.Target :?> View
 
                 match newValueOpt with
-                | ValueNone ->
-                    view.TranslationY <- 0.
-                | ValueSome value ->
-                    view.TranslationY <- value)
+                | ValueNone -> view.TranslationY <- 0.
+                | ValueSome value -> view.TranslationY <- value)
 
     let ScaleTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
@@ -324,25 +320,17 @@ type ViewModifiers =
                   Easing = easing }
             )
         )
-    
+
     /// <summary>Animates an elements TranslationX property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="x">The x component of the final translation vector.</param>
     [<Extension>]
-    static member inline translateXTo
-        (
-            this: WidgetBuilder<'msg, #IView>,
-            x: float
-        ) =
+    static member inline translateXTo(this: WidgetBuilder<'msg, #IView>, x: float) =
         this.AddScalar(XFView.TranslateXTo.WithValue(x))
 
     /// <summary>Animates an elements TranslationY property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="y">The y component of the final translation vector.</param>
     [<Extension>]
-    static member inline translateYTo
-        (
-            this: WidgetBuilder<'msg, #IView>,
-            y: float
-        ) =
+    static member inline translateYTo(this: WidgetBuilder<'msg, #IView>, y: float) =
         this.AddScalar(XFView.TranslateYTo.WithValue(y))
 
     /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
