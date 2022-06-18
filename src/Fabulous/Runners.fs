@@ -2,6 +2,7 @@ namespace Fabulous
 
 open System
 open System.Collections.Generic
+open System.Runtime.ExceptionServices
 open Fabulous
 
 /// Configuration of the Fabulous application
@@ -61,6 +62,7 @@ module ViewAdapterStore =
 /// Runners are responsible for the Model-Update part of MVU.
 /// They read from and update StateStore.
 module Runners =
+
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
     type Runner<'arg, 'model, 'msg, 'marker>(key: StateKey, program: Program<'arg, 'model, 'msg, 'marker>) =
@@ -70,21 +72,24 @@ module Runners =
                 (fun inbox ->
                     let rec processMsg () =
                         async {
-                            try
-                                let! msg = inbox.Receive()
-                                let model = unbox(StateStore.get key)
-                                let newModel, cmd = program.Update(msg, model)
-                                StateStore.set key newModel
+                            let! msg = inbox.Receive()
+                            let model = unbox(StateStore.get key)
+                            let newModel, cmd = program.Update(msg, model)
+                            StateStore.set key newModel
 
-                                for sub in cmd do
-                                    sub inbox.Post
+                            for sub in cmd do
+                                sub inbox.Post
 
-                                return! processMsg()
-                            with
-                            | ex -> program.Logger.Fatal(ex)
+                            return! processMsg()
                         }
 
                     processMsg())
+
+        do
+            mailbox.Error.Add
+                (fun ex ->
+                    program.Logger.LogException(ex)
+                    (ExceptionDispatchInfo.Capture ex).Throw())
 
         let start arg =
             try
@@ -99,7 +104,9 @@ module Runners =
                 for sub in cmd do
                     sub mailbox.Post
             with
-            | ex -> program.Logger.Fatal(ex)
+            | ex ->
+                program.Logger.LogException(ex)
+                reraise()
 
         interface IRunner
 
@@ -186,9 +193,13 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex -> logger.Fatal(ex))
+                            | ex ->
+                                logger.LogException(ex)
+                                reraise())
             with
-            | ex -> logger.Fatal(ex)
+            | ex ->
+                logger.LogException(ex)
+                reraise()
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()
