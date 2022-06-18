@@ -7,6 +7,31 @@ open Xamarin.Forms
 type IVisualElement =
     inherit INavigableElement
 
+[<Struct>]
+type TranslateToData =
+    { X: float
+      Y: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
+[<Struct>]
+type ScaleToData =
+    { Scale: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
+[<Struct>]
+type FadeToData =
+    { Opacity: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
+[<Struct>]
+type RotateToData =
+    { Rotation: float
+      AnimationDuration: uint32
+      Easing: Easing }
+
 module VisualElement =
     let AnchorX =
         Attributes.defineBindableFloat VisualElement.AnchorXProperty
@@ -53,32 +78,8 @@ module VisualElement =
     let Opacity =
         Attributes.defineBindableFloat VisualElement.OpacityProperty
 
-    let Rotation =
-        Attributes.defineBindableFloat VisualElement.RotationProperty
-
-    let RotationX =
-        Attributes.defineBindableFloat VisualElement.RotationXProperty
-
-    let RotationY =
-        Attributes.defineBindableFloat VisualElement.RotationYProperty
-
-    let Scale =
-        Attributes.defineBindableFloat VisualElement.ScaleProperty
-
-    let ScaleX =
-        Attributes.defineBindableFloat VisualElement.ScaleXProperty
-
-    let ScaleY =
-        Attributes.defineBindableFloat VisualElement.ScaleYProperty
-
     let TabIndex =
         Attributes.defineBindableInt VisualElement.TabIndexProperty
-
-    let TranslationX =
-        Attributes.defineBindableFloat VisualElement.TranslationXProperty
-
-    let TranslationY =
-        Attributes.defineBindableFloat VisualElement.TranslationYProperty
 
     let Visual =
         Attributes.defineBindableWithEquality<IVisual> VisualElement.VisualProperty
@@ -92,6 +93,114 @@ module VisualElement =
         Attributes.defineEvent<FocusEventArgs>
             "VisualElement_Unfocused"
             (fun target -> (target :?> VisualElement).Unfocused)
+
+    let TranslateTo =
+        Attributes.defineSimpleScalarWithEquality<TranslateToData>
+            "View_TranslateTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.TranslateTo(0., 0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let TranslateXTo =
+        Attributes.defineBindableFloat VisualElement.TranslationXProperty
+
+    let TranslateYTo =
+        Attributes.defineBindableFloat VisualElement.TranslationYProperty
+
+    let ScaleTo =
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
+            "View_ScaleTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let ScaleXTo =
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
+            "View_ScaleXTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleXTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleXTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let ScaleYTo =
+        Attributes.defineSimpleScalarWithEquality<ScaleToData>
+            "View_ScaleYTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.ScaleYTo(1., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.ScaleYTo(data.Scale, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let FadeTo =
+        Attributes.defineSimpleScalarWithEquality<FadeToData>
+            "View_FadeTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.FadeTo(0., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.FadeTo(data.Opacity, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateTo =
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
+            "View_RotateTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone -> view.RotateTo(0., uint 0, Easing.Linear) |> ignore
+                | ValueSome data ->
+                    view.RotateTo(data.Rotation, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateXTo =
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
+            "View_RotateXTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.RotateXTo(0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.RotateXTo(data.Rotation, data.AnimationDuration, data.Easing)
+                    |> ignore)
+
+    let RotateYTo =
+        Attributes.defineSimpleScalarWithEquality<RotateToData>
+            "View_RotateYTo"
+            (fun _ newValueOpt node ->
+                let view = node.Target :?> View
+
+                match newValueOpt with
+                | ValueNone ->
+                    view.RotateYTo(0., uint 0, Easing.Linear)
+                    |> ignore
+                | ValueSome data ->
+                    view.RotateYTo(data.Rotation, data.AnimationDuration, data.Easing)
+                    |> ignore)
 
 [<Extension>]
 type VisualElementModifiers =
@@ -172,40 +281,8 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Opacity.WithValue(value))
 
     [<Extension>]
-    static member inline rotation(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.Rotation.WithValue(value))
-
-    [<Extension>]
-    static member inline rotationX(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.RotationX.WithValue(value))
-
-    [<Extension>]
-    static member inline rotationY(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.RotationY.WithValue(value))
-
-    [<Extension>]
-    static member inline scale(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.Scale.WithValue(value))
-
-    [<Extension>]
-    static member inline scaleX(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.ScaleX.WithValue(value))
-
-    [<Extension>]
-    static member inline scaleY(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.ScaleY.WithValue(value))
-
-    [<Extension>]
     static member inline tabIndex(this: WidgetBuilder<'msg, #IVisualElement>, value: int) =
         this.AddScalar(VisualElement.TabIndex.WithValue(value))
-
-    [<Extension>]
-    static member inline translationX(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.TranslationX.WithValue(value))
-
-    [<Extension>]
-    static member inline translationY(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
-        this.AddScalar(VisualElement.TranslationY.WithValue(value))
 
     [<Extension>]
     static member inline visual(this: WidgetBuilder<'msg, #IVisualElement>, value: IVisual) =
@@ -218,3 +295,178 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline onUnfocused(this: WidgetBuilder<'msg, #IVisualElement>, onUnfocused: bool -> 'msg) =
         this.AddScalar(VisualElement.Unfocused.WithValue(fun args -> onUnfocused args.IsFocused |> box))
+
+    /// <summary>Animates an elements TranslationX and TranslationY properties from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="x">The x component of the final translation vector.</param>
+    /// <param name="y">The y component of the final translation vector.</param>
+    /// <param name="duration">The duration of the animation in milliseconds.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline translateTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            x: float,
+            y: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.TranslateTo.WithValue(
+                { X = x
+                  Y = y
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements TranslationX property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="x">The x component of the final translation vector.</param>
+    [<Extension>]
+    static member inline translateXTo(this: WidgetBuilder<'msg, #IVisualElement>, x: float) =
+        this.AddScalar(VisualElement.TranslateXTo.WithValue(x))
+
+    /// <summary>Animates an elements TranslationY property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="y">The y component of the final translation vector.</param>
+    [<Extension>]
+    static member inline translateYTo(this: WidgetBuilder<'msg, #IVisualElement>, y: float) =
+        this.AddScalar(VisualElement.TranslateYTo.WithValue(y))
+
+    /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            scale: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.ScaleTo.WithValue(
+                { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements ScaleX property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleXTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            scale: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.ScaleXTo.WithValue(
+                { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements ScaleY property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="scale">The value of the final scale vector.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline scaleYTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            scale: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.ScaleYTo.WithValue(
+                { Scale = scale
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates elements Opacity property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="opacity">The value of the final opacity value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline fadeTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            opacity: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.FadeTo.WithValue(
+                { Opacity = opacity
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements Rotation property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotation value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            rotation: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.RotateTo.WithValue(
+                { Rotation = rotation
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements RotationX property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotationX value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateXTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            rotation: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.RotateXTo.WithValue(
+                { Rotation = rotation
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )
+
+    /// <summary>Animates an elements RotationY property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="rotation">The value of the final rotationY value.</param>
+    /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
+    /// <param name="easing">The easing of the animation.</param>
+    [<Extension>]
+    static member inline rotateYTo
+        (
+            this: WidgetBuilder<'msg, #IVisualElement>,
+            rotation: float,
+            duration: int,
+            easing: Easing
+        ) =
+        this.AddScalar(
+            VisualElement.RotateYTo.WithValue(
+                { Rotation = rotation
+                  AnimationDuration = uint duration
+                  Easing = easing }
+            )
+        )

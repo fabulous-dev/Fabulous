@@ -39,13 +39,3 @@ This control can't be instantiated on its own. Its properties and events are inh
 | margin(value: float) | Sets the margin of the element. |
 | margin(left: float, top: float, right: float, bottom: float) | Sets the left, top, right and bottom margin of the element. |
 | gestureRecognizers() | Sets the gesture recognizers of the element. |
-| translateTo(x: float, y: float, duration: int, easing: Easing) | Animates an elements TranslationX and TranslationY properties from their current values to the new values. |
-| translateXTo(x: float) | Animates element TranslationX property from its current value to the new value. |
-| translateYTo(y: float) | Animates element TranslationY property from its current value to the new value. |
-| scaleTo(scale: float, duration: int, easing: Easing) | Animates elements Scale property from their current values to the new values. |
-| scaleXTo(scale: float) | Animates element ScaleX property from its current value to the new value. |
-| scaleYTo(scale: float) | Animates element ScaleY property from its current value to the new value. |
-| fadeTo(opacity: float, duration: int, easing: Easing) | Animates elements Opacity property from their current values to the new values. |
-| rotateTo(rotation: float, duration: int, easing: Easing) | Animates an elements Rotation property from their current values to the new values. |
-| rotateXTo(rotation: float) | Animates element RotationX property from its current value to the new value. |
-| rotateYTo(rotation: float) | Animates element RotationY property from its current value to the new value. |
