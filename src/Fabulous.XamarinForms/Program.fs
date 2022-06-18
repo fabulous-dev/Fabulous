@@ -89,7 +89,10 @@ module ViewHelpers =
 
             Trace.WriteLine(message, traceLevel)
 
+        let logException (ex: exn) = Trace.WriteLine(ex.ToString(), "Error")
+
         { Log = log
+          LogException = logException
           MinLogLevel = LogLevel.Error }
 
 module Program =

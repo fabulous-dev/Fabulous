@@ -14,6 +14,7 @@ type LogLevel =
 [<Struct>]
 type Logger =
     { Log: LogLevel * string -> unit
+      LogException: Exception -> unit
       MinLogLevel: LogLevel }
 
 [<Extension>]
@@ -38,6 +39,6 @@ type LoggerExtensions =
     static member inline Error(this: Logger, format: string, [<ParamArray>] args: obj []) =
         LoggerExtensions.Log(this, LogLevel.Error, format, args)
 
-    [<Extension>]
+    [<Extension; Obsolete("Use Logger.LogException(exn) instead")>]
     static member inline Fatal(this: Logger, ex: exn) =
         LoggerExtensions.Log(this, LogLevel.Fatal, "{0}", ex.ToString())
