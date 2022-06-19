@@ -20,7 +20,10 @@ type Program<'arg, 'model, 'msg, 'marker> =
       /// Runs the View function on the main thread
       SyncAction: (unit -> unit) -> unit
       /// Configuration for logging all output messages from Fabulous
-      Logger: Logger }
+      Logger: Logger
+      /// Exception handler for all uncaught exceptions happening in the MVU loop.
+      /// Returns true if the exception was handled, false otherwise.
+      OnException: exn -> bool }
 
 type IRunner =
     interface
@@ -88,8 +91,8 @@ module Runners =
         do
             mailbox.Error.Add
                 (fun ex ->
-                    program.Logger.LogException(ex)
-                    (ExceptionDispatchInfo.Capture ex).Throw())
+                    if not(program.OnException(ex)) then
+                        (ExceptionDispatchInfo.Capture ex).Throw())
 
         let start arg =
             try
@@ -105,8 +108,8 @@ module Runners =
                     sub mailbox.Post
             with
             | ex ->
-                program.Logger.LogException(ex)
-                reraise()
+                if not(program.OnException(ex)) then
+                    reraise()
 
         interface IRunner
 
@@ -141,6 +144,7 @@ module ViewAdapters =
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
             logger: Logger,
+            onException: exn -> bool,
             dispatch: 'msg -> unit,
             getViewNode: obj -> IViewNode
         ) as this =
@@ -193,13 +197,9 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex ->
-                                logger.LogException(ex)
-                                reraise())
+                            | ex -> if not(onException ex) then reraise())
             with
-            | ex ->
-                logger.LogException(ex)
-                reraise()
+            | ex -> if not(onException ex) then reraise()
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()
@@ -223,6 +223,7 @@ module ViewAdapters =
                 runner.Program.CanReuseView,
                 runner.Program.SyncAction,
                 runner.Program.Logger,
+                runner.Program.OnException,
                 runner.Dispatch,
                 getViewNode
             )
