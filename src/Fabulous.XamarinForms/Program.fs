@@ -89,11 +89,10 @@ module ViewHelpers =
 
             Trace.WriteLine(message, traceLevel)
 
-        let logException (ex: exn) = Trace.WriteLine(ex.ToString(), "Error")
-
         { Log = log
-          LogException = logException
           MinLogLevel = LogLevel.Error }
+
+    let defaultOnException _exn = false
 
 module Program =
     let inline private define
@@ -107,7 +106,8 @@ module Program =
           View = view
           CanReuseView = ViewHelpers.canReuseView
           SyncAction = Device.BeginInvokeOnMainThread
-          Logger = ViewHelpers.defaultLogger() }
+          Logger = ViewHelpers.defaultLogger()
+          OnException = ViewHelpers.defaultOnException }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
