@@ -34,12 +34,18 @@ module CarouselView =
             "CarouselView_IndicatorView"
             (fun _ newValueOpt node ->
                 let handler =
-                    match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name) with
+                    match node.TryGetHandler<Handler<IndicatorView>>(ViewRefAttributes.ViewRef.Name) with
                     | ValueSome handler -> handler
                     | ValueNone ->
                         let newHandler =
-                            EventHandler<IndicatorView>
-                                (fun _ indicatorView -> (node.Target :?> CarouselView).IndicatorView <- indicatorView)
+                            Handler<IndicatorView>
+                                (fun viewRef indicatorView ->
+                                    let carouselView = node.Target :?> CarouselView
+                                    if carouselView <> null then
+                                        carouselView.IndicatorView <- indicatorView
+                                    else
+                                        // The target has been destroyed, clean up the handler
+                                        (viewRef :?> ViewRef<IndicatorView>).ClearListeners())
 
                         newHandler
 
