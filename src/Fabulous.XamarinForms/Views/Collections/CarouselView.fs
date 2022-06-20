@@ -41,11 +41,13 @@ module CarouselView =
                             Handler<IndicatorView>
                                 (fun viewRef indicatorView ->
                                     let carouselView = node.Target :?> CarouselView
+
                                     if carouselView <> null then
                                         carouselView.IndicatorView <- indicatorView
                                     else
                                         // The target has been destroyed, clean up the handler
-                                        (viewRef :?> ViewRef<IndicatorView>).ClearListeners())
+                                        (viewRef :?> ViewRef<IndicatorView>)
+                                            .ClearListeners())
 
                         newHandler
 

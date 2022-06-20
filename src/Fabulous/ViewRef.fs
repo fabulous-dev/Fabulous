@@ -2,23 +2,26 @@ namespace Fabulous
 
 open System
 
-type RemovableEvent<'T> () = 
+type RemovableEvent<'T>() =
     let handlers = ResizeArray<Handler<'T>>()
-    
+
     member x.Trigger(sender, v) =
         let handlers = handlers.ToArray() // copy to avoid concurrent modification
-        for h in handlers do h.Invoke(sender, v)
-        
-    member x.Clear() =
-        handlers.Clear()
-        
-    member x.Publish = 
+
+        for h in handlers do
+            h.Invoke(sender, v)
+
+    member x.Clear() = handlers.Clear()
+
+    member x.Publish =
         { new IEvent<'T> with
             member x.AddHandler(h) = handlers.Add(h)
             member x.RemoveHandler(h) = handlers.Remove(h) |> ignore
+
             member x.Subscribe(h) =
                 let h = Handler<_>(fun _ -> h.OnNext)
                 handlers.Add(h)
+
                 { new IDisposable with
                     member x.Dispose() = handlers.Remove(h) |> ignore } }
 
@@ -39,7 +42,7 @@ type ViewRef<'T when 'T: not struct>() as this =
     /// Event triggered when the view is detached
     [<CLIEvent>]
     member _.Detached = detached.Publish
-    
+
     /// Remove all handlers
     member _.ClearListeners() =
         attached.Clear()

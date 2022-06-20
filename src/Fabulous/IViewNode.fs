@@ -20,7 +20,7 @@ type ViewRef(onAttached, onDetached) =
     member x.Unset() : unit =
         if not(x.IsSameTarget(null)) then
             handle.SetTarget(null)
-            onDetached ()
+            onDetached()
 
     member _.TryValue =
         match handle.TryGetTarget() with
