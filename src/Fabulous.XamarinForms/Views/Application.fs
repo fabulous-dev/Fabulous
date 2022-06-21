@@ -86,23 +86,45 @@ type ApplicationModifiers =
         this.AddScalar(Application.Resources.WithValue(value))
 
     [<Extension>]
-    static member inline onRequestedThemeChanged(this: WidgetBuilder<'msg, #IApplication>, onRequestedThemeChanged: OSAppTheme -> 'msg) =
-        this.AddScalar(Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box))
+    static member inline onRequestedThemeChanged
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onRequestedThemeChanged: OSAppTheme -> 'msg
+        ) =
+        this.AddScalar(
+            Application.RequestedThemeChanged.WithValue(fun args -> onRequestedThemeChanged args.RequestedTheme |> box)
+        )
 
     [<Extension>]
-    static member inline onModalPopped(this: WidgetBuilder<'msg, #IApplication>, onModalPopped: ModalPoppedEventArgs -> 'msg) =
+    static member inline onModalPopped
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onModalPopped: ModalPoppedEventArgs -> 'msg
+        ) =
         this.AddScalar(Application.ModalPopped.WithValue(onModalPopped >> box))
 
     [<Extension>]
-    static member inline onModalPopping(this: WidgetBuilder<'msg, #IApplication>, onModalPopping: ModalPoppingEventArgs -> 'msg) =
+    static member inline onModalPopping
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onModalPopping: ModalPoppingEventArgs -> 'msg
+        ) =
         this.AddScalar(Application.ModalPopping.WithValue(onModalPopping >> box))
 
     [<Extension>]
-    static member inline onModalPushed(this: WidgetBuilder<'msg, #IApplication>, onModalPushed: ModalPushedEventArgs -> 'msg) =
+    static member inline onModalPushed
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onModalPushed: ModalPushedEventArgs -> 'msg
+        ) =
         this.AddScalar(Application.ModalPushed.WithValue(onModalPushed >> box))
 
     [<Extension>]
-    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, onModalPushing: ModalPushingEventArgs -> 'msg) =
+    static member inline onModalPushing
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onModalPushing: ModalPushingEventArgs -> 'msg
+        ) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
     /// <summary>Link a ViewRef to access the direct Application instance</summary>
