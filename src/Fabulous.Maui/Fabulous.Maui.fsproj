@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <Compile Include="ViewNode.fs" />
+        <Compile Include="Widgets.fs" />
         <Compile Include="Views\Element.fs" />
         <Compile Include="Views\Application.fs" />
         <Compile Include="Program.fs" />

@@ -1,8 +1,27 @@
 ﻿namespace Fabulous.Maui
 
+open System.Diagnostics
 open Fabulous
+open Fabulous.Maui
 
-type IMauiApplication = Microsoft.Maui.IApplication
+module ViewHelpers =
+    let canReuseView (prev: Widget) (curr: Widget) =
+        ViewHelpers.canReuseView prev curr
+    
+    let defaultLogger () =
+        let log (level, message) =
+            let traceLevel =
+                match level with
+                | LogLevel.Debug -> "Debug"
+                | LogLevel.Info -> "Information"
+                | LogLevel.Warn -> "Warning"
+                | LogLevel.Error -> "Error"
+                | _ -> "Error"
+
+            Trace.WriteLine(message, traceLevel)
+
+        { Log = log
+          MinLogLevel = LogLevel.Error }
 
 module Program =
     let inline private define
@@ -12,31 +31,33 @@ module Program =
         =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
-          View = fun model -> (view model).Compile()
+          Subscribe = fun _ -> Cmd.none
+          View = view
           CanReuseView = ViewHelpers.canReuseView
-          SyncAction = fun fn -> fn () }
+          SyncAction = fun fn -> fn ()
+          Logger = ViewHelpers.defaultLogger() }
 
-    let statelessApplication (view: unit -> WidgetBuilder<unit, #IApplication>) =
+    let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
         define(fun () -> (), Cmd.none) (fun () () -> (), Cmd.none) view
 
-    let statefulApplication
+    let stateful
         (init: 'arg -> 'model)
         (update: 'msg -> 'model -> 'model)
-        (view: 'model -> WidgetBuilder<'msg, #IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         =
         define(fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
-    let statefulApplicationWithCmd
+    let statefulWithCmd
         (init: 'arg -> 'model * Cmd<'msg>)
         (update: 'msg -> 'model -> 'model * Cmd<'msg>)
-        (view: 'model -> WidgetBuilder<'msg, #IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         =
         define init update view
 
-    let statefulApplicationWithCmdMsg
+    let statefulWithCmdMsg
         (init: 'arg -> 'model * 'cmdMsg list)
         (update: 'msg -> 'model -> 'model * 'cmdMsg list)
-        (view: 'model -> WidgetBuilder<'msg, #IApplication>)
+        (view: 'model -> WidgetBuilder<'msg, 'marker>)
         (mapCmd: 'cmdMsg -> Cmd<'msg>)
         =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
@@ -46,8 +67,11 @@ module Program =
             (fun msg model -> let m, c = update msg model in m, mapCmds c)
             view
 
-    let createApplication (program: Program<'arg, 'model, 'msg>) (arg: 'arg) : Microsoft.Maui.IApplication =
+    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IApplication>) : Microsoft.Maui.IApplication =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
+
+    let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : Microsoft.Maui.IApplication =
+        startApplicationWithArgs () program

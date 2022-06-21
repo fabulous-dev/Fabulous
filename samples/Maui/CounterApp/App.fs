@@ -1,7 +1,8 @@
 namespace CounterApp
 
-open Fabulous
 open Fabulous.Maui
+
+open type Fabulous.Maui.View
 
 module App =
     type Model = { Text: string }
@@ -16,7 +17,7 @@ module App =
         | Nope -> model
 
     let view model =
-        Unchecked.defaultof<WidgetBuilder<Msg, IApplication>>
+        Application()
 
     let program =
-        Program.statefulApplication init update view
+        Program.stateful init update view

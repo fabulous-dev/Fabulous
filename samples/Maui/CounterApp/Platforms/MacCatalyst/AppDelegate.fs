@@ -1,4 +1,4 @@
-namespace CounterApp
+﻿namespace CounterApp
 
 open Foundation
 open Microsoft.Maui
@@ -6,4 +6,5 @@ open Microsoft.Maui
 [<Register("AppDelegate")>]
 type AppDelegate() =
     inherit MauiUIApplicationDelegate()
-        override this.CreateMauiApp() = MauiProgram.CreateMauiApp()
+    
+    override this.CreateMauiApp() = MauiProgram.CreateMauiApp()

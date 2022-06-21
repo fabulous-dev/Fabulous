@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9556534-40E8-4C49-ADDB-AF94A3C4F95B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{332DE82F-232E-4963-9BF4-A4E9CD6A94BC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous", "src\Fabulous\Fabulous.fsproj", "{08972FA6-0971-4B04-9A3F-B3C40E23F1D0}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Benchmarks", "src\Fabulous.Benchmarks\Fabulous.Benchmarks.fsproj", "{0CEFA033-9031-4754-B13A-14AD985CAE4D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Tests", "src\Fabulous.Tests\Fabulous.Tests.fsproj", "{4EEF2FA7-0497-46AB-B102-B5BE21230ADE}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Maui", "src\Fabulous.Maui\Fabulous.Maui.fsproj", "{89A531C9-B20B-4E54-BCCA-60221601E4F9}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp", "samples\Maui\CounterApp\CounterApp.fsproj", "{CD9CD81C-99CA-441F-9EDC-37974BF04CFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{08972FA6-0971-4B04-9A3F-B3C40E23F1D0} = {A9556534-40E8-4C49-ADDB-AF94A3C4F95B}
+		{0CEFA033-9031-4754-B13A-14AD985CAE4D} = {A9556534-40E8-4C49-ADDB-AF94A3C4F95B}
+		{4EEF2FA7-0497-46AB-B102-B5BE21230ADE} = {A9556534-40E8-4C49-ADDB-AF94A3C4F95B}
+		{89A531C9-B20B-4E54-BCCA-60221601E4F9} = {A9556534-40E8-4C49-ADDB-AF94A3C4F95B}
+		{CD9CD81C-99CA-441F-9EDC-37974BF04CFA} = {332DE82F-232E-4963-9BF4-A4E9CD6A94BC}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08972FA6-0971-4B04-9A3F-B3C40E23F1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08972FA6-0971-4B04-9A3F-B3C40E23F1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08972FA6-0971-4B04-9A3F-B3C40E23F1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08972FA6-0971-4B04-9A3F-B3C40E23F1D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEFA033-9031-4754-B13A-14AD985CAE4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEFA033-9031-4754-B13A-14AD985CAE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEFA033-9031-4754-B13A-14AD985CAE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEFA033-9031-4754-B13A-14AD985CAE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EEF2FA7-0497-46AB-B102-B5BE21230ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EEF2FA7-0497-46AB-B102-B5BE21230ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EEF2FA7-0497-46AB-B102-B5BE21230ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EEF2FA7-0497-46AB-B102-B5BE21230ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89A531C9-B20B-4E54-BCCA-60221601E4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A531C9-B20B-4E54-BCCA-60221601E4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A531C9-B20B-4E54-BCCA-60221601E4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A531C9-B20B-4E54-BCCA-60221601E4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9CD81C-99CA-441F-9EDC-37974BF04CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9CD81C-99CA-441F-9EDC-37974BF04CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9CD81C-99CA-441F-9EDC-37974BF04CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9CD81C-99CA-441F-9EDC-37974BF04CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

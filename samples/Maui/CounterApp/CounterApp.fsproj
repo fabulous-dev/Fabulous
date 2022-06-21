@@ -1,94 +1,105 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
-        <OutputType>Exe</OutputType>
-        <RootNamespace>CounterApp</RootNamespace>
-        <UseMaui>true</UseMaui>
-        <SingleProject>true</SingleProject>
-        <EnableDefaultItems>false</EnableDefaultItems>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>CounterApp</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<EnableDefaultItems>false</EnableDefaultItems>
+		<DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
 
-        <!-- Display name -->
-        <ApplicationTitle>CounterApp</ApplicationTitle>
-        
-        <!-- App Identifier -->
-        <ApplicationId>org.fabulous.maui.counterapp</ApplicationId>
-        <ApplicationId Condition="$(TargetFramework.Contains('-windows'))">c25cd678-04b0-442e-8052-1be051052c78</ApplicationId>
-        
-        <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>1</ApplicationVersion>
+		<!-- Display name -->
+		<ApplicationTitle>CounterApp</ApplicationTitle>
 
-        <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
-        <TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>        
-    </PropertyGroup>
+		<!-- App Identifier -->
+		<ApplicationId>org.fabulous.maui.counterapp</ApplicationId>
+		<ApplicationIdGuid>9ba62055-caf0-4bc6-aba6-2958ce60e04f</ApplicationIdGuid>
 
-    <ItemGroup>
-        <Compile Include="App.fs" />
-        <Compile Include="MauiProgram.fs" />
-    </ItemGroup>
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
 
-    <ItemGroup>
-        <!-- App Icon -->
-        <MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" Color="#512BD4" />
+		<TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
 
-        <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
 
-        <!-- Images -->
-        <MauiImage Include="Resources\Images\*" />
-        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+	<ItemGroup>
+		<Compile Include="App.fs" />
+		<Compile Include="MauiProgram.fs" />
+	</ItemGroup>
 
-        <!-- Custom Fonts -->
-        <MauiFont Include="Resources\Fonts\*" />
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
-        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-    </ItemGroup>
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-ios'">
-        <ImageAsset Include="$(iOSProjectFolder)**/*.xcassets/**/*.png;$(iOSProjectFolder)**/*.xcassets/*/*.jpg;$(iOSProjectFolder)**/*.xcassets/**/*.pdf;$(iOSProjectFolder)**/*.xcassets/**/*.json" Exclude="$(_SingleProjectiOSExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" Visible="false" IsDefaultItem="true" />
-        <SceneKitAsset Include="$(iOSProjectFolder)**/*.scnassets/*" Exclude="$(_SingleProjectiOSExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" IsDefaultItem="true" />
-        <InterfaceDefinition Include="$(iOSProjectFolder)**/*.storyboard;$(iOSProjectFolder)**/*.xib" Exclude="$(_SingleProjectiOSExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" Visible="false" IsDefaultItem="true" />
-        <BundleResource Include="Platforms\iOS\Resources\**" />
-        <None Include="Platforms\iOS\Info.plist" />
-        <Compile Include="Platforms\iOS\AppDelegate.fs" />
-        <Compile Include="Platforms\iOS\Main.fs" />
-    </ItemGroup>
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">
-        <ImageAsset Include="$(MacCatalystProjectFolder)**/*.xcassets/**/*.png;$(MacCatalystProjectFolder)**/*.xcassets/*/*.jpg;$(MacCatalystProjectFolder)**/*.xcassets/**/*.pdf;$(MacCatalystProjectFolder)**/*.xcassets/**/*.json" Exclude="$(_SingleProjectMacCatalystExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" Visible="false" IsDefaultItem="true" />
-        <SceneKitAsset Include="$(MacCatalystProjectFolder)**/*.scnassets/*" Exclude="$(_SingleProjectMacCatalystExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" IsDefaultItem="true" />
-        <InterfaceDefinition Include="$(MacCatalystProjectFolder)**/*.storyboard;$(MacCatalystProjectFolder)**/*.xib" Exclude="$(_SingleProjectMacCatalystExcludes)" Link="%(RecursiveDir)%(FileName)%(Extension)" Visible="false" IsDefaultItem="true" />
-        <BundleResource Include="Platforms\MacCatalyst\Resources\**" />
-        <None Include="Platforms\MacCatalyst\Info.plist" />
-        <Compile Include="Platforms\MacCatalyst\AppDelegate.fs" />
-        <Compile Include="Platforms\MacCatalyst\Main.fs" />
-    </ItemGroup>
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
-        <AndroidResource Include="Platforms/Android/Resources/*/*.xml" />
-        <AndroidResource Include="Platforms/Android/Resources/*/*.axml" />
-        <AndroidResource Include="Platforms/Android/Resources/*/*.png" />
-        <AndroidResource Include="Platforms/Android/Resources/*/*.jpg" />
-        <AndroidResource Include="Platforms/Android/Resources/*/*.gif" />
-        <AndroidResource Include="Platforms/Android/Resources/font/*.ttf" />
-        <AndroidResource Include="Platforms/Android/Resources/font/*.otf" />
-        <AndroidResource Include="Platforms/Android/Resources/font/*.ttc" />
-        <AndroidResource Include="Platforms/Android/Resources/raw/*" Exclude="Platforms/Android/Resources/raw/.*" />
-        <AndroidManifest Include="Platforms/Android/AndroidManifest.xml" />
-        <Compile Include="Platforms/Android/MainActivity.fs" />
-        <Compile Include="Platforms/Android/MainApplication.fs" />
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+	</ItemGroup>
 
-        <PackageReference Include="FSharp.Android.Resource" Version="1.0.0" />
-    </ItemGroup>
+	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'android'">
+		<AndroidResource Include="$(MonoAndroidResourcePrefix)/*/*" />
+		<AndroidResource Remove="$(MonoAndroidResourcePrefix)/raw/.*" />
+		<AndroidResource Update="$(MonoAndroidResourcePrefix)/raw/*" />
+		<AndroidAsset Include="$(MonoAndroidAssetsPrefix)/**/*" Exclude="$(MonoAndroidAssetsPrefix)/**/.*/**" />
+		<AndroidManifest Include="$(AndroidProjectFolder)AndroidManifest.xml" />
+		<Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
+		<Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
-      <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
-    </ItemGroup>
+		<PackageReference Include="FSharp.Android.Resource" Version="1.0.4" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'ios'">
+		<None Include="$(iOSProjectFolder)Info.plist" />
+		<Compile Include="$(iOSProjectFolder)AppDelegate.fs" />
+		<Compile Include="$(iOSProjectFolder)Program.fs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">
+		<None Include="$(MacCatalystProjectFolder)Info.plist" />
+		<Compile Include="$(MacCatalystProjectFolder)AppDelegate.fs" />
+		<Compile Include="$(MacCatalystProjectFolder)Program.fs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'windows'">
+		<Manifest Include="$(WindowsProjectFolder)app.manifest" />
+		<AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
+		<ApplicationDefinition Include="$(WindowsProjectFolder)App.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</ApplicationDefinition>
+		<Compile Include="$(WindowsProjectFolder)App.xaml.fs">
+			<DependentUpon>$(WindowsProjectFolder)App.xaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'tizen'">
+		<TizenManifestFile Include="$(TizenProjectFolder)tizen-manifest.xml" />
+		<Compile Include="$(TizenProjectFolder)Main.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
+		<PackageReference Include="FSharp.Core" Version="6.0.5" />
+	</ItemGroup>
+
 </Project>
