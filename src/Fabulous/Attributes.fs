@@ -234,8 +234,8 @@ module Attributes =
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
                 | WidgetCollectionItemChange.Update (index, widgetDiff) ->
-                    let childNode =
-                        node.TreeContext.GetViewNode(box targetColl.[index])
+                    let childNode = getViewNode (box targetColl.[index])
+//                        node.TreeContext.GetViewNode(box targetColl.[index])
 
                     childNode.ApplyDiff(&widgetDiff)
 
