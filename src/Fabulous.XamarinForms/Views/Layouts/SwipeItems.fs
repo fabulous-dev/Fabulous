@@ -29,7 +29,10 @@ module SwipeItemsBuilders =
 
     type Fabulous.XamarinForms.View with
         static member inline SwipeItems<'msg>() =
-            CollectionBuilder<'msg, ISwipeItems, ISwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
+            CollectionBuilder<'msg, ISwipeItems, Fabulous.XamarinForms.ISwipeItem>(
+                SwipeItems.WidgetKey,
+                SwipeItems.SwipeItems
+            )
 
 [<Extension>]
 type SwipeItemsModifiers() =
