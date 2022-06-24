@@ -26,7 +26,7 @@ This control can't be instantiated on its own. Its properties and events are inh
 |--|--|
 | horizontalOptions(value: LayoutOptions) | Sets the LayoutOptions that define how the element gets laid horizontally in a layout cycle. |
 | verticalOptions(value: LayoutOptions) | Sets the LayoutOptions that define how the element gets laid vertically in a layout cycle. |
-| center(?expand: bool) | Set the LayoutOptions that defined if an element that is centered vertically and horizontally, and does expand or not. false is the default value. | 
+| center(?expand: bool) | Set the LayoutOptions that defined if an element that is centered vertically and horizontally, and does expand or not. false is the default value. |
 | centerHorizontal(?expand: bool) | Set the LayoutOptions that defined if an element that is centered horizontally and does expand or not. false is the default value. |
 | centerVertical(?expand: bool) | Set the LayoutOptions that defined if an element that is centered vertically and does expand or not. false is the default value. |
 | alignStartHorizontal(?expand: bool) | Set the LayoutOptions that defined if an element that is aligned to the start horizontally and does expand or not. false is the default value. |
