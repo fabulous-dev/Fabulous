@@ -2,36 +2,13 @@ namespace Fabulous
 
 open System
 
-type RemovableEvent<'T>() =
-    let handlers = ResizeArray<Handler<'T>>()
-
-    member x.Trigger(sender, v) =
-        let handlers = handlers.ToArray() // copy to avoid concurrent modification
-
-        for h in handlers do
-            h.Invoke(sender, v)
-
-    member x.Clear() = handlers.Clear()
-
-    member x.Publish =
-        { new IEvent<'T> with
-            member x.AddHandler(h) = handlers.Add(h)
-            member x.RemoveHandler(h) = handlers.Remove(h) |> ignore
-
-            member x.Subscribe(h) =
-                let h = Handler<_>(fun _ -> h.OnNext)
-                handlers.Add(h)
-
-                { new IDisposable with
-                    member x.Dispose() = handlers.Remove(h) |> ignore } }
-
 /// A reference to be able to access the underlying control of a Widget
 type ViewRef<'T when 'T: not struct>() as this =
-    let attached = RemovableEvent<'T>()
-    let detached = RemovableEvent<unit>()
+    let attached = Event<EventHandler<'T>, 'T>()
+    let detached = Event<EventHandler, EventArgs>()
 
     let onAttached target = attached.Trigger(this, unbox target)
-    let onDetached () = detached.Trigger(this, ())
+    let onDetached () = detached.Trigger(this, EventArgs())
 
     let handle = ViewRef(onAttached, onDetached)
 
@@ -42,11 +19,6 @@ type ViewRef<'T when 'T: not struct>() as this =
     /// Event triggered when the view is detached
     [<CLIEvent>]
     member _.Detached = detached.Publish
-
-    /// Remove all handlers
-    member _.ClearListeners() =
-        attached.Clear()
-        detached.Clear()
 
     /// The underlying control.
     /// This property might throw an exception if the control is not attached to the ViewRef
