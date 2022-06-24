@@ -117,6 +117,7 @@
     <Compile Include="Views\Shapes\Line.fs" />
     <Compile Include="Views\Shapes\Polygon.fs" />
     <Compile Include="Views\Shapes\Polyline.fs" />
+    <Compile Include="Views\AppLinkEntry.fs" />
     <Compile Include="Views\Application.fs" />
     <Compile Include="Views\Any.fs" />
     <Compile Include="CollectionBuilderExtensions.fs" />

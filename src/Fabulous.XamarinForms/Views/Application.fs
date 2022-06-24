@@ -2,25 +2,26 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IApplication =
     inherit IElement
 
 module Application =
-    let WidgetKey = Widgets.register<Application>()
+    let WidgetKey = Widgets.register<CustomApplication>()
 
     let MainPage =
         Attributes.definePropertyWidget
             "Application_MainPage"
-            (fun target -> ViewNode.get (target :?> Application).MainPage)
-            (fun target value -> (target :?> Application).MainPage <- value)
+            (fun target -> ViewNode.get (target :?> CustomApplication).MainPage)
+            (fun target value -> (target :?> CustomApplication).MainPage <- value)
 
     let Resources =
         Attributes.defineSimpleScalarWithEquality<ResourceDictionary>
             "Application_Resources"
             (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+                let application = node.Target :?> CustomApplication
 
                 let value =
                     match newValueOpt with
@@ -33,7 +34,7 @@ module Application =
         Attributes.defineEnum<OSAppTheme>
             "Application_UserAppTheme"
             (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+                let application = node.Target :?> CustomApplication
 
                 let value =
                     match newValueOpt with
@@ -45,27 +46,64 @@ module Application =
     let RequestedThemeChanged =
         Attributes.defineEvent<AppThemeChangedEventArgs>
             "Application_RequestedThemeChanged"
-            (fun target -> (target :?> Application).RequestedThemeChanged)
+            (fun target -> (target :?> CustomApplication).RequestedThemeChanged)
 
     let ModalPopped =
         Attributes.defineEvent<ModalPoppedEventArgs>
             "Application_ModalPopped"
-            (fun target -> (target :?> Application).ModalPopped)
+            (fun target -> (target :?> CustomApplication).ModalPopped)
 
     let ModalPopping =
         Attributes.defineEvent<ModalPoppingEventArgs>
             "Application_ModalPopping"
-            (fun target -> (target :?> Application).ModalPopping)
+            (fun target -> (target :?> CustomApplication).ModalPopping)
 
     let ModalPushed =
         Attributes.defineEvent<ModalPushedEventArgs>
             "Application_ModalPushed"
-            (fun target -> (target :?> Application).ModalPushed)
+            (fun target -> (target :?> CustomApplication).ModalPushed)
 
     let ModalPushing =
         Attributes.defineEvent<ModalPushingEventArgs>
             "Application_ModalPushing"
-            (fun target -> (target :?> Application).ModalPushing)
+            (fun target -> (target :?> CustomApplication).ModalPushing) 
+    
+    // TODO: AppLinks is of type IAppLinks. So it is not a IList<IAppLink> and we can not add an
+    // So I think for now we should access to RegisterLink and DeregisterLink via ViewRef<Application>()
+    // Application.Current.AppLinks.RegisterLink (appLink);
+    let RegisterLink =
+        Attributes.defineSimpleScalarWithEquality<AppLinkEntry>
+            "Application_RegisterLink"
+            (fun _ newValueOpt node ->
+                let application = node.Target :?> CustomApplication
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> null
+                    | ValueSome v -> v
+
+                application.AppLinks.RegisterLink value)
+        
+    // TODO: AppLinks is of type IAppLinks. So it is not a IList<IAppLink> and we can not add an
+    // So I think for now we should access to RegisterLink and DeregisterLink via ViewRef<Application>()
+    // Application.Current.AppLinks.RegisterLink (appLink);
+    let DeregisterLink =
+        Attributes.defineSimpleScalarWithEquality<AppLinkEntry>
+            "Application_DeregisterLink"
+            (fun _ newValueOpt node ->
+                let application = node.Target :?> CustomApplication
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> null
+                    | ValueSome v -> v
+
+                application.AppLinks.DeregisterLink value)
+            
+    let LinkRequestReceived =
+        Attributes.defineEvent<LinkRequestReceivedEventArgs>
+            "Application_LinkRequestReceived"
+            (fun target -> (target :?> CustomApplication).LinkRequestReceived)
 
 [<AutoOpen>]
 module ApplicationBuilders =
@@ -127,7 +165,14 @@ type ApplicationModifiers =
         ) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
+    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, fn: ModalPushingEventArgs -> 'msg) =
+        this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
+        
+    [<Extension>]
+    static member inline onLinkReceived(this: WidgetBuilder<'msg, #IApplication>, fn: LinkRequestReceivedEventArgs -> 'msg) =
+        this.AddScalar(Application.LinkRequestReceived.WithValue(fn >> box))
+                
     /// <summary>Link a ViewRef to access the direct Application instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
+    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<CustomApplication>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

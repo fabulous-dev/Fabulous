@@ -147,3 +147,19 @@ type CustomFlyoutPage() as this =
 
     member _.OnIsPresentedChanged(_) =
         isPresentedChanged.Trigger(this, this.IsPresented)
+            
+type LinkRequestReceivedEventArgs(uri: Uri) =
+    inherit EventArgs()
+    member _.Uri = uri
+            
+type CustomApplication() =
+    inherit Application()
+    
+    let linkRequestReceived = Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
+    
+    [<CLIEvent>]
+    member _.LinkRequestReceived = linkRequestReceived.Publish
+    
+    override this.OnAppLinkRequestReceived(uri : Uri)=
+        linkRequestReceived.Trigger(this, LinkRequestReceivedEventArgs(uri))
+        base.OnAppLinkRequestReceived(uri)
