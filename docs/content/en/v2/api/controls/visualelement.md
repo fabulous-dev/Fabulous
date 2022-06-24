@@ -43,8 +43,8 @@ This control can't be instantiated on its own. Its properties and events are inh
 | tabIndex(value: int) | Sets the tab index of an element. |
 | visual(value: IVisual) | Sets the visual of an element. With the VisualMarker class providing the following IVisual properties: Default, MatchParent, Material. |
 | translateTo(x: float, y: float, duration: int, easing: Easing) | Animates an elements TranslationX and TranslationY properties from their current values to the new values. |
-| translateXTo(x: float) | Animates element TranslationX property from its current value to the new value. |
-| translateYTo(y: float) | Animates element TranslationY property from its current value to the new value. |
+| translationX(x: float) | Translates the X position of the element. |
+| translationY(y: float) | Translates the Y position of the element. |
 | scaleTo(scale: float, duration: int, easing: Easing) | Animates elements Scale property from their current values to the new values. |
 | scaleXTo(scale: float) | Animates element ScaleX property from its current value to the new value. |
 | scaleYTo(scale: float) | Animates element ScaleY property from its current value to the new value. |

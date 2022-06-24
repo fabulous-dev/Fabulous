@@ -15,12 +15,12 @@ type ViewRef(onAttached, onDetached) =
     member x.Set(target: obj) : unit =
         if not(x.IsSameTarget(target)) then
             handle.SetTarget(target)
-            onAttached x target
+            onAttached target
 
     member x.Unset() : unit =
         if not(x.IsSameTarget(null)) then
             handle.SetTarget(null)
-            onDetached x ()
+            onDetached()
 
     member _.TryValue =
         match handle.TryGetTarget() with

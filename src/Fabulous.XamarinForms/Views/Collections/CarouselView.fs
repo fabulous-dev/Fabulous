@@ -32,14 +32,46 @@ module CarouselView =
     let IndicatorView =
         Attributes.defineSimpleScalarWithEquality<ViewRef<IndicatorView>>
             "CarouselView_IndicatorView"
-            (fun _ newValueOpt node ->
+            (fun oldValueOpt newValueOpt node ->
+                let handlerOpt =
+                    node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name)
+
+                // Clean up previous handler
+                if handlerOpt.IsSome then
+                    match struct (oldValueOpt, newValueOpt) with
+                    | struct (ValueSome prev, _) -> prev.Attached.RemoveHandler(handlerOpt.Value)
+
+                    | struct (ValueNone, ValueSome curr) ->
+                        // Despite not having a previous value, we might still be reusing the same ViewRef
+                        // So we still need to clean up
+                        curr.Attached.RemoveHandler(handlerOpt.Value)
+
+                    | struct (ValueNone, ValueNone) -> ()
+
+                    node.SetHandler(ViewRefAttributes.ViewRef.Name, ValueNone)
+
                 let handler =
-                    match node.TryGetHandler<EventHandler<IndicatorView>>(ViewRefAttributes.ViewRef.Name) with
+                    match handlerOpt with
                     | ValueSome handler -> handler
                     | ValueNone ->
                         let newHandler =
                             EventHandler<IndicatorView>
-                                (fun _ indicatorView -> (node.Target :?> CarouselView).IndicatorView <- indicatorView)
+                                (fun viewRef indicatorView ->
+                                    let carouselView = node.Target :?> CarouselView
+
+                                    if carouselView <> null then
+                                        carouselView.IndicatorView <- indicatorView
+                                    else
+                                        // CarouselView has been disposed, clean up the handler
+                                        let handler =
+                                            node
+                                                .TryGetHandler<EventHandler<IndicatorView>>(
+                                                    ViewRefAttributes.ViewRef.Name
+                                                )
+                                                .Value
+
+                                        (viewRef :?> ViewRef<IndicatorView>)
+                                            .Attached.RemoveHandler(handler))
 
                         newHandler
 

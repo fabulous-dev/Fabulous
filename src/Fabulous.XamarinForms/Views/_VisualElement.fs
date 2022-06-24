@@ -108,10 +108,10 @@ module VisualElement =
                     view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing)
                     |> ignore)
 
-    let TranslateXTo =
+    let TranslationX =
         Attributes.defineBindableFloat VisualElement.TranslationXProperty
 
-    let TranslateYTo =
+    let TranslationY =
         Attributes.defineBindableFloat VisualElement.TranslationYProperty
 
     let ScaleTo =
@@ -319,17 +319,17 @@ type VisualElementModifiers =
             )
         )
 
-    /// <summary>Animates an elements TranslationX property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <summary>Translates the X position of the element.</summary>
     /// <param name="x">The x component of the final translation vector.</param>
     [<Extension>]
-    static member inline translateXTo(this: WidgetBuilder<'msg, #IVisualElement>, x: float) =
-        this.AddScalar(VisualElement.TranslateXTo.WithValue(x))
+    static member inline translationX(this: WidgetBuilder<'msg, #IVisualElement>, x: float) =
+        this.AddScalar(VisualElement.TranslationX.WithValue(x))
 
-    /// <summary>Animates an elements TranslationY property from its current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <summary>Translates the Y position of the element.</summary>
     /// <param name="y">The y component of the final translation vector.</param>
     [<Extension>]
-    static member inline translateYTo(this: WidgetBuilder<'msg, #IVisualElement>, y: float) =
-        this.AddScalar(VisualElement.TranslateYTo.WithValue(y))
+    static member inline translationY(this: WidgetBuilder<'msg, #IVisualElement>, y: float) =
+        this.AddScalar(VisualElement.TranslationY.WithValue(y))
 
     /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="scale">The value of the final scale vector.</param>

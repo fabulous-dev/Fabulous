@@ -3,12 +3,12 @@ namespace Fabulous
 open System
 
 /// A reference to be able to access the underlying control of a Widget
-type ViewRef<'T when 'T: not struct>() =
+type ViewRef<'T when 'T: not struct>() as this =
     let attached = Event<EventHandler<'T>, 'T>()
     let detached = Event<EventHandler, EventArgs>()
 
-    let onAttached sender target = attached.Trigger(sender, unbox target)
-    let onDetached sender () = detached.Trigger(sender, EventArgs())
+    let onAttached target = attached.Trigger(this, unbox target)
+    let onDetached () = detached.Trigger(this, EventArgs())
 
     let handle = ViewRef(onAttached, onDetached)
 
