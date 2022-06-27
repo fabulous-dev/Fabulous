@@ -21,18 +21,22 @@ module App =
 
     let update msg model =
         match msg with
-        | ItemSelected index -> { model with SelectedWidget = (Registry.getForIndex index).Name; IsFlyoutPresented = false }
+        | ItemSelected index ->
+            { model with
+                  SelectedWidget = (Registry.getForIndex index).Name
+                  IsFlyoutPresented = false }
         | FlyoutToggled value -> { model with IsFlyoutPresented = value }
-        
+
     let flyout () =
         ContentPage(
             "Flyout",
-            (GroupedListView(Registry.categories)
-                 (fun category -> TextCell(category.Name))
-                 (fun widget -> TextCell(widget.Name)))
+            (GroupedListView
+                (Registry.categories)
+                (fun category -> TextCell(category.Name))
+                (fun widget -> TextCell(widget.Name)))
                 .onItemSelected(ItemSelected)
         )
-        
+
     let detail model =
         NavigationPage() {
             ContentPage(
@@ -43,18 +47,18 @@ module App =
                             .font(namedSize = NamedSize.Title)
                             .textColor(Color.White.ToFabColor())
                             .centerHorizontal(expand = true)
-                    })
+                     })
                         .backgroundColor(FabColor.fromHex "#507aae")
                         .padding(Thickness(0., 44., 0., 8.))
-                        
+
                     ScrollView(
                         VStack(spacing = 20.) {
                             Label("Description")
                                 .font(namedSize = NamedSize.Subtitle)
                                 .centerHorizontal()
-                            
+
                             Label(model.SelectedWidget)
-                            
+
                             FlexLayout(FlexWrap.Wrap) {
                                 for category in Registry.categories do
                                     Label(category.Name)
@@ -76,10 +80,7 @@ module App =
 
     let view model =
         Application(
-            FlyoutPage(
-                flyout(),
-                detail model
-            )
+            FlyoutPage(flyout(), detail model)
                 .isPresented(model.IsFlyoutPresented, FlyoutToggled)
         )
 

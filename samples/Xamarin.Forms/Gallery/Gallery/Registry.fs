@@ -7,16 +7,19 @@ module Registry =
         { Name: string
           Description: string
           SampleCode: string }
-    
+
     type Category =
         { Name: string
           Description: string
           Widgets: Widget list }
-        
+
         interface IEnumerable<Widget> with
-            member this.GetEnumerator(): IEnumerator<Widget> = (Seq.ofList this.Widgets).GetEnumerator()
-            member this.GetEnumerator(): System.Collections.IEnumerator = (Seq.ofList this.Widgets).GetEnumerator() :> System.Collections.IEnumerator
-        
+            member this.GetEnumerator() : IEnumerator<Widget> =
+                (Seq.ofList this.Widgets).GetEnumerator()
+
+            member this.GetEnumerator() : System.Collections.IEnumerator =
+                (Seq.ofList this.Widgets).GetEnumerator() :> System.Collections.IEnumerator
+
     let categories =
         [ { Name = "Controls"
             Description = "Controls"
@@ -27,21 +30,21 @@ module Registry =
                   { Name = "Label"
                     Description = "Label"
                     SampleCode = "let label = new Label()" } ] }
-        
+
           { Name = "GestureRecognizers"
             Description = "GestureRecognizers"
             Widgets =
                 [ { Name = "TapGestureRecognizer"
                     Description = "TapGestureRecognizer"
                     SampleCode = "" } ] }
-          
+
           { Name = "Pages"
             Description = "Pages"
             Widgets =
                 [ { Name = "ContentPage"
                     Description = "ContentPage"
                     SampleCode = "" } ] } ]
-        
+
     let getForIndex (index: int) =
         let mutable i = index
         let mutable found = Unchecked.defaultof<Widget>
