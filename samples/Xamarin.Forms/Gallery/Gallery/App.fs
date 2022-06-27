@@ -21,15 +21,15 @@ module App =
 
     let update msg model =
         match msg with
-        | ItemSelected index -> { model with SelectedWidget = Registry.widgets.[index]; IsFlyoutPresented = false }
+        | ItemSelected index -> { model with SelectedWidget = (Registry.getForIndex index).Name; IsFlyoutPresented = false }
         | FlyoutToggled value -> { model with IsFlyoutPresented = value }
         
     let flyout () =
         ContentPage(
             "Flyout",
-            (ListView(Registry.widgets) (fun widget ->
-                TextCell(widget)
-            ))
+            (GroupedListView(Registry.categories)
+                 (fun category -> TextCell(category.Name))
+                 (fun widget -> TextCell(widget.Name)))
                 .onItemSelected(ItemSelected)
         )
         
@@ -37,7 +37,7 @@ module App =
         NavigationPage() {
             ContentPage(
                 "Detail",
-                VStack() {
+                VStack(spacing = 20.) {
                     (HStack() {
                         Label("Fabulous Gallery")
                             .font(namedSize = NamedSize.Title)
@@ -47,17 +47,31 @@ module App =
                         .backgroundColor(FabColor.fromHex "#507aae")
                         .padding(Thickness(0., 44., 0., 8.))
                         
-                    ScrollView(                        
-                        VStack() {
+                    ScrollView(
+                        VStack(spacing = 20.) {
+                            Label("Description")
+                                .font(namedSize = NamedSize.Subtitle)
+                                .centerHorizontal()
+                            
                             Label(model.SelectedWidget)
                             
-                            for i = 0 to 1000 do
-                                Label("Test")
+                            FlexLayout(FlexWrap.Wrap) {
+                                for category in Registry.categories do
+                                    Label(category.Name)
+                                        .height(175.)
+                                        .width(175.)
+                                        .centerTextHorizontal()
+                                        .centerTextVertical()
+                                        .backgroundColor(Color.Fuchsia.ToFabColor())
+                                        .margin(10.)
+                            }
                         }
                     )
                         .alignStartVertical(expand = true)
                 }
             )
+                .ignoreSafeArea()
+                .hasNavigationBar(false)
         }
 
     let view model =
