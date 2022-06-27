@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
@@ -14,7 +15,7 @@ module RoundRectangleGeometry =
         Widgets.register<RoundRectangleGeometry>()
 
     let CornerRadius =
-        Attributes.defineBindableFloat RoundRectangleGeometry.CornerRadiusProperty
+        Attributes.defineBindableWithEquality<Xamarin.Forms.CornerRadius> RoundRectangleGeometry.CornerRadiusProperty
 
     let Rect =
         Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
@@ -25,7 +26,15 @@ module RoundRectangleGeometry =
 [<AutoOpen>]
 module RoundRectangleGeometryBuilders =
     type Fabulous.XamarinForms.View with
+        [<Obsolete("Use RoundRectangleGeometry(cornerRadius: CornerRadius, rect: Rect) instead")>]
         static member inline RoundRectangleGeometry<'msg>(cornerRadius: float, rect: Rect) =
+            WidgetBuilder<'msg, IRoundRectangleGeometry>(
+                RoundRectangleGeometry.WidgetKey,
+                RoundRectangleGeometry.CornerRadius.WithValue(CornerRadius(cornerRadius)),
+                RoundRectangleGeometry.Rect.WithValue(rect)
+            )
+
+        static member inline RoundRectangleGeometry<'msg>(cornerRadius: CornerRadius, rect: Rect) =
             WidgetBuilder<'msg, IRoundRectangleGeometry>(
                 RoundRectangleGeometry.WidgetKey,
                 RoundRectangleGeometry.CornerRadius.WithValue(cornerRadius),
