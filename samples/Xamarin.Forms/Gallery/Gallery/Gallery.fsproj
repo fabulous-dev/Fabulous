@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" Version="6.0.4" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="Registry.fs" />
+      <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    </ItemGroup>
+</Project>
