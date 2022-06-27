@@ -1,7 +1,9 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 type IFlexLayout =
@@ -47,8 +49,17 @@ module FlexLayout =
 [<AutoOpen>]
 module FlexLayoutBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline FlexLayout<'msg>() =
-            CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
+        static member inline FlexLayout<'msg>(?wrap: FlexWrap) =
+            let wrap =
+                match wrap with
+                | None -> FlexWrap.NoWrap
+                | Some v -> v
+
+            CollectionBuilder<'msg, IFlexLayout, IView>(
+                FlexLayout.WidgetKey,
+                LayoutOfView.Children,
+                FlexLayout.Wrap.WithValue(wrap)
+            )
 
 [<Extension>]
 type FlexLayoutModifiers =
@@ -72,7 +83,7 @@ type FlexLayoutModifiers =
 
     /// <summary>Sets a value that controls whether and how child elements within this layout wrap.</summary>
     /// <param name="value">Enumerates values that control whether and how to wrap items in a FlexLayout.</param>
-    [<Extension>]
+    [<Extension; Obsolete("Use FlexLayout(wrap: FlexWrap) instead")>]
     static member inline wrap(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexWrap) =
         this.AddScalar(FlexLayout.Wrap.WithValue(value))
 
