@@ -15,7 +15,7 @@ module RoundRectangleGeometry =
         Widgets.register<RoundRectangleGeometry>()
 
     let CornerRadius =
-        Attributes.defineBindableWithEquality<Xamarin.Forms.CornerRadius> RoundRectangleGeometry.CornerRadiusProperty
+        Attributes.defineBindableWithEquality<CornerRadius> RoundRectangleGeometry.CornerRadiusProperty
 
     let Rect =
         Attributes.defineBindableWithEquality<Rect> RoundRectangleGeometry.RectProperty
