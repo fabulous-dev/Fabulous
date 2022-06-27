@@ -128,3 +128,17 @@ type CustomNavigationPage() as this =
             popCount <- popCount - 1
         else
             backNavigated.Trigger(this, EventArgs())
+
+/// FlyoutPage doesn't say if the Flyout is visible or not on IsPresentedChanged, so we implement it
+type CustomFlyoutPage() as this =
+    inherit FlyoutPage()
+
+    let isPresentedChanged = Event<EventHandler<bool>, bool>()
+
+    do this.IsPresentedChanged.Add(this.OnIsPresentedChanged)
+
+    [<CLIEvent>]
+    member _.CustomIsPresentedChanged = isPresentedChanged.Publish
+
+    member _.OnIsPresentedChanged(_) =
+        isPresentedChanged.Trigger(this, this.IsPresented)

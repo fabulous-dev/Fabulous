@@ -8,7 +8,7 @@ type IFlyoutPage =
     inherit IPage
 
 module FlyoutPage =
-    let WidgetKey = Widgets.register<FlyoutPage>()
+    let WidgetKey = Widgets.register<CustomFlyoutPage>()
 
     let CanChangeIsPresented =
         Attributes.defineBool
@@ -27,7 +27,12 @@ module FlyoutPage =
         Attributes.defineBindableBool FlyoutPage.IsGestureEnabledProperty
 
     let IsPresented =
-        Attributes.defineBindableBool FlyoutPage.IsPresentedProperty
+        Attributes.defineBindableWithEvent<bool, bool>
+            "FlyoutPage_IsPresentedChanged"
+            FlyoutPage.IsPresentedProperty
+            (fun target ->
+                (target :?> CustomFlyoutPage)
+                    .CustomIsPresentedChanged)
 
     let Flyout =
         Attributes.definePropertyWidget
@@ -75,25 +80,9 @@ module FlyoutPage =
             "FlyoutPage_BackButtonPressed"
             (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
-    let IsPresentedChanged =
-        Attributes.defineEventNoArg
-            "FlyoutPage_PresentedChanged"
-            (fun target -> (target :?> FlyoutPage).IsPresentedChanged)
-
 [<AutoOpen>]
 module FlyoutPageBuilders =
     type Fabulous.XamarinForms.View with
-
-        static member inline FlyoutPage<'msg, 'marker when 'marker :> IPage>
-            (
-                flyout: WidgetBuilder<'msg, 'marker>,
-                detail: WidgetBuilder<'msg, 'marker>
-            ) =
-            WidgetHelpers.buildWidgets<'msg, IFlyoutPage>
-                FlyoutPage.WidgetKey
-                [| FlyoutPage.Flyout.WithValue(flyout.Compile())
-                   FlyoutPage.Detail.WithValue(detail.Compile()) |]
-
         static member inline FlyoutPage<'msg, 'flyout, 'detail when 'flyout :> IPage and 'detail :> IPage>
             (
                 flyout: WidgetBuilder<'msg, 'flyout>,
@@ -112,8 +101,8 @@ type FlyoutPageModifiers =
         this.AddScalar(FlyoutPage.CanChangeIsPresented.WithValue(value))
 
     [<Extension>]
-    static member inline isPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
-        this.AddScalar(FlyoutPage.IsPresented.WithValue(value))
+    static member inline isPresented(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool, onChanged: bool -> 'msg) =
+        this.AddScalar(FlyoutPage.IsPresented.WithValue(ValueEventData.create value (fun v -> onChanged v |> box)))
 
     [<Extension>]
     static member inline isGestureEnabled(this: WidgetBuilder<'msg, #IFlyoutPage>, value: bool) =
@@ -138,10 +127,6 @@ type FlyoutPageModifiers =
             onBackButtonPressed: bool -> 'msg
         ) =
         this.AddScalar(FlyoutPage.BackButtonPressed.WithValue(fun args -> onBackButtonPressed args.Handled |> box))
-
-    [<Extension>]
-    static member inline onPresentedChanged(this: WidgetBuilder<'msg, #IFlyoutPage>, onPresentedChanged: 'msg) =
-        this.AddScalar(FlyoutPage.IsPresentedChanged.WithValue(onPresentedChanged))
 
     /// <summary>Link a ViewRef to access the direct ContentPage control instance</summary>
     [<Extension>]
