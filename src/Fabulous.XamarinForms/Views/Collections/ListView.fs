@@ -1,5 +1,6 @@
 namespace Fabulous.XamarinForms
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Xamarin.Forms
@@ -211,13 +212,17 @@ type ListViewModifiers =
     static member inline onItemTapped(this: WidgetBuilder<'msg, #IListView>, onItemTapped: int -> 'msg) =
         this.AddScalar(ListView.ItemTapped.WithValue(fun args -> onItemTapped args.ItemIndex |> box))
 
-    [<Extension>]
+    [<Extension; Obsolete("Use onItemSelected(int -> 'msg) instead")>]
     static member inline onItemSelected
         (
             this: WidgetBuilder<'msg, #IListView>,
             onItemSelected: SelectedItemChangedEventArgs -> 'msg
         ) =
         this.AddScalar(ListView.ItemSelected.WithValue(fun args -> onItemSelected args |> box))
+
+    [<Extension>]
+    static member inline onItemSelected(this: WidgetBuilder<'msg, #IListView>, onItemSelected: int -> 'msg) =
+        this.AddScalar(ListView.ItemSelected.WithValue(fun args -> onItemSelected args.SelectedItemIndex |> box))
 
     [<Extension>]
     static member inline onRefreshing(this: WidgetBuilder<'msg, #IListView>, onRefreshing: 'msg) =
