@@ -8,7 +8,10 @@
         <PackageReference Include="FSharp.Core" Version="6.0.4" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Include="Registry.fs" />
+      <Compile Include="Samples\Helpers.fs" />
+      <Compile Include="Samples\Button.fs" />
+      <Compile Include="Samples\Registry.fs" />
+      <Compile Include="WidgetPage.fs" />
       <Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
