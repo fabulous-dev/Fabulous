@@ -5,20 +5,17 @@ open Fabulous.XamarinForms
 
 open type Fabulous.XamarinForms.View
 
-type SampleDescription =
-    { Name: string
-      Description: string
-      ApiRefLink: string
-      XFDocLink: string
-      SampleCode: string }
-
 type SampleProgram =
     { init: unit -> obj
       update: obj -> obj -> obj
       view: obj -> WidgetBuilder<obj, IView> }
     
 type Sample =
-    { Description: SampleDescription
+    { Name: string
+      Description: string
+      ApiRefLink: string
+      XFDocLink: string
+      SampleCode: string
       Program: SampleProgram }
 
 module Helper =

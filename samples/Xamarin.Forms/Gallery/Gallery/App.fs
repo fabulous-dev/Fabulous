@@ -95,4 +95,4 @@ module App =
             WidgetPage.view model
         )
 
-    let program = Program.stateful init update view
+    let program = Program.statefulWithCmd init update view

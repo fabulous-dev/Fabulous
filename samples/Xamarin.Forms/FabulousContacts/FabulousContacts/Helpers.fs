@@ -98,10 +98,3 @@ module Helpers =
         match value with
         | None -> Image(aspect, defaultValue)
         | Some bytes -> Image(aspect, new MemoryStream(bytes))
-
-module Cmd =
-    let performAsync asyncUnit =
-        Cmd.ofMsgOption(
-            Async.Start asyncUnit
-            None
-        )

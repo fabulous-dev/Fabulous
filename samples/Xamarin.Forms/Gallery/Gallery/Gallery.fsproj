@@ -6,6 +6,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FSharp.Core" Version="6.0.4" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
     </ItemGroup>
     <ItemGroup>
       <Compile Include="Samples\Helpers.fs" />

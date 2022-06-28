@@ -5,13 +5,6 @@ open Fabulous.XamarinForms
 open type Fabulous.XamarinForms.View
 
 module Button =
-    let description =
-        { Name = "Button"
-          Description = "A button"
-          ApiRefLink = "https://docs.fabulous.dev/v2/api/controls/button"
-          XFDocLink = "https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.button"
-          SampleCode = """Button("Click me!", Clicked)""" }
-    
     type Model =
         { Count: int }
         
@@ -29,10 +22,13 @@ module Button =
     let view model =
         VStack(spacing = 20.) {
             Button("Click me!", Clicked)
-                
             Label($"Click count: {model.Count}")
         }
 
     let sample =
-        { Description = description
+        { Name = "Button"
+          Description = "A button widget that reacts to touch events."
+          ApiRefLink = "https://docs.fabulous.dev/v2/api/controls/button"
+          XFDocLink = "https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.button"
+          SampleCode = """Button("Click me!", Clicked)"""
           Program = Helper.createProgram init update view }
