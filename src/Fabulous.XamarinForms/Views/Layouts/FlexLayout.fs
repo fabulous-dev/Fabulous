@@ -50,16 +50,15 @@ module FlexLayout =
 module FlexLayoutBuilders =
     type Fabulous.XamarinForms.View with
         static member inline FlexLayout<'msg>(?wrap: FlexWrap) =
-            let wrap =
-                match wrap with
-                | None -> FlexWrap.NoWrap
-                | Some v -> v
+            match wrap with
+            | None -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
 
-            CollectionBuilder<'msg, IFlexLayout, IView>(
-                FlexLayout.WidgetKey,
-                LayoutOfView.Children,
-                FlexLayout.Wrap.WithValue(wrap)
-            )
+            | Some v ->
+                CollectionBuilder<'msg, IFlexLayout, IView>(
+                    FlexLayout.WidgetKey,
+                    LayoutOfView.Children,
+                    FlexLayout.Wrap.WithValue(v)
+                )
 
 [<Extension>]
 type FlexLayoutModifiers =
