@@ -16,6 +16,7 @@ type Sample =
       ApiRefLink: string
       XFDocLink: string
       SampleCode: string
+      SampleCodeFormatted: unit -> WidgetBuilder<obj, IFormattedLabel>
       Program: SampleProgram }
 
 module Helper =

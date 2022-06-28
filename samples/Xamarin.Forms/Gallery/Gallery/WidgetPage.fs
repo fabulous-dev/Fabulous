@@ -58,7 +58,7 @@ module WidgetPage =
                         Image(Aspect.AspectFit, "fabulous.png")
                             .size(width = 24., height = 24.)
                             
-                        Label("Fabulous API Reference")
+                        Label("Fabulous docs")
                             .centerTextVertical()
                     })
                         .gestureRecognizers() {
@@ -69,7 +69,7 @@ module WidgetPage =
                         Image(Aspect.AspectFit, "xamarin.png")
                             .size(width = 24., height = 24.)
                             
-                        Label("Xamarin.Forms documentation")
+                        Label("Xamarin.Forms docs")
                             .centerTextVertical()
                     })
                         .gestureRecognizers() {
@@ -77,13 +77,19 @@ module WidgetPage =
                         }
                 }
                 
-                ScrollView(
-                    Frame(
+                Frame(
+                    ContentView(
                         View.map SampleMsg (model.Sample.Program.view model.SampleModel)
                     )
-                        .borderColor
+                        .centerVertical()
                 )
-                    .centerVertical(expand = true)
+                    .borderColor(Color.Gray.ToFabColor())
+                    .fillVertical(expand = true)
+                    
+                Frame(
+                    View.map SampleMsg (model.Sample.SampleCodeFormatted ())
+                )
+                    .borderColor(Color.Gray.ToFabColor())
             })
                 .padding(Thickness(20., 0.))
         )
