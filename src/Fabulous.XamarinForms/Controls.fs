@@ -51,6 +51,7 @@ type FabulousTimePicker() =
     member _.TimeSelected = timeSelected.Publish
 
     override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
@@ -71,10 +72,12 @@ type CustomEntryCell() =
     member _.TextChanged = textChanged.Publish
 
     override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
         if propertyName = EntryCell.TextProperty.PropertyName then
             textChanged.Trigger(this, TextChangedEventArgs(oldText, this.Text))
 
     override this.OnPropertyChanging(propertyName) =
+        base.OnPropertyChanging(propertyName)
         if propertyName = EntryCell.TextProperty.PropertyName then
             oldText <- this.Text
 
@@ -91,10 +94,12 @@ type CustomPicker() =
     member _.CustomSelectedIndexChanged = selectedIndexChanged.Publish
 
     override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             selectedIndexChanged.Trigger(this, PositionChangedEventArgs(oldSelectedIndex, this.SelectedIndex))
 
     override this.OnPropertyChanging(propertyName) =
+        base.OnPropertyChanging(propertyName)
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             oldSelectedIndex <- this.SelectedIndex
 
