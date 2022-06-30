@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <UseMaui>true</UseMaui>
+        <UseMauiCore>true</UseMauiCore>
     </PropertyGroup>
 
     <ItemGroup>

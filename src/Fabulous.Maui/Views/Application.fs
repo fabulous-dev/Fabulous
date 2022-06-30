@@ -2,11 +2,11 @@
 
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
-
-type IApplication = inherit IElement
+open Microsoft.Maui
 
 type FabulousApplication() =
     inherit Node()
+    
     interface Microsoft.Maui.IApplication with
         member this.CloseWindow(window) = failwith "todo"
         member this.CreateWindow(activationState) = failwith "todo"
