@@ -74,7 +74,6 @@ type LabelModifiers =
         (
             this: WidgetBuilder<'msg, #ILabel>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
         ) =
@@ -84,6 +83,27 @@ type LabelModifiers =
         match size with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(v))
+
+        match attributes with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
+
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontFamily.WithValue(v))
+
+        res
+        
+    [<Extension>]
+    static member inline font
+        (
+            this: WidgetBuilder<'msg, #ILabel>,
+            ?namedSize: NamedSize,
+            ?attributes: FontAttributes,
+            ?fontFamily: string
+        ) =
+
+        let mutable res = this
 
         match namedSize with
         | None -> ()
@@ -127,11 +147,15 @@ type LabelModifiers =
     static member inline padding
         (
             this: WidgetBuilder<'msg, #ILabel>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
+            ?left: float,
+            ?top: float,
+            ?right: float,
+            ?bottom: float
         ) =
+        let left = match left with None -> 0. | Some v -> v
+        let top = match top with None -> 0. | Some v -> v
+        let right = match right with None -> 0. | Some v -> v
+        let bottom = match bottom with None -> 0. | Some v -> v
         LabelModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]

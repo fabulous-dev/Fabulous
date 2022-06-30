@@ -34,11 +34,15 @@ type LayoutModifiers =
     static member inline padding
         (
             this: WidgetBuilder<'msg, #ILayout>,
-            left: float,
-            top: float,
-            right: float,
-            bottom: float
+            ?left: float,
+            ?top: float,
+            ?right: float,
+            ?bottom: float
         ) =
+        let left = match left with None -> 0. | Some v -> v
+        let top = match top with None -> 0. | Some v -> v
+        let right = match right with None -> 0. | Some v -> v
+        let bottom = match bottom with None -> 0. | Some v -> v
         LayoutModifiers.padding(this, Thickness(left, top, right, bottom))
 
     [<Extension>]

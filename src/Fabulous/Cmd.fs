@@ -116,3 +116,9 @@ module Cmd =
                   | ex -> dispatch(failure ex)
               }
               |> ignore ]
+        
+    let performAsync asyncUnit =
+        ofMsgOption(
+            Async.Start asyncUnit
+            None
+        )

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" Version="6.0.4" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="Samples\Helpers.fs" />
+      <Compile Include="Samples\Button.fs" />
+      <Compile Include="Samples\Registry.fs" />
+      <Compile Include="WidgetPage.fs" />
+      <Compile Include="App.fs" />
+      <EmbeddedResource Include="icomoon.ttf" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    </ItemGroup>
+</Project>

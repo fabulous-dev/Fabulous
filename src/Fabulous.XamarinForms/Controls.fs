@@ -147,3 +147,19 @@ type CustomFlyoutPage() as this =
 
     member _.OnIsPresentedChanged(_) =
         isPresentedChanged.Trigger(this, this.IsPresented)
+        
+/// RadioButton has a CheckedChanged event that triggers for both when the radio button is checked and unchecked
+/// But we are only interested in the checked event, so we implement it
+type CustomRadioButton() as this =
+    inherit RadioButton()
+    
+    let ``checked`` = Event<EventHandler<EventArgs>, EventArgs>()
+    
+    do this.CheckedChanged.Add(this.OnCheckedChanged)
+    
+    [<CLIEvent>]
+    member _.Checked = ``checked``.Publish
+    
+    member _.OnCheckedChanged(args: CheckedChangedEventArgs) =
+        if args.Value then
+            ``checked``.Trigger(this, EventArgs())
