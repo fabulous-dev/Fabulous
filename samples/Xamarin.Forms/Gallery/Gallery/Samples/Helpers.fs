@@ -3,6 +3,7 @@ namespace Gallery.Samples
 open System.IO
 open Fabulous
 open Fabulous.XamarinForms
+open Xamarin.Forms
 
 open type Fabulous.XamarinForms.View
 
@@ -27,6 +28,11 @@ module Helper =
         { init = init >> box
           update = (fun msg model -> update (unbox msg) (unbox model) |> box)
           view = (fun model -> AnyView(View.map box (view (unbox model)))) }
+        
+    let createViewOnlyProgram (view: unit -> WidgetBuilder<obj, 'marker>) =
+        { init = fun () -> box ()
+          update = fun _ m -> m
+          view = (fun model -> AnyView(view (unbox model))) }
         
     type BlockType =
         | Normal
@@ -107,7 +113,7 @@ module Helper =
         if sb.Length > 0 then
             tokens.Add((sb.ToString(), blockType))
         
-        FormattedLabel() {
+        (FormattedLabel() {
             for str, blockType in tokens do
                 let textColor =
                     match blockType with
@@ -121,7 +127,9 @@ module Helper =
                     | Message -> FabColor.fromHex "#6833b6"
                 
                 Span(str).textColor(textColor)
-        }
+        })
+            .font(NamedSize.Small, fontFamily = "JetBrainsMono")
+            .lineHeight(1.2)
         
     let cleanMarkersFromSampleCode (str: string) =
         str

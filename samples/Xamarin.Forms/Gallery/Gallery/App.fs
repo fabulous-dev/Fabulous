@@ -7,6 +7,7 @@ open Fabulous.XamarinForms
 open type View
 
 [<assembly: ExportFont("icomoon.ttf", Alias = "Icomoon")>]
+[<assembly: ExportFont("JetBrainsMono-Regular.ttf", Alias = "JetBrainsMono")>]
 do ()
 
 module App =

@@ -1,7 +1,6 @@
 namespace Gallery.Samples
 
 open Fabulous.XamarinForms
-open Xamarin.Forms
 
 open type Fabulous.XamarinForms.View
 
@@ -11,41 +10,68 @@ module Button =
         
     type Msg =
         | Clicked
+        | Increment
+        | Decrement
         
     let init () =
         { Count = 0 }
         
     let update msg model =
         match msg with
-        | Clicked ->
+        | Clicked -> model
+        | Increment ->
             { model with Count = model.Count + 1 }
+        | Decrement ->
+            { model with Count = model.Count - 1 }
     
     let view model =
         VStack(spacing = 15.) {
-            Label("Default Buttons")
-                .font(namedSize = NamedSize.Subtitle)
+            Label("Regular button")
+            Button("Click me!", Clicked)
             
-            Frame(
-                VStack() {
-                    // Regular button
-                    Button($"Click count: {model.Count}", Clicked)
-                    
-                    // Disabled button
-                    Button("Disabled button", Clicked)
-                        .isEnabled(false)
-                }
-            )
-                .hasShadow(false)
-                .borderColor(Color.Gray.ToFabColor())
+            Label("Disabled button")
+            Button("Disabled button", Clicked)
+                .isEnabled(false)
+            
+            Label("Button with styling")
+            (HStack(spacing = 15.) {
+                Button("Decrement", Decrement)
+                    .backgroundColor("#FF0000")
+                    .textColor("#FFFFFF")
+                    .padding(5.)
+                
+                Label($"Count: {model.Count}")
+                    .centerTextVertical()
+                
+                Button("Increment", Increment)
+                    .textColor("#43ab2f")
+                    .padding(5.)
+            })
+                .centerHorizontal()
         }
         
     let sampleCode = """
 |C:// Regular button:|
-|T:Button:|(|S:$"Click count:| {model.|P:Count:|}|S:":|, |M:Clicked:|)
+|T:Button:|(|S:"Click me!":|, |M:Clicked:|)
 
 |C:// Disabled button:|
 |T:Button:|(|S:"Disabled button":|, |M:Clicked:|)
     .|T:isEnabled:|(|K:false:|)
+    
+|C:// Button with styling:|
+|T:HStack:|(spacing = |V:15.:|) {
+    |T:Button:|(|S:"Decrement":|, |M:Decrement:|)
+        .|T:backgroundColor:|(|S:"#FF0000":|)
+        .|T:textColor:|(|S:"#FFFFFF":|)
+        .|T:padding:|(|V:5.:|)
+    
+    |T:Label:|(|S:"Count: {:|model.|P:Count:||S:}":|)
+        .|T:centerTextVertical:|()
+    
+    |T:Button:|(|S:"Increment":|, |M:Increment:|)
+        .|T:textColor:|(|S:"#43ab2f":|)
+        .|T:padding:|(|V:5.:|)
+)
 """
         
     let sample =

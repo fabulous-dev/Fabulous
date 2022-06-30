@@ -216,6 +216,12 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
+        
+    [<Extension>]
+    static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, lightHex: string, ?darkHex: string) =
+        let light = FabColor.fromHex lightHex
+        let dark = match darkHex with None -> None | Some hex -> Some (FabColor.fromHex hex)
+        this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IVisualElement>, light: Brush, ?dark: Brush) =

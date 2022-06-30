@@ -21,7 +21,8 @@ module Registry =
         [ { Name = "Controls"
             Description = "Controls"
             Samples =
-                [ Button.sample ] } ]
+                [ Label.sample
+                  Button.sample ] } ]
 
     let getForIndex (index: int) =
         let mutable i = index

@@ -36,6 +36,12 @@ type TextCellModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #ITextCell>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(TextCell.TextColor.WithValue(AppTheme.create light dark))
+        
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #ITextCell>, lightHex: string, ?darkHex: string) =
+        let light = FabColor.fromHex lightHex
+        let dark = match darkHex with None -> None | Some hex -> Some (FabColor.fromHex hex)
+        this.AddScalar(TextCell.TextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Set the color of the detail text.</summary>
     /// <param name="light">The color of the text in the light theme.</param>

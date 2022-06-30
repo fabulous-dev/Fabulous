@@ -49,15 +49,31 @@ module FlexLayout =
 [<AutoOpen>]
 module FlexLayoutBuilders =
     type Fabulous.XamarinForms.View with
-        static member inline FlexLayout<'msg>(?wrap: FlexWrap) =
-            match wrap with
-            | None -> CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
+        static member inline FlexLayout<'msg>(?direction: FlexDirection, ?wrap: FlexWrap) =
+            match struct (direction, wrap) with
+            | struct (None, None) ->
+                CollectionBuilder<'msg, IFlexLayout, IView>(FlexLayout.WidgetKey, LayoutOfView.Children)
 
-            | Some v ->
+            | struct (None, Some v) ->
                 CollectionBuilder<'msg, IFlexLayout, IView>(
                     FlexLayout.WidgetKey,
                     LayoutOfView.Children,
                     FlexLayout.Wrap.WithValue(v)
+                )
+                
+            | struct (Some v, None) ->
+                CollectionBuilder<'msg, IFlexLayout, IView>(
+                    FlexLayout.WidgetKey,
+                    LayoutOfView.Children,
+                    FlexLayout.Direction.WithValue(v)
+                )
+                
+            | struct (Some v1, Some v2) ->
+                CollectionBuilder<'msg, IFlexLayout, IView>(
+                    FlexLayout.WidgetKey,
+                    LayoutOfView.Children,
+                    FlexLayout.Direction.WithValue(v1),
+                    FlexLayout.Wrap.WithValue(v2)
                 )
 
 [<Extension>]
@@ -76,13 +92,13 @@ type FlexLayoutModifiers =
 
     /// <summary>Sets the flex direction for child elements within this layout.</summary>
     /// <param name="value">Enumerates values that specify row and colum in flex layout directions, relative to the directions for the device locale.</param>
-    [<Extension>]
+    [<Extension; Obsolete("Use direction parameter on the constructor instead")>]
     static member inline direction(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexDirection) =
         this.AddScalar(FlexLayout.Direction.WithValue(value))
 
     /// <summary>Sets a value that controls whether and how child elements within this layout wrap.</summary>
     /// <param name="value">Enumerates values that control whether and how to wrap items in a FlexLayout.</param>
-    [<Extension; Obsolete("Use FlexLayout(wrap: FlexWrap) instead")>]
+    [<Extension; Obsolete("Use wrap parameter on the constructor instead")>]
     static member inline wrap(this: WidgetBuilder<'msg, #IFlexLayout>, value: FlexWrap) =
         this.AddScalar(FlexLayout.Wrap.WithValue(value))
 

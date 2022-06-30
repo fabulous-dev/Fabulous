@@ -75,6 +75,12 @@ type ButtonModifiers =
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IButton>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
+        
+    [<Extension>]
+    static member inline textColor(this: WidgetBuilder<'msg, #IButton>, lightHex: string, ?darkHex: string) =
+        let light = FabColor.fromHex lightHex
+        let dark = match darkHex with None -> None | Some hex -> Some (FabColor.fromHex hex)
+        this.AddScalar(Button.TextColor.WithValue(AppTheme.create light dark))
 
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IButton>, value: TextTransform) =

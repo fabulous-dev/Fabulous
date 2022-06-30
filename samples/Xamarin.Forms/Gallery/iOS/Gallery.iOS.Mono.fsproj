@@ -97,8 +97,6 @@
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios-marketing.png" />
         <Compile Include="Properties\AssemblyInfo.fs" />
         <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-        <BundleResource Include="Resources\sourcecode.png" />
-        <BundleResource Include="Resources\sample.png" />
         <Compile Include="AppDelegate.fs" />
         <None Include="Entitlements.plist" />
         <None Include="Info.plist" />
