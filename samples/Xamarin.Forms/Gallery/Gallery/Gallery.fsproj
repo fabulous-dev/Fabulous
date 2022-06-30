@@ -14,6 +14,7 @@
       <Compile Include="Samples\Registry.fs" />
       <Compile Include="WidgetPage.fs" />
       <Compile Include="App.fs" />
+      <EmbeddedResource Include="icomoon.ttf" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />

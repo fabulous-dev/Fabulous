@@ -20,21 +20,20 @@ module WidgetPageStyles =
                 
                 let vsmChecked = VisualState(Name = "Checked")
                 vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value = Color.Black))
-                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.Gray))
-                vsmChecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.Black))
+                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.LightGray))
+                vsmChecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.White))
                 vsmGroup.States.Add(vsmChecked)
                 
                 let vsmUnchecked = VisualState(Name = "Unchecked")
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value = Color.Gray))
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.LightGray))
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.White))
+                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value = Color.LightGray))
+                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.White))
+                vsmUnchecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.LightGray))
                 vsmGroup.States.Add(vsmUnchecked)
                 
                 vsmGroupList.Add(vsmGroup)
                 
-                
                 let frame = Xamarin.Forms.Frame(HasShadow = false, WidthRequest = 36., HeightRequest = 36., Padding = Thickness(0.))
-                let label = Xamarin.Forms.Label(HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center)
+                let label = Xamarin.Forms.Label(HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, FontFamily = "Icomoon")
                 label.SetBinding(Xamarin.Forms.Label.TextProperty, Binding(Path = "Content", Source = RelativeBindingSource.TemplatedParent))
                 frame.Content <- label
                 
@@ -75,7 +74,7 @@ module WidgetPage =
         let sample = Registry.getForIndex index
         { Sample = sample
           SampleModel = sample.Program.init()
-          CodeShown = false }, Cmd.none
+          CodeShown = false }
         
     let update msg model =
         match msg with
@@ -95,9 +94,29 @@ module WidgetPage =
             model.Sample.Name,
             ScrollView(
                 (VStack(spacing = 20.) {
-                    Label(model.Sample.Name)
-                        .font(NamedSize.Title)
-                        .padding(top = 20.)
+                    HStack() {
+                        Label(model.Sample.Name)
+                            .font(NamedSize.Title)
+                            .padding(top = 20.)
+                        
+                        (HStack() {
+                            RadioButton(
+                                "\uEA1C",
+                                model.CodeShown = false,
+                                (ShowCode false)
+                            )
+                                .style(WidgetPageStyles.radioButtonStyle)
+                            
+                            RadioButton(
+                                "\uEA80",
+                                model.CodeShown = true,
+                                (ShowCode true)
+                            )
+                                .style(WidgetPageStyles.radioButtonStyle)
+                        })
+                            .alignEndHorizontal(expand = true)
+                            .alignEndVertical()
+                    }
                     
                     Label(model.Sample.Description)
                     
@@ -128,33 +147,14 @@ module WidgetPage =
                     }
                     
                     Rectangle(1., SolidColorBrush(Color.Gray))
-                        .height(1.)
-                    
-                    (HStack() {
-                        RadioButton(
-                            "🪥",
-                            model.CodeShown = true,
-                            (ShowCode true)
-                        )
-                            .style(WidgetPageStyles.radioButtonStyle)
-                            
-                        RadioButton(
-                            "🏮",
-                            model.CodeShown = false,
-                            (ShowCode false)
-                        )
-                            .style(WidgetPageStyles.radioButtonStyle)
-                    })
-                        .alignEndHorizontal()
+                        .height(2.)
                     
                     Grid() {
                         (View.map SampleMsg (model.Sample.Program.view model.SampleModel))
                             .isVisible(model.CodeShown = false)
-                            .centerVertical()
                             
                         (View.map SampleMsg (model.Sample.SampleCodeFormatted ()))
                             .isVisible(model.CodeShown = true)
-                            .centerVertical()
                     }
                 })
                     .padding(Thickness(20., 0.))

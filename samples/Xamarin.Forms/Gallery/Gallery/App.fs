@@ -6,95 +6,61 @@ open Fabulous.XamarinForms
 
 open type View
 
+[<assembly: ExportFont("icomoon.ttf", Alias = "Icomoon")>]
+do ()
+
 module App =
-    // type Model =
-    //     { SelectedWidget: string
-    //       IsFlyoutPresented: bool }
-    //
-    // type Msg =
-    //     | ItemSelected of int
-    //     | FlyoutToggled of bool
-    //
-    // let init () =
-    //     { SelectedWidget = "None"
-    //       IsFlyoutPresented = false }
-    //
-    // let update msg model =
-    //     match msg with
-    //     | ItemSelected index ->
-    //         { model with
-    //               SelectedWidget = (Registry.getForIndex index).Name
-    //               IsFlyoutPresented = false }
-    //     | FlyoutToggled value -> { model with IsFlyoutPresented = value }
-    //
-    // let flyout () =
-    //     ContentPage(
-    //         "Flyout",
-    //         (GroupedListView
-    //             (Registry.categories)
-    //             (fun category -> TextCell(category.Name))
-    //             (fun widget -> TextCell(widget.Name)))
-    //             .onItemSelected(ItemSelected)
-    //     )
-    //
-    // let detail model =
-    //     NavigationPage() {
-    //         ContentPage(
-    //             "Detail",
-    //             VStack(spacing = 20.) {
-    //                 (HStack() {
-    //                     Label("Fabulous Gallery")
-    //                         .font(namedSize = NamedSize.Title)
-    //                         .textColor(Color.White.ToFabColor())
-    //                         .centerHorizontal(expand = true)
-    //                  })
-    //                     .backgroundColor(FabColor.fromHex "#507aae")
-    //                     .padding(Thickness(0., 44., 0., 8.))
-    //
-    //                 ScrollView(
-    //                     VStack(spacing = 20.) {
-    //                         Label("Description")
-    //                             .font(namedSize = NamedSize.Subtitle)
-    //                             .centerHorizontal()
-    //
-    //                         Label(model.SelectedWidget)
-    //
-    //                         FlexLayout(FlexWrap.Wrap) {
-    //                             for category in Registry.categories do
-    //                                 Label(category.Name)
-    //                                     .height(175.)
-    //                                     .width(175.)
-    //                                     .centerTextHorizontal()
-    //                                     .centerTextVertical()
-    //                                     .backgroundColor(Color.Fuchsia.ToFabColor())
-    //                                     .margin(10.)
-    //                         }
-    //                     }
-    //                 )
-    //                     .alignStartVertical(expand = true)
-    //             }
-    //         )
-    //             .ignoreSafeArea()
-    //             .hasNavigationBar(false)
-    //     }
-    //
-    // let view model =
-    //     Application(
-    //         FlyoutPage(flyout(), detail model)
-    //             .isPresented(model.IsFlyoutPresented, FlyoutToggled)
-    //     )
+    type Model =
+        { SelectedWidget: WidgetPage.Model option
+          IsFlyoutPresented: bool }
+    
+    type Msg =
+        | WidgetPageMsg of WidgetPage.Msg
+        | ItemSelected of int
+        | FlyoutToggled of bool
     
     let init () =
-        WidgetPage.init 1
-        
+        { SelectedWidget = None
+          IsFlyoutPresented = false }, Cmd.none
+    
     let update msg model =
-        WidgetPage.update msg model
+        match msg with
+        | WidgetPageMsg msg ->
+            let m, c = WidgetPage.update msg model.SelectedWidget.Value
+            { model with
+                SelectedWidget = Some m }, (Cmd.map WidgetPageMsg c)
         
+        | ItemSelected index ->
+            { model with
+                  SelectedWidget = Some (WidgetPage.init index)
+                  IsFlyoutPresented = false }, Cmd.none
+            
+        | FlyoutToggled value ->
+            { model with IsFlyoutPresented = value }, Cmd.none
+    
+    let flyout () =
+        ContentPage(
+            "Flyout",
+            (GroupedListView
+                (Samples.Registry.categories)
+                (fun category -> TextCell(category.Name))
+                (fun widget -> TextCell(widget.Name)))
+                .onItemSelected(ItemSelected)
+        )
+    
+    let detail model =
+        NavigationPage() {
+            match model.SelectedWidget with
+            | None ->
+                ContentPage("", Label("Choose a sample"))
+            | Some widgetModel ->
+                View.map WidgetPageMsg (WidgetPage.view widgetModel)
+        }
+    
     let view model =
         Application(
-            NavigationPage() {
-                WidgetPage.view model
-            }
+            FlyoutPage(flyout(), detail model)
+                .isPresented(model.IsFlyoutPresented, FlyoutToggled)
         )
-
+        
     let program = Program.statefulWithCmd init update view
