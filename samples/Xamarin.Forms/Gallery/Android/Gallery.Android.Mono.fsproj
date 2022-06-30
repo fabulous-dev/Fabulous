@@ -62,6 +62,14 @@
         <Compile Include="MainActivity.fs" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+          <Project>{50366fac-4301-4efb-99ca-b511d7d3d782}</Project>
+          <Name>Fabulous.XamarinForms</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+          <Project>{6c7591cf-8023-4867-9c60-a9a770d0e218}</Project>
+          <Name>Fabulous</Name>
+        </ProjectReference>
         <ProjectReference Include="..\Gallery\Gallery.fsproj">
             <Project>{C725DF97-C156-46AB-BD25-3547AD0F8F26}</Project>
             <Name>Gallery</Name>

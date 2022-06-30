@@ -9,7 +9,7 @@ type IRadioButton =
     inherit ITemplatedView
 
 module RadioButton =
-    let WidgetKey = Widgets.register<RadioButton>()
+    let WidgetKey = Widgets.register<CustomRadioButton>()
 
     let BorderColor =
         Attributes.defineBindableAppThemeColor RadioButton.BorderColorProperty
@@ -54,17 +54,17 @@ module RadioButton =
         Attributes.defineBindableWithEvent
             "RadioButton_CheckedChanged"
             RadioButton.IsCheckedProperty
-            (fun target -> (target :?> RadioButton).CheckedChanged)
+            (fun target -> (target :?> CustomRadioButton).Checked)
 
 [<AutoOpen>]
 module RadioButtonBuilders =
 
     type Fabulous.XamarinForms.View with
-        static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
+        static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: 'msg) =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
                 RadioButton.IsCheckedWithEvent.WithValue(
-                    ValueEventData.create isChecked (fun args -> onChecked args.Value |> box)
+                    ValueEventData.create isChecked (fun _ -> box onChecked)
                 ),
                 RadioButton.ContentString.WithValue(content)
             )
@@ -73,14 +73,14 @@ module RadioButtonBuilders =
             (
                 content: WidgetBuilder<'msg, 'marker>,
                 isChecked: bool,
-                onChecked: bool -> 'msg
+                onChecked: 'msg
             ) =
             WidgetBuilder<'msg, IRadioButton>(
                 RadioButton.WidgetKey,
                 AttributesBundle(
                     StackList.one(
                         RadioButton.IsCheckedWithEvent.WithValue(
-                            ValueEventData.create isChecked (fun args -> onChecked args.Value |> box)
+                            ValueEventData.create isChecked (fun _ -> onChecked |> box)
                         )
                     ),
                     ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],

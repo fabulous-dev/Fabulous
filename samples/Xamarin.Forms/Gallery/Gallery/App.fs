@@ -92,7 +92,9 @@ module App =
         
     let view model =
         Application(
-            WidgetPage.view model
+            NavigationPage() {
+                WidgetPage.view model
+            }
         )
 
     let program = Program.statefulWithCmd init update view

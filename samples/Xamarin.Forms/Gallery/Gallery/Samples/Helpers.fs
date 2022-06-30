@@ -13,10 +13,12 @@ type SampleProgram =
 type Sample =
     { Name: string
       Description: string
-      ApiRefLink: string
-      XFDocLink: string
+      SourceFilename: string
+      SourceLink: string
+      DocumentationName: string
+      DocumentationLink: string
       SampleCode: string
-      SampleCodeFormatted: unit -> WidgetBuilder<obj, IFormattedLabel>
+      SampleCodeFormatted: unit -> WidgetBuilder<obj, IView>
       Program: SampleProgram }
 
 module Helper =
@@ -24,3 +26,8 @@ module Helper =
         { init = init >> box
           update = (fun msg model -> update (unbox msg) (unbox model) |> box)
           view = (fun model -> AnyView(View.map box (view (unbox model)))) }
+        
+    let createSampleCodeFormatted (fn: unit -> WidgetBuilder<obj, IFormattedLabel>) =
+        let fn2 () =
+            AnyView(fn ())
+        fn2
