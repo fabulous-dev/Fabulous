@@ -96,28 +96,32 @@ module WidgetPage =
             ScrollView(
                 (VStack(spacing = 20.) {
                     Label(model.Sample.Name)
-                        .font(namedSize = NamedSize.Title)
+                        .font(NamedSize.Title)
                         .padding(top = 20.)
                     
                     Label(model.Sample.Description)
                     
-                    VStack() {
+                    VStack(spacing = 5.) {
                         Label("Source")
+                            .font(NamedSize.Micro)
                             .textTransform(TextTransform.Uppercase)
-                            .font(namedSize = NamedSize.Caption, attributes = FontAttributes.Bold)
+                            .textColor(FabColor.fromHex "#A4A4A4")
                             
                         Label(model.Sample.SourceFilename)
+                            .font(NamedSize.Small)
                             .gestureRecognizers() {
                                 TapGestureRecognizer(OpenBrowser model.Sample.SourceLink)
                             }
                     }
                 
-                    VStack() {
+                    VStack(spacing = 5.) {
                         Label("Documentation")
+                            .font(NamedSize.Micro)
                             .textTransform(TextTransform.Uppercase)
-                            .font(namedSize = NamedSize.Caption, attributes = FontAttributes.Bold)
+                            .textColor(FabColor.fromHex "#A4A4A4")
                             
                         Label(model.Sample.DocumentationName)
+                            .font(NamedSize.Small)
                             .gestureRecognizers() {
                                 TapGestureRecognizer(OpenBrowser model.Sample.DocumentationLink)
                             }
@@ -126,40 +130,32 @@ module WidgetPage =
                     Rectangle(1., SolidColorBrush(Color.Gray))
                         .height(1.)
                     
-                    Frame(
-                        Grid() {
-                            (View.map SampleMsg (model.Sample.Program.view model.SampleModel))
-                                .isVisible(model.CodeShown = false)
-                                .centerVertical()
-                                .margin(Thickness(0., 46., 0., 0.))
-                                
-                            (View.map SampleMsg (model.Sample.SampleCodeFormatted ()))
-                                .isVisible(model.CodeShown = true)
-                                .centerVertical()
-                                .margin(Thickness(0., 46., 0., 0.))
+                    (HStack() {
+                        RadioButton(
+                            "🪥",
+                            model.CodeShown = true,
+                            (ShowCode true)
+                        )
+                            .style(WidgetPageStyles.radioButtonStyle)
                             
-                            (HStack() {                                
-                                RadioButton(
-                                    "🪥",
-                                    model.CodeShown = true,
-                                    (ShowCode true)
-                                )
-                                    .style(WidgetPageStyles.radioButtonStyle)
-                                    
-                                RadioButton(
-                                    "🏮",
-                                    model.CodeShown = false,
-                                    (ShowCode false)
-                                )
-                                    .style(WidgetPageStyles.radioButtonStyle)
-                            })
-                                .alignEndHorizontal()
-                                .alignStartVertical()
-                        }
-                    )
-                        .hasShadow(false)
-                        .padding(10.)
-                        .borderColor(Color.Gray.ToFabColor())
+                        RadioButton(
+                            "🏮",
+                            model.CodeShown = false,
+                            (ShowCode false)
+                        )
+                            .style(WidgetPageStyles.radioButtonStyle)
+                    })
+                        .alignEndHorizontal()
+                    
+                    Grid() {
+                        (View.map SampleMsg (model.Sample.Program.view model.SampleModel))
+                            .isVisible(model.CodeShown = false)
+                            .centerVertical()
+                            
+                        (View.map SampleMsg (model.Sample.SampleCodeFormatted ()))
+                            .isVisible(model.CodeShown = true)
+                            .centerVertical()
+                    }
                 })
                     .padding(Thickness(20., 0.))
             )

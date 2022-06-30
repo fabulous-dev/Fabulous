@@ -74,7 +74,6 @@ type LabelModifiers =
         (
             this: WidgetBuilder<'msg, #ILabel>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
         ) =
@@ -84,6 +83,27 @@ type LabelModifiers =
         match size with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(v))
+
+        match attributes with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
+
+        match fontFamily with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontFamily.WithValue(v))
+
+        res
+        
+    [<Extension>]
+    static member inline font
+        (
+            this: WidgetBuilder<'msg, #ILabel>,
+            ?namedSize: NamedSize,
+            ?attributes: FontAttributes,
+            ?fontFamily: string
+        ) =
+
+        let mutable res = this
 
         match namedSize with
         | None -> ()
