@@ -179,7 +179,7 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute storing a Widget for a CLR property
-    let inline definePropertyWidget<'T when 'T: null>
+    let definePropertyWidget<'T when 'T: null>
         (name: string)
         ([<InlineIfLambda>] get: obj -> obj)
         ([<InlineIfLambda>] set: obj -> 'T -> unit)

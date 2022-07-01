@@ -17,7 +17,11 @@ module App =
         | Nope -> model
 
     let view model =
-        Application()
+        Application() {
+            Window(
+                Label(model.Text)
+            )
+        }
 
     let program =
         Program.stateful init update view

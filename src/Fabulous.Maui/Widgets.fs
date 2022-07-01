@@ -29,6 +29,10 @@ module Widgets =
                           match parentNode with
                           | ValueNone -> None
                           | ValueSome node -> Some node
+                          
+                      match parentNode with
+                      | None -> ()
+                      | Some node -> view.Parent <- node.Target :?> Microsoft.Maui.IElement
 
                       let node =
                           ViewNode(parentNode, treeContext, weakReference)

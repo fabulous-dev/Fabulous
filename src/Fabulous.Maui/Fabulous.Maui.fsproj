@@ -9,8 +9,10 @@
     <ItemGroup>
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
-        <Compile Include="Views\Element.fs" />
+        <Compile Include="Views\Window.fs" />
         <Compile Include="Views\Application.fs" />
+        <Compile Include="Views\StackLayout.fs" />
+        <Compile Include="Views\Label.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>

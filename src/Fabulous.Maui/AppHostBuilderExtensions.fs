@@ -10,7 +10,7 @@ open System
 [<Extension>]
 type AppHostBuilderExtensions =
     [<Extension>]
-    static member UseFabulousApp<'model, 'msg, 'marker when 'marker :> Fabulous.Maui.IApplication>(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, 'marker>): MauiAppBuilder =
+    static member UseFabulousApp<'model, 'msg, 'marker when 'marker :> IApplication>(this: MauiAppBuilder, program: Program<unit, 'model, 'msg, 'marker>): MauiAppBuilder =
         this.Services.TryAddSingleton<IApplication>(fun (_serviceProvider: IServiceProvider) ->
             Program.startApplication program
         )
@@ -18,7 +18,7 @@ type AppHostBuilderExtensions =
         this
 
     [<Extension>]
-    static member UseFabulousApp<'arg, 'model, 'msg, 'marker when 'marker :> Fabulous.Maui.IApplication>(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, 'marker>, arg: 'arg): MauiAppBuilder =
+    static member UseFabulousApp<'arg, 'model, 'msg, 'marker when 'marker :> IApplication>(this: MauiAppBuilder, program: Program<'arg, 'model, 'msg, 'marker>, arg: 'arg): MauiAppBuilder =
         this.Services.TryAddSingleton<IApplication>(fun (_serviceProvider: IServiceProvider) ->
             Program.startApplicationWithArgs arg program
         )

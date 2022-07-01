@@ -3,6 +3,7 @@
 open System.Diagnostics
 open Fabulous
 open Fabulous.Maui
+open Microsoft.Maui
 
 module ViewHelpers =
     let canReuseView (prev: Widget) (curr: Widget) =
@@ -67,11 +68,11 @@ module Program =
             (fun msg model -> let m, c = update msg model in m, mapCmds c)
             view
 
-    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IApplication>) : Microsoft.Maui.IApplication =
+    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #IApplication>) : IApplication =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
 
-    let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : Microsoft.Maui.IApplication =
+    let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : IApplication =
         startApplicationWithArgs () program
