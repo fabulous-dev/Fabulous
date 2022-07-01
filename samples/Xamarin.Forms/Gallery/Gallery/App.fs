@@ -50,13 +50,18 @@ module App =
         )
     
     let detail model =
-        NavigationPage() {
-            match model.SelectedWidget with
-            | None ->
-                ContentPage("", Label("Choose a sample"))
-            | Some widgetModel ->
-                View.map WidgetPageMsg (WidgetPage.view widgetModel)
-        }
+        (NavigationPage() {
+            (
+                match model.SelectedWidget with
+                | None ->
+                    ContentPage("", Label("Choose a sample"))
+                | Some widgetModel ->
+                    View.map WidgetPageMsg (WidgetPage.view widgetModel)
+            )
+                .backgroundColor(Color.White.ToFabColor(), FabColor.fromHex "#262626")
+        })
+            .barBackgroundColor(Color.White.ToFabColor(), FabColor.fromHex "#262626")
+            .barTextColor(Color.Black.ToFabColor(), Color.White.ToFabColor())
     
     let view model =
         Application(
