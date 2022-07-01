@@ -19,7 +19,7 @@ module WidgetPageStyles =
                 let vsmGroup = VisualStateGroup(Name = "CheckedStates")
                 
                 let vsmChecked = VisualState(Name = "Checked")
-                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value = Color.FromHex("#1a76d2")))
+                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value =  Color.FromHex("#1a76d2")))
                 vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.FromHex("#2196f3")))
                 vsmChecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.White))
                 vsmGroup.States.Add(vsmChecked)

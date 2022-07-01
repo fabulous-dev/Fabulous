@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Gallery</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname</string>
+	<string>org.fabulous.xf.gallery</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>UILaunchStoryboardName</key>

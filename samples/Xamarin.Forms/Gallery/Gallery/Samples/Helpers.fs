@@ -115,7 +115,7 @@ module Helper =
         
         (FormattedLabel() {
             for str, blockType in tokens do
-                let textColor =
+                let lightTextColor =
                     match blockType with
                     | Normal -> FabColor.fromHex "#383838"
                     | Comment -> FabColor.fromHex "#3e851a"
@@ -125,8 +125,20 @@ module Helper =
                     | Property -> FabColor.fromHex "#4092a2"
                     | Value -> FabColor.fromHex "#a03b6a"
                     | Message -> FabColor.fromHex "#6833b6"
+                    
                 
-                Span(str).textColor(textColor)
+                let darkTextColor =
+                    match blockType with
+                    | Normal -> FabColor.fromHex "#BDBDBD"
+                    | Comment -> FabColor.fromHex "#8FC272"
+                    | Type -> FabColor.fromHex "#5AB786"
+                    | Keyword -> FabColor.fromHex "#7894E7"
+                    | String -> FabColor.fromHex "#C2A371"
+                    | Property -> FabColor.fromHex "#7CC0CB"
+                    | Value -> FabColor.fromHex "#E198BE"
+                    | Message -> FabColor.fromHex "#BD93FB"
+                
+                Span(str).textColor(lightTextColor, darkTextColor)
         })
             .font(NamedSize.Small, fontFamily = "JetBrainsMono")
             .lineHeight(1.2)
