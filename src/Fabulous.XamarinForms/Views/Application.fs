@@ -8,7 +8,7 @@ type IApplication =
     inherit IElement
 
 module Application =
-    let WidgetKey = Widgets.register<Application>()
+    let WidgetKey = Widgets.register<CustomApplication>()
 
     let MainPage =
         Attributes.definePropertyWidget
@@ -66,6 +66,15 @@ module Application =
         Attributes.defineEvent<ModalPushingEventArgs>
             "Application_ModalPushing"
             (fun target -> (target :?> Application).ModalPushing)
+
+    let Start =
+        Attributes.defineEvent<unit> "Application_Start" (fun target -> (target :?> CustomApplication).Start)
+
+    let Sleep =
+        Attributes.defineEvent<unit> "Application_Sleep" (fun target -> (target :?> CustomApplication).Sleep)
+
+    let Resume =
+        Attributes.defineEvent<unit> "Application_Resume" (fun target -> (target :?> CustomApplication).Resume)
 
 [<AutoOpen>]
 module ApplicationBuilders =
@@ -131,3 +140,15 @@ type ApplicationModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+    [<Extension>]
+    static member inline onStart(this: WidgetBuilder<'msg, #IApplication>, onStart: 'msg) =
+        this.AddScalar(Application.Start.WithValue(fun () -> box onStart))
+
+    [<Extension>]
+    static member inline onSleep(this: WidgetBuilder<'msg, #IApplication>, onSleep: 'msg) =
+        this.AddScalar(Application.Sleep.WithValue(fun () -> box onSleep))
+
+    [<Extension>]
+    static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
+        this.AddScalar(Application.Resume.WithValue(fun () -> box onResume))
