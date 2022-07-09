@@ -159,9 +159,15 @@ type LinkRequestReceivedEventArgs(uri: Uri) =
 
 type CustomApplication() =
     inherit Application()
-
+    
     let linkRequestReceived =
         Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
+        
+    member val AppLinks: IAppLinks =
+        DependencyService.Get<IAppLinks>() with get
+        
+    interface IAppIndexingProvider with
+        member this.AppLinks = this.AppLinks
 
     [<CLIEvent>]
     member _.LinkRequestReceived = linkRequestReceived.Publish
