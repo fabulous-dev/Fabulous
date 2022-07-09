@@ -6,7 +6,6 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 
 module AppLinkUpdaters =
-    // TODO Update the implementation to use the correct type for the AppLinkEntry
     let applyDiffApplicationLinks (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let application = node.Target :?> CustomApplication
         let appLinks = application.AppLinks
@@ -31,7 +30,6 @@ module AppLinkUpdaters =
                 let link = appLink :?> AppLinkEntry
                 appLinks.DeregisterLink(link)
 
-    // TODO Update the implementation to use the correct type for the AppLinkEntry
     let updateAppLinks
         (oldValueOpt: ArraySlice<Widget> voption)
         (newValueOpt: ArraySlice<Widget> voption)
@@ -49,8 +47,9 @@ module AppLinkUpdaters =
             for widget in span do
                 let struct (_, appLink) = Helpers.createViewForWidget node widget
                 let link = appLink :?> AppLinkEntry
-
-                application.AppLinks.RegisterLink(link)
+                
+                if application.AppLinks <> null then
+                    application.AppLinks.RegisterLink(link)
 
             // Silently remove all old pages
             match oldValueOpt with

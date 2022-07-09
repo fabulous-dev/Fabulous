@@ -162,8 +162,8 @@ type CustomApplication() =
     
     let linkRequestReceived =
         Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
-        
-    member val AppLinks: IAppLinks =
+
+    member val AppLinks =
         DependencyService.Get<IAppLinks>() with get
         
     interface IAppIndexingProvider with
