@@ -52,6 +52,7 @@ type FabulousTimePicker() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
@@ -73,11 +74,13 @@ type CustomEntryCell() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = EntryCell.TextProperty.PropertyName then
             textChanged.Trigger(this, TextChangedEventArgs(oldText, this.Text))
 
     override this.OnPropertyChanging(propertyName) =
         base.OnPropertyChanging(propertyName)
+
         if propertyName = EntryCell.TextProperty.PropertyName then
             oldText <- this.Text
 
@@ -95,11 +98,13 @@ type CustomPicker() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             selectedIndexChanged.Trigger(this, PositionChangedEventArgs(oldSelectedIndex, this.SelectedIndex))
 
     override this.OnPropertyChanging(propertyName) =
         base.OnPropertyChanging(propertyName)
+
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             oldSelectedIndex <- this.SelectedIndex
 
@@ -147,19 +152,20 @@ type CustomFlyoutPage() as this =
 
     member _.OnIsPresentedChanged(_) =
         isPresentedChanged.Trigger(this, this.IsPresented)
-            
+
 type LinkRequestReceivedEventArgs(uri: Uri) =
     inherit EventArgs()
     member _.Uri = uri
-            
+
 type CustomApplication() =
     inherit Application()
-    
-    let linkRequestReceived = Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
-    
+
+    let linkRequestReceived =
+        Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
+
     [<CLIEvent>]
     member _.LinkRequestReceived = linkRequestReceived.Publish
-    
-    override this.OnAppLinkRequestReceived(uri : Uri)=
+
+    override this.OnAppLinkRequestReceived(uri: Uri) =
         linkRequestReceived.Trigger(this, LinkRequestReceivedEventArgs(uri))
         base.OnAppLinkRequestReceived(uri)

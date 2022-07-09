@@ -30,32 +30,12 @@ module App =
         }
         |> Cmd.ofAsyncMsg
 
-    let init () = initModel, Cmd.none
-    
-    let applicationRef = ViewRef<CustomApplication>()
-    
-    let createLink =
-        let pageLink = new Xamarin.Forms.AppLinkEntry()
-        pageLink.Title <- "Im a deep link"
-        pageLink.Description <- "Counter App"
-        pageLink.AppLinkUri <- Uri("https://www.xamarin.com/platform")
-        pageLink.IsLinkActive <- true
-
-        pageLink.KeyValues.Add("contentType", "TodoItemPage");
-        pageLink.KeyValues.Add("appName", "");
-        pageLink.KeyValues.Add("companyName", "Xamarin");
-
-        pageLink
+    let init () = initModel, Cmd.none   
         
     let update msg model =
         match msg with
         | Increment ->
             let model = { model with Count = model.Count + model.Step }
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(
-                fun _ ->
-                    match applicationRef.TryValue with
-                    | Some target -> target.AppLinks.RegisterLink(createLink)
-                    | None -> failwith "No application ref")
             model, Cmd.none
         | Decrement ->
             { model with
@@ -104,6 +84,10 @@ module App =
                     .centerVertical()
             )
         ).onLinkReceived(fun args -> LinkReceived args.Uri)
-         .reference(applicationRef)
+         .appLinks(){
+             AppLinkEntry("Im a deep link", "https://www.xamarin.com/platform")
+                .description("Im a deep link")
+                .thumbnail("https://www.xamarin.com/images/xamarin-logo.png")
+         }
 
     let program = Program.statefulWithCmd init update view

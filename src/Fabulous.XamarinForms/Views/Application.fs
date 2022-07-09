@@ -5,6 +5,66 @@ open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
 
+module AppLinkUpdaters =
+    // TODO Update the implementation to use the correct type for the AppLinkEntry
+    let applyDiffApplicationLinks (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+        let application = node.Target :?> CustomApplication
+        let appLinks = application.AppLinks
+
+        for diff in diffs do
+            match diff with
+            | WidgetCollectionItemChange.Insert (_, widget) ->
+                let struct (_, appLink) = Helpers.createViewForWidget node widget
+                let page = appLink :?> AppLinkEntry
+                appLinks.RegisterLink(page)
+            | WidgetCollectionItemChange.Update _ -> ()
+            | WidgetCollectionItemChange.Replace (_, _, newWidget) ->
+                let struct (_, appLink) =
+                    Helpers.createViewForWidget node newWidget
+
+                let link = appLink :?> AppLinkEntry
+                appLinks.DeregisterLink(link)
+            | WidgetCollectionItemChange.Remove (_, newWidget) ->
+                let struct (_, appLink) =
+                    Helpers.createViewForWidget node newWidget
+
+                let link = appLink :?> AppLinkEntry
+                appLinks.DeregisterLink(link)
+
+    // TODO Update the implementation to use the correct type for the AppLinkEntry
+    let updateAppLinks
+        (oldValueOpt: ArraySlice<Widget> voption)
+        (newValueOpt: ArraySlice<Widget> voption)
+        (node: IViewNode)
+        =
+        let application = node.Target :?> CustomApplication
+
+        match newValueOpt with
+        | ValueNone -> failwith "Application AppLinks requires its Pages modifier to be set"
+
+        | ValueSome widgets ->
+            // Push all new pages but only animate the last one
+            let span = ArraySlice.toSpan widgets
+
+            for widget in span do
+                let struct (_, appLink) = Helpers.createViewForWidget node widget
+                let link = appLink :?> AppLinkEntry
+
+                application.AppLinks.RegisterLink(link)
+
+            // Silently remove all old pages
+            match oldValueOpt with
+            | ValueNone -> ()
+            | ValueSome oldWidgets ->
+                let appLinks = application.AppLinks
+                let span = ArraySlice.toSpan oldWidgets
+
+                for i = 0 to span.Length - 1 do
+                    let linkArr = span.ToArray()
+                    let widget = linkArr.[i]
+                    let struct (_, appLink) = Helpers.createViewForWidget node widget
+                    appLinks.DeregisterLink(appLink :?> AppLinkEntry)
+
 type IApplication =
     inherit IElement
 
@@ -46,7 +106,9 @@ module Application =
     let RequestedThemeChanged =
         Attributes.defineEvent<AppThemeChangedEventArgs>
             "Application_RequestedThemeChanged"
-            (fun target -> (target :?> CustomApplication).RequestedThemeChanged)
+            (fun target ->
+                (target :?> CustomApplication)
+                    .RequestedThemeChanged)
 
     let ModalPopped =
         Attributes.defineEvent<ModalPoppedEventArgs>
@@ -66,44 +128,18 @@ module Application =
     let ModalPushing =
         Attributes.defineEvent<ModalPushingEventArgs>
             "Application_ModalPushing"
-            (fun target -> (target :?> CustomApplication).ModalPushing) 
-    
-    // TODO: AppLinks is of type IAppLinks. So it is not a IList<IAppLink> and we can not add an
-    // So I think for now we should access to RegisterLink and DeregisterLink via ViewRef<Application>()
-    // Application.Current.AppLinks.RegisterLink (appLink);
-    let RegisterLink =
-        Attributes.defineSimpleScalarWithEquality<AppLinkEntry>
-            "Application_RegisterLink"
-            (fun _ newValueOpt node ->
-                let application = node.Target :?> CustomApplication
+            (fun target -> (target :?> CustomApplication).ModalPushing)
 
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> null
-                    | ValueSome v -> v
-
-                application.AppLinks.RegisterLink value)
-        
-    // TODO: AppLinks is of type IAppLinks. So it is not a IList<IAppLink> and we can not add an
-    // So I think for now we should access to RegisterLink and DeregisterLink via ViewRef<Application>()
-    // Application.Current.AppLinks.RegisterLink (appLink);
-    let DeregisterLink =
-        Attributes.defineSimpleScalarWithEquality<AppLinkEntry>
-            "Application_DeregisterLink"
-            (fun _ newValueOpt node ->
-                let application = node.Target :?> CustomApplication
-
-                let value =
-                    match newValueOpt with
-                    | ValueNone -> null
-                    | ValueSome v -> v
-
-                application.AppLinks.DeregisterLink value)
-            
     let LinkRequestReceived =
         Attributes.defineEvent<LinkRequestReceivedEventArgs>
             "Application_LinkRequestReceived"
             (fun target -> (target :?> CustomApplication).LinkRequestReceived)
+
+    let AppLinks =
+        Attributes.defineWidgetCollection
+            "Application_AppLinks"
+            AppLinkUpdaters.applyDiffApplicationLinks
+            AppLinkUpdaters.updateAppLinks
 
 [<AutoOpen>]
 module ApplicationBuilders =
@@ -165,14 +201,21 @@ type ApplicationModifiers =
         ) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
-    static member inline onModalPushing(this: WidgetBuilder<'msg, #IApplication>, fn: ModalPushingEventArgs -> 'msg) =
-        this.AddScalar(Application.ModalPushing.WithValue(fn >> box))
-        
     [<Extension>]
-    static member inline onLinkReceived(this: WidgetBuilder<'msg, #IApplication>, fn: LinkRequestReceivedEventArgs -> 'msg) =
+    static member inline onLinkReceived
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            fn: LinkRequestReceivedEventArgs -> 'msg
+        ) =
         this.AddScalar(Application.LinkRequestReceived.WithValue(fn >> box))
-                
+
     /// <summary>Link a ViewRef to access the direct Application instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<CustomApplication>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+    [<Extension>]
+    static member inline appLinks<'msg, 'marker when 'marker :> IApplication>(this: WidgetBuilder<'msg, 'marker>) =
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IAppLinkEntry>
+            Application.AppLinks
+            this
