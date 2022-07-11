@@ -48,7 +48,7 @@ toc: true
 ```fs
 Application(
     ContentPage(
-        "Tilte",
+        "Title",
         Stack() {
             Label("Hello World!")
         }
