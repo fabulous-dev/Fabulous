@@ -156,21 +156,21 @@ type CustomFlyoutPage() as this =
 type CustomApplication() =
     inherit Application()
 
-    let start = Event<EventHandler<unit>, unit>()
-    let sleep = Event<EventHandler<unit>, unit>()
-    let resume = Event<EventHandler<unit>, unit>()
+    let start = Event<EventHandler, EventArgs>()
+    let sleep = Event<EventHandler, EventArgs>()
+    let resume = Event<EventHandler, EventArgs>()
 
     [<CLIEvent>]
     member _.Start = start.Publish
 
-    override this.OnStart() = start.Trigger(this, ())
+    override this.OnStart() = start.Trigger(this, EventArgs())
 
     [<CLIEvent>]
     member _.Sleep = sleep.Publish
 
-    override this.OnSleep() = sleep.Trigger(this, ())
+    override this.OnSleep() = sleep.Trigger(this, EventArgs())
 
     [<CLIEvent>]
     member _.Resume = resume.Publish
 
-    override this.OnResume() = resume.Trigger(this, ())
+    override this.OnResume() = resume.Trigger(this, EventArgs())

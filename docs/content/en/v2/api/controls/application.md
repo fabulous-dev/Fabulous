@@ -39,9 +39,9 @@ toc: true
 | onModalPopping(onModalPopping: ModalPoppingEventArgs -> 'msg) | Event that is fired when a modal page is popping. |
 | onModalPushed(onModalPushed: ModalPushedEventArgs -> 'msg) | Event that is fired when a modal page is pushed. |
 | onModalPushing(onModalPushing: ModalPushingEventArgs -> 'msg) | Event that is fired when a modal page is pushing. |
-| onStart(onStart: 'msg) | Event that is fired when the application starts. |
-| onSleep(onSleep: 'msg) | Event that is fired when the application goes to the background. |
-| onResume(onResume: 'msg) | Event that is fired when the application is resumed, after being sent to the background. |
+| onStart(onStart: 'msg) | Dispatch a message when the application starts |
+| onSleep(onSleep: 'msg) | Dispatch a message when the application is paused by the OS |
+| onResume(onResume: 'msg) | Dispatch a message when the application is resumed by the OS |
 
 ## Usages
 

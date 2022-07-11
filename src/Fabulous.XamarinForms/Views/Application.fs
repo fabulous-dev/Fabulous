@@ -68,13 +68,13 @@ module Application =
             (fun target -> (target :?> Application).ModalPushing)
 
     let Start =
-        Attributes.defineEvent<unit> "Application_Start" (fun target -> (target :?> CustomApplication).Start)
+        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> CustomApplication).Start)
 
     let Sleep =
-        Attributes.defineEvent<unit> "Application_Sleep" (fun target -> (target :?> CustomApplication).Sleep)
+        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> CustomApplication).Sleep)
 
     let Resume =
-        Attributes.defineEvent<unit> "Application_Resume" (fun target -> (target :?> CustomApplication).Resume)
+        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> CustomApplication).Resume)
 
 [<AutoOpen>]
 module ApplicationBuilders =
@@ -136,19 +136,22 @@ type ApplicationModifiers =
         ) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
-    /// <summary>Link a ViewRef to access the direct Application instance</summary>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-
+    /// Dispatch a message when the application starts
     [<Extension>]
     static member inline onStart(this: WidgetBuilder<'msg, #IApplication>, onStart: 'msg) =
         this.AddScalar(Application.Start.WithValue(fun () -> box onStart))
 
+    /// Dispatch a message when the application is paused by the OS
     [<Extension>]
     static member inline onSleep(this: WidgetBuilder<'msg, #IApplication>, onSleep: 'msg) =
         this.AddScalar(Application.Sleep.WithValue(fun () -> box onSleep))
 
+    /// Dispatch a message when the application is resumed by the OS
     [<Extension>]
     static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
         this.AddScalar(Application.Resume.WithValue(fun () -> box onResume))
+
+    /// Link a ViewRef to access the direct Application instance
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
