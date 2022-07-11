@@ -92,6 +92,8 @@ module ViewHelpers =
         { Log = log
           MinLogLevel = LogLevel.Error }
 
+    let defaultOnException _exn = false
+
 module Program =
     let inline private define
         (init: 'arg -> 'model * Cmd<'msg>)
@@ -104,7 +106,8 @@ module Program =
           View = view
           CanReuseView = ViewHelpers.canReuseView
           SyncAction = Device.BeginInvokeOnMainThread
-          Logger = ViewHelpers.defaultLogger() }
+          Logger = ViewHelpers.defaultLogger()
+          OnException = ViewHelpers.defaultOnException }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =

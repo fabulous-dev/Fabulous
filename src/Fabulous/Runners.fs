@@ -1,7 +1,9 @@
 namespace Fabulous
 
 open System
+open System.Collections.Concurrent
 open System.Collections.Generic
+open System.Runtime.ExceptionServices
 open Fabulous
 
 /// Configuration of the Fabulous application
@@ -19,7 +21,10 @@ type Program<'arg, 'model, 'msg, 'marker> =
       /// Runs the View function on the main thread
       SyncAction: (unit -> unit) -> unit
       /// Configuration for logging all output messages from Fabulous
-      Logger: Logger }
+      Logger: Logger
+      /// Exception handler for all uncaught exceptions happening in the MVU loop.
+      /// Returns true if the exception was handled, false otherwise.
+      OnException: exn -> bool }
 
 type IRunner =
     interface
@@ -61,30 +66,42 @@ module ViewAdapterStore =
 /// Runners are responsible for the Model-Update part of MVU.
 /// They read from and update StateStore.
 module Runners =
+
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
     type Runner<'arg, 'model, 'msg, 'marker>(key: StateKey, program: Program<'arg, 'model, 'msg, 'marker>) =
+        let mutable _reentering = false
+        let queue = ConcurrentQueue<'msg>()
 
-        let mailbox =
-            MailboxProcessor.Start
-                (fun inbox ->
-                    let rec processMsg () =
-                        async {
-                            try
-                                let! msg = inbox.Receive()
-                                let model = unbox(StateStore.get key)
-                                let newModel, cmd = program.Update(msg, model)
-                                StateStore.set key newModel
+        let rec dispatch msg =
+            try
+                if _reentering then
+                    queue.Enqueue(msg)
+                else
+                    _reentering <- true
 
-                                for sub in cmd do
-                                    sub inbox.Post
+                    let mutable lastMsg = ValueSome msg
 
-                                return! processMsg()
-                            with
-                            | ex -> program.Logger.Fatal(ex)
-                        }
+                    while lastMsg.IsSome do
+                        let model = unbox(StateStore.get key)
+                        let newModel, cmd = program.Update(lastMsg.Value, model)
+                        StateStore.set key newModel
 
-                    processMsg())
+                        for sub in cmd do
+                            sub dispatch
+
+                        lastMsg <-
+                            match queue.TryDequeue() with
+                            | false, _ -> ValueNone
+                            | true, msg -> ValueSome msg
+
+                    _reentering <- false
+            with
+            | ex ->
+                _reentering <- false
+
+                if not(program.OnException ex) then
+                    reraise()
 
         let start arg =
             try
@@ -94,12 +111,14 @@ module Runners =
                 let subs = program.Subscribe(model)
 
                 for sub in subs do
-                    sub mailbox.Post
+                    sub dispatch
 
                 for sub in cmd do
-                    sub mailbox.Post
+                    sub dispatch
             with
-            | ex -> program.Logger.Fatal(ex)
+            | ex ->
+                if not(program.OnException(ex)) then
+                    reraise()
 
         interface IRunner
 
@@ -110,7 +129,7 @@ module Runners =
         member _.Start(arg) = start arg
 
         /// Dispatch a message to the Runner loop
-        member _.Dispatch(msg) = mailbox.Post msg
+        member _.Dispatch(msg) = dispatch msg
 
     /// Create a new Runner for the component
     let create<'arg, 'model, 'msg, 'marker> (program: Program<'arg, 'model, 'msg, 'marker>) =
@@ -134,13 +153,13 @@ module ViewAdapters =
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
             logger: Logger,
+            onException: exn -> bool,
             dispatch: 'msg -> unit,
             getViewNode: obj -> IViewNode
         ) as this =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
-        let mutable _allowDispatch = false
 
         let _stateSubscription =
             StateStore.StateChanged.Subscribe(this.OnStateChanged)
@@ -165,8 +184,6 @@ module ViewAdapters =
                 definition.CreateView(widget, treeContext, ValueNone)
 
             _root <- root
-            _allowDispatch <- true
-
             _root
 
         /// Listens for StateStore changes and updates the view if necessary
@@ -186,9 +203,9 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex -> logger.Fatal(ex))
+                            | ex -> if not(onException ex) then reraise())
             with
-            | ex -> logger.Fatal(ex)
+            | ex -> if not(onException ex) then reraise()
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()
@@ -212,6 +229,7 @@ module ViewAdapters =
                 runner.Program.CanReuseView,
                 runner.Program.SyncAction,
                 runner.Program.Logger,
+                runner.Program.OnException,
                 runner.Dispatch,
                 getViewNode
             )
