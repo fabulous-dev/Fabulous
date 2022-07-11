@@ -73,8 +73,8 @@ module Application =
     let MainPage =
         Attributes.definePropertyWidget
             "Application_MainPage"
-            (fun target -> ViewNode.get (target :?> CustomApplication).MainPage)
-            (fun target value -> (target :?> CustomApplication).MainPage <- value)
+            (fun target -> (target :?> Application).MainPage :> obj)
+            (fun target value -> (target :?> Application).MainPage <- value)
 
     let Resources =
         Attributes.defineSimpleScalarWithEquality<ResourceDictionary>
@@ -140,6 +140,15 @@ module Application =
             AppLinkUpdaters.applyDiffApplicationLinks
             AppLinkUpdaters.updateAppLinks
 
+    let Start =
+        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> CustomApplication).Start)
+
+    let Sleep =
+        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> CustomApplication).Sleep)
+
+    let Resume =
+        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> CustomApplication).Resume)
+
 [<AutoOpen>]
 module ApplicationBuilders =
     type Fabulous.XamarinForms.View with
@@ -200,6 +209,22 @@ type ApplicationModifiers =
         ) =
         this.AddScalar(Application.ModalPushing.WithValue(onModalPushing >> box))
 
+    /// Dispatch a message when the application starts
+    [<Extension>]
+    static member inline onStart(this: WidgetBuilder<'msg, #IApplication>, onStart: 'msg) =
+        this.AddScalar(Application.Start.WithValue(fun () -> box onStart))
+
+    /// Dispatch a message when the application is paused by the OS
+    [<Extension>]
+    static member inline onSleep(this: WidgetBuilder<'msg, #IApplication>, onSleep: 'msg) =
+        this.AddScalar(Application.Sleep.WithValue(fun () -> box onSleep))
+
+    /// Dispatch a message when the application is resumed by the OS
+    [<Extension>]
+    static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
+        this.AddScalar(Application.Resume.WithValue(fun () -> box onResume))
+
+    /// Link a ViewRef to access the direct Application instance
     [<Extension>]
     static member inline onLinkReceived
         (

@@ -201,11 +201,8 @@ module Attributes =
         Attributes.definePropertyWidget
             bindableProperty.PropertyName
             (fun target ->
-                let childTarget =
-                    (target :?> BindableObject)
-                        .GetValue(bindableProperty)
-
-                ViewNode.get childTarget)
+                (target :?> BindableObject)
+                    .GetValue(bindableProperty))
             (fun target value ->
                 let bindableObject = target :?> BindableObject
 

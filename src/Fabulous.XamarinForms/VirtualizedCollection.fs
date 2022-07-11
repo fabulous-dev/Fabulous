@@ -7,7 +7,7 @@ open Xamarin.Forms
 
 module BindableHelpers =
     /// On BindableContextChanged triggered, call the Reconciler to update the cell
-    let createOnBindingContextChanged canReuseView templateFn (target: BindableObject) =
+    let createOnBindingContextChanged canReuseView (getViewNode: obj -> IViewNode) templateFn (target: BindableObject) =
         let mutable prevWidgetOpt: Widget voption = ValueNone
 
         let onBindingContextChanged () =
@@ -16,7 +16,7 @@ module BindableHelpers =
             | value ->
                 let currWidget = templateFn value
 
-                let node = ViewNode.get target
+                let node = getViewNode target
                 Reconciler.update canReuseView prevWidgetOpt currWidget node
                 prevWidgetOpt <- ValueSome currWidget
 
@@ -35,7 +35,11 @@ type WidgetDataTemplate(parent: IViewNode, ``type``: Type, templateFn: obj -> Wi
         bindableObject.SetValue(ViewNode.ViewNodeProperty, viewNode)
 
         let onBindingContextChanged =
-            BindableHelpers.createOnBindingContextChanged parent.TreeContext.CanReuseView templateFn bindableObject
+            BindableHelpers.createOnBindingContextChanged
+                parent.TreeContext.CanReuseView
+                parent.TreeContext.GetViewNode
+                templateFn
+                bindableObject
 
         bindableObject.BindingContextChanged.Add(fun _ -> onBindingContextChanged())
 

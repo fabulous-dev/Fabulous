@@ -14,7 +14,6 @@ module GeometryGroup =
     let Children =
         Attributes.defineListWidgetCollection
             "GeometryGroup_Children"
-            ViewNode.get
             (fun target -> (target :?> GeometryGroup).Children :> IList<_>)
 
     let FillRule =

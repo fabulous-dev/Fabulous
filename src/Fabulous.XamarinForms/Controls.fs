@@ -153,25 +153,24 @@ type CustomFlyoutPage() as this =
     member _.OnIsPresentedChanged(_) =
         isPresentedChanged.Trigger(this, this.IsPresented)
 
-type LinkRequestReceivedEventArgs(uri: Uri) =
-    inherit EventArgs()
-    member _.Uri = uri
-
 type CustomApplication() =
     inherit Application()
-    
-    let linkRequestReceived =
-        Event<EventHandler<LinkRequestReceivedEventArgs>, _>()
 
-    member val AppLinks =
-        DependencyService.Get<IAppLinks>() with get
-        
-    interface IAppIndexingProvider with
-        member this.AppLinks = this.AppLinks
+    let start = Event<EventHandler, EventArgs>()
+    let sleep = Event<EventHandler, EventArgs>()
+    let resume = Event<EventHandler, EventArgs>()
 
     [<CLIEvent>]
-    member _.LinkRequestReceived = linkRequestReceived.Publish
+    member _.Start = start.Publish
 
-    override this.OnAppLinkRequestReceived(uri: Uri) =
-        linkRequestReceived.Trigger(this, LinkRequestReceivedEventArgs(uri))
-        base.OnAppLinkRequestReceived(uri)
+    override this.OnStart() = start.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Sleep = sleep.Publish
+
+    override this.OnSleep() = sleep.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Resume = resume.Publish
+
+    override this.OnResume() = resume.Trigger(this, EventArgs())

@@ -39,13 +39,16 @@ toc: true
 | onModalPopping(onModalPopping: ModalPoppingEventArgs -> 'msg) | Event that is fired when a modal page is popping. |
 | onModalPushed(onModalPushed: ModalPushedEventArgs -> 'msg) | Event that is fired when a modal page is pushed. |
 | onModalPushing(onModalPushing: ModalPushingEventArgs -> 'msg) | Event that is fired when a modal page is pushing. |
+| onStart(onStart: 'msg) | Dispatch a message when the application starts |
+| onSleep(onSleep: 'msg) | Dispatch a message when the application is paused by the OS |
+| onResume(onResume: 'msg) | Dispatch a message when the application is resumed by the OS |
 
 ## Usages
 
 ```fs
 Application(
     ContentPage(
-        "Tilte",
+        "Title",
         Stack() {
             Label("Hello World!")
         }
@@ -57,6 +60,9 @@ Application(
   .onModalPopping(ModalPopping)
   .onModalPushed(ModalPushed)
   .onModalPushing(ModalPushing)
+  .onStart(Started)
+  .onSleep(WentToSleep)
+  .onResume(Resumed)
 ```
 
 ### Get access to the underlying Xamarin.Forms.Entry

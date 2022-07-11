@@ -13,7 +13,6 @@ module FormattedLabel =
     let Spans =
         Attributes.defineListWidgetCollection
             "FormattedString_Spans"
-            ViewNode.get
             (fun target ->
                 let label = target :?> Label
 
