@@ -15,7 +15,6 @@ module SwipeItems =
     let SwipeItems =
         Attributes.defineListWidgetCollection
             "SwipeItems_SwipeItems"
-            ViewNode.get
             (fun target -> (target :?> SwipeItems) :> IList<_>)
 
     let SwipeMode =

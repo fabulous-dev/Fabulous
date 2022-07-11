@@ -31,7 +31,7 @@ module ScrollView =
     let Content =
         Attributes.definePropertyWidget
             "ScrollView_Content"
-            (fun target -> ViewNode.get (target :?> ScrollView).Content)
+            (fun target -> (target :?> ScrollView).Content)
             (fun target value -> (target :?> ScrollView).Content <- value)
 
     let Scrolled =

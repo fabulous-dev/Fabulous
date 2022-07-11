@@ -37,7 +37,7 @@ module FlyoutPage =
     let Flyout =
         Attributes.definePropertyWidget
             "FlyoutPage_Flyout"
-            (fun target -> ViewNode.get (target :?> FlyoutPage).Flyout)
+            (fun target -> (target :?> FlyoutPage).Flyout)
             (fun target value -> (target :?> FlyoutPage).Flyout <- value)
 
     let FlyoutBounds =
@@ -59,7 +59,7 @@ module FlyoutPage =
     let Detail =
         Attributes.definePropertyWidget
             "FlyoutPage_Detail"
-            (fun target -> ViewNode.get (target :?> FlyoutPage).Detail)
+            (fun target -> (target :?> FlyoutPage).Detail)
             (fun target value -> (target :?> FlyoutPage).Detail <- value)
 
     let DetailBounds =

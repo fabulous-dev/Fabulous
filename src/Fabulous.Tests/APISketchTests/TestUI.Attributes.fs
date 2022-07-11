@@ -57,7 +57,6 @@ module TestUI_Attributes =
             let Children =
                 Attributes.defineListWidgetCollection
                     "Container_Children"
-                    TestUI_ViewNode.ViewNode.getViewNode
                     (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
         module Button =

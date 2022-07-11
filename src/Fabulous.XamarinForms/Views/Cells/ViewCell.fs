@@ -13,7 +13,7 @@ module ViewCell =
     let View =
         Attributes.definePropertyWidget
             "ViewCell_View"
-            (fun target -> ViewNode.get (target :?> ViewCell).View)
+            (fun target -> (target :?> ViewCell).View)
             (fun target value -> (target :?> ViewCell).View <- value)
 
 [<AutoOpen>]
