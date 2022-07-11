@@ -179,16 +179,15 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute storing a Widget for a CLR property
-    let inline definePropertyWidget<'T, 'view when 'T: null>
+    let inline definePropertyWidget<'T when 'T: null>
         (name: string)
-        ([<InlineIfLambda>] get: obj -> 'view)
+        ([<InlineIfLambda>] get: obj -> obj)
         ([<InlineIfLambda>] set: obj -> 'T -> unit)
         =
         let applyDiff (diff: WidgetDiff) (node: IViewNode) =
             let childView = get node.Target
 
-            let childNode =
-                node.TreeContext.GetViewNode(box childView)
+            let childNode = node.TreeContext.GetViewNode(childView)
 
             childNode.ApplyDiff(&diff)
 
