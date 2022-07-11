@@ -52,6 +52,7 @@ type FabulousTimePicker() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = TimePicker.TimeProperty.PropertyName then
             timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
 
@@ -73,11 +74,13 @@ type CustomEntryCell() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = EntryCell.TextProperty.PropertyName then
             textChanged.Trigger(this, TextChangedEventArgs(oldText, this.Text))
 
     override this.OnPropertyChanging(propertyName) =
         base.OnPropertyChanging(propertyName)
+
         if propertyName = EntryCell.TextProperty.PropertyName then
             oldText <- this.Text
 
@@ -95,11 +98,13 @@ type CustomPicker() =
 
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
+
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             selectedIndexChanged.Trigger(this, PositionChangedEventArgs(oldSelectedIndex, this.SelectedIndex))
 
     override this.OnPropertyChanging(propertyName) =
         base.OnPropertyChanging(propertyName)
+
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             oldSelectedIndex <- this.SelectedIndex
 
@@ -147,3 +152,25 @@ type CustomFlyoutPage() as this =
 
     member _.OnIsPresentedChanged(_) =
         isPresentedChanged.Trigger(this, this.IsPresented)
+
+type CustomApplication() =
+    inherit Application()
+
+    let start = Event<EventHandler, EventArgs>()
+    let sleep = Event<EventHandler, EventArgs>()
+    let resume = Event<EventHandler, EventArgs>()
+
+    [<CLIEvent>]
+    member _.Start = start.Publish
+
+    override this.OnStart() = start.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Sleep = sleep.Publish
+
+    override this.OnSleep() = sleep.Trigger(this, EventArgs())
+
+    [<CLIEvent>]
+    member _.Resume = resume.Publish
+
+    override this.OnResume() = resume.Trigger(this, EventArgs())
