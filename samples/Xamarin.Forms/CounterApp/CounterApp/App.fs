@@ -30,12 +30,15 @@ module App =
         }
         |> Cmd.ofAsyncMsg
 
-    let init () = initModel, Cmd.none   
-        
+    let init () = initModel, Cmd.none
+
     let update msg model =
         match msg with
         | Increment ->
-            let model = { model with Count = model.Count + model.Step }
+            let model =
+                { model with
+                      Count = model.Count + model.Step }
+
             model, Cmd.none
         | Decrement ->
             { model with
@@ -78,16 +81,17 @@ module App =
                         .centerTextHorizontal()
 
                     Button("Reset", Reset)
-                        
+
                  })
                     .padding(30.)
                     .centerVertical()
             )
-        ).onLinkReceived(fun args -> LinkReceived args.Uri)
-         .appLinks(){
-             AppLinkEntry("Im a deep link", "https://www.xamarin.com/platform")
+        )
+            .onLinkReceived(fun args -> LinkReceived args.Uri)
+            .appLinks() {
+            AppLinkEntry("Im a deep link", "https://www.xamarin.com/platform")
                 .description("Im a deep link")
                 .thumbnail("https://www.xamarin.com/images/xamarin-logo.png")
-         }
+        }
 
     let program = Program.statefulWithCmd init update view

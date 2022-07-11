@@ -38,20 +38,18 @@ module AppLinkUpdaters =
         let application = node.Target :?> CustomApplication
 
         match newValueOpt with
-        | ValueNone -> failwith "Application AppLinks requires its Pages modifier to be set"
+        | ValueNone -> failwith "Application AppLinks requires its AppLinks modifier to be set"
 
         | ValueSome widgets ->
-            // Push all new pages but only animate the last one
             let span = ArraySlice.toSpan widgets
 
             for widget in span do
                 let struct (_, appLink) = Helpers.createViewForWidget node widget
                 let link = appLink :?> AppLinkEntry
-                
+
                 if application.AppLinks <> null then
                     application.AppLinks.RegisterLink(link)
 
-            // Silently remove all old pages
             match oldValueOpt with
             | ValueNone -> ()
             | ValueSome oldWidgets ->
@@ -224,7 +222,11 @@ type ApplicationModifiers =
     static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
         this.AddScalar(Application.Resume.WithValue(fun () -> box onResume))
 
-    /// Link a ViewRef to access the direct Application instance
+    /// <summary>Link a ViewRef to access the direct Application instance</summary>
+    [<Extension>]
+    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<CustomApplication>) =
+        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
     [<Extension>]
     static member inline onLinkReceived
         (
@@ -232,11 +234,6 @@ type ApplicationModifiers =
             fn: LinkRequestReceivedEventArgs -> 'msg
         ) =
         this.AddScalar(Application.LinkRequestReceived.WithValue(fn >> box))
-
-    /// <summary>Link a ViewRef to access the direct Application instance</summary>
-    [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<CustomApplication>) =
-        this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
     [<Extension>]
     static member inline appLinks<'msg, 'marker when 'marker :> IApplication>(this: WidgetBuilder<'msg, 'marker>) =
