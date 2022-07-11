@@ -13,7 +13,7 @@ module Application =
     let MainPage =
         Attributes.definePropertyWidget
             "Application_MainPage"
-            (fun target -> ViewNode.get (target :?> Application).MainPage)
+            (fun target -> (target :?> Application).MainPage :> obj)
             (fun target value -> (target :?> Application).MainPage <- value)
 
     let Resources =

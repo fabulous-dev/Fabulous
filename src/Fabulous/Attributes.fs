@@ -181,11 +181,13 @@ module Attributes =
     /// Define an attribute storing a Widget for a CLR property
     let inline definePropertyWidget<'T when 'T: null>
         (name: string)
-        ([<InlineIfLambda>] get: obj -> IViewNode)
+        ([<InlineIfLambda>] get: obj -> obj)
         ([<InlineIfLambda>] set: obj -> 'T -> unit)
         =
         let applyDiff (diff: WidgetDiff) (node: IViewNode) =
-            let childNode = get node.Target
+            let childView = get node.Target
+
+            let childNode = node.TreeContext.GetViewNode(childView)
 
             childNode.ApplyDiff(&diff)
 
@@ -202,7 +204,6 @@ module Attributes =
     /// Define an attribute storing a collection of Widget for a List<T> property
     let inline defineListWidgetCollection<'itemType>
         name
-        ([<InlineIfLambda>] getViewNode: obj -> IViewNode)
         ([<InlineIfLambda>] getCollection: obj -> System.Collections.Generic.IList<'itemType>)
         =
         let applyDiff _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
@@ -211,7 +212,8 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove (index, widget) ->
-                    let itemNode = getViewNode targetColl.[index]
+                    let itemNode =
+                        node.TreeContext.GetViewNode(box targetColl.[index])
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -240,7 +242,8 @@ module Attributes =
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
-                    let prevItemNode = getViewNode targetColl.[index]
+                    let prevItemNode =
+                        node.TreeContext.GetViewNode(box targetColl.[index])
 
                     let struct (nextItemNode, view) =
                         Helpers.createViewForWidget node newWidget

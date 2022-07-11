@@ -20,7 +20,6 @@ module XFView =
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer>
             "View_GestureRecognizers"
-            ViewNode.get
             (fun target -> (target :?> View).GestureRecognizers)
 
 [<Extension>]

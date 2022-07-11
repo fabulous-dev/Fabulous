@@ -14,7 +14,6 @@ module PathGeometry =
     let FiguresWidgets =
         Attributes.defineListWidgetCollection
             "PathGeometry_FiguresWidgets"
-            ViewNode.get
             (fun target -> (target :?> PathGeometry).Figures :> IList<_>)
 
     let FiguresString =

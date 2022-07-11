@@ -10,5 +10,4 @@ module LayoutOfView =
     let Children =
         Attributes.defineListWidgetCollection
             "LayoutOfWidget_Children"
-            ViewNode.get
             (fun target -> (target :?> Xamarin.Forms.Layout<View>).Children)
