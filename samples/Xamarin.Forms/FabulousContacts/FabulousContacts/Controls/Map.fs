@@ -39,7 +39,7 @@ module Map =
                 | ValueSome mapSpan -> map.MoveToRegion(mapSpan))
 
     let Pins =
-        Attributes.defineListWidgetCollection<Pin> "Map_Pins" (fun target -> (target :?> Map).Pins)
+        Attributes.defineListWidgetCollection "Map_Pins" (fun target -> (target :?> Map).Pins)
 
     let HasZoomEnabled =
         Attributes.defineBindableBool Map.HasZoomEnabledProperty
