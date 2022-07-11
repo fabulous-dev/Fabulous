@@ -14,15 +14,10 @@ module AppLinkUpdaters =
             match diff with
             | WidgetCollectionItemChange.Insert (_, widget) ->
                 let struct (_, appLink) = Helpers.createViewForWidget node widget
-                let page = appLink :?> AppLinkEntry
-                appLinks.RegisterLink(page)
-            | WidgetCollectionItemChange.Update _ -> ()
-            | WidgetCollectionItemChange.Replace (_, _, newWidget) ->
-                let struct (_, appLink) =
-                    Helpers.createViewForWidget node newWidget
-
                 let link = appLink :?> AppLinkEntry
-                appLinks.DeregisterLink(link)
+                appLinks.RegisterLink(link)
+            | WidgetCollectionItemChange.Update _
+            | WidgetCollectionItemChange.Replace _ -> ()
             | WidgetCollectionItemChange.Remove (_, newWidget) ->
                 let struct (_, appLink) =
                     Helpers.createViewForWidget node newWidget
@@ -38,7 +33,7 @@ module AppLinkUpdaters =
         let application = node.Target :?> CustomApplication
 
         match newValueOpt with
-        | ValueNone -> failwith "Application AppLinks requires its AppLinks modifier to be set"
+        | ValueNone -> failwith "Application requires AppLinks"
 
         | ValueSome widgets ->
             let span = ArraySlice.toSpan widgets
@@ -56,9 +51,7 @@ module AppLinkUpdaters =
                 let appLinks = application.AppLinks
                 let span = ArraySlice.toSpan oldWidgets
 
-                for i = 0 to span.Length - 1 do
-                    let linkArr = span.ToArray()
-                    let widget = linkArr.[i]
+                for widget in span do
                     let struct (_, appLink) = Helpers.createViewForWidget node widget
                     appLinks.DeregisterLink(appLink :?> AppLinkEntry)
 
