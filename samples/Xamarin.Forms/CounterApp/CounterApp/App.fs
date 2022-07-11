@@ -1,6 +1,7 @@
 namespace CounterApp
 
 open System
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 
@@ -92,6 +93,10 @@ module App =
             AppLinkEntry("Im a deep link", "https://www.xamarin.com/platform")
                 .description("Im a deep link")
                 .thumbnail("https://www.xamarin.com/images/xamarin-logo.png")
+                .keyValues(
+                    [ KeyValuePair("key1", "value1")
+                      KeyValuePair("key2", "value2") ]
+                )
         }
 
     let program = Program.statefulWithCmd init update view

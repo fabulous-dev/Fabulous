@@ -1,6 +1,7 @@
 namespace Fabulous.XamarinForms
 
 open System
+open System.Collections.Generic
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
@@ -21,6 +22,20 @@ module AppLinkEntry =
                 match newValueOpt with
                 | ValueNone -> appLinkEntry.AppLinkUri <- null
                 | ValueSome data -> appLinkEntry.AppLinkUri <- data)
+
+    let KeyValues =
+        Attributes.defineSimpleScalarWithEquality<KeyValuePair<string, string> list>
+            "AppLinkEntry_KeyValues"
+            (fun _ newValueOpt node ->
+                let appLinkEntry = node.Target :?> AppLinkEntry
+
+                let values =
+                    match newValueOpt with
+                    | ValueNone -> []
+                    | ValueSome v -> v
+
+                for pair in values do
+                    appLinkEntry.KeyValues.Add(pair))
 
     let Description =
         Attributes.defineBindableWithEquality<string> AppLinkEntry.DescriptionProperty
@@ -56,6 +71,14 @@ type AppLinkEntryModifiers =
     [<Extension>]
     static member inline isLinkActive(this: WidgetBuilder<'msg, #IAppLinkEntry>, value: bool) =
         this.AddScalar(AppLinkEntry.IsLinkActive.WithValue(value))
+
+    [<Extension>]
+    static member inline keyValues
+        (
+            this: WidgetBuilder<'msg, #IAppLinkEntry>,
+            value: KeyValuePair<string, string> list
+        ) =
+        this.AddScalar(AppLinkEntry.KeyValues.WithValue(value))
 
     [<Extension>]
     static member inline thumbnail(this: WidgetBuilder<'msg, #IAppLinkEntry>, source: ImageSource) =
