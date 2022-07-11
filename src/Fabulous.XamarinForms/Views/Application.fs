@@ -231,9 +231,9 @@ type ApplicationModifiers =
     static member inline onLinkReceived
         (
             this: WidgetBuilder<'msg, #IApplication>,
-            fn: LinkRequestReceivedEventArgs -> 'msg
+            onLinkReceived: LinkRequestReceivedEventArgs -> 'msg
         ) =
-        this.AddScalar(Application.LinkRequestReceived.WithValue(fn >> box))
+        this.AddScalar(Application.LinkRequestReceived.WithValue(onLinkReceived >> box))
 
     [<Extension>]
     static member inline appLinks<'msg, 'marker when 'marker :> IApplication>(this: WidgetBuilder<'msg, 'marker>) =
