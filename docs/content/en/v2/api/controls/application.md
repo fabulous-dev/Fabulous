@@ -60,6 +60,9 @@ Application(
   .onModalPopping(ModalPopping)
   .onModalPushed(ModalPushed)
   .onModalPushing(ModalPushing)
+  .onStart(Started)
+  .onSleep(WentToSleep)
+  .onResume(Resumed)
 ```
 
 ### Get access to the underlying Xamarin.Forms.Entry
