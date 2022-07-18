@@ -23,6 +23,8 @@ module NavigationPageUpdaters =
             let struct (size, _) = prev
             int size
 
+        let mutable popLastWithAnimation = false
+
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
@@ -72,13 +74,21 @@ module NavigationPageUpdaters =
                 elif index > pagesLength - 1 then
                     () // Do nothing, page has already been popped
                 elif index = pagesLength - 1 then
-                    // Last page, we pop it the right way to get an animation
-                    navigationPage.Pop()
+
+                    // Pop with an animation if it's the last page of the NavigationPage
+                    if index = pages.Length - 1 then
+                        popLastWithAnimation <- true
+                    else
+                        navigationPage.Navigation.RemovePage(pages.[index])
+
                     pagesLength <- pagesLength - 1
                 else
                     // Page is not visible, we just remove it
                     navigationPage.Navigation.RemovePage(pages.[index])
                     pagesLength <- pagesLength - 1
+
+        if popLastWithAnimation then
+            navigationPage.Pop()
 
     let updateNavigationPagePages
         (oldValueOpt: ArraySlice<Widget> voption)
