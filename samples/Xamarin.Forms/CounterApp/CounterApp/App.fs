@@ -2,6 +2,7 @@ namespace CounterApp
 
 open Fabulous
 open Fabulous.XamarinForms
+open Xamarin.Forms
 
 open type Fabulous.XamarinForms.View
 
@@ -51,12 +52,19 @@ module App =
             else
                 model, Cmd.none
 
+    let sharedStyle () =
+        LabelStyle()
+            .textColor(Color.Red)
+            .textDecorations(TextDecorations.Underline)
+
     let view model =
         Application(
             ContentPage(
                 "CounterApp",
                 (VStack() {
-                    Label($"%d{model.Count}").centerTextHorizontal()
+                    Label($"%d{model.Count}")
+                        .centerTextHorizontal()
+                        .style(sharedStyle())
 
                     Button("Increment", Increment)
 
@@ -64,6 +72,15 @@ module App =
 
                     (HStack() {
                         Label("Timer")
+                            .style(
+                                LabelStyle()
+                                    .textColor(
+                                        if model.TimerOn then
+                                            Color.Green
+                                        else
+                                            Color.Red
+                                    )
+                            )
 
                         Switch(model.TimerOn, TimerToggled)
                      })
@@ -74,6 +91,7 @@ module App =
 
                     Label($"Step size: %d{model.Step}")
                         .centerTextHorizontal()
+                        .style(sharedStyle())
 
                     Button("Reset", Reset)
                  })

@@ -11,6 +11,9 @@ module NavigableElement =
     let Style =
         Attributes.defineBindableWithEquality<Xamarin.Forms.Style> NavigableElement.StyleProperty
 
+    let StyleWidget =
+        Attributes.defineBindableWidget NavigableElement.StyleProperty
+
 [<Extension>]
 type NavigableElementModifiers =
 

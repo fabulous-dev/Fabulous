@@ -39,7 +39,7 @@ module Widgets =
                       let node =
                           ViewNode(parentNode, treeContext, weakReference)
 
-                      ViewNode.set node view
+                      BindableViewNode.set node view
 
                       additionalSetup view node
 

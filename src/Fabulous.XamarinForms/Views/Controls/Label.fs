@@ -166,3 +166,7 @@ type LabelModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ILabel>, value: ViewRef<Label>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+    [<Extension>]
+    static member inline style(this: WidgetBuilder<'msg, #INavigableElement>, style: WidgetBuilder<'msg, ILabelStyle>) =
+        this.AddWidget(NavigableElement.StyleWidget.WithValue(style.Compile()))
