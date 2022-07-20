@@ -9,48 +9,7 @@ open Gallery.Samples
 
 open type Fabulous.XamarinForms.View
 
-module WidgetPageStyles =
-    open Xamarin.Forms.Internals
-    
-    let radioButtonStyle =
-        let controlTemplate =
-            ControlTemplate(fun () ->
-                let vsmGroupList = VisualStateGroupList()
-                let vsmGroup = VisualStateGroup(Name = "CheckedStates")
-                
-                let vsmChecked = VisualState(Name = "Checked")
-                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value =  Color.FromHex("#1a76d2")))
-                vsmChecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.FromHex("#2196f3")))
-                vsmChecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.White))
-                vsmGroup.States.Add(vsmChecked)
-                
-                let vsmUnchecked = VisualState(Name = "Unchecked")
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BorderColorProperty, Value = Color.LightGray))
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Frame", Property = Frame.BackgroundColorProperty, Value = Color.White))
-                vsmUnchecked.Setters.Add(Setter(TargetName = "Label", Property = Label.TextColorProperty, Value = Color.LightGray))
-                vsmGroup.States.Add(vsmUnchecked)
-                
-                vsmGroupList.Add(vsmGroup)
-                
-                let frame = Xamarin.Forms.Frame(HasShadow = false, WidthRequest = 36., HeightRequest = 36., Padding = Thickness(0.))
-                let label = Xamarin.Forms.Label(HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, FontFamily = "Icomoon")
-                label.SetBinding(Xamarin.Forms.Label.TextProperty, Binding(Path = "Content", Source = RelativeBindingSource.TemplatedParent))
-                frame.Content <- label
-                
-                let namescope = NameScope()
-                (namescope :> INameScope).RegisterName("Frame", frame)
-                (namescope :> INameScope).RegisterName("Label", label)
-                
-                NameScope.SetNameScope(frame, namescope)
-                VisualStateManager.SetVisualStateGroups(frame, vsmGroupList)
-                frame :> obj
-            )
-        
-        let style = Style(typeof<RadioButton>)
-        style.Setters.Add(RadioButton.ControlTemplateProperty, controlTemplate)
-        style
-
-module WidgetPage =
+module WidgetPage =    
     let openBrowserCmd url =
         async {
             do!
@@ -63,18 +22,18 @@ module WidgetPage =
     type Model =
         { Sample: Sample
           SampleModel: obj
-          CodeShown: bool }
+          SelectedSampleView: SampleViewType }
 
     type Msg =
         | SampleMsg of obj
-        | ShowCode of bool
+        | SampleViewChanged of SampleViewType
         | OpenBrowser of string
         
     let init index =
         let sample = Registry.getForIndex index
         { Sample = sample
           SampleModel = sample.Program.init()
-          CodeShown = false }
+          SelectedSampleView = Run }
         
     let update msg model =
         match msg with
@@ -83,11 +42,17 @@ module WidgetPage =
             { model with
                 SampleModel = sampleModel }, Cmd.none
             
-        | ShowCode value ->
-            { model with CodeShown = value }, Cmd.none
+        | SampleViewChanged value ->
+            { model with SelectedSampleView = value }, Cmd.none
             
         | OpenBrowser url ->
             model, openBrowserCmd url
+        
+    let sampleViews =
+        [ { Value = Run
+            Text = "\uEA1C" }
+          { Value = Code
+            Text = "\uEA80" } ]
         
     let view model =
         ContentPage(
@@ -99,21 +64,7 @@ module WidgetPage =
                             .font(NamedSize.Title)
                             .padding(top = 20.)
                         
-                        (HStack() {
-                            RadioButton(
-                                "\uEA1C",
-                                model.CodeShown = false,
-                                (ShowCode false)
-                            )
-                                .style(WidgetPageStyles.radioButtonStyle)
-                            
-                            RadioButton(
-                                "\uEA80",
-                                model.CodeShown = true,
-                                (ShowCode true)
-                            )
-                                .style(WidgetPageStyles.radioButtonStyle)
-                        })
+                        SampleViewSelector(sampleViews, model.SelectedSampleView, SampleViewChanged)
                             .alignEndHorizontal(expand = true)
                             .alignEndVertical()
                     }
@@ -152,14 +103,14 @@ module WidgetPage =
                     
                     Grid() {
                         (View.map SampleMsg (model.Sample.Program.view model.SampleModel))
-                            .isVisible(model.CodeShown = false)
+                            .isVisible(model.SelectedSampleView = Run)
                             
                         ScrollView(
                             (View.map SampleMsg (model.Sample.SampleCodeFormatted ()))
                                 .margin(Thickness(0., 0., 0., 10.))
                         )
                             .orientation(ScrollOrientation.Horizontal)
-                            .isVisible(model.CodeShown = true)
+                            .isVisible(model.SelectedSampleView = Code)
                     }
                 })
                     .padding(Thickness(20., 0.))

@@ -13,6 +13,7 @@
       <Compile Include="Samples\Label.fs" />
       <Compile Include="Samples\Button.fs" />
       <Compile Include="Samples\Registry.fs" />
+      <Compile Include="SampleViewSelector.fs" />
       <Compile Include="WidgetPage.fs" />
       <Compile Include="App.fs" />
       <EmbeddedResource Include="icomoon.ttf" />
