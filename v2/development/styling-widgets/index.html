@@ -74,7 +74,6 @@ type SharedStyle =
     static member inline largeText(this: WidgetBuilder&lt;'msg, #ILabel&gt;) =
         this
             .font(namedSize = NamedSize.Large, fontFamily = &quot;Helvetica&quot;)
-            .horizontalTextAlignment(TextAlignment.End)
             .textColor(Color.Blue.ToFabColor())
             .padding(10.)
 
