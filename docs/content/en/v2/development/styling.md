@@ -373,3 +373,37 @@ type Msg =
 
 SampleViewSelector(model.Items, model.SelectedItem, SelectedItemChanged)
 ```
+
+## Legacy XAML styling
+
+If any of the above techniques doesn't work for you or if you're trying to use an existing style written in C#/XAML, you can still use the legacy XAML styling.
+
+Every widget has a `style` modifier accepting a `Xamarin.Forms.Style` instance.
+
+```fs
+let myStyle =
+    let style = Xamarin.Forms.Style(typeof<Label>)
+    style.Setters.Add(Setter(Property = Label.BackgroundProperty, Value = Color.Red))
+    style.Setters.Add(Setter(Property = Label.TextColorProperty, Value = Color.Blue))
+    style.Setters.Add(Setter(Property = Label.PaddingProperty, Value = Thickness(10.)))
+    style
+
+Label("Hello, World!")
+    .style(myStyle)
+```
+
+You also have the option to set a resource dictionary on the Application widget with the `resources` modifier.
+
+```fs
+let myAppResources =
+    let res = ResourceDictionary()
+    res.Add(myStyle)
+    res
+
+Application(
+    (...)
+)
+    .resources(myAppResources)
+```
+
+For more information about styling in XAML, please read [Styling Xamarin.Forms Apps using XAML Styles](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml).
