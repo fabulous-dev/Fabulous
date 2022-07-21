@@ -120,7 +120,7 @@ type SharedStyle =
             .horizontalTextAlignment(TextAlignment.End)
             .textColor(Color.Blue.ToFabColor())
             .padding(10.)
-</code></pre><h2 id=reusing-a-widget-and-its-style>Reusing a widget and its style <a href=#reusing-a-widget-and-its-style class=anchor aria-hidden=true>#</a></h2><p>There are 2 ways of reusing a widget and its style:</p><ul><li>With a function</li><li>With a custom widget</li></ul><p>They both have pros and cons, use the one that fits your needs.</p><h3 id=with-a-function>With a function <a href=#with-a-function class=anchor aria-hidden=true>#</a></h3><p>Since in F# everything is functions, you can reuse a widget by putting it in its own function.</p><pre><code class=language-fs>module CustomViews =
+</code></pre><h2 id=reusing-a-widget-and-its-style>Reusing a widget and its style <a href=#reusing-a-widget-and-its-style class=anchor aria-hidden=true>#</a></h2><p>There are 2 ways of reusing a widget and its style:</p><ul><li>With a function</li><li>With a custom widget</li></ul><p>They both have pros and cons, use the one that fits your needs.</p><h3 id=with-a-function>With a function <a href=#with-a-function class=anchor aria-hidden=true>#</a></h3><p>Since in F# everything is function, you can reuse a widget by putting it in its own function.</p><pre><code class=language-fs>module CustomViews =
     let largeLabel (text: string) =
         Label(text)
             .horizontalTextAlignment(TextAlignment.Start)
