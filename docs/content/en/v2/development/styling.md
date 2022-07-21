@@ -150,12 +150,12 @@ static member inline SomeExtensionMethod(this: TypeForWhichWeWantToAddAnExtensio
 **Now, the most important part to understand:** when using a widget, Fabulous will actually give you an instance of `WidgetBuilder<'msg, 'marker>` where `'marker` will be a type representing the widget.  
 For example, `Label()` will give you `WidgetBuilder<'msg, ILabel>`,
 
-You might have noticed that in the code above, we are using `#ILabel` instead of `ILabel`.  
-The `#` (pound) symbol lets F# know that we actually want the shorthand modifier to be available to all widgets deriving from `ILabel`, not just `Label`.
+You might have noticed that in the code above, we are using `#ILabel` instead of `ILabel`. This `#` (pound) symbol is called a [flexible type annotation](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/flexible-types).  
+It lets F# know that we actually want the shorthand modifier to be available to all widgets deriving from `ILabel`, not just `Label`.
 
 Another example that will make more sense is the `backgroundColor` modifier of `VisualElement`.  
 `VisualElement` is a common type between most widgets (`Label`, `Button`, `Image`, etc.). They all can have a background color.  
-So, by using the `#` (pound) symbol, Fabulous will make the `backgroundColor` modifier available to all widgets that derive from `IVisualElement` like `Label` and `Button`.
+So, by using the flexible type annotation, Fabulous will make the `backgroundColor` modifier available to all widgets that derive from `IVisualElement` like `Label` and `Button`.
 
 Adding this symbol depends on your needs.  
 We recommend you add it by default. If you don't add it, the shorthand modifier will only be available to the specific widget type you are targeting.
@@ -396,7 +396,7 @@ You also have the option to set a resource dictionary on the Application widget 
 
 ```fs
 let myAppResources =
-    let res = ResourceDictionary()
+    let res = Xamarin.Forms.ResourceDictionary()
     res.Add(myStyle)
     res
 
