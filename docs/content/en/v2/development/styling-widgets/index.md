@@ -1,5 +1,5 @@
 ---
-id: "v2-styling"
+id: "v2-styling-widgets"
 title: "Styling widgets"
 description: ""
 lead: ""
@@ -14,15 +14,15 @@ weight: 301
 toc: true
 ---
 
-Widgets (`Label`, `Button`, `VStack`, etc.) all come with a default style.  
+Widgets all come with a default style.  
 You will most certainly want to override those default styles to make your app look good.
 
 In Fabulous, this is done by adding modifiers to your widgets.  
-We will see in this page how to add modifiers to your widgets and how to reuse a style across your app.
+We will see in this page how to add those modifiers and how to reuse a style across your app.
 
 ## Basic styling
 
-Using some basic style to your widgets is easy.  
+Adding some basic style is easy.  
 You simply need to apply modifiers on the widget you want to style by using the dot notation.
 
 ```fs
@@ -99,7 +99,6 @@ type SharedStyle =
     static member inline largeText(this: WidgetBuilder<'msg, #ILabel>) =
         this
             .font(namedSize = NamedSize.Large, fontFamily = "Helvetica")
-            .horizontalTextAlignment(TextAlignment.End)
             .textColor(Color.Blue.ToFabColor())
             .padding(10.)
 
@@ -154,13 +153,14 @@ You might have noticed that in the code above, we are using `#ILabel` instead of
 It lets F# know that we actually want the shorthand modifier to be available to all widgets deriving from `ILabel`, not just `Label`.
 
 Another example that will make more sense is the `backgroundColor` modifier of `VisualElement`.  
-`VisualElement` is a common type between most widgets (`Label`, `Button`, `Image`, etc.). They all can have a background color.  
+`VisualElement` is a common ancestor to most widgets (`Label`, `Button`, `Image`, etc.). They all can have a background color.  
 So, by using the flexible type annotation, Fabulous will make the `backgroundColor` modifier available to all widgets that derive from `IVisualElement` like `Label` and `Button`.
 
-Adding this symbol depends on your needs.  
+Adding this annotation depends on your needs.  
 We recommend you add it by default. If you don't add it, the shorthand modifier will only be available to the specific widget type you are targeting.
 
 Now, let's get back to our example. Based on all we just said, you should have the following code:
+
 ```fs
 open System.Runtime.CompilerServices
 
@@ -206,7 +206,7 @@ They both have pros and cons, use the one that fits your needs.
 
 ### With a function
 
-Since in F# everything is functions, you can reuse a widget by putting it in its own function.
+Since in F# everything is function, you can reuse a widget by putting it in its own function.
 
 ```fs
 module CustomViews =
@@ -407,3 +407,6 @@ Application(
 ```
 
 For more information about styling in XAML, please read [Styling Xamarin.Forms Apps using XAML Styles](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml).
+
+Please note that it is recommend to declare the XAML styles and resources outside of the `view` function.  
+The `view` function is executed on each update and therefore the styles and resources will be recreated each time, incurring a big memory cost since they are reference types.
