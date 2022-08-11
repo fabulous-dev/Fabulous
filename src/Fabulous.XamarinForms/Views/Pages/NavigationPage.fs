@@ -160,6 +160,11 @@ module NavigationPage =
             "NavigationPage_BackNavigated"
             (fun target -> (target :?> CustomNavigationPage).BackNavigated)
 
+    let BackButtonPressed =
+        Attributes.defineEventNoArg
+            "NavigationPage_BackButtonPressed"
+            (fun target -> (target :?> CustomNavigationPage).BackButtonPressed)
+
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =
         Attributes.defineEvent<NavigationEventArgs>
@@ -255,10 +260,17 @@ type NavigationPageModifiers =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Event that is fired when the user back navigated.</summary>
-    /// <param name="onPopped">Msg to dispatch when the user back navigated.</param>
+    /// <param name="onBackNavigated">Msg to dispatch when the user back navigated.</param>
     [<Extension>]
     static member inline onBackNavigated(this: WidgetBuilder<'msg, #INavigationPage>, onBackNavigated: 'msg) =
         this.AddScalar(NavigationPage.BackNavigated.WithValue(onBackNavigated))
+
+    /// <summary>Event that is fired when the user pressed the system back button. Doesn't support the iOS back button</summary>
+    /// <param name="onBackButtonPressed">Msg to dispatch when the user presses the system back button.</param>
+    /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
+    [<Extension>]
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #INavigationPage>, onBackButtonPressed: 'msg) =
+        this.AddScalar(NavigationPage.BackButtonPressed.WithValue(onBackButtonPressed))
 
     /// <summary>Event that is fired when the page is popped.</summary>
     /// <param name="onPopped">Msg to dispatch when then page is popped.</param>
