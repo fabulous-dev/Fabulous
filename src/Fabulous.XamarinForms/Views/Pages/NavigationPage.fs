@@ -265,7 +265,7 @@ type NavigationPageModifiers =
     static member inline onBackNavigated(this: WidgetBuilder<'msg, #INavigationPage>, onBackNavigated: 'msg) =
         this.AddScalar(NavigationPage.BackNavigated.WithValue(onBackNavigated))
 
-    /// <summary>Event that is fired when the user pressed the system back button. Doesn't support the iOS back button</summary>
+    /// <summary>Event that is fired when the user presses the system back button. Doesn't support the iOS back button</summary>
     /// <param name="onBackButtonPressed">Msg to dispatch when the user presses the system back button.</param>
     /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
     [<Extension>]
