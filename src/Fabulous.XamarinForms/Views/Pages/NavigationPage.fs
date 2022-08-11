@@ -163,7 +163,9 @@ module NavigationPage =
     let BackButtonPressed =
         Attributes.defineEventNoArg
             "NavigationPage_BackButtonPressed"
-            (fun target -> (target :?> CustomNavigationPage).BackButtonPressed)
+            (fun target ->
+                (target :?> CustomNavigationPage)
+                    .BackButtonPressed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =
