@@ -2,13 +2,28 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <UseMauiCore>true</UseMauiCore>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
+        <PackageIcon>nuget-icon.png</PackageIcon>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <VersionPrefix>2.0.1</VersionPrefix>
+        <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
+        <Compile Include="Attributes.fs" />
+        <Compile Include="Views\_Element.fs" />
+        <Compile Include="Views\_View.fs" />
+        <Compile Include="Views\_Padding.fs" />
+        <Compile Include="Views\_Layout.fs" />
+        <Compile Include="Views\_TextStyle.fs" />
+        <Compile Include="Views\_Text.fs" />
+        <Compile Include="Views\_TextAlignment.fs" />
+        <Compile Include="Views\_TitledElement.fs" />
         <Compile Include="Views\Window.fs" />
         <Compile Include="Views\Application.fs" />
         <Compile Include="Views\StackLayout.fs" />
@@ -18,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FSharp.Core" Version="6.0.0" />
       <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
     </ItemGroup>
 

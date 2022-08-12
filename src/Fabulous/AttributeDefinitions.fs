@@ -121,7 +121,7 @@ module ScalarAttributeDefinitions =
 module WidgetAttributeDefinitions =
     [<Struct>]
     type WidgetAttributeData =
-        { ApplyDiff: WidgetDiff -> IViewNode -> unit
+        { ApplyDiff: Widget -> WidgetDiff -> IViewNode -> unit
           UpdateNode: Widget voption -> Widget voption -> IViewNode -> unit }
 
     /// Attribute definition for widget properties

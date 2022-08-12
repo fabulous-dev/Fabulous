@@ -87,7 +87,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 let definition =
                     (AttributeDefinitionStore.getWidget newAttr.Key)
 
-                definition.ApplyDiff diffs (this :> IViewNode)
+                definition.ApplyDiff newAttr.Value diffs (this :> IViewNode)
 
     member inline private this.ApplyWidgetCollectionDiffs(diffs: WidgetCollectionChanges inref) =
         for diff in diffs do
@@ -131,7 +131,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
             | ValueSome v -> _handlers.[key] <- box v
 
         member _.Disconnect() = _isDisconnected <- true
-
+        
         member x.ApplyDiff(diff) =
             if not targetRef.IsAlive then
                 ()

@@ -14,9 +14,9 @@ type FabulousApplication() =
     member this.Windows = _windows
     
     interface IApplication with
-        member this.CloseWindow(window) = failwith "todo"
+        member this.CloseWindow(window) = _windows.Remove(window) |> ignore
         member this.CreateWindow(activationState) = _windows[0]
-        member this.OpenWindow(window) = failwith "todo"
+        member this.OpenWindow(window) = _windows.Add(window)
         member this.ThemeChanged() = failwith "todo"
         member this.Handler
             with get () = this.Handler
@@ -30,7 +30,6 @@ module Application =
     let Windows =
         Attributes.defineListWidgetCollection
             "Application_Windows"
-            ViewNode.get
             (fun target -> (target :?> FabulousApplication).Windows)
     
 [<AutoOpen>]

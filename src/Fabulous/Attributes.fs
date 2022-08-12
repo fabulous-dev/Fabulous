@@ -152,7 +152,7 @@ module Attributes =
     /// Used for storing the single child of a view
     let inline defineWidget
         name
-        (applyDiff: WidgetDiff -> IViewNode -> unit)
+        (applyDiff: Widget -> WidgetDiff -> IViewNode -> unit)
         (updateNode: Widget voption -> Widget voption -> IViewNode -> unit)
         : WidgetAttributeDefinition =
 
@@ -179,16 +179,14 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute storing a Widget for a CLR property
-    let definePropertyWidget<'T when 'T: null>
+    let inline definePropertyWidget<'T when 'T: null>
         (name: string)
         ([<InlineIfLambda>] get: obj -> obj)
         ([<InlineIfLambda>] set: obj -> 'T -> unit)
         =
-        let applyDiff (diff: WidgetDiff) (node: IViewNode) =
+        let applyDiff _ (diff: WidgetDiff) (node: IViewNode) =
             let childView = get node.Target
-
             let childNode = node.TreeContext.GetViewNode(childView)
-
             childNode.ApplyDiff(&diff)
 
         let updateNode _ (newValueOpt: Widget voption) (node: IViewNode) =
@@ -235,10 +233,8 @@ module Attributes =
                     // Trigger the mounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
-                | WidgetCollectionItemChange.Update (index, widgetDiff) ->
-                    let childNode =
-                        node.TreeContext.GetViewNode(box targetColl.[index])
-
+                | WidgetCollectionItemChange.Update (index, _, widgetDiff) ->
+                    let childNode = node.TreeContext.GetViewNode(box targetColl.[index])
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->

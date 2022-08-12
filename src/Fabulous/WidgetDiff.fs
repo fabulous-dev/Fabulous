@@ -79,7 +79,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
 and [<Struct; IsByRefLike; RequireQualifiedAccess>] WidgetCollectionItemChange =
     | Insert of widgetInserted: struct (int * Widget)
     | Replace of widgetReplaced: struct (int * Widget * Widget)
-    | Update of widgetUpdated: struct (int * WidgetDiff)
+    | Update of widgetUpdated: struct (int * Widget * WidgetDiff)
     | Remove of removed: struct (int * Widget)
 
 and [<Struct; NoComparison; NoEquality>] WidgetDiff =
@@ -558,7 +558,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
                 let diff =
                     WidgetDiff.create(ValueSome prevItem, currItem, canReuseView, compareScalars)
 
-                e.current <- WidgetCollectionItemChange.Update(i, diff)
+                e.current <- WidgetCollectionItemChange.Update(i, currItem, diff)
 
             | ValueSome prevItem -> e.current <- WidgetCollectionItemChange.Replace(i, prevItem, currItem)
 

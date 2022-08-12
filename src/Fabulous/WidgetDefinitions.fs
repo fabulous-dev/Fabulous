@@ -1,7 +1,6 @@
 namespace Fabulous
 
 open System
-open System.Collections.Generic
 open Fabulous
 
 /// Widget definition to create a control
