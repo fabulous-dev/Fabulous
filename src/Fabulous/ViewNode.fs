@@ -14,7 +14,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
     // ViewNode is supposed to be mutable, stateful and persistent object
     let _handlers = Dictionary<string, obj>()
 
-    member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
+    member private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
         let node = this :> IViewNode
 
         for diff in diffs do
@@ -57,13 +57,12 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
 
                 match ScalarAttributeKey.getKind key with
                 | ScalarAttributeKey.Inline ->
-                    let smallScalar =
-                        (AttributeDefinitionStore.getSmallScalar key)
+                    let smallScalar = AttributeDefinitionStore.getSmallScalar key
 
                     smallScalar.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) node
 
                 | ScalarAttributeKey.Boxed ->
-                    let scalar = (AttributeDefinitionStore.getScalar key)
+                    let scalar = AttributeDefinitionStore.getScalar key
 
                     scalar.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) node
 

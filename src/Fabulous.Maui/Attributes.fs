@@ -14,9 +14,9 @@ module Helpers =
         struct (childNode, childView)
 
 module Attributes =
-    let inline defineMauiScalar<'T>
+    let defineMauiScalar<'T>
         name
-        ([<InlineIfLambda>] compare: 'T -> 'T -> ScalarAttributeComparison)
+        (compare: 'T -> 'T -> ScalarAttributeComparison)
         : SimpleScalarAttributeDefinition<'T> =
             
         let updateNode _ _ (node: IViewNode) =
