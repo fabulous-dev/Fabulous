@@ -28,6 +28,9 @@
         <Compile Include="Views\Application.fs" />
         <Compile Include="Views\StackLayout.fs" />
         <Compile Include="Views\Label.fs" />
+        <Compile Include="Views\_ButtonStroke.fs" />
+        <Compile Include="Views\_Button.fs" />
+        <Compile Include="Views\TextButton.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>

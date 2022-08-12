@@ -1,31 +1,38 @@
 namespace Fabulous.Maui
 
-open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous.StackAllocatedCollections
 open Microsoft.Maui
-open Microsoft.Maui.Graphics
 open Microsoft.Maui.Handlers
 open Fabulous
+open Microsoft.Maui.Layouts
 
 module StackLayout =
-    type FabulousStackLayout(handler) =
-        inherit Layout.FabulousLayout(handler)
-
-        new() = FabulousStackLayout(LayoutHandler())
+    let ClipsToBounds = Attributes.defineMauiScalarWithEquality<bool> "ClipsToBounds"
+    let IgnoreSafeArea = Attributes.defineMauiScalarWithEquality<bool> "IgnoreSafeArea"
+    let IsReadOnly = Attributes.defineMauiScalarWithEquality<bool> "IsReadOnly"
+    let Spacing = Attributes.defineMauiScalarWithEquality<float> "Spacing"
+    
+    type FabulousStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
+        inherit Layout.FabulousLayout(handler, layoutManagerFn)
 
         interface IStackLayout with
             member this.CopyTo(array, arrayIndex) = failwith "todo"
             member this.Focus() = failwith "todo"
             member this.Clip = null
-            member this.ClipsToBounds = false
-            member this.IgnoreSafeArea = false
-            member this.IsReadOnly = failwith "todo"
-            member this.Spacing = 0.
-
-    let VerticalWidgetKey = Widgets.register<FabulousStackLayout>()
-    let HorizontalWidgetKey = Widgets.register<FabulousStackLayout>()
+            member this.ClipsToBounds = this.GetScalar(ClipsToBounds, false)
+            member this.IgnoreSafeArea = this.GetScalar(IgnoreSafeArea, false)
+            member this.IsReadOnly = this.GetScalar(IsReadOnly, false)
+            member this.Spacing = this.GetScalar(Spacing, 0.)
             
+    type FabulousVerticalStackLayout() =
+        inherit FabulousStackLayout(LayoutHandler(), fun layout -> VerticalStackLayoutManager(layout :?> IStackLayout))
+        
+    type FabulousHorizontalStackLayout() =
+        inherit FabulousStackLayout(LayoutHandler(), fun layout -> HorizontalStackLayoutManager(layout :?> IStackLayout))
+
+    let VerticalWidgetKey = Widgets.register<FabulousVerticalStackLayout>()
+    let HorizontalWidgetKey = Widgets.register<FabulousHorizontalStackLayout>() 
     
 [<AutoOpen>]
 module StackLayoutBuilders =

@@ -3,34 +3,28 @@
 open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.Maui.Window
 open Fabulous.StackAllocatedCollections
-open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.Maui
 
-type FabulousApplication() =
-    inherit Node(Microsoft.Maui.Handlers.ApplicationHandler())
-    
-    let _windows = List<IWindow>()
-    member this.Windows = _windows
-    
-    interface IApplication with
-        member this.CloseWindow(window) = _windows.Remove(window) |> ignore
-        member this.CreateWindow(activationState) = _windows[0]
-        member this.OpenWindow(window) = _windows.Add(window)
-        member this.ThemeChanged() = failwith "todo"
-        member this.Handler
-            with get () = this.Handler
-            and set value = this.Handler <- value
-        member this.Parent = this.Parent
-        member this.Windows = _windows :> IReadOnlyList<_>
-        
 module Application =
-    let WidgetKey = Widgets.register<FabulousApplication>()
+    let Windows = Attributes.defineMauiWidgetCollection "Windows"
     
-    let Windows =
-        Attributes.defineListWidgetCollection
-            "Application_Windows"
-            (fun target -> (target :?> FabulousApplication).Windows)
+    let ThemeChanged = Attributes.defineMauiEventNoArgs "ThemeChanged"
+    
+    type FabulousApplication() =
+        inherit Element.FabulousElement(Microsoft.Maui.Handlers.ApplicationHandler())
+        
+        member this.Windows = this.GetWidgetCollection(Windows)
+        
+        interface IApplication with
+            member this.CloseWindow(window) = this.Windows.Remove(window) |> ignore
+            member this.CreateWindow(activationState) = this.Windows[0] :?> IWindow
+            member this.OpenWindow(window) = this.Windows.Add(window)
+            member this.ThemeChanged() = this.InvokeEvent(ThemeChanged)
+            member this.Windows = List(Seq.map unbox<IWindow> this.Windows)
+        
+    let WidgetKey = Widgets.register<FabulousApplication>()
     
 [<AutoOpen>]
 module ApplicationBuilders =

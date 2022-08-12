@@ -1,5 +1,7 @@
 namespace Fabulous.Maui
 
+open System.Runtime.CompilerServices
+open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Primitives
@@ -117,3 +119,18 @@ module View' =
             member this.Visibility = this.GetScalar(Visibility, Microsoft.Maui.Visibility.Visible)
             member this.Width = this.GetScalar(Width, -1)
             member this.ZIndex = this.GetScalar(ZIndex, -1)
+            
+
+[<Extension>]
+type ViewModifiers =
+    [<Extension>]
+    static member inline horizontalLayoutAlignment(this: WidgetBuilder<'msg, #IView>, value: LayoutAlignment) =
+        this.AddScalar(View'.HorizontalLayoutAlignment.WithValue(value))
+        
+    [<Extension>]
+    static member inline verticalLayoutAlignment(this: WidgetBuilder<'msg, #IView>, value: LayoutAlignment) =
+        this.AddScalar(View'.VerticalLayoutAlignment.WithValue(value))
+        
+    [<Extension>]
+    static member inline background(this: WidgetBuilder<'msg, #IView>, value: SolidPaint) =
+        this.AddScalar(View'.Background.WithValue(value))

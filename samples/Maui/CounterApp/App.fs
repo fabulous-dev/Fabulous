@@ -5,6 +5,7 @@ open Fabulous.Maui
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Accessibility
+open Microsoft.Maui.Primitives
 
 open type Fabulous.Maui.View
 
@@ -37,20 +38,24 @@ module App =
     let view model =
         Application() {
             Window(
-                // VStack() {
-                    Label("Hello, World!")
-                        .textColor(Colors.Blue)
+                // (VStack() {
+                    // Label("Hello, World!")
+                    //     .textColor(Colors.Blue)
+                    //     .verticalTextAlignment(TextAlignment.Center)
+                    //     .horizontalTextAlignment(TextAlignment.Center)
                         
-                    // let text =
-                    //     if model.Count = 0 then
-                    //         "Click me!"
-                    //     else
-                    //         $"Clicked {model.Count} times"
-                            
-                    //Button(text, Clicked)
-                // }
-                    // .verticalLayoutAlignment(LayoutAlignment.Center)
-                    // .horizontalLayoutAlignment(LayoutAlignment.Center)
+                let text =
+                    if model.Count = 0 then
+                        "Click me!"
+                    else
+                        $"Clicked {model.Count} times"
+                        
+                TextButton(text, Clicked)
+                    .background(SolidPaint(Colors.Blue))
+                    .textColor(Colors.Yellow)
+                // })
+                //     .verticalLayoutAlignment(LayoutAlignment.Center)
+                //     .horizontalLayoutAlignment(LayoutAlignment.Center)
             )
         }
     
