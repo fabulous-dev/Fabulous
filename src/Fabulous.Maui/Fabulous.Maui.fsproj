@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <UseMauiCore>true</UseMauiCore>
+        <UseMauiEssentials>true</UseMauiEssentials>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
         <PackageIcon>nuget-icon.png</PackageIcon>

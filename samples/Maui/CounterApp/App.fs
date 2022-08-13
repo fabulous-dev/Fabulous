@@ -51,8 +51,8 @@ module App =
                         $"Clicked {model.Count} times"
                         
                 TextButton(text, Clicked)
-                    .background(SolidPaint(Colors.Blue))
-                    .textColor(Colors.Yellow)
+                    .background(SolidPaint(Color.FromArgb("#817DC0")))
+                    .textColor(Colors.White)
                 // })
                 //     .verticalLayoutAlignment(LayoutAlignment.Center)
                 //     .horizontalLayoutAlignment(LayoutAlignment.Center)

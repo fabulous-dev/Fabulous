@@ -4,6 +4,7 @@ open System.Diagnostics
 open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui
+open Microsoft.Maui.ApplicationModel
 
 module ViewHelpers =
     let canReuseView (prev: Widget) (curr: Widget) =
@@ -35,7 +36,7 @@ module Program =
           Subscribe = fun _ -> Cmd.none
           View = view
           CanReuseView = ViewHelpers.canReuseView
-          SyncAction = fun fn -> fn ()
+          SyncAction = MainThread.BeginInvokeOnMainThread
           Logger = ViewHelpers.defaultLogger() }
 
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
