@@ -14,7 +14,6 @@ module TransformGroup =
     let Children =
         Attributes.defineListWidgetCollection
             "TransformGroup_Children"
-            ViewNode.get
             (fun target -> (target :?> TransformGroup).Children :> IList<_>)
 
 [<AutoOpen>]

@@ -9,10 +9,7 @@ type IMultiPageOfPage =
 
 module MultiPageOfPage =
     let Children =
-        Attributes.defineListWidgetCollection
-            "MultiPageOfPage"
-            ViewNode.get
-            (fun target -> (target :?> MultiPage<Page>).Children)
+        Attributes.defineListWidgetCollection "MultiPageOfPage" (fun target -> (target :?> MultiPage<Page>).Children)
 
     let CurrentPageChanged =
         Attributes.defineEventNoArg

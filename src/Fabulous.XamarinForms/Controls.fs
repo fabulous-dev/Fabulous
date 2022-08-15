@@ -3,6 +3,32 @@
 open System
 open Xamarin.Forms
 
+// https://stackoverflow.com/a/2113902
+type RequiresSubscriptionEvent() =
+    let evt = Event<EventHandler, EventArgs>()
+    let mutable counter = 0
+
+    let published =
+        { new IEvent<EventHandler, EventArgs> with
+            member x.AddHandler(h) =
+                evt.Publish.AddHandler(h)
+                counter <- counter + 1
+
+            member x.RemoveHandler(h) =
+                evt.Publish.RemoveHandler(h)
+                counter <- counter - 1
+
+            member x.Subscribe(s) =
+                let h = EventHandler(fun _ -> s.OnNext)
+                x.AddHandler(h)
+
+                { new IDisposable with
+                    member y.Dispose() = x.RemoveHandler(h) } }
+
+    member x.Trigger(v) = evt.Trigger(v)
+    member x.Publish = published
+    member x.HasListeners = counter > 0
+
 /// Represents a dimension for either the row or column definition of a Grid
 type Dimension =
     /// Use a size that fits the children of the row or column.
@@ -112,6 +138,7 @@ type CustomNavigationPage() as this =
     inherit NavigationPage()
 
     let backNavigated = Event<EventHandler, EventArgs>()
+    let backButtonPressed = RequiresSubscriptionEvent()
 
     let mutable popCount = 0
 
@@ -119,6 +146,9 @@ type CustomNavigationPage() as this =
 
     [<CLIEvent>]
     member _.BackNavigated = backNavigated.Publish
+
+    [<CLIEvent>]
+    member _.BackButtonPressed = backButtonPressed.Publish
 
     member this.Push(page, ?animated) =
         let animated =
@@ -138,6 +168,15 @@ type CustomNavigationPage() as this =
             popCount <- popCount - 1
         else
             backNavigated.Trigger(this, EventArgs())
+
+    /// If we are listening to the BackButtonPressed event, cancel the automatic back navigation and trigger the event;
+    /// otherwise just let the automatic back navigation happen
+    override this.OnBackButtonPressed() =
+        if backButtonPressed.HasListeners then
+            backButtonPressed.Trigger(this, EventArgs())
+            true
+        else
+            false
 
 /// FlyoutPage doesn't say if the Flyout is visible or not on IsPresentedChanged, so we implement it
 type CustomFlyoutPage() as this =

@@ -23,6 +23,8 @@ module NavigationPageUpdaters =
             let struct (size, _) = prev
             int size
 
+        let mutable popLastWithAnimation = false
+
         for diff in diffs do
             match diff with
             | WidgetCollectionItemChange.Insert (index, widget) ->
@@ -72,13 +74,21 @@ module NavigationPageUpdaters =
                 elif index > pagesLength - 1 then
                     () // Do nothing, page has already been popped
                 elif index = pagesLength - 1 then
-                    // Last page, we pop it the right way to get an animation
-                    navigationPage.Pop()
+
+                    // Pop with an animation if it's the last page of the NavigationPage
+                    if index = pages.Length - 1 then
+                        popLastWithAnimation <- true
+                    else
+                        navigationPage.Navigation.RemovePage(pages.[index])
+
                     pagesLength <- pagesLength - 1
                 else
                     // Page is not visible, we just remove it
                     navigationPage.Navigation.RemovePage(pages.[index])
                     pagesLength <- pagesLength - 1
+
+        if popLastWithAnimation then
+            navigationPage.Pop()
 
     let updateNavigationPagePages
         (oldValueOpt: ArraySlice<Widget> voption)
@@ -149,6 +159,13 @@ module NavigationPage =
         Attributes.defineEventNoArg
             "NavigationPage_BackNavigated"
             (fun target -> (target :?> CustomNavigationPage).BackNavigated)
+
+    let BackButtonPressed =
+        Attributes.defineEventNoArg
+            "NavigationPage_BackButtonPressed"
+            (fun target ->
+                (target :?> CustomNavigationPage)
+                    .BackButtonPressed)
 
     [<Obsolete("Use BackNavigated instead")>]
     let Popped =
@@ -245,10 +262,17 @@ type NavigationPageModifiers =
         this.AddScalar(NavigationPage.BarTextColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Event that is fired when the user back navigated.</summary>
-    /// <param name="onPopped">Msg to dispatch when the user back navigated.</param>
+    /// <param name="onBackNavigated">Msg to dispatch when the user back navigated.</param>
     [<Extension>]
     static member inline onBackNavigated(this: WidgetBuilder<'msg, #INavigationPage>, onBackNavigated: 'msg) =
         this.AddScalar(NavigationPage.BackNavigated.WithValue(onBackNavigated))
+
+    /// <summary>Event that is fired when the user presses the system back button. Doesn't support the iOS back button</summary>
+    /// <param name="onBackButtonPressed">Msg to dispatch when the user presses the system back button.</param>
+    /// <remarks>Setting this modifier will prevent the default behavior of the system back button. It's up to you to update the navigation stack.</remarks>
+    [<Extension>]
+    static member inline onBackButtonPressed(this: WidgetBuilder<'msg, #INavigationPage>, onBackButtonPressed: 'msg) =
+        this.AddScalar(NavigationPage.BackButtonPressed.WithValue(onBackButtonPressed))
 
     /// <summary>Event that is fired when the page is popped.</summary>
     /// <param name="onPopped">Msg to dispatch when then page is popped.</param>
