@@ -7,8 +7,8 @@ open Microsoft.Maui.Handlers
 open Fabulous
 
 module Label =
-    let rec LineHeight = Attributes.defineMauiScalarWithEquality<float> "LineHeight"
-    let rec TextDecorations = Attributes.defineMauiScalarWithEquality<TextDecorations> "TextDecorations"
+    let LineHeight = Attributes.defineMauiScalarWithEquality<float> "LineHeight"
+    let TextDecorations = Attributes.defineMauiScalarWithEquality<TextDecorations> "TextDecorations"
     
     type FabulousLabel(handler) =
         inherit View'.FabulousView(handler)

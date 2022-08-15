@@ -4,7 +4,7 @@ open Microsoft.Maui
 
 module Element =
     type FabulousElement(handler) =
-        inherit Node(handler)
+        inherit NodeWithHandler(handler)
         
         interface IElement with
             member this.Handler

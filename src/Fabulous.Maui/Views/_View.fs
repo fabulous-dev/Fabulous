@@ -134,3 +134,11 @@ type ViewModifiers =
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IView>, value: SolidPaint) =
         this.AddScalar(View'.Background.WithValue(value))
+        
+    [<Extension>]
+    static member inline height(this: WidgetBuilder<'msg, #IView>, value: float) =
+        this.AddScalar(View'.Height.WithValue(value))
+        
+    [<Extension>]
+    static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
+        this.AddScalar(View'.Width.WithValue(value))

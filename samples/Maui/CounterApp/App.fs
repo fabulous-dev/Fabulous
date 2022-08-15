@@ -38,24 +38,13 @@ module App =
     let view model =
         Application() {
             Window(
-                // (VStack() {
-                    // Label("Hello, World!")
-                    //     .textColor(Colors.Blue)
-                    //     .verticalTextAlignment(TextAlignment.Center)
-                    //     .horizontalTextAlignment(TextAlignment.Center)
-                        
-                let text =
-                    if model.Count = 0 then
-                        "Click me!"
-                    else
-                        $"Clicked {model.Count} times"
-                        
-                TextButton(text, Clicked)
-                    .background(SolidPaint(Color.FromArgb("#817DC0")))
-                    .textColor(Colors.White)
-                // })
-                //     .verticalLayoutAlignment(LayoutAlignment.Center)
-                //     .horizontalLayoutAlignment(LayoutAlignment.Center)
+                (VStack() {
+                    Label("Hello, World!")
+                        .height(200.)
+                        .width(200.)
+                        .background(SolidPaint(Colors.Yellow))
+                })
+                    .background(SolidPaint(Colors.Red))
             )
         }
     

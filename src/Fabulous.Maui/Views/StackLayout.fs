@@ -8,21 +8,13 @@ open Fabulous
 open Microsoft.Maui.Layouts
 
 module StackLayout =
-    let ClipsToBounds = Attributes.defineMauiScalarWithEquality<bool> "ClipsToBounds"
-    let IgnoreSafeArea = Attributes.defineMauiScalarWithEquality<bool> "IgnoreSafeArea"
-    let IsReadOnly = Attributes.defineMauiScalarWithEquality<bool> "IsReadOnly"
+    /// TODO: Need to InvalidateMeasure when changing Spacing
     let Spacing = Attributes.defineMauiScalarWithEquality<float> "Spacing"
     
     type FabulousStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
         inherit Layout.FabulousLayout(handler, layoutManagerFn)
 
         interface IStackLayout with
-            member this.CopyTo(array, arrayIndex) = failwith "todo"
-            member this.Focus() = failwith "todo"
-            member this.Clip = null
-            member this.ClipsToBounds = this.GetScalar(ClipsToBounds, false)
-            member this.IgnoreSafeArea = this.GetScalar(IgnoreSafeArea, false)
-            member this.IsReadOnly = this.GetScalar(IsReadOnly, false)
             member this.Spacing = this.GetScalar(Spacing, 0.)
             
     type FabulousVerticalStackLayout() =
