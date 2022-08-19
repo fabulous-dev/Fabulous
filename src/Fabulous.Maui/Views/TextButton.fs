@@ -6,7 +6,7 @@ open Microsoft.Maui.Handlers
 open Fabulous
 
 module TextButton =
-    type FabulousTextButton(handler) =
+    type FabulousTextButton(handler: IButtonHandler) =
         inherit Button.FabulousButton(handler)
         
         new() = FabulousTextButton(ButtonHandler())

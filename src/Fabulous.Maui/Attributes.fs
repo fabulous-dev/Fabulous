@@ -130,8 +130,12 @@ module Attributes =
                     // Trigger the mounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
-                | WidgetCollectionItemChange.Update (index, _, widgetDiff) ->
+                | WidgetCollectionItemChange.Update (index, next, widgetDiff) ->
                     let childNode = node.TreeContext.GetViewNode(box targetColl.[index])
+                    let childView = childNode.Target :?> Node
+                    
+                    childView.Attributes.ScalarAttributes <- ValueOption.defaultValue [||] next.ScalarAttributes
+            
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
@@ -226,8 +230,12 @@ module Attributes =
                     // Trigger the mounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
-                | WidgetCollectionItemChange.Update (index, _, widgetDiff) ->
+                | WidgetCollectionItemChange.Update (index, next, widgetDiff) ->
                     let childNode = node.TreeContext.GetViewNode(box targetColl.[index])
+                    let childView = childNode.Target :?> Node
+                    
+                    childView.Attributes.ScalarAttributes <- ValueOption.defaultValue [||] next.ScalarAttributes
+            
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
@@ -259,9 +267,8 @@ module Attributes =
             let targetColl =
                 if targetNode.Attributes.WidgetCollections.ContainsKey(name) then
                     let lst = targetNode.Attributes.WidgetCollections[name]
-                    for item in lst do
-                        handler.Invoke("Remove", Microsoft.Maui.Handlers.LayoutHandlerUpdate(lst.IndexOf(item), item :?> IView))
                     lst.Clear()
+                    handler.Invoke("Clear")
                     lst
                 else
                     let lst = List<obj>()

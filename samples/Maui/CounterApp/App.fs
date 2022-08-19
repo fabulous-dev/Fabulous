@@ -34,48 +34,43 @@ module App =
         match msg with
         | Clicked ->
             { model with Count = model.Count + 1 }, [ SemanticAnnounce $"Clicked {model.Count} times" ]
-
+    
     let view model =
         Application() {
             Window(
-                (VStack() {
-                    for i = 0 to 100 do
+                //ScrollView(
+                    (VStack(spacing = 25.) {
+                        Image(Aspect.AspectFit, "dotnet_bot.png")
+                            //.semanticDescription("Cute dotnet bot waving hi to you!")
+                             .height(200.)
+                             .centerHorizontal()
+                            
                         Label("Hello, World!")
-                })
-                    .background(SolidPaint(Colors.Red))
+                            //.semanticHeadingLevel("Level1")
+                            .font(Microsoft.Maui.Font.Default.WithSize(32.))
+                            .centerHorizontal()
+                            
+                        Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
+                            //.semanticHeadingLevel("Level2")
+                            //.semanticDescription("Welcome to dot net Multi platform App U I powered by Fabulous")
+                            .font(Microsoft.Maui.Font.Default.WithSize(18.))
+                            .centerHorizontal()
+                            
+                        let text =
+                            if model.Count = 0 then
+                                "Click me"
+                            else
+                                $"Clicked {model.Count} times"
+                            
+                        TextButton(text, Clicked)
+                            //.semanticHint("Counts the number of times you click")
+                            .centerHorizontal()
+                    })
+                        .padding(Thickness(30., 0., 30., 0.))
+                        .centerVertical()
+                //)
             )
         }
-    
-    // let view model =
-    //     Application() {
-    //         Window(
-    //             ScrollView(
-    //                 (VStack(spacing = 25.) {
-    //                     Image(Aspect.AspectFit, "dotnet_bot.png")
-    //                         .semanticDescription("Cute dotnet bot waving hi to you!")
-    //                         .height(200.)
-    //                         .centerHorizontal()
-    //                         
-    //                     Label("Hello, World!")
-    //                         .semanticHeadingLevel("Level1")
-    //                         .font(size = 32.)
-    //                         .centerHorizontal()
-    //                         
-    //                     Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-    //                         .semanticHeadingLevel("Level2")
-    //                         .semanticDescription("Welcome to dot net Multi platform App U I")
-    //                         .font(size = 18.)
-    //                         .centerHorizontal()
-    //                         
-    //                     Button("Click me", Clicked)
-    //                         .semanticHint("Counts the number of times you click")
-    //                         .centerHorizontal()
-    //                 })
-    //                     .padding(30., 0., 30., 0.)
-    //                     .centerVertical()
-    //             )
-    //         )
-    //     }
 
     let program =
         Program.statefulWithCmdMsg init update view mapCmd

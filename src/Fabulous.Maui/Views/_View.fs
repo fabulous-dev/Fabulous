@@ -40,7 +40,7 @@ module View' =
     let Focused = Attributes.defineMauiEventNoArgs "Focused"
     let Unfocused = Attributes.defineMauiEventNoArgs "Unfocused"
     
-    type FabulousView(handler) =
+    type FabulousView(handler: IViewHandler) =
         inherit Element.FabulousElement(handler)
         
         let mutable _frame = Rect.Zero
@@ -71,8 +71,8 @@ module View' =
                 _isFocus <- false
                 this.InvokeEvent(Unfocused)
                 
-            member this.InvalidateArrange() = failwith "todo"
-            member this.InvalidateMeasure() = failwith "todo"
+            member this.InvalidateArrange() = ()
+            member this.InvalidateMeasure() = handler.Invoke("InvalidateMeasure")
             member this.Measure(widthConstraint, heightConstraint) =
                 _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
                 _desiredSize
@@ -142,3 +142,13 @@ type ViewModifiers =
     [<Extension>]
     static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(View'.Width.WithValue(value))
+        
+[<Extension>]
+type ViewModifiersExtra =
+    [<Extension>]
+    static member inline centerVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Center))
+        
+    [<Extension>]
+    static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Center))

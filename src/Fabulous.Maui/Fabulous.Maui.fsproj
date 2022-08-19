@@ -32,6 +32,9 @@
         <Compile Include="Views\_ButtonStroke.fs" />
         <Compile Include="Views\_Button.fs" />
         <Compile Include="Views\TextButton.fs" />
+        <Compile Include="Views\ContentView.fs" />
+        <Compile Include="Views\ScrollView.fs" />
+        <Compile Include="Views\Image.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>

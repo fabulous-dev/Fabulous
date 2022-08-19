@@ -35,6 +35,12 @@ module Layout =
             member this.Clear() = this.Children.Clear()
             member this.Contains(item) = this.Children.Contains(item)
             member this.CopyTo(array, arrayIndex) = this.Children.CopyTo(array, arrayIndex)
+            member this.InvalidateMeasure() =
+                handler.Invoke("InvalidateMeasure")
+                
+                for child in this.Children do
+                    child.InvalidateMeasure()
+                
             member this.CrossPlatformArrange(bounds) = this.LayoutManager.ArrangeChildren(bounds)
             member this.CrossPlatformMeasure(widthConstraint, heightConstraint) = this.LayoutManager.Measure(widthConstraint, heightConstraint)
             member this.GetEnumerator(): System.Collections.Generic.IEnumerator<IView> = this.Children.GetEnumerator()

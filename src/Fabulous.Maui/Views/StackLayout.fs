@@ -29,17 +29,33 @@ module StackLayout =
 [<AutoOpen>]
 module StackLayoutBuilders =
     type Fabulous.Maui.View with
-        static member inline VStack<'msg>() =
-            CollectionBuilder<'msg, IStackLayout, IView>(
-                StackLayout.VerticalWidgetKey,
-                Layout.Children
-            )
+        static member inline VStack<'msg>(?spacing: float) =
+            match spacing with
+            | Some spacing ->
+                CollectionBuilder<'msg, IStackLayout, IView>(
+                    StackLayout.VerticalWidgetKey,
+                    Layout.Children,
+                    StackLayout.Spacing.WithValue(spacing)
+                )
+            | None ->
+                CollectionBuilder<'msg, IStackLayout, IView>(
+                    StackLayout.VerticalWidgetKey,
+                    Layout.Children
+                )
             
-        static member inline HStack<'msg>() =
-            CollectionBuilder<'msg, IStackLayout, IView>(
-                StackLayout.HorizontalWidgetKey,
-                Layout.Children
-            )
+        static member inline HStack<'msg>(?spacing: float) =
+            match spacing with
+            | Some spacing ->
+                CollectionBuilder<'msg, IStackLayout, IView>(
+                    StackLayout.HorizontalWidgetKey,
+                    Layout.Children,
+                    StackLayout.Spacing.WithValue(spacing)
+                )
+            | None ->
+                CollectionBuilder<'msg, IStackLayout, IView>(
+                    StackLayout.HorizontalWidgetKey,
+                    Layout.Children
+                )
             
 [<Extension>]
 type StackLayoutCollectionExtensions =
