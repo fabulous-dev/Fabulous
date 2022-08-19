@@ -39,10 +39,8 @@ module App =
         Application() {
             Window(
                 (VStack() {
-                    Label("Hello, World!")
-                        .height(200.)
-                        .width(200.)
-                        .background(SolidPaint(Colors.Yellow))
+                    for i = 0 to 100 do
+                        Label("Hello, World!")
                 })
                     .background(SolidPaint(Colors.Red))
             )

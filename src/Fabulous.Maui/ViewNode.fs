@@ -17,6 +17,8 @@ type NodeAttributes() =
 type Node() =
     let attributes = NodeAttributes()
     member this.Attributes = attributes
+    member val ViewNode: IViewNode = Unchecked.defaultof<IViewNode> with get, set
+    member val Parent: IElement = null with get, set
     
     member inline this.TryFindScalar (key: int<scalarAttributeKey>) =
         this.Attributes.ScalarAttributes
@@ -50,19 +52,6 @@ type Node() =
             let newList = List<obj>()
             this.Attributes.WidgetCollections[def.Name] <- newList
             newList
-    
-    
-type FabulousFileImageSource() =
-    inherit Node()
-    
-    interface IFileImageSource with
-        member this.File = this.GetScalar(definition, "")
-
-type NodeWithHandler(handler: IElementHandler) =
-    inherit Node()
-    member val Handler = handler with get, set
-    member val ViewNode: IViewNode = Unchecked.defaultof<IViewNode> with get, set
-    member val Parent: IElement = null with get, set
         
     member inline this.InvokeEvent(def: SimpleScalarAttributeDefinition<unit -> obj>) =
         match this.TryFindScalar(def.Key) with
@@ -79,6 +68,10 @@ type NodeWithHandler(handler: IElementHandler) =
             let fn = unbox<'args -> obj> s.Value
             let msg = fn args
             Dispatcher.dispatch this.ViewNode msg
+
+type NodeWithHandler(handler: IElementHandler) =
+    inherit Node()
+    member val Handler = handler with get, set
 
 module ViewNode =
     let get (target: obj) = (target :?> Node).ViewNode

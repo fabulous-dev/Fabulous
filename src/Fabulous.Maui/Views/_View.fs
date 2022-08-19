@@ -86,7 +86,7 @@ module View' =
             member this.Frame
                 with get() = _frame
                 and set v = _frame <- v
-            member this.Height = this.GetScalar(Height, -1.)
+            member this.Height = this.GetScalar(Height, Dimension.Unset)
             member this.HorizontalLayoutAlignment = this.GetScalar(HorizontalLayoutAlignment, LayoutAlignment.Start)
             member this.InputTransparent = this.GetScalar(InputTransparent, false)
             member this.IsEnabled = this.GetScalar(IsEnabled, true)
@@ -100,10 +100,10 @@ module View' =
                         _isFocus <- false
                         this.InvokeEvent(Unfocused)
             member this.Margin = this.GetScalar(Margin, Thickness.Zero)
-            member this.MaximumHeight = this.GetScalar(MaximumHeight, -1)
-            member this.MaximumWidth = this.GetScalar(MaximumWidth, -1)
-            member this.MinimumHeight = this.GetScalar(MinimumHeight, 0)
-            member this.MinimumWidth = this.GetScalar(MinimumWidth, 0)
+            member this.MaximumHeight = this.GetScalar(MaximumHeight, Dimension.Maximum)
+            member this.MaximumWidth = this.GetScalar(MaximumWidth, Dimension.Maximum)
+            member this.MinimumHeight = this.GetScalar(MinimumHeight, Dimension.Unset)
+            member this.MinimumWidth = this.GetScalar(MinimumWidth, Dimension.Unset)
             member this.Opacity = this.GetScalar(Opacity, 1.)
             member this.Rotation = this.GetScalar(Rotation, 0.)
             member this.RotationX = this.GetScalar(RotationX, 0.)
@@ -117,7 +117,7 @@ module View' =
             member this.TranslationY = this.GetScalar(TranslationY, 0.)
             member this.VerticalLayoutAlignment = this.GetScalar(VerticalLayoutAlignment, LayoutAlignment.Start)
             member this.Visibility = this.GetScalar(Visibility, Microsoft.Maui.Visibility.Visible)
-            member this.Width = this.GetScalar(Width, -1)
+            member this.Width = this.GetScalar(Width, Dimension.Unset)
             member this.ZIndex = this.GetScalar(ZIndex, -1)
             
 

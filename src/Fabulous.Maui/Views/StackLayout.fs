@@ -9,7 +9,7 @@ open Microsoft.Maui.Layouts
 
 module StackLayout =
     /// TODO: Need to InvalidateMeasure when changing Spacing
-    let Spacing = Attributes.defineMauiScalarWithEquality<float> "Spacing"
+    let Spacing = Attributes.defineMauiScalar2<float> "Spacing"
     
     type FabulousStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
         inherit Layout.FabulousLayout(handler, layoutManagerFn)
