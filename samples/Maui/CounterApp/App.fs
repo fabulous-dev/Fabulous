@@ -41,18 +41,17 @@ module App =
                 //ScrollView(
                     (VStack(spacing = 25.) {
                         Image(Aspect.AspectFit, "dotnet_bot.png")
-                            //.semanticDescription("Cute dotnet bot waving hi to you!")
-                             .height(200.)
-                             .centerHorizontal()
+                            .semantics(description = "Cute dotnet bot waving hi to you!")
+                            .height(200.)
+                            .centerHorizontal()
                             
                         Label("Hello, World!")
-                            //.semanticHeadingLevel("Level1")
+                            .semantics(SemanticHeadingLevel.Level1)
                             .font(Microsoft.Maui.Font.Default.WithSize(32.))
                             .centerHorizontal()
                             
                         Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                            //.semanticHeadingLevel("Level2")
-                            //.semanticDescription("Welcome to dot net Multi platform App U I powered by Fabulous")
+                            .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
                             .font(Microsoft.Maui.Font.Default.WithSize(18.))
                             .centerHorizontal()
                             
@@ -63,7 +62,7 @@ module App =
                                 $"Clicked {model.Count} times"
                             
                         TextButton(text, Clicked)
-                            //.semanticHint("Counts the number of times you click")
+                            .semantics(hint = "Counts the number of times you click")
                             .centerHorizontal()
                     })
                         .padding(Thickness(30., 0., 30., 0.))

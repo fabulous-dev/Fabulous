@@ -5,6 +5,7 @@ open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Primitives
+open Microsoft.Maui.Platform
 
 module View' =
     let AnchorX = Attributes.defineMauiScalarWithEquality<float> "AnchorX"
@@ -76,6 +77,7 @@ module View' =
             member this.Measure(widthConstraint, heightConstraint) =
                 _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
                 _desiredSize
+                
             member this.AnchorX = this.GetScalar(AnchorX, 0.5)
             member this.AnchorY = this.GetScalar(AnchorY, 0.5)
             member this.AutomationId = this.GetScalar(AutomationId, null)
@@ -142,6 +144,16 @@ type ViewModifiers =
     [<Extension>]
     static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(View'.Width.WithValue(value))
+        
+    [<Extension>]
+    static member inline semantics(this: WidgetBuilder<'msg, #IView>, ?headingLevel: SemanticHeadingLevel, ?description: string, ?hint: string) =
+        let value =
+            Semantics(
+                HeadingLevel = defaultArg headingLevel SemanticHeadingLevel.None,
+                Description = defaultArg description null,
+                Hint = defaultArg hint null
+            )
+        this.AddScalar(View'.Semantics.WithValue(value))
         
 [<Extension>]
 type ViewModifiersExtra =
