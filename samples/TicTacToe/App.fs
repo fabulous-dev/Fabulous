@@ -28,7 +28,7 @@ module App =
 
     let update msg model =
         match msg with
-        | Clicked -> { model with Count = model.Count + 1 }, [ ]
+        | Clicked -> { model with Count = model.Count + 1 }, []
 
     let view model =
         Application() {
