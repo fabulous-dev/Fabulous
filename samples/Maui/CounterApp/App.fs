@@ -48,7 +48,7 @@ module App =
                         Label("Hello, World!")
                             .semantics(SemanticHeadingLevel.Level1)
                             .font(Microsoft.Maui.Font.Default.WithSize(32.))
-                            .centerHorizontal()
+                            .centerTextHorizontal()
                             
                         Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
                             .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")

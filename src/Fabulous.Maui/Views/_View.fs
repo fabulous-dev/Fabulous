@@ -89,7 +89,7 @@ module View' =
                 with get() = _frame
                 and set v = _frame <- v
             member this.Height = this.GetScalar(Height, Dimension.Unset)
-            member this.HorizontalLayoutAlignment = this.GetScalar(HorizontalLayoutAlignment, LayoutAlignment.Start)
+            member this.HorizontalLayoutAlignment = this.GetScalar(HorizontalLayoutAlignment, LayoutAlignment.Fill)
             member this.InputTransparent = this.GetScalar(InputTransparent, false)
             member this.IsEnabled = this.GetScalar(IsEnabled, true)
             member this.IsFocused
@@ -117,7 +117,7 @@ module View' =
             member this.Shadow = null
             member this.TranslationX = this.GetScalar(TranslationX, 0.)
             member this.TranslationY = this.GetScalar(TranslationY, 0.)
-            member this.VerticalLayoutAlignment = this.GetScalar(VerticalLayoutAlignment, LayoutAlignment.Start)
+            member this.VerticalLayoutAlignment = this.GetScalar(VerticalLayoutAlignment, LayoutAlignment.Fill)
             member this.Visibility = this.GetScalar(Visibility, Microsoft.Maui.Visibility.Visible)
             member this.Width = this.GetScalar(Width, Dimension.Unset)
             member this.ZIndex = this.GetScalar(ZIndex, -1)
