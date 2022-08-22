@@ -18,10 +18,10 @@ module Button =
             member this.Clicked() = this.InvokeEvent(Clicked)
             member this.Pressed() = this.InvokeEvent(Pressed)
             member this.Released() = this.InvokeEvent(Released)
-            member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, 0)
-            member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
+            member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, -1)
+            member this.Padding = this.GetScalar(Padding.Padding, Thickness(System.Double.NaN))
             member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, null)
-            member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, 0.)
+            member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, -1.)
 
 [<Extension>]
 type ButtonModifiers =
