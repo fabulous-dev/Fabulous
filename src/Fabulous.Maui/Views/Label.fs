@@ -35,7 +35,7 @@ module Label =
             member this.LineHeight = this.GetScalar(LineHeight, 1.)
             member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
             member this.Text = this.GetScalar(Text.Text, "")
-            member this.TextColor = this.GetScalar(TextStyle.TextColor, Colors.Black)
+            member this.TextColor = this.GetScalar(TextStyle.TextColor, null)
             member this.TextDecorations = this.GetScalar(TextDecorations, Microsoft.Maui.TextDecorations.None)
             member this.VerticalTextAlignment = this.GetScalar(TextAlignment.VerticalTextAlignment, TextAlignment.Start)
             

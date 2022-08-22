@@ -20,7 +20,7 @@ module Button =
             member this.Released() = this.InvokeEvent(Released)
             member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, 0)
             member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
-            member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, Colors.Black)
+            member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, null)
             member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, 0.)
 
 [<Extension>]

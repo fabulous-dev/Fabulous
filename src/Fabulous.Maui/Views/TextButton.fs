@@ -15,7 +15,7 @@ module TextButton =
             member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, 0)
             member this.Font = this.GetScalar(TextStyle.Font, Microsoft.Maui.Font.Default)
             member this.Text = this.GetScalar(Text.Text, "")
-            member this.TextColor = this.GetScalar(TextStyle.TextColor, Colors.Black)
+            member this.TextColor = this.GetScalar(TextStyle.TextColor, null)
 
     let WidgetKey = Widgets.register<FabulousTextButton>()
     

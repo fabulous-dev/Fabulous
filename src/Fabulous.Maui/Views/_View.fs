@@ -6,6 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Primitives
 open Microsoft.Maui.Platform
+open Microsoft.Maui.Layouts
 
 module View' =
     let AnchorX = Attributes.defineMauiScalarWithEquality<float> "AnchorX"
@@ -58,9 +59,8 @@ module View' =
                 and set (value: IViewHandler) = this.Handler <- value
                 
             member this.Arrange(bounds) =
-                _frame <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeFrame(this, bounds)
-                let viewHandler = this.Handler :?> IViewHandler
-                if viewHandler <> null then viewHandler.PlatformArrange(_frame)
+                _frame <- this.ComputeFrame(bounds)
+                (this.Handler :?> IViewHandler).PlatformArrange(_frame)
                 _frame.Size
                 
             member this.Focus() =
@@ -75,13 +75,13 @@ module View' =
             member this.InvalidateArrange() = ()
             member this.InvalidateMeasure() = handler.Invoke("InvalidateMeasure")
             member this.Measure(widthConstraint, heightConstraint) =
-                _desiredSize <- Microsoft.Maui.Layouts.LayoutExtensions.ComputeDesiredSize(this, widthConstraint, heightConstraint)
+                _desiredSize <- this.ComputeDesiredSize(widthConstraint, heightConstraint)
                 _desiredSize
                 
             member this.AnchorX = this.GetScalar(AnchorX, 0.5)
             member this.AnchorY = this.GetScalar(AnchorY, 0.5)
             member this.AutomationId = this.GetScalar(AutomationId, null)
-            member this.Background = this.GetScalar(Background, SolidPaint(Colors.White))
+            member this.Background = this.GetScalar(Background, null)
             member this.Clip = null
             member this.DesiredSize = _desiredSize
             member this.FlowDirection = this.GetScalar(FlowDirection, Microsoft.Maui.FlowDirection.MatchParent)
@@ -156,7 +156,7 @@ type ViewModifiers =
         this.AddScalar(View'.Semantics.WithValue(value))
         
 [<Extension>]
-type ViewModifiersExtra =
+type ViewExtraModifiers =
     [<Extension>]
     static member inline centerVertical(this: WidgetBuilder<'msg, #IView>) =
         this.AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Center))
@@ -164,3 +164,9 @@ type ViewModifiersExtra =
     [<Extension>]
     static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>) =
         this.AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Center))
+        
+    [<Extension>]
+    static member inline center(this: WidgetBuilder<'msg, #IView>) =
+        this
+            .AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Center))
+            .AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Center))

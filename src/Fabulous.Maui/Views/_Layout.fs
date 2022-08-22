@@ -28,8 +28,11 @@ module Layout =
         interface ILayout with
             member this.Measure(widthConstraint, heightConstraint) =
                 let padding = this.GetScalar(Padding.Padding, Thickness.Zero)
-                let size = (this :> IView).Measure(widthConstraint - padding.HorizontalThickness, heightConstraint - padding.VerticalThickness)
-                Size(size.Width + padding.HorizontalThickness, size.Height + padding.VerticalThickness)
+                // TODO: Need to find a way to call the base implementation of a member when overriding it in a subclass via interfaces
+                let desiredSize = this.ComputeDesiredSize(widthConstraint - padding.HorizontalThickness, heightConstraint - padding.VerticalThickness)
+                let desiredSize = Size(desiredSize.Width + padding.HorizontalThickness, desiredSize.Height + padding.VerticalThickness)
+                this.DesiredSize <- desiredSize
+                desiredSize
                 
             member this.Add(item) = this.Children.Add(item)
             member this.Clear() = this.Children.Clear()

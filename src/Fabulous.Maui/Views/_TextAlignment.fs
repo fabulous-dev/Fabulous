@@ -17,3 +17,13 @@ type TextAlignmentModifiers =
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ITextAlignment>, value: TextAlignment) =
         this.AddScalar(TextAlignment.VerticalTextAlignment.WithValue(value))
+       
+[<Extension>]
+type TextAlignmentExtraModifiers =
+    [<Extension>]
+    static member inline centerTextVertical(this: WidgetBuilder<'msg, #ITextAlignment>) =
+        this.AddScalar(TextAlignment.VerticalTextAlignment.WithValue(TextAlignment.Center))
+        
+    [<Extension>]
+    static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ITextAlignment>) =
+        this.AddScalar(TextAlignment.HorizontalTextAlignment.WithValue(TextAlignment.Center))

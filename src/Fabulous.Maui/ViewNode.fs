@@ -39,7 +39,7 @@ type Node() =
         | None -> defaultValue
         | Some s -> convertValue(unbox<'modelType> s.Value)
         
-    member inline this.GetWidget<'T when 'T: null>(def: WidgetAttributeDefinition) =
+    member this.GetWidget<'T when 'T: null>(def: WidgetAttributeDefinition) =
         if this.Attributes.Widgets.ContainsKey(def.Name) then
             unbox<'T> this.Attributes.Widgets[def.Name]
         else
