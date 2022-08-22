@@ -8,8 +8,6 @@ open Microsoft.Maui.Primitives
 open Microsoft.Maui.Layouts
 
 module View' =
-    let AnchorX = Attributes.defineMauiScalarWithEquality<float> "AnchorX"
-    let AnchorY = Attributes.defineMauiScalarWithEquality<float> "AnchorY"
     let AutomationId = Attributes.defineMauiScalarWithEquality<string> "AutomationId"
     let Background = Attributes.defineMauiScalarWithEquality<Paint> "Background"
     let FlowDirection = Attributes.defineMauiScalarWithEquality<FlowDirection> "FlowDirection"
@@ -24,15 +22,7 @@ module View' =
     let MinimumHeight = Attributes.defineMauiScalarWithEquality<float> "MinimumHeight"
     let MinimumWidth = Attributes.defineMauiScalarWithEquality<float> "MinimumWidth"
     let Opacity = Attributes.defineMauiScalarWithEquality<float> "Opacity"
-    let Rotation = Attributes.defineMauiScalarWithEquality<float> "Rotation"
-    let RotationX = Attributes.defineMauiScalarWithEquality<float> "RotationX"
-    let RotationY = Attributes.defineMauiScalarWithEquality<float> "RotationY"
-    let Scale = Attributes.defineMauiScalarWithEquality<float> "Scale"
-    let ScaleX = Attributes.defineMauiScalarWithEquality<float> "ScaleX"
-    let ScaleY = Attributes.defineMauiScalarWithEquality<float> "ScaleY"
     let Semantics = Attributes.defineMauiScalarWithEquality<Semantics> "Semantics"
-    let TranslationX = Attributes.defineMauiScalarWithEquality<float> "TranslationX"
-    let TranslationY = Attributes.defineMauiScalarWithEquality<float> "TranslationY"
     let VerticalLayoutAlignment = Attributes.defineMauiScalarWithEquality<LayoutAlignment> "VerticalLayoutAlignment"
     let Visibility = Attributes.defineMauiScalarWithEquality<Visibility> "Visibility"
     let Width = Attributes.defineMauiScalarWithEquality<float> "Width"
@@ -42,8 +32,6 @@ module View' =
     let Unfocused = Attributes.defineMauiEventNoArgs "Unfocused"
     
     module Defaults =
-        let [<Literal>] AnchorX = 0.5
-        let [<Literal>] AnchorY = 0.5
         let [<Literal>] AutomationId: string = null
         let [<Literal>] Background: Paint = null
         let [<Literal>] FlowDirection = Microsoft.Maui.FlowDirection.MatchParent
@@ -57,15 +45,7 @@ module View' =
         let [<Literal>] MinimumHeight = Dimension.Unset
         let [<Literal>] MinimumWidth = Dimension.Unset
         let [<Literal>] Opacity = 1.
-        let [<Literal>] Rotation = 0.
-        let [<Literal>] RotationX = 0.
-        let [<Literal>] RotationY = 0.
-        let [<Literal>] Scale = 1.
-        let [<Literal>] ScaleX = 1.
-        let [<Literal>] ScaleY = 1.
         let [<Literal>] Semantics: Microsoft.Maui.Semantics = null
-        let [<Literal>] TranslationX = 0.
-        let [<Literal>] TranslationY = 0.
         let [<Literal>] VerticalLayoutAlignment = LayoutAlignment.Fill
         let [<Literal>] Visibility = Microsoft.Maui.Visibility.Visible
         let [<Literal>] Width = Dimension.Unset
@@ -108,8 +88,8 @@ type FabView(handler: IViewHandler) =
             _desiredSize <- this.ComputeDesiredSize(widthConstraint, heightConstraint)
             _desiredSize
             
-        member this.AnchorX = this.GetScalar(View'.AnchorX, View'.Defaults.AnchorX)
-        member this.AnchorY = this.GetScalar(View'.AnchorY, View'.Defaults.AnchorY)
+        member this.AnchorX = this.GetScalar(Transform.AnchorX, Transform.Defaults.AnchorX)
+        member this.AnchorY = this.GetScalar(Transform.AnchorY, Transform.Defaults.AnchorY)
         member this.AutomationId = this.GetScalar(View'.AutomationId, View'.Defaults.AutomationId)
         member this.Background = this.GetScalar(View'.Background, View'.Defaults.Background)
         member this.Clip = null
@@ -137,16 +117,16 @@ type FabView(handler: IViewHandler) =
         member this.MinimumHeight = this.GetScalar(View'.MinimumHeight, View'.Defaults.MinimumHeight)
         member this.MinimumWidth = this.GetScalar(View'.MinimumWidth, View'.Defaults.MinimumWidth)
         member this.Opacity = this.GetScalar(View'.Opacity, View'.Defaults.Opacity)
-        member this.Rotation = this.GetScalar(View'.Rotation, View'.Defaults.Rotation)
-        member this.RotationX = this.GetScalar(View'.RotationX, View'.Defaults.RotationX)
-        member this.RotationY = this.GetScalar(View'.RotationY, View'.Defaults.RotationY)
-        member this.Scale = this.GetScalar(View'.Scale, View'.Defaults.Scale)
-        member this.ScaleX = this.GetScalar(View'.ScaleX, View'.Defaults.ScaleX)
-        member this.ScaleY = this.GetScalar(View'.ScaleY, View'.Defaults.ScaleY)
+        member this.Rotation = this.GetScalar(Transform.Rotation, Transform.Defaults.Rotation)
+        member this.RotationX = this.GetScalar(Transform.RotationX, Transform.Defaults.RotationX)
+        member this.RotationY = this.GetScalar(Transform.RotationY, Transform.Defaults.RotationY)
+        member this.Scale = this.GetScalar(Transform.Scale, Transform.Defaults.Scale)
+        member this.ScaleX = this.GetScalar(Transform.ScaleX, Transform.Defaults.ScaleX)
+        member this.ScaleY = this.GetScalar(Transform.ScaleY, Transform.Defaults.ScaleY)
         member this.Semantics = this.GetScalar(View'.Semantics, View'.Defaults.Semantics)
         member this.Shadow = null
-        member this.TranslationX = this.GetScalar(View'.TranslationX, View'.Defaults.TranslationX)
-        member this.TranslationY = this.GetScalar(View'.TranslationY, View'.Defaults.TranslationY)
+        member this.TranslationX = this.GetScalar(Transform.TranslationX, Transform.Defaults.TranslationX)
+        member this.TranslationY = this.GetScalar(Transform.TranslationY, Transform.Defaults.TranslationY)
         member this.VerticalLayoutAlignment = this.GetScalar(View'.VerticalLayoutAlignment, View'.Defaults.VerticalLayoutAlignment)
         member this.Visibility = this.GetScalar(View'.Visibility, View'.Defaults.Visibility)
         member this.Width = this.GetScalar(View'.Width, View'.Defaults.Width)
@@ -170,6 +150,10 @@ type ViewModifiers =
     [<Extension>]
     static member inline height(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(View'.Height.WithValue(value))
+        
+    [<Extension>]
+    static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Thickness) =
+        this.AddScalar(View'.Margin.WithValue(value))
         
     [<Extension>]
     static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
@@ -200,3 +184,11 @@ type ViewExtraModifiers =
         this
             .AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Center))
             .AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Center))
+            
+    [<Extension>]
+    static member inline margin(this: WidgetBuilder<'msg, #IView>, left: float, top: float, right: float, bottom: float) =
+        this.AddScalar(View'.Margin.WithValue(Thickness(left, top, right, bottom)))
+            
+    [<Extension>]
+    static member inline margin(this: WidgetBuilder<'msg, #IView>, horizontalSize: float, verticalSize: float) =
+        this.AddScalar(View'.Margin.WithValue(Thickness(horizontalSize, verticalSize)))

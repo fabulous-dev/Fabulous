@@ -1,4 +1,4 @@
-namespace HelloWorld
+namespace FabulousContacts
 
 open Fabulous
 open Fabulous.Maui
@@ -10,13 +10,10 @@ open Microsoft.Maui.Primitives
 open type Fabulous.Maui.View
 
 module App =
-    type Model =
-        { Count: int
-          EnteredText: string }
+    type Model = { Count: int }
 
     type Msg =
         | Clicked
-        | UserWroteSomething of string
 
     type CmdMsg =
         | SemanticAnnounce of string
@@ -31,15 +28,12 @@ module App =
         | SemanticAnnounce text -> semanticAnnounce text
     
     let init () =
-        { Count = 0; EnteredText = "" }, []
+        { Count = 0 }, []
 
     let update msg model =
         match msg with
         | Clicked ->
             { model with Count = model.Count + 1 }, [ SemanticAnnounce $"Clicked {model.Count} times" ]
-            
-        | UserWroteSomething text ->
-            { model with EnteredText = text }, []
     
     let view model =
         Application() {
@@ -69,19 +63,6 @@ module App =
                             
                         TextButton(text, Clicked)
                             .semantics(hint = "Counts the number of times you click")
-                            .centerHorizontal()
-                            
-                        Entry(model.EnteredText, UserWroteSomething)
-                            .semantics(hint = "Type something here")
-                            
-                        let userText =
-                            if model.EnteredText = "" then
-                                "You wrote nothing"
-                            else
-                                $"You wrote '{model.EnteredText}'"
-                            
-                        Label(userText)
-                            .semantics(description = userText)
                             .centerHorizontal()
                     })
                         .padding(Thickness(30., 0., 30., 0.))

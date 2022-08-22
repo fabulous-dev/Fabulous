@@ -18,6 +18,7 @@
         <Compile Include="Widgets.fs" />
         <Compile Include="Attributes.fs" />
         <Compile Include="Views\_Element.fs" />
+        <Compile Include="Views\_Transform.fs" />
         <Compile Include="Views\_View.fs" />
         <Compile Include="Views\_Padding.fs" />
         <Compile Include="Views\_Layout.fs" />
@@ -38,6 +39,9 @@
         <Compile Include="Views\Switch.fs" />
         <Compile Include="Views\_Range.fs" />
         <Compile Include="Views\Slider.fs" />
+        <Compile Include="Views\_Placeholder.fs" />
+        <Compile Include="Views\_TextInput.fs" />
+        <Compile Include="Views\Entry.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>

@@ -19,6 +19,9 @@ module ScrollView =
 type FabScrollView(handler: IViewHandler) =
     inherit FabContentView(handler)
     
+    let mutable _horizontalOffset = 0.
+    let mutable _verticalOffset = 0.
+    
     static let _widgetKey = Widgets.register<FabScrollView>()
     static member WidgetKey = _widgetKey
    
@@ -62,13 +65,13 @@ type FabScrollView(handler: IViewHandler) =
         member this.ScrollFinished() = failwith "todo"
         member this.ContentSize = failwith "todo"
         member this.HorizontalOffset
-            with get () = failwith "todo"
-            and set value = failwith "todo"
+            with get () = _horizontalOffset
+            and set v = _horizontalOffset <- v
         member this.HorizontalScrollBarVisibility = this.GetScalar(ScrollView.HorizontalScrollBarVisibility, ScrollView.Defaults.HorizontalScrollBarVisibility)
         member this.Orientation = this.GetScalar(ScrollView.Orientation, ScrollView.Defaults.Orientation)
         member this.VerticalOffset
-            with get () = failwith "todo"
-            and set value = failwith "todo"
+            with get () = _verticalOffset
+            and set v = _verticalOffset <- v
         member this.VerticalScrollBarVisibility = this.GetScalar(ScrollView.VerticalScrollBarVisibility, ScrollView.Defaults.VerticalScrollBarVisibility)
             
 [<AutoOpen>]
