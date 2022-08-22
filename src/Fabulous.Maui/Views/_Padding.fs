@@ -6,6 +6,9 @@ open Microsoft.Maui
 
 module Padding =
     let Padding = Attributes.defineMauiScalarWithEquality<Thickness> "Padding"
+    
+    module Defaults =
+        let inline createDefaultPadding () = Thickness.Zero
 
 [<Extension>]
 type PaddingModifiers =

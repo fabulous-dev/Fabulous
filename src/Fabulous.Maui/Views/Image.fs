@@ -17,6 +17,11 @@ module Image =
     let IsOpaque = Attributes.defineMauiScalarWithEquality<bool> "IsOpaque"
     let Source = Attributes.defineMauiScalarWithEquality<IImageSource> "Source"
     
+    module Defaults =
+        let [<Literal>] Aspect: Aspect = Microsoft.Maui.Aspect.AspectFit
+        let [<Literal>] IsOpaque: bool = false
+        let [<Literal>] Source: IImageSource = null
+    
 type FabImage(handler: IViewHandler) =
     inherit FabView(handler)
     
@@ -27,10 +32,10 @@ type FabImage(handler: IViewHandler) =
     
     interface IImage with
         member this.UpdateIsLoading(isLoading) = ()
-        member this.Aspect = this.GetScalar(Image.Aspect, Aspect.AspectFit)
+        member this.Aspect = this.GetScalar(Image.Aspect, Image.Defaults.Aspect)
         member this.IsAnimationPlaying = false
-        member this.IsOpaque = this.GetScalar(Image.IsOpaque, false)
-        member this.Source = this.GetScalar(Image.Source, null)
+        member this.IsOpaque = this.GetScalar(Image.IsOpaque, Image.Defaults.IsOpaque)
+        member this.Source = this.GetScalar(Image.Source, Image.Defaults.Source)
             
 
 [<AutoOpen>]

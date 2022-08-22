@@ -23,6 +23,12 @@ module Label =
     let LineHeight = Attributes.defineMauiScalarWithEquality<float> "LineHeight"
     let TextDecorations = Attributes.defineMauiScalarWithEquality<TextDecorations> "TextDecorations"
     
+    module Defaults =
+        let [<Literal>] LineHeight = 1.
+        let [<Literal>] TextDecorations = Microsoft.Maui.TextDecorations.None
+        // Label has a vertical text alignment set to Start
+        let [<Literal>] VerticalTextAlignment = TextAlignment.Start
+    
 type FabLabel(handler: IViewHandler) =
     inherit FabView(handler)
     
@@ -32,15 +38,15 @@ type FabLabel(handler: IViewHandler) =
     new() = FabLabel(LabelHandler())
     
     interface ILabel with
-        member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, 1.)
-        member this.Font = this.GetScalar(TextStyle.Font, Microsoft.Maui.Font.Default)
-        member this.HorizontalTextAlignment = this.GetScalar(TextAlignment.HorizontalTextAlignment, TextAlignment.Start)
-        member this.LineHeight = this.GetScalar(Label.LineHeight, 1.)
-        member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
-        member this.Text = this.GetScalar(Text.Text, "")
-        member this.TextColor = this.GetScalar(TextStyle.TextColor, null)
-        member this.TextDecorations = this.GetScalar(Label.TextDecorations, TextDecorations.None)
-        member this.VerticalTextAlignment = this.GetScalar(TextAlignment.VerticalTextAlignment, TextAlignment.Start)
+        member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, TextStyle.Defaults.CharacterSpacing)
+        member this.Font = this.GetScalar(TextStyle.Font, TextStyle.Defaults.createDefaultFont())
+        member this.HorizontalTextAlignment = this.GetScalar(TextAlignment.HorizontalTextAlignment, TextAlignment.Defaults.HorizontalTextAlignment)
+        member this.LineHeight = this.GetScalar(Label.LineHeight, Label.Defaults.LineHeight)
+        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
+        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
+        member this.TextColor = this.GetScalar(TextStyle.TextColor, TextStyle.Defaults.TextColor)
+        member this.TextDecorations = this.GetScalar(Label.TextDecorations, Label.Defaults.TextDecorations)
+        member this.VerticalTextAlignment = this.GetScalar(TextAlignment.VerticalTextAlignment, Label.Defaults.VerticalTextAlignment)
     
 [<AutoOpen>]
 module LabelBuilders =

@@ -11,11 +11,14 @@ module StackLayout =
     /// TODO: Need to InvalidateMeasure when changing Spacing
     let Spacing = Attributes.defineMauiScalar2<float> "Spacing"
     
+    module Defaults =
+        let [<Literal>] Spacing = 0.
+    
 type FabStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
     inherit FabLayout(handler, layoutManagerFn)
 
     interface IStackLayout with
-        member this.Spacing = this.GetScalar(StackLayout.Spacing, 0.)
+        member this.Spacing = this.GetScalar(StackLayout.Spacing, StackLayout.Defaults.Spacing)
         
 type FabVerticalStackLayout(handler: IViewHandler) =
     inherit FabStackLayout(handler, fun layout -> VerticalStackLayoutManager(layout :?> IStackLayout))

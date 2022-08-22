@@ -10,6 +10,11 @@ module TextStyle =
     let Font = Attributes.defineMauiScalarWithEquality<Microsoft.Maui.Font> "Font"
     let TextColor = Attributes.defineMauiScalarWithEquality<Color> "TextColor"
     
+    module Defaults =
+        let [<Literal>] CharacterSpacing = 0.
+        let [<Literal>] TextColor: Color = null
+        let inline createDefaultFont() = Microsoft.Maui.Font.Default
+    
 [<Extension>]
 type TextStyleModifiers =
     [<Extension>]

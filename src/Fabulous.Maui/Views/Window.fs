@@ -19,6 +19,10 @@ module Window =
     let Resumed = Attributes.defineMauiEventNoArgs "Resumed"
     let Stopped = Attributes.defineMauiEventNoArgs "Stopped"
     
+    module Defaults =
+        let [<Literal>] FlowDirection = Microsoft.Maui.FlowDirection.MatchParent
+        let [<Literal>] VisualDiagnosticsOverlay: VisualDiagnosticsOverlay = null
+    
 type FabWindow(handler) =
     inherit FabElement(handler)
     
@@ -41,10 +45,10 @@ type FabWindow(handler) =
         member this.Resumed() = this.InvokeEvent(Window.Resumed)
         member this.Stopped() = this.InvokeEvent(Window.Stopped)
         member this.Content = this.GetWidget(Window.Content)
-        member this.FlowDirection = this.GetScalar(Window.FlowDirection, FlowDirection.MatchParent)
+        member this.FlowDirection = this.GetScalar(Window.FlowDirection, Window.Defaults.FlowDirection)
         member this.Overlays = failwith "todo"
-        member this.Title = this.GetScalar(TitledElement.Title, "")
-        member this.VisualDiagnosticsOverlay = this.GetScalar(Window.VisualDiagnosticsOverlay, null)
+        member this.Title = this.GetScalar(TitledElement.Title, TitledElement.Defaults.Title)
+        member this.VisualDiagnosticsOverlay = this.GetScalar(Window.VisualDiagnosticsOverlay, Window.Defaults.VisualDiagnosticsOverlay)
     
 [<AutoOpen>]
 module WindowBuilders =

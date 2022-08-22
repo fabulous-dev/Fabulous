@@ -9,6 +9,11 @@ module ButtonStroke =
     let CornerRadius = Attributes.defineMauiScalarWithEquality<int> "CornerRadius"
     let StrokeColor = Attributes.defineMauiScalarWithEquality<Color> "StrokeColor"
     let StrokeThickness = Attributes.defineMauiScalarWithEquality<float> "StrokeThickness"
+    
+    module Defaults =
+        let [<Literal>] CornerRadius = -1
+        let [<Literal>] StrokeColor: Color = null
+        let [<Literal>] StrokeThickness = -1.
 
 [<Extension>]
 type ButtonStrokeModifiers =

@@ -14,10 +14,10 @@ type FabTextButton(handler: IButtonHandler) =
     new() = FabTextButton(ButtonHandler())
     
     interface ITextButton with
-        member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, 0)
-        member this.Font = this.GetScalar(TextStyle.Font, Microsoft.Maui.Font.Default)
-        member this.Text = this.GetScalar(Text.Text, "")
-        member this.TextColor = this.GetScalar(TextStyle.TextColor, null)
+        member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, TextStyle.Defaults.CharacterSpacing)
+        member this.Font = this.GetScalar(TextStyle.Font, TextStyle.Defaults.createDefaultFont())
+        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
+        member this.TextColor = this.GetScalar(TextStyle.TextColor, TextStyle.Defaults.TextColor)
     
 [<AutoOpen>]
 module TextButtonBuilders =

@@ -12,6 +12,10 @@ module Layout =
     let ClipsToBounds = Attributes.defineMauiScalarWithEquality<bool> "ClipsToBounds"
     let IgnoreSafeArea = Attributes.defineMauiScalarWithEquality<bool> "IgnoreSafeArea"
     
+    module Defaults =
+        let [<Literal>] ClipsToBounds = false
+        let [<Literal>] IgnoreSafeArea = false
+    
 type FabLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
     inherit FabView(handler)
     
@@ -52,11 +56,11 @@ type FabLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
         member this.Insert(index, item) = this.Children.Insert(index, item)
         member this.Remove(item) = this.Children.Remove(item)
         member this.RemoveAt(index) = this.Children.RemoveAt(index)
-        member this.ClipsToBounds = this.GetScalar(Layout.ClipsToBounds, false)
+        member this.ClipsToBounds = this.GetScalar(Layout.ClipsToBounds, Layout.Defaults.ClipsToBounds)
         member this.Count = this.Children.Count
-        member this.IgnoreSafeArea = this.GetScalar(Layout.IgnoreSafeArea, false)
+        member this.IgnoreSafeArea = this.GetScalar(Layout.IgnoreSafeArea, Layout.Defaults.IgnoreSafeArea)
         member this.IsReadOnly = true
         member this.Item
             with get index = this.Children[index]
             and set index v = this.Children[index] <- v
-        member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
+        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())

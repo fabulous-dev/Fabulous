@@ -11,6 +11,10 @@ module Button =
     let Pressed = Attributes.defineMauiEventNoArgs "Pressed"
     let Released = Attributes.defineMauiEventNoArgs "Released"
     
+    module Defaults =
+        // Button has a custom default padding set to NaN
+        let inline createDefaultPadding() = Thickness(System.Double.NaN)
+    
 type FabButton(handler) =
     inherit FabView(handler)
     
@@ -18,10 +22,10 @@ type FabButton(handler) =
         member this.Clicked() = this.InvokeEvent(Button.Clicked)
         member this.Pressed() = this.InvokeEvent(Button.Pressed)
         member this.Released() = this.InvokeEvent(Button.Released)
-        member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, -1)
-        member this.Padding = this.GetScalar(Padding.Padding, Thickness(System.Double.NaN))
-        member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, null)
-        member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, -1.)
+        member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, ButtonStroke.Defaults.CornerRadius)
+        member this.Padding = this.GetScalar(Padding.Padding, Button.Defaults.createDefaultPadding())
+        member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, ButtonStroke.Defaults.StrokeColor)
+        member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, ButtonStroke.Defaults.StrokeThickness)
 
 [<Extension>]
 type ButtonModifiers =

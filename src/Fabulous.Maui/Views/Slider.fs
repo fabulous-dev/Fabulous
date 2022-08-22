@@ -15,6 +15,12 @@ module Slider =
     let DragCompleted = Attributes.defineMauiEventNoArgs "DragCompleted"
     let DragStarted = Attributes.defineMauiEventNoArgs "DragStarted"
     
+    module Defaults =
+        let [<Literal>] MaximumTrackColor: Color = null
+        let [<Literal>] MinimumTrackColor: Color = null
+        let [<Literal>] ThumbColor: Color = null
+        let [<Literal>] ThumbImageSource: IImageSource = null
+    
 type FabSlider(handler: IViewHandler) =
     inherit FabView(handler)
     
@@ -26,14 +32,14 @@ type FabSlider(handler: IViewHandler) =
     interface ISlider with
         member this.DragCompleted() = this.InvokeEvent(Slider.DragCompleted)
         member this.DragStarted() = this.InvokeEvent(Slider.DragStarted)
-        member this.Maximum = this.GetScalar(Range.Maximum, 1.0)
-        member this.MaximumTrackColor = this.GetScalar(Slider.MaximumTrackColor, null)
-        member this.Minimum = this.GetScalar(Range.Minimum, 0.0)
-        member this.MinimumTrackColor = this.GetScalar(Slider.MinimumTrackColor, null)
-        member this.ThumbColor = this.GetScalar(Slider.ThumbColor, null)
-        member this.ThumbImageSource = this.GetScalar(Image.Source, null)
+        member this.Maximum = this.GetScalar(Range.Maximum, Range.Defaults.Maximum)
+        member this.MaximumTrackColor = this.GetScalar(Slider.MaximumTrackColor, Slider.Defaults.MaximumTrackColor)
+        member this.Minimum = this.GetScalar(Range.Minimum, Range.Defaults.Minimum)
+        member this.MinimumTrackColor = this.GetScalar(Slider.MinimumTrackColor, Slider.Defaults.MinimumTrackColor)
+        member this.ThumbColor = this.GetScalar(Slider.ThumbColor, Slider.Defaults.ThumbColor)
+        member this.ThumbImageSource = this.GetScalar(Image.Source, Slider.Defaults.ThumbImageSource)
         member this.Value
-            with get () = this.GetScalar(Range.Value, 0.0)
+            with get () = this.GetScalar(Range.Value, Range.Defaults.Value)
             and set value = this.InvokeEvent(Range.ValueChanged, value)
             
 [<AutoOpen>]

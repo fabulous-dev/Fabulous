@@ -12,6 +12,11 @@ module Switch =
     
     let Toggled = Attributes.defineMauiEvent<bool> "Toggled"
     
+    module Defaults =
+        let [<Literal>] IsOn = false
+        let [<Literal>] ThumbColor: Color = null
+        let [<Literal>] TrackColor: Color = null
+    
 type FabSwitch(handler: IViewHandler) =
     inherit FabView(handler)
     
@@ -22,10 +27,10 @@ type FabSwitch(handler: IViewHandler) =
     
     interface ISwitch with
         member this.IsOn
-            with get () = this.GetScalar(Switch.IsOn, false)
+            with get () = this.GetScalar(Switch.IsOn, Switch.Defaults.IsOn)
             and set v = this.InvokeEvent(Switch.Toggled, v)
-        member this.ThumbColor = this.GetScalar(Switch.ThumbColor, null)
-        member this.TrackColor = this.GetScalar(Switch.TrackColor, null)
+        member this.ThumbColor = this.GetScalar(Switch.ThumbColor, Switch.Defaults.ThumbColor)
+        member this.TrackColor = this.GetScalar(Switch.TrackColor, Switch.Defaults.TrackColor)
 
 
 [<AutoOpen>]

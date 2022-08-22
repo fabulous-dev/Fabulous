@@ -18,10 +18,15 @@ type FabContentView(handler: IViewHandler) =
     new() = FabContentView(ContentViewHandler())
     
     interface IContentView with
-        member this.CrossPlatformArrange(bounds) = this.ArrangeContent(bounds); bounds.Size
-        member this.CrossPlatformMeasure(widthConstraint, heightConstraint) = this.MeasureContent(widthConstraint, heightConstraint)
+        member this.CrossPlatformArrange(bounds) =
+            this.ArrangeContent(bounds)
+            bounds.Size
+            
+        member this.CrossPlatformMeasure(widthConstraint, heightConstraint) =
+            this.MeasureContent(widthConstraint, heightConstraint)
+            
         member this.Content = this.GetWidget(ContentView.Content)
-        member this.Padding = this.GetScalar(Padding.Padding, Thickness.Zero)
+        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
         member this.PresentedContent = this.GetWidget(ContentView.Content)
             
     

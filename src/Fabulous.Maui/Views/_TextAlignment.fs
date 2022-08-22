@@ -7,6 +7,10 @@ open Microsoft.Maui
 module TextAlignment =
     let HorizontalTextAlignment = Attributes.defineMauiScalarWithEquality<TextAlignment> "HorizontalTextAlignment"
     let VerticalTextAlignment = Attributes.defineMauiScalarWithEquality<TextAlignment> "VerticalTextAlignment"
+    
+    module Defaults =
+        let [<Literal>] HorizontalTextAlignment = TextAlignment.Start
+        let [<Literal>] VerticalTextAlignment = TextAlignment.Center
 
 [<Extension>]
 type TextAlignmentModifiers =

@@ -41,12 +41,43 @@ module View' =
     let Focused = Attributes.defineMauiEventNoArgs "Focused"
     let Unfocused = Attributes.defineMauiEventNoArgs "Unfocused"
     
+    module Defaults =
+        let [<Literal>] AnchorX = 0.5
+        let [<Literal>] AnchorY = 0.5
+        let [<Literal>] AutomationId: string = null
+        let [<Literal>] Background: Paint = null
+        let [<Literal>] FlowDirection = Microsoft.Maui.FlowDirection.MatchParent
+        let [<Literal>] Height = Dimension.Unset
+        let [<Literal>] HorizontalLayoutAlignment = LayoutAlignment.Fill
+        let [<Literal>] InputTransparent = false
+        let [<Literal>] IsEnabled = true
+        let [<Literal>] IsFocused = false
+        let [<Literal>] MaximumHeight = Dimension.Maximum
+        let [<Literal>] MaximumWidth = Dimension.Maximum
+        let [<Literal>] MinimumHeight = Dimension.Unset
+        let [<Literal>] MinimumWidth = Dimension.Unset
+        let [<Literal>] Opacity = 1.
+        let [<Literal>] Rotation = 0.
+        let [<Literal>] RotationX = 0.
+        let [<Literal>] RotationY = 0.
+        let [<Literal>] Scale = 1.
+        let [<Literal>] ScaleX = 1.
+        let [<Literal>] ScaleY = 1.
+        let [<Literal>] Semantics: Microsoft.Maui.Semantics = null
+        let [<Literal>] TranslationX = 0.
+        let [<Literal>] TranslationY = 0.
+        let [<Literal>] VerticalLayoutAlignment = LayoutAlignment.Fill
+        let [<Literal>] Visibility = Microsoft.Maui.Visibility.Visible
+        let [<Literal>] Width = Dimension.Unset
+        let [<Literal>] ZIndex = -1
+        let inline createDefaultMargin() = Thickness.Zero
+    
 type FabView(handler: IViewHandler) =
     inherit FabElement(handler)
     
     let mutable _frame = Rect.Zero
     let mutable _desiredSize = Size.Zero
-    let mutable _isFocus = false
+    let mutable _isFocus = View'.Defaults.IsFocused
     
     member this.DesiredSize
         with get() = _desiredSize
@@ -77,20 +108,20 @@ type FabView(handler: IViewHandler) =
             _desiredSize <- this.ComputeDesiredSize(widthConstraint, heightConstraint)
             _desiredSize
             
-        member this.AnchorX = this.GetScalar(View'.AnchorX, 0.5)
-        member this.AnchorY = this.GetScalar(View'.AnchorY, 0.5)
-        member this.AutomationId = this.GetScalar(View'.AutomationId, null)
-        member this.Background = this.GetScalar(View'.Background, null)
+        member this.AnchorX = this.GetScalar(View'.AnchorX, View'.Defaults.AnchorX)
+        member this.AnchorY = this.GetScalar(View'.AnchorY, View'.Defaults.AnchorY)
+        member this.AutomationId = this.GetScalar(View'.AutomationId, View'.Defaults.AutomationId)
+        member this.Background = this.GetScalar(View'.Background, View'.Defaults.Background)
         member this.Clip = null
         member this.DesiredSize = _desiredSize
-        member this.FlowDirection = this.GetScalar(View'.FlowDirection, FlowDirection.MatchParent)
+        member this.FlowDirection = this.GetScalar(View'.FlowDirection, View'.Defaults.FlowDirection)
         member this.Frame
             with get() = _frame
             and set v = _frame <- v
-        member this.Height = this.GetScalar(View'.Height, Dimension.Unset)
-        member this.HorizontalLayoutAlignment = this.GetScalar(View'.HorizontalLayoutAlignment, LayoutAlignment.Fill)
-        member this.InputTransparent = this.GetScalar(View'.InputTransparent, false)
-        member this.IsEnabled = this.GetScalar(View'.IsEnabled, true)
+        member this.Height = this.GetScalar(View'.Height, View'.Defaults.Height)
+        member this.HorizontalLayoutAlignment = this.GetScalar(View'.HorizontalLayoutAlignment, View'.Defaults.HorizontalLayoutAlignment)
+        member this.InputTransparent = this.GetScalar(View'.InputTransparent, View'.Defaults.InputTransparent)
+        member this.IsEnabled = this.GetScalar(View'.IsEnabled, View'.Defaults.IsEnabled)
         member this.IsFocused
             with get() = this.GetScalar(View'.IsFocused, _isFocus)
             and set v =
@@ -100,26 +131,26 @@ type FabView(handler: IViewHandler) =
                 else
                     _isFocus <- false
                     this.InvokeEvent(View'.Unfocused)
-        member this.Margin = this.GetScalar(View'.Margin, Thickness.Zero)
-        member this.MaximumHeight = this.GetScalar(View'.MaximumHeight, Dimension.Maximum)
-        member this.MaximumWidth = this.GetScalar(View'.MaximumWidth, Dimension.Maximum)
-        member this.MinimumHeight = this.GetScalar(View'.MinimumHeight, Dimension.Unset)
-        member this.MinimumWidth = this.GetScalar(View'.MinimumWidth, Dimension.Unset)
-        member this.Opacity = this.GetScalar(View'.Opacity, 1.)
-        member this.Rotation = this.GetScalar(View'.Rotation, 0.)
-        member this.RotationX = this.GetScalar(View'.RotationX, 0.)
-        member this.RotationY = this.GetScalar(View'.RotationY, 0.)
-        member this.Scale = this.GetScalar(View'.Scale, 1.)
-        member this.ScaleX = this.GetScalar(View'.ScaleX, 1.)
-        member this.ScaleY = this.GetScalar(View'.ScaleY, 1.)
-        member this.Semantics = this.GetScalar(View'.Semantics, null)
+        member this.Margin = this.GetScalar(View'.Margin, View'.Defaults.createDefaultMargin())
+        member this.MaximumHeight = this.GetScalar(View'.MaximumHeight, View'.Defaults.MaximumHeight)
+        member this.MaximumWidth = this.GetScalar(View'.MaximumWidth, View'.Defaults.MaximumWidth)
+        member this.MinimumHeight = this.GetScalar(View'.MinimumHeight, View'.Defaults.MinimumHeight)
+        member this.MinimumWidth = this.GetScalar(View'.MinimumWidth, View'.Defaults.MinimumWidth)
+        member this.Opacity = this.GetScalar(View'.Opacity, View'.Defaults.Opacity)
+        member this.Rotation = this.GetScalar(View'.Rotation, View'.Defaults.Rotation)
+        member this.RotationX = this.GetScalar(View'.RotationX, View'.Defaults.RotationX)
+        member this.RotationY = this.GetScalar(View'.RotationY, View'.Defaults.RotationY)
+        member this.Scale = this.GetScalar(View'.Scale, View'.Defaults.Scale)
+        member this.ScaleX = this.GetScalar(View'.ScaleX, View'.Defaults.ScaleX)
+        member this.ScaleY = this.GetScalar(View'.ScaleY, View'.Defaults.ScaleY)
+        member this.Semantics = this.GetScalar(View'.Semantics, View'.Defaults.Semantics)
         member this.Shadow = null
-        member this.TranslationX = this.GetScalar(View'.TranslationX, 0.)
-        member this.TranslationY = this.GetScalar(View'.TranslationY, 0.)
-        member this.VerticalLayoutAlignment = this.GetScalar(View'.VerticalLayoutAlignment, LayoutAlignment.Fill)
-        member this.Visibility = this.GetScalar(View'.Visibility, Microsoft.Maui.Visibility.Visible)
-        member this.Width = this.GetScalar(View'.Width, Dimension.Unset)
-        member this.ZIndex = this.GetScalar(View'.ZIndex, -1)
+        member this.TranslationX = this.GetScalar(View'.TranslationX, View'.Defaults.TranslationX)
+        member this.TranslationY = this.GetScalar(View'.TranslationY, View'.Defaults.TranslationY)
+        member this.VerticalLayoutAlignment = this.GetScalar(View'.VerticalLayoutAlignment, View'.Defaults.VerticalLayoutAlignment)
+        member this.Visibility = this.GetScalar(View'.Visibility, View'.Defaults.Visibility)
+        member this.Width = this.GetScalar(View'.Width, View'.Defaults.Width)
+        member this.ZIndex = this.GetScalar(View'.ZIndex, View'.Defaults.ZIndex)
             
 
 [<Extension>]

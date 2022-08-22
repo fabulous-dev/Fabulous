@@ -11,6 +11,11 @@ module ScrollView =
     let Orientation = Attributes.defineMauiScalarWithEquality<ScrollOrientation> "Orientation"
     let VerticalScrollBarVisibility = Attributes.defineMauiScalarWithEquality<ScrollBarVisibility> "VerticalScrollBarVisibility"
     
+    module Defaults =
+        let [<Literal>] HorizontalScrollBarVisibility = ScrollBarVisibility.Default
+        let [<Literal>] Orientation = ScrollOrientation.Vertical
+        let [<Literal>] VerticalScrollBarVisibility = ScrollBarVisibility.Default
+    
 type FabScrollView(handler: IViewHandler) =
     inherit FabContentView(handler)
     
@@ -59,12 +64,12 @@ type FabScrollView(handler: IViewHandler) =
         member this.HorizontalOffset
             with get () = failwith "todo"
             and set value = failwith "todo"
-        member this.HorizontalScrollBarVisibility = this.GetScalar(ScrollView.HorizontalScrollBarVisibility, ScrollBarVisibility.Default)
-        member this.Orientation = this.GetScalar(ScrollView.Orientation, ScrollOrientation.Vertical)
+        member this.HorizontalScrollBarVisibility = this.GetScalar(ScrollView.HorizontalScrollBarVisibility, ScrollView.Defaults.HorizontalScrollBarVisibility)
+        member this.Orientation = this.GetScalar(ScrollView.Orientation, ScrollView.Defaults.Orientation)
         member this.VerticalOffset
             with get () = failwith "todo"
             and set value = failwith "todo"
-        member this.VerticalScrollBarVisibility = this.GetScalar(ScrollView.VerticalScrollBarVisibility, ScrollBarVisibility.Default)
+        member this.VerticalScrollBarVisibility = this.GetScalar(ScrollView.VerticalScrollBarVisibility, ScrollView.Defaults.VerticalScrollBarVisibility)
             
 [<AutoOpen>]
 module ScrollViewBuilders =
