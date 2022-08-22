@@ -10,66 +10,81 @@ open Microsoft.Maui.Primitives
 open type Fabulous.Maui.View
 
 module App =
-    type Model = { Count: int }
+    type Model =
+        { Count: int
+          Step: int
+          TimerOn: bool }
 
     type Msg =
-        | Clicked
+        | Increment
+        | Decrement
+        | Reset
+        | SetStep of float
+        | TimerToggled of bool
+        | TimedTick
 
-    type CmdMsg =
-        | SemanticAnnounce of string
-        
-    let semanticAnnounce text =
-        Cmd.ofSub (fun _ ->
-            SemanticScreenReader.Announce(text)    
-        )
-    
-    let mapCmd cmdMsg =
-        match cmdMsg with
-        | SemanticAnnounce text -> semanticAnnounce text
-    
-    let init () =
-        { Count = 0 }, []
+    let initModel = { Count = 0; Step = 1; TimerOn = false }
+
+    let timerCmd () =
+        async {
+            do! Async.Sleep 200
+            return TimedTick
+        }
+        |> Cmd.ofAsyncMsg
+
+    let init () = initModel, Cmd.none
 
     let update msg model =
         match msg with
-        | Clicked ->
-            { model with Count = model.Count + 1 }, [ SemanticAnnounce $"Clicked {model.Count} times" ]
-    
+        | Increment ->
+            { model with
+                  Count = model.Count + model.Step },
+            Cmd.none
+        | Decrement ->
+            { model with
+                  Count = model.Count - model.Step },
+            Cmd.none
+        | Reset -> initModel, Cmd.none
+        | SetStep n -> { model with Step = int(n + 0.5) }, Cmd.none
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
+        | TimedTick ->
+            if model.TimerOn then
+                { model with
+                      Count = model.Count + model.Step },
+                timerCmd()
+            else
+                model, Cmd.none
+
     let view model =
         Application() {
             Window(
-                ScrollView(
-                    (VStack(spacing = 25.) {
-                        Image(Aspect.AspectFit, "dotnet_bot.png")
-                            .semantics(description = "Cute dotnet bot waving hi to you!")
-                            .height(200.)
-                            .centerHorizontal()
-                            
-                        Label("Hello, World!")
-                            .semantics(SemanticHeadingLevel.Level1)
-                            .font(Microsoft.Maui.Font.Default.WithSize(32.))
-                            .centerTextHorizontal()
-                            
-                        Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                            .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
-                            .font(Microsoft.Maui.Font.Default.WithSize(18.))
-                            .centerTextHorizontal()
-                            
-                        let text =
-                            if model.Count = 0 then
-                                "Click me"
-                            else
-                                $"Clicked {model.Count} times"
-                            
-                        TextButton(text, Clicked)
-                            .semantics(hint = "Counts the number of times you click")
-                            .centerHorizontal()
+                ContentView(
+                    (VStack() {
+                       Label($"%d{model.Count}").centerTextHorizontal()
+                       
+                       TextButton("Increment", Increment)
+                       
+                       TextButton("Decrement", Decrement)
+                       
+                       (HStack() {
+                           Label("Timer")
+                       
+                           Switch(model.TimerOn, TimerToggled)
+                        })
+                           .padding(20.)
+                           .centerHorizontal()
+                       
+                       Slider(0.0, 10.0, double model.Step, SetStep)
+                       
+                       Label($"Step size: %d{model.Step}")
+                           .centerTextHorizontal()
+                       
+                       TextButton("Reset", Reset)
                     })
-                        .padding(Thickness(30., 0., 30., 0.))
-                        .centerVertical()
+                       .padding(30.)
+                       .centerVertical()
                 )
             )
         }
 
-    let program =
-        Program.statefulWithCmdMsg init update view mapCmd
+    let program = Program.statefulWithCmd init update view

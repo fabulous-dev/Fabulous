@@ -11,20 +11,27 @@ module StackLayout =
     /// TODO: Need to InvalidateMeasure when changing Spacing
     let Spacing = Attributes.defineMauiScalar2<float> "Spacing"
     
-    type FabulousStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
-        inherit Layout.FabulousLayout(handler, layoutManagerFn)
+type FabStackLayout(handler, layoutManagerFn: ILayout -> ILayoutManager) =
+    inherit FabLayout(handler, layoutManagerFn)
 
-        interface IStackLayout with
-            member this.Spacing = this.GetScalar(Spacing, 0.)
-            
-    type FabulousVerticalStackLayout() =
-        inherit FabulousStackLayout(LayoutHandler(), fun layout -> VerticalStackLayoutManager(layout :?> IStackLayout))
+    interface IStackLayout with
+        member this.Spacing = this.GetScalar(StackLayout.Spacing, 0.)
         
-    type FabulousHorizontalStackLayout() =
-        inherit FabulousStackLayout(LayoutHandler(), fun layout -> HorizontalStackLayoutManager(layout :?> IStackLayout))
-
-    let VerticalWidgetKey = Widgets.register<FabulousVerticalStackLayout>()
-    let HorizontalWidgetKey = Widgets.register<FabulousHorizontalStackLayout>() 
+type FabVerticalStackLayout(handler: IViewHandler) =
+    inherit FabStackLayout(handler, fun layout -> VerticalStackLayoutManager(layout :?> IStackLayout))
+    
+    static let _widgetKey = Widgets.register<FabVerticalStackLayout>()
+    static member WidgetKey = _widgetKey
+    
+    new() = FabVerticalStackLayout(LayoutHandler())
+    
+type FabHorizontalStackLayout(handler: IViewHandler) =
+    inherit FabStackLayout(handler, fun layout -> HorizontalStackLayoutManager(layout :?> IStackLayout))
+    
+    static let _widgetKey = Widgets.register<FabHorizontalStackLayout>()
+    static member WidgetKey = _widgetKey
+    
+    new() = FabHorizontalStackLayout(LayoutHandler())
     
 [<AutoOpen>]
 module StackLayoutBuilders =
@@ -33,13 +40,13 @@ module StackLayoutBuilders =
             match spacing with
             | Some spacing ->
                 CollectionBuilder<'msg, IStackLayout, IView>(
-                    StackLayout.VerticalWidgetKey,
+                    FabVerticalStackLayout.WidgetKey,
                     Layout.Children,
                     StackLayout.Spacing.WithValue(spacing)
                 )
             | None ->
                 CollectionBuilder<'msg, IStackLayout, IView>(
-                    StackLayout.VerticalWidgetKey,
+                    FabVerticalStackLayout.WidgetKey,
                     Layout.Children
                 )
             
@@ -47,13 +54,13 @@ module StackLayoutBuilders =
             match spacing with
             | Some spacing ->
                 CollectionBuilder<'msg, IStackLayout, IView>(
-                    StackLayout.HorizontalWidgetKey,
+                    FabHorizontalStackLayout.WidgetKey,
                     Layout.Children,
                     StackLayout.Spacing.WithValue(spacing)
                 )
             | None ->
                 CollectionBuilder<'msg, IStackLayout, IView>(
-                    StackLayout.HorizontalWidgetKey,
+                    FabHorizontalStackLayout.WidgetKey,
                     Layout.Children
                 )
             

@@ -17,26 +17,28 @@ module Image =
     let IsOpaque = Attributes.defineMauiScalarWithEquality<bool> "IsOpaque"
     let Source = Attributes.defineMauiScalarWithEquality<IImageSource> "Source"
     
-    type FabulousImage(handler: IViewHandler) =
-        inherit View'.FabulousView(handler)
-        
-        new() = FabulousImage(ImageHandler())
-        
-        interface IImage with
-            member this.UpdateIsLoading(isLoading) = ()
-            member this.Aspect = this.GetScalar(Aspect, Microsoft.Maui.Aspect.AspectFit)
-            member this.IsAnimationPlaying = false
-            member this.IsOpaque = this.GetScalar(IsOpaque, false)
-            member this.Source = this.GetScalar(Source, null)
+type FabImage(handler: IViewHandler) =
+    inherit FabView(handler)
+    
+    static let _widgetKey = Widgets.register<FabImage>()
+    static member WidgetKey = _widgetKey
+    
+    new() = FabImage(ImageHandler())
+    
+    interface IImage with
+        member this.UpdateIsLoading(isLoading) = ()
+        member this.Aspect = this.GetScalar(Image.Aspect, Aspect.AspectFit)
+        member this.IsAnimationPlaying = false
+        member this.IsOpaque = this.GetScalar(Image.IsOpaque, false)
+        member this.Source = this.GetScalar(Image.Source, null)
             
-    let WidgetKey = Widgets.register<FabulousImage>()
 
 [<AutoOpen>]
 module ImageBuilders =
     type Fabulous.Maui.View with
-        static member inline Image<'msg>(aspect: Microsoft.Maui.Aspect, path: string) =
+        static member inline Image<'msg>(aspect: Aspect, path: string) =
             WidgetBuilder<'msg, IImage>(
-                Image.WidgetKey,
+                FabImage.WidgetKey,
                 Image.Aspect.WithValue(aspect),
                 Image.Source.WithValue(FileImageSource.FabulousFileImageSource(path))
             )

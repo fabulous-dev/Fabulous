@@ -35,6 +35,9 @@
         <Compile Include="Views\ContentView.fs" />
         <Compile Include="Views\ScrollView.fs" />
         <Compile Include="Views\Image.fs" />
+        <Compile Include="Views\Switch.fs" />
+        <Compile Include="Views\_Range.fs" />
+        <Compile Include="Views\Slider.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>
