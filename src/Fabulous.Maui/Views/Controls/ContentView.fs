@@ -17,6 +17,9 @@ type FabContentView(handler: IViewHandler) =
 
     new() = FabContentView(ContentViewHandler())
     
+    interface IPadding with
+        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
+    
     interface IContentView with
         member this.CrossPlatformArrange(bounds) =
             this.ArrangeContent(bounds)
@@ -26,10 +29,8 @@ type FabContentView(handler: IViewHandler) =
             this.MeasureContent(widthConstraint, heightConstraint)
             
         member this.Content = this.GetWidget(ContentView.Content)
-        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
         member this.PresentedContent = this.GetWidget(ContentView.Content)
-            
-    
+
 [<AutoOpen>]
 module ContentViewBuilders =
     type Fabulous.Maui.View with

@@ -18,14 +18,18 @@ module Button =
 type FabButton(handler) =
     inherit FabView(handler)
     
+    interface IButtonStroke with
+        member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, ButtonStroke.Defaults.CornerRadius)
+        member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, ButtonStroke.Defaults.StrokeColor)
+        member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, ButtonStroke.Defaults.StrokeThickness)
+        
+    interface IPadding with
+        member this.Padding = this.GetScalar(Padding.Padding, Button.Defaults.createDefaultPadding())
+    
     interface IButton with
         member this.Clicked() = this.InvokeEvent(Button.Clicked)
         member this.Pressed() = this.InvokeEvent(Button.Pressed)
         member this.Released() = this.InvokeEvent(Button.Released)
-        member this.CornerRadius = this.GetScalar(ButtonStroke.CornerRadius, ButtonStroke.Defaults.CornerRadius)
-        member this.Padding = this.GetScalar(Padding.Padding, Button.Defaults.createDefaultPadding())
-        member this.StrokeColor = this.GetScalar(ButtonStroke.StrokeColor, ButtonStroke.Defaults.StrokeColor)
-        member this.StrokeThickness = this.GetScalar(ButtonStroke.StrokeThickness, ButtonStroke.Defaults.StrokeThickness)
 
 [<Extension>]
 type ButtonModifiers =

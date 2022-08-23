@@ -30,6 +30,9 @@ type FabWindow(handler) =
     static member WidgetKey = _widgetKey
     
     new() = FabWindow(WindowHandler())
+    
+    interface ITitledElement with
+        member this.Title = this.GetScalar(TitledElement.Title, TitledElement.Defaults.Title)
 
     interface IWindow with
         member this.Activated() = this.InvokeEvent(Window.Activated)
@@ -47,7 +50,6 @@ type FabWindow(handler) =
         member this.Content = this.GetWidget(Window.Content)
         member this.FlowDirection = this.GetScalar(Window.FlowDirection, Window.Defaults.FlowDirection)
         member this.Overlays = failwith "todo"
-        member this.Title = this.GetScalar(TitledElement.Title, TitledElement.Defaults.Title)
         member this.VisualDiagnosticsOverlay = this.GetScalar(Window.VisualDiagnosticsOverlay, Window.Defaults.VisualDiagnosticsOverlay)
     
 [<AutoOpen>]

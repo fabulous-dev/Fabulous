@@ -37,16 +37,24 @@ type FabLabel(handler: IViewHandler) =
     
     new() = FabLabel(LabelHandler())
     
-    interface ILabel with
+    interface IPadding with
+        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
+    
+    interface IText with
+        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
+        
+    interface ITextAlignment with
+        member this.HorizontalTextAlignment = this.GetScalar(TextAlignment.HorizontalTextAlignment, TextAlignment.Defaults.HorizontalTextAlignment)
+        member this.VerticalTextAlignment = this.GetScalar(TextAlignment.VerticalTextAlignment, Label.Defaults.VerticalTextAlignment)
+        
+    interface ITextStyle with
         member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, TextStyle.Defaults.CharacterSpacing)
         member this.Font = this.GetScalar(TextStyle.Font, TextStyle.Defaults.createDefaultFont())
-        member this.HorizontalTextAlignment = this.GetScalar(TextAlignment.HorizontalTextAlignment, TextAlignment.Defaults.HorizontalTextAlignment)
-        member this.LineHeight = this.GetScalar(Label.LineHeight, Label.Defaults.LineHeight)
-        member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())
-        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
         member this.TextColor = this.GetScalar(TextStyle.TextColor, TextStyle.Defaults.TextColor)
+    
+    interface ILabel with
+        member this.LineHeight = this.GetScalar(Label.LineHeight, Label.Defaults.LineHeight)
         member this.TextDecorations = this.GetScalar(Label.TextDecorations, Label.Defaults.TextDecorations)
-        member this.VerticalTextAlignment = this.GetScalar(TextAlignment.VerticalTextAlignment, Label.Defaults.VerticalTextAlignment)
     
 [<AutoOpen>]
 module LabelBuilders =

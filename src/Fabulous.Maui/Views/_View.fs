@@ -62,6 +62,18 @@ type FabView(handler: IViewHandler) =
     member this.DesiredSize
         with get() = _desiredSize
         and set v = _desiredSize <- v
+        
+    interface ITransform with
+        member this.AnchorX = this.GetScalar(Transform.AnchorX, Transform.Defaults.AnchorX)
+        member this.AnchorY = this.GetScalar(Transform.AnchorY, Transform.Defaults.AnchorY)
+        member this.Rotation = this.GetScalar(Transform.Rotation, Transform.Defaults.Rotation)
+        member this.RotationX = this.GetScalar(Transform.RotationX, Transform.Defaults.RotationX)
+        member this.RotationY = this.GetScalar(Transform.RotationY, Transform.Defaults.RotationY)
+        member this.Scale = this.GetScalar(Transform.Scale, Transform.Defaults.Scale)
+        member this.ScaleX = this.GetScalar(Transform.ScaleX, Transform.Defaults.ScaleX)
+        member this.ScaleY = this.GetScalar(Transform.ScaleY, Transform.Defaults.ScaleY)
+        member this.TranslationX = this.GetScalar(Transform.TranslationX, Transform.Defaults.TranslationX)
+        member this.TranslationY = this.GetScalar(Transform.TranslationY, Transform.Defaults.TranslationY)
 
     interface IView with
         member this.Handler
@@ -88,8 +100,6 @@ type FabView(handler: IViewHandler) =
             _desiredSize <- this.ComputeDesiredSize(widthConstraint, heightConstraint)
             _desiredSize
             
-        member this.AnchorX = this.GetScalar(Transform.AnchorX, Transform.Defaults.AnchorX)
-        member this.AnchorY = this.GetScalar(Transform.AnchorY, Transform.Defaults.AnchorY)
         member this.AutomationId = this.GetScalar(View'.AutomationId, View'.Defaults.AutomationId)
         member this.Background = this.GetScalar(View'.Background, View'.Defaults.Background)
         member this.Clip = null
@@ -117,21 +127,12 @@ type FabView(handler: IViewHandler) =
         member this.MinimumHeight = this.GetScalar(View'.MinimumHeight, View'.Defaults.MinimumHeight)
         member this.MinimumWidth = this.GetScalar(View'.MinimumWidth, View'.Defaults.MinimumWidth)
         member this.Opacity = this.GetScalar(View'.Opacity, View'.Defaults.Opacity)
-        member this.Rotation = this.GetScalar(Transform.Rotation, Transform.Defaults.Rotation)
-        member this.RotationX = this.GetScalar(Transform.RotationX, Transform.Defaults.RotationX)
-        member this.RotationY = this.GetScalar(Transform.RotationY, Transform.Defaults.RotationY)
-        member this.Scale = this.GetScalar(Transform.Scale, Transform.Defaults.Scale)
-        member this.ScaleX = this.GetScalar(Transform.ScaleX, Transform.Defaults.ScaleX)
-        member this.ScaleY = this.GetScalar(Transform.ScaleY, Transform.Defaults.ScaleY)
         member this.Semantics = this.GetScalar(View'.Semantics, View'.Defaults.Semantics)
         member this.Shadow = null
-        member this.TranslationX = this.GetScalar(Transform.TranslationX, Transform.Defaults.TranslationX)
-        member this.TranslationY = this.GetScalar(Transform.TranslationY, Transform.Defaults.TranslationY)
         member this.VerticalLayoutAlignment = this.GetScalar(View'.VerticalLayoutAlignment, View'.Defaults.VerticalLayoutAlignment)
         member this.Visibility = this.GetScalar(View'.Visibility, View'.Defaults.Visibility)
         member this.Width = this.GetScalar(View'.Width, View'.Defaults.Width)
         member this.ZIndex = this.GetScalar(View'.ZIndex, View'.Defaults.ZIndex)
-            
 
 [<Extension>]
 type ViewModifiers =

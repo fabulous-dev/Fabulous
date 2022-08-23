@@ -13,11 +13,15 @@ type FabTextButton(handler: IButtonHandler) =
     
     new() = FabTextButton(ButtonHandler())
     
-    interface ITextButton with
+    interface IText with
+        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
+        
+    interface ITextStyle with
         member this.CharacterSpacing = this.GetScalar(TextStyle.CharacterSpacing, TextStyle.Defaults.CharacterSpacing)
         member this.Font = this.GetScalar(TextStyle.Font, TextStyle.Defaults.createDefaultFont())
-        member this.Text = this.GetScalar(Text.Text, Text.Defaults.Text)
         member this.TextColor = this.GetScalar(TextStyle.TextColor, TextStyle.Defaults.TextColor)
+    
+    interface ITextButton
     
 [<AutoOpen>]
 module TextButtonBuilders =

@@ -214,7 +214,7 @@ module App =
                                 ],
                                 rowdefs = [
                                     GridLength.Star
-                                    GridLength(5.0)
+                                    GridLength(5.0)B
                                     GridLength.Star
                                     GridLength(5.0)
                                     GridLength.Star

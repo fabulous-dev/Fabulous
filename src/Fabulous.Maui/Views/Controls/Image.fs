@@ -15,12 +15,10 @@ module FileImageSource =
 module Image =
     let Aspect = Attributes.defineMauiScalarWithEquality<Aspect> "Aspect"
     let IsOpaque = Attributes.defineMauiScalarWithEquality<bool> "IsOpaque"
-    let Source = Attributes.defineMauiScalarWithEquality<IImageSource> "Source"
     
     module Defaults =
         let [<Literal>] Aspect: Aspect = Microsoft.Maui.Aspect.AspectFit
         let [<Literal>] IsOpaque: bool = false
-        let [<Literal>] Source: IImageSource = null
     
 type FabImage(handler: IViewHandler) =
     inherit FabView(handler)
@@ -30,13 +28,14 @@ type FabImage(handler: IViewHandler) =
     
     new() = FabImage(ImageHandler())
     
-    interface IImage with
+    interface IImageSourcePart with
         member this.UpdateIsLoading(isLoading) = ()
-        member this.Aspect = this.GetScalar(Image.Aspect, Image.Defaults.Aspect)
         member this.IsAnimationPlaying = false
+        member this.Source = this.GetScalar(ImageSourcePart.Source, ImageSourcePart.Defaults.Source)
+    
+    interface IImage with
+        member this.Aspect = this.GetScalar(Image.Aspect, Image.Defaults.Aspect)
         member this.IsOpaque = this.GetScalar(Image.IsOpaque, Image.Defaults.IsOpaque)
-        member this.Source = this.GetScalar(Image.Source, Image.Defaults.Source)
-            
 
 [<AutoOpen>]
 module ImageBuilders =
@@ -45,5 +44,5 @@ module ImageBuilders =
             WidgetBuilder<'msg, IImage>(
                 FabImage.WidgetKey,
                 Image.Aspect.WithValue(aspect),
-                Image.Source.WithValue(FileImageSource.FabulousFileImageSource(path))
+                ImageSourcePart.Source.WithValue(FileImageSource.FabulousFileImageSource(path))
             )

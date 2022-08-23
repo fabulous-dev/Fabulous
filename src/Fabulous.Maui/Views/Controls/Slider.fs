@@ -10,7 +10,7 @@ module Slider =
     let MaximumTrackColor = Attributes.defineMauiScalarWithEquality<Color> "MaximumTrackColor"
     let MinimumTrackColor = Attributes.defineMauiScalarWithEquality<Color> "MinimumTrackColor"
     let ThumbColor = Attributes.defineMauiScalarWithEquality<Color> "ThumbColor"
-    let ThumbImageSource = Attributes.defineMauiWidget "ThumbImageSource" (fun target -> (target :?> ISlider).ThumbImageSource)
+    let ThumbImageSource = Attributes.defineMauiScalarWithEquality<IImageSource> "ThumbImageSource"
     
     let DragCompleted = Attributes.defineMauiEventNoArgs "DragCompleted"
     let DragStarted = Attributes.defineMauiEventNoArgs "DragStarted"
@@ -29,18 +29,20 @@ type FabSlider(handler: IViewHandler) =
     
     new() = FabSlider(SliderHandler())
     
-    interface ISlider with
-        member this.DragCompleted() = this.InvokeEvent(Slider.DragCompleted)
-        member this.DragStarted() = this.InvokeEvent(Slider.DragStarted)
+    interface IRange with
         member this.Maximum = this.GetScalar(Range.Maximum, Range.Defaults.Maximum)
-        member this.MaximumTrackColor = this.GetScalar(Slider.MaximumTrackColor, Slider.Defaults.MaximumTrackColor)
         member this.Minimum = this.GetScalar(Range.Minimum, Range.Defaults.Minimum)
-        member this.MinimumTrackColor = this.GetScalar(Slider.MinimumTrackColor, Slider.Defaults.MinimumTrackColor)
-        member this.ThumbColor = this.GetScalar(Slider.ThumbColor, Slider.Defaults.ThumbColor)
-        member this.ThumbImageSource = this.GetScalar(Image.Source, Slider.Defaults.ThumbImageSource)
         member this.Value
             with get () = this.GetScalar(Range.Value, Range.Defaults.Value)
             and set value = this.InvokeEvent(Range.ValueChanged, value)
+    
+    interface ISlider with
+        member this.DragCompleted() = this.InvokeEvent(Slider.DragCompleted)
+        member this.DragStarted() = this.InvokeEvent(Slider.DragStarted)
+        member this.MaximumTrackColor = this.GetScalar(Slider.MaximumTrackColor, Slider.Defaults.MaximumTrackColor)
+        member this.MinimumTrackColor = this.GetScalar(Slider.MinimumTrackColor, Slider.Defaults.MinimumTrackColor)
+        member this.ThumbColor = this.GetScalar(Slider.ThumbColor, Slider.Defaults.ThumbColor)
+        member this.ThumbImageSource = this.GetScalar(Slider.ThumbImageSource, Slider.Defaults.ThumbImageSource)
             
 [<AutoOpen>]
 module SliderBuilders =
