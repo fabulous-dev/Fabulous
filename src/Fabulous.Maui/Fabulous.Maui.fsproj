@@ -42,6 +42,7 @@
         <Compile Include="Views\_Placeholder.fs" />
         <Compile Include="Views\_TextInput.fs" />
         <Compile Include="Views\Entry.fs" />
+        <Compile Include="Views\GridLayout.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>
