@@ -9,10 +9,6 @@
 
         <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
     </PropertyGroup>
-
-    <Target Name="DebugMsgTim" BeforeTargets="CoreCompile">
-        <Message Text="Currently building for '$(TargetFramework)' '$(TargetPlatformIdentifier)'" />
-    </Target>
     
     <ItemGroup>
         <Compile Remove="**\**\*.Standard.cs" />
