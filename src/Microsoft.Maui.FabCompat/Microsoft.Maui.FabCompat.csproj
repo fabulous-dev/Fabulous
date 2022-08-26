@@ -18,7 +18,6 @@
         <Compile Remove="**\**\*.Standard.cs" />
         <Compile Remove="**\**\*.iOS.cs" />
         <Compile Remove="**\**\*.Android.cs" />
-        <Compile Remove="**\**\*.MacCatalyst.cs" />
     </ItemGroup>
     
     <ItemGroup Condition="$(TargetPlatformIdentifier) == ''">
