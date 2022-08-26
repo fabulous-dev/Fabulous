@@ -17,6 +17,7 @@
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
         <Compile Include="Attributes.fs" />
+        <Compile Include="Shapes\RectangleShape.fs" />
         <Compile Include="Views\Partial\_Transform.fs" />
         <Compile Include="Views\Partial\_Padding.fs" />
         <Compile Include="Views\Partial\_TextStyle.fs" />
@@ -44,7 +45,7 @@
         <Compile Include="Views\Controls\Slider.fs" />
         <Compile Include="Views\Controls\Entry.fs" />
         <Compile Include="Views\Controls\ShapeView.fs" />
-        <Compile Include="Views\Shapes\Rectangle.fs" />
+        <Compile Include="Views\Controls\Rectangle.fs" />
         <Compile Include="Views\Window.fs" />
         <Compile Include="Views\Application.fs" />
         <Compile Include="Program.fs" />
@@ -53,6 +54,7 @@
 
     <ItemGroup>
       <PackageReference Include="FSharp.Core" Version="6.0.0" />
+      <ProjectReference Include="..\Microsoft.Maui.FabCompat\Microsoft.Maui.FabCompat.csproj" />
       <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
     </ItemGroup>
 

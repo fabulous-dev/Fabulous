@@ -214,15 +214,15 @@ module App =
                                 ],
                                 rowdefs = [
                                     GridLength.Star
-                                    GridLength(5.0)B
+                                    GridLength(5.0)
                                     GridLength.Star
                                     GridLength(5.0)
                                     GridLength.Star
                                 ]) {
-                                BoxView(Colors.black).gridRow(1).gridColumnSpan(5)
-                                BoxView(Colors.black).gridRow(3).gridColumnSpan(5)
-                                BoxView(Colors.black).gridColumn(1).gridRowSpan(5)
-                                BoxView(Colors.black).gridColumn(3).gridRowSpan(5)
+                                Rectangle(SolidPaint(Colors.black)).gridRow(1).gridColumnSpan(5)
+                                Rectangle(SolidPaint(Colors.black)).gridRow(3).gridColumnSpan(5)
+                                Rectangle(SolidPaint(Colors.black)).gridColumn(1).gridRowSpan(5)
+                                Rectangle(SolidPaint(Colors.black)).gridColumn(3).gridRowSpan(5)
 
                                 for row, col as pos in positions do
                                     if canPlay model model.Board.[pos] then

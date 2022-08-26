@@ -1,27 +1,27 @@
 namespace Fabulous.Maui
 
 open Fabulous
-open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
-open Microsoft.Maui.Handlers
 
 module ShapeView =
     let Aspect = Attributes.defineMauiScalarWithEquality<PathAspect> "Aspect"
     let Fill = Attributes.defineMauiScalarWithEquality<Paint> "Fill"
-    let Shape = Attributes.defineMauiWidget "Shape" (fun t -> (t :?> IShapeView).Aspect)
     
     module Defaults =
         let [<Literal>] Aspect = PathAspect.None
         let [<Literal>] Fill: Paint = null
     
-type FabShapeView(handler: IViewHandler) =
+type FabShapeView(handler: IViewHandler, shapeFn: IShapeView -> IShape) =
     inherit FabView(handler)
     
-    static let _widgetKey = Widgets.register<FabShapeView>()
-    static member WidgetKey = _widgetKey
-    
-    new() = FabShapeView(ShapeViewHandler())
+    let mutable _shape = null
+        
+    member this.Shape =
+        if _shape = null then
+            _shape <- shapeFn(this)
+        
+        _shape
     
     interface IStroke with
         member this.Stroke = this.GetScalar(Stroke.Stroke, Stroke.Defaults.Stroke)
@@ -35,17 +35,4 @@ type FabShapeView(handler: IViewHandler) =
     interface IShapeView with
         member this.Aspect = this.GetScalar(ShapeView.Aspect, ShapeView.Defaults.Aspect)
         member this.Fill = this.GetScalar(ShapeView.Fill, ShapeView.Defaults.Fill)
-        member this.Shape = this.GetWidget(ShapeView.Shape)
-        
-[<AutoOpen>]
-module ShapeViewBuilders =
-    type Fabulous.Maui.View with
-        static member inline ShapeView<'msg, 'marker when 'marker :> IShape>(shape: WidgetBuilder<'msg, 'marker>) =
-            WidgetBuilder<'msg, IShapeView>(
-                FabShapeView.WidgetKey,
-                AttributesBundle(
-                    StackList.empty(),
-                    ValueSome [| ShapeView.Shape.WithValue(shape.Compile()) |],
-                    ValueNone
-                )
-            )
+        member this.Shape = this.Shape

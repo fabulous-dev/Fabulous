@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+        <UseMauiCore>true</UseMauiCore>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Microsoft.Maui.FabCompat</RootNamespace>
+
+        <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
+    </PropertyGroup>
+
+    <Target Name="DebugMsgTim" BeforeTargets="CoreCompile">
+        <Message Text="Currently building for '$(TargetFramework)' '$(TargetPlatformIdentifier)'" />
+    </Target>
+    
+    <ItemGroup>
+        <Compile Remove="**\**\*.Standard.cs" />
+        <Compile Remove="**\**\*.iOS.cs" />
+        <Compile Remove="**\**\*.Android.cs" />
+        <Compile Remove="**\**\*.MacCatalyst.cs" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="$(TargetPlatformIdentifier) == ''">
+        <Compile Include="**\**\*.Standard.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="$(TargetPlatformIdentifier) == 'iOS' OR $(TargetPlatformIdentifier) == 'MacCatalyst'">
+        <Compile Include="**\**\*.iOS.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="$(TargetPlatformIdentifier) == 'Android'">
+        <Compile Include="**\**\*.Android.cs" />
+    </ItemGroup>
+
+</Project>

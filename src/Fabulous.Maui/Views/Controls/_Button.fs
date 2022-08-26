@@ -15,7 +15,7 @@ module Button =
         // Button has a custom default padding set to NaN
         let inline createDefaultPadding() = Thickness(System.Double.NaN)
     
-type FabButton(handler) =
+type FabButton(handler: IViewHandler) =
     inherit FabView(handler)
     
     interface IButtonStroke with
