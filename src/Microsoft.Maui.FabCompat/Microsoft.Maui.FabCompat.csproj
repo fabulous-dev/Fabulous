@@ -5,8 +5,6 @@
         <UseMauiCore>true</UseMauiCore>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Microsoft.Maui.FabCompat</RootNamespace>
-
         <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
     </PropertyGroup>
     
