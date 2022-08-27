@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
@@ -13,7 +13,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Maui", "src\Fabulo
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp", "samples\Maui\CounterApp\CounterApp.fsproj", "{ADCCC94A-9277-4E38-BB45-210F765269C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "samples\TicTacToe\TicTacToe.fsproj", "{D32ED54C-F27D-4771-ADCF-6F3979DA39D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "samples\Maui\TicTacToe\TicTacToe.fsproj", "{D32ED54C-F27D-4771-ADCF-6F3979DA39D6}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "HelloWorld", "samples\Maui\HelloWorld\HelloWorld.fsproj", "{03046273-39B4-412D-B0C3-9C2C9F5C5381}"
 EndProject
