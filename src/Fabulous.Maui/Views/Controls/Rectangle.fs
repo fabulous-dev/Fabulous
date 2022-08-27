@@ -2,7 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Fabulous.Maui.Shapes
 open Microsoft.FSharp.Core
 open Microsoft.Maui
 open Microsoft.Maui.Graphics

@@ -17,7 +17,7 @@
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
         <Compile Include="Attributes.fs" />
-        <Compile Include="Shapes\RectangleShape.fs" />
+        <Compile Include="Shapes.fs" />
         <Compile Include="Views\Partial\_Transform.fs" />
         <Compile Include="Views\Partial\_Padding.fs" />
         <Compile Include="Views\Partial\_TextStyle.fs" />
@@ -46,6 +46,7 @@
         <Compile Include="Views\Controls\Entry.fs" />
         <Compile Include="Views\Controls\ShapeView.fs" />
         <Compile Include="Views\Controls\Rectangle.fs" />
+        <Compile Include="Views\Controls\Ellipse.fs" />
         <Compile Include="Views\Window.fs" />
         <Compile Include="Views\Application.fs" />
         <Compile Include="Program.fs" />

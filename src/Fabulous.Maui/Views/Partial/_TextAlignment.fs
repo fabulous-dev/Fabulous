@@ -31,3 +31,8 @@ type TextAlignmentExtraModifiers =
     [<Extension>]
     static member inline centerTextHorizontal(this: WidgetBuilder<'msg, #ITextAlignment>) =
         this.AddScalar(TextAlignment.HorizontalTextAlignment.WithValue(TextAlignment.Center))
+        
+    [<Extension>]
+    static member inline centerText(this: WidgetBuilder<'msg, #ITextAlignment>) =
+        this.centerTextVertical()
+            .centerTextHorizontal()

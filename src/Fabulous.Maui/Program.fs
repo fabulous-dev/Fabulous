@@ -77,3 +77,12 @@ module Program =
 
     let startApplication (program: Program<unit, 'model, 'msg, 'marker>) : IApplication =
         startApplicationWithArgs () program
+        
+    /// Subscribe to external source of events.
+    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg, 'marker>) =
+        let sub model =
+            Cmd.batch [ program.Subscribe model
+                        subscribe model ]
+
+        { program with Subscribe = sub }

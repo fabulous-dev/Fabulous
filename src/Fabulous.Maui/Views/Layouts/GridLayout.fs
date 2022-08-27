@@ -53,13 +53,13 @@ type FabGridLayout(handler: IViewHandler, layoutManagerFn: ILayout -> ILayoutMan
 [<AutoOpen>]
 module GridLayoutBuilders =
     type Fabulous.Maui.View with
-        static member inline GridLayout<'msg>() =
+        static member inline Grid<'msg>() =
             CollectionBuilder<'msg, IGridLayout, IView>(
                 FabGridLayout.WidgetKey,
                 Layout.Children
             )
             
-        static member inline GridLayout<'msg>(coldefs: GridLength seq, rowdefs: GridLength seq) =
+        static member inline Grid<'msg>(coldefs: GridLength seq, rowdefs: GridLength seq) =
             CollectionBuilder<'msg, IGridLayout, IView>(
                 FabGridLayout.WidgetKey,
                 Layout.Children,

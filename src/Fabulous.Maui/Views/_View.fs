@@ -193,3 +193,9 @@ type ViewExtraModifiers =
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, horizontalSize: float, verticalSize: float) =
         this.AddScalar(View'.Margin.WithValue(Thickness(horizontalSize, verticalSize)))
+            
+    [<Extension>]
+    static member inline size(this: WidgetBuilder<'msg, #IView>, width: float, height: float) =
+        this
+            .AddScalar(View'.Width.WithValue(width))
+            .AddScalar(View'.Height.WithValue(height))
