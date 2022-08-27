@@ -17,7 +17,6 @@
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
         <Compile Include="Attributes.fs" />
-        <Compile Include="Shapes.fs" />
         <Compile Include="Views\Partial\_Transform.fs" />
         <Compile Include="Views\Partial\_Padding.fs" />
         <Compile Include="Views\Partial\_TextStyle.fs" />

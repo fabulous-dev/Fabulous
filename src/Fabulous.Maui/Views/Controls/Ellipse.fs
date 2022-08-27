@@ -6,6 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.FabCompat
 open Microsoft.Maui.FabCompat.Handlers
+open Microsoft.Maui.FabCompat.Shapes
     
 type FabEllipse(handler: IViewHandler) =
     inherit FabShapeView(handler, fun shapeView -> EllipseShape(shapeView :?> IEllipse))

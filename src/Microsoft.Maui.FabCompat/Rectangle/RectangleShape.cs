@@ -2,10 +2,20 @@ using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.FabCompat.Shapes;
 
-public static partial class ShapeExtensions
+public class RectangleShape: IShape
 {
-    public static PathF GetPathForBounds(this IRectangle view, Rect bounds)
+    private readonly WeakReference<IRectangle> _view;
+
+    public RectangleShape(IRectangle view)
     {
+        _view = new WeakReference<IRectangle>(view);
+    }
+
+    public PathF PathForBounds(Rect bounds)
+    {
+        if (!_view.TryGetTarget(out var view))
+            return new PathF();
+        
         var path = new PathF();
 
         var x = (float)(view.StrokeThickness / 2);
