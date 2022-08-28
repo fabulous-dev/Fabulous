@@ -40,6 +40,7 @@ type Pos = int * int
 
 /// Represents an update to the game
 type Msg =
+    | ThemeChanged of AppTheme
     | Play of Pos
     | Restart
     | VisualBoardSizeChanged of size: float
@@ -53,6 +54,9 @@ type Row = GameCell list
 /// Represents the state of the game
 type Model =
     {
+      // The current theme: Light or Dark modes
+      Theme: AppTheme
+      
       /// Who is next to play
       NextUp: Player
 
@@ -81,7 +85,8 @@ module App =
     let init () =
         let size = System.Math.Min(DeviceDisplay.MainDisplayInfo.Width, DeviceDisplay.MainDisplayInfo.Height) / DeviceDisplay.MainDisplayInfo.Density
         
-        { NextUp = X
+        { Theme = AppInfo.RequestedTheme
+          NextUp = X
           Board = initialBoard
           GameScore = (0, 0)
           VisualBoardSize = size - 40. }
@@ -183,13 +188,9 @@ module App =
         (cell = Empty)
         && (getGameResult model = StillPlaying)
 
-    module private Colors =
-        let black = Colors.Black
-        let lightBlue = Colors.LightBlue
-
     /// The dynamic 'view' function giving the updated content for the view
     let view model =        
-        Application() {
+        (Application() {
             Window(
                 Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Star; GridLength.Auto; GridLength.Auto ]) {
                     (Grid(
@@ -207,15 +208,21 @@ module App =
                             GridLength(5.0)
                             GridLength.Star
                         ]) {
-                        Rectangle(SolidPaint(Colors.black)).gridRow(1).gridColumnSpan(5)
-                        Rectangle(SolidPaint(Colors.black)).gridRow(3).gridColumnSpan(5)
-                        Rectangle(SolidPaint(Colors.black)).gridColumn(1).gridRowSpan(5)
-                        Rectangle(SolidPaint(Colors.black)).gridColumn(3).gridRowSpan(5)
+                    
+                        let gridColor =
+                            match model.Theme with
+                            | AppTheme.Dark -> SolidPaint(Colors.White)
+                            | _ -> SolidPaint(Colors.Black)
+                            
+                        Rectangle(gridColor).gridRow(1).gridColumnSpan(5)
+                        Rectangle(gridColor).gridRow(3).gridColumnSpan(5)
+                        Rectangle(gridColor).gridColumn(1).gridRowSpan(5)
+                        Rectangle(gridColor).gridColumn(3).gridRowSpan(5)
 
                         for row, col as pos in positions do
                             if canPlay model model.Board.[pos] then
                                 TextButton("", Play pos)
-                                    .background(SolidPaint(Colors.lightBlue))
+                                    .background(SolidPaint(Colors.LightBlue))
                                     .gridRow(row * 2)
                                     .gridColumn(col * 2)
                             else
@@ -250,13 +257,14 @@ module App =
                         .gridRow(1)
 
                     TextButton("Restart game", Restart)
-                        .textColor(Colors.black)
-                        .background(SolidPaint(Colors.lightBlue))
+                        .textColor(Colors.Black)
+                        .background(SolidPaint(Colors.LightBlue))
                         .font(Microsoft.Maui.Font.Default.WithSize(32.))
                         .gridRow(2)
                 }
             )
-        }
+        })
+            .themeChanged(ThemeChanged)
 
     let program =
         Program.stateful init update view
