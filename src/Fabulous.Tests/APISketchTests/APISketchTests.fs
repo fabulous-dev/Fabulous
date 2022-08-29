@@ -801,3 +801,49 @@ module Attributes =
 
         Assert.AreEqual(MyEnum.One, SmallScalars.IntEnum.decode<MyEnum> one.NumericValue)
         Assert.AreEqual(MyEnum.MinusOne, SmallScalars.IntEnum.decode<MyEnum> minusOne.NumericValue)
+
+
+    
+    /// In WidgetBuilders we can easily have duplicate attributes
+    /// like Label("aha!").color("red").color("blue")
+    /// Diffing algorithm already uses stable sort for diffing attributes
+    /// Thus we need to leverage that fact
+    ///
+    /// In particular we might have a bug in this context
+    /// prev:  Label("aha!").color("red").color("blue")
+    /// next:  Label("aha!").color("red")
+    ///
+    /// After the diffing the resulting color should be "red", but previously
+    /// it was interpreted as "removed color property" instead
+    [<Test>]
+    let WithDuplicateAttributesLastOneWins () =
+        let view addColor =
+            Stack() {
+                let label =
+                    Label("text")
+                        .textColor("red")
+                        .automationId("text")
+
+                if addColor then
+                    label.textColor("blue")
+                else
+                    label
+            }
+
+        let init () = true
+        let update (_: unit) addColor = not addColor
+
+
+        let program =
+            StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let label = find<TestLabel> tree "text" :> IText
+
+        Assert.AreEqual(label.TextColor, "blue")
+        
+        instance.ProcessMessage(())
+        
+        Assert.AreEqual(label.TextColor, "red")

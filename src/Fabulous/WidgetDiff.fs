@@ -23,6 +23,41 @@ module EnumerationMode =
         | ValueNone, ValueSome next -> EnumerationMode.AllAddedOrRemoved(next, true)
         | ValueSome prev, ValueSome next -> EnumerationMode.ActualDiff(prev, next)
 
+module private SkipRepeatingScalars =
+    /// Context:
+    /// In WidgetBuilders we can easily have duplicate attributes
+    /// like Label("aha!").color("red").color("blue")
+    /// Diffing algorithm already uses stable sort for diffing attributes
+    /// Thus we need to leverage that fact
+    ///
+    /// In particular we might have a bug in this context
+    /// prev:  Label("aha!").color("red").color("blue")
+    /// next:  Label("aha!").color("red")
+    ///
+    /// After the diffing the resulting color should be "red", but previously
+    /// it was interpreted as "removed color property" instead
+    ///
+    /// This functions skips "color("red")" from "color("red").color("blue")"
+    /// Effectively taking only the latest attribute for a particular property
+    ///
+    /// TODO: is there a more optimal way to write it? This is a part of the hot path
+    /// I couldn't detect perf differences with and without this function
+    /// but still might be interesting to tinker about it more
+    let inline skip (scalars: ScalarAttribute array) (pos: int) =
+        let length = scalars.Length
+        // either the last element or out of bounds 
+        if pos >= length - 1 then
+            pos
+        else
+            // that means that there is at least one more element ahead
+            let key = scalars[pos].Key
+            let mutable resultingIndex = pos
+            
+            while (length - 1 > resultingIndex) && (scalars[resultingIndex + 1].Key = key) do
+                resultingIndex <- resultingIndex + 1
+                
+            resultingIndex
+
 [<Struct; IsByRefLike; RequireQualifiedAccess>]
 type ScalarChange =
     | Added of added: ScalarAttribute
@@ -168,8 +203,8 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                 false
 
         | EnumerationMode.ActualDiff (prev, next) ->
-            let mutable prevIndex = e.prevIndex
-            let mutable nextIndex = e.nextIndex
+            let mutable prevIndex = SkipRepeatingScalars.skip prev e.prevIndex
+            let mutable nextIndex = SkipRepeatingScalars.skip next e.nextIndex
 
             let prevLength = prev.Length
             let nextLength = next.Length
@@ -178,7 +213,6 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
             // that needs to be in a loop until we have a change
 
             while ValueOption.isNone res do
-
                 if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
@@ -232,8 +266,8 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                                     res <- ValueSome true
 
                             // move both pointers
-                            prevIndex <- prevIndex + 1
-                            nextIndex <- nextIndex + 1
+                            prevIndex <- SkipRepeatingScalars.skip prev (prevIndex + 1) 
+                            nextIndex <- SkipRepeatingScalars.skip next (nextIndex + 1)
 
                 else
                     res <- ValueSome false
@@ -530,3 +564,6 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         else
             // means that we are done iterating
             false
+
+
+
