@@ -39,6 +39,7 @@ module Widgets =
 
                       ViewNode.set node view
 
+                      view.Attributes.ScalarAttributes <- ValueOption.defaultValue [||] widget.ScalarAttributes
                       additionalSetup view node
 
                       Reconciler.update treeContext.CanReuseView ValueNone widget node

@@ -38,36 +38,13 @@ module App =
     let view model =
         Application() {
             Window(
-                ScrollView(
-                    (VStack(spacing = 25.) {
-                        Image(Aspect.AspectFit, "dotnet_bot.png")
-                            .semantics(description = "Cute dotnet bot waving hi to you!")
-                            .height(200.)
-                            .centerHorizontal()
-                            
-                        Label("Hello, World!")
-                            .semantics(SemanticHeadingLevel.Level1)
-                            .font(Microsoft.Maui.Font.Default.WithSize(32.))
-                            .centerTextHorizontal()
-                            
-                        Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
-                            .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
-                            .font(Microsoft.Maui.Font.Default.WithSize(18.))
-                            .centerTextHorizontal()
-                            
-                        let text =
-                            if model.Count = 0 then
-                                "Click me"
-                            else
-                                $"Clicked {model.Count} times"
-                            
-                        TextButton(text, Clicked)
-                            .semantics(hint = "Counts the number of times you click")
-                            .centerHorizontal()
-                    })
-                        .padding(Thickness(30., 0., 30., 0.))
-                        .centerVertical()
-                )
+                NavigationView() {
+                    // Page A
+                    Label("Page A")
+                    
+                    // Page B
+                    Label("Page B")
+                }
             )
         }
 

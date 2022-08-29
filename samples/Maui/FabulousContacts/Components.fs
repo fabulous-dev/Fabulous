@@ -6,6 +6,7 @@ open Fabulous.Maui
 open FabulousContacts.Helpers
 open FabulousContacts.Style
 open Microsoft.Maui
+open Microsoft.Maui.Graphics
 
 open type Fabulous.Maui.View
 open System.IO
@@ -24,85 +25,81 @@ module Components =
         Entry(text, onTextChanged)
             .placeholder(placeholder)
             .keyboard(keyboard)
-            .borderColor(
-                if isValid then
-                    Color.Default.ToFabColor()
-                else
-                    Color.Red.ToFabColor()
-            )
+            // .borderColor(
+            //     if isValid then
+            //         Color.Default.ToFabColor()
+            //     else
+            //         Color.Red.ToFabColor()
+            // )
 
     let formEditor text textChanged =
-        Editor(text, textChanged).size(height = 100.)
+        Editor(text, textChanged).height(100.)
 
     let destroyButton text onClicked =
-        Button(text, onClicked)
-            .backgroundColor(Color.Red.ToFabColor())
-            .textColor(Color.White.ToFabColor())
+        TextButton(text, onClicked)
+            .background(SolidPaint(Colors.Red))
+            .textColor(Colors.White)
             .margin(0., 20., 0., 0.)
-            .alignEndVertical(expand = true)
+            .alignEndVertical((* expand = true *))
 
-    let toolbarButton text onClicked =
-        ToolbarItem(text, onClicked)
-            .order(ToolbarItemOrder.Primary)
+    // let toolbarButton text onClicked =
+    //     ToolbarItem(text, onClicked)
+    //         .order(ToolbarItemOrder.Primary)
 
     let groupView name =
-        ViewCell(
-            (VStack() {
-                Label(name)
-                    .textColor(accentTextColor)
-                    .verticalOptions(LayoutOptions.FillAndExpand)
-                    .verticalTextAlignment(TextAlignment.Center)
-                    .margin(Thickness(20., 5.))
-             })
-                .backgroundColor(accentColor)
-        )
+        (VStack() {
+            Label(name)
+                .textColor(accentTextColor)
+                .fillVertical((* expand = true *))
+                .centerTextVertical()
+                .margin(20., 5.)
+         })
+            .background(SolidPaint(accentColor))
 
     let cellView picture name address isFavorite =
-        ViewCell(
-            (HStack(spacing = 10.) {
-                (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
-                    .margin(15., 0., 0., 0.)
-                    .size(height = 50., width = 50.)
+        (HStack(spacing = 10.) {
+            (getImageValueOrDefault "addphoto.png" Aspect.AspectFit picture)
+                .margin(15., 0., 0., 0.)
+                .size(height = 50., width = 50.)
 
-                (VStack(spacing = 5.) {
-                    Label(name)
-                        .font(18.)
-                        .fillVertical(expand = true)
-                        .centerTextVertical()
+            (VStack(spacing = 5.) {
+                Label(name)
+                    .font(Microsoft.Maui.Font.Default.WithSize(18.))
+                    .fillVertical((* expand = true *))
+                    .centerTextVertical()
 
-                    Label(address)
-                        .font(12.)
-                        .textColor(Color.Gray.ToFabColor())
-                        .lineBreakMode(LineBreakMode.TailTruncation)
-                 })
-                    .fillHorizontal(expand = true)
-                    .margin(0., 5., 0., 5.)
-
-                Image(Aspect.AspectFit, "star.png")
-                    .isVisible(isFavorite)
-                    .centerVertical()
-                    .margin(0., 0., 15., 0.)
-                    .size(height = 25., width = 25.)
+                Label(address)
+                    .font(Microsoft.Maui.Font.Default.WithSize(12.))
+                    .textColor(Colors.Gray)
+                    //.lineBreakMode(LineBreakMode.TailTruncation) // NOTE: not implemented in Maui
              })
-                .padding(5.)
-        )
+                .fillHorizontal((* expand = true *))
+                .margin(0., 5., 0., 5.)
+
+            Image(Aspect.AspectFit, "star.png")
+                .visibility(if isFavorite then Visibility.Visible else Visibility.Collapsed)
+                .centerVertical()
+                .margin(0., 0., 15., 0.)
+                .size(height = 25., width = 25.)
+         })
+            .padding(5.)
 
     let detailActionButton (imagePath: string) onClicked =
         ImageButton(Aspect.AspectFit, imagePath, onClicked)
-            .backgroundColor(accentColor)
-            .size(height = 35.)
-            .fillHorizontal(expand = true)
+            .background(SolidPaint(accentColor))
+            .height(35.)
+            .fillHorizontal((* expand = true *))
 
     let detailFieldTitle text =
         Label(text)
-            .font(attributes = FontAttributes.Bold)
+            .font(Microsoft.Maui.Font.Default.WithWeight(FontWeight.Bold))
             .margin(0., 10., 0., 0.)
 
     let optionalLabel text =
         match text with
         | "" ->
             Label(Strings.Common_NotSpecified)
-                .font(attributes = FontAttributes.Italic)
+                .font(Microsoft.Maui.Font.Default.WithSlant(FontSlant.Italic))
         | _ -> Label(text)
 
     let favoriteField isFavorite markAsFavorite =
@@ -111,7 +108,7 @@ module Components =
                 .centerVertical()
 
             Switch(isFavorite, markAsFavorite)
-                .alignEndHorizontal(expand = true)
+                .alignEndHorizontal((* expand = true *))
                 .centerVertical()
          })
             .margin(0., 20., 0., 0.)
@@ -119,15 +116,15 @@ module Components =
     let profilePictureButton (picture: byte [] option) updatePicture =
         match picture with
         | None ->
-            ContentView(ImageButton(Aspect.AspectFit, "addphoto.png", updatePicture))
-                .backgroundColor(Color.White.ToFabColor())
-                .gridRowSpan(2)
+            AnyView(
+                ImageButton(Aspect.AspectFit, "addphoto.png", updatePicture)
+                    .background(SolidPaint(Colors.White))
+                    .gridRowSpan(2)
+            )
 
         | Some picture ->
-            ContentView(
+            AnyView(
                 Image(Aspect.AspectFill, new MemoryStream(picture))
+                    .gridRowSpan(2)
             )
-                .gridRowSpan(
-                2
-            )
-                .gestureRecognizers() { TapGestureRecognizer(updatePicture) }
+                //.gestureRecognizers() { TapGestureRecognizer(updatePicture) }

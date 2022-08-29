@@ -61,7 +61,7 @@ type Node() =
             let msg = fn ()
             Dispatcher.dispatch this.ViewNode msg
         
-    member inline this.InvokeEvent<'args>(def: SimpleScalarAttributeDefinition<'args -> obj>, args: 'args) =
+    member this.InvokeEvent<'args>(def: SimpleScalarAttributeDefinition<'args -> obj>, args: 'args) =
         match this.TryFindScalar(def.Key) with
         | None -> ()
         | Some s ->

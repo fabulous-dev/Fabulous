@@ -178,7 +178,10 @@ module App =
         | VisualBoardSizeChanged size ->
             { model with
                 VisualBoardSize = size - 40. }
-
+        | ThemeChanged theme ->
+            { model with
+                Theme = theme }
+    
     /// A helper to get the suffix used in the Xaml for a position on the board.
     let uiText (row, col) = sprintf "%d%d" row col
 

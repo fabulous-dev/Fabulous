@@ -2,11 +2,9 @@ namespace FabulousContacts
 
 open System.IO
 open Fabulous
-// open Plugin.Media
-// open Plugin.Media.Abstractions
-// open Plugin.Permissions
-// open Plugin.Permissions.Abstractions
-open Microsoft.Maui
+open Microsoft.Maui.ApplicationModel
+open Microsoft.Maui.Media
+open Microsoft.Maui.Storage
 open Fabulous.Maui
 
 open type Fabulous.Maui.View
@@ -32,80 +30,69 @@ module Helpers =
         // |> Async.AwaitTask
         async { return () }
 
-    let requestPermissionAsync<'a when 'a: (new: unit -> 'a) (*and 'a :> BasePermission*)> () =
+    let requestPermissionAsync<'a when 'a: (new: unit -> 'a) and 'a :> Permissions.BasePermission> () =
         async {
-            // try
-            //     let! status =
-            //         CrossPermissions.Current.RequestPermissionAsync<'a>()
-            //         |> Async.AwaitTask
-            //
-            //     return
-            //         status = PermissionStatus.Granted
-            //         || status = PermissionStatus.Unknown
-            // with
-            // | _ -> return false
-            return false
+            try
+                let! status =
+                    Permissions.RequestAsync<'a>()
+                    |> Async.AwaitTask
+            
+                return
+                    status = PermissionStatus.Granted
+                    || status = PermissionStatus.Unknown
+            with
+            | _ -> return false
         }
 
-    let askPermissionAsync<'a when 'a: (new: unit -> 'a) (*and 'a :> BasePermission*)> () =
+    let askPermissionAsync<'a when 'a: (new: unit -> 'a) and 'a :> Permissions.BasePermission> () =
         async {
-            // try
-            //     let! status =
-            //         CrossPermissions.Current.CheckPermissionStatusAsync<'a>()
-            //         |> Async.AwaitTask
-            //
-            //     if status = PermissionStatus.Granted then
-            //         return true
-            //     else
-            //         return! requestPermissionAsync<'a>()
-            // with
-            // | _ -> return false
-            return false
+            try
+                let! status =
+                    Permissions.CheckStatusAsync<'a>()
+                    |> Async.AwaitTask
+            
+                if status = PermissionStatus.Granted then
+                    return true
+                else
+                    return! requestPermissionAsync<'a>()
+            with
+            | _ -> return false
         }
 
     let takePictureAsync () =
-        async {
-            // let options =
-            //     StoreCameraMediaOptions(PhotoSize = PhotoSize.Small)
-            //
-            // let! picture =
-            //     CrossMedia.Current.TakePhotoAsync(options)
-            //     |> Async.AwaitTask
-            //
-            // return picture |> Option.ofObj
-            return None
+        async {            
+            let! picture =
+                MediaPicker.CapturePhotoAsync()
+                |> Async.AwaitTask
+            
+            return picture |> Option.ofObj
         }
 
     let pickPictureAsync () =
         async {
-            // let options =
-            //     PickMediaOptions(PhotoSize = PhotoSize.Small)
-            //
-            // let! picture =
-            //     CrossMedia.Current.PickPhotoAsync(options)
-            //     |> Async.AwaitTask
-            //
-            // return picture |> Option.ofObj
-            return None
+            let! picture =
+                MediaPicker.PickPhotoAsync()
+                |> Async.AwaitTask
+            
+            return picture |> Option.ofObj
         }
 
-    let readBytesAsync (file: obj (*MediaFile*)) =
+    let readBytesAsync (file: FileResult) =
         async {
-            // use stream = file.GetStream()
-            // use memoryStream = new MemoryStream()
-            //
-            // do!
-            //     stream.CopyToAsync(memoryStream)
-            //     |> Async.AwaitTask
-            //
-            // return memoryStream.ToArray()
-            return [| 0uy |]
+            use! stream = file.OpenReadAsync() |> Async.AwaitTask
+            use memoryStream = new MemoryStream()
+            
+            do!
+                stream.CopyToAsync(memoryStream)
+                |> Async.AwaitTask
+            
+            return memoryStream.ToArray()
         }
 
     let getImageValueOrDefault (defaultValue: string) aspect (value: byte [] option) =
         match value with
         | None -> Image(aspect, defaultValue)
-        | Some bytes -> Image(aspect, defaultValue (*new MemoryStream(bytes)*))
+        | Some bytes -> Image(aspect, new MemoryStream(bytes))
 
 module Cmd =
     let performAsync asyncUnit =

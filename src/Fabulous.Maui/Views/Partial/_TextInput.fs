@@ -1,6 +1,8 @@
 namespace Fabulous.Maui
 
+open System.Runtime.CompilerServices
 open Microsoft.Maui
+open Fabulous
 
 module TextInput =
     let IsTextPredictionEnabled = Attributes.defineMauiScalarWithEquality<bool> "IsTextPredictionEnabled"
@@ -17,3 +19,9 @@ module TextInput =
         let [<Literal>] CursorPosition = 0
         let [<Literal>] SelectionLength = 0
         let inline createDefaultKeyboard() = Microsoft.Maui.Keyboard.Default
+
+[<Extension>]
+type TextInputModifiers =
+    [<Extension>]
+    static member inline keyboard(this: WidgetBuilder<'msg, #ITextInput>, keyboard: Keyboard) =
+        this.AddScalar(TextInput.Keyboard.WithValue(keyboard))

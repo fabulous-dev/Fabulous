@@ -157,6 +157,10 @@ type ViewModifiers =
         this.AddScalar(View'.Margin.WithValue(value))
         
     [<Extension>]
+    static member inline visibility(this: WidgetBuilder<'msg, #IView>, value: Visibility) =
+        this.AddScalar(View'.Visibility.WithValue(value))
+        
+    [<Extension>]
     static member inline width(this: WidgetBuilder<'msg, #IView>, value: float) =
         this.AddScalar(View'.Width.WithValue(value))
         
@@ -185,6 +189,34 @@ type ViewExtraModifiers =
         this
             .AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Center))
             .AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Center))
+            
+    [<Extension>]
+    static member inline fillVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Fill))
+        
+    [<Extension>]
+    static member inline fillHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Fill))
+        
+    [<Extension>]
+    static member inline fill(this: WidgetBuilder<'msg, #IView>) =
+        this
+            .AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.Fill))
+            .AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.Fill))
+            
+    [<Extension>]
+    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.End))
+        
+    [<Extension>]
+    static member inline alignEndHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.End))
+        
+    [<Extension>]
+    static member inline alignEnd(this: WidgetBuilder<'msg, #IView>) =
+        this
+            .AddScalar(View'.VerticalLayoutAlignment.WithValue(LayoutAlignment.End))
+            .AddScalar(View'.HorizontalLayoutAlignment.WithValue(LayoutAlignment.End))
             
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, left: float, top: float, right: float, bottom: float) =

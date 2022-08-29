@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
@@ -6,18 +6,18 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>FabulousContacts</RootNamespace>
+		<RootNamespace>Playground</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<EnableDefaultItems>false</EnableDefaultItems>
 		<DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
 
 		<!-- Display name -->
-		<ApplicationTitle>FabulousContacts</ApplicationTitle>
+		<ApplicationTitle>Playground</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>org.fabulous.maui.fabulouscontacts</ApplicationId>
-		<ApplicationIdGuid>c50fe8a4-d2d1-4fe0-b4a0-1feb9fe1eba5</ApplicationIdGuid>
+		<ApplicationId>org.fabulous.maui.playground</ApplicationId>
+		<ApplicationIdGuid>16754483-590d-47a9-a8f2-4724a9b77037</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -34,13 +34,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Strings.fs" />
-		<Compile Include="Style.fs" />
-		<Compile Include="Helpers.fs" />
-		<Compile Include="Components.fs" />
-		<Compile Include="Models.fs" />
-		<Compile Include="Repository.fs" />
-		<Compile Include="ContactsListPage.fs" />
 		<Compile Include="App.fs" />
 		<Compile Include="MauiProgram.fs" />
 	</ItemGroup>
@@ -105,7 +98,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
 		<PackageReference Include="FSharp.Core" Version="6.0.5" />
 	</ItemGroup>

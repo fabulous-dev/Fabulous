@@ -42,7 +42,7 @@ module ApplicationBuilders =
 [<Extension>]
 type ApplicationModifiers =
     [<Extension>]
-    static member inline themeChanged(this: WidgetBuilder<'msg, #IApplication>, fn: AppTheme -> 'msg) =
+    static member themeChanged(this: WidgetBuilder<'msg, #IApplication>, fn: AppTheme -> 'msg) =
         this.AddScalar(Application.ThemeChanged.WithValue(fun t -> fn t |> box))
 
 [<Extension>]

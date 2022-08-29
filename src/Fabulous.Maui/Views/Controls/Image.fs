@@ -1,16 +1,9 @@
 namespace Fabulous.Maui
 
+open System.IO
 open Fabulous
-open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.Maui
 open Microsoft.Maui.Handlers
-
-module FileImageSource =
-    [<Struct>]
-    type FabulousFileImageSource(file: string) =
-        interface IFileImageSource with
-            member this.File = file
-            member this.IsEmpty = false
 
 module Image =
     let Aspect = Attributes.defineMauiScalarWithEquality<Aspect> "Aspect"
@@ -44,5 +37,12 @@ module ImageBuilders =
             WidgetBuilder<'msg, IImage>(
                 FabImage.WidgetKey,
                 Image.Aspect.WithValue(aspect),
-                ImageSourcePart.Source.WithValue(FileImageSource.FabulousFileImageSource(path))
+                ImageSourcePart.Source.WithValue(ImageSources.FabulousFileImageSource(path))
+            )
+            
+        static member inline Image<'msg>(aspect: Aspect, stream: Stream) =
+            WidgetBuilder<'msg, IImage>(
+                FabImage.WidgetKey,
+                Image.Aspect.WithValue(aspect),
+                ImageSourcePart.Source.WithValue(ImageSources.FabulousStreamImageSource(stream))
             )

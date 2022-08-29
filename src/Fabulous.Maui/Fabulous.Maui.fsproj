@@ -17,6 +17,7 @@
         <Compile Include="ViewNode.fs" />
         <Compile Include="Widgets.fs" />
         <Compile Include="Attributes.fs" />
+        <Compile Include="ImageSources.fs" />
         <Compile Include="Views\Partial\_Transform.fs" />
         <Compile Include="Views\Partial\_Padding.fs" />
         <Compile Include="Views\Partial\_TextStyle.fs" />
@@ -29,6 +30,7 @@
         <Compile Include="Views\Partial\_Stroke.fs" />
         <Compile Include="Views\Partial\_ImageSourcePart.fs" />
         <Compile Include="Views\Partial\_TextInput.fs" />
+        <Compile Include="Views\Partial\_Image.fs" />
         <Compile Include="Views\_Element.fs" />
         <Compile Include="Views\_View.fs" />
         <Compile Include="Views\Layouts\_Layout.fs" />
@@ -39,6 +41,7 @@
         <Compile Include="Views\Controls\Label.fs" />
         <Compile Include="Views\Controls\_Button.fs" />
         <Compile Include="Views\Controls\TextButton.fs" />
+        <Compile Include="Views\Controls\ImageButton.fs" />
         <Compile Include="Views\Controls\Image.fs" />
         <Compile Include="Views\Controls\Switch.fs" />
         <Compile Include="Views\Controls\Slider.fs" />
@@ -46,8 +49,11 @@
         <Compile Include="Views\Controls\ShapeView.fs" />
         <Compile Include="Views\Controls\Rectangle.fs" />
         <Compile Include="Views\Controls\Ellipse.fs" />
+        <Compile Include="Views\Controls\Editor.fs" />
+        <Compile Include="Views\Controls\NavigationView.fs" />
         <Compile Include="Views\Window.fs" />
         <Compile Include="Views\Application.fs" />
+        <Compile Include="Views\Any.fs" />
         <Compile Include="Program.fs" />
         <Compile Include="AppHostBuilderExtensions.fs" />
     </ItemGroup>
