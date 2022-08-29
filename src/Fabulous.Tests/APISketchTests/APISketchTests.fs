@@ -803,7 +803,7 @@ module Attributes =
         Assert.AreEqual(MyEnum.MinusOne, SmallScalars.IntEnum.decode<MyEnum> minusOne.NumericValue)
 
 
-    
+
     /// In WidgetBuilders we can easily have duplicate attributes
     /// like Label("aha!").color("red").color("blue")
     /// Diffing algorithm already uses stable sort for diffing attributes
@@ -843,7 +843,7 @@ module Attributes =
         let label = find<TestLabel> tree "text" :> IText
 
         Assert.AreEqual(label.TextColor, "blue")
-        
+
         instance.ProcessMessage(())
-        
+
         Assert.AreEqual(label.TextColor, "red")

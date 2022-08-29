@@ -45,17 +45,18 @@ module private SkipRepeatingScalars =
     /// but still might be interesting to tinker about it more
     let inline skip (scalars: ScalarAttribute array) (pos: int) =
         let length = scalars.Length
-        // either the last element or out of bounds 
+        // either the last element or out of bounds
         if pos >= length - 1 then
             pos
         else
             // that means that there is at least one more element ahead
-            let key = scalars[pos].Key
+            let key = scalars.[pos].Key
             let mutable resultingIndex = pos
-            
-            while (length - 1 > resultingIndex) && (scalars[resultingIndex + 1].Key = key) do
+
+            while (length - 1 > resultingIndex)
+                  && (scalars.[resultingIndex + 1].Key = key) do
                 resultingIndex <- resultingIndex + 1
-                
+
             resultingIndex
 
 [<Struct; IsByRefLike; RequireQualifiedAccess>]
@@ -203,8 +204,11 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                 false
 
         | EnumerationMode.ActualDiff (prev, next) ->
-            let mutable prevIndex = SkipRepeatingScalars.skip prev e.prevIndex
-            let mutable nextIndex = SkipRepeatingScalars.skip next e.nextIndex
+            let mutable prevIndex =
+                SkipRepeatingScalars.skip prev e.prevIndex
+
+            let mutable nextIndex =
+                SkipRepeatingScalars.skip next e.nextIndex
 
             let prevLength = prev.Length
             let nextLength = next.Length
@@ -266,7 +270,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                                     res <- ValueSome true
 
                             // move both pointers
-                            prevIndex <- SkipRepeatingScalars.skip prev (prevIndex + 1) 
+                            prevIndex <- SkipRepeatingScalars.skip prev (prevIndex + 1)
                             nextIndex <- SkipRepeatingScalars.skip next (nextIndex + 1)
 
                 else
@@ -564,6 +568,3 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         else
             // means that we are done iterating
             false
-
-
-
