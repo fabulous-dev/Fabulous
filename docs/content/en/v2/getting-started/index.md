@@ -29,7 +29,7 @@ _Note: if you choose JetBrains Rider, you will also need to install either Visua
 
 ## Creating a new Fabulous project
 
-### Download the latest templates
+### 1. Download the latest templates
 
 First, we need to install the latest templates for Fabulous. This is done via command line.  
 Open a terminal in the folder where you want to store the new solution, and type the following command:
@@ -46,7 +46,7 @@ dotnet new --list
 
 ![Result of dotnet new --list](dotnet-new-list.png)
 
-### Create the project
+### 2. Create the project
 
 Now, we can create the solution using the newly installed template:
 
@@ -56,7 +56,7 @@ dotnet new fabulous-xf -n FabHelloWorld
 
 _Note: if you plan to use Visual Studio on Windows, use `fabulous-xf-vswin` instead. Visual Studio doesn't support the default template._
 
-### Build and run
+### 3. Build and run
 
 In your IDE, you will be able to choose the configuration profile, the project to start and the device or simulator to use.
 
