@@ -1,40 +1,10 @@
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Microsoft.Maui
-{
-    /// Duplicate Microsoft.Maui.ElementHandlerExtensions because it is marked as internal
-    /// https://github.com/dotnet/maui/blob/9ee62c1b125424ea54c99661de8be951f21203a3/src/Core/src/Handlers/ElementHandlerExtensions.cs
-    public static class ElementHandlerExtensions
-    {
-        public static IServiceProvider GetServiceProvider(this IElementHandler handler)
-        {
-            var context = handler.MauiContext ??
-                          throw new InvalidOperationException($"Unable to find the context. The {nameof(ElementHandler.MauiContext)} property should have been set by the host.");
-
-            var services = context?.Services ??
-                           throw new InvalidOperationException($"Unable to find the service provider. The {nameof(ElementHandler.MauiContext)} property should have been set by the host.");
-
-            return services;
-        }
-        
-        public static T GetRequiredService<T>(this IElementHandler handler)
-            where T : notnull
-        {
-            var services = handler.GetServiceProvider();
-
-            var service = services.GetRequiredService<T>();
-
-            return service;
-        }
-    }
-}
 
 namespace Microsoft.Maui.Platform
 {
     /// Microsoft.Maui.Platform.ContainerViewController does not listen to the change between light and dark modes
-    /// Microsoft.Maui.Platform.PageViewController does, but it's only used by Microsoft.Maui.Controls.Page
+    /// Microsoft.Maui.Platform.PageViewController does, but it's only used by Microsoft.Maui.Handlers.PageHandler
     /// while any view added to the window will be wrapped in a ContainerView
     /// So we replace the default ContainerViewController by ThemeEnabledContainerViewController
     ///
@@ -54,7 +24,7 @@ namespace Microsoft.Maui.Platform
         }
     }
     
-    public static partial class ElementExtensions
+    public static class ElementExtensionsEx
     {
         public static UIViewController ToThemeEnabledUIViewController(this IElement view, IMauiContext context)
         {
