@@ -29,7 +29,7 @@ type FabWindow(handler) =
     static let _widgetKey = Widgets.register<FabWindow>()
     static member WidgetKey = _widgetKey
     
-    new() = FabWindow(WindowHandler())
+    new() = FabWindow(WindowHandlerEx())
     
     interface ITitledElement with
         member this.Title = this.GetScalar(TitledElement.Title, TitledElement.Defaults.Title)

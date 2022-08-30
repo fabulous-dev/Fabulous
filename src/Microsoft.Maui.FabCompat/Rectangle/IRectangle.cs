@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Maui.FabCompat;
+﻿namespace Microsoft.Maui;
 
 public interface IRectangle : IShapeView
 {

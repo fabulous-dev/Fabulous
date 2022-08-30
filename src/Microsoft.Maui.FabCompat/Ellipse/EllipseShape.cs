@@ -1,6 +1,6 @@
 using Microsoft.Maui.Graphics;
 
-namespace Microsoft.Maui.FabCompat.Shapes;
+namespace Microsoft.Maui.Shapes;
 
 public class EllipseShape: IShape
 {

@@ -1,6 +1,6 @@
 using Microsoft.Maui.Handlers;
 
-namespace Microsoft.Maui.FabCompat.Handlers;
+namespace Microsoft.Maui.Handlers;
 
 public partial class RectangleHandler: ViewHandler<IRectangle, object>
 {

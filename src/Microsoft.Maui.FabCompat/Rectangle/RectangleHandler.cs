@@ -12,7 +12,7 @@ using PlatformView = Microsoft.Maui.Platform.MauiShapeView;
 using PlatformView = System.Object;
 #endif
 
-namespace Microsoft.Maui.FabCompat.Handlers;
+namespace Microsoft.Maui.Handlers;
 
 public partial class RectangleHandler: IRectangleHandler
 {

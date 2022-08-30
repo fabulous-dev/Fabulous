@@ -5,9 +5,8 @@ open Fabulous
 open Microsoft.FSharp.Core
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
-open Microsoft.Maui.FabCompat
-open Microsoft.Maui.FabCompat.Handlers
-open Microsoft.Maui.FabCompat.Shapes
+open Microsoft.Maui.Handlers
+open Microsoft.Maui.Shapes
     
 module Rectangle =
     let RadiusX = Attributes.defineMauiScalarWithEquality<float> "RadiusX"

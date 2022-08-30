@@ -4,9 +4,8 @@ open Fabulous
 open Microsoft.FSharp.Core
 open Microsoft.Maui
 open Microsoft.Maui.Graphics
-open Microsoft.Maui.FabCompat
-open Microsoft.Maui.FabCompat.Handlers
-open Microsoft.Maui.FabCompat.Shapes
+open Microsoft.Maui.Handlers
+open Microsoft.Maui.Shapes
     
 type FabEllipse(handler: IViewHandler) =
     inherit FabShapeView(handler, fun shapeView -> EllipseShape(shapeView :?> IEllipse))
@@ -14,7 +13,7 @@ type FabEllipse(handler: IViewHandler) =
     static let _widgetKey = Widgets.register<FabEllipse>()
     static member WidgetKey = _widgetKey
     
-    new() = FabEllipse(EllipseHandler())
+    new() = FabEllipse(ShapeViewHandler())
     
     interface IEllipse
         
