@@ -39,10 +39,10 @@ namespace Microsoft.Maui.Platform
 
 namespace Microsoft.Maui.Handlers
 {
-    public partial class WindowHandlerEx : ElementHandler<IWindow, UIWindow>
+    public partial class WindowHandlerEx
     {
-        /// Do exactly the same than Microsoft.Maui.FabCompat.WindowHandler.MapContent
-        /// but use a ThemeEnabledContainerViewController instead of a ContainerViewController
+        /// Do exactly the same than Microsoft.Maui.WindowHandler.MapContent
+        /// but use a ThemeEnabledContainerViewController instead of ContainerViewController
         public static void MapContent(IWindowHandler handler, IWindow window)
         {
             _ = handler.MauiContext ??

@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Handlers
 
 module NavigationView =
-    let NavigationStack = Attributes.defineMauiWidgetCollection "NavigationStack" 
+    let NavigationStack = Attributes.defineMauiWidgetCollectionNavigation "NavigationStack" 
     
 type FabNavigationView(handler: IViewHandler) =
     inherit FabView(handler)
@@ -18,7 +18,7 @@ type FabNavigationView(handler: IViewHandler) =
     new() = FabNavigationView(NavigationViewHandler())
     
     interface IStackNavigation with
-        member this.NavigationFinished(newStack) = failwith "todo"
+        member this.NavigationFinished(newStack) = ()
         member this.RequestNavigation(eventArgs) = this.Handler.Invoke("RequestNavigation", eventArgs)
         
     interface IStackNavigationView

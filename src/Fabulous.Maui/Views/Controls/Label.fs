@@ -6,19 +6,6 @@ open Microsoft.Maui.Graphics
 open Microsoft.Maui.Handlers
 open Fabulous
 
-#if __IOS__
-// Workaround for https://github.com/dotnet/maui/issues/5835#issuecomment-1221263083
-type CustomLabelHandler() =
-    inherit LabelHandler()
-    
-    override this.CreatePlatformView() =
-        let label = base.CreatePlatformView()
-        label.Lines <- nativeint 0
-        label
-        
-type LabelHandler = CustomLabelHandler
-#endif
-
 module Label =
     let LineHeight = Attributes.defineMauiScalarWithEquality<float> "LineHeight"
     let TextDecorations = Attributes.defineMauiScalarWithEquality<TextDecorations> "TextDecorations"
@@ -35,7 +22,7 @@ type FabLabel(handler: IViewHandler) =
     static let _widgetKey = Widgets.register<FabLabel>()
     static member WidgetKey = _widgetKey
     
-    new() = FabLabel(LabelHandler())
+    new() = FabLabel(LabelHandlerEx())
     
     interface IPadding with
         member this.Padding = this.GetScalar(Padding.Padding, Padding.Defaults.createDefaultPadding())

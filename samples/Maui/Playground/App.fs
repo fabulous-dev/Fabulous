@@ -11,80 +11,42 @@ open type Fabulous.Maui.View
 
 module App =
     type Model =
-        { Count: int
-          Step: int
-          TimerOn: bool }
+        { HasNavigated: bool }
 
     type Msg =
-        | Increment
-        | Decrement
-        | Reset
-        | SetStep of float
-        | TimerToggled of bool
-        | TimedTick
+        | GoToA
+        | GoToB
 
-    let initModel = { Count = 0; Step = 1; TimerOn = false }
-
-    let timerCmd () =
-        async {
-            do! Async.Sleep 200
-            return TimedTick
-        }
-        |> Cmd.ofAsyncMsg
-
-    let init () = initModel, Cmd.none
+    let init () =
+        { HasNavigated = false }
 
     let update msg model =
         match msg with
-        | Increment ->
-            { model with
-                  Count = model.Count + model.Step },
-            Cmd.none
-        | Decrement ->
-            { model with
-                  Count = model.Count - model.Step },
-            Cmd.none
-        | Reset -> initModel, Cmd.none
-        | SetStep n -> { model with Step = int(n + 0.5) }, Cmd.none
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
-        | TimedTick ->
-            if model.TimerOn then
-                { model with
-                      Count = model.Count + model.Step },
-                timerCmd()
-            else
-                model, Cmd.none
+        | GoToA -> { model with HasNavigated = false }
+        | GoToB -> { model with HasNavigated = true }
 
     let view model =
         Application() {
             Window(
-                ContentView(
-                    (VStack() {
-                       Label($"%d{model.Count}").centerTextHorizontal()
-                       
-                       TextButton("Increment", Increment)
-                       
-                       TextButton("Decrement", Decrement)
-                       
-                       (HStack() {
-                           Label("Timer")
-                       
-                           Switch(model.TimerOn, TimerToggled)
-                        })
-                           .padding(20.)
-                           .centerHorizontal()
-                       
-                       Slider(0.0, 10.0, double model.Step, SetStep)
-                       
-                       Label($"Step size: %d{model.Step}")
-                           .centerTextHorizontal()
-                       
-                       TextButton("Reset", Reset)
+                Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Star; GridLength.Star ]) {
+                    Label("Playground")
+                    
+                    (NavigationView() {
+                        VStack() {
+                            Label("A")
+                            TextButton("Go to B", GoToB)
+                        }
+                        
+                        if model.HasNavigated then
+                            VStack() {
+                                Label("B")
+                                TextButton("Go to A", GoToA)
+                            }
                     })
-                       .padding(30.)
-                       .centerVertical()
-                )
+                        .background(SolidPaint(Colors.Red))
+                        .gridRow(1)
+                }
             )
         }
 
-    let program = Program.statefulWithCmd init update view
+    let program = Program.stateful init update view
