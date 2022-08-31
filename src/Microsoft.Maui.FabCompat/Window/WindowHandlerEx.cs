@@ -2,12 +2,12 @@ namespace Microsoft.Maui.Handlers;
 
 public partial class WindowHandlerEx: WindowHandler
 {
-    public static IPropertyMapper<IWindow, IWindowHandler> Mapper = new PropertyMapper<IWindow, IWindowHandler>(WindowHandler.Mapper)
+    public new static IPropertyMapper<IWindow, IWindowHandler> Mapper = new PropertyMapper<IWindow, IWindowHandler>(WindowHandler.Mapper)
     {
         [nameof(IWindow.Content)] = MapContent
     };
 
-    public static CommandMapper<IWindow, IWindowHandler> CommandMapper = new(WindowHandler.CommandMapper);
+    public new static CommandMapper<IWindow, IWindowHandler> CommandMapper = new(WindowHandler.CommandMapper);
 
     public WindowHandlerEx()
         : base(Mapper, CommandMapper)

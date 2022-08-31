@@ -380,10 +380,6 @@ module Attributes =
                     let struct (_, view) = Helpers.createViewForWidget node widget
                     targetColl.Add(view)
                 
-            let handler = node.Target :?> IStackNavigation
-            let stack = targetColl |> Seq.map unbox<IView> |> List<_>
-            handler.RequestNavigation(NavigationRequest(stack.AsReadOnly(), true))
-                
         let key =
             AttributeDefinitionStore.registerWidgetCollection
                 { ApplyDiff = applyDiff

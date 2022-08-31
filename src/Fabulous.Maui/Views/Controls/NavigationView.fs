@@ -15,13 +15,9 @@ type FabNavigationView(handler: IViewHandler) =
     static let _widgetKey = Widgets.register<FabNavigationView>()
     static member WidgetKey = _widgetKey
     
-    new() = FabNavigationView(NavigationViewHandler())
-    
-    interface IStackNavigation with
-        member this.NavigationFinished(newStack) = ()
-        member this.RequestNavigation(eventArgs) = this.Handler.Invoke("RequestNavigation", eventArgs)
+    new() = FabNavigationView(NavigationViewExHandler())
         
-    interface IStackNavigationView
+    interface INavigationViewEx
     
 [<AutoOpen>]
 module NavigationViewBuilders =

@@ -28,8 +28,11 @@ module App =
     let view model =
         Application() {
             Window(
-                Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Star; GridLength.Star ]) {
+                Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Auto; GridLength.Auto; GridLength.Star ]) {
                     Label("Playground")
+                    
+                    TextButton("Start navigation", GoToB)
+                        .gridRow(1)
                     
                     (NavigationView() {
                         VStack() {
@@ -44,7 +47,7 @@ module App =
                             }
                     })
                         .background(SolidPaint(Colors.Red))
-                        .gridRow(1)
+                        .gridRow(2)
                 }
             )
         }

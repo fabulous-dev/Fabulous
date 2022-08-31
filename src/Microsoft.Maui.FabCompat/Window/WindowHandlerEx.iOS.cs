@@ -43,7 +43,7 @@ namespace Microsoft.Maui.Handlers
     {
         /// Do exactly the same than Microsoft.Maui.WindowHandler.MapContent
         /// but use a ThemeEnabledContainerViewController instead of ContainerViewController
-        public static void MapContent(IWindowHandler handler, IWindow window)
+        public new static void MapContent(IWindowHandler handler, IWindow window)
         {
             _ = handler.MauiContext ??
                 throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
