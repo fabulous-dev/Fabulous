@@ -1,5 +1,7 @@
 namespace CounterApp
 
+open System
+open System.Collections.Generic
 open Fabulous
 open Fabulous.XamarinForms
 
@@ -18,6 +20,7 @@ module App =
         | SetStep of float
         | TimerToggled of bool
         | TimedTick
+        | LinkReceived of Uri
 
     let initModel = { Count = 0; Step = 1; TimerOn = false }
 
@@ -33,9 +36,11 @@ module App =
     let update msg model =
         match msg with
         | Increment ->
-            { model with
-                  Count = model.Count + model.Step },
-            Cmd.none
+            let model =
+                { model with
+                      Count = model.Count + model.Step }
+
+            model, Cmd.none
         | Decrement ->
             { model with
                   Count = model.Count - model.Step },
@@ -50,6 +55,7 @@ module App =
                 timerCmd()
             else
                 model, Cmd.none
+        | LinkReceived uri -> model, Cmd.none
 
     let view model =
         Application(
@@ -76,10 +82,21 @@ module App =
                         .centerTextHorizontal()
 
                     Button("Reset", Reset)
+
                  })
                     .padding(30.)
                     .centerVertical()
             )
         )
+            .onLinkReceived(fun args -> LinkReceived args.Uri)
+            .appLinks() {
+            AppLinkEntry("Im a deep link", "https://www.xamarin.com/platform")
+                .description("Im a deep link")
+                .thumbnail("https://www.xamarin.com/images/xamarin-logo.png")
+                .keyValues(
+                    [ KeyValuePair("key1", "value1")
+                      KeyValuePair("key2", "value2") ]
+                )
+        }
 
     let program = Program.statefulWithCmd init update view

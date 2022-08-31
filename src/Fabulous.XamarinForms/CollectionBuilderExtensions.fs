@@ -79,6 +79,14 @@ type CollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IAppLinkEntry>
+        (
+            _: AttributeCollectionBuilder<'msg, 'marker, IAppLinkEntry>,
+            x: WidgetBuilder<'msg, 'itemType>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IToolbarItem>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IToolbarItem>,
@@ -155,6 +163,14 @@ type CollectionBuilderExtensions =
     static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IGestureRecognizer>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IGestureRecognizer>,
+            x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
+        ) : Content<'msg> =
+        { Widgets = MutStackArray1.One(x.Compile()) }
+
+    [<Extension>]
+    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IAppLinkEntry>
+        (
+            _: AttributeCollectionBuilder<'msg, 'marker, IAppLinkEntry>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
         ) : Content<'msg> =
         { Widgets = MutStackArray1.One(x.Compile()) }

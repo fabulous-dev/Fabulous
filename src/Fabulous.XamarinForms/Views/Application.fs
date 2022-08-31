@@ -2,7 +2,58 @@ namespace Fabulous.XamarinForms
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
+
+module AppLinkUpdaters =
+    let applyDiffApplicationLinks (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+        let application = node.Target :?> CustomApplication
+        let appLinks = application.AppLinks
+
+        for diff in diffs do
+            match diff with
+            | WidgetCollectionItemChange.Insert (_, widget) ->
+                let struct (_, appLink) = Helpers.createViewForWidget node widget
+                let link = appLink :?> AppLinkEntry
+                appLinks.RegisterLink(link)
+            | WidgetCollectionItemChange.Update _
+            | WidgetCollectionItemChange.Replace _ -> ()
+            | WidgetCollectionItemChange.Remove (_, newWidget) ->
+                let struct (_, appLink) =
+                    Helpers.createViewForWidget node newWidget
+
+                let link = appLink :?> AppLinkEntry
+                appLinks.DeregisterLink(link)
+
+    let updateAppLinks
+        (oldValueOpt: ArraySlice<Widget> voption)
+        (newValueOpt: ArraySlice<Widget> voption)
+        (node: IViewNode)
+        =
+        let application = node.Target :?> CustomApplication
+
+        match newValueOpt with
+        | ValueNone -> failwith "Application requires AppLinks"
+
+        | ValueSome widgets ->
+            let span = ArraySlice.toSpan widgets
+
+            for widget in span do
+                let struct (_, appLink) = Helpers.createViewForWidget node widget
+                let link = appLink :?> AppLinkEntry
+
+                if application.AppLinks <> null then
+                    application.AppLinks.RegisterLink(link)
+
+            match oldValueOpt with
+            | ValueNone -> ()
+            | ValueSome oldWidgets ->
+                let appLinks = application.AppLinks
+                let span = ArraySlice.toSpan oldWidgets
+
+                for widget in span do
+                    let struct (_, appLink) = Helpers.createViewForWidget node widget
+                    appLinks.DeregisterLink(appLink :?> AppLinkEntry)
 
 type IApplication =
     inherit IElement
@@ -20,7 +71,7 @@ module Application =
         Attributes.defineSimpleScalarWithEquality<ResourceDictionary>
             "Application_Resources"
             (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+                let application = node.Target :?> CustomApplication
 
                 let value =
                     match newValueOpt with
@@ -33,7 +84,7 @@ module Application =
         Attributes.defineEnum<OSAppTheme>
             "Application_UserAppTheme"
             (fun _ newValueOpt node ->
-                let application = node.Target :?> Application
+                let application = node.Target :?> CustomApplication
 
                 let value =
                     match newValueOpt with
@@ -45,27 +96,40 @@ module Application =
     let RequestedThemeChanged =
         Attributes.defineEvent<AppThemeChangedEventArgs>
             "Application_RequestedThemeChanged"
-            (fun target -> (target :?> Application).RequestedThemeChanged)
+            (fun target ->
+                (target :?> CustomApplication)
+                    .RequestedThemeChanged)
 
     let ModalPopped =
         Attributes.defineEvent<ModalPoppedEventArgs>
             "Application_ModalPopped"
-            (fun target -> (target :?> Application).ModalPopped)
+            (fun target -> (target :?> CustomApplication).ModalPopped)
 
     let ModalPopping =
         Attributes.defineEvent<ModalPoppingEventArgs>
             "Application_ModalPopping"
-            (fun target -> (target :?> Application).ModalPopping)
+            (fun target -> (target :?> CustomApplication).ModalPopping)
 
     let ModalPushed =
         Attributes.defineEvent<ModalPushedEventArgs>
             "Application_ModalPushed"
-            (fun target -> (target :?> Application).ModalPushed)
+            (fun target -> (target :?> CustomApplication).ModalPushed)
 
     let ModalPushing =
         Attributes.defineEvent<ModalPushingEventArgs>
             "Application_ModalPushing"
-            (fun target -> (target :?> Application).ModalPushing)
+            (fun target -> (target :?> CustomApplication).ModalPushing)
+
+    let LinkRequestReceived =
+        Attributes.defineEvent<LinkRequestReceivedEventArgs>
+            "Application_LinkRequestReceived"
+            (fun target -> (target :?> CustomApplication).LinkRequestReceived)
+
+    let AppLinks =
+        Attributes.defineWidgetCollection
+            "Application_AppLinks"
+            AppLinkUpdaters.applyDiffApplicationLinks
+            AppLinkUpdaters.updateAppLinks
 
     let Start =
         Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> CustomApplication).Start)
@@ -151,7 +215,21 @@ type ApplicationModifiers =
     static member inline onResume(this: WidgetBuilder<'msg, #IApplication>, onResume: 'msg) =
         this.AddScalar(Application.Resume.WithValue(onResume))
 
-    /// Link a ViewRef to access the direct Application instance
+    /// <summary>Link a ViewRef to access the direct Application instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<Application>) =
+    static member inline reference(this: WidgetBuilder<'msg, IApplication>, value: ViewRef<CustomApplication>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
+
+    [<Extension>]
+    static member inline onLinkReceived
+        (
+            this: WidgetBuilder<'msg, #IApplication>,
+            onLinkReceived: LinkRequestReceivedEventArgs -> 'msg
+        ) =
+        this.AddScalar(Application.LinkRequestReceived.WithValue(onLinkReceived >> box))
+
+    [<Extension>]
+    static member inline appLinks<'msg, 'marker when 'marker :> IApplication>(this: WidgetBuilder<'msg, 'marker>) =
+        WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.XamarinForms.IAppLinkEntry>
+            Application.AppLinks
+            this
