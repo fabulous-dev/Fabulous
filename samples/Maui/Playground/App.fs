@@ -24,32 +24,25 @@ module App =
         | GoToB -> { model with HasNavigated = true }
 
     let view model =
-        Application() {
-            Window(
-                Grid(coldefs = [ GridLength.Star ],
-                     rowdefs = [ GridLength.Auto
-                                 GridLength.Auto
-                                 GridLength.Star ]) {
-                    Label("Playground")
+        Application(
+            NavigationPage() {
+                ContentPage(
+                    "A",
+                    VStack() {
+                        Label("A")
+                        Button("Go to B", GoToB)
+                    }
+                )
 
-                    TextButton("Start navigation", GoToB).gridRow(1)
-
-                    (NavigationView() {
+                if model.HasNavigated then
+                    ContentPage(
+                        "B",
                         VStack() {
-                            Label("A")
-                            TextButton("Go to B", GoToB)
+                            Label("B")
+                            Button("Go to A", GoToA)
                         }
-
-                        if model.HasNavigated then
-                            VStack() {
-                                Label("B")
-                                TextButton("Go to A", GoToA)
-                            }
-                     })
-                        .background(SolidPaint(Colors.Red))
-                        .gridRow(2)
-                }
-            )
-        }
+                    )
+             }
+        )
 
     let program = Program.stateful init update view
