@@ -1,0 +1,134 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <UseMaui>true</UseMaui>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
+        <PackageIcon>nuget-icon.png</PackageIcon>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <VersionPrefix>2.0.1</VersionPrefix>
+        <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="ViewNode.fs" />
+        <Compile Include="FabColor.fs" />
+        <Compile Include="Attributes.fs" />
+        <Compile Include="Controls.fs" />
+        <Compile Include="VirtualizedCollection.fs" />
+        <Compile Include="Widgets.fs" />
+        <Compile Include="Views\_Element.fs" />
+        <Compile Include="Views\_Geometry.fs" />
+        <Compile Include="Views\_NavigableElement.fs" />
+        <Compile Include="Views\_VisualElement.fs" />
+        <Compile Include="Views\GestureRecognizers\_GestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\TapGestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\PinchGestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\PanGestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\SwipeGestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\DragGestureRecognizer.fs" />
+        <Compile Include="Views\GestureRecognizers\DropGestureRecognizer.fs" />
+        <Compile Include="Views\_View.fs" />
+        <Compile Include="Views\MenuItems\MenuItem.fs" />
+        <Compile Include="Views\MenuItems\ToolbarItem.fs" />
+        <Compile Include="Views\Cells\_Cell.fs" />
+        <Compile Include="Views\Cells\ViewCell.fs" />
+        <Compile Include="Views\Cells\TextCell.fs" />
+        <Compile Include="Views\Cells\ImageCell.fs" />
+        <Compile Include="Views\Cells\SwitchCell.fs" />
+        <Compile Include="Views\Cells\EntryCell.fs" />
+        <Compile Include="Views\Pages\_Page.fs" />
+        <Compile Include="Views\Pages\ContentPage.fs" />
+        <Compile Include="Views\Pages\NavigationPage.fs" />
+        <Compile Include="Views\Pages\_MultiPageOfPage.fs" />
+        <Compile Include="Views\Pages\TabbedPage.fs" />
+        <Compile Include="Views\Pages\FlyoutPage.fs" />
+        <Compile Include="Views\Layouts\_Layout.fs" />
+        <Compile Include="Views\Layouts\_TemplatedView.fs" />
+        <Compile Include="Views\Layouts\ContentView.fs" />
+        <Compile Include="Views\Layouts\RefreshView.fs" />
+        <Compile Include="Views\Layouts\_LayoutOfView.fs" />
+        <Compile Include="Views\Layouts\StackLayout.fs" />
+        <Compile Include="Views\Layouts\Grid.fs" />
+        <Compile Include="Views\Layouts\ScrollView.fs" />
+        <Compile Include="Views\Layouts\Frame.fs" />
+        <Compile Include="Views\Layouts\AbsoluteLayout.fs" />
+        <Compile Include="Views\Layouts\RelativeLayout.fs" />
+        <Compile Include="Views\Layouts\FlexLayout.fs" />
+        <Compile Include="Views\Layouts\SwipeItem.fs" />
+        <Compile Include="Views\Layouts\SwipeItems.fs" />
+        <Compile Include="Views\Layouts\SwipeView.fs" />
+        <Compile Include="Views\Controls\IndicatorView.fs" />
+        <Compile Include="Views\Controls\Label.fs" />
+        <Compile Include="Views\Controls\Span.fs" />
+        <Compile Include="Views\Controls\FormattedLabel.fs" />
+        <Compile Include="Views\Controls\Button.fs" />
+        <Compile Include="Views\Controls\Switch.fs" />
+        <Compile Include="Views\Controls\Slider.fs" />
+        <Compile Include="Views\Controls\ActivityIndicator.fs" />
+        <Compile Include="Views\Controls\Image.fs" />
+        <Compile Include="Views\Controls\BoxView.fs" />
+        <Compile Include="Views\Controls\_InputView.fs" />
+        <Compile Include="Views\Controls\Entry.fs" />
+        <Compile Include="Views\Controls\SearchBar.fs" />
+        <Compile Include="Views\Controls\Editor.fs" />
+        <Compile Include="Views\Controls\ImageButton.fs" />
+        <Compile Include="Views\Controls\DatePicker.fs" />
+        <Compile Include="Views\Controls\Picker.fs" />
+        <Compile Include="Views\Controls\TimePicker.fs" />
+        <Compile Include="Views\Controls\Stepper.fs" />
+        <Compile Include="Views\Controls\WebView.fs" />
+        <Compile Include="Views\Controls\CheckBox.fs" />
+        <Compile Include="Views\Controls\ProgressBar.fs" />
+        <Compile Include="Views\Controls\RadioButton.fs" />
+        <Compile Include="Views\Collections\_ItemsView.fs" />
+        <Compile Include="Views\Collections\_ItemsViewOfCell.fs" />
+        <Compile Include="Views\Collections\ListView.fs" />
+        <Compile Include="Views\Collections\CollectionView.fs" />
+        <Compile Include="Views\Collections\CarouselView.fs" />
+        <Compile Include="Views\Shapes\Segments\_PathSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\PathFigure.fs" />
+        <Compile Include="Views\Shapes\Segments\ArcSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\BezierSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\LineSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\PolyBezierSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\PolyLineSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\PolyQuadraticBezierSegment.fs" />
+        <Compile Include="Views\Shapes\Segments\QuadraticBezierSegment.fs" />
+        <Compile Include="Views\Shapes\Geometries\EllipseGeometry.fs" />
+        <Compile Include="Views\Shapes\Geometries\LineGeometry.fs" />
+        <Compile Include="Views\Shapes\Geometries\RectangleGeometry.fs" />
+        <Compile Include="Views\Shapes\Geometries\PathGeometry.fs" />
+        <Compile Include="Views\Shapes\Geometries\GeometryGroup.fs" />
+        <Compile Include="Views\Shapes\Geometries\RoundRectangleGeometry.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\_Transform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\RotateTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\ScaleTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\SkewTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\TranslateTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\CompositeTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\MatrixTransform.fs" />
+        <Compile Include="Views\Shapes\PathTransforms\TransformGroup.fs" />
+        <Compile Include="Views\Shapes\_Shape.fs" />
+        <Compile Include="Views\Shapes\Ellipse.fs" />
+        <Compile Include="Views\Shapes\Rectangle.fs" />
+        <Compile Include="Views\Shapes\Path.fs" />
+        <Compile Include="Views\Shapes\Line.fs" />
+        <Compile Include="Views\Shapes\Polygon.fs" />
+        <Compile Include="Views\Shapes\Polyline.fs" />
+        <Compile Include="Views\Application.fs" />
+        <Compile Include="Views\Any.fs" />
+        <Compile Include="CollectionBuilderExtensions.fs" />
+        <Compile Include="Program.fs" />
+        <Compile Include="Async.fs" />
+        <Compile Include="AppHostBuilderExtensions.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FSharp.Core" Version="6.0.0" />
+      <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
+    </ItemGroup>
+
+</Project>
