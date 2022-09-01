@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ICheckBox =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module CheckBox =
 

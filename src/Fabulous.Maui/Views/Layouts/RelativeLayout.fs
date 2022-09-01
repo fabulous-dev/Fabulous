@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IRelativeLayout =
-    inherit ILayoutOfView
+    inherit Fabulous.Maui.ILayoutOfView
 
 module RelativeLayout =
     ()

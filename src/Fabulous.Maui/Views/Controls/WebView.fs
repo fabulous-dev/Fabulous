@@ -9,7 +9,7 @@ open Microsoft.Maui.Controls
 // open Microsoft.Maui.PlatformConfiguration
 
 type IWebView =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module WebView =
 

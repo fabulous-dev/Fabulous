@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IEntryCell =
-    inherit ICell
+    inherit Fabulous.Maui.ICell
 
 module EntryCell =
     let WidgetKey = Widgets.register<CustomEntryCell>()

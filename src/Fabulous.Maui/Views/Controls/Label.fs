@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ILabel =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Label =
     let WidgetKey = Widgets.register<Label>()

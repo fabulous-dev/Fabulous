@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type ISwitchCell =
-    inherit ICell
+    inherit Fabulous.Maui.ICell
 
 module SwitchCell =
     let WidgetKey = Widgets.register<SwitchCell>()

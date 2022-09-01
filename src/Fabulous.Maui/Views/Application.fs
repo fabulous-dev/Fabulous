@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.ApplicationModel
 
 type IApplication =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module Application =
     let WidgetKey = Widgets.register<CustomApplication>()

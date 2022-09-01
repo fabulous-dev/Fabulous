@@ -4,7 +4,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type ITranslateTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module TranslateTransform =
     let WidgetKey = Widgets.register<TranslateTransform>()

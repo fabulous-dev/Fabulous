@@ -5,7 +5,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type ILineSegment =
-    inherit IPathSegment
+    inherit Fabulous.Maui.IPathSegment
 
 module LineSegment =
     let WidgetKey = Widgets.register<LineSegment>()

@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type ILine =
-    inherit IShape
+    inherit Fabulous.Maui.IShape
 
 module Line =
 

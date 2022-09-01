@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IContentPage =
-    inherit IPage
+    inherit Fabulous.Maui.IPage
 
 module ContentPage =
     let WidgetKey = Widgets.register<FabulousContentPage>()
@@ -23,7 +23,7 @@ module ContentPage =
 [<AutoOpen>]
 module ContentPageBuilders =
     type Fabulous.Maui.View with
-        static member inline ContentPage<'msg, 'marker when 'marker :> IView>
+        static member inline ContentPage<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
             (
                 title: string,
                 content: WidgetBuilder<'msg, 'marker>

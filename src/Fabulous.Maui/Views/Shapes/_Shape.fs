@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
 type IShape =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Shape =
 

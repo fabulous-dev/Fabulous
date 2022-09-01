@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 // open Microsoft.Maui.PlatformConfiguration
 
 type IPicker =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Picker =
     let WidgetKey = Widgets.register<CustomPicker>()

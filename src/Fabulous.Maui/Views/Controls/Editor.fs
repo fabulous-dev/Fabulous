@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type IEditor =
-    inherit IInputView
+    inherit Fabulous.Maui.IInputView
 
 module Editor =
     let WidgetKey = Widgets.register<Editor>()

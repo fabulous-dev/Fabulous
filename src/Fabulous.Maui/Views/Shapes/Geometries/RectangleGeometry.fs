@@ -5,7 +5,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IRectangleGeometry =
-    inherit IGeometry
+    inherit Fabulous.Maui.IGeometry
 
 module RectangleGeometry =
     let WidgetKey = Widgets.register<RectangleGeometry>()

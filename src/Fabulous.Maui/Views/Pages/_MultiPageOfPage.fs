@@ -5,7 +5,7 @@ open Microsoft.Maui.Controls
 open System.Runtime.CompilerServices
 
 type IMultiPageOfPage =
-    inherit IPage
+    inherit Fabulous.Maui.IPage
 
 module MultiPageOfPage =
     let Children =

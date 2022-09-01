@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls
 open System
 
 type IImageButton =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module ImageButton =
     let WidgetKey = Widgets.register<ImageButton>()

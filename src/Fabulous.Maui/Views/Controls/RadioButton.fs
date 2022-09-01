@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IRadioButton =
-    inherit ITemplatedView
+    inherit Fabulous.Maui.ITemplatedView
 
 module RadioButton =
     let WidgetKey = Widgets.register<RadioButton>()

@@ -8,7 +8,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IMenuItem =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module MenuItem =
     let WidgetKey = Widgets.register<MenuItem>()

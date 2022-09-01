@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IViewCell =
-    inherit ICell
+    inherit Fabulous.Maui.ICell
 
 module ViewCell =
     let WidgetKey = Widgets.register<ViewCell>()

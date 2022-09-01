@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IPolyBezierSegment =
-    inherit IPathSegment
+    inherit Fabulous.Maui.IPathSegment
 
 module PolyBezierSegment =
     let WidgetKey = Widgets.register<PolyBezierSegment>()

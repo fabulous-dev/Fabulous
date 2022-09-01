@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IPathFigure =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module PathFigure =
     let WidgetKey = Widgets.register<PathFigure>()

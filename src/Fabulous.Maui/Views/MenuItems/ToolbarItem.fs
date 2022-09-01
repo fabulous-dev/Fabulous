@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type IToolbarItem =
-    inherit IMenuItem
+    inherit Fabulous.Maui.IMenuItem
 
 module ToolbarItem =
     let WidgetKey = Widgets.register<ToolbarItem>()

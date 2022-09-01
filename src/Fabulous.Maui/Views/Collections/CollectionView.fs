@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ICollectionView =
-    inherit IItemsView
+    inherit Fabulous.Maui.IItemsView
 
 module CollectionView =
     let WidgetKey = Widgets.register<CollectionView>()

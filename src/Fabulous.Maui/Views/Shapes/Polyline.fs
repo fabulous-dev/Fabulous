@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IPolyline =
-    inherit IShape
+    inherit Fabulous.Maui.IShape
 
 module Polyline =
 

@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls
 open System.IO
 
 type IImage =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Image =
     let WidgetKey = Widgets.register<Image>()

@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
 type IEllipse =
-    inherit IShape
+    inherit Fabulous.Maui.IShape
 
 
 module Ellipse =

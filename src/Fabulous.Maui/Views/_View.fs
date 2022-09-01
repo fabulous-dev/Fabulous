@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IView =
-    inherit IVisualElement
+    inherit Fabulous.Maui.IVisualElement
 
 module XFView =
     let HorizontalOptions =

@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IContentView =
-    inherit ITemplatedView
+    inherit Fabulous.Maui.ITemplatedView
 
 module ContentView =
     let WidgetKey = Widgets.register<ContentView>()

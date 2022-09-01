@@ -5,7 +5,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IItemsViewOfCell =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module ItemsViewOfCell =
     let ItemsSource<'T> =

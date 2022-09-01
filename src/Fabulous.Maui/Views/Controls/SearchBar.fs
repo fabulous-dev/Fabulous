@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISearchBar =
-    inherit IInputView
+    inherit Fabulous.Maui.IInputView
 
 module SearchBar =
     let WidgetKey = Widgets.register<SearchBar>()

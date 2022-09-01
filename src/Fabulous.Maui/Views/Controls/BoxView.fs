@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IBoxView =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module BoxView =
     let WidgetKey = Widgets.register<BoxView>()

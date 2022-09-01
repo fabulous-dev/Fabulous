@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IInputView =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module InputView =
 

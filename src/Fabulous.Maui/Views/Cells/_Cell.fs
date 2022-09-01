@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ICell =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module Cell =
     let IsEnabled =

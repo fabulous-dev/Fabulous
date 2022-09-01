@@ -5,7 +5,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type ILineGeometry =
-    inherit IGeometry
+    inherit Fabulous.Maui.IGeometry
 
 module LineGeometry =
     let WidgetKey = Widgets.register<LineGeometry>()

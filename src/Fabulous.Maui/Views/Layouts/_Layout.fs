@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ILayout =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Layout =
     let Padding =

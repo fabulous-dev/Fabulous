@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IActivityIndicator =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module ActivityIndicator =
     let WidgetKey = Widgets.register<ActivityIndicator>()

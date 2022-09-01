@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
 type IGestureRecognizer =
-    inherit IElement
+    inherit Fabulous.Maui.IElement

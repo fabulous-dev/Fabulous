@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IVisualElement =
-    inherit INavigableElement
+    inherit Fabulous.Maui.INavigableElement
 
 [<Struct>]
 type TranslateToData =

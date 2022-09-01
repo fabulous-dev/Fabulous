@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
 type ITemplatedView =
-    inherit ILayout
+    inherit Fabulous.Maui.ILayout

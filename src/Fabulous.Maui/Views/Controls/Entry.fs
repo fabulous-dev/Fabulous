@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 //open Microsoft.Maui.PlatformConfiguration
 
 type IEntry =
-    inherit IInputView
+    inherit Fabulous.Maui.IInputView
 
 module Entry =
     let WidgetKey = Widgets.register<Entry>()

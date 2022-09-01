@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls.Shapes
 open Fabulous.Maui
 
 type IPath =
-    inherit IShape
+    inherit Fabulous.Maui.IShape
 
 module Path =
     let WidgetKey = Widgets.register<Path>()

@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type ITransformGroup =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module TransformGroup =
 

@@ -1,4 +1,4 @@
 namespace Fabulous.Maui
 
 type IGeometry =
-    inherit IElement
+    inherit Fabulous.Maui.IElement

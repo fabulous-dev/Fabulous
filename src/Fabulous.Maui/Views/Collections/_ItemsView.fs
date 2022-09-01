@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IItemsView =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module ItemsView =
     let ItemsSource<'T> =

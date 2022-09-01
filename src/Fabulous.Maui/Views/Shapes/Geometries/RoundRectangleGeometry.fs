@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IRoundRectangleGeometry =
-    inherit IGeometryGroup
+    inherit Fabulous.Maui.IGeometryGroup
 
 module RoundRectangleGeometry =
 

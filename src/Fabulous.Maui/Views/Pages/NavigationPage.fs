@@ -11,7 +11,7 @@ open Microsoft.Maui.Controls
 //open Microsoft.Maui.PlatformConfiguration
 
 type INavigationPage =
-    inherit IPage
+    inherit Fabulous.Maui.IPage
 
 module NavigationPageUpdaters =
     /// NOTE: Would be better to have a custom diff logic for Navigation

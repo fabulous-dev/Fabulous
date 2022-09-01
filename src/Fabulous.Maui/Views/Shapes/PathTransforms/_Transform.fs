@@ -3,7 +3,7 @@ namespace Fabulous.Maui
 open Microsoft.Maui.Controls.Shapes
 
 type ITransform =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module Transform =
 

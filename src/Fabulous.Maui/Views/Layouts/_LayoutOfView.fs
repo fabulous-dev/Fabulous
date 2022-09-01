@@ -10,4 +10,4 @@ module LayoutOfView =
     let Children =
         Attributes.defineListWidgetCollection
             "LayoutOfWidget_Children"
-            (fun target -> (target :?> Microsoft.Maui.Controls.Compatibility.Layout<View>).Children)
+            (fun target -> (target :?> Microsoft.Maui.Controls.Layout).Children)

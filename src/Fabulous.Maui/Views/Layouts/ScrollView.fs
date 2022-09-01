@@ -53,7 +53,7 @@ module ScrollView =
 [<AutoOpen>]
 module ScrollViewBuilders =
     type Fabulous.Maui.View with
-        static member inline ScrollView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ScrollView<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IScrollView>
                 ScrollView.WidgetKey
                 [| ScrollView.Content.WithValue(content.Compile()) |]

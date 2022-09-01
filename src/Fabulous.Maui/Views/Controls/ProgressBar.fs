@@ -7,7 +7,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 
 type IProgressBar =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 [<Struct>]
 type ProgressToData =

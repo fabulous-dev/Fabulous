@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IRefreshView =
-    inherit IContentView
+    inherit Fabulous.Maui.IContentView
 
 module RefreshView =
     let WidgetKey = Widgets.register<RefreshView>()

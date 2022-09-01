@@ -4,7 +4,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type IMatrixTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 // FIXME Should we expose some of the Matrix methods? ie Invert or RotateAt ...? as extension methods
 // https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Maui.shapes.matrix?view=xamarin-forms

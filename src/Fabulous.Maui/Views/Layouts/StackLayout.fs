@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IStackLayout =
-    inherit ILayoutOfView
+    inherit Fabulous.Maui.ILayoutOfView
 
 module StackLayout =
     let WidgetKey = Widgets.register<StackLayout>()
@@ -23,14 +23,14 @@ module StackLayoutBuilders =
         static member inline private StackLayout<'msg>(orientation: StackOrientation, ?spacing: float) =
             match spacing with
             | None ->
-                CollectionBuilder<'msg, IStackLayout, IView>(
+                CollectionBuilder<'msg, IStackLayout, Fabulous.Maui.IView>(
                     StackLayout.WidgetKey,
                     LayoutOfView.Children,
                     StackLayout.Orientation.WithValue(orientation)
                 )
 
             | Some v ->
-                CollectionBuilder<'msg, IStackLayout, IView>(
+                CollectionBuilder<'msg, IStackLayout, Fabulous.Maui.IView>(
                     StackLayout.WidgetKey,
                     LayoutOfView.Children,
                     StackLayout.Orientation.WithValue(orientation),

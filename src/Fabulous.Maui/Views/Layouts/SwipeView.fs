@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISwipeView =
-    inherit IContentView
+    inherit Fabulous.Maui.IContentView
 
 module SwipeView =
 

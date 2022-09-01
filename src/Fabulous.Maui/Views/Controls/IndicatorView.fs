@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type IIndicatorView =
-    inherit ITemplatedView
+    inherit Fabulous.Maui.ITemplatedView
 
 module IndicatorView =
     let WidgetKey = Widgets.register<IndicatorView>()

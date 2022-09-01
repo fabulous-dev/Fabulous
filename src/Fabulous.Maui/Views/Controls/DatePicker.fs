@@ -8,7 +8,7 @@ open Microsoft.Maui.Controls
 //open Microsoft.Maui.PlatformConfiguration
 
 type IDatePicker =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module DatePicker =
     let WidgetKey = Widgets.register<DatePicker>()

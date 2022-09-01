@@ -9,7 +9,7 @@ open Microsoft.Maui.Controls
 //open Microsoft.Maui.PlatformConfiguration
 
 type IPage =
-    inherit IVisualElement
+    inherit Fabulous.Maui.IVisualElement
 
 module Page =
     let BackgroundImageSource =

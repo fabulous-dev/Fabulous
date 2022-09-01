@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls
 // open Microsoft.Maui.PlatformConfiguration
 
 type ITimePicker =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module TimePicker =
     let WidgetKey = Widgets.register<FabulousTimePicker>()

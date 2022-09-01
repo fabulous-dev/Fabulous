@@ -4,7 +4,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type IScaleTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module ScaleTransform =
     let WidgetKey = Widgets.register<ScaleTransform>()

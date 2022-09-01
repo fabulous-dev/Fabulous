@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 //open Microsoft.Maui.PlatformConfiguration
 
 type ITabbedPage =
-    inherit IMultiPageOfPage
+    inherit Fabulous.Maui.IMultiPageOfPage
 
 module TabbedPage =
     let WidgetKey = Widgets.register<TabbedPage>()

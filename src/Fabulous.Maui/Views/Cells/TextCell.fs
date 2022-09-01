@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type ITextCell =
-    inherit ICell
+    inherit Fabulous.Maui.ICell
 
 module TextCell =
     let WidgetKey = Widgets.register<TextCell>()

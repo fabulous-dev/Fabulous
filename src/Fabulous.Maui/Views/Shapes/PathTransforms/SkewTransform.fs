@@ -4,7 +4,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type ISkewTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module SkewTransform =
     let WidgetKey = Widgets.register<SkewTransform>()

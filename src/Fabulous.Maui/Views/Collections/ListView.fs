@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IListView =
-    inherit IItemsViewOfCell
+    inherit Fabulous.Maui.IItemsViewOfCell
 
 module ListView =
 

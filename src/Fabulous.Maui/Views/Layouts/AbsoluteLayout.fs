@@ -9,7 +9,7 @@ open Microsoft.Maui.Layouts
 open Microsoft.Maui.Graphics
 
 type IAbsoluteLayout =
-    inherit ILayoutOfView
+    inherit Fabulous.Maui.ILayoutOfView
 
 module AbsoluteLayout =
 

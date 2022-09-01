@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISwitch =
-    inherit IView
+    inherit Fabulous.Maui.IView
 
 module Switch =
     let WidgetKey = Widgets.register<Switch>()

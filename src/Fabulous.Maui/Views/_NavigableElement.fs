@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls
 
 type INavigableElement =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module NavigableElement =
     let Style =

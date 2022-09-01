@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IFrame =
-    inherit IContentView
+    inherit Fabulous.Maui.IContentView
 
 module Frame =
     let WidgetKey = Widgets.register<Frame>()

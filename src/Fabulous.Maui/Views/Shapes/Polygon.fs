@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IPolygon =
-    inherit IShape
+    inherit Fabulous.Maui.IShape
 
 module Polygon =
 

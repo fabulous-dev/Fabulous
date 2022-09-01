@@ -4,7 +4,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type IRotateTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module RotateTransform =
     let WidgetKey = Widgets.register<RotateTransform>()

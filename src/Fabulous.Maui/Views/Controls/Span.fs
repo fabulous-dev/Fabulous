@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISpan =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module Span =
     let WidgetKey = Widgets.register<Span>()

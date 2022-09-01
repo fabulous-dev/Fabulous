@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ICarouselView =
-    inherit IItemsView
+    inherit Fabulous.Maui.IItemsView
 
 module CarouselView =
     let WidgetKey = Widgets.register<CarouselView>()

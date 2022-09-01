@@ -5,7 +5,7 @@ open Fabulous
 open Microsoft.Maui.Controls.Shapes
 
 type ICompositeTransform =
-    inherit ITransform
+    inherit Fabulous.Maui.ITransform
 
 module CompositeTransform =
     let WidgetKey = Widgets.register<CompositeTransform>()

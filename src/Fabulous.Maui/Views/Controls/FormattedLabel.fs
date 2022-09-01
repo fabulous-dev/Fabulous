@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IFormattedLabel =
-    inherit ILabel
+    inherit Fabulous.Maui.ILabel
 
 module FormattedLabel =
     let WidgetKey = Widgets.register<Label>()

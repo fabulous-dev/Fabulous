@@ -7,7 +7,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISwipeItems =
-    inherit IElement
+    inherit Fabulous.Maui.IElement
 
 module SwipeItems =
 

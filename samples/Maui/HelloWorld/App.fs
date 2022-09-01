@@ -54,12 +54,12 @@ module App =
                             
                         Label("Hello, World!")
                             .semantics(SemanticHeadingLevel.Level1)
-                            .font(Microsoft.Maui.Font.Default.WithSize(32.))
+                            .font(size = 32.)
                             .centerTextHorizontal()
                             
                         Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
                             .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
-                            .font(Microsoft.Maui.Font.Default.WithSize(18.))
+                            .font(size = 18.)
                             .centerTextHorizontal()
                             
                         let text =
@@ -68,7 +68,7 @@ module App =
                             else
                                 $"Clicked {model.Count} times"
                             
-                        TextButton(text, Clicked)
+                        Button(text, Clicked)
                             .semantics(hint = "Counts the number of times you click")
                             .centerHorizontal()
                             

@@ -6,7 +6,7 @@ open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IGrid =
-    inherit ILayoutOfView
+    inherit Fabulous.Maui.ILayoutOfView
 
 module GridUpdaters =
     let updateGridColumnDefinitions _ (newValueOpt: Dimension [] voption) (node: IViewNode) =

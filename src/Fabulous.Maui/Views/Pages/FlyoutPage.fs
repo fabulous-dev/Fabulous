@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
 type IFlyoutPage =
-    inherit IPage
+    inherit Fabulous.Maui.IPage
 
 module FlyoutPage =
     let WidgetKey = Widgets.register<CustomFlyoutPage>()

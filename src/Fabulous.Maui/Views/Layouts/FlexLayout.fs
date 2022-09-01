@@ -9,7 +9,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Layouts
 
 type IFlexLayout =
-    inherit ILayoutOfView
+    inherit Fabulous.Maui.ILayoutOfView
 
 module FlexLayout =
 

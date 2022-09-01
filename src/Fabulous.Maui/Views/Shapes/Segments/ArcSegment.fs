@@ -7,7 +7,7 @@ open Microsoft.Maui.Controls.Shapes
 open Microsoft.Maui.Graphics
 
 type IArcSegment =
-    inherit IPathSegment
+    inherit Fabulous.Maui.IPathSegment
 
 module ArcSegment =
     let WidgetKey = Widgets.register<ArcSegment>()

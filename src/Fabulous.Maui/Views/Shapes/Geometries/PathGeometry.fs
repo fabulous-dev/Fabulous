@@ -6,7 +6,7 @@ open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.Shapes
 
 type IPathGeometry =
-    inherit IGeometry
+    inherit Fabulous.Maui.IGeometry
 
 module PathGeometry =
     let WidgetKey = Widgets.register<PathGeometry>()
