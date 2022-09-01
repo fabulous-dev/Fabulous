@@ -42,7 +42,7 @@ module App =
                             Button("Go to A", GoToA)
                         }
                     )
-             }
+            }
         )
 
     let program = Program.stateful init update view

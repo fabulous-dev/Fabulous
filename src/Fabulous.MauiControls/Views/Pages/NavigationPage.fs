@@ -240,7 +240,10 @@ module NavigationPage =
 module NavigationPageBuilders =
     type Fabulous.Maui.View with
         static member inline NavigationPage<'msg>() =
-            CollectionBuilder<'msg, INavigationPage, Fabulous.Maui.IPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
+            CollectionBuilder<'msg, INavigationPage, Fabulous.Maui.IPage>(
+                NavigationPage.WidgetKey,
+                NavigationPage.Pages
+            )
 
 [<Extension>]
 type NavigationPageModifiers =
