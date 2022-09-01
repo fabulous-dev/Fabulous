@@ -14,5 +14,5 @@ type App() =
     inherit MauiWinUIApplication()
 
     do this.LoadFromXaml(typeof<App>) |> ignore
-    
+
     override this.CreateMauiApp() = MauiProgram.CreateMauiApp()
