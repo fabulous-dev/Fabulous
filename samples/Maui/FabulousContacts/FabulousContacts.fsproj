@@ -106,7 +106,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
+		<ProjectReference Include="..\..\..\src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
 		<PackageReference Include="FSharp.Core" Version="6.0.5" />
 	</ItemGroup>
 

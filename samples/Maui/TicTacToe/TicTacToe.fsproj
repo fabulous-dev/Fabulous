@@ -102,7 +102,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous.Maui\Fabulous.Maui.fsproj" />
+      <ProjectReference Include="..\..\..\src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
     </ItemGroup>
 
 </Project>

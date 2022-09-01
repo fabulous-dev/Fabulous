@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{366F
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous", "src\Fabulous\Fabulous.fsproj", "{88A3BC68-3DD7-4D6B-BCC7-F05DF17D89E1}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Maui", "src\Fabulous.Maui\Fabulous.Maui.fsproj", "{258971DA-04D5-4004-9446-891CC9374E70}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls", "src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj", "{258971DA-04D5-4004-9446-891CC9374E70}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp", "samples\Maui\CounterApp\CounterApp.fsproj", "{ADCCC94A-9277-4E38-BB45-210F765269C6}"
 EndProject
