@@ -48,19 +48,19 @@ module Entry =
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
-    // let CursorColor =
-    //     Attributes.defineSmallScalar<FabColor>
-    //         "Entry_CursorColor"
-    //         SmallScalars.FabColor.decode
-    //         (fun _ newValueOpt node ->
-    //             let entry = node.Target :?> Entry
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> Color.Default
-    //                 | ValueSome x -> x.ToXFColor()
-    //
-    //             iOSSpecific.Entry.SetCursorColor(entry, value))
+// let CursorColor =
+//     Attributes.defineSmallScalar<FabColor>
+//         "Entry_CursorColor"
+//         SmallScalars.FabColor.decode
+//         (fun _ newValueOpt node ->
+//             let entry = node.Target :?> Entry
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> Color.Default
+//                 | ValueSome x -> x.ToXFColor()
+//
+//             iOSSpecific.Entry.SetCursorColor(entry, value))
 
 [<AutoOpen>]
 module EntryBuilders =

@@ -18,7 +18,11 @@ module NavigationPageUpdaters =
     /// because it's a Stack and not a random access collection
     let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
         let navigationPage = node.Target :?> CustomNavigationPage
-        let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
+
+        let pages =
+            Array.ofSeq
+                (navigationPage :> INavigationPageController)
+                    .Pages
 
         let mutable pagesLength =
             let struct (size, _) = prev
@@ -117,7 +121,11 @@ module NavigationPageUpdaters =
             match oldValueOpt with
             | ValueNone -> ()
             | ValueSome oldWidgets ->
-                let pages = Array.ofSeq (navigationPage :> INavigationPageController).Pages
+                let pages =
+                    Array.ofSeq
+                        (navigationPage :> INavigationPageController)
+                            .Pages
+
                 let span = ArraySlice.toSpan oldWidgets
 
                 for i = 0 to span.Length - 1 do
@@ -189,44 +197,44 @@ module NavigationPage =
     let TitleView =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
-    // let HideNavigationBarSeparator =
-    //     Attributes.defineBool
-    //         "NavigationPage_HideNavigationBarSeparator"
-    //         (fun _ newValueOpt node ->
-    //             let page = node.Target :?> NavigationPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
+// let HideNavigationBarSeparator =
+//     Attributes.defineBool
+//         "NavigationPage_HideNavigationBarSeparator"
+//         (fun _ newValueOpt node ->
+//             let page = node.Target :?> NavigationPage
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
 
-    // let IsNavigationBarTranslucent =
-    //     Attributes.defineBool
-    //         "NavigationPage_IsNavigationBarTranslucent"
-    //         (fun _ newValueOpt node ->
-    //             let page = node.Target :?> NavigationPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+// let IsNavigationBarTranslucent =
+//     Attributes.defineBool
+//         "NavigationPage_IsNavigationBarTranslucent"
+//         (fun _ newValueOpt node ->
+//             let page = node.Target :?> NavigationPage
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
 
-    // let PrefersLargeTitles =
-    //     Attributes.defineBool
-    //         "NavigationPage_PrefersLargeTitles"
-    //         (fun _ newValueOpt node ->
-    //             let page = node.Target :?> NavigationPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
+// let PrefersLargeTitles =
+//     Attributes.defineBool
+//         "NavigationPage_PrefersLargeTitles"
+//         (fun _ newValueOpt node ->
+//             let page = node.Target :?> NavigationPage
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
 
 [<AutoOpen>]
 module NavigationPageBuilders =

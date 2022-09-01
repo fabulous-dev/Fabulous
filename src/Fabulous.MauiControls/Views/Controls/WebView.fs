@@ -35,34 +35,34 @@ module WebView =
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
-    // let ReloadRequested =
-    //     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
+// let ReloadRequested =
+//     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
-    // let EnableZoomControls =
-    //     Attributes.defineBool
-    //         "WebView_EnableZoomControls"
-    //         (fun _ newValueOpt node ->
-    //             let webview = node.Target :?> WebView
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+// let EnableZoomControls =
+//     Attributes.defineBool
+//         "WebView_EnableZoomControls"
+//         (fun _ newValueOpt node ->
+//             let webview = node.Target :?> WebView
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
 
-    // let DisplayZoomControls =
-    //     Attributes.defineBool
-    //         "WebView_DisplayZoomControls"
-    //         (fun _ newValueOpt node ->
-    //             let webview = node.Target :?> WebView
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
+// let DisplayZoomControls =
+//     Attributes.defineBool
+//         "WebView_DisplayZoomControls"
+//         (fun _ newValueOpt node ->
+//             let webview = node.Target :?> WebView
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
 [<AutoOpen>]
 module WebViewBuilders =

@@ -22,17 +22,15 @@ module SwipeItems =
         Attributes.defineBindableEnum<SwipeMode> Microsoft.Maui.Controls.SwipeItems.ModeProperty
 
     let SwipeBehaviorOnInvoked =
-        Attributes.defineBindableEnum<SwipeBehaviorOnInvoked> Microsoft.Maui.Controls.SwipeItems.SwipeBehaviorOnInvokedProperty
+        Attributes.defineBindableEnum<SwipeBehaviorOnInvoked>
+            Microsoft.Maui.Controls.SwipeItems.SwipeBehaviorOnInvokedProperty
 
 [<AutoOpen>]
 module SwipeItemsBuilders =
 
     type Fabulous.Maui.View with
         static member inline SwipeItems<'msg>() =
-            CollectionBuilder<'msg, ISwipeItems, Fabulous.Maui.ISwipeItem>(
-                SwipeItems.WidgetKey,
-                SwipeItems.SwipeItems
-            )
+            CollectionBuilder<'msg, ISwipeItems, Fabulous.Maui.ISwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
 
 [<Extension>]
 type SwipeItemsModifiers() =

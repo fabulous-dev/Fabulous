@@ -92,7 +92,7 @@ module ViewHelpers =
 
         { Log = log
           MinLogLevel = LogLevel.Error }
-        
+
     let defaultOnException _exn = false
 
 module Program =
@@ -145,14 +145,19 @@ module Program =
             view
 
     /// Start the program
-    let startApplicationWithArgs (arg: 'arg) (program: Program<'arg, 'model, 'msg, #Fabulous.Maui.IApplication>) : Microsoft.Maui.Controls.Application =
+    let startApplicationWithArgs
+        (arg: 'arg)
+        (program: Program<'arg, 'model, 'msg, #Fabulous.Maui.IApplication>)
+        : Microsoft.Maui.Controls.Application =
         let runner = Runners.create program
         runner.Start(arg)
         let adapter = ViewAdapters.create ViewNode.get runner
         adapter.CreateView() |> unbox
 
     /// Start the program
-    let startApplication (program: Program<unit, 'model, 'msg, #Fabulous.Maui.IApplication>) : Microsoft.Maui.Controls.Application =
+    let startApplication
+        (program: Program<unit, 'model, 'msg, #Fabulous.Maui.IApplication>)
+        : Microsoft.Maui.Controls.Application =
         startApplicationWithArgs() program
 
     /// Subscribe to external source of events.

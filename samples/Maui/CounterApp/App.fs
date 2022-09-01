@@ -60,29 +60,29 @@ module App =
             ContentPage(
                 "CounterApp",
                 (VStack() {
-                   Label($"%d{model.Count}").centerTextHorizontal()
-                   
-                   Button("Increment", Increment)
-                   
-                   Button("Decrement", Decrement)
-                   
-                   (HStack() {
-                       Label("Timer")
-                   
-                       Switch(model.TimerOn, TimerToggled)
-                    })
-                       .padding(20.)
-                       .centerHorizontal()
-                   
-                   Slider(0.0, 10.0, double model.Step, SetStep)
-                   
-                   Label($"Step size: %d{model.Step}")
-                       .centerTextHorizontal()
-                   
-                   Button("Reset", Reset)
-                })
-                   .padding(30.)
-                   .centerVertical()
+                    Label($"%d{model.Count}").centerTextHorizontal()
+
+                    Button("Increment", Increment)
+
+                    Button("Decrement", Decrement)
+
+                    (HStack() {
+                        Label("Timer")
+
+                        Switch(model.TimerOn, TimerToggled)
+                     })
+                        .padding(20.)
+                        .centerHorizontal()
+
+                    Slider(0.0, 10.0, double model.Step, SetStep)
+
+                    Label($"Step size: %d{model.Step}")
+                        .centerTextHorizontal()
+
+                    Button("Reset", Reset)
+                 })
+                    .padding(30.)
+                    .centerVertical()
             )
         )
 

@@ -25,7 +25,10 @@ module GeometryGroupBuilders =
         static member inline GeometryGroup<'msg>(?fillRule: FillRule) =
             match fillRule with
             | None ->
-                CollectionBuilder<'msg, IGeometryGroup, Fabulous.Maui.IGeometry>(GeometryGroup.WidgetKey, GeometryGroup.Children)
+                CollectionBuilder<'msg, IGeometryGroup, Fabulous.Maui.IGeometry>(
+                    GeometryGroup.WidgetKey,
+                    GeometryGroup.Children
+                )
             | Some fillRule ->
                 CollectionBuilder<'msg, IGeometryGroup, Fabulous.Maui.IGeometry>(
                     GeometryGroup.WidgetKey,

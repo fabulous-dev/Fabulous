@@ -33,10 +33,8 @@ module Helpers =
     let requestPermissionAsync<'a when 'a: (new: unit -> 'a) and 'a :> Permissions.BasePermission> () =
         async {
             try
-                let! status =
-                    Permissions.RequestAsync<'a>()
-                    |> Async.AwaitTask
-            
+                let! status = Permissions.RequestAsync<'a>() |> Async.AwaitTask
+
                 return
                     status = PermissionStatus.Granted
                     || status = PermissionStatus.Unknown
@@ -50,7 +48,7 @@ module Helpers =
                 let! status =
                     Permissions.CheckStatusAsync<'a>()
                     |> Async.AwaitTask
-            
+
                 if status = PermissionStatus.Granted then
                     return true
                 else
@@ -60,20 +58,16 @@ module Helpers =
         }
 
     let takePictureAsync () =
-        async {            
-            let! picture =
-                MediaPicker.CapturePhotoAsync()
-                |> Async.AwaitTask
-            
+        async {
+            let! picture = MediaPicker.CapturePhotoAsync() |> Async.AwaitTask
+
             return picture |> Option.ofObj
         }
 
     let pickPictureAsync () =
         async {
-            let! picture =
-                MediaPicker.PickPhotoAsync()
-                |> Async.AwaitTask
-            
+            let! picture = MediaPicker.PickPhotoAsync() |> Async.AwaitTask
+
             return picture |> Option.ofObj
         }
 
@@ -81,11 +75,11 @@ module Helpers =
         async {
             use! stream = file.OpenReadAsync() |> Async.AwaitTask
             use memoryStream = new MemoryStream()
-            
+
             do!
                 stream.CopyToAsync(memoryStream)
                 |> Async.AwaitTask
-            
+
             return memoryStream.ToArray()
         }
 

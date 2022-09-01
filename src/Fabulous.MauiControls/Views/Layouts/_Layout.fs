@@ -18,8 +18,8 @@ module Layout =
     let IsClippedToBounds =
         Attributes.defineBindableBool Layout.IsClippedToBoundsProperty
 
-    // let LayoutChanged =
-    //     Attributes.defineEventNoArg "Layout_LayoutChanged" (fun target -> (target :?> Layout).LayoutChanged)
+// let LayoutChanged =
+//     Attributes.defineEventNoArg "Layout_LayoutChanged" (fun target -> (target :?> Layout).LayoutChanged)
 
 [<Extension>]
 type LayoutModifiers =
@@ -50,6 +50,6 @@ type LayoutModifiers =
     static member inline isClippedToBounds(this: WidgetBuilder<'msg, #ILayout>, value: bool) =
         this.AddScalar(Layout.IsClippedToBounds.WithValue(value))
 
-    // [<Extension>]
-    // static member inline onLayoutChanged(this: WidgetBuilder<'msg, #ILayout>, value: 'msg) =
-    //     this.AddScalar(Layout.LayoutChanged.WithValue(value))
+// [<Extension>]
+// static member inline onLayoutChanged(this: WidgetBuilder<'msg, #ILayout>, value: 'msg) =
+//     this.AddScalar(Layout.LayoutChanged.WithValue(value))

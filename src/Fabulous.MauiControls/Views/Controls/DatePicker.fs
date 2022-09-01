@@ -46,18 +46,18 @@ module DatePicker =
             DatePicker.DateProperty
             (fun target -> (target :?> DatePicker).DateSelected)
 
-    // let UpdateMode =
-    //     Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
-    //         "DatePicker_UpdateMode"
-    //         (fun _ newValueOpt node ->
-    //             let datePicker = node.Target :?> DatePicker
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
+// let UpdateMode =
+//     Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
+//         "DatePicker_UpdateMode"
+//         (fun _ newValueOpt node ->
+//             let datePicker = node.Target :?> DatePicker
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
 
 [<AutoOpen>]
 module DatePickerBuilders =

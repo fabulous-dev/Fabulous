@@ -15,32 +15,29 @@ module Components =
     let centralLabel text =
         Label(text)
             .centerHorizontal()
-            .centerVertical((* expand = true*))
+            .centerVertical( (* expand = true*) )
 
-    let formLabel text =
-        Label(text)
-            .margin(0., 20., 0., 5.)
+    let formLabel text = Label(text).margin(0., 20., 0., 5.)
 
     let formEntry placeholder text keyboard isValid onTextChanged =
         Entry(text, onTextChanged)
             .placeholder(placeholder)
             .keyboard(keyboard)
-            // .borderColor(
-            //     if isValid then
-            //         Color.Default.ToFabColor()
-            //     else
-            //         Color.Red.ToFabColor()
-            // )
+    // .borderColor(
+    //     if isValid then
+    //         Color.Default.ToFabColor()
+    //     else
+    //         Color.Red.ToFabColor()
+    // )
 
-    let formEditor text textChanged =
-        Editor(text, textChanged).height(100.)
+    let formEditor text textChanged = Editor(text, textChanged).height(100.)
 
     let destroyButton text onClicked =
         TextButton(text, onClicked)
             .background(SolidPaint(Colors.Red))
             .textColor(Colors.White)
             .margin(0., 20., 0., 0.)
-            .alignEndVertical((* expand = true *))
+            .alignEndVertical( (* expand = true *) )
 
     // let toolbarButton text onClicked =
     //     ToolbarItem(text, onClicked)
@@ -50,7 +47,7 @@ module Components =
         (VStack() {
             Label(name)
                 .textColor(accentTextColor)
-                .fillVertical((* expand = true *))
+                .fillVertical( (* expand = true *) )
                 .centerTextVertical()
                 .margin(20., 5.)
          })
@@ -65,19 +62,24 @@ module Components =
             (VStack(spacing = 5.) {
                 Label(name)
                     .font(Microsoft.Maui.Font.Default.WithSize(18.))
-                    .fillVertical((* expand = true *))
+                    .fillVertical( (* expand = true *) )
                     .centerTextVertical()
 
                 Label(address)
                     .font(Microsoft.Maui.Font.Default.WithSize(12.))
                     .textColor(Colors.Gray)
-                    //.lineBreakMode(LineBreakMode.TailTruncation) // NOTE: not implemented in Maui
+             //.lineBreakMode(LineBreakMode.TailTruncation) // NOTE: not implemented in Maui
              })
-                .fillHorizontal((* expand = true *))
+                .fillHorizontal( (* expand = true *) )
                 .margin(0., 5., 0., 5.)
 
             Image(Aspect.AspectFit, "star.png")
-                .visibility(if isFavorite then Visibility.Visible else Visibility.Collapsed)
+                .visibility(
+                    if isFavorite then
+                        Visibility.Visible
+                    else
+                        Visibility.Collapsed
+                )
                 .centerVertical()
                 .margin(0., 0., 15., 0.)
                 .size(height = 25., width = 25.)
@@ -88,7 +90,7 @@ module Components =
         ImageButton(Aspect.AspectFit, imagePath, onClicked)
             .background(SolidPaint(accentColor))
             .height(35.)
-            .fillHorizontal((* expand = true *))
+            .fillHorizontal( (* expand = true *) )
 
     let detailFieldTitle text =
         Label(text)
@@ -108,7 +110,7 @@ module Components =
                 .centerVertical()
 
             Switch(isFavorite, markAsFavorite)
-                .alignEndHorizontal((* expand = true *))
+                .alignEndHorizontal( (* expand = true *) )
                 .centerVertical()
          })
             .margin(0., 20., 0., 0.)
@@ -127,4 +129,4 @@ module Components =
                 Image(Aspect.AspectFill, new MemoryStream(picture))
                     .gridRowSpan(2)
             )
-                //.gestureRecognizers() { TapGestureRecognizer(updatePicture) }
+//.gestureRecognizers() { TapGestureRecognizer(updatePicture) }

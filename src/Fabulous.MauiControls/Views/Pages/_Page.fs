@@ -41,18 +41,18 @@ module Page =
     let LayoutChanged =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
-    // let UseSafeArea =
-    //     Attributes.defineSimpleScalarWithEquality<bool>
-    //         "Page_UseSafeArea"
-    //         (fun _ newValueOpt node ->
-    //             let page = node.Target :?> Page
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> false
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.Page.SetUseSafeArea(page, value))
+// let UseSafeArea =
+//     Attributes.defineSimpleScalarWithEquality<bool>
+//         "Page_UseSafeArea"
+//         (fun _ newValueOpt node ->
+//             let page = node.Target :?> Page
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> false
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.Page.SetUseSafeArea(page, value))
 
 [<Extension>]
 type PageModifiers =

@@ -10,15 +10,13 @@ open Microsoft.Maui.Primitives
 open type Fabulous.Maui.View
 
 module App =
-    type Model =
-        { HasNavigated: bool }
+    type Model = { HasNavigated: bool }
 
     type Msg =
         | GoToA
         | GoToB
 
-    let init () =
-        { HasNavigated = false }
+    let init () = { HasNavigated = false }
 
     let update msg model =
         match msg with
@@ -28,24 +26,26 @@ module App =
     let view model =
         Application() {
             Window(
-                Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Auto; GridLength.Auto; GridLength.Star ]) {
+                Grid(coldefs = [ GridLength.Star ],
+                     rowdefs = [ GridLength.Auto
+                                 GridLength.Auto
+                                 GridLength.Star ]) {
                     Label("Playground")
-                    
-                    TextButton("Start navigation", GoToB)
-                        .gridRow(1)
-                    
+
+                    TextButton("Start navigation", GoToB).gridRow(1)
+
                     (NavigationView() {
                         VStack() {
                             Label("A")
                             TextButton("Go to B", GoToB)
                         }
-                        
+
                         if model.HasNavigated then
                             VStack() {
                                 Label("B")
                                 TextButton("Go to A", GoToA)
                             }
-                    })
+                     })
                         .background(SolidPaint(Colors.Red))
                         .gridRow(2)
                 }

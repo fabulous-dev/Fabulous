@@ -36,21 +36,21 @@ module TimePicker =
     let TextColor =
         Attributes.defineBindableAppThemeColor TimePicker.TextColorProperty
 
-    // let TextTransform =
-    //     Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
+// let TextTransform =
+//     Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
 
-    // let UpdateMode =
-    //     Attributes.defineEnum<iOSSpecific.UpdateMode>
-    //         "TimePicker_UpdateMode"
-    //         (fun _ newValueOpt node ->
-    //             let timePicker = node.Target :?> TimePicker
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.TimePicker.SetUpdateMode(timePicker, value))
+// let UpdateMode =
+//     Attributes.defineEnum<iOSSpecific.UpdateMode>
+//         "TimePicker_UpdateMode"
+//         (fun _ newValueOpt node ->
+//             let timePicker = node.Target :?> TimePicker
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.TimePicker.SetUpdateMode(timePicker, value))
 
 [<AutoOpen>]
 module TimePickerBuilders =

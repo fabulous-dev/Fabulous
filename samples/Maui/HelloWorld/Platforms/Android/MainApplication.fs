@@ -8,5 +8,5 @@ type MainApplication(handle, ownership) =
     inherit MauiApplication(handle, ownership)
 
     do HelloWorld.Resource.UpdateIdValues()
-    
+
     override _.CreateMauiApp() = MauiProgram.CreateMauiApp()

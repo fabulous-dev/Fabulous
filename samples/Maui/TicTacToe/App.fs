@@ -57,7 +57,7 @@ type Model =
     {
       // The current theme: Light or Dark modes
       Theme: AppTheme
-      
+
       /// Who is next to play
       NextUp: Player
 
@@ -84,8 +84,10 @@ module App =
         Map.ofList [ for p in positions -> p, Empty ]
 
     let init () =
-        let size = System.Math.Min(DeviceDisplay.MainDisplayInfo.Width, DeviceDisplay.MainDisplayInfo.Height) / DeviceDisplay.MainDisplayInfo.Density
-        
+        let size =
+            System.Math.Min(DeviceDisplay.MainDisplayInfo.Width, DeviceDisplay.MainDisplayInfo.Height)
+            / DeviceDisplay.MainDisplayInfo.Density
+
         { Theme = AppInfo.RequestedTheme
           NextUp = X
           Board = initialBoard
@@ -178,11 +180,9 @@ module App =
                   GameScore = (0, 0) }
         | VisualBoardSizeChanged size ->
             { model with
-                VisualBoardSize = size - 40. }
-        | ThemeChanged theme ->
-            { model with
-                Theme = theme }
-    
+                  VisualBoardSize = size - 40. }
+        | ThemeChanged theme -> { model with Theme = theme }
+
     /// A helper to get the suffix used in the Xaml for a position on the board.
     let uiText (row, col) = sprintf "%d%d" row col
 
@@ -193,36 +193,42 @@ module App =
         && (getGameResult model = StillPlaying)
 
     /// The dynamic 'view' function giving the updated content for the view
-    let view model =        
+    let view model =
         Application(
             ContentPage(
                 "TicTacToe",
                 Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
-                    (Grid(
-                        coldefs = [
-                            Star
-                            Absolute 5.0
-                            Star
-                            Absolute 5.0
-                            Star
-                        ],
-                        rowdefs = [
-                            Star
-                            Absolute 5.0
-                            Star
-                            Absolute 5.0
-                            Star
-                        ]) {
-                    
+                    (Grid(coldefs = [ Star
+                                      Absolute 5.0
+                                      Star
+                                      Absolute 5.0
+                                      Star ],
+                          rowdefs = [ Star
+                                      Absolute 5.0
+                                      Star
+                                      Absolute 5.0
+                                      Star ]) {
+
                         let gridColor =
                             match model.Theme with
                             | AppTheme.Dark -> SolidColorBrush(Colors.White)
                             | _ -> SolidColorBrush(Colors.Black)
-                            
-                        Rectangle(5., gridColor).gridRow(1).gridColumnSpan(5)
-                        Rectangle(5., gridColor).gridRow(3).gridColumnSpan(5)
-                        Rectangle(5., gridColor).gridColumn(1).gridRowSpan(5)
-                        Rectangle(5., gridColor).gridColumn(3).gridRowSpan(5)
+
+                        Rectangle(5., gridColor)
+                            .gridRow(1)
+                            .gridColumnSpan(5)
+
+                        Rectangle(5., gridColor)
+                            .gridRow(3)
+                            .gridColumnSpan(5)
+
+                        Rectangle(5., gridColor)
+                            .gridColumn(1)
+                            .gridRowSpan(5)
+
+                        Rectangle(5., gridColor)
+                            .gridColumn(3)
+                            .gridRowSpan(5)
 
                         for row, col as pos in positions do
                             if canPlay model model.Board.[pos] then
@@ -240,7 +246,7 @@ module App =
                                         .margin(10.)
                                         .gridRow(row * 2)
                                         .gridColumn(col * 2)
-                                        
+
                                 | Full O ->
                                     Label("O")
                                         .font(size = model.VisualBoardSize / 3.)
@@ -248,12 +254,12 @@ module App =
                                         .margin(10.)
                                         .gridRow(row * 2)
                                         .gridColumn(col * 2)
-                    })
-                       .rowSpacing(0.)
-                       .columnSpacing(0.)
-                       .centerVertical()
-                       .size(model.VisualBoardSize, model.VisualBoardSize)
-                       .gridRow(0)
+                     })
+                        .rowSpacing(0.)
+                        .columnSpacing(0.)
+                        .centerVertical()
+                        .size(model.VisualBoardSize, model.VisualBoardSize)
+                        .gridRow(0)
 
                     Label(getMessage model)
                         .font(size = 32.)
@@ -272,11 +278,14 @@ module App =
 
     let program =
         Program.stateful init update view
-        |> Program.withSubscription (fun _ ->
-            Cmd.ofSub (fun dispatch ->
-                DeviceDisplay.MainDisplayInfoChanged.Add(fun args ->
-                    let size = System.Math.Min(args.DisplayInfo.Width, args.DisplayInfo.Height) / DeviceDisplay.MainDisplayInfo.Density
-                    dispatch (VisualBoardSizeChanged size)
-                )
-            )
-        )
+        |> Program.withSubscription
+            (fun _ ->
+                Cmd.ofSub
+                    (fun dispatch ->
+                        DeviceDisplay.MainDisplayInfoChanged.Add
+                            (fun args ->
+                                let size =
+                                    System.Math.Min(args.DisplayInfo.Width, args.DisplayInfo.Height)
+                                    / DeviceDisplay.MainDisplayInfo.Density
+
+                                dispatch(VisualBoardSizeChanged size))))

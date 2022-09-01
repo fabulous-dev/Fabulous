@@ -23,18 +23,18 @@ module TabbedPage =
     let UnselectedTabColor =
         Attributes.defineBindableAppThemeColor TabbedPage.UnselectedTabColorProperty
 
-    // let ToolbarPlacement =
-    //     Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
-    //         "TabbedPage_ToolbarPlacement"
-    //         (fun _ newValueOpt node ->
-    //             let tabbedPage = node.Target :?> TabbedPage
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
-    //                 | ValueSome v -> v
-    //
-    //             AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
+// let ToolbarPlacement =
+//     Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
+//         "TabbedPage_ToolbarPlacement"
+//         (fun _ newValueOpt node ->
+//             let tabbedPage = node.Target :?> TabbedPage
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
+//                 | ValueSome v -> v
+//
+//             AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
 
 [<AutoOpen>]
 module TabbedPageBuilders =

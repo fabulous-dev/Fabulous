@@ -165,8 +165,7 @@ type LabelModifiers =
 
     [<Extension>]
     static member inline centerText(this: WidgetBuilder<'msg, #ILabel>) =
-        this.centerTextHorizontal()
-            .centerTextVertical()
+        this.centerTextHorizontal().centerTextVertical()
 
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]

@@ -60,18 +60,18 @@ module Picker =
                 (target :?> CustomPicker)
                     .CustomSelectedIndexChanged)
 
-    // let UpdateMode =
-    //     Attributes.defineEnum<iOSSpecific.UpdateMode>
-    //         "Picker_UpdateMode"
-    //         (fun _ newValueOpt node ->
-    //             let picker = node.Target :?> Picker
-    //
-    //             let value =
-    //                 match newValueOpt with
-    //                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
-    //                 | ValueSome v -> v
-    //
-    //             iOSSpecific.Picker.SetUpdateMode(picker, value))
+// let UpdateMode =
+//     Attributes.defineEnum<iOSSpecific.UpdateMode>
+//         "Picker_UpdateMode"
+//         (fun _ newValueOpt node ->
+//             let picker = node.Target :?> Picker
+//
+//             let value =
+//                 match newValueOpt with
+//                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
+//                 | ValueSome v -> v
+//
+//             iOSSpecific.Picker.SetUpdateMode(picker, value))
 
 [<AutoOpen>]
 module PickerBuilders =
