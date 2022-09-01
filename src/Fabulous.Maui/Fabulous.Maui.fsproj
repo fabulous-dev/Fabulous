@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net6.0-ios;net6.0-android;net6.0-maccatalyst</TargetFrameworks>
         <UseMaui>true</UseMaui>
+        <UseMauiCore>true</UseMauiCore>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
         <PackageIcon>nuget-icon.png</PackageIcon>
