@@ -14,6 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
         <Compile Include="ViewNode.fs" />
         <Compile Include="FabColor.fs" />
         <Compile Include="Attributes.fs" />

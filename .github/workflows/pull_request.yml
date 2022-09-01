@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: macos-latest
     env:
-      SLN_FILE: Fabulous-NoSamples.sln
+      SLN_FILE: Fabulous.XamarinForms-NoSamples.sln
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
