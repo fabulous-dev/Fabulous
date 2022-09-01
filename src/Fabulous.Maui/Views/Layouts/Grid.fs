@@ -80,7 +80,7 @@ module Grid =
 module GridBuilders =
     type Fabulous.Maui.View with
         static member inline Grid<'msg>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
-            CollectionBuilder<'msg, IGrid, IView>(
+            CollectionBuilder<'msg, IGrid, Fabulous.Maui.IView>(
                 Grid.WidgetKey,
                 LayoutOfView.Children,
                 Grid.ColumnDefinitions.WithValue(Array.ofSeq coldefs),
@@ -107,17 +107,17 @@ type GridModifiers =
 [<Extension>]
 type GridAttachedModifiers =
     [<Extension>]
-    static member inline gridColumn(this: WidgetBuilder<'msg, #IView>, value: int) =
+    static member inline gridColumn(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, value: int) =
         this.AddScalar(Grid.Column.WithValue(value))
 
     [<Extension>]
-    static member inline gridRow(this: WidgetBuilder<'msg, #IView>, value: int) =
+    static member inline gridRow(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, value: int) =
         this.AddScalar(Grid.Row.WithValue(value))
 
     [<Extension>]
-    static member inline gridColumnSpan(this: WidgetBuilder<'msg, #IView>, value: int) =
+    static member inline gridColumnSpan(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, value: int) =
         this.AddScalar(Grid.ColumnSpan.WithValue(value))
 
     [<Extension>]
-    static member inline gridRowSpan(this: WidgetBuilder<'msg, #IView>, value: int) =
+    static member inline gridRowSpan(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, value: int) =
         this.AddScalar(Grid.RowSpan.WithValue(value))

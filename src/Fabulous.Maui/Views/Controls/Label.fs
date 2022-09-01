@@ -163,6 +163,11 @@ type LabelModifiers =
     static member inline centerTextVertical(this: WidgetBuilder<'msg, #ILabel>) =
         this.AddScalar(Label.VerticalTextAlignment.WithValue(TextAlignment.Center))
 
+    [<Extension>]
+    static member inline centerText(this: WidgetBuilder<'msg, #ILabel>) =
+        this.centerTextHorizontal()
+            .centerTextVertical()
+
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ILabel>, value: ViewRef<Label>) =

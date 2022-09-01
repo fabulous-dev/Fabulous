@@ -1,9 +1,10 @@
 namespace TicTacToe
 
 open Microsoft.Maui
+open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Devices
-open Microsoft.Maui.Graphics
 open Fabulous
 open Fabulous.Maui
 
@@ -193,39 +194,40 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model =        
-        (Application() {
-            Window(
-                Grid(coldefs = [ GridLength.Star ], rowdefs = [ GridLength.Star; GridLength.Auto; GridLength.Auto ]) {
+        Application(
+            ContentPage(
+                "TicTacToe",
+                Grid(coldefs = [ Star ], rowdefs = [ Star; Auto; Auto ]) {
                     (Grid(
                         coldefs = [
-                            GridLength.Star
-                            GridLength(5.0)
-                            GridLength.Star
-                            GridLength(5.0)
-                            GridLength.Star
+                            Star
+                            Absolute 5.0
+                            Star
+                            Absolute 5.0
+                            Star
                         ],
                         rowdefs = [
-                            GridLength.Star
-                            GridLength(5.0)
-                            GridLength.Star
-                            GridLength(5.0)
-                            GridLength.Star
+                            Star
+                            Absolute 5.0
+                            Star
+                            Absolute 5.0
+                            Star
                         ]) {
                     
                         let gridColor =
                             match model.Theme with
-                            | AppTheme.Dark -> SolidPaint(Colors.White)
-                            | _ -> SolidPaint(Colors.Black)
+                            | AppTheme.Dark -> SolidColorBrush(Colors.White)
+                            | _ -> SolidColorBrush(Colors.Black)
                             
-                        Rectangle(gridColor).gridRow(1).gridColumnSpan(5)
-                        Rectangle(gridColor).gridRow(3).gridColumnSpan(5)
-                        Rectangle(gridColor).gridColumn(1).gridRowSpan(5)
-                        Rectangle(gridColor).gridColumn(3).gridRowSpan(5)
+                        Rectangle(5., gridColor).gridRow(1).gridColumnSpan(5)
+                        Rectangle(5., gridColor).gridRow(3).gridColumnSpan(5)
+                        Rectangle(5., gridColor).gridColumn(1).gridRowSpan(5)
+                        Rectangle(5., gridColor).gridColumn(3).gridRowSpan(5)
 
                         for row, col as pos in positions do
                             if canPlay model model.Board.[pos] then
-                                TextButton("", Play pos)
-                                    .background(SolidPaint(Colors.LightBlue))
+                                Button("", Play pos)
+                                    .backgroundColor(Colors.LightBlue.ToFabColor())
                                     .gridRow(row * 2)
                                     .gridColumn(col * 2)
                             else
@@ -233,7 +235,7 @@ module App =
                                 | Empty -> ()
                                 | Full X ->
                                     Label("X")
-                                        .font(Microsoft.Maui.Font.Default.WithSize(model.VisualBoardSize / 3.))
+                                        .font(size = model.VisualBoardSize / 3.)
                                         .centerText()
                                         .margin(10.)
                                         .gridRow(row * 2)
@@ -241,7 +243,7 @@ module App =
                                         
                                 | Full O ->
                                     Label("O")
-                                        .font(Microsoft.Maui.Font.Default.WithSize(model.VisualBoardSize / 3.))
+                                        .font(size = model.VisualBoardSize / 3.)
                                         .centerText()
                                         .margin(10.)
                                         .gridRow(row * 2)
@@ -254,20 +256,19 @@ module App =
                        .gridRow(0)
 
                     Label(getMessage model)
-                        .font(Microsoft.Maui.Font.Default.WithSize(32.))
+                        .font(size = 32.)
                         .center()
                         .margin(10.)
                         .gridRow(1)
 
-                    TextButton("Restart game", Restart)
-                        .textColor(Colors.Black)
-                        .background(SolidPaint(Colors.LightBlue))
-                        .font(Microsoft.Maui.Font.Default.WithSize(32.))
+                    Button("Restart game", Restart)
+                        .textColor(Colors.Black.ToFabColor())
+                        .backgroundColor(Colors.LightBlue.ToFabColor())
+                        .font(size = 32.)
                         .gridRow(2)
                 }
             )
-        })
-            .themeChanged(ThemeChanged)
+        )
 
     let program =
         Program.stateful init update view

@@ -56,35 +56,34 @@ module App =
                 model, Cmd.none
 
     let view model =
-        Application() {
-            Window(
-                ContentView(
-                    (VStack() {
-                       Label($"%d{model.Count}").centerTextHorizontal()
-                       
-                       TextButton("Increment", Increment)
-                       
-                       TextButton("Decrement", Decrement)
-                       
-                       (HStack() {
-                           Label("Timer")
-                       
-                           Switch(model.TimerOn, TimerToggled)
-                        })
-                           .padding(20.)
-                           .centerHorizontal()
-                       
-                       Slider(0.0, 10.0, double model.Step, SetStep)
-                       
-                       Label($"Step size: %d{model.Step}")
-                           .centerTextHorizontal()
-                       
-                       TextButton("Reset", Reset)
+        Application(
+            ContentPage(
+                "CounterApp",
+                (VStack() {
+                   Label($"%d{model.Count}").centerTextHorizontal()
+                   
+                   Button("Increment", Increment)
+                   
+                   Button("Decrement", Decrement)
+                   
+                   (HStack() {
+                       Label("Timer")
+                   
+                       Switch(model.TimerOn, TimerToggled)
                     })
-                       .padding(30.)
-                       .centerVertical()
-                )
+                       .padding(20.)
+                       .centerHorizontal()
+                   
+                   Slider(0.0, 10.0, double model.Step, SetStep)
+                   
+                   Label($"Step size: %d{model.Step}")
+                       .centerTextHorizontal()
+                   
+                   Button("Reset", Reset)
+                })
+                   .padding(30.)
+                   .centerVertical()
             )
-        }
+        )
 
     let program = Program.statefulWithCmd init update view
