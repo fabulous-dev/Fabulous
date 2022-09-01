@@ -79,7 +79,7 @@ type DatePickerModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #IDatePicker>,
-            ?size: double,
+            ?size: float,
             ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
