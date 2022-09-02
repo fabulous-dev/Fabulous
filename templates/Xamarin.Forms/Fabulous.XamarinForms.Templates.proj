@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Description>Template to create projects using Fabulous for Xamarin.Forms</Description>
+        <Authors>Fabulous contributors</Authors>
+        <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageIcon>images\nuget-icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/fsprojects/Fabulous.git</RepositoryUrl>
+        <PackageTags>template;fsharp;fabulous</PackageTags>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageType>Template</PackageType>
+        <NoBuild>true</NoBuild>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <!-- https://github.com/dotnet/templating/issues/2350#issuecomment-610431461 -->
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+        <VersionPrefix>2.0.1</VersionPrefix>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ExcludeFromPackage>
+content/*/.fake/**/*;
+content/*/.ionide/**/*;
+content/*/.cache/**/*;
+content/*/**/obj/**/*;
+content/*/**/bin/**/*;
+        </ExcludeFromPackage>
+    </PropertyGroup>
+    <PropertyGroup Condition=" $(IsNightlyBuild) != 'true' ">
+        <ExcludeFromPackage>
+$(ExcludeFromPackage);
+content/*/nuget.config;
+        </ExcludeFromPackage>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="content/**/*" Exclude="$(ExcludeFromPackage)">
+            <PackagePath>content/</PackagePath>
+        </Content>
+        <None Include="../../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
+    </ItemGroup>
+</Project>

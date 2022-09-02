@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Description>Template to create projects using Fabulous for Xamarin.Forms</Description>
+        <Description>Template to create projects using Fabulous for Maui.Controls</Description>
         <Authors>Fabulous contributors</Authors>
         <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageIcon>images\nuget-icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/fsprojects/Fabulous.git</RepositoryUrl>
-        <PackageTags>template;fsharp;fabulous</PackageTags>
+        <PackageTags>template;fsharp;fabulous;maui</PackageTags>
         <NeutralLanguage>en-US</NeutralLanguage>
         <PackageType>Template</PackageType>
         <NoBuild>true</NoBuild>
@@ -36,6 +36,6 @@ content/*/nuget.config;
         <Content Include="content/**/*" Exclude="$(ExcludeFromPackage)">
             <PackagePath>content/</PackagePath>
         </Content>
-        <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
+        <None Include="../../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
     </ItemGroup>
 </Project>
