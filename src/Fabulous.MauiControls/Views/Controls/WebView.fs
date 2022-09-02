@@ -6,7 +6,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-// open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type IWebView =
     inherit Fabulous.Maui.IView
@@ -35,34 +35,34 @@ module WebView =
     let Navigated =
         Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
-// let ReloadRequested =
-//     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
+    // let ReloadRequested =
+    //     Attributes.defineEventNoArg "WebView_ReloadRequested" (fun target -> (target :?> WebView).ReloadRequested)
 
-// let EnableZoomControls =
-//     Attributes.defineBool
-//         "WebView_EnableZoomControls"
-//         (fun _ newValueOpt node ->
-//             let webview = node.Target :?> WebView
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+    let EnableZoomControls =
+        Attributes.defineBool
+            "WebView_EnableZoomControls"
+            (fun _ newValueOpt node ->
+                let webview = node.Target :?> WebView
 
-// let DisplayZoomControls =
-//     Attributes.defineBool
-//         "WebView_DisplayZoomControls"
-//         (fun _ newValueOpt node ->
-//             let webview = node.Target :?> WebView
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                AndroidSpecific.WebView.SetEnableZoomControls(webview, value))
+
+    let DisplayZoomControls =
+        Attributes.defineBool
+            "WebView_DisplayZoomControls"
+            (fun _ newValueOpt node ->
+                let webview = node.Target :?> WebView
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                AndroidSpecific.WebView.SetDisplayZoomControls(webview, value))
 
 [<AutoOpen>]
 module WebViewBuilders =
@@ -127,12 +127,12 @@ type WebViewModifiers() =
     static member inline reference(this: WidgetBuilder<'msg, IWebView>, value: ViewRef<WebView>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-// [<Extension>]
-// type WebViewPlatformModifiers =
-//     [<Extension>]
-//     static member inline enableZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
-//         this.AddScalar(WebView.EnableZoomControls.WithValue(value))
-//
-//     [<Extension>]
-//     static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
-//         this.AddScalar(WebView.DisplayZoomControls.WithValue(value))
+[<Extension>]
+type WebViewPlatformModifiers =
+    [<Extension>]
+    static member inline enableZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+        this.AddScalar(WebView.EnableZoomControls.WithValue(value))
+
+    [<Extension>]
+    static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+        this.AddScalar(WebView.DisplayZoomControls.WithValue(value))

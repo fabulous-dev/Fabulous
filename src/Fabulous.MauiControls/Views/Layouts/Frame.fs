@@ -23,7 +23,9 @@ module Frame =
 [<AutoOpen>]
 module FrameBuilders =
     type Fabulous.Maui.View with
-        static member inline Frame<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline Frame<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
+            (content: WidgetBuilder<'msg, 'marker>)
+            =
             WidgetHelpers.buildWidgets<'msg, IFrame>
                 Frame.WidgetKey
                 [| ContentView.Content.WithValue(content.Compile()) |]

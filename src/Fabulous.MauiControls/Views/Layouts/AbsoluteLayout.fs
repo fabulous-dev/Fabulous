@@ -25,7 +25,10 @@ module AbsoluteLayout =
 module AbsoluteLayoutBuilders =
     type Fabulous.Maui.View with
         static member inline AbsoluteLayout<'msg>() =
-            CollectionBuilder<'msg, IAbsoluteLayout, Fabulous.Maui.IView>(AbsoluteLayout.WidgetKey, LayoutOfView.Children)
+            CollectionBuilder<'msg, IAbsoluteLayout, Fabulous.Maui.IView>(
+                AbsoluteLayout.WidgetKey,
+                LayoutOfView.Children
+            )
 
 [<Extension>]
 type AbsoluteLayoutModifiers =

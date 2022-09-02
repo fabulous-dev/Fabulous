@@ -4,7 +4,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-//open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type IEntry =
     inherit Fabulous.Maui.IInputView
@@ -48,19 +48,19 @@ module Entry =
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
-// let CursorColor =
-//     Attributes.defineSmallScalar<FabColor>
-//         "Entry_CursorColor"
-//         SmallScalars.FabColor.decode
-//         (fun _ newValueOpt node ->
-//             let entry = node.Target :?> Entry
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> Color.Default
-//                 | ValueSome x -> x.ToXFColor()
-//
-//             iOSSpecific.Entry.SetCursorColor(entry, value))
+    let CursorColor =
+        Attributes.defineSmallScalar<FabColor>
+            "Entry_CursorColor"
+            SmallScalars.FabColor.decode
+            (fun _ newValueOpt node ->
+                let entry = node.Target :?> Entry
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> null
+                    | ValueSome x -> x.ToXFColor()
+
+                iOSSpecific.Entry.SetCursorColor(entry, value))
 
 [<AutoOpen>]
 module EntryBuilders =

@@ -36,7 +36,7 @@ module TimePicker =
     let TextColor =
         Attributes.defineBindableAppThemeColor TimePicker.TextColorProperty
 
-// let TextTransform =
+    // let TextTransform =
 //     Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
 
     let UpdateMode =
