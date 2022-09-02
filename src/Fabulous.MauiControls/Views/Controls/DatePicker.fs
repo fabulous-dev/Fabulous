@@ -5,7 +5,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-//open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type IDatePicker =
     inherit Fabulous.Maui.IView
@@ -46,18 +46,18 @@ module DatePicker =
             DatePicker.DateProperty
             (fun target -> (target :?> DatePicker).DateSelected)
 
-// let UpdateMode =
-//     Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
-//         "DatePicker_UpdateMode"
-//         (fun _ newValueOpt node ->
-//             let datePicker = node.Target :?> DatePicker
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> iOSSpecific.UpdateMode.Immediately
-//                 | ValueSome v -> v
-//
-//             iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
+    let UpdateMode =
+        Attributes.defineSimpleScalarWithEquality<iOSSpecific.UpdateMode>
+            "DatePicker_UpdateMode"
+            (fun _ newValueOpt node ->
+                let datePicker = node.Target :?> DatePicker
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> iOSSpecific.UpdateMode.Immediately
+                    | ValueSome v -> v
+
+                iOSSpecific.DatePicker.SetUpdateMode(datePicker, value))
 
 [<AutoOpen>]
 module DatePickerBuilders =
@@ -130,11 +130,11 @@ type DatePickerModifiers =
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IDatePicker>, value: ViewRef<DatePicker>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
-//
-// [<Extension>]
-// type DatePickerPlatformModifiers =
-//     /// <summary>iOS platform specific. Sets a value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
-//     /// <param name="mode">The new property value to assign.</param>
-//     [<Extension>]
-//     static member inline updateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: iOSSpecific.UpdateMode) =
-//         this.AddScalar(DatePicker.UpdateMode.WithValue(mode))
+
+[<Extension>]
+type DatePickerPlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that controls whether elements in the date picker are continuously updated while scrolling or updated once after scrolling has completed.</summary>
+    /// <param name="mode">The new property value to assign.</param>
+    [<Extension>]
+    static member inline updateMode(this: WidgetBuilder<'msg, #IDatePicker>, mode: iOSSpecific.UpdateMode) =
+        this.AddScalar(DatePicker.UpdateMode.WithValue(mode))
