@@ -56,6 +56,9 @@ module Label =
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Label.VerticalTextAlignmentProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Label.FontAutoScalingEnabledProperty
+
 
 [<AutoOpen>]
 module LabelBuilders =
@@ -74,10 +77,10 @@ type LabelModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #ILabel>,
-            ?size: double,
-            ?namedSize: NamedSize,
+            ?size: float,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -86,10 +89,6 @@ type LabelModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
@@ -97,6 +96,10 @@ type LabelModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontFamily.WithValue(v))
+
+        match autoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -166,6 +169,12 @@ type LabelModifiers =
     [<Extension>]
     static member inline centerText(this: WidgetBuilder<'msg, #ILabel>) =
         this.centerTextHorizontal().centerTextVertical()
+
+    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ILabel>, value: bool) =
+        this.AddScalar(Label.FontAutoScalingEnabled.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
