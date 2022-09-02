@@ -17,7 +17,9 @@ module ContentView =
 [<AutoOpen>]
 module ContentViewBuilders =
     type Fabulous.Maui.View with
-        static member inline ContentView<'msg, 'marker when 'marker :> IView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ContentView<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
+            (content: WidgetBuilder<'msg, 'marker>)
+            =
             WidgetHelpers.buildWidgets<'msg, IContentView>
                 ContentView.WidgetKey
                 [| ContentView.Content.WithValue(content.Compile()) |]

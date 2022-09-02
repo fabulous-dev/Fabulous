@@ -25,7 +25,10 @@ module AbsoluteLayout =
 module AbsoluteLayoutBuilders =
     type Fabulous.Maui.View with
         static member inline AbsoluteLayout<'msg>() =
-            CollectionBuilder<'msg, IAbsoluteLayout, IView>(AbsoluteLayout.WidgetKey, LayoutOfView.Children)
+            CollectionBuilder<'msg, IAbsoluteLayout, Fabulous.Maui.IView>(
+                AbsoluteLayout.WidgetKey,
+                LayoutOfView.Children
+            )
 
 [<Extension>]
 type AbsoluteLayoutModifiers =
@@ -44,7 +47,7 @@ type AbsoluteLayoutAttachedModifiers =
     [<Extension>]
     static member inline layoutBounds
         (
-            this: WidgetBuilder<'msg, #IView>,
+            this: WidgetBuilder<'msg, #Fabulous.Maui.IView>,
             x: float,
             y: float,
             width: float,
@@ -55,5 +58,5 @@ type AbsoluteLayoutAttachedModifiers =
     /// <summary>Determines how the values in the list are interpreted to create the bounding rectangle.</summary>
     /// <param name= "value">AbsoluteLayoutFlags enumeration value: All, None, HeightProportional, WidthProportional, SizeProportional, XProportional, YProportional, or PositionProportional.</param>
     [<Extension>]
-    static member inline layoutFlags(this: WidgetBuilder<'msg, #IView>, value: AbsoluteLayoutFlags) =
+    static member inline layoutFlags(this: WidgetBuilder<'msg, #Fabulous.Maui.IView>, value: AbsoluteLayoutFlags) =
         this.AddScalar(AbsoluteLayout.LayoutFlags.WithValue(value))

@@ -85,7 +85,7 @@ module CarouselView =
 [<AutoOpen>]
 module CarouselViewBuilders =
     type Fabulous.Maui.View with
-        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IView>
+        static member inline CarouselView<'msg, 'itemData, 'itemMarker when 'itemMarker :> Fabulous.Maui.IView>
             (items: seq<'itemData>)
             =
             WidgetHelpers.buildItems<'msg, ICarouselView, 'itemData, 'itemMarker>

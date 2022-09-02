@@ -3,7 +3,7 @@ namespace Fabulous.Maui
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui.Controls
-//open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type ITabbedPage =
     inherit Fabulous.Maui.IMultiPageOfPage
@@ -23,18 +23,18 @@ module TabbedPage =
     let UnselectedTabColor =
         Attributes.defineBindableAppThemeColor TabbedPage.UnselectedTabColorProperty
 
-// let ToolbarPlacement =
-//     Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
-//         "TabbedPage_ToolbarPlacement"
-//         (fun _ newValueOpt node ->
-//             let tabbedPage = node.Target :?> TabbedPage
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
-//                 | ValueSome v -> v
-//
-//             AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
+    let ToolbarPlacement =
+        Attributes.defineSimpleScalarWithEquality<AndroidSpecific.ToolbarPlacement>
+            "TabbedPage_ToolbarPlacement"
+            (fun _ newValueOpt node ->
+                let tabbedPage = node.Target :?> TabbedPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> AndroidSpecific.ToolbarPlacement.Default
+                    | ValueSome v -> v
+
+                AndroidSpecific.TabbedPage.SetToolbarPlacement(tabbedPage, value))
 
 [<AutoOpen>]
 module TabbedPageBuilders =
@@ -82,12 +82,12 @@ type TabbedPageModifiers =
     static member inline reference(this: WidgetBuilder<'msg, ITabbedPage>, value: ViewRef<TabbedPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-//open Microsoft.Maui.PlatformConfiguration.AndroidSpecific
+open Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific
 
-// [<Extension>]
-// type TabbedPagePlatformModifiers =
-//     /// <summary>Android platform specific. Sets the toolbar placement.</summary>
-//     /// <param name= "value">The new toolbar placement value.</param>
-//     [<Extension>]
-//     static member inline toolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
-//         this.AddScalar(TabbedPage.ToolbarPlacement.WithValue(value))
+[<Extension>]
+type TabbedPagePlatformModifiers =
+    /// <summary>Android platform specific. Sets the toolbar placement.</summary>
+    /// <param name= "value">The new toolbar placement value.</param>
+    [<Extension>]
+    static member inline toolbarPlacement(this: WidgetBuilder<'msg, #ITabbedPage>, value: ToolbarPlacement) =
+        this.AddScalar(TabbedPage.ToolbarPlacement.WithValue(value))

@@ -8,7 +8,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-//open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type INavigationPage =
     inherit Fabulous.Maui.IPage
@@ -197,44 +197,44 @@ module NavigationPage =
     let TitleView =
         Attributes.defineBindableWidget NavigationPage.TitleViewProperty
 
-// let HideNavigationBarSeparator =
-//     Attributes.defineBool
-//         "NavigationPage_HideNavigationBarSeparator"
-//         (fun _ newValueOpt node ->
-//             let page = node.Target :?> NavigationPage
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
+    let HideNavigationBarSeparator =
+        Attributes.defineBool
+            "NavigationPage_HideNavigationBarSeparator"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
 
-// let IsNavigationBarTranslucent =
-//     Attributes.defineBool
-//         "NavigationPage_IsNavigationBarTranslucent"
-//         (fun _ newValueOpt node ->
-//             let page = node.Target :?> NavigationPage
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
 
-// let PrefersLargeTitles =
-//     Attributes.defineBool
-//         "NavigationPage_PrefersLargeTitles"
-//         (fun _ newValueOpt node ->
-//             let page = node.Target :?> NavigationPage
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
+                iOSSpecific.NavigationPage.SetHideNavigationBarSeparator(page, value))
+
+    let IsNavigationBarTranslucent =
+        Attributes.defineBool
+            "NavigationPage_IsNavigationBarTranslucent"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.NavigationPage.SetIsNavigationBarTranslucent(page, value))
+
+    let PrefersLargeTitles =
+        Attributes.defineBool
+            "NavigationPage_PrefersLargeTitles"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> NavigationPage
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.NavigationPage.SetPrefersLargeTitles(page, value))
 
 [<AutoOpen>]
 module NavigationPageBuilders =
@@ -383,7 +383,7 @@ type NavigationPageAttachedModifiers =
     /// <summary>Sets the value for TitleView</summary>
     /// <param name= "content">View to use as a title for the navigation page.</param>
     [<Extension>]
-    static member inline titleView<'msg, 'marker, 'contentMarker when 'marker :> IPage and 'contentMarker :> IView>
+    static member inline titleView<'msg, 'marker, 'contentMarker when 'marker :> Fabulous.Maui.IPage and 'contentMarker :> Fabulous.Maui.IView>
         (
             this: WidgetBuilder<'msg, 'marker>,
             content: WidgetBuilder<'msg, 'contentMarker>
@@ -395,18 +395,18 @@ type NavigationPageAttachedModifiers =
     static member inline reference(this: WidgetBuilder<'msg, INavigationPage>, value: ViewRef<NavigationPage>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-// [<Extension>]
-// type NavigationPagePlatformModifiers =
-//     /// <summary>iOS platform specific. Sets a value that hides the navigation bar separator.</summary>
-//     /// <param name="value">true to hide the separator. Otherwise, false.</param>
-//     [<Extension>]
-//     static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
-//         this.AddScalar(NavigationPage.HideNavigationBarSeparator.WithValue(value))
-//
-//     [<Extension>]
-//     static member inline isNavigationBarTranslucent(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
-//         this.AddScalar(NavigationPage.IsNavigationBarTranslucent.WithValue(value))
-//
-//     [<Extension>]
-//     static member inline prefersLargeTitles(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
-//         this.AddScalar(NavigationPage.PrefersLargeTitles.WithValue(value))
+[<Extension>]
+type NavigationPagePlatformModifiers =
+    /// <summary>iOS platform specific. Sets a value that hides the navigation bar separator.</summary>
+    /// <param name="value">true to hide the separator. Otherwise, false.</param>
+    [<Extension>]
+    static member inline hideNavigationBarSeparator(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.HideNavigationBarSeparator.WithValue(value))
+
+    [<Extension>]
+    static member inline isNavigationBarTranslucent(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.IsNavigationBarTranslucent.WithValue(value))
+
+    [<Extension>]
+    static member inline prefersLargeTitles(this: WidgetBuilder<'msg, #INavigationPage>, value: bool) =
+        this.AddScalar(NavigationPage.PrefersLargeTitles.WithValue(value))

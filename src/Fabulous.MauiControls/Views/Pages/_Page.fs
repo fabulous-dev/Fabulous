@@ -6,7 +6,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-//open Microsoft.Maui.PlatformConfiguration
+open Microsoft.Maui.Controls.PlatformConfiguration
 
 type IPage =
     inherit Fabulous.Maui.IVisualElement
@@ -41,18 +41,18 @@ module Page =
     let LayoutChanged =
         Attributes.defineEventNoArg "Page_LayoutChanged" (fun target -> (target :?> Page).LayoutChanged)
 
-// let UseSafeArea =
-//     Attributes.defineSimpleScalarWithEquality<bool>
-//         "Page_UseSafeArea"
-//         (fun _ newValueOpt node ->
-//             let page = node.Target :?> Page
-//
-//             let value =
-//                 match newValueOpt with
-//                 | ValueNone -> false
-//                 | ValueSome v -> v
-//
-//             iOSSpecific.Page.SetUseSafeArea(page, value))
+    let UseSafeArea =
+        Attributes.defineSimpleScalarWithEquality<bool>
+            "Page_UseSafeArea"
+            (fun _ newValueOpt node ->
+                let page = node.Target :?> Page
+
+                let value =
+                    match newValueOpt with
+                    | ValueNone -> false
+                    | ValueSome v -> v
+
+                iOSSpecific.Page.SetUseSafeArea(page, value))
 
 [<Extension>]
 type PageModifiers =
@@ -206,10 +206,10 @@ type PageModifiers =
         ) =
         PageModifiers.padding(this, Thickness(left, top, right, bottom))
 
-// [<Extension>]
-// type PagePlatformModifiers =
-//
-//     /// <summary>iOS platform specific. Sets a value that controls whether padding values are overridden with the safe area insets.</summary>
-//     [<Extension>]
-//     static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
-//         this.AddScalar(Page.UseSafeArea.WithValue(false))
+[<Extension>]
+type PagePlatformModifiers =
+
+    /// <summary>iOS platform specific. Sets a value that controls whether padding values are overridden with the safe area insets.</summary>
+    [<Extension>]
+    static member inline ignoreSafeArea(this: WidgetBuilder<'msg, #IPage>) =
+        this.AddScalar(Page.UseSafeArea.WithValue(false))

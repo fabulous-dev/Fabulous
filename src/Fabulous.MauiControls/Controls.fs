@@ -45,7 +45,7 @@ type SizeAllocatedEventArgs = { Width: float; Height: float }
 /// Set UseSafeArea to true by default because View DSL only shows `ignoreSafeArea`
 type FabulousContentPage() as this =
     inherit ContentPage()
-    //do Microsoft.Maui.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true)
+    do Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true)
 
     let sizeAllocated =
         Event<EventHandler<SizeAllocatedEventArgs>, _>()
