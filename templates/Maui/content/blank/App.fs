@@ -12,8 +12,7 @@ open type Fabulous.Maui.View
 module App =
     type Model = { Count: int }
 
-    type Msg =
-        | Clicked
+    type Msg = | Clicked
 
     type CmdMsg = SemanticAnnounce of string
 
