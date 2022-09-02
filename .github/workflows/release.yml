@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     environment: nuget
     env:
-      SLN_FILE: Fabulous.XamarinForms-NoSamples.sln
+      SLN_FILE: Fabulous.XamarinForms.NoSamples.sln
     steps:
     - uses: actions/checkout@v2
     - name: Extract version from tag

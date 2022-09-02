@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: macos-latest
     env:
-      SLN_FILE: Fabulous.XamarinForms-NoSamples.sln
+      SLN_FILE: Fabulous.XamarinForms.NoSamples.sln
       VERSION: 2.0.7
     steps:
     - uses: actions/checkout@v2
