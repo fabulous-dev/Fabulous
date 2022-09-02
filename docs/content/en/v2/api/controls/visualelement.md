@@ -1,5 +1,5 @@
 ---
-id: "v2-visualelement"
+id: "v2-visual-element"
 title: "VisualElement"
 description: ""
 lead: ""

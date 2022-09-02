@@ -46,3 +46,11 @@ IndicatorView(indicatorViewRef)
     .indicatorsShape(IndicatorShape.Circle)
     .indicatorColor(Palette.MidGrey)
 ```
+### Get access to the underlying Xamarin.Forms.IndicatorView
+
+```fs
+let indicatorViewRef = ViewRef<IndicatorView>()
+
+IndicatorView(//TODO)
+    .reference(indicatorViewRef)
+```

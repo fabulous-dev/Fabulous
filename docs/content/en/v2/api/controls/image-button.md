@@ -1,5 +1,5 @@
 ---
-id: "v2-imagebutton"
+id: "v2-image-button"
 title: "ImageButton"
 description: ""
 lead: ""
@@ -66,8 +66,8 @@ ImageButton(//TODO)
 ### Get access to the underlying Xamarin.Forms.ImageButton
 
 ```fs
-let imagebuttonRef = ViewRef<ImageButton>()
+let imageButtonRef = ViewRef<ImageButton>()
 
 ImageButton(//TODO)
-    .reference(imagebuttonRef)
+    .reference(imageButtonRef)
 ```
