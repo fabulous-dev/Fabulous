@@ -36,6 +36,6 @@ content/*/nuget.config;
         <Content Include="content/**/*" Exclude="$(ExcludeFromPackage)">
             <PackagePath>content/</PackagePath>
         </Content>
-        <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
+        <None Include="../../logo/nuget-icon.png" Pack="true" PackagePath="images/" />
     </ItemGroup>
 </Project>
