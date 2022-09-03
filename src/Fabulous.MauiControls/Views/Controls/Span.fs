@@ -44,6 +44,9 @@ module Span =
     let Text =
         Attributes.defineBindableWithEquality<string> Span.TextProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Span.FontAutoScalingEnabledProperty
+
     let GestureRecognizers =
         Attributes.defineListWidgetCollection<IGestureRecognizer>
             "Span_GestureRecognizers"
@@ -71,9 +74,9 @@ type SpanModifiers =
         (
             this: WidgetBuilder<'msg, #ISpan>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -82,10 +85,6 @@ type SpanModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Span.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Span.FontSize.WithValue(Device.GetNamedSize(v, typeof<Span>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Span.FontAttributes.WithValue(v))
@@ -93,6 +92,10 @@ type SpanModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Span.FontFamily.WithValue(v))
+
+        match autoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Span.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -121,6 +124,12 @@ type SpanModifiers =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, Fabulous.Maui.IGestureRecognizer>
             Span.GestureRecognizers
             this
+
+    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ISpan>, value: bool) =
+        this.AddScalar(Span.FontAutoScalingEnabled.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Span control instance</summary>
     [<Extension>]
