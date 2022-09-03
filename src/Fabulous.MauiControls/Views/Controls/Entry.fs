@@ -45,6 +45,9 @@ module Entry =
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Entry.VerticalTextAlignmentProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Entry.FontAutoScalingEnabledProperty
+
     let Completed =
         Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
@@ -88,9 +91,9 @@ type EntryModifiers =
         (
             this: WidgetBuilder<'msg, #IEntry>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -99,10 +102,6 @@ type EntryModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Entry.FontSize.WithValue(Device.GetNamedSize(v, typeof<Entry>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Entry.FontAttributes.WithValue(v))
@@ -110,6 +109,10 @@ type EntryModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Entry.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Entry.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -146,10 +149,16 @@ type EntryModifiers =
     static member inline reference(this: WidgetBuilder<'msg, IEntry>, value: ViewRef<Entry>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-// [<Extension>]
-// type EntryPlatformModifiers =
-//     /// <summary>iOS platform specific. Sets the cursor color.</summary>
-//     /// <param name="value">The new cursor color.</param>
-//     [<Extension>]
-//     static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: FabColor) =
-//         this.AddScalar(Entry.CursorColor.WithValue(value))
+    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
+        this.AddScalar(Entry.FontAutoScalingEnabled.WithValue(value))
+
+[<Extension>]
+type EntryPlatformModifiers =
+    /// <summary>iOS platform specific. Sets the cursor color.</summary>
+    /// <param name="value">The new cursor color.</param>
+    [<Extension>]
+    static member inline cursorColor(this: WidgetBuilder<'msg, #IEntry>, value: FabColor) =
+        this.AddScalar(Entry.CursorColor.WithValue(value))
