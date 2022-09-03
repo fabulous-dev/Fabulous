@@ -22,6 +22,9 @@ module Image =
     let IsOpaque =
         Attributes.defineBindableBool Image.IsOpaqueProperty
 
+    let IsLoading =
+        Attributes.defineBindableBool Image.IsLoadingProperty
+
     let Source =
         Attributes.defineBindableAppTheme<ImageSource> Image.SourceProperty
 
@@ -67,13 +70,23 @@ module ImageBuilders =
 
 [<Extension>]
 type ImageModifiers =
+    /// <summary>Determines whether an animated GIF is playing or stopped.</summary>
+    /// <param name="value">The default value of this property is false.</param>
     [<Extension>]
-    static member inline isAnimationPlaying(this: WidgetBuilder<'msg, #IImage>, isAnimationPlaying: bool) =
-        this.AddScalar(Image.IsAnimationPlaying.WithValue(isAnimationPlaying))
+    static member inline isAnimationPlaying(this: WidgetBuilder<'msg, #IImage>, value: bool) =
+        this.AddScalar(Image.IsAnimationPlaying.WithValue(value))
 
+    /// <summary>Indicates whether the rendering engine may treat the image as opaque while rendering it.</summary>
+    /// <param name="value">The default value of this property is false.</param>
     [<Extension>]
-    static member inline isOpaque(this: WidgetBuilder<'msg, #IImage>, isOpaque: bool) =
-        this.AddScalar(Image.IsOpaque.WithValue(isOpaque))
+    static member inline isOpaque(this: WidgetBuilder<'msg, #IImage>, value: bool) =
+        this.AddScalar(Image.IsOpaque.WithValue(value))
+
+    /// <summary>Indicates the loading status of the image.</summary>
+    /// <param name="value">The default value of this property is false</param>
+    [<Extension>]
+    static member inline isLoading(this: WidgetBuilder<'msg, #IImage>, value: bool) =
+        this.AddScalar(Image.IsLoading.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Image control instance</summary>
     [<Extension>]

@@ -2,7 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISwitch =
