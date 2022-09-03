@@ -52,6 +52,12 @@ module Button =
     let TextTransform =
         Attributes.defineBindableEnum<TextTransform> Button.TextTransformProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Button.FontAutoScalingEnabledProperty
+
+    let LineBreakMode =
+        Attributes.defineBindableWithEquality<LineBreakMode> Button.LineBreakModeProperty
+
     let Clicked =
         Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
 
@@ -130,9 +136,9 @@ type ButtonModifiers =
         (
             this: WidgetBuilder<'msg, #IButton>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -141,10 +147,6 @@ type ButtonModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Button.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Button.FontSize.WithValue(Device.GetNamedSize(v, typeof<Button>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Button.FontAttributes.WithValue(v))
@@ -152,6 +154,10 @@ type ButtonModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Button.FontFamily.WithValue(v))
+
+        match autoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Button.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -199,6 +205,18 @@ type ButtonModifiers =
     [<Extension>]
     static member inline onReleased(this: WidgetBuilder<'msg, #IButton>, onReleased: 'msg) =
         this.AddScalar(Button.Released.WithValue(onReleased))
+
+    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IButton>, value: bool) =
+        this.AddScalar(Button.FontAutoScalingEnabled.WithValue(value))
+
+    /// <summary>Determines how text should be handled when it can't fit on one line.</summary>
+    /// <param name="value">The default value of this property is LineBreakMode.NoWrap</param>
+    [<Extension>]
+    static member inline lineBreakMode(this: WidgetBuilder<'msg, #IButton>, value: LineBreakMode) =
+        this.AddScalar(Button.LineBreakMode.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Button control instance</summary>
     [<Extension>]
