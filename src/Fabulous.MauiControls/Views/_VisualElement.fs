@@ -4,6 +4,7 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
+open Microsoft.Maui.Graphics
 
 type IVisualElement =
     inherit Fabulous.Maui.INavigableElement
@@ -114,6 +115,9 @@ module VisualElement =
 
     let TranslationY =
         Attributes.defineBindableFloat VisualElement.TranslationYProperty
+
+    let Shadow =
+        Attributes.defineBindableWidget VisualElement.ShadowProperty
 
     let ScaleTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
@@ -331,6 +335,15 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline translationY(this: WidgetBuilder<'msg, #IVisualElement>, y: float) =
         this.AddScalar(VisualElement.TranslationY.WithValue(y))
+
+    /// <summary>Create a Shadow widget, that enables a shadow to be added to any layout or view.</summary>
+    [<Extension>]
+    static member inline shadow<'msg, 'marker, 'contentMarker when 'marker :> IVisualElement and 'contentMarker :> Fabulous.Maui.IShadow>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(VisualElement.Shadow.WithValue(content.Compile()))
 
     /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="scale">The value of the final scale vector.</param>
