@@ -3,7 +3,6 @@ namespace Fabulous.Maui
 open System
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
@@ -37,8 +36,8 @@ module DatePicker =
     let TextColor =
         Attributes.defineBindableAppThemeColor DatePicker.TextColorProperty
 
-    // let TextTransform =
-    //     Attributes.defineBindableEnum<Microsoft.Maui.TextTransform> DatePicker.TextTransformProperty
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool DatePicker.FontAutoScalingEnabledProperty
 
     let DateWithEvent =
         Attributes.defineBindableWithEvent
@@ -72,6 +71,7 @@ module DatePickerBuilders =
 
 [<Extension>]
 type DatePickerModifiers =
+    /// <summary>CharacterSpacing, of type double, is the spacing between characters of the DatePicker text.</summary>
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IDatePicker>, value: float) =
         this.AddScalar(DatePicker.CharacterSpacing.WithValue(value))
@@ -81,9 +81,9 @@ type DatePickerModifiers =
         (
             this: WidgetBuilder<'msg, #IDatePicker>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -91,10 +91,6 @@ type DatePickerModifiers =
         match size with
         | None -> ()
         | Some v -> res <- res.AddScalar(DatePicker.FontSize.WithValue(v))
-
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(DatePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<DatePicker>)))
 
         match attributes with
         | None -> ()
@@ -104,27 +100,37 @@ type DatePickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(DatePicker.FontFamily.WithValue(v))
 
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(DatePicker.FontAutoScalingEnabled.WithValue(v))
+
         res
 
+    /// <summary>Format of type string, a standard or custom .NET formatting string, which defaults to "D", the long date pattern.</summary>
     [<Extension>]
     static member inline format(this: WidgetBuilder<'msg, #IDatePicker>, value: string) =
         this.AddScalar(DatePicker.Format.WithValue(value))
 
+    /// <summary>Date of type DateTime, which defaults to the first day of the year 1900.</summary>
     [<Extension>]
     static member inline minimumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MinimumDate.WithValue(value))
 
+    /// <summary>Date of type DateTime, which defaults to the last day of the year 2100.</summary>
     [<Extension>]
     static member inline maximumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
 
+    /// <summary>TextColor of type Color, the color used to display the selected date.</summary>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(DatePicker.TextColor.WithValue(AppTheme.create light dark))
 
-    // [<Extension>]
-    // static member inline textTransform(this: WidgetBuilder<'msg, #IDatePicker>, value: TextTransform) =
-    //     this.AddScalar(DatePicker.TextTransform.WithValue(value))
+    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IDatePicker>, value: bool) =
+        this.AddScalar(DatePicker.FontAutoScalingEnabled.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
     [<Extension>]
