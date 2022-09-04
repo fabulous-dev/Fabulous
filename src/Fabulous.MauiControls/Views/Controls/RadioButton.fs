@@ -51,6 +51,9 @@ module RadioButton =
     let RadioButtonGroupName =
         Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool RadioButton.FontAutoScalingEnabledProperty
+
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent
             "RadioButton_CheckedChanged"
@@ -126,9 +129,9 @@ type RadioButtonModifiers =
         (
             this: WidgetBuilder<'msg, #IRadioButton>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -137,10 +140,6 @@ type RadioButtonModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(RadioButton.FontSize.WithValue(Device.GetNamedSize(v, typeof<RadioButton>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontAttributes.WithValue(v))
@@ -148,6 +147,10 @@ type RadioButtonModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(RadioButton.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -162,6 +165,12 @@ type RadioButtonModifiers =
     [<Extension>]
     static member inline textTransform(this: WidgetBuilder<'msg, #IRadioButton>, value: TextTransform) =
         this.AddScalar(RadioButton.TextTransform.WithValue(value))
+
+    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IRadioButton>, value: bool) =
+        this.AddScalar(RadioButton.FontAutoScalingEnabled.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct RadioButton control instance</summary>
     [<Extension>]
