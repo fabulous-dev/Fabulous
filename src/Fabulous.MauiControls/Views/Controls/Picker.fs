@@ -33,8 +33,8 @@ module Picker =
     let TextColor =
         Attributes.defineBindableAppThemeColor Picker.TextColorProperty
 
-    // let TextTransform =
-    //     Attributes.defineBindableEnum<TextTransform> Picker.TextTransformProperty
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Picker.FontAutoScalingEnabledProperty
 
     let Title =
         Attributes.defineBindableWithEquality<string> Picker.TitleProperty
@@ -104,9 +104,9 @@ type PickerModifiers =
         (
             this: WidgetBuilder<'msg, #IPicker>,
             ?size: double,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -115,10 +115,6 @@ type PickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Picker.FontSize.WithValue(Device.GetNamedSize(v, typeof<Picker>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Picker.FontAttributes.WithValue(v))
@@ -126,6 +122,10 @@ type PickerModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Picker.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Picker.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -136,9 +136,11 @@ type PickerModifiers =
     static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
 
-    // [<Extension>]
-    // static member inline textTransform(this: WidgetBuilder<'msg, #IPicker>, value: TextTransform) =
-    //     this.AddScalar(Picker.TextTransform.WithValue(value))
+    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
+    /// <param name="value">The default value of this property is true.</param>
+    [<Extension>]
+    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IDatePicker>, value: bool) =
+        this.AddScalar(Picker.FontAutoScalingEnabled.WithValue(value))
 
     [<Extension>]
     static member inline title(this: WidgetBuilder<'msg, #IPicker>, value: string) =
