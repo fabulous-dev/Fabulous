@@ -103,7 +103,7 @@ type PickerModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #IPicker>,
-            ?size: double,
+            ?size: float,
             ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
