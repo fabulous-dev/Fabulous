@@ -106,12 +106,6 @@ type TimePickerModifiers =
 
         res
 
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ITimePicker>, value: bool) =
-        this.AddScalar(TimePicker.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct TimePicker control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ITimePicker>, value: ViewRef<TimePicker>) =
