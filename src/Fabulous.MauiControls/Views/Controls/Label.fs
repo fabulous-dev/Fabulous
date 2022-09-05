@@ -170,12 +170,6 @@ type LabelModifiers =
     static member inline centerText(this: WidgetBuilder<'msg, #ILabel>) =
         this.centerTextHorizontal().centerTextVertical()
 
-    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ILabel>, value: bool) =
-        this.AddScalar(Label.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct Label control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ILabel>, value: ViewRef<Label>) =
