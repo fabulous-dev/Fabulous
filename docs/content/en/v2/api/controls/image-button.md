@@ -22,45 +22,45 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| ImageButton(aspect: Aspect, light: ImageSource, onClicked: 'msg, ?dark: ImageSource) | //TODO Defines a ImageButton widget with a text |
-| ImageButton(aspect: Aspect, light: string, onClicked: 'msg, ?dark: string) | | // TODO
-| ImageButton(aspect: Aspect, light: Uri, onClicked: 'msg, ?dark: Uri) || // TODO
-| ImageButton(aspect: Aspect, light: Stream, onClicked: 'msg, ?dark: Stream) || //TODO
-
+| ImageButton(aspect: Aspect, light: ImageSource, onClicked: 'msg, ?dark: ImageSource) | Define a ImageButton widget with an ImageSource depending if light or dark mode |
+| ImageButton(aspect: Aspect, light: string, onClicked: 'msg, ?dark: string) | Define a ImageButton widget with a path to an image depending if light or dark mode |
+| ImageButton(aspect: Aspect, light: Uri, onClicked: 'msg, ?dark: Uri) | Define a ImageButton widget with a URI to an image depending if light or dark mode |
+| ImageButton(aspect: Aspect, light: Stream, onClicked: 'msg, ?dark: Stream) | Define a ImageButton widget with an image Stream depending if light or dark mode |
 
 ## Properties
-//TODO Add descriptions 
 | Properties | Description |
 |--|--|
-| borderColor(light: FabColor, ?dark: FabColor) ||
-| borderWidth(value: float) ||
-| cornerRadius(value: float) ||
-| isLoading(value: bool) ||
-| isOpaque(value: bool) ||
-| isPressed(value: bool) ||
-| padding(value: Thickness) ||
-| padding(value: float) ||
-| padding(left: float, top: float, right: float, bottom: float) ||
-| onPressed(onPressed: 'msg) ||
-| onReleased(onReleased: 'msg) ||
-| reference(value: ViewRef<ImageButton>) ||
+| borderColor(light: FabColor, ?dark: FabColor) | Sets the border color |
+| borderWidth(value: float) | Sets the border width |
+| cornerRadius(value: float) | Sets the corner radius |
+| isLoading(value: bool) | Sets if the image is currently loading |
+| isOpaque(value: bool) | Sets if the image is opaque |
+| isPressed(value: bool) | Sets if the image is currently pressed |
+| padding(value: Thickness) | Sets the padding |
+| padding(value: float) | Sets a uniform padding |
+| padding(left: float, top: float, right: float, bottom: float) | Sets the padding |
+| reference(value: ViewRef<ImageButton>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ImageButton` instance associated to this widget |
 
+## Events
+
+| Properties | Description |
+|--|--|
+| onPressed(onPressed: 'msg) | Sets the event handler for the image button pressed event |
+| onReleased(onReleased: 'msg) | Sets the event handler for the image button released event |
 
 ## Usages
-//TODO fill the parentheses
 ```fs
-ImageButton(//TODO)
-    .borderColor(light: FabColor, ?dark: FabColor) 
-    .borderWidth(value: float) 
-    .isLoading(value: bool) 
-    .isOpaque(value: bool) 
-    .isPressed(value: bool) 
-    .padding(value: Thickness) 
-    .padding(value: float) 
-    .padding(left: float, top: float, right: float, bottom: float) 
-    .onPressed(onPressed: 'msg) 
-    .onReleased(onReleased: 'msg) 
-    .reference(value: ViewRef<ImageButton>) 
+ImageButton(Aspect.AspectFit, light = "image-light.png", dark = "image-dark.png")
+    .borderColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor()) 
+    .borderWidth(5.) 
+    .isLoading(false) 
+    .isOpaque(true) 
+    .isPressed(false) 
+    .padding(Thickness(5., 10., 5., 10.)) 
+    .padding(10.) 
+    .padding(5., 10., 5., 10.) 
+    .onPressed(PressedMsg) 
+    .onReleased(ReleasedMsg) 
 ```
 
 ### Get access to the underlying Xamarin.Forms.ImageButton
@@ -68,6 +68,6 @@ ImageButton(//TODO)
 ```fs
 let imageButtonRef = ViewRef<ImageButton>()
 
-ImageButton(//TODO)
+ImageButton(Aspect.AspectFit, light = "image-light.png", dark = "image-dark.png")
     .reference(imageButtonRef)
 ```
