@@ -22,22 +22,23 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| ProgressBar(progress: float) | //TODO |
-| ProgressBar(progress: float, duration: int, easing: Easing) | //TODO |
+| ProgressBar(progress: float) | Define a ProgressBar widget with the progress value (between 0.0 and 1.0) |
+| ProgressBar(progress: float, duration: int, easing: Easing) | Define a ProgressBar widget with an animated change of the progress value (between 0.0 and 1.0) |
 
 ## Properties
-//TODO add descriptions 
 | Properties | Description |
 |--|--|
-| progressColor(light: FabColor, ?dark: FabColor) | |
-| reference(value: ViewRef<ProgressBar>) |  | 
+| progressColor(light: FabColor, ?dark: FabColor) | Sets the progress bar color depending if light or dark mode |
+| reference(value: ViewRef<ProgressBar>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ProgressBar` instance associated to this widget | 
 
 ## Usages
 
 ```fs
-ProgressBar(//TODO)
-    .progressColor(//TODO)
+ProgressBar(0.5)
+    .progressColor(Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
     
+ProgressBar(0.5, 1000, Easing.CubicInOut)
+    .progressColor(Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
 ```
 
 ### Get access to the underlying Xamarin.Forms.ProgressBar
@@ -45,6 +46,6 @@ ProgressBar(//TODO)
 ```fs
 let progressBarRef = ViewRef<ProgressBar>()
 
-ProgressBar("Enter a description", TexChanged, SearchButtonPressed)
+ProgressBar(0.5)
     .reference(progressBarRef)
 ```
