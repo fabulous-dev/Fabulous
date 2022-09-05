@@ -124,12 +124,6 @@ type SearchBarModifiers =
     static member inline selectionLength(this: WidgetBuilder<'msg, #ISearchBar>, value: int) =
         this.AddScalar(SearchBar.SelectionLength.WithValue(value))
 
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ISearchBar>, value: bool) =
-        this.AddScalar(SearchBar.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct SearchBar control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ISearchBar>, value: ViewRef<SearchBar>) =
