@@ -59,6 +59,7 @@
     <Compile Include="Views\Layouts\SwipeItem.fs" />
     <Compile Include="Views\Layouts\SwipeItems.fs" />
     <Compile Include="Views\Layouts\SwipeView.fs" />
+    <Compile Include="Views\Controls\_InputView.fs" />
     <Compile Include="Views\Controls\ActivityIndicator.fs" />
     <Compile Include="Views\Controls\BoxView.fs" />
     <Compile Include="Views\Controls\Button.fs" />
@@ -66,11 +67,9 @@
     <Compile Include="Views\Controls\DatePicker.fs" />
     <Compile Include="Views\Controls\Editor.fs" />
     <Compile Include="Views\Controls\Entry.fs" />
-    <Compile Include="Views\Controls\FormattedLabel.fs" />
     <Compile Include="Views\Controls\Image.fs" />
     <Compile Include="Views\Controls\ImageButton.fs" />
     <Compile Include="Views\Controls\IndicatorView.fs" />
-    <Compile Include="Views\Controls\_InputView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
     <Compile Include="Views\Controls\Picker.fs" />
     <Compile Include="Views\Controls\ProgressBar.fs" />
@@ -82,6 +81,7 @@
     <Compile Include="Views\Controls\Switch.fs" />
     <Compile Include="Views\Controls\TimePicker.fs" />
     <Compile Include="Views\Controls\WebView.fs" />
+    <Compile Include="Views\Controls\FormattedLabel.fs" />
     <Compile Include="Views\Collections\_ItemsView.fs" />
     <Compile Include="Views\Collections\_ItemsViewOfCell.fs" />
     <Compile Include="Views\Collections\ListView.fs" />
