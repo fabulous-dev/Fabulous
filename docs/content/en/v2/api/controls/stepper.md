@@ -22,21 +22,18 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| Stepper(min: float, max: float, value: float, onValueChanged: float -> 'msg) | //TODO Defines a Stepper widget with items list, selected index and onSelectedIndexChanged event |
+| Stepper(min: float, max: float, value: float, onValueChanged: float -> 'msg) | Define a Stepper widget with the min-max bounds and the current value |
 
 ## Properties
-//TODO qdd descriptions
 | Properties | Description |
 |--|--|
-| increment(value: float) ||
-| reference(value: value: ViewRef<Stepper>) | |
+| increment(value: float) | Sets the increment step between each selected values |
+| reference(value: value: ViewRef<Stepper>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Stepper` instance associated to this widget |
 
 ## Usages
-// TODO
 ```fs
-Stepper(//TODO)
-    .increment(value: float)
-    
+Stepper(1000., 5000., model.Value, ValueChangedMsg)
+    .increment(250.)
 ```
 
 ### Get access to the underlying Xamarin.Forms.Stepper
@@ -44,6 +41,6 @@ Stepper(//TODO)
 ```fs
 let stepperRef = ViewRef<Stepper>()
 
-Stepper(["Item 1"; "Item 2"; "Item 3"], 0, SelectedIndexChanged) //TODO not sure 
+Stepper(1000., 5000., model.Value, ValueChangedMsg)
     .reference(stepperRef) 
 ```
