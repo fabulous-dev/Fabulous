@@ -73,7 +73,7 @@ type SpanModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #ISpan>,
-            ?size: double,
+            ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
             ?autoScalingEnabled: bool

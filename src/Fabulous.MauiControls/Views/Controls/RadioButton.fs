@@ -128,7 +128,7 @@ type RadioButtonModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #IRadioButton>,
-            ?size: double,
+            ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
             ?fontAutoScalingEnabled: bool
