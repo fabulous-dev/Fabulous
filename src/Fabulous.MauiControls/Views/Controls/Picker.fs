@@ -136,12 +136,6 @@ type PickerModifiers =
     static member inline textColor(this: WidgetBuilder<'msg, #IPicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(Picker.TextColor.WithValue(AppTheme.create light dark))
 
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IDatePicker>, value: bool) =
-        this.AddScalar(Picker.FontAutoScalingEnabled.WithValue(value))
-
     [<Extension>]
     static member inline title(this: WidgetBuilder<'msg, #IPicker>, value: string) =
         this.AddScalar(Picker.Title.WithValue(value))
