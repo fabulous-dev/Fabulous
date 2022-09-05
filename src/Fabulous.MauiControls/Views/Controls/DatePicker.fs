@@ -71,7 +71,7 @@ module DatePickerBuilders =
 
 [<Extension>]
 type DatePickerModifiers =
-    /// <summary>CharacterSpacing, of type double, is the spacing between characters of the DatePicker text.</summary>
+    /// <summary>CharacterSpacing, of type float, is the spacing between characters of the DatePicker text.</summary>
     [<Extension>]
     static member inline characterSpacing(this: WidgetBuilder<'msg, #IDatePicker>, value: float) =
         this.AddScalar(DatePicker.CharacterSpacing.WithValue(value))
@@ -80,7 +80,7 @@ type DatePickerModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #IDatePicker>,
-            ?size: double,
+            ?size: float,
             ?attributes: FontAttributes,
             ?fontFamily: string,
             ?fontAutoScalingEnabled: bool
@@ -121,16 +121,10 @@ type DatePickerModifiers =
     static member inline maximumDate(this: WidgetBuilder<'msg, #IDatePicker>, value: DateTime) =
         this.AddScalar(DatePicker.MaximumDate.WithValue(value))
 
-    /// <summary>TextColor of type Color, the color used to display the selected date.</summary>
+    /// <summary>TextColor of type FabColor, the color used to display the selected date.</summary>
     [<Extension>]
     static member inline textColor(this: WidgetBuilder<'msg, #IDatePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(DatePicker.TextColor.WithValue(AppTheme.create light dark))
-
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IDatePicker>, value: bool) =
-        this.AddScalar(DatePicker.FontAutoScalingEnabled.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct DatePicker control instance</summary>
     [<Extension>]
