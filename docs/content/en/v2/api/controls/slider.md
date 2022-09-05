@@ -22,37 +22,36 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| Slider(min: float, max: float, value: float, onValueChanged: float -> 'msg) | //TODO Defines a Slider widget with items list, selected index and onSelectedIndexChanged event |
+| Slider(min: float, max: float, value: float, onValueChanged: float -> 'msg) | Define a Slider widget with the min-max bounds and the current value |
 
 ## Properties
-//TODO qdd descriptions
 | Properties | Description |
 |--|--|
-| maximumTrackColor(light: FabColor, ?dark: FabColor)  | |
-| minimumTrackColor(light: FabColor, ?dark: FabColor)  | |
-| thumbColor(light: FabColor, ?dark: FabColor)  | |
-| thumbImage(light: ImageSource, ?dark: ImageSource) ||
-| thumbImage(light: string, ?dark: string) ||
-| thumbImage(light: Uri, ?dark: Uri) ||
-| thumbImage(light: Stream, ?dark: Stream) ||
-| onDragCompleted(onDragCompleted: 'msg) ||
-| onDragStarted(onDragStarted: 'msg) ||
-| reference(value: value: ViewRef<Slider>) | |
+| maximumTrackColor(light: FabColor, ?dark: FabColor) | Sets the color of the maximum track depending if light or dark mode |
+| minimumTrackColor(light: FabColor, ?dark: FabColor) | Sets the color of the minimum track depending if light or dark mode |
+| thumbColor(light: FabColor, ?dark: FabColor) | Sets the color of the thumb |
+| thumbImage(light: ImageSource, ?dark: ImageSource) | Sets the image of the thumb using ImageSource depending if light or dark mode |
+| thumbImage(light: string, ?dark: string) | Sets the image of the thumb using a path depending if light or dark mode |
+| thumbImage(light: Uri, ?dark: Uri) | Sets the image of the thumb using a URI depending if light or dark mode |
+| thumbImage(light: Stream, ?dark: Stream) | Sets the image of the thumb using Stream depending if light or dark mode |
+| reference(value: value: ViewRef<Slider>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Slider` instance associated to this widget |
 
+## Events
+
+| Properties | Description |
+|--|--|
+| onDragCompleted(onDragCompleted: 'msg) | Sets the event handler for the drag completed event |
+| onDragStarted(onDragStarted: 'msg) | Sets the event handler for the drag start event |
 
 ## Usages
-// TODO 
 ```fs
-Slider(//TODO)
-    .maximumTrackColor(light: FabColor, ?dark: FabColor) 
-    .minimumTrackColor(light: FabColor, ?dark: FabColor)  
-    .thumbColor(light: FabColor, ?dark: FabColor)  
-    .thumbImage(light: ImageSource, ?dark: ImageSource) 
-    .thumbImage(light: string, ?dark: string) 
-    .thumbImage(light: Uri, ?dark: Uri)
-    .thumbImage(light: Stream, ?dark: Stream))
-    .onDragCompleted(onDragCompleted: 'msg) 
-    .onDragStarted(onDragStarted: 'msg) 
+Slider(20., 80., model.Value, ValueChangedMsg)
+    .maximumTrackColor(Color.Red.ToFabColor(), dark = Color.Blue.ToString()) 
+    .minimumTrackColor(Color.Red.ToFabColor(), dark = Color.Blue.ToString())  
+    .thumbColor(Color.Red.ToFabColor(), dark = Color.Blue.ToString())  
+    .thumbImage("thumb-light.png", dark = "thumb-dark.png")
+    .onDragCompleted(DragCompletedMsg) 
+    .onDragStarted(DragStartedMsg) 
 ```
 
 ### Get access to the underlying Xamarin.Forms.Slider
@@ -60,6 +59,6 @@ Slider(//TODO)
 ```fs
 let sliderRef = ViewRef<Slider>()
 
-Slider(["Item 1"; "Item 2"; "Item 3"], 0, SelectedIndexChanged) //TODO not sure 
+Slider(20., 80., model.Value, ValueChangedMsg)
     .reference(sliderRef) 
 ```

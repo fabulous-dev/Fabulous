@@ -50,7 +50,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 ## Usages
 ```fs
-ImageButton(Aspect.AspectFit, light = "image-light.png", dark = "image-dark.png")
+ImageButton(Aspect.AspectFit, "image-light.png", dark = "image-dark.png")
     .borderColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor()) 
     .borderWidth(5.) 
     .isLoading(false) 
@@ -60,7 +60,13 @@ ImageButton(Aspect.AspectFit, light = "image-light.png", dark = "image-dark.png"
     .padding(10.) 
     .padding(5., 10., 5., 10.) 
     .onPressed(PressedMsg) 
-    .onReleased(ReleasedMsg) 
+    .onReleased(ReleasedMsg)
+    
+ImageButton(Aspect.AspectFit, FileImageSource(...), dark = StreamImageSource(...))
+
+ImageButton(Aspect.AspectFit, Uri("http://..."), dark = Uri("http://..."))
+
+ImageButton(Aspect.AspectFit, MemoryStream(), dark = FileStream())
 ```
 
 ### Get access to the underlying Xamarin.Forms.ImageButton
