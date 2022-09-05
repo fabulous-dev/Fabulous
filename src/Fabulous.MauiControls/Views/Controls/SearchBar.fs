@@ -29,6 +29,18 @@ module SearchBar =
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> SearchBar.VerticalTextAlignmentProperty
 
+    let IsTextPredictionEnabled =
+        Attributes.defineBindableBool SearchBar.IsTextPredictionEnabledProperty
+
+    let CursorPosition =
+        Attributes.defineBindableInt SearchBar.CursorPositionProperty
+
+    let SelectionLength =
+        Attributes.defineBindableInt SearchBar.SelectionLengthProperty
+
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool SearchBar.FontAutoScalingEnabledProperty
+
     let SearchButtonPressed =
         Attributes.defineEventNoArg
             "SearchBar_SearchButtonPressed"
@@ -60,9 +72,9 @@ type SearchBarModifiers =
         (
             this: WidgetBuilder<'msg, #ISearchBar>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -70,10 +82,6 @@ type SearchBarModifiers =
         match size with
         | None -> ()
         | Some v -> res <- res.AddScalar(SearchBar.FontSize.WithValue(v))
-
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(SearchBar.FontSize.WithValue(Device.GetNamedSize(v, typeof<SearchBar>)))
 
         match attributes with
         | None -> ()
@@ -83,19 +91,38 @@ type SearchBarModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(SearchBar.FontFamily.WithValue(v))
 
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(SearchBar.FontAutoScalingEnabled.WithValue(v))
+
         res
 
     /// <summary>Set the horizontal text alignment</summary>
-    /// param name="alignment">The horizontal text alignment</summary>
+    /// param name="value">The horizontal text alignment</summary>
     [<Extension>]
     static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #ISearchBar>, value: TextAlignment) =
         this.AddScalar(SearchBar.HorizontalTextAlignment.WithValue(value))
 
     /// <summary>Set the vertical text alignment</summary>
-    /// param name="alignment">The vertical text alignment</summary>
+    /// param name="value">The vertical text alignment</summary>
     [<Extension>]
     static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #ISearchBar>, value: TextAlignment) =
         this.AddScalar(SearchBar.VerticalTextAlignment.WithValue(value))
+
+    /// <summary>Determines whether text prediction and automatic text correction is enabled.</summary>
+    [<Extension>]
+    static member inline isTextPredictionEnabled(this: WidgetBuilder<'msg, #ISearchBar>, value: bool) =
+        this.AddScalar(SearchBar.IsTextPredictionEnabled.WithValue(value))
+
+    /// <summary>Determines the position at which the next character will be inserted into the string stored in the Text property.</summary>
+    [<Extension>]
+    static member inline cursorPosition(this: WidgetBuilder<'msg, #ISearchBar>, value: int) =
+        this.AddScalar(SearchBar.CursorPosition.WithValue(value))
+
+    /// <summary>Set the length of text selection within the SearchBar.</summary>
+    [<Extension>]
+    static member inline selectionLength(this: WidgetBuilder<'msg, #ISearchBar>, value: int) =
+        this.AddScalar(SearchBar.SelectionLength.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct SearchBar control instance</summary>
     [<Extension>]

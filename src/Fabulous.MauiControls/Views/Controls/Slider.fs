@@ -4,7 +4,6 @@ open System
 open System.IO
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type ISlider =

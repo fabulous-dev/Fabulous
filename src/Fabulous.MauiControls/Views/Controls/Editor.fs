@@ -2,6 +2,7 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
+open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IEditor =
@@ -25,6 +26,21 @@ module Editor =
     let IsTextPredictionEnabled =
         Attributes.defineBindableBool Editor.IsTextPredictionEnabledProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Editor.FontAutoScalingEnabledProperty
+
+    let CursorPosition =
+        Attributes.defineBindableInt Editor.CursorPositionProperty
+
+    let SelectionLength =
+        Attributes.defineBindableInt Editor.SelectionLengthProperty
+
+    let HorizontalTextAlignment =
+        Attributes.defineBindableEnum<TextAlignment> Editor.HorizontalTextAlignmentProperty
+
+    let VerticalTextAlignment =
+        Attributes.defineBindableEnum<TextAlignment> Editor.VerticalTextAlignmentProperty
+
     let Completed =
         Attributes.defineEventNoArg "Editor_Completed" (fun target -> (target :?> Editor).Completed)
 
@@ -46,9 +62,9 @@ type EditorModifiers =
         (
             this: WidgetBuilder<'msg, #IEditor>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -57,10 +73,6 @@ type EditorModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Editor.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Editor.FontSize.WithValue(Device.GetNamedSize(v, typeof<Editor>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Editor.FontAttributes.WithValue(v))
@@ -68,6 +80,10 @@ type EditorModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Editor.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Editor.FontAutoScalingEnabled.WithValue(v))
 
         res
 
@@ -88,6 +104,28 @@ type EditorModifiers =
     [<Extension>]
     static member inline onCompleted(this: WidgetBuilder<'msg, #IEditor>, onCompleted: 'msg) =
         this.AddScalar(Editor.Completed.WithValue(onCompleted))
+
+    /// <summary>Determines the position at which the next character will be inserted into the string stored in the Text property.</summary>
+    [<Extension>]
+    static member inline cursorPosition(this: WidgetBuilder<'msg, #IEditor>, value: int) =
+        this.AddScalar(Editor.CursorPosition.WithValue(value))
+
+    /// <summary>Set the length of text selection within the SearchBar.</summary>
+    [<Extension>]
+    static member inline selectionLength(this: WidgetBuilder<'msg, #IEditor>, value: int) =
+        this.AddScalar(Editor.SelectionLength.WithValue(value))
+
+    /// <summary>Set the horizontal text alignment</summary>
+    /// param name="value">The horizontal text alignment</summary>
+    [<Extension>]
+    static member inline horizontalTextAlignment(this: WidgetBuilder<'msg, #IEditor>, value: TextAlignment) =
+        this.AddScalar(Editor.HorizontalTextAlignment.WithValue(value))
+
+    /// <summary>Set the vertical text alignment</summary>
+    /// param name="value">The vertical text alignment</summary>
+    [<Extension>]
+    static member inline verticalTextAlignment(this: WidgetBuilder<'msg, #IEditor>, value: TextAlignment) =
+        this.AddScalar(Editor.VerticalTextAlignment.WithValue(value))
 
     /// <summary>Link a ViewRef to access the direct Editor control instance</summary>
     [<Extension>]

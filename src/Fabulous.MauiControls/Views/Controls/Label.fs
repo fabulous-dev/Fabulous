@@ -56,6 +56,9 @@ module Label =
     let VerticalTextAlignment =
         Attributes.defineBindableEnum<TextAlignment> Label.VerticalTextAlignmentProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool Label.FontAutoScalingEnabledProperty
+
 
 [<AutoOpen>]
 module LabelBuilders =
@@ -75,9 +78,9 @@ type LabelModifiers =
         (
             this: WidgetBuilder<'msg, #ILabel>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?autoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -86,10 +89,6 @@ type LabelModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(Label.FontSize.WithValue(Device.GetNamedSize(v, typeof<Label>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontAttributes.WithValue(v))
@@ -97,6 +96,10 @@ type LabelModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(Label.FontFamily.WithValue(v))
+
+        match autoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(Label.FontAutoScalingEnabled.WithValue(v))
 
         res
 
