@@ -19,23 +19,22 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/activityindicator).
 
 ## Constructors
-// TODO Add descriptions 
 | Constructors | Description |
 |--|--|
-| ActivityIndicator(isRunning: bool) |  |
+| ActivityIndicator(isRunning: bool) | Define an ActivityIndicator widget with its current state |
 
 ## Properties
 
 | Properties | Description |
 |--|--|
-| color(light: FabColor, ?dark: FabColor) | Sets the text color depending if light or dark mode |
+| color(light: FabColor, ?dark: FabColor) | Sets the activity indicator color depending if light or dark mode |
 | reference(value: ViewRef<ActivityIndicator>) |  |
 
 
 ## Usages
 
 ```fs
-ActivityIndicator(//TODO)
+ActivityIndicator(true)
     .color(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
 
 ```
@@ -45,6 +44,6 @@ ActivityIndicator(//TODO)
 ```fs
 let activityIndicatorRef = ViewRef<ActivityIndicator>()
 
-ActivityIndicator(//TODO)
+ActivityIndicator(true)
     .reference(activityIndicatorRef)
 ```

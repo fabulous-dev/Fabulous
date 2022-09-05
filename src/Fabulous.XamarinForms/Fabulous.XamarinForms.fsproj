@@ -59,6 +59,7 @@
     <Compile Include="Views\Layouts\SwipeItem.fs" />
     <Compile Include="Views\Layouts\SwipeItems.fs" />
     <Compile Include="Views\Layouts\SwipeView.fs" />
+    <Compile Include="Views\Controls\ActivityIndicator.fs" />
     <Compile Include="Views\Controls\IndicatorView.fs" />
     <Compile Include="Views\Controls\Label.fs" />
     <Compile Include="Views\Controls\Span.fs" />
@@ -66,7 +67,6 @@
     <Compile Include="Views\Controls\Button.fs" />
     <Compile Include="Views\Controls\Switch.fs" />
     <Compile Include="Views\Controls\Slider.fs" />
-    <Compile Include="Views\Controls\ActivityIndicator.fs" />
     <Compile Include="Views\Controls\Image.fs" />
     <Compile Include="Views\Controls\BoxView.fs" />
     <Compile Include="Views\Controls\_InputView.fs" />
