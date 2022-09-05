@@ -73,7 +73,7 @@ type LabelModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #ILabel>,
-            ?size: double,
+            ?size: float,
             ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
