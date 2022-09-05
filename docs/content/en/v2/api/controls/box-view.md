@@ -19,25 +19,21 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/boxview).
 
 ## Constructors
-// TODO Add descriptions
 | Constructors | Description |
 |--|--|
-| BoxView(light: FabColor, ?dark: FabColor) |  |
+| BoxView(light: FabColor, ?dark: FabColor) | Define a BoxView widget with its fill color depending if light or dark mode |
 
 ## Properties
-//TODO add descriptions
 | Properties | Description |
 |--|--|
-| cornerRadius(value: float) |  |
-| reference(value: ViewRef<BoxView>) |  |
-
+| cornerRadius(value: float) | Sets the corner radius |
+| reference(value: ViewRef<BoxView>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.BoxView` instance associated to this widget |
 
 ## Usages
 
 ```fs
-BoxView(//TODO)
-    .cornerRadius(//TODO)
-
+BoxView(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
+    .cornerRadius(10.)
 ```
 
 ### Get access to the underlying Xamarin.Forms.BoxView
@@ -45,6 +41,6 @@ BoxView(//TODO)
 ```fs
 let boxViewRef = ViewRef<BoxView>()
 
-BoxView(//TODO)
+BoxView(Color.Red.ToFabColor())
     .reference(boxViewRef)
 ```

@@ -28,15 +28,13 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | color(light: FabColor, ?dark: FabColor) | Sets the activity indicator color depending if light or dark mode |
-| reference(value: ViewRef<ActivityIndicator>) |  |
-
+| reference(value: ViewRef<ActivityIndicator>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ActivityIndicator` instance associated to this widget |
 
 ## Usages
 
 ```fs
 ActivityIndicator(true)
     .color(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
-
 ```
 
 ### Get access to the underlying Xamarin.Forms.ActivityIndicator
