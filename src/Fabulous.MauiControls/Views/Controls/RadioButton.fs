@@ -51,6 +51,9 @@ module RadioButton =
     let RadioButtonGroupName =
         Attributes.defineBindableWithEquality<string> RadioButtonGroup.GroupNameProperty
 
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool RadioButton.FontAutoScalingEnabledProperty
+
     let IsCheckedWithEvent =
         Attributes.defineBindableWithEvent
             "RadioButton_CheckedChanged"
@@ -126,9 +129,9 @@ type RadioButtonModifiers =
         (
             this: WidgetBuilder<'msg, #IRadioButton>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -137,10 +140,6 @@ type RadioButtonModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(RadioButton.FontSize.WithValue(Device.GetNamedSize(v, typeof<RadioButton>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontAttributes.WithValue(v))
@@ -148,6 +147,10 @@ type RadioButtonModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(RadioButton.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(RadioButton.FontAutoScalingEnabled.WithValue(v))
 
         res
 

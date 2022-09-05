@@ -2,7 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 open Microsoft.Maui.Controls.PlatformConfiguration
 
@@ -36,8 +35,8 @@ module TimePicker =
     let TextColor =
         Attributes.defineBindableAppThemeColor TimePicker.TextColorProperty
 
-    // let TextTransform =
-//     Attributes.defineBindableEnum<TextTransform> TimePicker.TextTransformProperty
+    let FontAutoScalingEnabled =
+        Attributes.defineBindableBool TimePicker.FontAutoScalingEnabledProperty
 
     let UpdateMode =
         Attributes.defineEnum<iOSSpecific.UpdateMode>
@@ -77,18 +76,14 @@ type TimePickerModifiers =
     static member inline textColor(this: WidgetBuilder<'msg, #ITimePicker>, light: FabColor, ?dark: FabColor) =
         this.AddScalar(TimePicker.TextColor.WithValue(AppTheme.create light dark))
 
-    // [<Extension>]
-    // static member inline textTransform(this: WidgetBuilder<'msg, #ITimePicker>, value: TextTransform) =
-    //     this.AddScalar(TimePicker.TextTransform.WithValue(value))
-
     [<Extension>]
     static member inline font
         (
             this: WidgetBuilder<'msg, #ITimePicker>,
             ?size: float,
-            ?namedSize: NamedSize,
             ?attributes: FontAttributes,
-            ?fontFamily: string
+            ?fontFamily: string,
+            ?fontAutoScalingEnabled: bool
         ) =
 
         let mutable res = this
@@ -97,10 +92,6 @@ type TimePickerModifiers =
         | None -> ()
         | Some v -> res <- res.AddScalar(TimePicker.FontSize.WithValue(v))
 
-        match namedSize with
-        | None -> ()
-        | Some v -> res <- res.AddScalar(TimePicker.FontSize.WithValue(Device.GetNamedSize(v, typeof<TimePicker>)))
-
         match attributes with
         | None -> ()
         | Some v -> res <- res.AddScalar(TimePicker.FontAttributes.WithValue(v))
@@ -108,6 +99,10 @@ type TimePickerModifiers =
         match fontFamily with
         | None -> ()
         | Some v -> res <- res.AddScalar(TimePicker.FontFamily.WithValue(v))
+
+        match fontAutoScalingEnabled with
+        | None -> ()
+        | Some v -> res <- res.AddScalar(TimePicker.FontAutoScalingEnabled.WithValue(v))
 
         res
 
