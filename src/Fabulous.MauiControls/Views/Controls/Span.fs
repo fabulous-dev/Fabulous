@@ -125,12 +125,6 @@ type SpanModifiers =
             Span.GestureRecognizers
             this
 
-    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #ISpan>, value: bool) =
-        this.AddScalar(Span.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct Span control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, ISpan>, value: ViewRef<Span>) =
