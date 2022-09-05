@@ -29,7 +29,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the text |
-| font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
+| font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font |
 | horizontalTextAlignment(value: textAlignment) | Sets the horizontal alignment of the text |
 | lineBreakMode(value: LineBreakMode) | Sets the line break mode |
 | lineHeight(value: float) | Sets the multiplier to apply to the default line height when displaying text |
