@@ -206,12 +206,6 @@ type ButtonModifiers =
     static member inline onReleased(this: WidgetBuilder<'msg, #IButton>, onReleased: 'msg) =
         this.AddScalar(Button.Released.WithValue(onReleased))
 
-    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IButton>, value: bool) =
-        this.AddScalar(Button.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Determines how text should be handled when it can't fit on one line.</summary>
     /// <param name="value">The default value of this property is LineBreakMode.NoWrap</param>
     [<Extension>]
