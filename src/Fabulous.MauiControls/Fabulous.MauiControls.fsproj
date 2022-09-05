@@ -25,6 +25,7 @@
         <Compile Include="Views\_Element.fs" />
         <Compile Include="Views\_Geometry.fs" />
         <Compile Include="Views\_NavigableElement.fs" />
+        <Compile Include="Views\Shadow.fs" />
         <Compile Include="Views\_VisualElement.fs" />
         <Compile Include="Views\GestureRecognizers\_GestureRecognizer.fs" />
         <Compile Include="Views\GestureRecognizers\TapGestureRecognizer.fs" />
