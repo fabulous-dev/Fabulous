@@ -34,9 +34,8 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Usages
 
 ```fs
-CheckBox("Hello World", CheckedChanged)
+CheckBox(model.Checked, CheckedChanged)
     .characterSpacing(1.)
-    .reference() //TODO
 ```
 
 ### Get access to the underlying Xamarin.Forms.CheckBox
@@ -44,6 +43,6 @@ CheckBox("Hello World", CheckedChanged)
 ```fs
 let checkboxRef = ViewRef<CheckBox>()
 
-CheckBox("Hello World", CheckedChanged)
+CheckBox(model.Checked, CheckedChanged)
     .reference(checkboxRef)
 ```
