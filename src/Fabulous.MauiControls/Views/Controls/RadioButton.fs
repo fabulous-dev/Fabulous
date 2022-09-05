@@ -166,12 +166,6 @@ type RadioButtonModifiers =
     static member inline textTransform(this: WidgetBuilder<'msg, #IRadioButton>, value: TextTransform) =
         this.AddScalar(RadioButton.TextTransform.WithValue(value))
 
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IRadioButton>, value: bool) =
-        this.AddScalar(RadioButton.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Link a ViewRef to access the direct RadioButton control instance</summary>
     [<Extension>]
     static member inline reference(this: WidgetBuilder<'msg, IRadioButton>, value: ViewRef<RadioButton>) =
