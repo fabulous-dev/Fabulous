@@ -4,7 +4,6 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-open Microsoft.Maui.Graphics
 
 type IVisualElement =
     inherit Fabulous.Maui.INavigableElement
@@ -65,8 +64,8 @@ module VisualElement =
     let IsEnabled =
         Attributes.defineBindableBool VisualElement.IsEnabledProperty
 
-    // let IsTabStop =
-    //     Attributes.defineBindableBool VisualElement.IsTabStopProperty
+    let IsFocused =
+        Attributes.defineBindableBool VisualElement.IsFocusedProperty
 
     let IsVisible =
         Attributes.defineBindableBool VisualElement.IsVisibleProperty
@@ -77,11 +76,14 @@ module VisualElement =
     let MinimumWidthRequest =
         Attributes.defineBindableFloat VisualElement.MinimumWidthRequestProperty
 
+    let MaximumHeightRequest =
+        Attributes.defineBindableFloat VisualElement.MaximumHeightRequestProperty
+
+    let MaximumWidthRequest =
+        Attributes.defineBindableFloat VisualElement.MaximumHeightRequestProperty
+
     let Opacity =
         Attributes.defineBindableFloat VisualElement.OpacityProperty
-
-    // let TabIndex =
-    //     Attributes.defineBindableInt VisualElement.TabIndexProperty
 
     let Visual =
         Attributes.defineBindableWithEquality<IVisual> VisualElement.VisualProperty
@@ -265,10 +267,6 @@ type VisualElementModifiers =
     static member inline isEnabled(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
         this.AddScalar(VisualElement.IsEnabled.WithValue(value))
 
-    // [<Extension>]
-    // static member inline isTabStop(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
-    //     this.AddScalar(VisualElement.IsTabStop.WithValue(value))
-
     [<Extension>]
     static member inline isVisible(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
         this.AddScalar(VisualElement.IsVisible.WithValue(value))
@@ -282,16 +280,24 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.MinimumWidthRequest.WithValue(value))
 
     [<Extension>]
+    static member inline maximumHeight(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
+        this.AddScalar(VisualElement.MaximumHeightRequest.WithValue(value))
+
+    [<Extension>]
+    static member inline maximumWidth(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
+        this.AddScalar(VisualElement.MaximumWidthRequest.WithValue(value))
+
+    [<Extension>]
     static member inline opacity(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
         this.AddScalar(VisualElement.Opacity.WithValue(value))
-
-    // [<Extension>]
-    // static member inline tabIndex(this: WidgetBuilder<'msg, #IVisualElement>, value: int) =
-    //     this.AddScalar(VisualElement.TabIndex.WithValue(value))
 
     [<Extension>]
     static member inline visual(this: WidgetBuilder<'msg, #IVisualElement>, value: IVisual) =
         this.AddScalar(VisualElement.Visual.WithValue(value))
+
+    [<Extension>]
+    static member inline isFocused(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
+        this.AddScalar(VisualElement.IsFocused.WithValue(value))
 
     [<Extension>]
     static member inline onFocused(this: WidgetBuilder<'msg, #IVisualElement>, onFocused: bool -> 'msg) =
