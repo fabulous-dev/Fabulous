@@ -34,7 +34,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | thumbImage(light: string, ?dark: string) | Sets the image of the thumb using a path depending if light or dark mode |
 | thumbImage(light: Uri, ?dark: Uri) | Sets the image of the thumb using a URI depending if light or dark mode |
 | thumbImage(light: Stream, ?dark: Stream) | Sets the image of the thumb using Stream depending if light or dark mode |
-| reference(value: value: ViewRef<Slider>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Slider` instance associated to this widget |
+| reference(value: ViewRef&lt;Slider&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Slider` instance associated to this widget |
 
 ## Events
 

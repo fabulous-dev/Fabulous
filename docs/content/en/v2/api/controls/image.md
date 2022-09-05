@@ -32,7 +32,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 |--|--|
 | isLoading(value: bool) | Sets if the image is currently loading |
 | isOpaque(value: bool) | Sets if the image is opaque |
-| reference(value: ViewRef<Image>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Image` instance associated to this widget |
+| reference(value: ViewRef&lt;Image&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Image` instance associated to this widget |
 
 ## Usages
 ```fs

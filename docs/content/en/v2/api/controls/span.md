@@ -36,7 +36,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | textDecorations(value: TextDecorations) | Sets the text decoration |
 | textTransform(value: TextTransform) | Sets the text transformation |
 | gestureRecognizers() | Sets a collection of gesture recognizers to attach to this widget |
-| reference(value: value: ViewRef<Span>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Span` instance associated to this widget |
+| reference(value: ViewRef&lt;Span&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Span` instance associated to this widget |
 
 ## Usages
 ```fs

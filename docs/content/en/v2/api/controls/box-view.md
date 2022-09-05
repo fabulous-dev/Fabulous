@@ -27,7 +27,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | cornerRadius(value: float) | Sets the corner radius |
-| reference(value: ViewRef<BoxView>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.BoxView` instance associated to this widget |
+| reference(value: ViewRef&lt;BoxView&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.BoxView` instance associated to this widget |
 
 ## Usages
 

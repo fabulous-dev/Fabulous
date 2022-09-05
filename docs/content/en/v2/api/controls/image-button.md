@@ -39,7 +39,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | padding(value: Thickness) | Sets the padding |
 | padding(value: float) | Sets a uniform padding |
 | padding(left: float, top: float, right: float, bottom: float) | Sets the padding |
-| reference(value: ViewRef<ImageButton>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ImageButton` instance associated to this widget |
+| reference(value: ViewRef&lt;ImageButton&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ImageButton` instance associated to this widget |
 
 ## Events
 

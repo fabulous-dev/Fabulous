@@ -28,7 +28,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | increment(value: float) | Sets the increment step between each selected values |
-| reference(value: value: ViewRef<Stepper>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Stepper` instance associated to this widget |
+| reference(value: ViewRef&lt;Stepper&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Stepper` instance associated to this widget |
 
 ## Usages
 ```fs

@@ -29,7 +29,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 |--|--|
 | thumbColor(light: FabColor, ?dark: FabColor) | Sets the thumb color depending if light or dark mode |
 | colorOn(light: FabColor, ?dark: FabColor) | Sets the color when switch is toggled on |
-| reference(value: value: ViewRef<Switch>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Switch` instance associated to this widget |
+| reference(value: ViewRef&lt;Switch&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Switch` instance associated to this widget |
 
 ## Usages
 ```fs

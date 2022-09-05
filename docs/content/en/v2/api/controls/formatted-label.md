@@ -26,7 +26,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ## Properties
 | Properties | Description |
 |--|--|
-| reference(value: ViewRef<Label>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Label` instance associated to this widget |
+| reference(value: ViewRef&lt;Label&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Label` instance associated to this widget |
 
 ## Usages
 

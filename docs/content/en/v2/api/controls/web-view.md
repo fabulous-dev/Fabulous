@@ -36,7 +36,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | cookies(value: CookieContainer) | Sets the cookies |
 | enableZoomControls(value: bool) | Sets if the zoom controls are enabled |
 | displayZoomControls(value: bool) | Sets if the zoom controls are shown on the screen |
-| reference(value: ViewRef<WebView>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.WebView` instance associated to this widget |
+| reference(value: ViewRef&lt;WebView&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.WebView` instance associated to this widget |
 
 ## Events
 

@@ -29,7 +29,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | progressColor(light: FabColor, ?dark: FabColor) | Sets the progress bar color depending if light or dark mode |
-| reference(value: ViewRef<ProgressBar>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ProgressBar` instance associated to this widget | 
+| reference(value: ViewRef&lt;ProgressBar&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ProgressBar` instance associated to this widget | 
 
 ## Usages
 
