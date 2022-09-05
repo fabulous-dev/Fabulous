@@ -19,22 +19,26 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](//TODO).
 
 ## Constructors
-// TODO Add descriptions
 | Constructors | Description |
 |--|--|
-| FormattedLabel(//TODO Why it is empty) |  |
+| FormattedLabel() | Define a FormattedLabel widget. This widget accept Span widgets as children |
 
 ## Properties
-//TODO add descriptions
 | Properties | Description |
 |--|--|
-| reference(value: ViewRef<Label>) |  |
+| reference(value: ViewRef<Label>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Label` instance associated to this widget |
 
 ## Usages
 
 ```fs
-FormattedLabel(//TODO)
-
+(FormattedLabel() {
+  Span("Hello")
+    .font(size = 20., attributes = FontAttributes.Bold)
+    
+  Span("World")
+    .textColor(Color.Red.ToFabColor())
+})
+  .font(fontFamily = "Consolas")
 ```
 
 ### Get access to the underlying Xamarin.Forms.FormattedLabel
@@ -42,6 +46,8 @@ FormattedLabel(//TODO)
 ```fs
 let formattedLabelRef = ViewRef<Label>()
 
-FormattedLabel(//TODO)
+(FormattedLabel() {
+  Span("Hello")
+})
     .reference(labelRef)
 ```
