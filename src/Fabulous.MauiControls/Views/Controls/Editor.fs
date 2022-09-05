@@ -115,12 +115,6 @@ type EditorModifiers =
     static member inline selectionLength(this: WidgetBuilder<'msg, #IEditor>, value: int) =
         this.AddScalar(Editor.SelectionLength.WithValue(value))
 
-    /// <summary>Defines whether an app's UI reflects text scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IEditor>, value: bool) =
-        this.AddScalar(Editor.FontAutoScalingEnabled.WithValue(value))
-
     /// <summary>Set the horizontal text alignment</summary>
     /// param name="value">The horizontal text alignment</summary>
     [<Extension>]
