@@ -22,28 +22,23 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| Image(aspect: Aspect, light: ImageSource, ?dark: ImageSource) | //TODO Defines a Image widget with a text |
-| Image(aspect: Aspect, light: string, ?dark: string)  | | // TODO
-| Image(aspect: Aspect, light: Uri, ?dark: Uri) || // TODO
-| Image(aspect: Aspect, light: Stream, ?dark: Stream) || //TODO
-
+| Image(aspect: Aspect, light: ImageSource, ?dark: ImageSource) | Defines an Image widget with a image for light and dark mode using ImageSource |
+| Image(aspect: Aspect, light: string, ?dark: string) | Defines an Image widget with a image for light and dark mode using a path |
+| Image(aspect: Aspect, light: Uri, ?dark: Uri) | Defines a Image widget with a image for light and dark mode using an URI |
+| Image(aspect: Aspect, light: Stream, ?dark: Stream) | Defines a Image widget with a image for light and dark mode using a stream |
 
 ## Properties
-//TODO Add descriptions
 | Properties | Description |
 |--|--|
-| isAnimationPlaying(isAnimationPlaying: bool) ||
-| isOpaque(value: bool) ||
-| reference(value: ViewRef<Image>) ||
-
+| isLoading(value: bool) | Sets if the image is currently loading |
+| isOpaque(value: bool) | Sets if the image is opaque |
+| reference(value: ViewRef<Image>) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Image` instance associated to this widget |
 
 ## Usages
-//TODO fill the parentheses
 ```fs
-Image(//TODO)
-    .isAnimationPlaying(isAnimationPlaying: bool)
-    .isOpaque(value: bool) 
-    .reference(value: ViewRef<Image>) 
+Image("image-light.png", dark = "image-dark.png")
+    .isAnimationPlaying(true)
+    .isOpaque(false)
 ```
 
 ### Get access to the underlying Xamarin.Forms.Image
@@ -51,6 +46,6 @@ Image(//TODO)
 ```fs
 let imageRef = ViewRef<Image>()
 
-Image(//TODO)
+Image("image-light.png", dark = "image-dark.png")
     .reference(imageRef)
 ```
