@@ -65,6 +65,7 @@
         <Compile Include="Views\Layouts\SwipeItems.fs" />
         <Compile Include="Views\Layouts\SwipeView.fs" />
         <Compile Include="Views\Controls\IndicatorView.fs" />
+        <Compile Include="Views\Controls\GraphicsView.fs" />
         <Compile Include="Views\Controls\Label.fs" />
         <Compile Include="Views\Controls\Span.fs" />
         <Compile Include="Views\Controls\FormattedLabel.fs" />
