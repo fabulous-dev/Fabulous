@@ -149,12 +149,6 @@ type EntryModifiers =
     static member inline reference(this: WidgetBuilder<'msg, IEntry>, value: ViewRef<Entry>) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
 
-    /// <summary>Defines whether the text will reflect scaling preferences set in the operating system.</summary>
-    /// <param name="value">The default value of this property is true.</param>
-    [<Extension>]
-    static member inline fontAutoScalingEnabled(this: WidgetBuilder<'msg, #IEntry>, value: bool) =
-        this.AddScalar(Entry.FontAutoScalingEnabled.WithValue(value))
-
 [<Extension>]
 type EntryPlatformModifiers =
     /// <summary>iOS platform specific. Sets the cursor color.</summary>
