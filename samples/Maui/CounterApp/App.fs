@@ -3,11 +3,13 @@ namespace CounterApp
 open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui
+open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Accessibility
 open Microsoft.Maui.Primitives
-
 open type Fabulous.Maui.View
+open Microsoft.Maui.Graphics
+open System
 
 module App =
     type Model =
@@ -22,6 +24,7 @@ module App =
         | SetStep of float
         | TimerToggled of bool
         | TimedTick
+        | Interaction of TouchEventArgs
 
     let initModel = { Count = 0; Step = 1; TimerOn = false }
 
@@ -36,6 +39,7 @@ module App =
 
     let update msg model =
         match msg with
+        | Interaction touchEventArgs -> model, Cmd.none
         | Increment ->
             { model with
                   Count = model.Count + model.Step },
@@ -59,30 +63,24 @@ module App =
         Application(
             ContentPage(
                 "CounterApp",
-                (VStack() {
-                    Label($"%d{model.Count}").centerTextHorizontal()
-
-                    Button("Increment", Increment)
-
-                    Button("Decrement", Decrement)
-
-                    (HStack() {
-                        Label("Timer")
-
-                        Switch(model.TimerOn, TimerToggled)
-                     })
-                        .padding(20.)
-                        .centerHorizontal()
-
-                    Slider(0.0, 10.0, double model.Step, SetStep)
-
-                    Label($"Step size: %d{model.Step}")
-                        .centerTextHorizontal()
-
-                    Button("Reset", Reset)
+                (VStack(16.0) {
+                    Label("Ima text")
+                        .background(SolidColorBrush(Color.Parse("#FF9988")))
+                        
+                    Frame()
+                        .borderColor(Colors.Red.ToFabColor())
+                        .hasShadow(true)
+                        .cornerRadius(12.)
+                        .height(120.)
+                        .width(120.)
+                        .background(
+                            LinearGradientBrush(Point(1, 0)) {
+                                GradientStop(0.1, Color.Parse("#FF9988"))
+                                GradientStop(1.0, Color.Parse("#FF0000"))
+                            }
+                        )
                  })
-                    .padding(30.)
-                    .centerVertical()
+                    .center()
             )
         )
 

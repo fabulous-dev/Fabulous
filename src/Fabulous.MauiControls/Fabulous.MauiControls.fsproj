@@ -26,6 +26,11 @@
         <Compile Include="Views\_Geometry.fs" />
         <Compile Include="Views\_NavigableElement.fs" />
         <Compile Include="Views\Shadow.fs" />
+        <Compile Include="Views\Brushes\_Brush.fs" />
+        <Compile Include="Views\Brushes\_GradientBrush.fs" />
+        <Compile Include="Views\Brushes\_GradientStop.fs" />
+        <Compile Include="Views\Brushes\SolidColorBrush.fs" />
+        <Compile Include="Views\Brushes\LinearGradientBrush.fs" />
         <Compile Include="Views\_VisualElement.fs" />
         <Compile Include="Views\GestureRecognizers\_GestureRecognizer.fs" />
         <Compile Include="Views\GestureRecognizers\TapGestureRecognizer.fs" />
