@@ -63,22 +63,27 @@ module App =
         Application(
             ContentPage(
                 "CounterApp",
-                (VStack(16.0) {
-                    Label("Ima text")
-                        .background(SolidColorBrush(Color.Parse("#FF9988")))
-                        
-                    Frame()
-                        .borderColor(Colors.Red.ToFabColor())
-                        .hasShadow(true)
-                        .cornerRadius(12.)
-                        .height(120.)
-                        .width(120.)
-                        .background(
-                            LinearGradientBrush(Point(1, 0)) {
-                                GradientStop(0.1, Color.Parse("#FF9988"))
-                                GradientStop(1.0, Color.Parse("#FF0000"))
-                            }
-                        )
+                (VStack() {
+                    Label($"%d{model.Count}").centerTextHorizontal()
+
+                    Button("Increment", Increment)
+
+                    Button("Decrement", Decrement)
+
+                    (HStack() {
+                        Label("Timer")
+
+                        Switch(model.TimerOn, TimerToggled)
+                     })
+                        .padding(20.)
+                        .centerHorizontal()
+
+                    Slider(0.0, 10.0, double model.Step, SetStep)
+
+                    Label($"Step size: %d{model.Step}")
+                        .centerTextHorizontal()
+
+                    Button("Reset", Reset)
                  })
                     .center()
             )

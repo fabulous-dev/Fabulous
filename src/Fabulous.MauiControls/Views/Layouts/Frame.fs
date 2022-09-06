@@ -29,13 +29,9 @@ module FrameBuilders =
             WidgetHelpers.buildWidgets<'msg, IFrame>
                 Frame.WidgetKey
                 [| ContentView.Content.WithValue(content.Compile()) |]
-                
-        static member inline Frame<'msg, 'marker when 'marker :> Fabulous.Maui.IView>
-            ()
-            =
-            WidgetHelpers.buildWidgets<'msg, IFrame>
-                Frame.WidgetKey
-                [||]
+
+        static member inline Frame<'msg, 'marker when 'marker :> Fabulous.Maui.IView>() =
+            WidgetHelpers.buildWidgets<'msg, IFrame> Frame.WidgetKey [||]
 
 
 [<Extension>]

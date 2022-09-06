@@ -4,7 +4,6 @@ open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
 open Microsoft.Maui.Controls
-open Microsoft.Maui.Graphics
 
 type IVisualElement =
     inherit Fabulous.Maui.INavigableElement
@@ -49,7 +48,7 @@ module VisualElement =
 
     let BackgroundWidget =
         Attributes.defineBindableWidget VisualElement.BackgroundProperty
-        
+
     let Clip =
         Attributes.defineBindableWidget VisualElement.ClipProperty
 
@@ -228,7 +227,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IVisualElement>, light: Brush, ?dark: Brush) =
         this.AddScalar(VisualElement.Background.WithValue(AppTheme.create light dark))
-    
+
     [<Extension>]
     static member inline background<'msg, 'marker, 'contentMarker when 'marker :> IVisualElement and 'contentMarker :> IBrush>
         (

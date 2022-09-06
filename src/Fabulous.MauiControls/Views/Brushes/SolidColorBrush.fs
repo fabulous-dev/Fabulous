@@ -12,7 +12,7 @@ module SolidColorBrush =
     let WidgetKey = Widgets.register<SolidColorBrush>()
 
     let Color =
-        Attributes.defineBindableAppTheme SolidColorBrush.ColorProperty
+        Attributes.defineBindableAppThemeColor SolidColorBrush.ColorProperty
 
 [<AutoOpen>]
 module SolidColorBrushBuilders =
@@ -20,7 +20,7 @@ module SolidColorBrushBuilders =
         /// <summary>SolidColorBrush, which paints an area with a solid color. For more information, see Solid color brushes.</summary>
         /// <param name="light">The color in light theme.</param>
         /// <param name="dark">The color in dark theme.</param>
-        static member inline SolidColorBrush(light: Color, ?dark: Color) =
+        static member inline SolidColorBrush(light: FabColor, ?dark: FabColor) =
             WidgetBuilder<'msg, ISolidColorBrush>(
                 SolidColorBrush.WidgetKey,
                 SolidColorBrush.Color.WithValue(AppTheme.create light dark)

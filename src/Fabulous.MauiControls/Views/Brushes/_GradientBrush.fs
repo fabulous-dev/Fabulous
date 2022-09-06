@@ -8,7 +8,6 @@ open Fabulous
 type IGradientBrush =
     inherit IBrush
 
-
 module GradientBrush =
 
     let Children =
