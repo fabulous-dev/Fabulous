@@ -13,7 +13,7 @@ menu:
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}}) -> [View]({{< ref "view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigable-element.md" >}}) -> [VisualElement]({{< ref "visual-element.md" >}}) -> [View]({{< ref "view.md" >}})  
 **Xamarin.Forms documentation:** ImageButton [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.imagebutton) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/imagebutton)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/imagebutton).

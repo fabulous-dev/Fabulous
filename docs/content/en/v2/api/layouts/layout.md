@@ -13,7 +13,7 @@ menu:
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}}) -> [View]({{< ref "view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigable-element.md" >}}) -> [VisualElement]({{< ref "visual-element.md" >}}) -> [View]({{< ref "view.md" >}})  
 **Xamarin.Forms documentation:** Layout [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.layout)
 
 ## Constructors
