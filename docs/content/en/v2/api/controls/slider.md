@@ -25,6 +25,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Slider(min: float, max: float, value: float, onValueChanged: float -> 'msg) | Define a Slider widget with the min-max bounds and the current value |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | maximumTrackColor(light: FabColor, ?dark: FabColor) | Sets the color of the maximum track depending if light or dark mode |
@@ -44,6 +45,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | onDragStarted(onDragStarted: 'msg) | Sets the event handler for the drag start event |
 
 ## Usages
+
 ```fs
 Slider(20., 80., model.Value, ValueChangedMsg)
     .maximumTrackColor(Color.Red.ToFabColor(), dark = Color.Blue.ToString()) 

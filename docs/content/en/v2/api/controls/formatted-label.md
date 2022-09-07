@@ -19,11 +19,13 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](//TODO).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | FormattedLabel() | Define a FormattedLabel widget. This widget accept Span widgets as children |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | reference(value: ViewRef&lt;Label&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Label` instance associated to this widget |

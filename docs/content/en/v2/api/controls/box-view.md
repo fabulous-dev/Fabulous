@@ -19,11 +19,13 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/boxview).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | BoxView(light: FabColor, ?dark: FabColor) | Define a BoxView widget with its fill color depending if light or dark mode |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | cornerRadius(value: float) | Sets the corner radius |

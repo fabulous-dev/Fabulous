@@ -28,6 +28,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | ImageButton(aspect: Aspect, light: Stream, onClicked: 'msg, ?dark: Stream) | Define a ImageButton widget with an image Stream depending if light or dark mode |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | borderColor(light: FabColor, ?dark: FabColor) | Sets the border color |
@@ -49,6 +50,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | onReleased(onReleased: 'msg) | Sets the event handler for the image button released event |
 
 ## Usages
+
 ```fs
 ImageButton(Aspect.AspectFit, "image-light.png", dark = "image-dark.png")
     .borderColor(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor()) 

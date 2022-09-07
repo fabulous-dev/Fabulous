@@ -25,6 +25,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Switch(isToggled: bool, onToggled: bool -> 'msg) | Define a Switch widget with its toggled state |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | thumbColor(light: FabColor, ?dark: FabColor) | Sets the thumb color depending if light or dark mode |
@@ -32,6 +33,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;Switch&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Switch` instance associated to this widget |
 
 ## Usages
+
 ```fs
 Switch(model.Toggled, ToggledMsg)
     .thumbColor(Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())

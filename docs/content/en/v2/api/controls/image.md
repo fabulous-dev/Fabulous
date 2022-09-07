@@ -28,6 +28,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Image(aspect: Aspect, light: Stream, ?dark: Stream) | Defines a Image widget with a image for light and dark mode using a stream |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | isLoading(value: bool) | Sets if the image is currently loading |
@@ -35,6 +36,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;Image&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Image` instance associated to this widget |
 
 ## Usages
+
 ```fs
 Image("image-light.png", dark = "image-dark.png")
     .isAnimationPlaying(true)

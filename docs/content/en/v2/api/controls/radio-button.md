@@ -26,6 +26,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | RadioButton(content: string, isChecked: bool, onChecked: bool -> 'msg)  | Define a RadioButton widget with a text and the checked state |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | borderColor(light: FabColor, ?dark: FabColor) | Sets the border color depending if light or dark mode |

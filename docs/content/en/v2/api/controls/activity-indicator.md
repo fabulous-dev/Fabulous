@@ -19,6 +19,7 @@ toc: true
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/activityindicator).
 
 ## Constructors
+
 | Constructors | Description |
 |--|--|
 | ActivityIndicator(isRunning: bool) | Define an ActivityIndicator widget with its current state |

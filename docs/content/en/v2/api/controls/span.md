@@ -25,6 +25,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Span(text: string) | Define a Span widget with a text |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | backgroundColor(light: FabColor, ?dark: FabColor) | Sets the background color depending if light or dark mode |
@@ -39,6 +40,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | reference(value: ViewRef&lt;Span&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Span` instance associated to this widget |
 
 ## Usages
+
 ```fs
 Span("Hello, Word!")
     .backgroundColor(Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())  

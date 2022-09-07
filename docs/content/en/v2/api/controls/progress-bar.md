@@ -26,10 +26,11 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | ProgressBar(progress: float, duration: int, easing: Easing) | Define a ProgressBar widget with an animated change of the progress value (between 0.0 and 1.0) |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | progressColor(light: FabColor, ?dark: FabColor) | Sets the progress bar color depending if light or dark mode |
-| reference(value: ViewRef&lt;ProgressBar&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ProgressBar` instance associated to this widget | 
+| reference(value: ViewRef&lt;ProgressBar&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.ProgressBar` instance associated to this widget |
 
 ## Usages
 
