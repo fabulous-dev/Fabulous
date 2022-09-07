@@ -47,6 +47,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | onReloadRequested(onReloadRequested: 'msg) | Sets the event listener for the reload requested event |
 
 ## Usages
+
 ```fs
 let cookies = CookieContainer()
 

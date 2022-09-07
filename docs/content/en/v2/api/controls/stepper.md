@@ -25,12 +25,14 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Stepper(min: float, max: float, value: float, onValueChanged: float -> 'msg) | Define a Stepper widget with the min-max bounds and the current value |
 
 ## Properties
+
 | Properties | Description |
 |--|--|
 | increment(value: float) | Sets the increment step between each selected values |
 | reference(value: ViewRef&lt;Stepper&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.Stepper` instance associated to this widget |
 
 ## Usages
+
 ```fs
 Stepper(1000., 5000., model.Value, ValueChangedMsg)
     .increment(250.)
