@@ -22,7 +22,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| IndicatorView(reference: ViewRef<IndicatorView>) | Creates a new instance of the control with the given reference. |
+| IndicatorView(reference: ViewRef<IndicatorView>) | Define a IndicatorView widget with the given reference. |
 
 ## Properties
 

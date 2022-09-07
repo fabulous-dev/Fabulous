@@ -9,7 +9,7 @@ draft: false
 images: []
 menu:
   docs:
-    parent: "controls"
+    parent: "collections"
 toc: true
 ---
 
@@ -36,7 +36,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | peekAreaInsets(value: Thickness) | Sets a value that indicates the peek area insets. |
 | peekAreaInsets(value: float) | Sets a value that indicates the peek area insets. |
 | peekAreaInsets(left: float, top: float, right: float, bottom: float) | Sets values that indicates the peek area insets. |
-| indicatorView(value: ViewRef<IndicatorView>) | Sets a value that indicates the indicator view. |
+| indicatorView(value: ViewRef&lt;IndicatorView&gt;) | Sets a value that indicates the indicator view. |
 | reference(value: ViewRef&lt;CarouselView&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.CarouselView` instance associated to this widget |
 
 ## Events

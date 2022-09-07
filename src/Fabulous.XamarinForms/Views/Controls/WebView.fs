@@ -133,5 +133,5 @@ type WebViewPlatformModifiers =
         this.AddScalar(WebView.EnableZoomControls.WithValue(value))
 
     [<Extension>]
-    static member displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
+    static member inline displayZoomControls(this: WidgetBuilder<'msg, #IWebView>, value: bool) =
         this.AddScalar(WebView.DisplayZoomControls.WithValue(value))

@@ -9,7 +9,7 @@ draft: false
 images: []
 menu:
   docs:
-    parent: "controls"
+    parent: "api"
 toc: true
 ---
 

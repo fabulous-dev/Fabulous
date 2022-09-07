@@ -84,7 +84,7 @@ type TimePickerModifiers =
     static member inline font
         (
             this: WidgetBuilder<'msg, #ITimePicker>,
-            ?size: double,
+            ?size: float,
             ?namedSize: NamedSize,
             ?attributes: FontAttributes,
             ?fontFamily: string
