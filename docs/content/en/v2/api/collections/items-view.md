@@ -7,6 +7,7 @@ date: 2022-06-03T00:00:00+00:00
 lastmod: 2022-06-03T00:00:00+00:00
 draft: false
 images: []
+weight: 412
 menu:
   docs:
     parent: "collections"
