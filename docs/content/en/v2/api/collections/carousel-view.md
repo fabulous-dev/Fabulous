@@ -13,7 +13,7 @@ menu:
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigable-element.md" >}}) -> [VisualElement]({{< ref "visual-element.md" >}})  -> [View]({{< ref "view.md" >}}) -> [View]({{< ref "items-view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "../navigable-element.md" >}}) -> [VisualElement]({{< ref "../visual-element.md" >}})  -> [View]({{< ref "../view.md" >}}) -> [View]({{< ref "items-view.md" >}})  
 **Xamarin.Forms documentation:** CarouselView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.carouselview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/carouselview)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/carouselview).
