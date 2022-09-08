@@ -1,21 +1,683 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-regular.woff2 type=font/woff2 crossorigin><link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-500.woff2 type=font/woff2 crossorigin><link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2 crossorigin><script>(()=>{var b=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,a=localStorage.getItem("theme");b&&a===null&&(localStorage.setItem("theme","dark"),document.documentElement.setAttribute("data-dark-mode","")),b&&a==="dark"&&document.documentElement.setAttribute("data-dark-mode",""),a==="dark"&&document.documentElement.setAttribute("data-dark-mode","")})()</script><link rel=stylesheet href=https://docs.fabulous.dev/main.6600c3b63112594832a975028011a6ba21205542b563b84baf571dbcbd9b3606939979a1041079499a21a0386c0dc97bd489a25bd5a3ca3e126ff971a7cb00cc.css integrity="sha512-ZgDDtjESWUgyqXUCgBGmuiEgVUK1Y7hLr1cdvL2bNgaTmXmhBBB5SZohoDhsDcl71ImiW9Wjyj4Sb/lxp8sAzA==" crossorigin=anonymous><noscript><style>img.lazyload{display:none}</style></noscript><meta name=robots content="index, follow"><meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"><meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"><title>Fabulous - F# Functional App Development, using declarative dynamic UI</title><meta name=description content="F# Functional App Development, using declarative dynamic UI"><link rel=canonical href=https://docs.fabulous.dev/><meta property="og:locale" content="en_US"><meta property="og:type" content="website"><meta property="og:title" content="Fabulous"><meta property="og:description" content="F# Functional App Development, using declarative dynamic UI"><meta property="og:url" content="https://docs.fabulous.dev/"><meta property="og:site_name" content="Fabulous"><meta property="og:updated_time" content="2022-05-23T00:00:00+00:00"><meta property="og:image" content="https://docs.fabulous.dev/fabulous.png"><meta property="og:image:alt" content="Fabulous"><meta name=twitter:card content="summary_large_image"><meta name=twitter:site content="@Tim_Lariviere"><meta name=twitter:creator content="@Tim_Lariviere"><meta name=twitter:title content="Fabulous"><meta name=twitter:description content="F# Functional App Development, using declarative dynamic UI"><meta name=twitter:image content="https://docs.fabulous.dev/fabulous.png"><meta name=twitter:image:alt content="Fabulous"><link rel=alternate type=application/rss+xml href=https://docs.fabulous.dev/index.xml><script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://docs.fabulous.dev/#/schema/organization/1","name":"Fabulous","url":"https://docs.fabulous.dev/","sameAs":["https://twitter.com/Tim_Lariviere","https://github.com/fsprojects/Fabulous"],"logo":{"@type":"ImageObject","@id":"https://docs.fabulous.dev/#/schema/image/1","url":"https://docs.fabulous.dev/logo-fabulous.png","width":512,"height":512,"caption":"Fabulous"},"image":{"@id":"https://docs.fabulous.dev/#/schema/image/1"}},{"@type":"WebSite","@id":"https://docs.fabulous.dev/#/schema/website/1","url":"https://docs.fabulous.dev/","name":"Fabulous","description":"Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL.","publisher":{"@id":"https://docs.fabulous.dev/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://docs.fabulous.dev/","url":"https://docs.fabulous.dev/","name":"Fabulous","description":"F# Functional App Development, using declarative dynamic UI","isPartOf":{"@id":"https://docs.fabulous.dev/#/schema/website/1"},"about":{"@id":"https://docs.fabulous.dev/#/schema/organization/1"},"datePublished":"2022-05-23T00:00:00CET","dateModified":"2022-05-23T00:00:00CET","breadcrumb":{"@id":"https://docs.fabulous.dev/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://docs.fabulous.dev/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://docs.fabulous.dev/"]}]},{"@type":"BreadcrumbList","@id":"https://docs.fabulous.dev/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://docs.fabulous.dev/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://docs.fabulous.dev/#/schema/image/2","url":"https://docs.fabulous.dev/fabulous.png","contentUrl":"https://docs.fabulous.dev/fabulous.png","caption":"Fabulous"}]}]}</script><meta name=theme-color content="#fff"><link rel=apple-touch-icon sizes=180x180 href=https://docs.fabulous.dev/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://docs.fabulous.dev/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://docs.fabulous.dev/favicon-16x16.png><link rel=manifest crossorigin=use-credentials href=https://docs.fabulous.dev/site.webmanifest></head><body class=home><div class=header-bar></div><header class="navbar navbar-expand-md navbar-light doks-navbar"><nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation"><a class="navbar-brand p-0 me-auto" href=https://fabulous.dev aria-label=Fabulous>Fabulous</a>
-<button class="btn btn-menu d-block d-md-none order-5" type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasDoks aria-controls=offcanvasDoks aria-label="Open main menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="offcanvas offcanvas-start border-0 py-md-1" tabindex=-1 id=offcanvasDoks data-bs-backdrop=true aria-labelledby=offcanvasDoksLabel><div class="header-bar d-md-none"></div><div class="offcanvas-header d-md-none"><h2 class="h5 offcanvas-title ps-2" id=offcanvasDoksLabel><a class=text-dark href=https://fabulous.dev>Fabulous</a></h2><button type=button class="btn-close text-reset me-2" data-bs-dismiss=offcanvas aria-label="Close main menu"></button></div><div class="offcanvas-body px-4"><h3 class="h6 text-uppercase mb-3 d-md-none">Main</h3><ul class="nav flex-column flex-md-row ms-md-n3"><li class=nav-item><a class="nav-link ps-0 py-1" href=https://docs.fabulous.dev>Docs</a></li></ul><hr class="text-black-50 my-4 d-md-none"><h3 class="h6 text-uppercase mb-3 d-md-none">Socials</h3><ul class="nav flex-column flex-md-row ms-md-auto me-md-n5 pe-md-2"><li class=nav-item><a class="nav-link ps-0 py-1" href=https://github.com/fsprojects/Fabulous><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><small class="ms-2 d-md-none">GitHub</small></a></li><li class=nav-item><a class="nav-link ps-0 py-1" href=https://twitter.com/Tim_Lariviere><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg><small class="ms-2 d-md-none">Twitter</small></a></li></ul></div></div><button id=mode class="btn btn-link order-md-1" type=button aria-label="Toggle user interface mode">
-<span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span><span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></nav></header><div class="wrap container-xxl" role=document><div class=content><div class="row flex-xl-nowrap"><div class="col-lg-5 col-xl-4 docs-sidebar d-none d-lg-block"><nav class=docs-links aria-label="Main navigation"><ul class="list-unstyled collapsible-sidebar"><li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-46b3931b9959c927df4fc65fdee94b07 aria-expanded=false>
-About</button><div class=collapse id=section-46b3931b9959c927df4fc65fdee94b07><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/about/fabulous-for-xamarinforms/>Fabulous for Xamarin.Forms</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/about/fabulous-staticview/>Fabulous.StaticView (deprecated)</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/about/they-use-fabulous/>They use Fabulous</a></li></ul></div></li><li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-6654c734ccab8f440ff0825eb443dc7f aria-expanded=false>
-Version 1</button><div class=collapse id=section-6654c734ccab8f440ff0825eb443dc7f><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/getting-started/>Getting started</a></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-a4d1982d45a8df888848781b1b4774e7 aria-expanded=false>
-Tutorials</button><div class=collapse id=section-a4d1982d45a8df888848781b1b4774e7><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/how-to/>How to write your own extensions</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/model/>Models</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/mvu/>MVU</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/dev-pitfalls/>Pitfalls and F# 5.0 support</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/dev-testing/>Testing</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/update/>The Init and Update Functions</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/dev-logging/>Traces and crashes</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/dev-tools/>Using the Fabulous command line</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/tutorials/view/>Views</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-3e57f996a3aea1880033d283d256a07a aria-expanded=false>
-API Reference</button><div class=collapse id=section-3e57f996a3aea1880033d283d256a07a><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-a456323b78d9c122f7f82472cfcaa555 aria-expanded=false>
-Controls</button><div class=collapse id=section-a456323b78d9c122f7f82472cfcaa555><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/activityindicator/>ActivityIndicator</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/boxview/>BoxView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/button/>Button</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/carouselpage/>CarouselPage</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/carouselview/>CarouselView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/checkbox/>Checkbox</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/collectionview/>CollectionView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/contentpage/>ContentPage</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/datepicker/>DatePicker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/editor/>Editor</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/ellipse/>Ellipse</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/entry/>Entry</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/flyoutpage/>FlyoutPage</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/gestures/>Gestures</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/image/>Image</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/imagebutton/>ImageButton</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/indicatorview/>IndicatorView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/label/>Label</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/layouts/>Layouts</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/line/>Line</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/listview/>ListView and ListViewGrouped</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/navigationpage/>NavigationPage</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/openglview/>OpenGLView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/path/>Path</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/picker/>Picker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/polygon/>Polygon</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/polyline/>Polyline</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/progressbar/>ProgressBar</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/radiobutton/>RadioButton</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/rectangle/>Rectangle</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/refreshview/>RefreshVIew</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/searchbar/>SearchBar</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/shell/>Shell</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/slider/>Slider</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/stepper/>Stepper</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/styling/>Styling</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/swipeview/>SwipeView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/switch/>Switch</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/tabbedpage/>TabbedPage</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/tableview/>TableView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/timepicker/>TimePicker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/controls/webview/>WebView</a></li></ul></div></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/animations/>Animations</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/custom-renderer/>Custom renderers and Custom controls</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/effects/>Effects</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/codegen-bindings/>Fabulous.CodeGen</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/navigation/>Navigation</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/popups/>Pop-ups</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/api/performance/>View and performance</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-3dc8be706a69216224c91c2bee37d0f9 aria-expanded=false>
-Extensions</button><div class=collapse id=section-3dc8be706a69216224c91c2bee37d0f9><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/extensions/ffimageloading/>FFImageLoading</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/extensions/oxyplot/>OxyPlot</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/extensions/skiasharp/>SkiaSharp</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/extensions/videomanager/>VideoManager</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v1/extensions/xamarinforms-maps/>Xamarin.Forms.Maps</a></li></ul></div></li></ul></div></li><li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-1b267619c4812cc46ee281747884ca50 aria-expanded=false>
-Version 2</button><div class=collapse id=section-1b267619c4812cc46ee281747884ca50><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/getting-started/>Getting started</a></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-5027704fbba052221b8192c347dd324b aria-expanded=false>
-Tutorials</button><div class=collapse id=section-5027704fbba052221b8192c347dd324b><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/tutorials/using-nightly-builds/>Using nightly builds</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-d07ff116d7babeec4250e8e99b20f67f aria-expanded=false>
-Development</button><div class=collapse id=section-d07ff116d7babeec4250e8e99b20f67f><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/development/styling-widgets/>Styling widgets</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-ee970452eef2feb3434e4db493978a7a aria-expanded=false>
-API Reference</button><div class=collapse id=section-ee970452eef2feb3434e4db493978a7a><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-9ce35db8b23f7f9bd775c67ace72b1a0 aria-expanded=false>
-Collections</button><div class=collapse id=section-9ce35db8b23f7f9bd775c67ace72b1a0><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/collections/carousel-view/>CarouselView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/collections/collection-view/>CollectionView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/collections/items-view/>ItemsView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/collections/list-view/>ListView</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-f2e7ce0d9a84a2a9dafb13341470c18f aria-expanded=false>
-Controls</button><div class=collapse id=section-f2e7ce0d9a84a2a9dafb13341470c18f><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/activity-indicator/>ActivityIndicator</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/box-view/>BoxView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/button/>Button</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/checkbox/>CheckBox</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/date-picker/>DatePicker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/editor/>Editor</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/element/>Element</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/entry/>Entry</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/formatted-label/>FormattedLabel</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/image-button/>ImageButton</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/image/>Image</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/indicator-view/>IndicatorView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/input-view/>InputView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/label/>Label</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/picker/>Picker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/progress-bar/>ProgressBar</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/radio-button/>RadioButton</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/search-bar/>SearchBar</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/slider/>Slider</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/span/>Span</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/stepper/>Stepper</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/switch/>Switch</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/time-picker/>TimePicker</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/controls/web-view/>WebView</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-99970d645a0bfdd37fe46f77046f9053 aria-expanded=false>
-Layouts</button><div class=collapse id=section-99970d645a0bfdd37fe46f77046f9053><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/layouts/layout/>Layout</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/layouts/templated-view/>TemplatedView</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-6a1f4d0ea459b3b6a868335b0161aa9a aria-expanded=false>
-Shapes</button><div class=collapse id=section-6a1f4d0ea459b3b6a868335b0161aa9a><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/shapes/geometries/>Geometries</a></li></ul></div></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/any-view/>AnyView</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/application/>Application</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/extending-controls/>Creating and extending controls</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/navigable-element/>NavigableElement</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/view/>View</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/api/visual-element/>VisualElement</a></li></ul></div></li><li class="my-1 ms-3"><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#section-d6dc8e34ffb16d208f2777e5c6b23062 aria-expanded=false>
-Architecture</button><div class=collapse id=section-d6dc8e34ffb16d208f2777e5c6b23062><ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small"><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/architecture/goals-of-v2/>Reasonable goals of v2</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/architecture/virtualized-collections/>Virtualized collections</a></li><li><a class="docs-link rounded" href=https://docs.fabulous.dev/v2/architecture/attribute-definitions/>Attribute definitions</a></li></ul></div></li></ul></div></li></ul></nav></div><nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation"><div class=page-links><h3>On this page</h3><nav id=TableOfContents><ul><li><a href=#documentation>Documentation</a></li><li><a href=#about-fabulous>About Fabulous</a><ul><li><a href=#fabulous-for-xamarinforms>Fabulous for Xamarin.Forms</a></li></ul></li></ul></nav></div></nav><main class="docs-content col-lg-11 col-xl-9 mx-xl-auto"><h1>Fabulous</h1><p class=lead>F# Functional App Development, using declarative dynamic UI</p><nav class=d-xl-none aria-label="Quaternary navigation"><div class=page-links><h3>On this page</h3><nav id=TableOfContents><ul><li><a href=#documentation>Documentation</a></li><li><a href=#about-fabulous>About Fabulous</a><ul><li><a href=#fabulous-for-xamarinforms>Fabulous for Xamarin.Forms</a></li></ul></li></ul></nav></div></nav><p>Never write a ViewModel class again! Conquer the world with clean dynamic UIs!</p><p>Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!</p><h2 id=documentation>Documentation <a href=#documentation class=anchor aria-hidden=true>#</a></h2><p>See also the <a href=https://docs.fabulous.dev/v2/architecture/goals-of-v2/>goals</a> for the future of Fabulous v2.</p><h2 id=about-fabulous>About Fabulous <a href=#about-fabulous class=anchor aria-hidden=true>#</a></h2><p>Fabulous aims to provide all the tools to let you create your own mobile and desktop apps using only F# and the <a href=https://guide.elm-lang.org/architecture/>Model-View-Update architecture</a> (shorten to MVU), with a great F# DSL for building dynamic UIs.<br>The combination of F# and MVU makes for a great development experience.</p><p>Note that Fabulous itself does not provide UI controls, so you&rsquo;ll need to combine it with another framework like Xamarin.Forms.</p><h3 id=fabulous-for-xamarinforms>Fabulous for Xamarin.Forms <a href=#fabulous-for-xamarinforms class=anchor aria-hidden=true>#</a></h3><p>Fabulous for Xamarin.Forms combines both frameworks with a tailored DSL to let you take advantage of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.</p><p>With Fabulous for Xamarin.Forms, you will be able to write complete applications in F# like this:</p><pre><code class=language-fs>type Model = { Text: string }
+<!doctype html>
+<html lang=en-us>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-regular.woff2
+        type=font/woff2 crossorigin>
+    <link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-500.woff2 type=font/woff2
+        crossorigin>
+    <link rel=preload as=font href=https://docs.fabulous.dev/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2
+        crossorigin>
+    <script>(() => { var b = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches, a = localStorage.getItem("theme"); b && a === null && (localStorage.setItem("theme", "dark"), document.documentElement.setAttribute("data-dark-mode", "")), b && a === "dark" && document.documentElement.setAttribute("data-dark-mode", ""), a === "dark" && document.documentElement.setAttribute("data-dark-mode", "") })()</script>
+    <link rel=stylesheet
+        href='./main.6600c3b63112594832a975028011a6ba21205542b563b84baf571dbcbd9b3606939979a1041079499a21a0386c0dc97bd489a25bd5a3ca3e126ff971a7cb00cc.css'>
+    <noscript>
+        <style>
+            img.lazyload {
+                display: none
+            }
+        </style>
+    </noscript>
+    <meta name=robots content="index, follow">
+    <meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <title>Fabulous - F# Functional App Development, using declarative dynamic UI</title>
+    <meta name=description content="F# Functional App Development, using declarative dynamic UI">
+    <link rel=canonical href=https://docs.fabulous.dev />
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fabulous">
+    <meta property="og:description" content="F# Functional App Development, using declarative dynamic UI">
+    <meta property="og:url" content="https://docs.fabulous.dev/">
+    <meta property="og:site_name" content="Fabulous">
+    <meta property="og:updated_time" content="2022-05-23T00:00:00+00:00">
+    <meta property="og:image" content="https://docs.fabulous.dev/fabulous.png">
+    <meta property="og:image:alt" content="Fabulous">
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:site content="@Tim_Lariviere">
+    <meta name=twitter:creator content="@Tim_Lariviere">
+    <meta name=twitter:title content="Fabulous">
+    <meta name=twitter:description content="F# Functional App Development, using declarative dynamic UI">
+    <meta name=twitter:image content="https://docs.fabulous.dev/fabulous.png">
+    <meta name=twitter:image:alt content="Fabulous">
+    <link rel=alternate type=application/rss+xml href=https://docs.fabulous.dev/index.xml>
+    <script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://docs.fabulous.dev/#/schema/organization/1","name":"Fabulous","url":"https://docs.fabulous.dev/","sameAs":["https://twitter.com/Tim_Lariviere","https://github.com/fsprojects/Fabulous"],"logo":{"@type":"ImageObject","@id":"https://docs.fabulous.dev/#/schema/image/1","url":"https://docs.fabulous.dev/logo-fabulous.png","width":512,"height":512,"caption":"Fabulous"},"image":{"@id":"https://docs.fabulous.dev/#/schema/image/1"}},{"@type":"WebSite","@id":"https://docs.fabulous.dev/#/schema/website/1","url":"https://docs.fabulous.dev/","name":"Fabulous","description":"Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL.","publisher":{"@id":"https://docs.fabulous.dev/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://docs.fabulous.dev/","url":"https://docs.fabulous.dev/","name":"Fabulous","description":"F# Functional App Development, using declarative dynamic UI","isPartOf":{"@id":"https://docs.fabulous.dev/#/schema/website/1"},"about":{"@id":"https://docs.fabulous.dev/#/schema/organization/1"},"datePublished":"2022-05-23T00:00:00CET","dateModified":"2022-05-23T00:00:00CET","breadcrumb":{"@id":"https://docs.fabulous.dev/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://docs.fabulous.dev/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://docs.fabulous.dev/"]}]},{"@type":"BreadcrumbList","@id":"https://docs.fabulous.dev/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://docs.fabulous.dev/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://docs.fabulous.dev/#/schema/image/2","url":"https://docs.fabulous.dev/fabulous.png","contentUrl":"https://docs.fabulous.dev/fabulous.png","caption":"Fabulous"}]}]}</script>
+    <meta name=theme-color content="#fff">
+    <link rel=apple-touch-icon sizes=180x180 href=https://docs.fabulous.dev/apple-touch-icon.png>
+    <link rel=icon type=image/png sizes=32x32 href=https://docs.fabulous.dev/favicon-32x32.png>
+    <link rel=icon type=image/png sizes=16x16 href=https://docs.fabulous.dev/favicon-16x16.png>
+    <link rel=manifest crossorigin=use-credentials href=https://docs.fabulous.dev/site.webmanifest>
+</head>
+
+<body class=home>
+    <div class=header-bar></div>
+    <header class="navbar navbar-expand-md navbar-light doks-navbar">
+        <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation"><a
+                class="navbar-brand p-0 me-auto" href=https://fabulous.dev aria-label=Fabulous>Fabulous</a>
+            <button class="btn btn-menu d-block d-md-none order-5" type=button data-bs-toggle=offcanvas
+                data-bs-target=#offcanvasDoks aria-controls=offcanvasDoks aria-label="Open main menu"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-menu">
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg></button>
+            <div class="offcanvas offcanvas-start border-0 py-md-1" tabindex=-1 id=offcanvasDoks data-bs-backdrop=true
+                aria-labelledby=offcanvasDoksLabel>
+                <div class="header-bar d-md-none"></div>
+                <div class="offcanvas-header d-md-none">
+                    <h2 class="h5 offcanvas-title ps-2" id=offcanvasDoksLabel><a class=text-dark
+                            href=https://fabulous.dev>Fabulous</a></h2><button type=button
+                        class="btn-close text-reset me-2" data-bs-dismiss=offcanvas
+                        aria-label="Close main menu"></button>
+                </div>
+                <div class="offcanvas-body px-4">
+                    <h3 class="h6 text-uppercase mb-3 d-md-none">Main</h3>
+                    <ul class="nav flex-column flex-md-row ms-md-n3">
+                        <li class=nav-item><a class="nav-link ps-0 py-1" href=https://docs.fabulous.dev>Docs</a></li>
+                    </ul>
+                    <hr class="text-black-50 my-4 d-md-none">
+                    <h3 class="h6 text-uppercase mb-3 d-md-none">Socials</h3>
+                    <ul class="nav flex-column flex-md-row ms-md-auto me-md-n5 pe-md-2">
+                        <li class=nav-item><a class="nav-link ps-0 py-1"
+                                href=https://github.com/fsprojects/Fabulous><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-github">
+                                    <path
+                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22" />
+                                </svg><small class="ms-2 d-md-none">GitHub</small></a></li>
+                        <li class=nav-item><a class="nav-link ps-0 py-1" href=https://twitter.com/Tim_Lariviere><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-twitter">
+                                    <path
+                                        d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z" />
+                                </svg><small class="ms-2 d-md-none">Twitter</small></a></li>
+                    </ul>
+                </div>
+            </div><button id=mode class="btn btn-link order-md-1" type=button aria-label="Toggle user interface mode">
+                <span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="feather feather-moon">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg></span><span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="feather feather-sun">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg></span></button>
+        </nav>
+    </header>
+    <div class="wrap container-xxl" role=document>
+        <div class=content>
+            <div class="row flex-xl-nowrap">
+                <div class="col-lg-5 col-xl-4 docs-sidebar">
+                    <nav class=docs-links aria-label="Main navigation">
+                        <ul class="list-unstyled collapsible-sidebar">
+                            <li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed"
+                                    data-bs-toggle=collapse data-bs-target=#section-46b3931b9959c927df4fc65fdee94b07
+                                    aria-expanded=false>
+                                    About</button>
+                                <div class=collapse id=section-46b3931b9959c927df4fc65fdee94b07>
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        <li><a class="docs-link rounded"
+                                                href=https://docs.fabulous.dev/about/fabulous-for-xamarinforms />Fabulous
+                                            for Xamarin.Forms</a></li>
+                                        <li><a class="docs-link rounded"
+                                                href=https://docs.fabulous.dev/about/fabulous-staticview />Fabulous.StaticView
+                                            (deprecated)</a></li>
+                                        <li><a class="docs-link rounded"
+                                                href=https://docs.fabulous.dev/about/they-use-fabulous />They use
+                                            Fabulous</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed"
+                                    data-bs-toggle=collapse data-bs-target=#section-6654c734ccab8f440ff0825eb443dc7f
+                                    aria-expanded=false>
+                                    Version 1</button>
+                                <div class=collapse id=section-6654c734ccab8f440ff0825eb443dc7f>
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        <li><a class="docs-link rounded"
+                                                href=https://docs.fabulous.dev/v1/getting-started />Getting started</a>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-a4d1982d45a8df888848781b1b4774e7
+                                                aria-expanded=false>
+                                                Tutorials</button>
+                                            <div class=collapse id=section-a4d1982d45a8df888848781b1b4774e7>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/how-to />How to
+                                                        write your own extensions</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/model />Models</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/mvu />MVU</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/dev-pitfalls />Pitfalls
+                                                        and F# 5.0 support</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/dev-testing />Testing</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/update />The
+                                                        Init and Update Functions</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/dev-logging />Traces
+                                                        and crashes</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/dev-tools />Using
+                                                        the Fabulous command line</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/tutorials/view />Views</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-3e57f996a3aea1880033d283d256a07a
+                                                aria-expanded=false>
+                                                API Reference</button>
+                                            <div class=collapse id=section-3e57f996a3aea1880033d283d256a07a>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li class="my-1 ms-3"><button
+                                                            class="btn btn-toggle align-items-center rounded collapsed"
+                                                            data-bs-toggle=collapse
+                                                            data-bs-target=#section-a456323b78d9c122f7f82472cfcaa555
+                                                            aria-expanded=false>
+                                                            Controls</button>
+                                                        <div class=collapse id=section-a456323b78d9c122f7f82472cfcaa555>
+                                                            <ul
+                                                                class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/activityindicator />ActivityIndicator</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/boxview />BoxView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/button />Button</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/carouselpage />CarouselPage</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/carouselview />CarouselView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/checkbox />Checkbox</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/collectionview />CollectionView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/contentpage />ContentPage</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/datepicker />DatePicker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/editor />Editor</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/ellipse />Ellipse</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/entry />Entry</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/flyoutpage />FlyoutPage</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/gestures />Gestures</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/image />Image</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/imagebutton />ImageButton</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/indicatorview />IndicatorView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/label />Label</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/layouts />Layouts</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/line />Line</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/listview />ListView
+                                                                    and ListViewGrouped</a></li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/navigationpage />NavigationPage</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/openglview />OpenGLView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/path />Path</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/picker />Picker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/polygon />Polygon</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/polyline />Polyline</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/progressbar />ProgressBar</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/radiobutton />RadioButton</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/rectangle />Rectangle</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/refreshview />RefreshVIew</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/searchbar />SearchBar</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/shell />Shell</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/slider />Slider</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/stepper />Stepper</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/styling />Styling</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/swipeview />SwipeView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/switch />Switch</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/tabbedpage />TabbedPage</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/tableview />TableView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/timepicker />TimePicker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v1/api/controls/webview />WebView</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/animations />Animations</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/custom-renderer />Custom
+                                                        renderers and Custom controls</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/effects />Effects</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/codegen-bindings />Fabulous.CodeGen</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/navigation />Navigation</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/popups />Pop-ups</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/api/performance />View and
+                                                        performance</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-3dc8be706a69216224c91c2bee37d0f9
+                                                aria-expanded=false>
+                                                Extensions</button>
+                                            <div class=collapse id=section-3dc8be706a69216224c91c2bee37d0f9>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/extensions/ffimageloading />FFImageLoading</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/extensions/oxyplot />OxyPlot</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/extensions/skiasharp />SkiaSharp</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/extensions/videomanager />VideoManager</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v1/extensions/xamarinforms-maps />Xamarin.Forms.Maps</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class=mb-1><button class="btn btn-toggle align-items-center rounded collapsed"
+                                    data-bs-toggle=collapse data-bs-target=#section-1b267619c4812cc46ee281747884ca50
+                                    aria-expanded=false>
+                                    Version 2</button>
+                                <div class=collapse id=section-1b267619c4812cc46ee281747884ca50>
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        <li><a class="docs-link rounded"
+                                                href=https://docs.fabulous.dev/v2/getting-started />Getting started</a>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-5027704fbba052221b8192c347dd324b
+                                                aria-expanded=false>
+                                                Tutorials</button>
+                                            <div class=collapse id=section-5027704fbba052221b8192c347dd324b>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/tutorials/using-nightly-builds />Using
+                                                        nightly builds</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-d07ff116d7babeec4250e8e99b20f67f
+                                                aria-expanded=false>
+                                                Development</button>
+                                            <div class=collapse id=section-d07ff116d7babeec4250e8e99b20f67f>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/development/styling-widgets />Styling
+                                                        widgets</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-ee970452eef2feb3434e4db493978a7a
+                                                aria-expanded=false>
+                                                API Reference</button>
+                                            <div class=collapse id=section-ee970452eef2feb3434e4db493978a7a>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li class="my-1 ms-3"><button
+                                                            class="btn btn-toggle align-items-center rounded collapsed"
+                                                            data-bs-toggle=collapse
+                                                            data-bs-target=#section-9ce35db8b23f7f9bd775c67ace72b1a0
+                                                            aria-expanded=false>
+                                                            Collections</button>
+                                                        <div class=collapse id=section-9ce35db8b23f7f9bd775c67ace72b1a0>
+                                                            <ul
+                                                                class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/collections/carousel-view />CarouselView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/collections/collection-view />CollectionView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/collections/items-view />ItemsView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/collections/list-view />ListView</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li class="my-1 ms-3"><button
+                                                            class="btn btn-toggle align-items-center rounded collapsed"
+                                                            data-bs-toggle=collapse
+                                                            data-bs-target=#section-f2e7ce0d9a84a2a9dafb13341470c18f
+                                                            aria-expanded=false>
+                                                            Controls</button>
+                                                        <div class=collapse id=section-f2e7ce0d9a84a2a9dafb13341470c18f>
+                                                            <ul
+                                                                class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/activity-indicator />ActivityIndicator</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/box-view />BoxView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/button />Button</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/checkbox />CheckBox</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/date-picker />DatePicker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/editor />Editor</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/element />Element</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/entry />Entry</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/formatted-label />FormattedLabel</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/image-button />ImageButton</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/image />Image</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/indicator-view />IndicatorView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/input-view />InputView</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/label />Label</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/picker />Picker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/progress-bar />ProgressBar</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/radio-button />RadioButton</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/search-bar />SearchBar</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/slider />Slider</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/span />Span</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/stepper />Stepper</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/switch />Switch</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/time-picker />TimePicker</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/controls/web-view />WebView</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li class="my-1 ms-3"><button
+                                                            class="btn btn-toggle align-items-center rounded collapsed"
+                                                            data-bs-toggle=collapse
+                                                            data-bs-target=#section-99970d645a0bfdd37fe46f77046f9053
+                                                            aria-expanded=false>
+                                                            Layouts</button>
+                                                        <div class=collapse id=section-99970d645a0bfdd37fe46f77046f9053>
+                                                            <ul
+                                                                class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/layouts/layout />Layout</a>
+                                                                </li>
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/layouts/templated-view />TemplatedView</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li class="my-1 ms-3"><button
+                                                            class="btn btn-toggle align-items-center rounded collapsed"
+                                                            data-bs-toggle=collapse
+                                                            data-bs-target=#section-6a1f4d0ea459b3b6a868335b0161aa9a
+                                                            aria-expanded=false>
+                                                            Shapes</button>
+                                                        <div class=collapse id=section-6a1f4d0ea459b3b6a868335b0161aa9a>
+                                                            <ul
+                                                                class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li><a class="docs-link rounded"
+                                                                        href=https://docs.fabulous.dev/v2/api/shapes/geometries />Geometries</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/any-view />AnyView</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/application />Application</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/extending-controls />Creating
+                                                        and extending controls</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/navigable-element />NavigableElement</a>
+                                                    </li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/view />View</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/api/visual-element />VisualElement</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="my-1 ms-3"><button
+                                                class="btn btn-toggle align-items-center rounded collapsed"
+                                                data-bs-toggle=collapse
+                                                data-bs-target=#section-d6dc8e34ffb16d208f2777e5c6b23062
+                                                aria-expanded=false>
+                                                Architecture</button>
+                                            <div class=collapse id=section-d6dc8e34ffb16d208f2777e5c6b23062>
+                                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/architecture/goals-of-v2 />Reasonable
+                                                        goals of v2</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/architecture/virtualized-collections />Virtualized
+                                                        collections</a></li>
+                                                    <li><a class="docs-link rounded"
+                                                            href=https://docs.fabulous.dev/v2/architecture/attribute-definitions />Attribute
+                                                        definitions</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+                    <div class=page-links>
+                        <h3>On this page</h3>
+                        <nav id=TableOfContents>
+                            <ul>
+                                <li><a href=#documentation>Documentation</a></li>
+                                <li><a href=#about-fabulous>About Fabulous</a>
+                                    <ul>
+                                        <li><a href=#fabulous-for-xamarinforms>Fabulous for Xamarin.Forms</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </nav>
+                <main class="docs-content col-lg-11 col-xl-9 mx-xl-auto">
+                    <h1>Fabulous</h1>
+                    <p class=lead>F# Functional App Development, using declarative dynamic UI</p>
+                    <nav class=d-xl-none aria-label="Quaternary navigation">
+                        <div class=page-links>
+                            <h3>On this page</h3>
+                            <nav id=TableOfContents>
+                                <ul>
+                                    <li><a href=#documentation>Documentation</a></li>
+                                    <li><a href=#about-fabulous>About Fabulous</a>
+                                        <ul>
+                                            <li><a href=#fabulous-for-xamarinforms>Fabulous for Xamarin.Forms</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </nav>
+                    <p>Never write a ViewModel class again! Conquer the world with clean dynamic UIs!</p>
+                    <p>Fabulous allows you to combine the power of functional programming and the simple
+                        Model-View-Update architecture to build any kind of mobile and desktop applications with an
+                        expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and
+                        target iOS, Android, Mac, WPF and more!</p>
+                    <h2 id=documentation>Documentation <a href=#documentation class=anchor aria-hidden=true>#</a></h2>
+                    <p>See also the <a href=https://docs.fabulous.dev/v2/architecture/goals-of-v2 />goals</a> for the
+                        future of Fabulous v2.</p>
+                    <h2 id=about-fabulous>About Fabulous <a href=#about-fabulous class=anchor aria-hidden=true>#</a>
+                    </h2>
+                    <p>Fabulous aims to provide all the tools to let you create your own mobile and desktop apps using
+                        only F# and the <a href=https://guide.elm-lang.org/architecture />Model-View-Update
+                        architecture</a> (shorten to MVU), with a great F# DSL for building dynamic UIs.<br>The
+                        combination of F# and MVU makes for a great development experience.</p>
+                    <p>Note that Fabulous itself does not provide UI controls, so you&rsquo;ll need to combine it with
+                        another framework like Xamarin.Forms.</p>
+                    <h3 id=fabulous-for-xamarinforms>Fabulous for Xamarin.Forms <a href=#fabulous-for-xamarinforms
+                            class=anchor aria-hidden=true>#</a></h3>
+                    <p>Fabulous for Xamarin.Forms combines both frameworks with a tailored DSL to let you take advantage
+                        of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.</p>
+                    <p>With Fabulous for Xamarin.Forms, you will be able to write complete applications in F# like this:
+                    </p>
+                    <pre><code class=language-fs>type Model = { Text: string }
 type Msg = ButtonClicked
 
 let init () = { Text = &quot;Hello Fabulous!&quot; }
@@ -36,6 +698,48 @@ let view model =
             )
         }
     )
-</code></pre><div class="page-footer-meta d-flex flex-column flex-md-row justify-content-between"><div class=edit-page><a href=https://github.com/fsprojects/Fabulous/blob/main/docs/content/en/_index.md><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828.0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>Edit this page on GitHub</a></div></div></main></div></div></div><footer class="footer text-muted"><div class=container-xxl><div class=row><div class="col-lg-8 order-last order-lg-first"><ul class=list-inline><li class=list-inline-item>Powered by <a class=text-muted href=https://pages.github.com>GitHub Pages</a>, <a class=text-muted href=https://gohugo.io/>Hugo</a>, and <a class=text-muted href=https://getdoks.org/>Doks</a></li></ul></div><div class="col-lg-8 order-first order-lg-last text-lg-end"><ul class=list-inline></ul></div></div></div></footer><script src=https://docs.fabulous.dev/js/bootstrap.min.fdbe9b9ba88a036135318f3c721784d684ac9e3280fe282cc80d7d49f7f9c82780cd54228c1608685a230c09984300d7946fc471734d566fcebc148b65bd16db.js integrity="sha512-/b6bm6iKA2E1MY88cheE1oSsnjKA/igsyA19Sff5yCeAzVQijBYIaFojDAmYQwDXlG/EcXNNVm/OvBSLZb0W2w==" crossorigin=anonymous defer></script>
-<script src=https://docs.fabulous.dev/js/highlight.min.838b3c1ddbb9b9165b7561f7099cb5c4355b6154aaeb65308b36bab9eb30eaa5878166aa717b399c4adddd7dd2a4e04efa14a096b190683a94630bb0c15b431e.js integrity="sha512-g4s8Hdu5uRZbdWH3CZy1xDVbYVSq62Uwiza6uesw6qWHgWaqcXs5nErd3X3SpOBO+hSglrGQaDqUYwuwwVtDHg==" crossorigin=anonymous defer></script>
-<script src=https://docs.fabulous.dev/main.min.6bcd117899ffc9e0f284a6a38e48794689fd80fbd8a0a50a6c886e47e1bfac6c90f39ecad7cdc1a52f577e7c99ed379a3b3b84adb674a5776d815dd650d71eb6.js integrity="sha512-a80ReJn/yeDyhKajjkh5Ron9gPvYoKUKbIhuR+G/rGyQ857K183BpS9XfnyZ7TeaOzuErbZ0pXdtgV3WUNcetg==" crossorigin=anonymous defer></script></body></html>
+</code></pre>
+                    <div class="page-footer-meta d-flex flex-column flex-md-row justify-content-between">
+                        <div class=edit-page><a
+                                href=https://github.com/fsprojects/Fabulous/blob/main/docs/content/en/_index.md><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-edit-2">
+                                    <path d="M17 3a2.828 2.828.0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                                </svg>Edit this page on GitHub</a></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer class="footer text-muted">
+        <div class=container-xxl>
+            <div class=row>
+                <div class="col-lg-8 order-last order-lg-first">
+                    <ul class=list-inline>
+                        <li class=list-inline-item>Powered by <a class=text-muted href=https://pages.github.com>GitHub
+                                Pages</a>, <a class=text-muted href=https://gohugo.io />Hugo</a>, and <a
+                                class=text-muted href=https://getdoks.org />Doks</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-8 order-first order-lg-last text-lg-end">
+                    <ul class=list-inline></ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script
+        src=https://docs.fabulous.dev/js/bootstrap.min.fdbe9b9ba88a036135318f3c721784d684ac9e3280fe282cc80d7d49f7f9c82780cd54228c1608685a230c09984300d7946fc471734d566fcebc148b65bd16db.js
+        integrity="sha512-/b6bm6iKA2E1MY88cheE1oSsnjKA/igsyA19Sff5yCeAzVQijBYIaFojDAmYQwDXlG/EcXNNVm/OvBSLZb0W2w=="
+        crossorigin=anonymous defer></script>
+    <script
+        src=https://docs.fabulous.dev/js/highlight.min.838b3c1ddbb9b9165b7561f7099cb5c4355b6154aaeb65308b36bab9eb30eaa5878166aa717b399c4adddd7dd2a4e04efa14a096b190683a94630bb0c15b431e.js
+        integrity="sha512-g4s8Hdu5uRZbdWH3CZy1xDVbYVSq62Uwiza6uesw6qWHgWaqcXs5nErd3X3SpOBO+hSglrGQaDqUYwuwwVtDHg=="
+        crossorigin=anonymous defer></script>
+    <script
+        src=https://docs.fabulous.dev/main.min.6bcd117899ffc9e0f284a6a38e48794689fd80fbd8a0a50a6c886e47e1bfac6c90f39ecad7cdc1a52f577e7c99ed379a3b3b84adb674a5776d815dd650d71eb6.js
+        integrity="sha512-a80ReJn/yeDyhKajjkh5Ron9gPvYoKUKbIhuR+G/rGyQ857K183BpS9XfnyZ7TeaOzuErbZ0pXdtgV3WUNcetg=="
+        crossorigin=anonymous defer></script>
+</body>
+
+</html>
