@@ -54,6 +54,8 @@ module App =
                 timerCmd()
             else
                 model, Cmd.none
+                
+    let border() = Border(Label("Im a text"), Colors.Red.ToFabColor())
 
     let view model =
         Application(
@@ -76,6 +78,8 @@ module App =
 
                     Slider(0.0, 10.0, double model.Step, SetStep)
 
+                    border()
+                    
                     Label($"Step size: %d{model.Step}")
                         .centerTextHorizontal()
 
