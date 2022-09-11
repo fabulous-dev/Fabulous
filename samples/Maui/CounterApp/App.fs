@@ -2,10 +2,6 @@ namespace CounterApp
 
 open Fabulous
 open Fabulous.Maui
-open Microsoft.Maui
-open Microsoft.Maui.Graphics
-open Microsoft.Maui.Accessibility
-open Microsoft.Maui.Primitives
 
 open type Fabulous.Maui.View
 
@@ -54,8 +50,6 @@ module App =
                 timerCmd()
             else
                 model, Cmd.none
-                
-    let border() = Border(Label("Im a text"), Colors.Red.ToFabColor())
 
     let view model =
         Application(
@@ -78,8 +72,6 @@ module App =
 
                     Slider(0.0, 10.0, double model.Step, SetStep)
 
-                    border()
-                    
                     Label($"Step size: %d{model.Step}")
                         .centerTextHorizontal()
 
