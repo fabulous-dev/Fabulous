@@ -37,10 +37,10 @@ type RotateToData =
 module VisualElementUpdaters =
     let updateVisualElementFocus oldValueOpt (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
         let target = node.Target :?> VisualElement
-        
+
         let onEventName = $"Focus_On"
         let onEvent = target.Focused
-        
+
         let offEventName = $"Focus_Off"
         let offEvent = target.Unfocused
 
@@ -50,7 +50,7 @@ module VisualElementUpdaters =
             match node.TryGetHandler(onEventName) with
             | ValueNone -> ()
             | ValueSome handler -> onEvent.RemoveHandler(handler)
-            
+
             match node.TryGetHandler(offEventName) with
             | ValueNone -> ()
             | ValueSome handler -> offEvent.RemoveHandler(handler)
@@ -65,7 +65,7 @@ module VisualElementUpdaters =
             match node.TryGetHandler(onEventName) with
             | ValueNone -> ()
             | ValueSome handler -> onEvent.RemoveHandler(handler)
-            
+
             match node.TryGetHandler(offEventName) with
             | ValueNone -> ()
             | ValueSome handler -> offEvent.RemoveHandler(handler)
@@ -85,7 +85,7 @@ module VisualElementUpdaters =
 
             node.SetHandler(onEventName, ValueSome onHandler)
             onEvent.AddHandler(onHandler)
-            
+
             let offHandler =
                 EventHandler<FocusEventArgs>
                     (fun _ args ->
@@ -94,7 +94,7 @@ module VisualElementUpdaters =
 
             node.SetHandler(offEventName, ValueSome offHandler)
             offEvent.AddHandler(offHandler)
-            
+
 module VisualElement =
     let AnchorX =
         Attributes.defineBindableFloat VisualElement.AnchorXProperty
@@ -352,7 +352,9 @@ type VisualElementModifiers =
 
     [<Extension>]
     static member inline focus(this: WidgetBuilder<'msg, #IVisualElement>, value: bool, onFocusChanged: bool -> 'msg) =
-        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ValueEventData.create value (fun args -> onFocusChanged args |> box)))
+        this.AddScalar(
+            VisualElement.FocusWithEvent.WithValue(ValueEventData.create value (fun args -> onFocusChanged args |> box))
+        )
 
     /// <summary>Animates an elements TranslationX and TranslationY properties from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="x">The x component of the final translation vector.</param>
