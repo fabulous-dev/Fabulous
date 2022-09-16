@@ -1,5 +1,6 @@
 namespace Fabulous.Maui
 
+open System
 open System.Runtime.CompilerServices
 open Fabulous
 open Microsoft.Maui
@@ -33,6 +34,67 @@ type RotateToData =
       AnimationDuration: uint32
       Easing: Easing }
 
+module VisualElementUpdaters =
+    let updateVisualElementFocus oldValueOpt (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
+        let target = node.Target :?> VisualElement
+        
+        let onEventName = $"Focus_On"
+        let onEvent = target.Focused
+        
+        let offEventName = $"Focus_Off"
+        let offEvent = target.Unfocused
+
+        match newValueOpt with
+        | ValueNone ->
+            // The attribute is no longer applied, so we clean up the events
+            match node.TryGetHandler(onEventName) with
+            | ValueNone -> ()
+            | ValueSome handler -> onEvent.RemoveHandler(handler)
+            
+            match node.TryGetHandler(offEventName) with
+            | ValueNone -> ()
+            | ValueSome handler -> offEvent.RemoveHandler(handler)
+
+            // Only clear the property if a value was set before
+            match oldValueOpt with
+            | ValueNone -> ()
+            | ValueSome _ -> target.Unfocus()
+
+        | ValueSome curr ->
+            // Clean up the old event handlers if any
+            match node.TryGetHandler(onEventName) with
+            | ValueNone -> ()
+            | ValueSome handler -> onEvent.RemoveHandler(handler)
+            
+            match node.TryGetHandler(offEventName) with
+            | ValueNone -> ()
+            | ValueSome handler -> offEvent.RemoveHandler(handler)
+
+            // Set the new value
+            if curr.Value then
+                target.Focus() |> ignore
+            else
+                target.Unfocus()
+
+            // Set the new event handlers
+            let onHandler =
+                EventHandler<FocusEventArgs>
+                    (fun _ args ->
+                        let r = curr.Event true
+                        Dispatcher.dispatch node r)
+
+            node.SetHandler(onEventName, ValueSome onHandler)
+            onEvent.AddHandler(onHandler)
+            
+            let offHandler =
+                EventHandler<FocusEventArgs>
+                    (fun _ args ->
+                        let r = curr.Event false
+                        Dispatcher.dispatch node r)
+
+            node.SetHandler(offEventName, ValueSome offHandler)
+            offEvent.AddHandler(offHandler)
+            
 module VisualElement =
     let AnchorX =
         Attributes.defineBindableFloat VisualElement.AnchorXProperty
@@ -64,9 +126,6 @@ module VisualElement =
     let IsEnabled =
         Attributes.defineBindableBool VisualElement.IsEnabledProperty
 
-    let IsFocused =
-        Attributes.defineBindableBool VisualElement.IsFocusedProperty
-
     let IsVisible =
         Attributes.defineBindableBool VisualElement.IsVisibleProperty
 
@@ -88,15 +147,11 @@ module VisualElement =
     let Visual =
         Attributes.defineBindableWithEquality<IVisual> VisualElement.VisualProperty
 
-    let Focused =
-        Attributes.defineEvent<FocusEventArgs>
-            "VisualElement_Focused"
-            (fun target -> (target :?> VisualElement).Focused)
-
-    let Unfocused =
-        Attributes.defineEvent<FocusEventArgs>
-            "VisualElement_Unfocused"
-            (fun target -> (target :?> VisualElement).Unfocused)
+    let FocusWithEvent =
+        Attributes.defineSimpleScalar
+            "VisualElement_FocusWithEvent"
+            ScalarAttributeComparers.noCompare
+            VisualElementUpdaters.updateVisualElementFocus
 
     let TranslateTo =
         Attributes.defineSimpleScalarWithEquality<TranslateToData>
@@ -296,16 +351,8 @@ type VisualElementModifiers =
         this.AddScalar(VisualElement.Visual.WithValue(value))
 
     [<Extension>]
-    static member inline isFocused(this: WidgetBuilder<'msg, #IVisualElement>, value: bool) =
-        this.AddScalar(VisualElement.IsFocused.WithValue(value))
-
-    [<Extension>]
-    static member inline onFocused(this: WidgetBuilder<'msg, #IVisualElement>, onFocused: bool -> 'msg) =
-        this.AddScalar(VisualElement.Focused.WithValue(fun args -> onFocused args.IsFocused |> box))
-
-    [<Extension>]
-    static member inline onUnfocused(this: WidgetBuilder<'msg, #IVisualElement>, onUnfocused: bool -> 'msg) =
-        this.AddScalar(VisualElement.Unfocused.WithValue(fun args -> onUnfocused args.IsFocused |> box))
+    static member inline focus(this: WidgetBuilder<'msg, #IVisualElement>, value: bool, onFocusChanged: bool -> 'msg) =
+        this.AddScalar(VisualElement.FocusWithEvent.WithValue(ValueEventData.create value (fun args -> onFocusChanged args |> box)))
 
     /// <summary>Animates an elements TranslationX and TranslationY properties from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="x">The x component of the final translation vector.</param>
