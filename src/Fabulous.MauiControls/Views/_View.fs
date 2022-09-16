@@ -34,97 +34,42 @@ type ViewModifiers =
         this.AddScalar(XFView.VerticalOptions.WithValue(value))
 
     [<Extension>]
-    static member inline center(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Center
-            | Some true -> LayoutOptions.CenterAndExpand
-
+    static member inline center(this: WidgetBuilder<'msg, #IView>) =
         this
-            .AddScalar(XFView.HorizontalOptions.WithValue(options))
-            .AddScalar(XFView.VerticalOptions.WithValue(options))
-
-
-    [<Extension>]
-    static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Center
-            | Some true -> LayoutOptions.CenterAndExpand
-
-        this.AddScalar(XFView.HorizontalOptions.WithValue(options))
+            .AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Center))
+            .AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline centerVertical(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Center
-            | Some true -> LayoutOptions.CenterAndExpand
-
-        this.AddScalar(XFView.VerticalOptions.WithValue(options))
+    static member inline centerHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline alignStartHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Start
-            | Some true -> LayoutOptions.StartAndExpand
-
-        this.AddScalar(XFView.HorizontalOptions.WithValue(options))
+    static member inline centerVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Center))
 
     [<Extension>]
-    static member inline alignStartVertical(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Start
-            | Some true -> LayoutOptions.StartAndExpand
-
-        this.AddScalar(XFView.VerticalOptions.WithValue(options))
+    static member inline alignStartHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Start))
 
     [<Extension>]
-    static member inline alignEndHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.End
-            | Some true -> LayoutOptions.EndAndExpand
-
-        this.AddScalar(XFView.HorizontalOptions.WithValue(options))
+    static member inline alignStartVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Start))
 
     [<Extension>]
-    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.End
-            | Some true -> LayoutOptions.EndAndExpand
-
-        this.AddScalar(XFView.VerticalOptions.WithValue(options))
+    static member inline alignEndHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.End))
 
     [<Extension>]
-    static member inline fillHorizontal(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Fill
-            | Some true -> LayoutOptions.FillAndExpand
-
-        this.AddScalar(XFView.HorizontalOptions.WithValue(options))
+    static member inline alignEndVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.End))
 
     [<Extension>]
-    static member inline fillVertical(this: WidgetBuilder<'msg, #IView>, ?expand: bool) =
-        let options =
-            match expand with
-            | None
-            | Some false -> LayoutOptions.Fill
-            | Some true -> LayoutOptions.FillAndExpand
+    static member inline fillHorizontal(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.HorizontalOptions.WithValue(LayoutOptions.Fill))
 
-        this.AddScalar(XFView.VerticalOptions.WithValue(options))
+    [<Extension>]
+    static member inline fillVertical(this: WidgetBuilder<'msg, #IView>) =
+        this.AddScalar(XFView.VerticalOptions.WithValue(LayoutOptions.Fill))
 
     [<Extension>]
     static member inline margin(this: WidgetBuilder<'msg, #IView>, value: Thickness) =
