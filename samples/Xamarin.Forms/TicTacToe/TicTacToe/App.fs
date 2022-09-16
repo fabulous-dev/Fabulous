@@ -227,7 +227,7 @@ module App =
                                 for row, col as pos in positions do
                                     if canPlay model model.Board.[pos] then
                                         Button("", Play pos)
-                                            .backgroundColor(Colors.lightBlue)
+                                            .background(Colors.lightBlue)
                                             .gridRow(row * 2)
                                             .gridColumn(col * 2)
                                     else
@@ -252,7 +252,7 @@ module App =
 
                             Button("Restart game", Restart)
                                 .textColor(Colors.black)
-                                .backgroundColor(Colors.lightBlue)
+                                .background(Colors.lightBlue)
                                 .font(namedSize = NamedSize.Large)
                                 .gridRow(2)
                         }

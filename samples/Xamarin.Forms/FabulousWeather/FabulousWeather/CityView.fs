@@ -87,7 +87,7 @@ module CityView =
                                     }
                                 )
                             )
-                                .backgroundColor(Styles.HourlyForecastStartColor)
+                                .background(Styles.HourlyForecastStartColor)
                      })
                         .centerHorizontal()
                         .margin(0., 30., 0., 0.)

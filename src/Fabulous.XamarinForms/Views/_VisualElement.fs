@@ -287,7 +287,7 @@ type VisualElementModifiers =
     /// <summary>Sets the background color depending if light or dark mode.</summary>
     [<Extension; Obsolete("Use background instead.")>]
     static member inline backgroundColor(this: WidgetBuilder<'msg, #IVisualElement>, light: FabColor, ?dark: FabColor) =
-        this.background(light, ?dark = dark)
+        this.AddScalar(VisualElement.BackgroundColor.WithValue(AppTheme.create light dark))
 
     /// <summary>Sets the background color depending if light or dark mode.</summary>
     [<Extension>]

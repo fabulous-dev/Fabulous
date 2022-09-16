@@ -37,7 +37,7 @@ module Components =
 
     let destroyButton text onClicked =
         Button(text, onClicked)
-            .backgroundColor(Color.Red.ToFabColor())
+            .background(Color.Red.ToFabColor())
             .textColor(Color.White.ToFabColor())
             .margin(0., 20., 0., 0.)
             .alignEndVertical(expand = true)
@@ -55,7 +55,7 @@ module Components =
                     .verticalTextAlignment(TextAlignment.Center)
                     .margin(Thickness(20., 5.))
              })
-                .backgroundColor(accentColor)
+                .background(accentColor)
         )
 
     let cellView picture name address isFavorite =
@@ -90,7 +90,7 @@ module Components =
 
     let detailActionButton (imagePath: string) onClicked =
         ImageButton(Aspect.AspectFit, imagePath, onClicked)
-            .backgroundColor(accentColor)
+            .background(accentColor)
             .size(height = 35.)
             .fillHorizontal(expand = true)
 
@@ -121,7 +121,7 @@ module Components =
         match picture with
         | None ->
             ContentView(ImageButton(Aspect.AspectFit, "addphoto.png", updatePicture))
-                .backgroundColor(Color.White.ToFabColor())
+                .background(Color.White.ToFabColor())
                 .gridRowSpan(2)
 
         | Some picture ->

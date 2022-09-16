@@ -162,7 +162,7 @@ module AboutPage =
             ScrollView(
                 (VStack() {
                     ContentView(Image(Aspect.AspectFit, "icon.png"))
-                        .backgroundColor(accentColor)
+                        .background(accentColor)
                         .size(height = 100., width = 100.)
                         .centerHorizontal()
                         .padding(15.)
