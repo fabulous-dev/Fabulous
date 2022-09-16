@@ -108,6 +108,9 @@ module VisualElement =
     let Background =
         Attributes.defineBindableAppTheme<Brush> VisualElement.BackgroundProperty
 
+    let BackgroundWidget =
+        Attributes.defineBindableWidget VisualElement.BackgroundProperty
+
     let Clip =
         Attributes.defineBindableWidget VisualElement.ClipProperty
 
@@ -282,6 +285,14 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline background(this: WidgetBuilder<'msg, #IVisualElement>, light: Brush, ?dark: Brush) =
         this.AddScalar(VisualElement.Background.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline background<'msg, 'marker, 'contentMarker when 'marker :> IVisualElement and 'contentMarker :> IBrush>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(VisualElement.BackgroundWidget.WithValue(content.Compile()))
 
     [<Extension>]
     static member inline clip<'msg, 'marker, 'contentMarker when 'marker :> IVisualElement and 'contentMarker :> IGeometry>

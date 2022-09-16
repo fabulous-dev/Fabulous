@@ -30,6 +30,10 @@ module FrameBuilders =
                 Frame.WidgetKey
                 [| ContentView.Content.WithValue(content.Compile()) |]
 
+        static member inline Frame<'msg, 'marker when 'marker :> Fabulous.Maui.IView>() =
+            WidgetHelpers.buildWidgets<'msg, IFrame> Frame.WidgetKey [||]
+
+
 [<Extension>]
 type FrameModifiers =
     /// <summary>Set the color of the frame border color</summary>

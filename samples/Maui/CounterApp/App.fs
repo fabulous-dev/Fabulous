@@ -3,11 +3,13 @@ namespace CounterApp
 open Fabulous
 open Fabulous.Maui
 open Microsoft.Maui
+open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.Accessibility
 open Microsoft.Maui.Primitives
-
 open type Fabulous.Maui.View
+open Microsoft.Maui.Graphics
+open System
 
 module App =
     type Model =
@@ -22,6 +24,7 @@ module App =
         | SetStep of float
         | TimerToggled of bool
         | TimedTick
+        | Interaction of TouchEventArgs
 
     let initModel = { Count = 0; Step = 1; TimerOn = false }
 
@@ -36,6 +39,7 @@ module App =
 
     let update msg model =
         match msg with
+        | Interaction touchEventArgs -> model, Cmd.none
         | Increment ->
             { model with
                   Count = model.Count + model.Step },
@@ -81,8 +85,7 @@ module App =
 
                     Button("Reset", Reset)
                  })
-                    .padding(30.)
-                    .centerVertical()
+                    .center()
             )
         )
 
