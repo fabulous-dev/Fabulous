@@ -7,15 +7,14 @@ date: 2022-06-02T00:00:00+00:00
 lastmod: 2022-06-02T00:00:00+00:00
 draft: false
 images: []
+weight: 432
 menu:
-docs:
-menu:
-    docs:
-        parent: "controls"
+  docs:
+    parent: "controls"
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "../navigable-element.md" >}}) -> [VisualElement]({{< ref "../visual-element.md" >}})  
 **Xamarin.Forms documentation:** InputView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.inputview)
 
 ## Constructors

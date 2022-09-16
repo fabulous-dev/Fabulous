@@ -110,7 +110,7 @@ module ContactsListPage =
             title,
             (VStack(spacing = 0.) {
                 SearchBar(model.FilterText, UpdateFilterText, Search)
-                    .backgroundColor(accentColor)
+                    .background(accentColor)
                     .cancelButtonColor(accentTextColor)
 
                 (ListView

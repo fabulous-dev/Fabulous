@@ -7,13 +7,14 @@ date: 2022-06-12T00:00:00+00:00
 lastmod: 2022-06-12T00:00:00+00:00
 draft: false
 images: []
+weight: 431
 menu:
-    docs:
-        parent: "controls"
+  docs:
+    parent: "controls"
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}}) -> [View]({{< ref "view.md" >}}) -> [Layout]({{< ref "layout.md" >}}) -> [TemplatedView]({{< ref "templated-view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "../navigable-element.md" >}}) -> [VisualElement]({{< ref "../visual-element.md" >}}) -> [View]({{< ref "../view.md" >}}) -> [Layout]({{< ref "layout.md" >}}) -> [TemplatedView]({{< ref "templated-view.md" >}})  
 **Xamarin.Forms documentation:** IndicatorView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.indicatorview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/indicatorview)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/indicatorview).
@@ -22,7 +23,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 
 | Constructors | Description |
 |--|--|
-| IndicatorView(reference: ViewRef<IndicatorView>) | Creates a new instance of the control with the given reference. |
+| IndicatorView(reference: ViewRef<IndicatorView>) | Define a IndicatorView widget with the given reference. |
 
 ## Properties
 

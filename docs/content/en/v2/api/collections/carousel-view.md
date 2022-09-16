@@ -7,13 +7,14 @@ date: 2022-06-03T00:00:00+00:00
 lastmod: 2022-06-03T00:00:00+00:00
 draft: false
 images: []
+weight: 410
 menu:
   docs:
-    parent: "controls"
+    parent: "collections"
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}})  -> [View]({{< ref "view.md" >}}) -> [View]({{< ref "items-view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "../navigable-element.md" >}}) -> [VisualElement]({{< ref "../visual-element.md" >}})  -> [View]({{< ref "../view.md" >}}) -> [View]({{< ref "items-view.md" >}})  
 **Xamarin.Forms documentation:** CarouselView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.carouselview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/carouselview)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/carouselview).
@@ -36,7 +37,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | peekAreaInsets(value: Thickness) | Sets a value that indicates the peek area insets. |
 | peekAreaInsets(value: float) | Sets a value that indicates the peek area insets. |
 | peekAreaInsets(left: float, top: float, right: float, bottom: float) | Sets values that indicates the peek area insets. |
-| indicatorView(value: ViewRef<IndicatorView>) | Sets a value that indicates the indicator view. |
+| indicatorView(value: ViewRef&lt;IndicatorView&gt;) | Sets a value that indicates the indicator view. |
 | reference(value: ViewRef&lt;CarouselView&gt;) | Sets a `ViewRef` instance to retrieve the `Xamarin.Forms.CarouselView` instance associated to this widget |
 
 ## Events

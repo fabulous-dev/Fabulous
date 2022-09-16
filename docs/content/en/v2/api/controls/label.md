@@ -7,13 +7,14 @@ date: 2022-03-24T00:00:00+00:00
 lastmod: 2022-03-24T00:00:00+00:00
 draft: false
 images: []
+weight: 433
 menu:
   docs:
     parent: "controls"
 toc: true
 ---
 
-**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "navigableelement.md" >}}) -> [VisualElement]({{< ref "visualelement.md" >}}) -> [View]({{< ref "view.md" >}})  
+**Inheritance:** [Element]({{< ref "element.md" >}}) -> [NavigableElement]({{< ref "../navigable-element.md" >}}) -> [VisualElement]({{< ref "../visual-element.md" >}}) -> [View]({{< ref "../view.md" >}})  
 **Xamarin.Forms documentation:** Label [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.label) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/text/label)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/text/label).
@@ -29,7 +30,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 | Properties | Description |
 |--|--|
 | characterSpacing(value: float) | Sets the spacing between each character of the text |
-| font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font family used |
+| font(?size: float, ?namedSize: NamedSize, ?attributes: FontAttributes, ?fontFamily: string) | Sets the font |
 | horizontalTextAlignment(value: textAlignment) | Sets the horizontal alignment of the text |
 | lineBreakMode(value: LineBreakMode) | Sets the line break mode |
 | lineHeight(value: float) | Sets the multiplier to apply to the default line height when displaying text |

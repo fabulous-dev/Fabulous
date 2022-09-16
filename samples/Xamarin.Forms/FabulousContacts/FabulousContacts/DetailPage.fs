@@ -119,7 +119,7 @@ module DetailPage =
                         .alignStartVertical()
                  })
                     .size(height = 125., width = 125.)
-                    .backgroundColor(Color.White.ToFabColor())
+                    .background(Color.White.ToFabColor())
                     .centerHorizontal()
 
                 (HStack(spacing = 20.) {
@@ -133,7 +133,7 @@ module DetailPage =
                     .centerHorizontal()
                     .margin(0., 10., 0., 10.)
              })
-                .backgroundColor(FabColor.fromHex "#448cb8")
+                .background(FabColor.fromHex "#448cb8")
                 .padding(20., 10., 20., 10.)
         with
         | ex -> raise ex
