@@ -14,6 +14,9 @@ module Shape =
     let Fill =
         Attributes.defineBindableAppTheme<Brush> Shape.FillProperty
 
+    let FillWidget =
+        Attributes.defineBindableWidget Shape.FillProperty
+
     let Stroke =
         Attributes.defineBindableAppTheme<Brush> Shape.StrokeProperty
 
@@ -70,6 +73,14 @@ type ShapeModifiers =
     [<Extension>]
     static member inline fill(this: WidgetBuilder<'msg, #IShape>, light: Brush, ?dark: Brush) =
         this.AddScalar(Shape.Fill.WithValue(AppTheme.create light dark))
+
+    [<Extension>]
+    static member inline fill<'msg, 'marker, 'contentMarker when 'marker :> IShape and 'contentMarker :> IBrush>
+        (
+            this: WidgetBuilder<'msg, 'marker>,
+            content: WidgetBuilder<'msg, 'contentMarker>
+        ) =
+        this.AddWidget(Shape.FillWidget.WithValue(content.Compile()))
 
     [<Extension>]
     static member inline stroke(this: WidgetBuilder<'msg, #IShape>, light: Brush, ?dark: Brush) =
