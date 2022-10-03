@@ -100,7 +100,7 @@ module Runners =
             | ex ->
                 _reentering <- false
 
-                if not(program.OnException ex) then
+                if not(program.ExceptionHandler ex) then
                     reraise()
 
         let start arg =
@@ -117,7 +117,7 @@ module Runners =
                     sub dispatch
             with
             | ex ->
-                if not(program.OnException(ex)) then
+                if not(program.ExceptionHandler(ex)) then
                     reraise()
 
         interface IRunner
@@ -153,7 +153,7 @@ module ViewAdapters =
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
             logger: Logger,
-            onException: exn -> bool,
+            exceptionHandler: exn -> bool,
             dispatch: 'msg -> unit,
             getViewNode: obj -> IViewNode
         ) as this =
@@ -203,9 +203,9 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex -> if not(onException ex) then reraise())
+                            | ex -> if not(exceptionHandler ex) then reraise())
             with
-            | ex -> if not(onException ex) then reraise()
+            | ex -> if not(exceptionHandler ex) then reraise()
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()
@@ -229,7 +229,7 @@ module ViewAdapters =
                 runner.Program.CanReuseView,
                 runner.Program.SyncAction,
                 runner.Program.Logger,
-                runner.Program.OnException,
+                runner.Program.ExceptionHandler,
                 runner.Dispatch,
                 getViewNode
             )

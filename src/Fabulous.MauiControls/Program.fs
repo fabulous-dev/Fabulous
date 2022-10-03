@@ -5,6 +5,7 @@ open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
 open Microsoft.Maui
 open Microsoft.Maui.Controls
+open System
 open System.Diagnostics
 
 module ViewHelpers =
@@ -93,7 +94,9 @@ module ViewHelpers =
         { Log = log
           MinLogLevel = LogLevel.Error }
 
-    let defaultOnException _exn = false
+    let defaultExceptionHandler exn =
+        Trace.WriteLine(String.Format("Unhandled exception: {0}", exn.ToString()), "Debug")
+        false
 
 module Program =
     let inline private define
@@ -108,7 +111,7 @@ module Program =
           CanReuseView = ViewHelpers.canReuseView
           SyncAction = Device.BeginInvokeOnMainThread
           Logger = ViewHelpers.defaultLogger()
-          OnException = ViewHelpers.defaultOnException }
+          ExceptionHandler = ViewHelpers.defaultExceptionHandler }
 
     /// Create a program for a static view
     let stateless (view: unit -> WidgetBuilder<unit, 'marker>) =
@@ -212,6 +215,11 @@ module Program =
               Init = traceInit
               Update = traceUpdate
               View = traceView }
+
+    /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
+    let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg, 'marker>) =
+        { program with
+            ExceptionHandler = handler }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =
