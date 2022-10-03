@@ -11,7 +11,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.400
+        dotnet-version: 6.0.401
     - name: Check code formatting
       run: |
         dotnet tool restore
