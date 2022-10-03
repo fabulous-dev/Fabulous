@@ -24,7 +24,7 @@ type Program<'arg, 'model, 'msg, 'marker> =
       Logger: Logger
       /// Exception handler for all uncaught exceptions happening in the MVU loop.
       /// Returns true if the exception was handled, false otherwise.
-      OnException: exn -> bool }
+      ExceptionHandler: exn -> bool }
 
 type IRunner =
     interface
