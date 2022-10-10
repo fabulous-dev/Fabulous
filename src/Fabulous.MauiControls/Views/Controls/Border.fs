@@ -16,6 +16,9 @@ module Border =
     let Stroke =
         Attributes.defineBindableAppTheme<Brush> Border.StrokeProperty
 
+    let StrokeWidget =
+        Attributes.defineBindableWidget Border.StrokeProperty
+
     let Content =
         Attributes.defineBindableWidget Border.ContentProperty
 
@@ -114,6 +117,24 @@ module BorderBuilders =
                         Border.StrokeShape.WithValue(Rectangle())
                     ),
                     ValueSome [| Border.Content.WithValue(content.Compile()) |],
+                    ValueNone
+                )
+            )
+
+        /// <summary>Border is a container control that draws a border, background, or both, around another control. A Border can only contain one child object. If you want to put a border around multiple objects, wrap them in a container object such as a layout</summary>
+        /// <param name="stroke">The stroke brush widget</param>
+        static member inline Border<'msg, 'marker, 'stroke when 'marker :> Fabulous.Maui.IView and 'stroke :> Fabulous.Maui.IBrush>
+            (
+                content: WidgetBuilder<'msg, 'marker>,
+                stroke: WidgetBuilder<'msg, 'stroke>
+            ) =
+            WidgetBuilder<'msg, IBorder>(
+                Border.WidgetKey,
+                AttributesBundle(
+                    // By spec we need to set StrokeShape to Rectangle
+                    StackList.one(Border.StrokeShape.WithValue(Rectangle())),
+                    ValueSome [| Border.Content.WithValue(content.Compile())
+                                 Border.StrokeWidget.WithValue(stroke.Compile()) |],
                     ValueNone
                 )
             )
