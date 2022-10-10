@@ -37,10 +37,10 @@ module VisualElementUpdaters =
     let updateVisualElementFocus oldValueOpt (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
         let target = node.Target :?> VisualElement
 
-        let onEventName = $"Focus_On"
+        let onEventName = "Focus_On"
         let onEvent = target.Focused
 
-        let offEventName = $"Focus_Off"
+        let offEventName = "Focus_Off"
         let offEvent = target.Unfocused
 
         match newValueOpt with
@@ -78,18 +78,20 @@ module VisualElementUpdaters =
             // Set the new event handlers
             let onHandler =
                 EventHandler<FocusEventArgs>
-                    (fun _ args ->
-                        let r = curr.Event true
-                        Dispatcher.dispatch node r)
+                    (fun sender args ->
+                        if not (sender :?> VisualElement).IsFocused then
+                            let r = curr.Event true
+                            Dispatcher.dispatch node r)
 
             node.SetHandler(onEventName, ValueSome onHandler)
             onEvent.AddHandler(onHandler)
 
             let offHandler =
                 EventHandler<FocusEventArgs>
-                    (fun _ args ->
-                        let r = curr.Event false
-                        Dispatcher.dispatch node r)
+                    (fun sender args ->
+                        if (sender :?> VisualElement).IsFocused then
+                            let r = curr.Event false
+                            Dispatcher.dispatch node r)
 
             node.SetHandler(offEventName, ValueSome offHandler)
             offEvent.AddHandler(offHandler)
