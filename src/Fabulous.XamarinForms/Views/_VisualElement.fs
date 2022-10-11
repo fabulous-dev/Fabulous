@@ -34,7 +34,11 @@ type RotateToData =
       Easing: Easing }
 
 module VisualElementUpdaters =
-    let updateVisualElementFocus (oldValueOpt: ValueEventData<bool, bool> voption) (newValueOpt: ValueEventData<bool, bool> voption) (node: IViewNode) =
+    let updateVisualElementFocus
+        (oldValueOpt: ValueEventData<bool, bool> voption)
+        (newValueOpt: ValueEventData<bool, bool> voption)
+        (node: IViewNode)
+        =
         let target = node.Target :?> VisualElement
 
         let onEventName = "Focus_On"
@@ -70,12 +74,13 @@ module VisualElementUpdaters =
             | ValueSome handler -> offEvent.RemoveHandler(handler)
 
             // Change the focus state, except if the old value was the same
-            if oldValueOpt.IsSome && oldValueOpt.Value.Value = curr.Value then
+            if oldValueOpt.IsSome
+               && oldValueOpt.Value.Value = curr.Value then
                 ()
             else
                 match struct (curr.Value, target.IsFocused) with
-                | struct(true, false) -> target.Focus() |> ignore
-                | struct(false, true) -> target.Unfocus()
+                | struct (true, false) -> target.Focus() |> ignore
+                | struct (false, true) -> target.Unfocus()
                 | _ -> ()
 
             // Set the new event handlers
