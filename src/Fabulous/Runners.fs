@@ -203,9 +203,13 @@ module ViewAdapters =
                             try
                                 Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                             with
-                            | ex -> if not(exceptionHandler ex) then reraise())
+                            | ex ->
+                                if not(exceptionHandler ex) then
+                                    reraise())
             with
-            | ex -> if not(exceptionHandler ex) then reraise()
+            | ex ->
+                if not(exceptionHandler ex) then
+                    reraise()
 
         /// Disposes the ViewAdapter
         member _.Dispose() = _stateSubscription.Dispose()

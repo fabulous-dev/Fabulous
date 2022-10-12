@@ -209,11 +209,11 @@ module Program =
               Init = traceInit
               Update = traceUpdate
               View = traceView }
-        
+
     /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
     let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg, 'marker>) =
         { program with
-            ExceptionHandler = handler }
+              ExceptionHandler = handler }
 
 [<RequireQualifiedAccess>]
 module CmdMsg =
