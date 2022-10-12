@@ -198,6 +198,9 @@ module VisualElement =
                     view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing)
                     |> ignore)
 
+    let ScaleX =
+        Attributes.defineBindableFloat VisualElement.ScaleXProperty
+
     let ScaleXTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
             "View_ScaleXTo"
@@ -209,6 +212,9 @@ module VisualElement =
                 | ValueSome data ->
                     view.ScaleXTo(data.Scale, data.AnimationDuration, data.Easing)
                     |> ignore)
+
+    let ScaleY =
+        Attributes.defineBindableFloat VisualElement.ScaleYProperty
 
     let ScaleYTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
@@ -506,6 +512,12 @@ type VisualElementAnimationModifiers =
             )
         )
 
+    /// <summary>ScaleX property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="value">The value of the final scale vector.</param>
+    [<Extension>]
+    static member inline scaleX(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
+        this.AddScalar(VisualElement.ScaleX.WithValue(value))
+
     /// <summary>Animates elements Scale property from their current values to the new values. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="scale">The value of the final scale vector.</param>
     /// <param name="duration">The time, in milliseconds, over which to animate the transition. The default is 250.</param>
@@ -545,6 +557,12 @@ type VisualElementAnimationModifiers =
                   Easing = easing }
             )
         )
+
+    /// <summary>ScaleY property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
+    /// <param name="value">The value of the final scale vector.</param>
+    [<Extension>]
+    static member inline scaleY(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
+        this.AddScalar(VisualElement.ScaleY.WithValue(value))
 
     /// <summary>Animates elements ScaleY property from their current value to the new value. This ensures that the input layout is in the same position as the visual layout.</summary>
     /// <param name="scale">The value of the final scale vector.</param>
