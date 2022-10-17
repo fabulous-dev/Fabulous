@@ -2,7 +2,6 @@ namespace Fabulous.Maui
 
 open System.Runtime.CompilerServices
 open Fabulous
-open Microsoft.Maui
 open Microsoft.Maui.Controls
 
 type IViewCell =
@@ -20,7 +19,7 @@ module ViewCell =
 [<AutoOpen>]
 module ViewCellBuilders =
     type Fabulous.Maui.View with
-        static member inline ViewCell<'msg, 'marker when 'marker :> IView>(view: WidgetBuilder<'msg, 'marker>) =
+        static member inline ViewCell<'msg, 'marker when 'marker :> Fabulous.Maui.IView>(view: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IViewCell> ViewCell.WidgetKey [| ViewCell.View.WithValue(view.Compile()) |]
 
 [<Extension>]
