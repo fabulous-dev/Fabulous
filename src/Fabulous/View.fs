@@ -32,6 +32,7 @@ module View =
         let replaceWith (oldAttr: ScalarAttribute) =
             let fnWithBoxing (msg: obj) =
                 let oldFn = unbox<obj -> obj> oldAttr.Value
+
                 if msg.GetType() = typeof<'newMsg> then
                     box msg
                 else
@@ -45,7 +46,7 @@ module View =
                     box msg
                 else
                     unbox<'oldMsg> msg |> fn |> box
-            
+
             MapMsg.MapMsg.WithValue(mappedFn)
 
         let builder =
