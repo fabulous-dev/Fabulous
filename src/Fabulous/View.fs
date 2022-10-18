@@ -30,16 +30,23 @@ module View =
     /// Map the widget's message type to the parent's message type to allow for view composition
     let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
         let replaceWith (oldAttr: ScalarAttribute) =
-            let fnWithBoxing: obj -> obj =
-                unbox<obj -> obj> oldAttr.Value
-                >> unbox
-                >> fn
-                >> box
+            let fnWithBoxing (msg: obj) =
+                let oldFn = unbox<obj -> obj> oldAttr.Value
+                if msg.GetType() = typeof<'newMsg> then
+                    box msg
+                else
+                    oldFn msg |> unbox<'oldMsg> |> fn |> box
 
             { oldAttr with Value = fnWithBoxing }
 
         let defaultWith () =
-            MapMsg.MapMsg.WithValue(unbox<'oldMsg> >> fn >> box)
+            let mappedFn (msg: obj) =
+                if msg.GetType() = typeof<'newMsg> then
+                    box msg
+                else
+                    unbox<'oldMsg> msg |> fn |> box
+            
+            MapMsg.MapMsg.WithValue(mappedFn)
 
         let builder =
             x.AddOrReplaceScalar(MapMsg.MapMsg.Key, replaceWith, defaultWith)
