@@ -35,6 +35,58 @@ module TestUI_Attributes =
 
             { Key = key; Name = name }
 
+        let defineTappable name : ScalarAttributeDefinition<obj, obj> =
+            let key =
+                ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
+                    (fun x -> x),
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ newValueOpt node ->
+
+                        let btn = node.Target :?> IButton
+
+                        match node.TryGetHandler<int>(name) with
+                        | ValueNone -> ()
+                        | ValueSome handlerId -> btn.RemoveTapListener handlerId
+
+                        match newValueOpt with
+                        | ValueNone -> node.SetHandler(name, ValueNone)
+
+                        | ValueSome msg ->
+                            let handler () = Dispatcher.dispatch node msg
+
+                            let handlerId = btn.AddTapListener handler
+                            node.SetHandler<int>(name, ValueSome handlerId))
+                )
+                |> AttributeDefinitionStore.registerScalar
+
+            { Key = key; Name = name }
+
+        let defineContainerTappable name : ScalarAttributeDefinition<obj, obj> =
+            let key =
+                ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
+                    (fun x -> x),
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ newValueOpt node ->
+
+                        let btn = node.Target :?> IContainer
+
+                        match node.TryGetHandler<int>(name) with
+                        | ValueNone -> ()
+                        | ValueSome handlerId -> btn.RemoveTapListener handlerId
+
+                        match newValueOpt with
+                        | ValueNone -> node.SetHandler(name, ValueNone)
+
+                        | ValueSome msg ->
+                            let handler () = Dispatcher.dispatch node msg
+
+                            let handlerId = btn.AddTapListener handler
+                            node.SetHandler<int>(name, ValueSome handlerId))
+                )
+                |> AttributeDefinitionStore.registerScalar
+
+            { Key = key; Name = name }
+
 
 
 
@@ -59,8 +111,11 @@ module TestUI_Attributes =
                     "Container_Children"
                     (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
+            let Tap = defineContainerTappable "Container_Tap"
+
         module Button =
             let Pressed = definePressable "Button_Pressed"
+            let Tap = defineTappable "Button_Tap"
 
 
         module Automation =

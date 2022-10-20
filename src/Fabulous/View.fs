@@ -28,12 +28,12 @@ module View =
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(Memo.MemoWidgetKey, Memo.MemoAttribute.WithValue(memo))
 
     /// Map the widget's message type to the parent's message type to allow for view composition
-    let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+    let map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
         let replaceWith (oldAttr: ScalarAttribute) =
             let fnWithBoxing (msg: obj) =
                 let oldFn = unbox<obj -> obj> oldAttr.Value
 
-                if msg.GetType() = typeof<'newMsg> then
+                if typeof<'newMsg>.IsAssignableFrom (msg.GetType()) then
                     box msg
                 else
                     oldFn msg |> unbox<'oldMsg> |> fn |> box
@@ -42,7 +42,7 @@ module View =
 
         let defaultWith () =
             let mappedFn (msg: obj) =
-                if msg.GetType() = typeof<'newMsg> then
+                if typeof<'newMsg>.IsAssignableFrom (msg.GetType()) then
                     box msg
                 else
                     unbox<'oldMsg> msg |> fn |> box

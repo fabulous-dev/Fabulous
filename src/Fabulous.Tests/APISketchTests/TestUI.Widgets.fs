@@ -107,6 +107,24 @@ module TestUI_Widgets =
             ) =
             this.AddScalar(Attributes.Text.Record.WithValue(value))
 
+
+        [<Extension>]
+        static member inline tap<'msg, 'marker when 'marker :> TestButtonMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: 'msg
+            ) =
+            this.AddScalar(Attributes.Button.Tap.WithValue(value))
+
+
+        [<Extension>]
+        static member inline tap2<'msg, 'marker when 'marker :> TestStackMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: 'msg
+            ) =
+            this.AddScalar(Attributes.Container.Tap.WithValue(value))
+
     ///----------------
     ///----------------
 

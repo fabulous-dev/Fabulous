@@ -1,6 +1,7 @@
 namespace Fabulous.Tests.APISketchTests
 
 open Fabulous.StackAllocatedCollections
+open Fabulous.Tests.APISketchTests.Platform
 open NUnit.Framework
 
 open Platform
@@ -847,3 +848,169 @@ module Attributes =
         instance.ProcessMessage(())
 
         Assert.AreEqual(label.TextColor, "red")
+
+module ViewHelpers =
+    type ChildMsg = | ChildClick
+
+    type ParentMsg =
+        | ParentClick
+        | ParentTap
+        | ChildMessage of ChildMsg
+
+    type GrandParentMsg =
+        | GrandParentClick
+        | GrandParentTap
+        | ParentMessage of ParentMsg
+
+    [<Test>]
+    let ``Widget converted with View.map dispatches the right message type`` () =
+        let mutable expectedMsg = Unchecked.defaultof<ParentMsg>
+
+        let childView =
+            Button("Child button", ChildClick)
+                .automationId("childButton")
+
+        let parentView model =
+            Stack() {
+                Button("Parent button", ParentClick)
+                    .automationId("parentButton")
+
+                (View.map ChildMessage childView).tap(ParentTap)
+            }
+
+        let init () = true
+
+        let update msg model =
+            Assert.AreEqual(expectedMsg, msg)
+            not model
+
+        let program =
+            StatefulWidget.mkSimpleView init update parentView
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let childButton = find<TestButton> tree "childButton"
+        let parentButton = find<TestButton> tree "parentButton"
+
+        expectedMsg <- ParentClick
+        parentButton.Press()
+
+        expectedMsg <- ChildMessage ChildClick
+        childButton.Press()
+
+    [<Test>]
+    let ``Adding property modifiers to widget converted with View.map is valid`` () =
+        let childView =
+            Button("Child button", ChildClick)
+                .automationId("childButton")
+
+        let parentView model =
+            Stack() {
+                (View.map ChildMessage childView)
+                    .textColor("blue")
+            }
+
+        let init () = true
+        let update _msg model = not model
+
+        let program =
+            StatefulWidget.mkSimpleView init update parentView
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let childButton =
+            find<TestButton> tree "childButton" :> IText
+
+        Assert.AreEqual(childButton.TextColor, "blue")
+
+    [<Test>]
+    let ``Adding event modifiers to widget converted with View.map still dispatches the right message type`` () =
+        let mutable expectedMsg = Unchecked.defaultof<ParentMsg>
+
+        let childView =
+            Button("Child button", ChildClick)
+                .automationId("childButton")
+
+        let parentView model =
+            Stack() { (View.map ChildMessage childView).tap(ParentTap) }
+
+        let init () = true
+
+        let update msg model =
+            Assert.AreEqual(expectedMsg, msg)
+            not model
+
+        let program =
+            StatefulWidget.mkSimpleView init update parentView
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let childButton = find<TestButton> tree "childButton"
+
+        expectedMsg <- ParentTap
+        childButton.Tap()
+
+    [<Test>]
+    let ``Cascading View.map produces the right result`` () =
+        let mutable expectedMsg = Unchecked.defaultof<GrandParentMsg>
+
+        let childView =
+            Button("Child button", ChildClick)
+                .automationId("childButton")
+
+        let parentView =
+            Stack() {
+                Button("Parent button", ParentClick)
+                    .automationId("parentButton")
+
+                (View.map ChildMessage childView).tap(ParentTap)
+            }
+
+        let grandParentView model =
+            Stack() {
+                Button("Grand Parent button", GrandParentClick)
+                    .automationId("grandParentButton")
+
+                (View.map ParentMessage parentView)
+                    .automationId("parentStack")
+                    .tap2(GrandParentTap)
+            }
+
+
+        let init () = true
+
+        let update msg model =
+            Assert.AreEqual(expectedMsg, msg)
+            not model
+
+        let program =
+            StatefulWidget.mkSimpleView init update grandParentView
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let childButton = find<TestButton> tree "childButton"
+        let parentButton = find<TestButton> tree "parentButton"
+
+        let grandParentButton =
+            find<TestButton> tree "grandParentButton"
+
+        let parentStack = find<TestStack> tree "parentStack"
+
+        expectedMsg <- ParentMessage(ChildMessage ChildClick)
+        childButton.Press()
+
+        expectedMsg <- ParentMessage ParentTap
+        childButton.Tap()
+
+        expectedMsg <- ParentMessage ParentClick
+        parentButton.Press()
+
+        expectedMsg <- GrandParentClick
+        grandParentButton.Press()
+
+        expectedMsg <- GrandParentTap
+        parentStack.Tap()
