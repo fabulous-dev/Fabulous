@@ -13,7 +13,7 @@ module ViewHelpers =
 
 module View =
     /// Avoid recomputing the whole subtree when the key doesn't change
-    let lazy'<'msg, 'key, 'marker when 'key: equality>
+    let inline lazy'<'msg, 'key, 'marker when 'key: equality>
         (fn: 'key -> WidgetBuilder<'msg, 'marker>)
         (key: 'key)
         : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
@@ -28,7 +28,7 @@ module View =
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(Memo.MemoWidgetKey, Memo.MemoAttribute.WithValue(memo))
 
     /// Map the widget's message type to the parent's message type to allow for view composition
-    let map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+    let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
         let replaceWith (oldAttr: ScalarAttribute) =
             let fnWithBoxing (msg: obj) =
                 let oldFn = unbox<obj -> obj> oldAttr.Value
