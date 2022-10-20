@@ -118,7 +118,16 @@ module TestUI_Widgets =
 
 
         [<Extension>]
-        static member inline tap2<'msg, 'marker when 'marker :> TestStackMarker>
+        static member inline tap2<'msg, 'marker when 'marker :> TestButtonMarker>
+            (
+                this: WidgetBuilder<'msg, 'marker>,
+                value: 'msg
+            ) =
+            this.AddScalar(Attributes.Button.Tap2.WithValue(value))
+
+
+        [<Extension>]
+        static member inline tapContainer<'msg, 'marker when 'marker :> TestStackMarker>
             (
                 this: WidgetBuilder<'msg, 'marker>,
                 value: 'msg

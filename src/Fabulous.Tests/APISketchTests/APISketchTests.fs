@@ -954,7 +954,7 @@ module ViewHelpers =
         childButton.Tap()
 
     [<Test>]
-    let ``Cascading View.map produces the right result`` () =
+    let ``Several layers of View.map produce the right result`` () =
         let mutable expectedMsg = Unchecked.defaultof<GrandParentMsg>
 
         let childView =
@@ -976,7 +976,7 @@ module ViewHelpers =
 
                 (View.map ParentMessage parentView)
                     .automationId("parentStack")
-                    .tap2(GrandParentTap)
+                    .tapContainer(GrandParentTap)
             }
 
 
@@ -1014,3 +1014,41 @@ module ViewHelpers =
 
         expectedMsg <- GrandParentTap
         parentStack.Tap()
+
+    [<Test>]
+    let ``Cascading View.map produce the right result`` () =
+        let mutable expectedMsg = Unchecked.defaultof<GrandParentMsg>
+
+        let childView =
+            Button("Child button", ChildClick)
+                .automationId("childButton")
+
+        let parentView =
+            (View.map ChildMessage childView).tap(ParentTap)
+
+        let grandParentView model =
+            (View.map ParentMessage parentView)
+                .tap2(GrandParentTap)
+
+        let init () = true
+
+        let update msg model =
+            Assert.AreEqual(expectedMsg, msg)
+            not model
+
+        let program =
+            StatefulWidget.mkSimpleView init update grandParentView
+
+        let instance = Run.Instance program
+        let tree = instance.Start()
+
+        let childButton = find<TestButton> tree "childButton"
+
+        expectedMsg <- ParentMessage(ChildMessage ChildClick)
+        childButton.Press()
+
+        expectedMsg <- ParentMessage ParentTap
+        childButton.Tap()
+
+        expectedMsg <- GrandParentTap
+        childButton.Tap2()

@@ -61,6 +61,32 @@ module TestUI_Attributes =
 
             { Key = key; Name = name }
 
+        let defineTappable2 name : ScalarAttributeDefinition<obj, obj> =
+            let key =
+                ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
+                    (fun x -> x),
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ newValueOpt node ->
+
+                        let btn = node.Target :?> IButton
+
+                        match node.TryGetHandler<int>(name) with
+                        | ValueNone -> ()
+                        | ValueSome handlerId -> btn.RemoveTap2Listener handlerId
+
+                        match newValueOpt with
+                        | ValueNone -> node.SetHandler(name, ValueNone)
+
+                        | ValueSome msg ->
+                            let handler () = Dispatcher.dispatch node msg
+
+                            let handlerId = btn.AddTap2Listener handler
+                            node.SetHandler<int>(name, ValueSome handlerId))
+                )
+                |> AttributeDefinitionStore.registerScalar
+
+            { Key = key; Name = name }
+
         let defineContainerTappable name : ScalarAttributeDefinition<obj, obj> =
             let key =
                 ScalarAttributeDefinition.CreateAttributeData<obj, obj>(
@@ -116,6 +142,7 @@ module TestUI_Attributes =
         module Button =
             let Pressed = definePressable "Button_Pressed"
             let Tap = defineTappable "Button_Tap"
+            let Tap2 = defineTappable2 "Button_Tap2"
 
 
         module Automation =
