@@ -1,7 +1,7 @@
 name: Build
 on:
    push:
-     branches: [ 'v2.0' ]
+     branches: [ 'v2.1' ]
      paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
@@ -11,13 +11,13 @@ jobs:
     runs-on: macos-latest
     env:
       SLN_FILE: Fabulous-NoSamples.sln
-      VERSION: 2.0.10
+      VERSION: 2.1.0
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.401
+        dotnet-version: 7.0.0
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
