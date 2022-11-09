@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
     </PropertyGroup>
@@ -13,7 +13,7 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
         <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-        <PackageReference Update="FSharp.Core" Version="6.0.4" />
+        <PackageReference Update="FSharp.Core" Version="7.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />

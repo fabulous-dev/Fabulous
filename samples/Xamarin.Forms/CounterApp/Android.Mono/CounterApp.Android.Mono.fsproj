@@ -84,10 +84,10 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FSharp.Android.Resource" Version="1.0.4" />
-        <PackageReference Include="FSharp.Core" Version="6.0.4" />
+        <PackageReference Include="FSharp.Core" Version="7.0.0" />
         <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.2" />
         <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
 </Project>

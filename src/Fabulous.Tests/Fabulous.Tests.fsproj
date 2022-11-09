@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
     </PropertyGroup>
@@ -24,7 +24,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Update="FSharp.Core" Version="6.0.4" />
+        <PackageReference Update="FSharp.Core" Version="7.0.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />

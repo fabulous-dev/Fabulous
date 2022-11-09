@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net7.0;netstandard2.1</TargetFrameworks>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <VersionPrefix>2.0.1</VersionPrefix>
+        <VersionPrefix>2.1.0</VersionPrefix>
         <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
@@ -34,7 +34,7 @@
         <Compile Include="ViewRef.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" Version="6.0.0" />
+        <PackageReference Include="FSharp.Core" Version="7.0.0" />
         <PackageReference Include="System.Memory" Version="4.5.5" />
     </ItemGroup>
 </Project>
