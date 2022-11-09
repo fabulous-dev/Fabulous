@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net6.0-ios;net6.0-android;net6.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks>net7.0;net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
         <UseMaui>true</UseMaui>
         <UseMauiCore>true</UseMauiCore>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <VersionPrefix>2.0.1</VersionPrefix>
+        <VersionPrefix>2.1.0</VersionPrefix>
         <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
@@ -139,7 +139,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FSharp.Core" Version="6.0.0" />
+      <PackageReference Include="FSharp.Core" Version="7.0.0" />
       <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-      <PackageReference Include="FSharp.Core" Version="6.0.4" />
+      <PackageReference Include="FSharp.Core" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -52,7 +52,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "6.0.5"
+      "defaultValue": "7.0.0"
     },
     "FSharpAndroidResourceSdk": {
       "type": "parameter",

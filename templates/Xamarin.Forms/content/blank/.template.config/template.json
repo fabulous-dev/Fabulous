@@ -61,7 +61,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "5.0.0.2337"
+      "defaultValue": "5.0.0.2515"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
@@ -73,7 +73,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "6.0.1"
+      "defaultValue": "7.0.0"
     },
     "XamarinCommunityToolkitSdk": {
       "type": "parameter",
