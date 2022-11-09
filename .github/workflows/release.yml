@@ -24,14 +24,14 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-restore --configuration Release ${SLN_FILE}
+      run: dotnet build ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-restore --configuration Release
     - name: Test
-      run: dotnet test -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-build --configuration Release ${SLN_FILE}
+      run: dotnet test ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-build --configuration Release
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g"
-        dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs ${SLN_FILE}
-        dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs templates/Xamarin.Forms/Fabulous.XamarinForms.Templates.proj
+        dotnet pack ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs
+        dotnet pack templates/Xamarin.Forms/Fabulous.XamarinForms.Templates.proj -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
