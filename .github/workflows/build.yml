@@ -6,12 +6,16 @@ on:
 
 permissions: write-all
 
+env:
+  VERSION: 2.1.0
+
 jobs:
-  build:
+  xf:
+    name: Fabulous.XamarinForms
     runs-on: macos-latest
     env:
-      SLN_FILE: Fabulous-NoSamples.sln
-      VERSION: 2.1.0
+      SLN_FILE: Fabulous.XamarinForms.NoSamples.sln
+      TEMPLATE_PROJ: templates/Xamarin.Forms/Fabulous.XamarinForms.Templates.proj
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -21,14 +25,43 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-restore --configuration Release ${SLN_FILE}
+      run: dotnet build ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-restore --configuration Release
     - name: Test
-      run: dotnet test -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-build --configuration Release ${SLN_FILE}
+      run: dotnet test ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-build --configuration Release
     - name: Pack
       run: |
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
-        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs ${SLN_FILE}
-        dotnet pack -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs templates/Xamarin.Forms/Fabulous.XamarinForms.Templates.proj
+        dotnet pack ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs
+        dotnet pack ${TEMPLATE_PROJ} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs
+    - name: Push
+      run: |
+        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+
+  maui:
+    name: Fabulous.MauiControls
+    runs-on: macos-12
+    env:
+      SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+      TEMPLATE_PROJ: templates/Maui/Fabulous.MauiControls.Templates.proj
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-restore --configuration Release
+    - name: Test
+      run: dotnet test ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --no-build --configuration Release
+    - name: Pack
+      run: |
+        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${VERSION}-nightly-${GITHUB_RUN_ID}/g"
+        dotnet pack ${SLN_FILE} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} --configuration Release --output nupkgs
+        dotnet pack ${TEMPLATE_PROJ} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

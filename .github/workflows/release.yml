@@ -7,7 +7,8 @@ on:
 permissions: write-all
 
 jobs:
-  build:
+  xf:
+    name: Fabulous.XamarinForms
     runs-on: macos-latest
     environment: nuget
     env:
@@ -31,6 +32,35 @@ jobs:
         find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g"
         dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs ${SLN_FILE}
         dotnet pack -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs templates/Xamarin.Forms/Fabulous.XamarinForms.Templates.proj
+    - name: Push
+      run: |
+        dotnet nuget push "nupkgs/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+
+  maui:
+    name: Fabulous.MauiControls
+    runs-on: macos-12
+    environment: nuget
+    env:
+      SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+    steps:
+    - uses: actions/checkout@v3
+    - name: Extract version from tag
+      uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-restore --configuration Release
+    - name: Test
+      run: dotnet test ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-build --configuration Release
+    - name: Pack
+      run: |
+        find templates -type f -name template.json | xargs sed -i bak "s/FABULOUS_PKG_VERSION/${MAJOR}.${MINOR}.${PATCH}/g"
+        dotnet pack ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs
+        dotnet pack templates/Maui/Fabulous.MauiControls.Templates.proj -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs
     - name: Push
       run: |
         dotnet nuget push "nupkgs/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate

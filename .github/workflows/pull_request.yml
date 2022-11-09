@@ -3,9 +3,7 @@ on: pull_request
 
 jobs:
   build:
-    runs-on: macos-latest
-    env:
-      SLN_FILE: Fabulous.XamarinForms.NoSamples.sln
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -16,11 +14,41 @@ jobs:
       run: |
         dotnet tool restore
         dotnet fantomas --check -r src samples templates
-    - name: Install dotnet workload
-      run: dotnet workload install ios android
+
+  xf:
+    name: Fabulous.XamarinForms
+    runs-on: macos-latest
+    env:
+      SLN_FILE: Fabulous.XamarinForms.NoSamples.sln
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build --no-restore --configuration Release ${SLN_FILE}
+      run: dotnet build ${SLN_FILE} --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-build --configuration Release ${SLN_FILE}
+      run: dotnet test ${SLN_FILE} --no-build --configuration Release
+
+  maui:
+    name: Fabulous.MauiControls
+    runs-on: macos-12
+    env:
+      SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} --no-restore --configuration Release
+    - name: Test
+      run: dotnet test ${SLN_FILE} --no-build --configuration Release

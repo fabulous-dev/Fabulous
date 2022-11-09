@@ -11,7 +11,7 @@ module TapGestureRecognizer =
     let WidgetKey = Widgets.register<TapGestureRecognizer>()
 
     let Tapped =
-        Attributes.defineEventNoArg
+        Attributes.defineEvent
             "TapGestureRecognizer_Tapped"
             (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
@@ -24,7 +24,7 @@ module TapGestureRecognizerBuilders =
         static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =
             WidgetBuilder<'msg, ITapGestureRecognizer>(
                 TapGestureRecognizer.WidgetKey,
-                TapGestureRecognizer.Tapped.WithValue(onTapped)
+                TapGestureRecognizer.Tapped.WithValue(fun _ -> box onTapped)
             )
 
 [<Extension>]
