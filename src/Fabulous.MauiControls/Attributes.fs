@@ -153,10 +153,10 @@ module Attributes =
                 | ValueSome v -> target.SetValue(bindableProperty, v.ToXFColor()))
 
     /// Define an enum attribute for a BindableProperty and encode it as a small scalar (8 bytes)
-    let inline defineBindableEnum< ^T when ^T: enum<int>>
+    let inline defineBindableEnum<'T when 'T: enum<int>>
         (bindableProperty: BindableProperty)
-        : SmallScalarAttributeDefinition< ^T > =
-        Attributes.defineEnum< ^T>
+        : SmallScalarAttributeDefinition<'T> =
+        Attributes.defineEnum<'T>
             bindableProperty.PropertyName
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject

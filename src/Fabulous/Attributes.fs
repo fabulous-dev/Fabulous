@@ -47,10 +47,10 @@ module SmallScalars =
         let inline decode (encoded: uint64) : uint = uint encoded
 
     module IntEnum =
-        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 =
+        let inline encode<'T when 'T: enum<int> and 'T: (static member op_Explicit: 'T -> uint64)> (v: 'T) : uint64 =
             uint64 v
 
-        let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
+        let inline decode<'T when 'T: enum<int>> (encoded: uint64) : 'T = enum<'T>(int encoded)
 
 [<Extension>]
 type SmallScalarExtensions() =
@@ -67,9 +67,9 @@ type SmallScalarExtensions() =
         this.WithValue(value, SmallScalars.Int.encode)
 
     [<Extension>]
-    static member inline WithValue< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)>
+    static member inline WithValue<'T when 'T: enum<int> and 'T: (static member op_Explicit: 'T -> uint64)>
         (
-            this: SmallScalarAttributeDefinition< ^T >,
+            this: SmallScalarAttributeDefinition<'T>,
             value
         ) =
         this.WithValue(value, SmallScalars.IntEnum.encode)
@@ -134,10 +134,10 @@ module Attributes =
         defineSmallScalar name SmallScalars.Float.decode updateNode
 
     /// Define a enum attribute that is encoded into uint64
-    let inline defineEnum< ^T when ^T: enum<int>>
+    let inline defineEnum<'T when 'T: enum<int>>
         name
-        ([<InlineIfLambda>] updateNode: ^T voption -> ^T voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition< ^T > =
+        ([<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit)
+        : SmallScalarAttributeDefinition<'T> =
         defineSmallScalar name SmallScalars.IntEnum.decode updateNode
 
     /// Define a boolean attribute that is encoded into uint64
