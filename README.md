@@ -48,6 +48,37 @@ let view model =
     )
 ```
 
+### Fabulous for Maui.Controls
+
+Fabulous now supports Microsoft.Maui.Controls, the framework that will replace Xamarin.Forms.
+
+You will still be able to combine MVU with an SwiftUI-inspired DSL in F#, while targeting several platforms (iOS, Android, and more) using the new single project format.
+
+With Fabulous for Maui.Controls, you will be able to write complete applications in F# like this:
+```fsharp
+type Model = { Text: string }
+type Msg = ButtonClicked
+
+let init () = { Text = "Hello Fabulous!" }
+
+let update msg model =
+    match msg with
+    | ButtonClicked -> { model with Text = "Thanks for using Fabulous!" }
+
+let view model =
+    Application() {
+        NavigationPage() {                
+            ContentPage("Counter",
+                VStack(spacing = 16.) {
+                    Image(Aspect.AspectFit, "fabulous.png")
+                    Label(model.Text)
+                    Button("Click me", ButtonClicked)
+                }
+            )
+        }
+    )
+```
+
 ## Credits
 This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
  
