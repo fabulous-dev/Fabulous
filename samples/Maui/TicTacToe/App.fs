@@ -1,7 +1,6 @@
 namespace TicTacToe
 
 open Microsoft.Maui
-open Microsoft.Maui.Controls
 open Microsoft.Maui.Graphics
 open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Devices
@@ -211,8 +210,8 @@ module App =
 
                         let gridColor =
                             match model.Theme with
-                            | AppTheme.Dark -> SolidColorBrush(Colors.White)
-                            | _ -> SolidColorBrush(Colors.Black)
+                            | AppTheme.Dark -> Controls.SolidColorBrush(Colors.White)
+                            | _ -> Controls.SolidColorBrush(Colors.Black)
 
                         Rectangle(5., gridColor)
                             .gridRow(1)

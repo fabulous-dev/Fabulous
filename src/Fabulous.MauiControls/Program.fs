@@ -4,6 +4,7 @@ open Fabulous
 open Fabulous.ScalarAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
 open Microsoft.Maui
+open Microsoft.Maui.ApplicationModel
 open Microsoft.Maui.Controls
 open System
 open System.Diagnostics
@@ -109,7 +110,7 @@ module Program =
           Subscribe = fun _ -> Cmd.none
           View = view
           CanReuseView = ViewHelpers.canReuseView
-          SyncAction = Device.BeginInvokeOnMainThread
+          SyncAction = MainThread.BeginInvokeOnMainThread
           Logger = ViewHelpers.defaultLogger()
           ExceptionHandler = ViewHelpers.defaultExceptionHandler }
 
