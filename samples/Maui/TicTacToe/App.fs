@@ -210,7 +210,7 @@ module App =
 
                         let gridColor =
                             match model.Theme with
-                            | AppTheme.Dark ->  Controls.SolidColorBrush(Colors.White)
+                            | AppTheme.Dark -> Controls.SolidColorBrush(Colors.White)
                             | _ -> Controls.SolidColorBrush(Colors.Black)
 
                         Rectangle(5., gridColor)

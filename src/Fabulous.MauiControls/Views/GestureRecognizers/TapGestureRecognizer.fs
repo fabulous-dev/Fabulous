@@ -11,9 +11,7 @@ module TapGestureRecognizer =
     let WidgetKey = Widgets.register<TapGestureRecognizer>()
 
     let Tapped =
-        Attributes.defineEvent
-            "TapGestureRecognizer_Tapped"
-            (fun target -> (target :?> TapGestureRecognizer).Tapped)
+        Attributes.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
     let NumberOfTapsRequired =
         Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
