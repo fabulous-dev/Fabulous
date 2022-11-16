@@ -181,9 +181,6 @@ module VisualElement =
 
     let ScaleX =
         Attributes.defineBindableFloat VisualElement.ScaleXProperty
-        
-    let ZIndex =
-        Attributes.defineBindableInt VisualElement.ZIndexProperty
 
     let ScaleTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
@@ -571,7 +568,3 @@ type VisualElementModifiers =
                   Easing = easing }
             )
         )
-        
-    [<Extension>]
-    static member inline zindex(this: WidgetBuilder<'msg, #IVisualElement>, value: int) =
-        this.AddScalar(VisualElement.ZIndex.WithValue(value))
