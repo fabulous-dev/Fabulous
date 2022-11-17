@@ -87,6 +87,7 @@ module Memo =
                   // store widget that was used to produce this node
                   // to pass it to reconciler later on
                   node.MemoizedWidget <- Some memoizedWidget
-                  struct (node, view) }
+                  struct (node, view)
+          AttachView = fun (_widget, _context, _parentNode, _view) -> failwith "Memo widget cannot be attached" }
 
     WidgetDefinitionStore.set MemoWidgetKey widgetDefinition

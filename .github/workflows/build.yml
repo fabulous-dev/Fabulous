@@ -1,13 +1,13 @@
 name: Build
 on:
    push:
-     branches: [ 'v2.1' ]
+     branches: [ 'v2.2' ]
      paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
 
 env:
-  VERSION: 2.1.0
+  VERSION: 2.2.0
 
 jobs:
   xf:
