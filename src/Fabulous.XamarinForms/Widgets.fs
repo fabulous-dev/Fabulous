@@ -44,7 +44,28 @@ module Widgets =
                       additionalSetup view node
 
                       Reconciler.update treeContext.CanReuseView ValueNone widget node
-                      struct (node :> IViewNode, box view) }
+                      struct (node :> IViewNode, box view)
+              AttachView =
+                  fun (widget, treeContext, parentNode, view) ->
+                      treeContext.Logger.Debug("Attaching view for {0}", typeof<'T>.Name)
+
+                      let view = unbox<'T> view
+                      let weakReference = WeakReference(view)
+
+                      let parentNode =
+                          match parentNode with
+                          | ValueNone -> None
+                          | ValueSome node -> Some node
+
+                      let node =
+                          ViewNode(parentNode, treeContext, weakReference)
+
+                      ViewNode.set node view
+
+                      additionalSetup view node
+
+                      Reconciler.update treeContext.CanReuseView ValueNone widget node
+                      node :> IViewNode }
 
         WidgetDefinitionStore.set key definition
         key
