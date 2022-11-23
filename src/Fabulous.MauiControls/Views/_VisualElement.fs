@@ -208,8 +208,9 @@ module VisualElement =
 
     let ScaleY =
         Attributes.defineBindableFloat VisualElement.ScaleYProperty
-        
-    let ZIndex = Attributes.defineBindableInt VisualElement.ZIndexProperty
+
+    let ZIndex =
+        Attributes.defineBindableInt VisualElement.ZIndexProperty
 
     let ScaleYTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData>
@@ -470,7 +471,7 @@ type VisualElementModifiers =
     [<Extension>]
     static member inline scaleY(this: WidgetBuilder<'msg, #IVisualElement>, value: float) =
         this.AddScalar(VisualElement.ScaleY.WithValue(value))
-        
+
     /// <summary>Sets the z-index of the element.</summary>
     /// <param name="value">The z-index of the element.</param>
     [<Extension>]
