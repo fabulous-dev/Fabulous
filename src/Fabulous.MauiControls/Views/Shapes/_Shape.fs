@@ -39,7 +39,7 @@ module Shape =
                     ))
 
     let StrokeDashArrayList =
-        Attributes.defineSimpleScalarWithEquality<float array>
+        Attributes.defineSimpleScalarWithEquality<float list>
             "Shape_StrokeDashArrayList"
             (fun _ newValueOpt node ->
                 let target = node.Target :?> BindableObject
@@ -48,7 +48,7 @@ module Shape =
                 | ValueNone -> target.ClearValue(Shape.StrokeDashArrayProperty)
                 | ValueSome points ->
                     let coll = DoubleCollection()
-                    points |> Array.iter coll.Add
+                    points |> List.iter coll.Add
                     target.SetValue(Shape.StrokeDashArrayProperty, coll))
 
     let StrokeDashOffset =
@@ -96,7 +96,7 @@ type ShapeModifiers =
 
     [<Extension>]
     static member inline strokeDashArray(this: WidgetBuilder<'msg, #IShape>, value: float list) =
-        this.AddScalar(Shape.StrokeDashArrayList.WithValue(Array.ofList value))
+        this.AddScalar(Shape.StrokeDashArrayList.WithValue(value))
 
     [<Extension>]
     static member inline strokeDashOffset(this: WidgetBuilder<'msg, #IShape>, value: float) =
