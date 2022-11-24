@@ -9,7 +9,7 @@ type IVerticalStackLayout =
 
 module VerticalStackLayout =
     let WidgetKey = Widgets.register<VerticalStackLayout>()
-        
+
 [<AutoOpen>]
 module VerticalStackLayoutBuilders =
     type Fabulous.Maui.View with
@@ -31,5 +31,9 @@ module VerticalStackLayoutBuilders =
 type VerticalStackLayoutModifiers =
     /// <summary>Link a ViewRef to access the direct VerticalStackLayout control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IVerticalStackLayout>, value: ViewRef<VerticalStackLayout>) =
+    static member inline reference
+        (
+            this: WidgetBuilder<'msg, IVerticalStackLayout>,
+            value: ViewRef<VerticalStackLayout>
+        ) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))

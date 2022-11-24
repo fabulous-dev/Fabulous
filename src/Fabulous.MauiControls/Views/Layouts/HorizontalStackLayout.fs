@@ -6,9 +6,10 @@ open Microsoft.Maui.Controls
 
 type IHorizontalStackLayout =
     inherit IStackBase
-    
+
 module HorizontalStackLayout =
-    let WidgetKey = Widgets.register<HorizontalStackLayout>()
+    let WidgetKey =
+        Widgets.register<HorizontalStackLayout>()
 
 [<AutoOpen>]
 module HorizontalStackLayoutBuilders =
@@ -31,5 +32,9 @@ module HorizontalStackLayoutBuilders =
 type HorizontalStackLayoutModifiers =
     /// <summary>Link a ViewRef to access the direct HorizontalStackLayout control instance</summary>
     [<Extension>]
-    static member inline reference(this: WidgetBuilder<'msg, IHorizontalStackLayout>, value: ViewRef<HorizontalStackLayout>) =
+    static member inline reference
+        (
+            this: WidgetBuilder<'msg, IHorizontalStackLayout>,
+            value: ViewRef<HorizontalStackLayout>
+        ) =
         this.AddScalar(ViewRefAttributes.ViewRef.WithValue(value.Unbox))
