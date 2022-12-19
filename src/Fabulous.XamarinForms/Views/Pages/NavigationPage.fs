@@ -169,8 +169,7 @@ module NavigationPageUpdaters =
                     navigationPage.Navigation.RemovePage(pages.[i])
 
 module NavigationPage =
-    let WidgetKey =
-        Widgets.register<CustomNavigationPage>()
+    let WidgetKey = Widgets.register<CustomNavigationPage>()
 
     let BackButtonTitle =
         Attributes.defineBindableWithEquality<string> NavigationPage.BackButtonTitleProperty
