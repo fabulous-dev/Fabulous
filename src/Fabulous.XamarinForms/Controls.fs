@@ -134,50 +134,6 @@ type CustomPicker() =
         if propertyName = Picker.SelectedIndexProperty.PropertyName then
             oldSelectedIndex <- this.SelectedIndex
 
-type CustomNavigationPage() as this =
-    inherit NavigationPage()
-
-    let backNavigated = Event<EventHandler, EventArgs>()
-    let backButtonPressed = RequiresSubscriptionEvent()
-
-    let mutable popCount = 0
-
-    do this.Popped.Add(this.OnPopped)
-
-    [<CLIEvent>]
-    member _.BackNavigated = backNavigated.Publish
-
-    [<CLIEvent>]
-    member _.BackButtonPressed = backButtonPressed.Publish
-
-    member this.Push(page, ?animated) =
-        let animated =
-            match animated with
-            | Some v -> v
-            | None -> true
-
-        this.PushAsync(page, animated) |> ignore
-
-    member this.Pop() =
-        popCount <- popCount + 1
-        this.PopAsync() |> ignore
-
-    member this.OnPopped(_: NavigationEventArgs) =
-        // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
-        if popCount > 0 then
-            popCount <- popCount - 1
-        else
-            backNavigated.Trigger(this, EventArgs())
-
-    /// If we are listening to the BackButtonPressed event, cancel the automatic back navigation and trigger the event;
-    /// otherwise just let the automatic back navigation happen
-    override this.OnBackButtonPressed() =
-        if backButtonPressed.HasListeners then
-            backButtonPressed.Trigger(this, EventArgs())
-            true
-        else
-            false
-
 /// FlyoutPage doesn't say if the Flyout is visible or not on IsPresentedChanged, so we implement it
 type CustomFlyoutPage() as this =
     inherit FlyoutPage()
