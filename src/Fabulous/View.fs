@@ -49,11 +49,10 @@ module View =
 
             MapMsg.MapMsg.WithValue(mappedFn)
 
-        let builder =
-            x.AddOrReplaceScalar(MapMsg.MapMsg.Key, replaceWith, defaultWith)
+        let builder = x.AddOrReplaceScalar(MapMsg.MapMsg.Key, replaceWith, defaultWith)
 
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
 
     /// Combine map and lazy. Map the widget's message type to the parent's message type, and then memoize it
     let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) =
-        lazy'(viewFn >> map mapFn) model
+        lazy' (viewFn >> map mapFn) model

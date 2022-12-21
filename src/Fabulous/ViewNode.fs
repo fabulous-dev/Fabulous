@@ -24,8 +24,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
 
                 match ScalarAttributeKey.getKind key with
                 | ScalarAttributeKey.Inline ->
-                    let smallScalar =
-                        (AttributeDefinitionStore.getSmallScalar key)
+                    let smallScalar = (AttributeDefinitionStore.getSmallScalar key)
 
                     smallScalar.UpdateNode ValueNone (ValueSome added.NumericValue) node
 
@@ -40,52 +39,47 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
 
                 match ScalarAttributeKey.getKind key with
                 | ScalarAttributeKey.Inline ->
-                    let smallScalar =
-                        (AttributeDefinitionStore.getSmallScalar key)
+                    let smallScalar = (AttributeDefinitionStore.getSmallScalar key)
 
-                    smallScalar.UpdateNode(ValueSome removed.NumericValue) ValueNone node
+                    smallScalar.UpdateNode (ValueSome removed.NumericValue) ValueNone node
 
                 | ScalarAttributeKey.Boxed ->
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
-                    scalar.UpdateNode(ValueSome removed.Value) ValueNone node
+                    scalar.UpdateNode (ValueSome removed.Value) ValueNone node
 
 
 
-            | ScalarChange.Updated (oldAttr, newAttr) ->
+            | ScalarChange.Updated(oldAttr, newAttr) ->
                 let key = oldAttr.Key
 
                 match ScalarAttributeKey.getKind key with
                 | ScalarAttributeKey.Inline ->
-                    let smallScalar =
-                        (AttributeDefinitionStore.getSmallScalar key)
+                    let smallScalar = (AttributeDefinitionStore.getSmallScalar key)
 
-                    smallScalar.UpdateNode(ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) node
+                    smallScalar.UpdateNode (ValueSome oldAttr.NumericValue) (ValueSome newAttr.NumericValue) node
 
                 | ScalarAttributeKey.Boxed ->
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
-                    scalar.UpdateNode(ValueSome oldAttr.Value) (ValueSome newAttr.Value) node
+                    scalar.UpdateNode (ValueSome oldAttr.Value) (ValueSome newAttr.Value) node
 
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do
             match diff with
             | WidgetChange.Added newWidget
             | WidgetChange.ReplacedBy newWidget ->
-                let definition =
-                    (AttributeDefinitionStore.getWidget newWidget.Key)
+                let definition = (AttributeDefinitionStore.getWidget newWidget.Key)
 
                 definition.UpdateNode ValueNone (ValueSome newWidget.Value) (this :> IViewNode)
 
             | WidgetChange.Removed removed ->
-                let definition =
-                    (AttributeDefinitionStore.getWidget removed.Key)
+                let definition = (AttributeDefinitionStore.getWidget removed.Key)
 
-                definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
+                definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
 
             | WidgetChange.Updated struct (newAttr, diffs) ->
-                let definition =
-                    (AttributeDefinitionStore.getWidget newAttr.Key)
+                let definition = (AttributeDefinitionStore.getWidget newAttr.Key)
 
                 definition.ApplyDiff diffs (this :> IViewNode)
 
@@ -93,22 +87,19 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
         for diff in diffs do
             match diff with
             | WidgetCollectionChange.Added added ->
-                let definition =
-                    (AttributeDefinitionStore.getWidgetCollection added.Key)
+                let definition = (AttributeDefinitionStore.getWidgetCollection added.Key)
 
                 definition.UpdateNode ValueNone (ValueSome added.Value) (this :> IViewNode)
 
 
             | WidgetCollectionChange.Removed removed ->
-                let definition =
-                    (AttributeDefinitionStore.getWidgetCollection removed.Key)
+                let definition = (AttributeDefinitionStore.getWidgetCollection removed.Key)
 
-                definition.UpdateNode(ValueSome removed.Value) ValueNone (this :> IViewNode)
+                definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
 
 
             | WidgetCollectionChange.Updated struct (oldAttr, newAttr, diffs) ->
-                let definition =
-                    (AttributeDefinitionStore.getWidgetCollection newAttr.Key)
+                let definition = (AttributeDefinitionStore.getWidgetCollection newAttr.Key)
 
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 

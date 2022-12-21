@@ -8,23 +8,25 @@ open Fabulous
 
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg, 'marker> =
-    { /// Give the initial state for the application
-      Init: 'arg -> 'model * Cmd<'msg>
-      /// Update the application state based on a message
-      Update: 'msg * 'model -> 'model * Cmd<'msg>
-      /// Add a subscription that can dispatch messages
-      Subscribe: 'model -> Cmd<'msg>
-      /// Render the application state
-      View: 'model -> WidgetBuilder<'msg, 'marker>
-      /// Indicates if a previous Widget's view can be reused
-      CanReuseView: Widget -> Widget -> bool
-      /// Runs the View function on the main thread
-      SyncAction: (unit -> unit) -> unit
-      /// Configuration for logging all output messages from Fabulous
-      Logger: Logger
-      /// Exception handler for all uncaught exceptions happening in the MVU loop.
-      /// Returns true if the exception was handled, false otherwise.
-      ExceptionHandler: exn -> bool }
+    {
+        /// Give the initial state for the application
+        Init: 'arg -> 'model * Cmd<'msg>
+        /// Update the application state based on a message
+        Update: 'msg * 'model -> 'model * Cmd<'msg>
+        /// Add a subscription that can dispatch messages
+        Subscribe: 'model -> Cmd<'msg>
+        /// Render the application state
+        View: 'model -> WidgetBuilder<'msg, 'marker>
+        /// Indicates if a previous Widget's view can be reused
+        CanReuseView: Widget -> Widget -> bool
+        /// Runs the View function on the main thread
+        SyncAction: (unit -> unit) -> unit
+        /// Configuration for logging all output messages from Fabulous
+        Logger: Logger
+        /// Exception handler for all uncaught exceptions happening in the MVU loop.
+        /// Returns true if the exception was handled, false otherwise.
+        ExceptionHandler: exn -> bool
+    }
 
 type IRunner =
     interface
@@ -43,8 +45,7 @@ module RunnerStore =
     let remove key = _runners.Remove(key) |> ignore
 
 module ViewAdapterStore =
-    let private _viewAdapters =
-        Dictionary<ViewAdapterKey, IViewAdapter>()
+    let private _viewAdapters = Dictionary<ViewAdapterKey, IViewAdapter>()
 
     let mutable private _nextKey = 0
 
@@ -96,8 +97,7 @@ module Runners =
                             | true, msg -> ValueSome msg
 
                     _reentering <- false
-            with
-            | ex ->
+            with ex ->
                 _reentering <- false
 
                 if not(program.ExceptionHandler ex) then
@@ -115,8 +115,7 @@ module Runners =
 
                 for sub in cmd do
                     sub dispatch
-            with
-            | ex ->
+            with ex ->
                 if not(program.ExceptionHandler(ex)) then
                     reraise()
 
@@ -161,8 +160,7 @@ module ViewAdapters =
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
 
-        let _stateSubscription =
-            StateStore.StateChanged.Subscribe(this.OnStateChanged)
+        let _stateSubscription = StateStore.StateChanged.Subscribe(this.OnStateChanged)
 
         member private _.Dispatch(msg) = dispatch(unbox msg)
 
@@ -180,8 +178,7 @@ module ViewAdapters =
 
             let definition = WidgetDefinitionStore.get widget.Key
 
-            let struct (_node, root) =
-                definition.CreateView(widget, treeContext, ValueNone)
+            let struct (_node, root) = definition.CreateView(widget, treeContext, ValueNone)
 
             _root <- root
             _root
@@ -198,16 +195,13 @@ module ViewAdapters =
 
                     let node = getViewNode _root
 
-                    syncAction
-                        (fun () ->
-                            try
-                                Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
-                            with
-                            | ex ->
-                                if not(exceptionHandler ex) then
-                                    reraise())
-            with
-            | ex ->
+                    syncAction(fun () ->
+                        try
+                            Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
+                        with ex ->
+                            if not(exceptionHandler ex) then
+                                reraise())
+            with ex ->
                 if not(exceptionHandler ex) then
                     reraise()
 

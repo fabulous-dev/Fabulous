@@ -11,9 +11,9 @@ type ScalarAttributeComparison =
 
 [<Struct; IsByRefLike; RequireQualifiedAccess; NoComparison; NoEquality>]
 type EnumerationMode<'a> =
-    | AllAddedOrRemoved of struct ('a [] * bool)
+    | AllAddedOrRemoved of struct ('a[] * bool)
     | Empty
-    | ActualDiff of prevNext: struct ('a [] * 'a [])
+    | ActualDiff of prevNext: struct ('a[] * 'a[])
 
 module EnumerationMode =
     let fromOptions prev next =
@@ -53,8 +53,7 @@ module private SkipRepeatingScalars =
             let key = scalars.[pos].Key
             let mutable resultingIndex = pos
 
-            while (length - 1 > resultingIndex)
-                  && (scalars.[resultingIndex + 1].Key = key) do
+            while (length - 1 > resultingIndex) && (scalars.[resultingIndex + 1].Key = key) do
                 resultingIndex <- resultingIndex + 1
 
             resultingIndex
@@ -113,17 +112,17 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
         { ScalarChanges = ScalarChanges(prevScalarAttributes, next.ScalarAttributes, compareScalars)
           WidgetChanges = WidgetChanges(prevWidgetAttributes, next.WidgetAttributes, canReuseView, compareScalars)
           WidgetCollectionChanges =
-              WidgetCollectionChanges(
-                  prevWidgetCollectionAttributes,
-                  next.WidgetCollectionAttributes,
-                  canReuseView,
-                  compareScalars
-              ) }
+            WidgetCollectionChanges(
+                prevWidgetCollectionAttributes,
+                next.WidgetCollectionAttributes,
+                canReuseView,
+                compareScalars
+            ) }
 
 and [<Struct; NoComparison; NoEquality>] ScalarChanges
     (
-        prev: ScalarAttribute [] voption,
-        next: ScalarAttribute [] voption,
+        prev: ScalarAttribute[] voption,
+        next: ScalarAttribute[] voption,
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
@@ -131,8 +130,8 @@ and [<Struct; NoComparison; NoEquality>] ScalarChanges
 
 and [<Struct; NoComparison; NoEquality>] WidgetChanges
     (
-        prev: WidgetAttribute [] voption,
-        next: WidgetAttribute [] voption,
+        prev: WidgetAttribute[] voption,
+        next: WidgetAttribute[] voption,
         canReuseView: Widget -> Widget -> bool,
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
@@ -141,8 +140,8 @@ and [<Struct; NoComparison; NoEquality>] WidgetChanges
 
 and [<Struct; NoComparison; NoEquality>] WidgetCollectionChanges
     (
-        prev: WidgetCollectionAttribute [] voption,
-        next: WidgetCollectionAttribute [] voption,
+        prev: WidgetCollectionAttribute[] voption,
+        next: WidgetCollectionAttribute[] voption,
         canReuseView: Widget -> Widget -> bool,
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
@@ -186,7 +185,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
     member e.MoveNext() =
         match mode with
         | EnumerationMode.Empty -> false
-        | EnumerationMode.AllAddedOrRemoved (attributes, added) ->
+        | EnumerationMode.AllAddedOrRemoved(attributes, added) ->
             // use prevIndex regardless if it is for adding or removal
             let i = e.prevIndex
 
@@ -203,12 +202,10 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
             else
                 false
 
-        | EnumerationMode.ActualDiff (prev, next) ->
-            let mutable prevIndex =
-                SkipRepeatingScalars.skip prev e.prevIndex
+        | EnumerationMode.ActualDiff(prev, next) ->
+            let mutable prevIndex = SkipRepeatingScalars.skip prev e.prevIndex
 
-            let mutable nextIndex =
-                SkipRepeatingScalars.skip next e.nextIndex
+            let mutable nextIndex = SkipRepeatingScalars.skip next e.nextIndex
 
             let prevLength = prev.Length
             let nextLength = next.Length
@@ -304,7 +301,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
     member e.MoveNext() =
         match mode with
         | EnumerationMode.Empty -> false
-        | EnumerationMode.AllAddedOrRemoved (struct (values, added)) ->
+        | EnumerationMode.AllAddedOrRemoved(struct (values, added)) ->
             // use prevIndex regardless if it is for adding or removal
             let i = e.prevIndex
 
@@ -321,7 +318,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
             else
                 false
 
-        | EnumerationMode.ActualDiff (struct (prev, next)) ->
+        | EnumerationMode.ActualDiff(struct (prev, next)) ->
             let mutable prevIndex = e.prevIndex
             let mutable nextIndex = e.nextIndex
 
@@ -426,7 +423,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
     member e.MoveNext() =
         match mode with
         | EnumerationMode.Empty -> false
-        | EnumerationMode.AllAddedOrRemoved (struct (values, added)) ->
+        | EnumerationMode.AllAddedOrRemoved(struct (values, added)) ->
             // use prevIndex regardless if it is for adding or removal
             let i = e.prevIndex
 
@@ -443,7 +440,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
             else
                 false
 
-        | EnumerationMode.ActualDiff (struct (prev, next)) ->
+        | EnumerationMode.ActualDiff(struct (prev, next)) ->
             let mutable prevIndex = e.prevIndex
             let mutable nextIndex = e.nextIndex
 
@@ -532,8 +529,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         let tailIndex = e.tailIndex
         let i = e.index
 
-        if prev.Length > next.Length
-           && tailIndex < prev.Length - next.Length then
+        if prev.Length > next.Length && tailIndex < prev.Length - next.Length then
 
             let index = prev.Length - tailIndex - 1
             e.current <- WidgetCollectionItemChange.Remove(index, prev.[index])
@@ -544,11 +540,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         elif i < next.Length then
             let currItem = next.[i]
 
-            let prevItemOpt =
-                if (i >= prev.Length) then
-                    ValueNone
-                else
-                    ValueSome prev.[i]
+            let prevItemOpt = if (i >= prev.Length) then ValueNone else ValueSome prev.[i]
 
             match prevItemOpt with
             | ValueNone -> e.current <- WidgetCollectionItemChange.Insert(i, currItem)

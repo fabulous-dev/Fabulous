@@ -36,18 +36,18 @@ module ScalarAttributeDefinitions =
                 [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
             ) : SmallScalarAttributeData =
             { UpdateNode =
-                  (fun oldValueOpt newValueOpt node ->
-                      let oldValueOpt =
-                          match oldValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                (fun oldValueOpt newValueOpt node ->
+                    let oldValueOpt =
+                        match oldValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(decode(v))
 
-                      let newValueOpt =
-                          match newValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(decode(v))
+                    let newValueOpt =
+                        match newValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(decode(v))
 
-                      updateNode oldValueOpt newValueOpt node) }
+                    updateNode oldValueOpt newValueOpt node) }
 
     /// Attribute definition for boxed scalar properties
     [<Struct>]
@@ -68,20 +68,20 @@ module ScalarAttributeDefinitions =
                 compare: 'T -> 'T -> ScalarAttributeComparison,
                 updateNode: 'T voption -> 'T voption -> IViewNode -> unit
             ) : ScalarAttributeData =
-            { CompareBoxed = (fun a b -> compare(unbox<'T> a) (unbox<'T> b))
+            { CompareBoxed = (fun a b -> compare (unbox<'T> a) (unbox<'T> b))
               UpdateNode =
-                  (fun oldValueOpt newValueOpt node ->
-                      let oldValueOpt =
-                          match oldValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(unbox<'T> v)
+                (fun oldValueOpt newValueOpt node ->
+                    let oldValueOpt =
+                        match oldValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(unbox<'T> v)
 
-                      let newValueOpt =
-                          match newValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(unbox<'T> v)
+                    let newValueOpt =
+                        match newValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(unbox<'T> v)
 
-                      updateNode oldValueOpt newValueOpt node) }
+                    updateNode oldValueOpt newValueOpt node) }
 
     /// Attribute definition for boxed scalar properties with a custom conversion before being applied to the view
     [<Struct>]
@@ -103,20 +103,20 @@ module ScalarAttributeDefinitions =
                 [<InlineIfLambda>] compare: 'modelType -> 'modelType -> ScalarAttributeComparison,
                 [<InlineIfLambda>] updateNode: 'valueType voption -> 'valueType voption -> IViewNode -> unit
             ) : ScalarAttributeData =
-            { CompareBoxed = (fun a b -> compare(unbox<'modelType> a) (unbox<'modelType> b))
+            { CompareBoxed = (fun a b -> compare (unbox<'modelType> a) (unbox<'modelType> b))
               UpdateNode =
-                  (fun oldValueOpt newValueOpt node ->
-                      let oldValueOpt =
-                          match oldValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                (fun oldValueOpt newValueOpt node ->
+                    let oldValueOpt =
+                        match oldValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
-                      let newValueOpt =
-                          match newValueOpt with
-                          | ValueNone -> ValueNone
-                          | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
+                    let newValueOpt =
+                        match newValueOpt with
+                        | ValueNone -> ValueNone
+                        | ValueSome v -> ValueSome(convertValue(unbox<'modelType> v))
 
-                      updateNode oldValueOpt newValueOpt node) }
+                    updateNode oldValueOpt newValueOpt node) }
 
 module WidgetAttributeDefinitions =
     [<Struct>]
@@ -165,22 +165,19 @@ module AttributeDefinitionStore =
     let private _smallScalars = ResizeArray<SmallScalarAttributeData>()
     let private _widgets = ResizeArray<WidgetAttributeData>()
 
-    let private _widgetCollections =
-        ResizeArray<WidgetCollectionAttributeData>()
+    let private _widgetCollections = ResizeArray<WidgetCollectionAttributeData>()
 
     let registerSmallScalar (data: SmallScalarAttributeData) : ScalarAttributeKey =
         let index = _smallScalars.Count
         _smallScalars.Add(data)
 
-        (index ||| ScalarAttributeKey.Code.Inline)
-        * 1<scalarAttributeKey>
+        (index ||| ScalarAttributeKey.Code.Inline) * 1<scalarAttributeKey>
 
     let registerScalar (data: ScalarAttributeData) : ScalarAttributeKey =
         let index = _scalars.Count
         _scalars.Add(data)
 
-        (index ||| ScalarAttributeKey.Code.Boxed)
-        * 1<scalarAttributeKey>
+        (index ||| ScalarAttributeKey.Code.Boxed) * 1<scalarAttributeKey>
 
     let registerWidget (data: WidgetAttributeData) : WidgetAttributeKey =
         let index = _widgets.Count
@@ -212,8 +209,6 @@ module AttributeHelpers =
         match widget.ScalarAttributes with
         | ValueNone -> ValueNone
         | ValueSome attrs ->
-            match attrs
-                  |> Array.tryFind(fun attr -> attr.Key = definition.Key)
-                with
+            match attrs |> Array.tryFind(fun attr -> attr.Key = definition.Key) with
             | None -> ValueNone
             | Some attr -> ValueSome(unbox<'T> attr.Value)

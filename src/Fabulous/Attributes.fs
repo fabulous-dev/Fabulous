@@ -211,9 +211,8 @@ module Attributes =
 
             for diff in diffs do
                 match diff with
-                | WidgetCollectionItemChange.Remove (index, widget) ->
-                    let itemNode =
-                        node.TreeContext.GetViewNode(box targetColl.[index])
+                | WidgetCollectionItemChange.Remove(index, widget) ->
+                    let itemNode = node.TreeContext.GetViewNode(box targetColl.[index])
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -226,7 +225,7 @@ module Attributes =
 
             for diff in diffs do
                 match diff with
-                | WidgetCollectionItemChange.Insert (index, widget) ->
+                | WidgetCollectionItemChange.Insert(index, widget) ->
                     let struct (itemNode, view) = Helpers.createViewForWidget node widget
 
                     // Insert the new child into the UI tree
@@ -235,18 +234,15 @@ module Attributes =
                     // Trigger the mounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
-                | WidgetCollectionItemChange.Update (index, widgetDiff) ->
-                    let childNode =
-                        node.TreeContext.GetViewNode(box targetColl.[index])
+                | WidgetCollectionItemChange.Update(index, widgetDiff) ->
+                    let childNode = node.TreeContext.GetViewNode(box targetColl.[index])
 
                     childNode.ApplyDiff(&widgetDiff)
 
-                | WidgetCollectionItemChange.Replace (index, oldWidget, newWidget) ->
-                    let prevItemNode =
-                        node.TreeContext.GetViewNode(box targetColl.[index])
+                | WidgetCollectionItemChange.Replace(index, oldWidget, newWidget) ->
+                    let prevItemNode = node.TreeContext.GetViewNode(box targetColl.[index])
 
-                    let struct (nextItemNode, view) =
-                        Helpers.createViewForWidget node newWidget
+                    let struct (nextItemNode, view) = Helpers.createViewForWidget node newWidget
 
                     // Trigger the unmounted event for the old child
                     Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
@@ -304,8 +300,7 @@ module Attributes =
                     | ValueNone -> node.SetHandler(name, ValueNone)
 
                     | ValueSome msg ->
-                        let handler =
-                            EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
+                        let handler = EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
 
                         event.AddHandler handler
                         node.SetHandler(name, ValueSome handler))
@@ -335,10 +330,9 @@ module Attributes =
 
                     | ValueSome fn ->
                         let handler =
-                            EventHandler<'args>
-                                (fun _ args ->
-                                    let r = fn args
-                                    Dispatcher.dispatch node r)
+                            EventHandler<'args>(fun _ args ->
+                                let r = fn args
+                                Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
                         event.AddHandler handler)

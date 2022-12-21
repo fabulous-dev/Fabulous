@@ -7,7 +7,7 @@ open Fabulous.StackAllocatedCollections.StackList
 open Microsoft.FSharp.Core
 
 type AttributesBundle =
-    (struct (StackList<ScalarAttribute> * WidgetAttribute [] voption * WidgetCollectionAttribute [] voption))
+    (struct (StackList<ScalarAttribute> * WidgetAttribute[] voption * WidgetCollectionAttribute[] voption))
 
 [<Struct; NoComparison; NoEquality>]
 type WidgetBuilder<'msg, 'marker> =
@@ -31,7 +31,8 @@ type WidgetBuilder<'msg, 'marker> =
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.Compile() : Widget =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Attributes
 
             { Key = x.Key
 #if DEBUG
@@ -40,18 +41,18 @@ type WidgetBuilder<'msg, 'marker> =
               ScalarAttributes =
                   match StackList.length &scalarAttributes with
                   | 0us -> ValueNone
-                  | _ -> ValueSome(Array.sortInPlace(fun a -> a.Key) (StackList.toArray &scalarAttributes))
+                  | _ -> ValueSome(Array.sortInPlace (fun a -> a.Key) (StackList.toArray &scalarAttributes))
 
-              WidgetAttributes = ValueOption.map(Array.sortInPlace(fun a -> a.Key)) widgetAttributes
+              WidgetAttributes = ValueOption.map (Array.sortInPlace(fun a -> a.Key)) widgetAttributes
 
 
               WidgetCollectionAttributes =
-                  widgetCollectionAttributes
-                  |> ValueOption.map(Array.sortInPlace(fun a -> a.Key)) }
+                  widgetCollectionAttributes |> ValueOption.map(Array.sortInPlace(fun a -> a.Key)) }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Attributes
 
             WidgetBuilder<'msg, 'marker>(
                 x.Key,
@@ -65,7 +66,8 @@ type WidgetBuilder<'msg, 'marker> =
                 [<InlineIfLambda>] replaceWith: ScalarAttribute -> ScalarAttribute,
                 [<InlineIfLambda>] defaultWith: unit -> ScalarAttribute
             ) =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Attributes
 
             match StackList.tryFind(&scalarAttributes, (fun attr -> attr.Key = attrKey)) with
             | ValueNone ->
@@ -86,7 +88,9 @@ type WidgetBuilder<'msg, 'marker> =
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidget(attr: WidgetAttribute) =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Attributes
+
             let attribs = widgetAttributes
 
             let res =
@@ -102,7 +106,9 @@ type WidgetBuilder<'msg, 'marker> =
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member x.AddWidgetCollection(attr: WidgetCollectionAttribute) =
-            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) = x.Attributes
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Attributes
+
             let attribs = widgetCollectionAttributes
 
             let res =
@@ -164,8 +170,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
             )
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
-            let res =
-                MutStackArray1.combineMut(&a.Widgets, b.Widgets)
+            let res = MutStackArray1.combineMut(&a.Widgets, b.Widgets)
 
             { Widgets = res }
 

@@ -31,7 +31,6 @@ type AttributesTests() =
         =
         let encoded = SmallScalars.IntEnum.encode value
 
-        let decoded =
-            SmallScalars.IntEnum.decode<IntTypedEnum> encoded
+        let decoded = SmallScalars.IntEnum.decode<IntTypedEnum> encoded
 
         Assert.AreEqual(value, decoded)

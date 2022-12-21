@@ -24,14 +24,12 @@ module Helpers =
 
                 children
                 |> Array.ofSeq
-                |> Array.fold(fun res child -> res |> Option.orElse(findOptional child id)) None
+                |> Array.fold (fun res child -> res |> Option.orElse(findOptional child id)) None
 
             | _ -> None
 
     let find<'a when 'a :> TestViewElement> (root: TestViewElement) (id: string) : 'a =
-        findOptional root id
-        |> Option.defaultWith(fun () -> failwith "not found")
-        :?> 'a
+        findOptional root id |> Option.defaultWith(fun () -> failwith "not found") :?> 'a
 
 
 module SimpleLabelTests =
@@ -47,16 +45,13 @@ module SimpleLabelTests =
         | SetColor color -> { model with color = color }
 
     let view model =
-        Label(model.text)
-            .textColor(model.color)
-            .automationId("label")
+        Label(model.text).textColor(model.color).automationId("label")
 
     let init () = { text = "hi"; color = "red" }
 
     [<Test>]
     let SketchAPI () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
 
@@ -84,15 +79,13 @@ module ButtonTests =
 
 
     let view model =
-        Button(model.count.ToString(), Increment)
-            .automationId("btn")
+        Button(model.count.ToString(), Increment).automationId("btn")
 
     let init () = { count = 0 }
 
     [<Test>]
     let SketchAPI () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -116,22 +109,13 @@ module SimpleStackTests =
     let update msg model =
         match msg with
         | Delete id -> model |> List.filter(fun (id_, _) -> id_ <> id)
-        | AddNew (id, text) -> (id, text) :: model
-        | ChangeText (id, text) ->
+        | AddNew(id, text) -> (id, text) :: model
+        | ChangeText(id, text) ->
             model
-            |> List.map
-                (fun (id_, text_) ->
-                    if id = id_ then
-                        (id, text)
-                    else
-                        (id_, text_))
+            |> List.map(fun (id_, text_) -> if id = id_ then (id, text) else (id_, text_))
 
     let view model =
-        (Stack() {
-            yield!
-                model
-                |> List.map(fun (id, text) -> Label(text).automationId(id.ToString()))
-         })
+        (Stack() { yield! model |> List.map(fun (id, text) -> Label(text).automationId(id.ToString())) })
             .automationId("stack")
 
 
@@ -139,15 +123,13 @@ module SimpleStackTests =
 
     [<Test>]
     let Test () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
 
         let tree = instance.Start()
 
-        let stack =
-            find<TestStack> tree "stack" :> IContainer
+        let stack = find<TestStack> tree "stack" :> IContainer
 
         Assert.AreEqual(stack.Children.Count, 0)
 
@@ -155,8 +137,7 @@ module SimpleStackTests =
         instance.ProcessMessage(AddNew(1, "yo"))
         Assert.AreEqual(1, stack.Children.Count)
 
-        let label =
-            stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children.[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "yo")
 
@@ -164,16 +145,14 @@ module SimpleStackTests =
         instance.ProcessMessage(AddNew(2, "yo2"))
         Assert.AreEqual(2, stack.Children.Count)
 
-        let label =
-            stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children.[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "yo2")
 
         // modify the initial one
         instance.ProcessMessage(ChangeText(1, "just 1"))
 
-        let label =
-            stack.Children.[1] :?> TestLabel :> IText
+        let label = stack.Children.[1] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "just 1")
 
@@ -181,8 +160,7 @@ module SimpleStackTests =
         instance.ProcessMessage(Delete 2)
         Assert.AreEqual(stack.Children.Count, 1)
 
-        let label =
-            stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children.[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "just 1")
 
@@ -203,9 +181,7 @@ module ComputationExpressionTest =
             // requires implemented "Yield"
             Stack() { Button("inc", Inc).automationId("inc") }
 
-        let instance =
-            StatefulWidget.mkSimpleView(fun () -> 0) update view
-            |> Run.Instance
+        let instance = StatefulWidget.mkSimpleView (fun () -> 0) update view |> Run.Instance
 
         let tree = instance.Start()
 
@@ -223,18 +199,15 @@ module ComputationExpressionTest =
                     Label("label").automationId("label")
                 else
                     Button("btn", Inc).automationId("btn")
-             })
+            })
                 .automationId("stack")
 
 
-        let instance =
-            StatefulWidget.mkSimpleView(fun () -> 0) update view
-            |> Run.Instance
+        let instance = StatefulWidget.mkSimpleView (fun () -> 0) update view |> Run.Instance
 
         let tree = instance.Start()
 
-        let stack =
-            find<TestStack> tree "stack" :> IContainer
+        let stack = find<TestStack> tree "stack" :> IContainer
 
         Assert.AreEqual(1, stack.Children.Count)
 
@@ -262,19 +235,17 @@ module ComputationExpressionTest =
             Stack() {
                 // requires implemented "YieldFrom"
                 yield!
-                    [ for i in 0 .. model -> i.ToString() ]
+                    [ for i in 0..model -> i.ToString() ]
                     |> List.map(fun i -> Label(i).automationId(i))
             }
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> count) update view
-            |> Run.Instance
+            StatefulWidget.mkSimpleView (fun () -> count) update view |> Run.Instance
 
         let tree = instance.Start()
 
-        for i in 0 .. count do
-            let label =
-                find<TestLabel> tree (i.ToString()) :> IText
+        for i in 0..count do
+            let label = find<TestLabel> tree (i.ToString()) :> IText
 
             Assert.AreEqual(label.Text, i.ToString())
 
@@ -287,18 +258,16 @@ module ComputationExpressionTest =
         let view model =
             Stack() {
                 // requires implemented "For"
-                for i in 0 .. model -> Label(i.ToString()).automationId(i.ToString())
+                for i in 0..model -> Label(i.ToString()).automationId(i.ToString())
             }
 
         let instance =
-            StatefulWidget.mkSimpleView(fun () -> count) update view
-            |> Run.Instance
+            StatefulWidget.mkSimpleView (fun () -> count) update view |> Run.Instance
 
         let tree = instance.Start()
 
-        for i in 0 .. count do
-            let label =
-                find<TestLabel> tree (i.ToString()) :> IText
+        for i in 0..count do
+            let label = find<TestLabel> tree (i.ToString()) :> IText
 
             Assert.AreEqual(label.Text, i.ToString())
 
@@ -322,15 +291,9 @@ module MapViewTests =
 
     let view model =
         Stack() {
-            View.map
-                mapMsg
-                (Button("+1", AddOne)
-                    .automationId("add")
-                    .textColor("red"))
+            View.map mapMsg (Button("+1", AddOne).automationId("add").textColor("red"))
 
-            Label(model.ToString())
-                .automationId("label")
-                .textColor("blue")
+            Label(model.ToString()).automationId("label").textColor("blue")
 
             View.map mapMsg (Button("-2", RemoveTwo).automationId("remove"))
         }
@@ -340,8 +303,7 @@ module MapViewTests =
 
     [<Test>]
     let SketchAPI () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -388,15 +350,9 @@ module MultipleMapViewTests =
 
     let view model =
         Stack() {
-            View.map
-                mapChildMsg
-                (Button("+1", AddOne)
-                    .automationId("add")
-                    .textColor("red"))
+            View.map mapChildMsg (Button("+1", AddOne).automationId("add").textColor("red"))
 
-            Label(model.ToString())
-                .automationId("label")
-                .textColor("blue")
+            Label(model.ToString()).automationId("label").textColor("blue")
 
             View.map mapChildMsg (Button("-2", RemoveTwo).automationId("remove"))
             View.map mapChildMsg (View.map mapChildChildMsg (Button("-4", RemoveFour).automationId("remove4")))
@@ -407,8 +363,7 @@ module MultipleMapViewTests =
 
     [<Test>]
     let SketchAPI () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -451,8 +406,7 @@ module MemoTests =
 
         let view model =
             Stack() {
-                Label<Msg>(model.notMemoized)
-                    .automationId("not_memo")
+                Label<Msg>(model.notMemoized).automationId("not_memo")
 
                 View.lazy'
                     (fun i ->
@@ -468,8 +422,7 @@ module MemoTests =
                 { notMemoized = "initial"
                   memoTrigger = 0 }
 
-            let program =
-                StatefulWidget.mkSimpleView init update view
+            let program = StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
             let tree = instance.Start()
@@ -512,9 +465,9 @@ module MemoTests =
         let view model =
             (Stack() {
                 match model with
-                | Btn -> View.lazy'(fun i -> Button(string i, Change).automationId("btn")) model
-                | Lbl -> View.lazy'(fun i -> Label(string i).automationId("label")) model
-             })
+                | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId("btn")) model
+                | Lbl -> View.lazy' (fun i -> Label(string i).automationId("label")) model
+            })
                 .automationId("stack")
 
         [<Test>]
@@ -522,14 +475,12 @@ module MemoTests =
 
             let init () = Btn
 
-            let program =
-                StatefulWidget.mkSimpleView init update view
+            let program = StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
             let tree = instance.Start()
 
-            let stack =
-                find<TestStack> tree "stack" :> IContainer
+            let stack = find<TestStack> tree "stack" :> IContainer
 
             Assert.AreEqual(1, stack.Children.Count)
 
@@ -563,20 +514,10 @@ module MemoTests =
             Stack() {
                 match model with
                 | Label1 ->
-                    View.lazy'
-                        (fun _ ->
-                            Label("one")
-                                .record(true)
-                                .textColor("blue")
-                                .automationId("label"))
-                        model
+                    View.lazy' (fun _ -> Label("one").record(true).textColor("blue").automationId("label")) model
                 | Label2 ->
                     View.lazy'
-                        (fun _ ->
-                            Label("two")
-                                .record(true)
-                                .textColor("blue")
-                                .automationId("label"))
+                        (fun _ -> Label("two").record(true).textColor("blue").automationId("label"))
                         (string model)
             }
 
@@ -585,8 +526,7 @@ module MemoTests =
 
             let init () = Label1
 
-            let program =
-                StatefulWidget.mkSimpleView init update view
+            let program = StatefulWidget.mkSimpleView init update view
 
             let instance = Run.Instance program
             let tree = instance.Start()
@@ -602,12 +542,7 @@ module MemoTests =
             Assert.AreSame(label, labelAgain)
 
             // just changes text but kept the same color
-            Assert.AreEqual(
-                [ TextSet "one"
-                  ColorSet "blue"
-                  TextSet "two" ],
-                label.changeList
-            )
+            Assert.AreEqual([ TextSet "one"; ColorSet "blue"; TextSet "two" ], label.changeList)
 
 
 
@@ -618,9 +553,7 @@ module SmallScalars =
 
     let update msg model =
         match msg with
-        | Inc value ->
-            { model with
-                  value = model.value + value }
+        | Inc value -> { model with value = model.value + value }
 
     let view model =
         InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
@@ -630,8 +563,7 @@ module SmallScalars =
 
     [<Test>]
     let UpdatesCorrectly () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
 
@@ -670,8 +602,7 @@ module Issue99 =
 
     [<Test>]
     let Test () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -769,16 +700,12 @@ module Issue104 =
             if not model then
                 Control().attr4("test").attr5("test")
             else
-                Control()
-                    .attr1("test")
-                    .attr2("test")
-                    .attr3("test")
+                Control().attr1("test").attr2("test").attr3("test")
         }
 
     [<Test>]
     let Test () =
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let _ = instance.Start()
@@ -791,8 +718,7 @@ module Attributes =
         | One = 1
         | MinusOne = -1
 
-    let MyEnumAttr =
-        Attributes.defineEnum<MyEnum> "hey" (fun _ _ _ -> ())
+    let MyEnumAttr = Attributes.defineEnum<MyEnum> "hey" (fun _ _ _ -> ())
 
     [<Test>]
     let IntEnumCodecForSmallScalars () =
@@ -820,23 +746,16 @@ module Attributes =
     let WithDuplicateAttributesLastOneWins () =
         let view addColor =
             Stack() {
-                let label =
-                    Label("text")
-                        .textColor("red")
-                        .automationId("text")
+                let label = Label("text").textColor("red").automationId("text")
 
-                if addColor then
-                    label.textColor("blue")
-                else
-                    label
+                if addColor then label.textColor("blue") else label
             }
 
         let init () = true
         let update (_: unit) addColor = not addColor
 
 
-        let program =
-            StatefulWidget.mkSimpleView init update view
+        let program = StatefulWidget.mkSimpleView init update view
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -866,14 +785,11 @@ module ViewHelpers =
     let ``Widget converted with View.map dispatches the right message type`` () =
         let mutable expectedMsg = Unchecked.defaultof<ParentMsg>
 
-        let childView =
-            Button("Child button", ChildClick)
-                .automationId("childButton")
+        let childView = Button("Child button", ChildClick).automationId("childButton")
 
         let parentView model =
             Stack() {
-                Button("Parent button", ParentClick)
-                    .automationId("parentButton")
+                Button("Parent button", ParentClick).automationId("parentButton")
 
                 (View.map ChildMessage childView).tap(ParentTap)
             }
@@ -884,8 +800,7 @@ module ViewHelpers =
             Assert.AreEqual(expectedMsg, msg)
             not model
 
-        let program =
-            StatefulWidget.mkSimpleView init update parentView
+        let program = StatefulWidget.mkSimpleView init update parentView
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -901,27 +816,20 @@ module ViewHelpers =
 
     [<Test>]
     let ``Adding property modifiers to widget converted with View.map is valid`` () =
-        let childView =
-            Button("Child button", ChildClick)
-                .automationId("childButton")
+        let childView = Button("Child button", ChildClick).automationId("childButton")
 
         let parentView model =
-            Stack() {
-                (View.map ChildMessage childView)
-                    .textColor("blue")
-            }
+            Stack() { (View.map ChildMessage childView).textColor("blue") }
 
         let init () = true
         let update _msg model = not model
 
-        let program =
-            StatefulWidget.mkSimpleView init update parentView
+        let program = StatefulWidget.mkSimpleView init update parentView
 
         let instance = Run.Instance program
         let tree = instance.Start()
 
-        let childButton =
-            find<TestButton> tree "childButton" :> IText
+        let childButton = find<TestButton> tree "childButton" :> IText
 
         Assert.AreEqual(childButton.TextColor, "blue")
 
@@ -929,9 +837,7 @@ module ViewHelpers =
     let ``Adding event modifiers to widget converted with View.map still dispatches the right message type`` () =
         let mutable expectedMsg = Unchecked.defaultof<ParentMsg>
 
-        let childView =
-            Button("Child button", ChildClick)
-                .automationId("childButton")
+        let childView = Button("Child button", ChildClick).automationId("childButton")
 
         let parentView model =
             Stack() { (View.map ChildMessage childView).tap(ParentTap) }
@@ -942,8 +848,7 @@ module ViewHelpers =
             Assert.AreEqual(expectedMsg, msg)
             not model
 
-        let program =
-            StatefulWidget.mkSimpleView init update parentView
+        let program = StatefulWidget.mkSimpleView init update parentView
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -957,14 +862,11 @@ module ViewHelpers =
     let ``Several layers of View.map produce the right result`` () =
         let mutable expectedMsg = Unchecked.defaultof<GrandParentMsg>
 
-        let childView =
-            Button("Child button", ChildClick)
-                .automationId("childButton")
+        let childView = Button("Child button", ChildClick).automationId("childButton")
 
         let parentView =
             Stack() {
-                Button("Parent button", ParentClick)
-                    .automationId("parentButton")
+                Button("Parent button", ParentClick).automationId("parentButton")
 
                 (View.map ChildMessage childView).tap(ParentTap)
             }
@@ -986,8 +888,7 @@ module ViewHelpers =
             Assert.AreEqual(expectedMsg, msg)
             not model
 
-        let program =
-            StatefulWidget.mkSimpleView init update grandParentView
+        let program = StatefulWidget.mkSimpleView init update grandParentView
 
         let instance = Run.Instance program
         let tree = instance.Start()
@@ -995,8 +896,7 @@ module ViewHelpers =
         let childButton = find<TestButton> tree "childButton"
         let parentButton = find<TestButton> tree "parentButton"
 
-        let grandParentButton =
-            find<TestButton> tree "grandParentButton"
+        let grandParentButton = find<TestButton> tree "grandParentButton"
 
         let parentStack = find<TestStack> tree "parentStack"
 
@@ -1019,16 +919,12 @@ module ViewHelpers =
     let ``Cascading View.map produce the right result`` () =
         let mutable expectedMsg = Unchecked.defaultof<GrandParentMsg>
 
-        let childView =
-            Button("Child button", ChildClick)
-                .automationId("childButton")
+        let childView = Button("Child button", ChildClick).automationId("childButton")
 
-        let parentView =
-            (View.map ChildMessage childView).tap(ParentTap)
+        let parentView = (View.map ChildMessage childView).tap(ParentTap)
 
         let grandParentView model =
-            (View.map ParentMessage parentView)
-                .tap2(GrandParentTap)
+            (View.map ParentMessage parentView).tap2(GrandParentTap)
 
         let init () = true
 
@@ -1036,8 +932,7 @@ module ViewHelpers =
             Assert.AreEqual(expectedMsg, msg)
             not model
 
-        let program =
-            StatefulWidget.mkSimpleView init update grandParentView
+        let program = StatefulWidget.mkSimpleView init update grandParentView
 
         let instance = Run.Instance program
         let tree = instance.Start()

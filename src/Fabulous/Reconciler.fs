@@ -17,7 +17,6 @@ module Reconciler =
         (node: IViewNode)
         : unit =
 
-        let diff =
-            WidgetDiff.create(prevOpt, next, canReuseView, compareScalars)
+        let diff = WidgetDiff.create(prevOpt, next, canReuseView, compareScalars)
 
         node.ApplyDiff(&diff)
