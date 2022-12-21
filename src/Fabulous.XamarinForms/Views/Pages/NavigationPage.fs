@@ -12,16 +12,79 @@ open Xamarin.Forms.PlatformConfiguration
 type INavigationPage =
     inherit IPage
 
-module NavigationPageUpdaters =
-    /// NOTE: Would be better to have a custom diff logic for Navigation
-    /// because it's a Stack and not a random access collection
-    let applyDiffNavigationPagePages (prev: ArraySlice<Widget>) (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
-        let navigationPage = node.Target :?> CustomNavigationPage
-        let pages = Array.ofSeq navigationPage.Pages
+/// Xamarin.Forms handles pages asynchronously, meaning a page will be added to the stack only after the animation is finished.
+/// This is a problem for Fabulous, because the nav stack needs to be synchronized with the widget trees.
+/// Otherwise rapid consecutive updates might end up with a wrong nav stack.
+///
+/// To work around that, we keep our own nav stack, and we update it synchronously.
+type CustomNavigationPage() as this =
+    inherit NavigationPage()
 
-        let mutable pagesLength =
-            let struct (size, _) = prev
-            int size
+    let _pagesSync =
+        System.Collections.Generic.List(this.Pages)
+
+    let mutable popCount = 0
+
+    let backNavigated = Event<EventHandler, EventArgs>()
+    let backButtonPressed = RequiresSubscriptionEvent()
+
+    do this.Popped.Add(this.OnPopped)
+
+    [<CLIEvent>]
+    member _.BackNavigated = backNavigated.Publish
+
+    [<CLIEvent>]
+    member _.BackButtonPressed = backButtonPressed.Publish
+
+    member this.PagesSync =
+        _pagesSync :> System.Collections.Generic.IReadOnlyList<Page>
+
+    member this.PushSync(page: Page, ?animated: bool) =
+        _pagesSync.Add(page)
+
+        this.PushAsync(page, (animated <> Some false))
+        |> ignore
+
+    member this.InsertPageBeforeSync(page: Page, index: int) =
+        let next = _pagesSync.[index]
+        _pagesSync.Insert(index, page)
+        this.Navigation.InsertPageBefore(page, next)
+
+    member this.RemovePageSync(index: int) =
+        if index < _pagesSync.Count then
+            popCount <- popCount + 1
+            let page = _pagesSync.[index]
+            _pagesSync.RemoveAt(index)
+            this.Navigation.RemovePage(page)
+
+    member this.PopSync(?animated: bool) =
+        if _pagesSync.Count > 0 then
+            popCount <- popCount + 1
+            _pagesSync.RemoveAt(_pagesSync.Count - 1)
+            this.PopAsync((animated <> Some false)) |> ignore
+
+    member this.OnPopped(_: NavigationEventArgs) =
+        // Only trigger BackNavigated if Fabulous isn't the one popping the page (e.g. user tapped back button)
+        if popCount > 0 then
+            popCount <- popCount - 1
+        else
+            _pagesSync.RemoveAt(_pagesSync.Count - 1)
+            backNavigated.Trigger(this, EventArgs())
+
+    /// If we are listening to the BackButtonPressed event, cancel the automatic back navigation and trigger the event;
+    /// otherwise just let the automatic back navigation happen
+    override this.OnBackButtonPressed() =
+        if backButtonPressed.HasListeners then
+            backButtonPressed.Trigger(this, EventArgs())
+            true
+        else
+            false
+
+
+module NavigationPageUpdaters =
+    let applyDiffNavigationPagePages _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
+        let navigationPage = node.Target :?> CustomNavigationPage
+        let pages = Array.ofSeq navigationPage.PagesSync
 
         let mutable popLastWithAnimation = false
 
@@ -31,12 +94,10 @@ module NavigationPageUpdaters =
                 let struct (_, page) = Helpers.createViewForWidget node widget
                 let page = page :?> Page
 
-                if index >= pagesLength then
-                    navigationPage.Push(page)
+                if index >= pages.Length then
+                    navigationPage.PushSync(page)
                 else
-                    navigationPage.Navigation.InsertPageBefore(page, pages.[index])
-
-                pagesLength <- pagesLength + 1
+                    navigationPage.InsertPageBeforeSync(page, index)
 
             | WidgetCollectionItemChange.Update (index, diff) ->
                 let childNode =
@@ -50,45 +111,30 @@ module NavigationPageUpdaters =
 
                 let page = page :?> Page
 
-                if index = 0 && pagesLength = 1 then
+                if index = 0 && pages.Length = 1 then
                     // We are trying to replace the root page
                     // First we push the new page, then we remove the old one
-                    navigationPage.Push(page, false)
-                    navigationPage.Navigation.RemovePage(pages.[index])
+                    navigationPage.PushSync(page, false)
+                    navigationPage.RemovePageSync(index)
 
-                elif index = pagesLength - 1 then
+                elif index = pages.Length - 1 then
                     // Last page, we pop it and push the new one
-                    navigationPage.Pop()
-                    navigationPage.Push(page)
+                    navigationPage.PopSync()
+                    navigationPage.PushSync(page)
 
                 else
                     // Page is not visible, we just replace it
-                    let nextPage = pages.[index + 1]
-                    navigationPage.Navigation.RemovePage(pages.[index])
-                    navigationPage.Navigation.InsertPageBefore(page, nextPage)
+                    navigationPage.RemovePageSync(index)
+                    navigationPage.InsertPageBeforeSync(page, index + 1)
 
             | WidgetCollectionItemChange.Remove (index, _) ->
-                if pagesLength > pages.Length then
-                    // NavigationPage already popped the page before notifying Fabulous, we do nothing
-                    pagesLength <- pagesLength - 1
-                elif index > pagesLength - 1 then
-                    () // Do nothing, page has already been popped
-                elif index = pagesLength - 1 then
-
-                    // Pop with an animation if it's the last page of the NavigationPage
-                    if index = pages.Length - 1 then
-                        popLastWithAnimation <- true
-                    else
-                        navigationPage.Navigation.RemovePage(pages.[index])
-
-                    pagesLength <- pagesLength - 1
+                if index = pages.Length - 1 then
+                    popLastWithAnimation <- true
                 else
-                    // Page is not visible, we just remove it
-                    navigationPage.Navigation.RemovePage(pages.[index])
-                    pagesLength <- pagesLength - 1
+                    navigationPage.RemovePageSync(index)
 
         if popLastWithAnimation then
-            navigationPage.Pop()
+            navigationPage.PopSync()
 
     let updateNavigationPagePages
         (oldValueOpt: ArraySlice<Widget> voption)
@@ -109,7 +155,7 @@ module NavigationPageUpdaters =
                 let animateIfLastPage = i = span.Length - 1
                 let struct (_, page) = Helpers.createViewForWidget node widget
 
-                navigationPage.Push(page :?> Page, animateIfLastPage)
+                navigationPage.PushSync(page :?> Page, animateIfLastPage)
                 i <- i + 1
 
             // Silently remove all old pages
