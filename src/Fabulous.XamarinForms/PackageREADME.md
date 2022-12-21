@@ -1,1 +1,0 @@
-Xamarin.Forms implementation for Fabulous

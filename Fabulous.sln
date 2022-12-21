@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0A6931CB-FA8E-4519-8EFA-61BF7E81E301}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous", "src\Fabulous\Fabulous.fsproj", "{F3C378FD-2A04-42FA-9B89-4F691B92CE0D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Benchmarks", "src\Fabulous.Benchmarks\Fabulous.Benchmarks.fsproj", "{3CA02AD8-6BD9-4E8A-857F-BCF800B12247}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Tests", "src\Fabulous.Tests\Fabulous.Tests.fsproj", "{31A18443-E05B-47F1-812E-4FEECCCA06DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Files", "_Solution Files", "{20E44B0C-FA62-4DE4-8017-95AAE3B178CE}" 
+	ProjectSection(SolutionItems) = preProject 
+		README.md = README.md 
+		CHANGELOG.md = CHANGELOG.md 
+		LICENSE.md = LICENSE.md 
+	    .gitignore = .gitignore 
+	    pull_request.yml = .github/workflows/pull_request.yml 
+	    build.yml = .github/workflows/build.yml 
+	    release.yml = .github/workflows/release.yml 
+	EndProjectSection 
+EndProject 
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3C378FD-2A04-42FA-9B89-4F691B92CE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C378FD-2A04-42FA-9B89-4F691B92CE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C378FD-2A04-42FA-9B89-4F691B92CE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C378FD-2A04-42FA-9B89-4F691B92CE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CA02AD8-6BD9-4E8A-857F-BCF800B12247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CA02AD8-6BD9-4E8A-857F-BCF800B12247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CA02AD8-6BD9-4E8A-857F-BCF800B12247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CA02AD8-6BD9-4E8A-857F-BCF800B12247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A18443-E05B-47F1-812E-4FEECCCA06DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A18443-E05B-47F1-812E-4FEECCCA06DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A18443-E05B-47F1-812E-4FEECCCA06DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A18443-E05B-47F1-812E-4FEECCCA06DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F3C378FD-2A04-42FA-9B89-4F691B92CE0D} = {0A6931CB-FA8E-4519-8EFA-61BF7E81E301}
+		{3CA02AD8-6BD9-4E8A-857F-BCF800B12247} = {0A6931CB-FA8E-4519-8EFA-61BF7E81E301}
+		{31A18443-E05B-47F1-812E-4FEECCCA06DB} = {0A6931CB-FA8E-4519-8EFA-61BF7E81E301}
+	EndGlobalSection
+EndGlobal

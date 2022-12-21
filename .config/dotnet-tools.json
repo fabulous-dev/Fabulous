@@ -2,8 +2,8 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "fantomas-tool": {
-      "version": "4.5.11",
+    "fantomas": {
+      "version": "5.1.4",
       "commands": [
         "fantomas"
       ]

@@ -39,7 +39,7 @@ module NestedTreeCreation =
 
     //    [<NativeMemoryProfiler>]
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     //    [<SimpleJob(RuntimeMoniker.Mono)>]
     //    [<SimpleJob(RuntimeMoniker.MonoAOTLLVM, warmupCount = 1)>]
     type Benchmarks() =
@@ -85,7 +85,7 @@ module DiffingAttributes =
     let view model = viewInner model.depth model.counter
 
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     type Benchmarks() =
         [<Params(10, 15)>]
         member val depth = 0 with get, set
@@ -155,7 +155,7 @@ module DiffingSmallScalars =
         viewInlineInner model.depth model.counter
 
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     type Benchmarks() =
         [<Params(15)>]
         member val depth = 0 with get, set
