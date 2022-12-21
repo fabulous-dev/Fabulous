@@ -44,7 +44,7 @@ As of January 2021, here is the support level we noticed for the various IDEs:
   Works perfectly out of the box with Visual Studio 16.8 or newer.
 
   **Known issues**:
-  - Android projects might fail to build because of [an issue with `Xamarin.Android.FSharp.ResourceProvider`](https://github.com/xamarin/Xamarin.Android.FSharp.ResourceProvider/issues/9). A [known workaround](https://github.com/fsprojects/Fabulous/issues/813#issuecomment-726210183) is to remove `System` and `System.Numerics` from the Android project references.  
+  - Android projects might fail to build because of [an issue with `Xamarin.Android.FSharp.ResourceProvider`](https://github.com/xamarin/Xamarin.Android.FSharp.ResourceProvider/issues/9). A [known workaround](https://github.com/fabulous-dev/Fabulous/issues/813#issuecomment-726210183) is to remove `System` and `System.Numerics` from the Android project references.  
   This issue only affects VS 16.8. So lower versions will require `System` and `System.Numerics` to build.
 
   - iOS projects may fail after updating FSharp.Core. You will see an exception about a missing ValueOption type. This is caused by VS making a breaking change to the iOS fsproj file.  

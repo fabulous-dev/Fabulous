@@ -42,7 +42,7 @@ let update (msg : Msg) (model : Model) =
 
 _Why don't we add a Fabulous wrapper for those?_
 Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.
-See [Pull Request #147](https://github.com/fsprojects/Fabulous/pull/147) for more information
+See [Pull Request #147](https://github.com/fabulous-dev/Fabulous/pull/147) for more information
 
 See also:
 

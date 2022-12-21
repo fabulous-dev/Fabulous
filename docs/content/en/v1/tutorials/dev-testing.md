@@ -34,7 +34,7 @@ let init () =
 ```
 
 Here we can make sure that the default state stays exact throughout the life of the project.  
-So using our favorite unit test framework (here we use [FsUnit](https://fsprojects.github.io/FsUnit/) for this example), we can write a test that will check if the value returned by `init` is the one we expect.
+So using our favorite unit test framework (here we use [FsUnit](https://fabulous-dev.github.io/FsUnit/) for this example), we can write a test that will check if the value returned by `init` is the one we expect.
 
 ```fs
 [<Test>]
@@ -212,4 +212,4 @@ let ``Clicking the button Increment should send the message Increment``() =
 
 ## See also
 
-- [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)
+- [CounterApp.Tests sample](https://github.com/fabulous-dev/Fabulous/blob/v1.0/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)

@@ -2,7 +2,7 @@
 
 *F# Functional App Development, using declarative dynamic UI.*
 
-[![build](https://github.com/fsprojects/Fabulous/actions/workflows/build.yml/badge.svg)](https://github.com/fsprojects/Fabulous/actions/workflows/dotnet.yml) [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
+[![build](https://github.com/fabulous-dev/Fabulous/actions/workflows/build.yml/badge.svg)](https://github.com/fabulous-dev/Fabulous/actions/workflows/dotnet.yml) [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 

@@ -6,7 +6,7 @@
         <PackageIcon>nuget-icon.png</PackageIcon>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <VersionPrefix>2.1.0</VersionPrefix>
-        <RepositoryUrl>https://github.com/fsprojects/Fabulous</RepositoryUrl>
+        <RepositoryUrl>https://github.com/fabulous-dev/Fabulous</RepositoryUrl>
         <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     </PropertyGroup>
     <ItemGroup>

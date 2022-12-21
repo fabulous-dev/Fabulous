@@ -27,7 +27,7 @@ The following additional view elements are available as pre-built nuget librarie
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Fabulous view element.
 
-> Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms/extensions).
+> Please consider contributing your extensions to [this repository](https://github.com/fabulous-dev/Fabulous/tree/master/Fabulous.XamarinForms/extensions).
 
 The basic shape of an extension view component is shown below. Here we assume the Xamarin.Forms control defines one extra element
 called ABC deriving from existing element kind BASE, and that ABC has one additional
@@ -248,5 +248,5 @@ See also:
 * [Core Elements](view-elements.html)
 * [Maps](view-maps.html)
 * [SkiaSharp](view-skiasharp.html)
-* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
+* [Source for the Maps extension](https://github.com/fabulous-dev/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
+* [Source for the SkiaSharp extension](https://github.com/fabulous-dev/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)

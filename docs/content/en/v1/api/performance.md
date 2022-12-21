@@ -159,7 +159,7 @@ View.Grid([
 
 1. If no previous element can be reused, a new one is created
 
-Note that old keyed elements that didn't had a matching key in the new list will be destroyed instead of being reused by new unkeyed elements to help developers avoid undesired animations, such as fade-in/fade-out on Button Text changes on iOS ([#308](https://github.com/fsprojects/Fabulous/issues/308)) or ripple effects on Android Button.
+Note that old keyed elements that didn't had a matching key in the new list will be destroyed instead of being reused by new unkeyed elements to help developers avoid undesired animations, such as fade-in/fade-out on Button Text changes on iOS ([#308](https://github.com/fabulous-dev/Fabulous/issues/308)) or ripple effects on Android Button.
 
 In the end, controls that weren't reused are destroyed.
 
