@@ -18,7 +18,7 @@ module AboutPage =
     let fsharpOrgUrl = "https://fsharp.org"
 
     let fabulousXamarinFormsUrl =
-        "https://github.com/fsprojects/Fabulous/tree/master/Fabulous.XamarinForms"
+        "https://github.com/fabulous-dev/Fabulous/tree/master/Fabulous.XamarinForms"
 
     let freepikUrl =
         "https://www.flaticon.com/authors/freepik"

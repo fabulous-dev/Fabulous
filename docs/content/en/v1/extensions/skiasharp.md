@@ -56,5 +56,5 @@ See also:
 
 * [Interface Objects](view-interface-objects.html).
 * [Using SkiaSharp in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/).
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
+* [Source for the SkiaSharp extension](https://github.com/fabulous-dev/Fabulous/blob/v1.0/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)
 * [Defining Extensions](view-a-extensions.html)

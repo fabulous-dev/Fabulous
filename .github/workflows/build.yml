@@ -35,7 +35,7 @@ jobs:
         dotnet pack ${TEMPLATE_PROJ} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs
     - name: Push
       run: |
-        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
 
   maui:
     name: Fabulous.MauiControls
@@ -64,4 +64,4 @@ jobs:
         dotnet pack ${TEMPLATE_PROJ} -p:Version=${VERSION}-nightly-${GITHUB_RUN_ID} -p:IsNightlyBuild=true --configuration Release --output nupkgs
     - name: Push
       run: |
-        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fsprojects/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
