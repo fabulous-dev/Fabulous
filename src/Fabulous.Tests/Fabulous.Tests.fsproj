@@ -15,7 +15,7 @@
         <Compile Include="AttributesTests.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
         <PackageReference Include="FsCheck.NUnit" Version="2.16.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
         <PackageReference Include="NUnit" Version="3.13.3" />

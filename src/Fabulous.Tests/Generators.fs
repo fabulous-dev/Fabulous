@@ -15,13 +15,14 @@ module SmallScalarGenerators =
     let intTypedEnum =
         gen {
             return!
-                Gen.elements [ IntTypedEnum.One
-                               IntTypedEnum.Two
-                               IntTypedEnum.Three
-                               IntTypedEnum.Four
-                               IntTypedEnum.Five
-                               IntTypedEnum.Five
-                               IntTypedEnum.Six ]
+                Gen.elements
+                    [ IntTypedEnum.One
+                      IntTypedEnum.Two
+                      IntTypedEnum.Three
+                      IntTypedEnum.Four
+                      IntTypedEnum.Five
+                      IntTypedEnum.Five
+                      IntTypedEnum.Six ]
         }
 
 type Generators =

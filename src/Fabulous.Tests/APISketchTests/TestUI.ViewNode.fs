@@ -9,7 +9,4 @@ module TestUI_ViewNode =
         let ViewNodeProperty = "ViewNodeProperty"
 
         let getViewNode (target: obj) =
-            (target :?> TestViewElement)
-                .PropertyBag.Item ViewNodeProperty
-            :?> ViewNode
-            :> IViewNode
+            (target :?> TestViewElement).PropertyBag.Item ViewNodeProperty :?> ViewNode :> IViewNode

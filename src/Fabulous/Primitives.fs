@@ -87,14 +87,16 @@ type ViewAdapterKey = int
 /// Represents a value for a property of a widget
 [<Struct>]
 type ScalarAttribute =
-    { Key: ScalarAttributeKey
+    {
+        Key: ScalarAttributeKey
 #if DEBUG
-      DebugName: string
+        DebugName: string
 #endif
-      /// Stores the value as object (boxed), prefer NumericValue when possible
-      Value: obj
-      /// Stores the value in a numeric form for faster performance (no boxing)
-      NumericValue: uint64 }
+        /// Stores the value as object (boxed), prefer NumericValue when possible
+        Value: obj
+        /// Stores the value in a numeric form for faster performance (no boxing)
+        NumericValue: uint64
+    }
 
 /// Represents a single child of a widget
 and [<Struct>] WidgetAttribute =
@@ -118,6 +120,6 @@ and [<Struct>] Widget =
 #if DEBUG
       DebugName: string
 #endif
-      ScalarAttributes: ScalarAttribute [] voption
-      WidgetAttributes: WidgetAttribute [] voption
-      WidgetCollectionAttributes: WidgetCollectionAttribute [] voption }
+      ScalarAttributes: ScalarAttribute[] voption
+      WidgetAttributes: WidgetAttribute[] voption
+      WidgetCollectionAttributes: WidgetCollectionAttribute[] voption }

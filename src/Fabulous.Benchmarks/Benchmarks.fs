@@ -20,26 +20,24 @@ module NestedTreeCreation =
         //        printfn $"view on {depth}"
 
         Stack() {
-            if (depth > 0) then viewInner(depth - 1)
+            if (depth > 0) then
+                viewInner(depth - 1)
 
-            Label($"label1:{depth}")
-                .textColor("red")
-                .automationId($"label1:{depth}")
+            Label($"label1:{depth}").textColor("red").automationId($"label1:{depth}")
 
-            Label($"label2:{depth}")
-                .textColor("green")
-                .automationId($"label2:{depth}")
+            Label($"label2:{depth}").textColor("green").automationId($"label2:{depth}")
 
             Button($"btn: {depth}", Depth depth)
 
-            if (depth > 0) then viewInner(depth - 2)
+            if (depth > 0) then
+                viewInner(depth - 2)
         }
 
     let view d = viewInner d
 
     //    [<NativeMemoryProfiler>]
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     //    [<SimpleJob(RuntimeMoniker.Mono)>]
     //    [<SimpleJob(RuntimeMoniker.MonoAOTLLVM, warmupCount = 1)>]
     type Benchmarks() =
@@ -59,9 +57,7 @@ module DiffingAttributes =
 
     let update msg model =
         match msg with
-        | IncBy amount ->
-            { model with
-                  counter = model.counter + amount }
+        | IncBy amount -> { model with counter = model.counter + amount }
 
     let rec viewInner depth counter =
         Stack() {
@@ -76,16 +72,16 @@ module DiffingAttributes =
             Button($"btn: {depth}", IncBy 2)
 
             if (depth > 0) then
-                viewInner(depth - 1) counter
+                viewInner (depth - 1) counter
 
             if (depth > 0) then
-                viewInner(depth - 2) counter
+                viewInner (depth - 2) counter
         }
 
     let view model = viewInner model.depth model.counter
 
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     type Benchmarks() =
         [<Params(10, 15)>]
         member val depth = 0 with get, set
@@ -93,13 +89,13 @@ module DiffingAttributes =
         [<Benchmark>]
         member x.ProcessMessages() =
             let program =
-                StatefulWidget.mkSimpleView(fun () -> { depth = x.depth; counter = 0 }) update view
+                StatefulWidget.mkSimpleView (fun () -> { depth = x.depth; counter = 0 }) update view
 
             let instance = Run.Instance program
 
             let _tree = (instance.Start())
 
-            for i in 1 .. 100 do
+            for i in 1..100 do
                 instance.ProcessMessage(IncBy i)
 
 
@@ -112,9 +108,7 @@ module DiffingSmallScalars =
 
     let update msg model =
         match msg with
-        | IncBy amount ->
-            { model with
-                  counter = model.counter + amount }
+        | IncBy amount -> { model with counter = model.counter + amount }
 
     let rec viewBoxedInner depth counter =
         // this is to emulate changing value only once per 5 updates
@@ -126,10 +120,10 @@ module DiffingSmallScalars =
             BoxedNumericBag(value, value, float value)
 
             if (depth > 0) then
-                viewBoxedInner(depth - 1) counter
+                viewBoxedInner (depth - 1) counter
 
             if (depth > 0) then
-                viewBoxedInner(depth - 2) counter
+                viewBoxedInner (depth - 2) counter
         }
 
     let rec viewInlineInner depth counter =
@@ -142,10 +136,10 @@ module DiffingSmallScalars =
             InlineNumericBag(value, value, float value)
 
             if (depth > 0) then
-                viewInlineInner(depth - 1) counter
+                viewInlineInner (depth - 1) counter
 
             if (depth > 0) then
-                viewInlineInner(depth - 2) counter
+                viewInlineInner (depth - 2) counter
         }
 
     let viewBoxed model =
@@ -155,7 +149,7 @@ module DiffingSmallScalars =
         viewInlineInner model.depth model.counter
 
     [<MemoryDiagnoser>]
-    [<SimpleJob(RuntimeMoniker.Net60)>]
+    [<SimpleJob>]
     type Benchmarks() =
         [<Params(15)>]
         member val depth = 0 with get, set
@@ -167,19 +161,15 @@ module DiffingSmallScalars =
         member x.ProcessIncrements() =
             let program =
 
-                let view =
-                    if x.boxed then
-                        viewBoxed
-                    else
-                        viewInline
+                let view = if x.boxed then viewBoxed else viewInline
 
-                StatefulWidget.mkSimpleView(fun () -> { depth = x.depth; counter = 0UL }) update view
+                StatefulWidget.mkSimpleView (fun () -> { depth = x.depth; counter = 0UL }) update view
 
             let instance = Run.Instance program
 
             let _tree = (instance.Start())
 
-            for i in 1 .. 100 do
+            for i in 1..100 do
                 instance.ProcessMessage(IncBy 1UL)
 
 
@@ -187,15 +177,14 @@ module DiffingSmallScalars =
 [<EntryPoint>]
 let main argv =
     //    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
-//    |> ignore
-//
-//    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
-//    |> ignore
+    //    |> ignore
+    //
+    //    BenchmarkRunner.Run<DiffingAttributes.Benchmarks>()
+    //    |> ignore
 
     printfn "Hello"
 
-    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>()
-    |> ignore
+    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>() |> ignore
 
     0 // return an integer exit code
 

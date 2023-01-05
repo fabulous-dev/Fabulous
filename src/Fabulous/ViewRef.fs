@@ -38,13 +38,11 @@ type ViewRef<'T when 'T: not struct>() as this =
 
 module ViewRefAttributes =
     let ViewRef =
-        Attributes.defineSimpleScalarWithEquality<ViewRef>
-            "Fabulous_ViewRef"
-            (fun oldValueOpt newValueOpt node ->
-                match oldValueOpt with
-                | ValueNone -> ()
-                | ValueSome viewRef -> viewRef.Unset()
+        Attributes.defineSimpleScalarWithEquality<ViewRef> "Fabulous_ViewRef" (fun oldValueOpt newValueOpt node ->
+            match oldValueOpt with
+            | ValueNone -> ()
+            | ValueSome viewRef -> viewRef.Unset()
 
-                match newValueOpt with
-                | ValueNone -> ()
-                | ValueSome viewRef -> viewRef.Set(node.Target))
+            match newValueOpt with
+            | ValueNone -> ()
+            | ValueSome viewRef -> viewRef.Set(node.Target))

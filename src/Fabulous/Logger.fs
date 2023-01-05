@@ -18,24 +18,24 @@ type Logger =
 
 [<Extension>]
 type LoggerExtensions =
-    static member inline Log(this: Logger, level: LogLevel, format: string, [<ParamArray>] args: obj []) =
+    static member inline Log(this: Logger, level: LogLevel, format: string, [<ParamArray>] args: obj[]) =
         if level >= this.MinLogLevel then
             this.Log(level, String.Format(format, args))
 
     [<Extension>]
-    static member inline Debug(this: Logger, format: string, [<ParamArray>] args: obj []) =
+    static member inline Debug(this: Logger, format: string, [<ParamArray>] args: obj[]) =
         LoggerExtensions.Log(this, LogLevel.Debug, format, args)
 
     [<Extension>]
-    static member inline Info(this: Logger, format: string, [<ParamArray>] args: obj []) =
+    static member inline Info(this: Logger, format: string, [<ParamArray>] args: obj[]) =
         LoggerExtensions.Log(this, LogLevel.Info, format, args)
 
     [<Extension>]
-    static member inline Warn(this: Logger, format: string, [<ParamArray>] args: obj []) =
+    static member inline Warn(this: Logger, format: string, [<ParamArray>] args: obj[]) =
         LoggerExtensions.Log(this, LogLevel.Warn, format, args)
 
     [<Extension>]
-    static member inline Error(this: Logger, format: string, [<ParamArray>] args: obj []) =
+    static member inline Error(this: Logger, format: string, [<ParamArray>] args: obj[]) =
         LoggerExtensions.Log(this, LogLevel.Error, format, args)
 
     [<Extension>]

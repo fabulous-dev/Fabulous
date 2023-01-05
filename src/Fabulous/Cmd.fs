@@ -29,8 +29,7 @@ module Cmd =
 
     /// When emitting the message, map to another type
     let map (f: 'a -> 'msg) (cmd: Cmd<'a>) : Cmd<'msg> =
-        cmd
-        |> List.map(fun g -> (fun dispatch -> f >> dispatch) >> g)
+        cmd |> List.map(fun g -> (fun dispatch -> f >> dispatch) >> g)
 
     /// Aggregate multiple commands
     let batch (cmds: #seq<Cmd<'msg>>) : Cmd<'msg> = cmds |> List.concat
@@ -78,8 +77,8 @@ module Cmd =
                       match result with
                       | Ok x -> dispatch(success x)
                       | Error x -> dispatch(error x)
-                  with
-                  | ex -> dispatch(failure ex)
+                  with ex ->
+                      dispatch(failure ex)
               }
               |> Async.StartImmediate ]
 
@@ -90,8 +89,7 @@ module Cmd =
                   try
                       let! result = p
                       dispatch result
-                  with
-                  | _ex ->
+                  with _ex ->
                       // TODO: log exception
                       ()
               }
@@ -112,7 +110,7 @@ module Cmd =
                       match result with
                       | Ok x -> dispatch(success x)
                       | Error x -> dispatch(error x)
-                  with
-                  | ex -> dispatch(failure ex)
+                  with ex ->
+                      dispatch(failure ex)
               }
               |> ignore ]

@@ -120,8 +120,7 @@ module TestUI_Attributes =
         //    open Fabulous.Attributes
 
         module Text =
-            let Record =
-                Attributes.defineBool "Record" TestUI_ViewUpdaters.updateRecord
+            let Record = Attributes.defineBool "Record" TestUI_ViewUpdaters.updateRecord
 
             let Text =
                 Attributes.defineSimpleScalarWithEquality<string> "Text" TestUI_ViewUpdaters.updateText
@@ -133,9 +132,8 @@ module TestUI_Attributes =
 
         module Container =
             let Children =
-                Attributes.defineListWidgetCollection
-                    "Container_Children"
-                    (fun target -> (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
+                Attributes.defineListWidgetCollection "Container_Children" (fun target ->
+                    (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
             let Tap = defineContainerTappable "Container_Tap"
 

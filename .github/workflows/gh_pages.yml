@@ -1,45 +1,47 @@
-name: gh-pages
+### DISABLED UNTIL WEBSITE IS MIGRATED TO NEW REPO
 
-on:
-  push:
-    branches: ['v2.1']
+# name: gh-pages
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      # Check out the docs branch containing the Doks website
-      - name: Checkout docs branch
-        uses: actions/checkout@v3
-        with:
-          ref: docs
+# on:
+#   push:
+#     branches: ['v2.1']
 
-      # Copy the content of the docs folder from v2.1 branch to docs branch
-      - name: Copy docs from v2.1
-        run: |
-          git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/v2.1*:refs/remotes/origin/v2.1*
-          git checkout --progress --force refs/remotes/origin/v2.1 -- docs
-          mv docs/content content
-          rm -r docs
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       # Check out the docs branch containing the Doks website
+#       - name: Checkout docs branch
+#         uses: actions/checkout@v3
+#         with:
+#           ref: docs
 
-      # Build website
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-          cache: 'npm'
+#       # Copy the content of the docs folder from v2.1 branch to docs branch
+#       - name: Copy docs from v2.1
+#         run: |
+#           git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/v2.1*:refs/remotes/origin/v2.1*
+#           git checkout --progress --force refs/remotes/origin/v2.1 -- docs
+#           mv docs/content content
+#           rm -r docs
 
-      - name: Install dependencies
-        run: npm install
+#       # Build website
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: '16'
+#           cache: 'npm'
 
-      - name: Check for linting errors
-        run: npm test
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Build production website
-        run: npm run build
+#       - name: Check for linting errors
+#         run: npm test
 
-      # Deploy to GitHub Pages branch
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+#       - name: Build production website
+#         run: npm run build
+
+#       # Deploy to GitHub Pages branch
+#       - name: Deploy to GitHub Pages
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./public

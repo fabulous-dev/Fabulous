@@ -28,27 +28,26 @@ module TestUI_Widgets =
                   Name = typeof<'T>.Name
                   TargetType = typeof<'T>
                   CreateView =
-                      fun (widget, context, parentNode) ->
-                          let name = typeof<'T>.Name
-                          //                      printfn $"Creating view for {name}"
+                    fun (widget, context, parentNode) ->
+                        let name = typeof<'T>.Name
+                        //                      printfn $"Creating view for {name}"
 
-                          let view = new 'T()
-                          let weakReference = WeakReference(view)
+                        let view = new 'T()
+                        let weakReference = WeakReference(view)
 
-                          let parentNode =
-                              match parentNode with
-                              | ValueNone -> None
-                              | ValueSome parent -> Some parent
+                        let parentNode =
+                            match parentNode with
+                            | ValueNone -> None
+                            | ValueSome parent -> Some parent
 
-                          let viewNode =
-                              ViewNode(parentNode, context, weakReference)
+                        let viewNode = ViewNode(parentNode, context, weakReference)
 
-                          view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
+                        view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
-                          let oldWidget: Widget voption = ValueNone
+                        let oldWidget: Widget voption = ValueNone
 
-                          Reconciler.update context.CanReuseView oldWidget widget viewNode
-                          struct (viewNode :> IViewNode, box view) }
+                        Reconciler.update context.CanReuseView oldWidget widget viewNode
+                        struct (viewNode :> IViewNode, box view) }
 
             WidgetDefinitionStore.set key definition
             key
@@ -207,11 +206,7 @@ module TestUI_Widgets =
                 x: WidgetBuilder<'msg, 'itemMarker> seq
             ) : Content<'msg> =
             // TODO optimize this one with addMut
-            { Widgets =
-                  x
-                  |> Seq.map(fun wb -> wb.Compile())
-                  |> Seq.toArray
-                  |> MutStackArray1.fromArray }
+            { Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toArray |> MutStackArray1.fromArray }
 
 
 
@@ -237,14 +232,14 @@ module TestUI_Widgets =
                 { CanReuseView = ViewHelpers.canReuseView
                   GetViewNode = ViewNode.getViewNode
                   Logger =
-                      { Log = fun _ -> ()
-                        MinLogLevel = LogLevel.Fatal }
+                    { Log = fun _ -> ()
+                      MinLogLevel = LogLevel.Fatal }
                   Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage }
 
             member x.ProcessMessage(msg: 'msg) =
                 match state with
                 | None -> ()
-                | Some (m, target, oldWidget) ->
+                | Some(m, target, oldWidget) ->
                     let newModel = program.Update msg m
                     let newWidget = program.View(newModel).Compile()
 
@@ -269,8 +264,7 @@ module TestUI_Widgets =
                 let widget = program.View(model).Compile()
                 let widgetDef = WidgetDefinitionStore.get widget.Key
 
-                let struct (_node, view) =
-                    widgetDef.CreateView(widget, x.viewContext, ValueNone)
+                let struct (_node, view) = widgetDef.CreateView(widget, x.viewContext, ValueNone)
 
                 state <- Some(model, view, widget)
 
