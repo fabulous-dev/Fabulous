@@ -36,6 +36,8 @@ type IViewAdapter =
     inherit IDisposable
     /// Instantiates a new view using the current state associated with this ViewAdapter
     abstract CreateView: unit -> obj
+    /// Attaches to the existing view and updates it with the current state associated with this ViewAdapter
+    abstract Attach: obj -> unit
 
 module RunnerStore =
     let private _runners = Dictionary<StateKey, IRunner>()
@@ -183,6 +185,24 @@ module ViewAdapters =
             _root <- root
             _root
 
+        member _.Attach(root) =
+            let state = unbox(StateStore.get stateKey)
+            let widget = (view state).Compile()
+            _widget <- widget
+
+            let treeContext =
+                { CanReuseView = canReuseView
+                  GetViewNode = getViewNode
+                  Logger = logger
+                  Dispatch = this.Dispatch }
+
+            let definition = WidgetDefinitionStore.get widget.Key
+
+            let _node =
+                definition.AttachView(widget, treeContext, ValueNone, root)
+
+            _root <- root
+
         /// Listens for StateStore changes and updates the view if necessary
         member _.OnStateChanged(args) =
             try
@@ -211,6 +231,7 @@ module ViewAdapters =
         interface IViewAdapter with
             member x.Dispose() = x.Dispose()
             member x.CreateView() = x.CreateView()
+            member x.Attach(root) = x.Attach(root)
 
     /// Create a new ViewAdapter for the component
     let create<'arg, 'model, 'msg, 'marker>
