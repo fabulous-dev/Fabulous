@@ -1,84 +1,120 @@
-# <img src="logo/logo-title.png" height="120px" alt="Fabulous" />
+<a href="https://fabulous.dev/">
+  <h1 align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="logo/logo-title.png">
+      <img alt="Fabulous" src="logo/logo-title.png" height="180px">
+    </picture>
+  </h1>
+</a>
 
-*F# Functional App Development, using declarative dynamic UI.*
+[![build](https://img.shields.io/github/actions/workflow/status/fabulous-dev/Fabulous/build.yml?branch=main)](https://github.com/fabulous-dev/Fabulous/actions/workflows/build.yml) [![NuGet version](https://img.shields.io/nuget/v/Fabulous)](https://www.nuget.org/packages/Fabulous) [![NuGet downloads](https://img.shields.io/nuget/dt/Fabulous)](https://www.nuget.org/packages/Fabulous) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK) [![Twitter Follow](https://img.shields.io/twitter/follow/FabulousAppDev?style=social)](https://twitter.com/FabulousAppDev)
 
-[![build](https://github.com/fabulous-dev/Fabulous/actions/workflows/build.yml/badge.svg)](https://github.com/fabulous-dev/Fabulous/actions/workflows/dotnet.yml) [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK)
-
-Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
-
-Fabulous allows you to combine the power of functional programming and the simple Model-View-Update architecture to build any kind of mobile and desktop applications with an expressive, dynamic and clean UI DSL. Go cross-platform with Fabulous for Xamarin.Forms and target iOS, Android, Mac, WPF and more!
+Fabulous is a modern declarative UI framework for crafting cross-platform mobile and desktop applications in .NET. It aims to bring you confidence in your apps and a great development experience by combining an expressive UI syntax, the simple & robust Model-View-Update (MVU) architecture, and functional programming.
 
 ## Documentation
 
-Documentation is available at https://docs.fabulous.dev
+- [Get started](https://fabulous.dev/get-started)
+- [Fabulous documentation](https://docs.fabulous.dev)
+- [Contribution guide](https://github.com/fabulous-dev/Fabulous/blob/main/CONTRIBUTING.md)
 
 ## About Fabulous
 
-Fabulous aims to provide all the tools to let you create your own mobile and desktop apps using only F# and the [Model-View-Update architecture](https://guide.elm-lang.org/architecture/) (shorten to MVU), with a great F# DSL for building dynamic UIs.  
-The combination of F# and MVU makes for a great development experience.
+Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org).  
+Fabulous also aims to be performant by having low memory consumption and efficient view diffing mechanisms.
 
-Note that Fabulous itself does not provide UI controls, so you'll need to combine it with another framework like Xamarin.Forms.
+Note that Fabulous itself does not provide any UI rendering. You'll need to combine it with another framework like:
+- [Xamarin.Forms](https://dotnet.microsoft.com/en-us/apps/xamarin/xamarin-forms) with [Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms)
+- [.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui) with [Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
+- [AvaloniaUI](https://avaloniaui.net) with [Fabulous.Avalonia](https://github.com/fabulous-dev/Fabulous.Avalonia)
 
-### Fabulous for Xamarin.Forms
+### Declarative UI
 
-Fabulous for Xamarin.Forms combines both frameworks with a tailored DSL to let you take advantage of everything Xamarin.Forms has to offer while keeping all the benefits of Fabulous.
+Typical UI development can be a nightmare if not done properly. It is generally written once, then mutated here and there based on the need and what the user is doing.  
+Related UI pieces end up in several places, making it hard to mentally think of all the possibilities; until the inevitable race condition or bug due to an unintended user flow.
 
-With Fabulous for Xamarin.Forms, you will be able to write complete applications in F# like this:
-```fsharp
-type Model = { Text: string }
-type Msg = ButtonClicked
+Fabulous makes it easier to reason about UI thanks to its declarative UI inspired by SwiftUI.  
+The UI of a component is defined in a single place (the `view` function) and Fabulous will call it everytime the state of that component (the `Model` type) is changed.  
 
-let init () = { Text = "Hello Fabulous!" }
+You don't need to think about how to mutate the UI, Fabulous will handle it for you to always match the latest UI you need.
 
-let update msg model =
-    match msg with
-    | ButtonClicked -> { model with Text = "Thanks for using Fabulous!" }
+```fs
+/// A simple Counter app made with Fabulous.MauiControls
+type Model =
+    { Count: int }
+
+type Msg =
+    | Increment
+    | Decrement
 
 let view model =
     Application(
-        NavigationPage() {                
-            ContentPage("Counter",
-                VStack(spacing = 16.) {
-                    Image(Aspect.AspectFit, "fabulous.png")
-                    Label(model.Text)
-                    Button("Click me", ButtonClicked)
-                }
-            )
-        }
+        ContentPage(
+            "Counter app",
+            VStack(spacing = 16.) {
+                Image(Aspect.AspectFit, "fabulous.png")
+
+                Label($"Count is {model.Count}")
+
+                Button("Increment", Increment)
+                Button("Decrement", Decrement)
+            }
+        )
     )
 ```
 
-### Fabulous for Maui.Controls
+### MVU architecture
 
-Fabulous now supports Microsoft.Maui.Controls, the framework that will replace Xamarin.Forms.
+We believe declarative UI, functional programming, and the MVU state management are a perfect fit for app development.
 
-You will still be able to combine MVU with an SwiftUI-inspired DSL in F#, while targeting several platforms (iOS, Android, and more) using the new single project format.
+MVU makes every state and transition between those states explicit.  
+You don't need to worry about unintended actions that could lead to an invalid state which would crash the app.
 
-With Fabulous for Maui.Controls, you will be able to write complete applications in F# like this:
-```fsharp
-type Model = { Text: string }
-type Msg = ButtonClicked
+Instead, you can very easily model the state of your app or component (via the `Model` type) and transitions between them (via the `Msg` type) using F# records and discriminated unions types.  
+When starting, Fabulous will initialize the state by calling the `init` function. Then, when messages are being dispatched, Fabulous will call the `update` function to let you transition from one state to the other.
 
-let init () = { Text = "Hello Fabulous!" }
+If several messages are received at the same time, Fabulous will queue them to let you update the app state properly.
+
+```fs
+let init () =
+    { Count = 0 }
 
 let update msg model =
     match msg with
-    | ButtonClicked -> { model with Text = "Thanks for using Fabulous!" }
-
-let view model =
-    Application() {
-        NavigationPage() {                
-            ContentPage("Counter",
-                VStack(spacing = 16.) {
-                    Image(Aspect.AspectFit, "fabulous.png")
-                    Label(model.Text)
-                    Button("Click me", ButtonClicked)
-                }
-            )
-        }
-    )
+    | Increment -> { model with Count = model.Count + 1 }
+    | Decrement -> { model with Count = model.Count - 1 }
 ```
 
-## Credits
-This repository is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish).
- 
+And finally, given the functional nature of MVU, it is extremely simple to unit test each and every possible state of your application.
+
+```fs
+[<Test>]
+let ``When clicking the Increment button, increment the count by one``() =
+    let previousState = { Count = 10 }
+    let expectedState = { Count = 11 }
+
+    let actualState = App.update Increment previousState
+
+    actualState |> should equal expectedState
+```
+
+### Powered by .NET
+
+.NET is a very mature and broad framework by Microsoft. It can run on any device and platform, is very efficient, and has a vast ecosystem of open-source and licensed libraries, plugins, and other frameworks.  
+Fabulous is compatible with most .NET libraries. You will be able to benefit from the .NET ecosystem by using 3rd party packages directly in your application.
+
+## Sponsoring
+
+Donating is a fantastic way to support all the efforts going into making Fabulous the best declarative UI framework for dotnet.  
+We accept donations through the GitHub Sponsors program.
+
+If you need support see Commercial Support section below.
+
+## Commercial support
+
+If you would like us to provide you with:
+
+- training and workshops,
+- support services,
+- and consulting services.
+
+Feel free to contact us: [support@fabulous.dev](mailto:support@fabulous.dev)

@@ -1,40 +1,54 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>net7.0;netstandard2.1</TargetFrameworks>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PackageReadmeFile>PackageREADME.md</PackageReadmeFile>
-        <PackageIcon>nuget-icon.png</PackageIcon>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <VersionPrefix>2.1.0</VersionPrefix>
-        <RepositoryUrl>https://github.com/fabulous-dev/Fabulous</RepositoryUrl>
-        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Include="PackageREADME.md" Pack="true" PackagePath="\" />
-        <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
-        <Compile Include="Array.fs" />
-        <Compile Include="Primitives.fs" />
-        <Compile Include="Logger.fs" />
-        <Compile Include="WidgetDiff.fs" />
-        <Compile Include="IViewNode.fs" />
-        <Compile Include="AttributeDefinitions.fs" />
-        <Compile Include="WidgetDefinitions.fs" />
-        <Compile Include="Builders.fs" />
-        <Compile Include="Reconciler.fs" />
-        <Compile Include="ViewNode.fs" />
-        <Compile Include="State.fs" />
-        <Compile Include="Cmd.fs" />
-        <Compile Include="Runners.fs" />
-        <Compile Include="MapMsg.fs" />
-        <Compile Include="Lifecycle.fs" />
-        <Compile Include="Dispatch.fs" />
-        <Compile Include="Attributes.fs" />
-        <Compile Include="Memo.fs" />
-        <Compile Include="View.fs" />
-        <Compile Include="ViewRef.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FSharp.Core" Version="7.0.0" />
-        <PackageReference Include="System.Memory" Version="4.5.5" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;netstandard2.1</TargetFrameworks>
+    <PackageId>Fabulous</PackageId>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <Description>Declarative UI framework with F# and MVU</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
+    <Compile Include="Array.fs" />
+    <Compile Include="Primitives.fs" />
+    <Compile Include="Logger.fs" />
+    <Compile Include="WidgetDiff.fs" />
+    <Compile Include="IViewNode.fs" />
+    <Compile Include="AttributeDefinitions.fs" />
+    <Compile Include="WidgetDefinitions.fs" />
+    <Compile Include="Builders.fs" />
+    <Compile Include="Reconciler.fs" />
+    <Compile Include="ViewNode.fs" />
+    <Compile Include="State.fs" />
+    <Compile Include="Cmd.fs" />
+    <Compile Include="Runners.fs" />
+    <Compile Include="MapMsg.fs" />
+    <Compile Include="Lifecycle.fs" />
+    <Compile Include="Dispatch.fs" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="Memo.fs" />
+    <Compile Include="View.fs" />
+    <Compile Include="ViewRef.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+      FSharp.Core is fixed to a specific version that is not necessarily the latest one.
+      This version will be used as the lower bound in the NuGet package
+    -->
+    <PackageReference Include="FSharp.Core" VersionOverride="7.0.0" />
+    <PackageReference Include="System.Memory" />
+  </ItemGroup>
 </Project>

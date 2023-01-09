@@ -477,3 +477,6 @@ $RECYCLE.BIN/
 *.lnk
 
 .idea
+
+Resource.designer.cs
+nupkgs/

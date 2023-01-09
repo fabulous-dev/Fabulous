@@ -1,32 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <IsPackable>false</IsPackable>
-        <OutputType>Library</OutputType>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="APISketchTests\TestUI.Platform.fs" />
-        <Compile Include="APISketchTests\TestUI.ViewNode.fs" />
-        <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
-        <Compile Include="APISketchTests\TestUI.Attributes.fs" />
-        <Compile Include="APISketchTests\TestUI.Widgets.fs" />
-        <Compile Include="APISketchTests\APISketchTests.fs" />
-        <Compile Include="Generators.fs" />
-        <Compile Include="AttributesTests.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
-        <PackageReference Include="FsCheck.NUnit" Version="2.16.4" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-        <PackageReference Include="NUnit" Version="3.13.3" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-        <PackageReference Include="coverlet.collector" Version="3.1.2">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Update="FSharp.Core" Version="7.0.0" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="APISketchTests\TestUI.Platform.fs" />
+    <Compile Include="APISketchTests\TestUI.ViewNode.fs" />
+    <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
+    <Compile Include="APISketchTests\TestUI.Attributes.fs" />
+    <Compile Include="APISketchTests\TestUI.Widgets.fs" />
+    <Compile Include="APISketchTests\APISketchTests.fs" />
+    <Compile Include="Generators.fs" />
+    <Compile Include="AttributesTests.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+    <PackageReference Include="FsCheck.NUnit" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="FSharp.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
 </Project>
