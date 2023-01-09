@@ -47,8 +47,7 @@ module SmallScalars =
         let inline decode (encoded: uint64) : uint = uint encoded
 
     module IntEnum =
-        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 =
-            uint64 v
+        let inline encode< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)> (v: ^T) : uint64 = uint64 v
 
         let inline decode< ^T when ^T: enum<int>> (encoded: uint64) : ^T = enum< ^T>(int encoded)
 
@@ -118,18 +117,12 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an int attribute that is encoded into uint64
-    let inline defineInt
-        name
-        ([<InlineIfLambda>] updateNode: int voption -> int voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition<int> =
+    let inline defineInt name ([<InlineIfLambda>] updateNode: int voption -> int voption -> IViewNode -> unit) : SmallScalarAttributeDefinition<int> =
 
         defineSmallScalar name SmallScalars.Int.decode updateNode
 
     /// Define a float attribute that is encoded into uint64
-    let inline defineFloat
-        name
-        ([<InlineIfLambda>] updateNode: float voption -> float voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition<float> =
+    let inline defineFloat name ([<InlineIfLambda>] updateNode: float voption -> float voption -> IViewNode -> unit) : SmallScalarAttributeDefinition<float> =
 
         defineSmallScalar name SmallScalars.Float.decode updateNode
 
@@ -141,10 +134,7 @@ module Attributes =
         defineSmallScalar name SmallScalars.IntEnum.decode updateNode
 
     /// Define a boolean attribute that is encoded into uint64
-    let inline defineBool
-        name
-        ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit)
-        : SmallScalarAttributeDefinition<bool> =
+    let inline defineBool name ([<InlineIfLambda>] updateNode: bool voption -> bool voption -> IViewNode -> unit) : SmallScalarAttributeDefinition<bool> =
 
         defineSmallScalar name SmallScalars.Bool.decode updateNode
 
@@ -179,11 +169,7 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute storing a Widget for a CLR property
-    let inline definePropertyWidget<'T when 'T: null>
-        (name: string)
-        ([<InlineIfLambda>] get: obj -> obj)
-        ([<InlineIfLambda>] set: obj -> 'T -> unit)
-        =
+    let inline definePropertyWidget<'T when 'T: null> (name: string) ([<InlineIfLambda>] get: obj -> obj) ([<InlineIfLambda>] set: obj -> 'T -> unit) =
         let applyDiff (diff: WidgetDiff) (node: IViewNode) =
             let childView = get node.Target
 
@@ -202,10 +188,7 @@ module Attributes =
         defineWidget name applyDiff updateNode
 
     /// Define an attribute storing a collection of Widget for a List<T> property
-    let inline defineListWidgetCollection<'itemType>
-        name
-        ([<InlineIfLambda>] getCollection: obj -> System.Collections.Generic.IList<'itemType>)
-        =
+    let inline defineListWidgetCollection<'itemType> name ([<InlineIfLambda>] getCollection: obj -> System.Collections.Generic.IList<'itemType>) =
         let applyDiff _ (diffs: WidgetCollectionItemChanges) (node: IViewNode) =
             let targetColl = getCollection node.Target
 
@@ -282,10 +265,7 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute for EventHandler
-    let inline defineEventNoArg
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
-        : SimpleScalarAttributeDefinition<obj> =
+    let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<obj> =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,

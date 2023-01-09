@@ -199,8 +199,7 @@ module AttributeDefinitionStore =
 
     let getWidget (key: WidgetAttributeKey) : WidgetAttributeData = _widgets.[int key]
 
-    let getWidgetCollection (key: WidgetCollectionAttributeKey) : WidgetCollectionAttributeData =
-        _widgetCollections.[int key]
+    let getWidgetCollection (key: WidgetCollectionAttributeKey) : WidgetCollectionAttributeData = _widgetCollections.[int key]
 
 module AttributeHelpers =
     open ScalarAttributeDefinitions
