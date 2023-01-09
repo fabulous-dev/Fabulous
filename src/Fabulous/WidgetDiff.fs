@@ -111,13 +111,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
 
         { ScalarChanges = ScalarChanges(prevScalarAttributes, next.ScalarAttributes, compareScalars)
           WidgetChanges = WidgetChanges(prevWidgetAttributes, next.WidgetAttributes, canReuseView, compareScalars)
-          WidgetCollectionChanges =
-            WidgetCollectionChanges(
-                prevWidgetCollectionAttributes,
-                next.WidgetCollectionAttributes,
-                canReuseView,
-                compareScalars
-            ) }
+          WidgetCollectionChanges = WidgetCollectionChanges(prevWidgetCollectionAttributes, next.WidgetCollectionAttributes, canReuseView, compareScalars) }
 
 and [<Struct; NoComparison; NoEquality>] ScalarChanges
     (
@@ -157,12 +151,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionItemChanges
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
     member _.GetEnumerator() =
-        WidgetCollectionItemChangesEnumerator(
-            ArraySlice.toSpan prev,
-            ArraySlice.toSpan next,
-            canReuseView,
-            compareScalars
-        )
+        WidgetCollectionItemChangesEnumerator(ArraySlice.toSpan prev, ArraySlice.toSpan next, canReuseView, compareScalars)
 
 // enumerators
 and [<Struct; IsByRefLike>] ScalarChangesEnumerator
@@ -378,12 +367,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
                                 let change =
                                     if canReuseView prevWidget nextWidget then
                                         let diff =
-                                            WidgetDiff.create(
-                                                (ValueSome prevWidget),
-                                                nextWidget,
-                                                canReuseView,
-                                                compareScalars
-                                            )
+                                            WidgetDiff.create((ValueSome prevWidget), nextWidget, canReuseView, compareScalars)
 
                                         WidgetChange.Updated(nextAttr, diff)
                                     else
@@ -489,12 +473,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
                             nextIndex <- nextIndex + 1
 
                             let diff =
-                                WidgetCollectionItemChanges(
-                                    prevWidgetColl,
-                                    nextWidgetColl,
-                                    canReuseView,
-                                    compareScalars
-                                )
+                                WidgetCollectionItemChanges(prevWidgetColl, nextWidgetColl, canReuseView, compareScalars)
 
                             e.current <- WidgetCollectionChange.Updated(prevAttr, nextAttr, diff)
 

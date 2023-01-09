@@ -213,10 +213,7 @@ module ViewAdapters =
             member x.CreateView() = x.CreateView()
 
     /// Create a new ViewAdapter for the component
-    let create<'arg, 'model, 'msg, 'marker>
-        (getViewNode: obj -> IViewNode)
-        (runner: Runner<'arg, 'model, 'msg, 'marker>)
-        =
+    let create<'arg, 'model, 'msg, 'marker> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg, 'marker>) =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =

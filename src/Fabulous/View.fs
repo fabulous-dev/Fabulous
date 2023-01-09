@@ -13,10 +13,7 @@ module ViewHelpers =
 
 module View =
     /// Avoid recomputing the whole subtree when the key doesn't change
-    let lazy'<'msg, 'key, 'marker when 'key: equality>
-        (fn: 'key -> WidgetBuilder<'msg, 'marker>)
-        (key: 'key)
-        : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
+    let lazy'<'msg, 'key, 'marker when 'key: equality> (fn: 'key -> WidgetBuilder<'msg, 'marker>) (key: 'key) : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
 
         let memo: Memo.MemoData =
             { KeyData = box key
@@ -54,5 +51,4 @@ module View =
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
 
     /// Combine map and lazy. Map the widget's message type to the parent's message type, and then memoize it
-    let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) =
-        lazy' (viewFn >> map mapFn) model
+    let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) = lazy' (viewFn >> map mapFn) model

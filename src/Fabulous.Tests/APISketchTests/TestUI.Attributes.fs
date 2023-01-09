@@ -155,23 +155,14 @@ module TestUI_Attributes =
                 Attributes.defineSmallScalar<uint64> "InlineValueTwo" id TestUI_ViewUpdaters.updateNumericValueTwo
 
             let InlineValueThree =
-                Attributes.defineSmallScalar<float>
-                    "InlineValueThree"
-                    BitConverter.UInt64BitsToDouble
-                    TestUI_ViewUpdaters.updateNumericValueThree
+                Attributes.defineSmallScalar<float> "InlineValueThree" BitConverter.UInt64BitsToDouble TestUI_ViewUpdaters.updateNumericValueThree
 
 
             let BoxedValueOne =
-                Attributes.defineSimpleScalarWithEquality<uint64>
-                    "BoxedValueOne"
-                    TestUI_ViewUpdaters.updateNumericValueOne
+                Attributes.defineSimpleScalarWithEquality<uint64> "BoxedValueOne" TestUI_ViewUpdaters.updateNumericValueOne
 
             let BoxedValueTwo =
-                Attributes.defineSimpleScalarWithEquality<uint64>
-                    "BoxedValueTwo"
-                    TestUI_ViewUpdaters.updateNumericValueTwo
+                Attributes.defineSimpleScalarWithEquality<uint64> "BoxedValueTwo" TestUI_ViewUpdaters.updateNumericValueTwo
 
             let BoxedValueThree =
-                Attributes.defineSimpleScalarWithEquality<float>
-                    "BoxedValueThree"
-                    TestUI_ViewUpdaters.updateNumericValueThree
+                Attributes.defineSimpleScalarWithEquality<float> "BoxedValueThree" TestUI_ViewUpdaters.updateNumericValueThree

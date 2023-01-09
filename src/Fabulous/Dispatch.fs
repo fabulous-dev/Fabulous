@@ -30,11 +30,7 @@ module Dispatcher =
             node.TreeContext.Dispatch(mapMsg msg)
 
     /// Trigger an event for the node and all its descendants declaring the given event definition
-    let dispatchEventForAllChildren
-        (node: IViewNode)
-        (rootWidget: Widget)
-        (definition: SimpleScalarAttributeDefinition<obj>)
-        =
+    let dispatchEventForAllChildren (node: IViewNode) (rootWidget: Widget) (definition: SimpleScalarAttributeDefinition<obj>) =
         let rec dispatchAndVisitChildren skipMapMsg dispatch widget =
             // Check if the current widget has a MapMsg function and apply it before dispatch
             let dispatch =

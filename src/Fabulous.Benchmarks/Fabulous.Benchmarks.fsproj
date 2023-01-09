@@ -1,23 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
-        <IsPackable>false</IsPackable>
-        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Compile Include="Benchmarks.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
-      <PackageReference Include="FSharp.Core" Version="7.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Fabulous.Tests\Fabulous.Tests.fsproj" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Benchmarks.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+    <PackageReference Include="FSharp.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous.Tests\Fabulous.Tests.fsproj" />
+  </ItemGroup>
 </Project>

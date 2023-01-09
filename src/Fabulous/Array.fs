@@ -325,10 +325,7 @@ module StackAllocatedCollections =
         /// Note that you should always use the result,
         /// In Few mode it creates a new stack allocated array
         /// In Many case it sorts the Many variant inline for optimization reasons
-        let rec inline sortInPlace<'T, 'V when 'V: comparison>
-            ([<InlineIfLambda>] getKey: 'T -> 'V)
-            (arr: StackArray3<'T> inref)
-            : StackArray3<'T> =
+        let rec inline sortInPlace<'T, 'V when 'V: comparison> ([<InlineIfLambda>] getKey: 'T -> 'V) (arr: StackArray3<'T> inref) : StackArray3<'T> =
             match arr with
             | Few(struct (size, v0, v1, v2)) ->
                 match size with

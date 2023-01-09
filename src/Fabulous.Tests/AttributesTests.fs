@@ -26,9 +26,7 @@ type AttributesTests() =
         Assert.AreEqual(value, decoded)
 
     [<Property>]
-    member _.``Encoding then decoding an int-typed enum should return an identical int-typed enum``
-        (value: IntTypedEnum)
-        =
+    member _.``Encoding then decoding an int-typed enum should return an identical int-typed enum``(value: IntTypedEnum) =
         let encoded = SmallScalars.IntEnum.encode value
 
         let decoded = SmallScalars.IntEnum.decode<IntTypedEnum> encoded

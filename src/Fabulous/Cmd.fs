@@ -63,12 +63,7 @@ module Cmd =
               |> Async.StartImmediate ]
 
     /// Command to issue a message ot the end of an asynchronous task returning a Result
-    let ofAsyncResult
-        (p: Async<Result<'data, 'exn>>)
-        (success: 'data -> 'msg)
-        (error: 'exn -> 'msg)
-        (failure: exn -> 'msg)
-        : Cmd<'msg> =
+    let ofAsyncResult (p: Async<Result<'data, 'exn>>) (success: 'data -> 'msg) (error: 'exn -> 'msg) (failure: exn -> 'msg) : Cmd<'msg> =
         [ fun dispatch ->
               async {
                   try
@@ -96,12 +91,7 @@ module Cmd =
               |> ignore ]
 
     /// Command to issue a message at the end of an asynchronous task
-    let ofTaskResult
-        (p: Task<Result<'data, 'exn>>)
-        (success: 'data -> 'msg)
-        (error: 'exn -> 'msg)
-        (failure: exn -> 'msg)
-        : Cmd<'msg> =
+    let ofTaskResult (p: Task<Result<'data, 'exn>>) (success: 'data -> 'msg) (error: 'exn -> 'msg) (failure: exn -> 'msg) : Cmd<'msg> =
         [ fun dispatch ->
               task {
                   try

@@ -513,12 +513,8 @@ module MemoTests =
         let view model =
             Stack() {
                 match model with
-                | Label1 ->
-                    View.lazy' (fun _ -> Label("one").record(true).textColor("blue").automationId("label")) model
-                | Label2 ->
-                    View.lazy'
-                        (fun _ -> Label("two").record(true).textColor("blue").automationId("label"))
-                        (string model)
+                | Label1 -> View.lazy' (fun _ -> Label("one").record(true).textColor("blue").automationId("label")) model
+                | Label2 -> View.lazy' (fun _ -> Label("two").record(true).textColor("blue").automationId("label")) (string model)
             }
 
         [<Test>]
@@ -648,51 +644,28 @@ module Issue104 =
     let ControlWidgetKey = Widgets.register<TestButton>()
 
     let Control<'msg> () =
-        WidgetBuilder<'msg, TestButtonMarker>(
-            ControlWidgetKey,
-            AttributesBundle(StackList.StackList.empty(), ValueNone, ValueNone)
-        )
+        WidgetBuilder<'msg, TestButtonMarker>(ControlWidgetKey, AttributesBundle(StackList.StackList.empty(), ValueNone, ValueNone))
 
     [<System.Runtime.CompilerServices.Extension>]
     type WidgetExtensions() =
         [<System.Runtime.CompilerServices.Extension>]
-        static member inline attr1<'msg, 'marker when 'marker :> IMarker>
-            (
-                this: WidgetBuilder<'msg, 'marker>,
-                value: string
-            ) =
+        static member inline attr1<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attr1.WithValue(value))
 
         [<System.Runtime.CompilerServices.Extension>]
-        static member inline attr2<'msg, 'marker when 'marker :> IMarker>
-            (
-                this: WidgetBuilder<'msg, 'marker>,
-                value: string
-            ) =
+        static member inline attr2<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attr2.WithValue(value))
 
         [<System.Runtime.CompilerServices.Extension>]
-        static member inline attr3<'msg, 'marker when 'marker :> IMarker>
-            (
-                this: WidgetBuilder<'msg, 'marker>,
-                value: string
-            ) =
+        static member inline attr3<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attr3.WithValue(value))
 
         [<System.Runtime.CompilerServices.Extension>]
-        static member inline attr4<'msg, 'marker when 'marker :> IMarker>
-            (
-                this: WidgetBuilder<'msg, 'marker>,
-                value: string
-            ) =
+        static member inline attr4<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attr4.WithValue(value))
 
         [<System.Runtime.CompilerServices.Extension>]
-        static member inline attr5<'msg, 'marker when 'marker :> IMarker>
-            (
-                this: WidgetBuilder<'msg, 'marker>,
-                value: string
-            ) =
+        static member inline attr5<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attr5.WithValue(value))
 
     let view model =
