@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <RepositoryUrl>https://github.com/fabulous-dev/Fabulous</RepositoryUrl>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+
+  <!-- Shared NuGet Package info -->
+  <PropertyGroup>
+    <Authors>Fabulous contributors</Authors>
+    <PackageTags>Fabulous;F#;Declarative UI;MVU</PackageTags>
+    <PackageIcon>nuget-icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/fabulous-dev/Fabulous</PackageProjectUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+</Project>

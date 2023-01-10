@@ -7,6 +7,7 @@ on:
 permissions: write-all
 
 env:
+  CONFIG: Release
   SLN_FILE: Fabulous.sln
 
 jobs:
@@ -14,9 +15,22 @@ jobs:
     runs-on: ubuntu-latest
     environment: nuget
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout sources
+      uses: actions/checkout@v3
     - name: Extract version from tag
       uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+    - name: Set release version
+      run: |
+        RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}
+        echo "Release version is $RELEASE_VERSION"
+        echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_ENV"
+    - name: Get Changelog Entry
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        validation_level: warn
+        version: '${{ env.RELEASE_VERSION }}'
+        path: ./CHANGELOG.md
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -24,10 +38,15 @@ jobs:
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
-      run: dotnet build ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-restore --configuration Release
+      run: dotnet build ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-restore
     - name: Test
-      run: dotnet test ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --no-build --configuration Release
+      run: dotnet test ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-build
     - name: Pack
-      run: dotnet pack ${SLN_FILE} -p:Version="${MAJOR}.${MINOR}.${PATCH}" --configuration Release --output nupkgs
+      run: dotnet pack ${SLN_FILE} -p:Version=${RELEASE_VERSION} -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c ${CONFIG} --no-build --output nupkgs
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Packages
+        path: nupkgs/
     - name: Push
-      run: dotnet nuget push "nupkgs/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+      run: dotnet nuget push "nupkgs/*" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
