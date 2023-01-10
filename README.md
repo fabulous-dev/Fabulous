@@ -32,8 +32,8 @@ Note that Fabulous itself does not provide any UI rendering. You'll need to comb
 
 ### Declarative UI
 
-Typical UI development can be a nightmare if not done properly. It is generally created in one place, then mutated here and there based on the need and what the user is doing.  
-Related UI pieces end up in several places, making it hard to mentally think of all the possibilities; until the inevitable race condition or bug due to an unintended user flow.
+Typical UI development can be a nightmare if not done properly.  
+It is generally created in one place, then mutated here and there based on the need and what the user is doing. Related UI pieces end up in several places, making it hard to mentally think of all the possibilities; until the inevitable race condition or bug due to an unintended user flow.
 
 Fabulous makes it easier to reason about UI thanks to its declarative UI inspired by SwiftUI.  
 The UI of a component is defined in a single place and Fabulous will call it everytime the state of that component is changed.  
