@@ -19,7 +19,9 @@ Fabulous is a modern declarative UI framework for crafting cross-platform mobile
 
 ## About Fabulous
 
-Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org).  
+We believe declarative UI, functional programming, and the MVU state management are a perfect fit for app development.
+
+Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org) - a functional programing language.  
 Fabulous also aims to be performant by having low memory consumption and efficient view diffing mechanisms.
 
 Note that Fabulous itself does not provide any UI rendering. You'll need to combine it with another framework like:
@@ -29,11 +31,11 @@ Note that Fabulous itself does not provide any UI rendering. You'll need to comb
 
 ### Declarative UI
 
-Typical UI development can be a nightmare if not done properly. It is generally written once, then mutated here and there based on the need and what the user is doing.  
+Typical UI development can be a nightmare if not done properly. It is generally created in one place, then mutated here and there based on the need and what the user is doing.  
 Related UI pieces end up in several places, making it hard to mentally think of all the possibilities; until the inevitable race condition or bug due to an unintended user flow.
 
 Fabulous makes it easier to reason about UI thanks to its declarative UI inspired by SwiftUI.  
-The UI of a component is defined in a single place (the `view` function) and Fabulous will call it everytime the state of that component (the `Model` type) is changed.  
+The UI of a component is defined in a single place and Fabulous will call it everytime the state of that component is changed.  
 
 You don't need to think about how to mutate the UI, Fabulous will handle it for you to always match the latest UI you need.
 
@@ -64,15 +66,13 @@ let view model =
 
 ### MVU architecture
 
-We believe declarative UI, functional programming, and the MVU state management are a perfect fit for app development.
-
 MVU makes every state and transition between those states explicit.  
 You don't need to worry about unintended actions that could lead to an invalid state which would crash the app.
 
-Instead, you can very easily model the state of your app or component (via the `Model` type) and transitions between them (via the `Msg` type) using F# records and discriminated unions types.  
-When starting, Fabulous will initialize the state by calling the `init` function. Then, when messages are being dispatched, Fabulous will call the `update` function to let you transition from one state to the other.
+Instead, you can very easily model the state of your app or component and transitions between them using F# records and discriminated unions types.  
+When starting, Fabulous will initialize the state. Then, when messages are being dispatched, Fabulous will let you transition from one state to the other given a specific message.
 
-If several messages are received at the same time, Fabulous will queue them to let you update the app state properly.
+If several messages are received at the same time, Fabulous will queue them to let you update the state properly.
 
 ```fs
 let init () =
@@ -100,7 +100,7 @@ let ``When clicking the Increment button, increment the count by one``() =
 ### Powered by .NET
 
 .NET is a very mature and broad framework by Microsoft. It can run on any device and platform, is very efficient, and has a vast ecosystem of open-source and licensed libraries, plugins, and other frameworks.  
-Fabulous is compatible with most .NET libraries. You will be able to benefit from the .NET ecosystem by using 3rd party packages directly in your application.
+You will be able to benefit from the .NET ecosystem by using 3rd party packages directly in your Fabulous application.
 
 ## Sponsoring
 
