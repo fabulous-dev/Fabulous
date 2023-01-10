@@ -10,7 +10,7 @@
 [![build](https://img.shields.io/github/actions/workflow/status/fabulous-dev/Fabulous/build.yml?branch=main)](https://github.com/fabulous-dev/Fabulous/actions/workflows/build.yml) [![NuGet version](https://img.shields.io/nuget/v/Fabulous)](https://www.nuget.org/packages/Fabulous) [![NuGet downloads](https://img.shields.io/nuget/dt/Fabulous)](https://www.nuget.org/packages/Fabulous) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK) [![Twitter Follow](https://img.shields.io/twitter/follow/FabulousAppDev?style=social)](https://twitter.com/FabulousAppDev)
 
 Fabulous is a modern declarative UI framework for crafting cross-platform mobile and desktop apps in .NET.  
-It aims to bring you a great development experience and confidence in your code while building your apps by combining an expressive UI syntax, the simple & robust Model-View-Update (MVU) architecture, and functional programming.
+It aims to bring you a great development experience and confidence in your code by combining an expressive UI syntax, the simple & robust Model-View-Update (MVU) architecture, and functional programming.
 
 ## Documentation
 
