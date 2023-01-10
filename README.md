@@ -21,7 +21,8 @@ Fabulous is a modern declarative UI framework for crafting cross-platform mobile
 
 We believe declarative UI, functional programming, and the MVU state management are a perfect fit for app development.
 
-Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org) - a functional programing language.  
+Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org) - a functional programing language.
+
 Fabulous also aims to be performant by having low memory consumption and efficient view diffing mechanisms.
 
 Note that Fabulous itself does not provide any UI rendering. You'll need to combine it with another framework like:
