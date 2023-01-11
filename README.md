@@ -114,7 +114,7 @@ You will be able to benefit from the .NET ecosystem by using 3rd party packages 
 
 The simplest way to show us your support is by giving the project a star.
 
-You can also support us by sponsoring us on the GitHub Sponsors program.  
+You can also support us by becoming our sponsor on the GitHub Sponsors program.  
 This is a fantastic way to support all the efforts going into making Fabulous the best declarative UI framework for dotnet.
 
 If you need support see Commercial Support section below.
