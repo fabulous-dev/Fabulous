@@ -101,7 +101,7 @@ The title of the pull request should be descriptive of the work you did.
 
 ## Maintainers
 
-These instructions are for the maintainers of Flame.
+These instructions are for the maintainers of Fabulous.
 
 
 ### Merging a pull request
