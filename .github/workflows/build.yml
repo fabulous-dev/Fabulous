@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'v2.1' ]
     paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
