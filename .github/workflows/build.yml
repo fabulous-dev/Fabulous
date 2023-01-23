@@ -1,13 +1,13 @@
 name: Build
 on:
   push:
-    branches: [ 'v2.1' ]
+    branches: [ 'main' ]
     paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
 
 env:
-  VERSION: 2.1.1
+  VERSION: 2.2.0
   CONFIG: Release
   SLN_FILE: Fabulous.sln
 
