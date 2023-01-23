@@ -178,11 +178,6 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         member inline x.AddScalar(attr: ScalarAttribute) =
             CollectionBuilder<'msg, 'marker, 'itemMarker>(x.WidgetKey, StackList.add(&x.Scalars, attr), x.Attr)
 
-
-
-
-
-
     end
 
 module CollectionBuilder =

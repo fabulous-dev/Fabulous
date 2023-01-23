@@ -549,7 +549,9 @@ module SmallScalars =
 
     let update msg model =
         match msg with
-        | Inc value -> { model with value = model.value + value }
+        | Inc value ->
+            { model with
+                value = model.value + value }
 
     let view model =
         InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
