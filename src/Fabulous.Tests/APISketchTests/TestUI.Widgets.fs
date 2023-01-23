@@ -47,7 +47,8 @@ module TestUI_Widgets =
                         let oldWidget: Widget voption = ValueNone
 
                         Reconciler.update context.CanReuseView oldWidget widget viewNode
-                        struct (viewNode :> IViewNode, box view) }
+                        struct (viewNode :> IViewNode, box view)
+                  AttachView = fun (_widget, _context, _parentNode, _view) -> failwith "not implemented" }
 
             WidgetDefinitionStore.set key definition
             key
