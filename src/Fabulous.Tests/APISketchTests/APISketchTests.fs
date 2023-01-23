@@ -468,7 +468,7 @@ module MemoTests =
                 | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId("btn")) model
                 | Lbl -> View.lazy' (fun i -> Label(string i).automationId("label")) model
             }
-                
+
 
         [<Test>]
         let Test () =
