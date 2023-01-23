@@ -114,11 +114,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
           WidgetCollectionChanges = WidgetCollectionChanges(prevWidgetCollectionAttributes, next.WidgetCollectionAttributes, canReuseView, compareScalars) }
 
 and [<Struct; NoComparison; NoEquality>] ScalarChanges
-    (
-        prev: ScalarAttribute[] voption,
-        next: ScalarAttribute[] voption,
-        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
-    ) =
+    (prev: ScalarAttribute[] voption, next: ScalarAttribute[] voption, compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison) =
     member _.GetEnumerator() =
         ScalarChangesEnumerator(EnumerationMode.fromOptions prev next, compareScalars)
 
@@ -155,10 +151,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionItemChanges
 
 // enumerators
 and [<Struct; IsByRefLike>] ScalarChangesEnumerator
-    (
-        mode: EnumerationMode<ScalarAttribute>,
-        compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
-    ) =
+    (mode: EnumerationMode<ScalarAttribute>, compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison) =
 
     [<DefaultValue(false)>]
     val mutable private current: ScalarChange

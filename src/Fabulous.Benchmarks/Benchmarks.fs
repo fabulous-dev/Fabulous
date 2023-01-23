@@ -57,7 +57,9 @@ module DiffingAttributes =
 
     let update msg model =
         match msg with
-        | IncBy amount -> { model with counter = model.counter + amount }
+        | IncBy amount ->
+            { model with
+                counter = model.counter + amount }
 
     let rec viewInner depth counter =
         Stack() {
@@ -108,7 +110,9 @@ module DiffingSmallScalars =
 
     let update msg model =
         match msg with
-        | IncBy amount -> { model with counter = model.counter + amount }
+        | IncBy amount ->
+            { model with
+                counter = model.counter + amount }
 
     let rec viewBoxedInner depth counter =
         // this is to emulate changing value only once per 5 updates

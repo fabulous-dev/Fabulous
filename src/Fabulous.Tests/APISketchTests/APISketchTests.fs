@@ -115,8 +115,8 @@ module SimpleStackTests =
             |> List.map(fun (id_, text_) -> if id = id_ then (id, text) else (id_, text_))
 
     let view model =
-        (Stack() { yield! model |> List.map(fun (id, text) -> Label(text).automationId(id.ToString())) })
-            .automationId("stack")
+        Stack().automationId("stack") { yield! model |> List.map(fun (id, text) -> Label(text).automationId(id.ToString())) }
+
 
 
     let init () = []
@@ -194,13 +194,13 @@ module ComputationExpressionTest =
     let Condition () =
         let view model =
             // requires implemented "Zero"
-            (Stack() {
+            Stack().automationId("stack") {
                 if (model % 2 = 0) then
                     Label("label").automationId("label")
                 else
                     Button("btn", Inc).automationId("btn")
-            })
-                .automationId("stack")
+            }
+
 
 
         let instance = StatefulWidget.mkSimpleView (fun () -> 0) update view |> Run.Instance
@@ -463,12 +463,12 @@ module MemoTests =
                 | Lbl -> Btn
 
         let view model =
-            (Stack() {
+            Stack().automationId("stack") {
                 match model with
                 | Btn -> View.lazy' (fun i -> Button(string i, Change).automationId("btn")) model
                 | Lbl -> View.lazy' (fun i -> Label(string i).automationId("label")) model
-            })
-                .automationId("stack")
+            }
+
 
         [<Test>]
         let Test () =
@@ -549,7 +549,9 @@ module SmallScalars =
 
     let update msg model =
         match msg with
-        | Inc value -> { model with value = model.value + value }
+        | Inc value ->
+            { model with
+                value = model.value + value }
 
     let view model =
         InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
