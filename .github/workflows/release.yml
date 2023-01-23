@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    tags: ['[0-9]+.[0-9]+.[0-9]+']
+    tags: ['[0-9]+.[0-9]+.[0-9]+(-.*)?']
     paths-ignore: [ 'docs/**' ]
 
 permissions: write-all
@@ -21,7 +21,11 @@ jobs:
       uses: damienaicheh/extract-version-from-tag-action@v1.0.0
     - name: Set release version
       run: |
-        RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}
+        if [ "${PRE_RELEASE}" == "" ]; then
+          RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}
+        else
+          RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}-${PRE_RELEASE}
+        fi
         echo "Release version is $RELEASE_VERSION"
         echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_ENV"
     - name: Get Changelog Entry
