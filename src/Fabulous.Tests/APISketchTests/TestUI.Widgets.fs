@@ -86,6 +86,14 @@ module TestUI_Widgets =
             this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
         [<Extension>]
+        static member inline automationId<'msg, 'marker, 'itemMarker when 'marker :> IMarker>
+            (
+                this: CollectionBuilder<'msg, 'marker, 'itemMarker>,
+                value: string
+            ) =
+            this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
+
+        [<Extension>]
         static member inline textColor<'msg, 'marker when 'marker :> TextMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
@@ -157,7 +165,7 @@ module TestUI_Widgets =
                 _: CollectionBuilder<'msg, 'marker, IMarker>,
                 x: WidgetBuilder<'msg, 'itemMarker>
             ) : Content<'msg> =
-            { Widgets = MutStackArray1.One(x.Compile()) }
+            CollectionBuilder.yieldImpl x
 
         [<Extension>]
         static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
@@ -165,7 +173,7 @@ module TestUI_Widgets =
                 _: CollectionBuilder<'msg, 'marker, IMarker>,
                 x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
             ) : Content<'msg> =
-            { Widgets = MutStackArray1.One(x.Compile()) }
+            CollectionBuilder.yieldImpl x
 
         [<Extension>]
         static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>

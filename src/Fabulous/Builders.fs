@@ -173,7 +173,17 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
                 res <- x.Combine(res, f t)
 
             res
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member inline x.AddScalar(attr: ScalarAttribute) =
+            CollectionBuilder<'msg, 'marker, 'itemMarker>(x.WidgetKey, StackList.add(&x.Scalars, attr), x.Attr)
+    
+    
+
     end
+
+module CollectionBuilder =
+    let inline yieldImpl (builder: WidgetBuilder<'msg, 'itemMarker>): Content<'msg> = { Widgets = MutStackArray1.One(builder.Compile()) }
 
 [<Struct>]
 type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
