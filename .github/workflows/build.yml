@@ -7,7 +7,6 @@ on:
 permissions: write-all
 
 env:
-  VERSION: 2.2.0
   CONFIG: Release
   SLN_FILE: Fabulous.sln
 
@@ -15,13 +14,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Set nightly version
-      run: |
-        NIGHTLY_VERSION=${VERSION}-nightly-${GITHUB_RUN_ID}
-        echo "Nightly version is $NIGHTLY_VERSION"
-        echo "NIGHTLY_VERSION=$NIGHTLY_VERSION" >> "$GITHUB_ENV"
     - name: Checkout sources
       uses: actions/checkout@v3
+    - name: Read last version from CHANGELOG.md
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        validation_level: warn
+        path: ./CHANGELOG.md
+    - name: Set nightly version
+      run: |
+        NIGHTLY_VERSION=${{ steps.changelog_reader.outputs.version }}-nightly-${GITHUB_RUN_ID}
+        echo "Nightly version is $NIGHTLY_VERSION"
+        echo "NIGHTLY_VERSION=$NIGHTLY_VERSION" >> "$GITHUB_ENV"
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:

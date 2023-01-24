@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.2.0]
+
 ### Added
+- Enable ViewAdapter to attach to an existing view (https://github.com/fabulous-dev/Fabulous/pull/1026)
 - Support for adding modifiers before the body of a CollectionBuilder (https://github.com/fabulous-dev/Fabulous/pull/1035)
 
 ## [2.1.1] - 2023-01-14
@@ -20,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Enable ViewAdapter to attach to an existing view (https://github.com/fabulous-dev/Fabulous/pull/1026)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.1.1...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.0
 [2.1.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.1.1
 [2.2.0-preview.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.0-preview.1

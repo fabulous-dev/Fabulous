@@ -198,8 +198,7 @@ module ViewAdapters =
 
             let definition = WidgetDefinitionStore.get widget.Key
 
-            let _node =
-                definition.AttachView(widget, treeContext, ValueNone, root)
+            let _node = definition.AttachView(widget, treeContext, ValueNone, root)
 
             _root <- root
 
