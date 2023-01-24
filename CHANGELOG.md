@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
-## [2.2.0]
+## [2.2.0] - 2023-01-24
 
 ### Added
 - Enable ViewAdapter to attach to an existing view (https://github.com/fabulous-dev/Fabulous/pull/1026)
