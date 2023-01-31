@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Fixed
+- Fix a NullReferenceException when applying `View.map` to a view using `Unit` Msg type (https://github.com/fabulous-dev/Fabulous/pull/1037) 
 
 ## [2.2.0] - 2023-01-24
 
