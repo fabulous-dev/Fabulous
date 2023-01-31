@@ -30,7 +30,7 @@ module View =
             let fnWithBoxing (msg: obj) =
                 let oldFn = unbox<obj -> obj> oldAttr.Value
 
-                if typeof<'newMsg>.IsAssignableFrom(msg.GetType()) then
+                if msg <> null && typeof<'newMsg>.IsAssignableFrom(msg.GetType()) then
                     box msg
                 else
                     oldFn msg |> unbox<'oldMsg> |> fn |> box
@@ -39,7 +39,7 @@ module View =
 
         let defaultWith () =
             let mappedFn (msg: obj) =
-                if typeof<'newMsg>.IsAssignableFrom(msg.GetType()) then
+                if msg <> null && typeof<'newMsg>.IsAssignableFrom(msg.GetType()) then
                     box msg
                 else
                     unbox<'oldMsg> msg |> fn |> box
