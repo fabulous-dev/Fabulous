@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.2.1] - 2023-02-01
+
 ### Fixed
-- Fix a NullReferenceException when applying `View.map` to a view using `Unit` Msg type (https://github.com/fabulous-dev/Fabulous/pull/1037) 
+- Fix a NullReferenceException when applying `View.map` to a view using `Unit` Msg type by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1037) 
 
 ## [2.2.0] - 2023-01-24
 
@@ -26,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.2.0...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.2.1...HEAD
+[2.2.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.1
 [2.2.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.0
 [2.2.0-preview.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.0-preview.1
 [2.1.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.1.1
