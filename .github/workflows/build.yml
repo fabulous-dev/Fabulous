@@ -38,7 +38,7 @@ jobs:
     - name: Test
       run: dotnet test ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build
     - name: Pack
-      run: dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --output nupkgs
+      run: dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --property PackageOutputPath=${PWD}/nupkgs
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
