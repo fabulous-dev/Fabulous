@@ -45,4 +45,4 @@ jobs:
         name: Packages
         path: nupkgs/
     - name: Push
-      run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      run: dotnet nuget push "nupkgs/*" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
