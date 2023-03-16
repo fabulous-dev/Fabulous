@@ -69,6 +69,10 @@ type SmallScalarExtensions() =
         this.WithValue(value, SmallScalars.Float.encode)
 
     [<Extension>]
+    static member inline WithValue(this: SmallScalarAttributeDefinition<float32>, value) =
+        this.WithValue(value, SmallScalars.Float32.encode)
+
+    [<Extension>]
     static member inline WithValue(this: SmallScalarAttributeDefinition<int>, value) =
         this.WithValue(value, SmallScalars.Int.encode)
 
