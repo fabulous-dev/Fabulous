@@ -35,6 +35,13 @@ module SmallScalars =
         let inline decode (encoded: uint64) : float =
             encoded |> int64 |> BitConverter.Int64BitsToDouble
 
+    module Float32 =
+        let inline encode (v: float32) : uint64 =
+            v |> float |> BitConverter.DoubleToInt64Bits |> uint64
+
+        let inline decode (encoded: uint64) : float32 =
+            encoded |> int64 |> BitConverter.Int64BitsToDouble |> float32
+
     // TODO is there a better conversion algorithm?
     module Int =
         let inline encode (v: int) : uint64 = uint64 v

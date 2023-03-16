@@ -20,6 +20,12 @@ type AttributesTests() =
         Assert.AreEqual(value, decoded)
 
     [<Property>]
+    member _.``Encoding then decoding a float32 should return an identical float32``(value: float32) =
+        let encoded = SmallScalars.Float32.encode value
+        let decoded = SmallScalars.Float32.decode encoded
+        Assert.AreEqual(value, decoded)
+
+    [<Property>]
     member _.``Encoding then decoding an int should return an identical int``(value: int) =
         let encoded = SmallScalars.Int.encode value
         let decoded = SmallScalars.Int.decode encoded
