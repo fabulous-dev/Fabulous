@@ -14,6 +14,7 @@
     <Compile Include="Generators.fs" />
     <Compile Include="AttributesTests.fs" />
     <Compile Include="ViewTests.fs" />
+    <Compile Include="ArrayTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
