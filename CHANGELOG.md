@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Fixed
+- Fix an issue in `MutStackArray1.combineMut` that could result in a crash by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1042)
 
 ## [2.3.0] - 2023-03-17
 
