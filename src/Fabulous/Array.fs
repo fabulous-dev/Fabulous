@@ -498,7 +498,7 @@ module StackAllocatedCollections =
                         let arr = ArraySlice.shiftByMut &sliceB (uint16 usedA)
 
                         Array.blit arrA 0 arr 0 usedA
-                        Many(newSize, arrA)
+                        Many(newSize, arr)
                     else
                         // None of them can fit the result
                         // thus allocate a new one
