@@ -1,5 +1,6 @@
 namespace Fabulous.Tests
 
+open System
 open Fabulous.StackAllocatedCollections
 open NUnit.Framework
 open Fabulous
@@ -20,4 +21,4 @@ type ``Array tests``() =
         Assert.AreEqual(7us, usedC)
 
         // Reference should be equal to arrB since the array was reused
-        Assert.AreEqual(arrC, Array.zeroCreate 7)
+        Assert.True(Object.ReferenceEquals(arrC, arrB))
