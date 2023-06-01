@@ -206,20 +206,21 @@ module ViewAdapters =
         member _.OnStateChanged(args) =
             try
                 if args.Key = stateKey then
-                    let state = unbox args.NewState
-
-                    let prevWidget = _widget
-                    let currentWidget = (view state).Compile()
-                    _widget <- currentWidget
-
-                    let node = getViewNode _root
-
                     syncAction(fun () ->
                         try
+                            let state = unbox args.NewState
+
+                            let prevWidget = _widget
+                            let currentWidget = (view state).Compile()
+                            _widget <- currentWidget
+
+                            let node = getViewNode _root
+
                             Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                         with ex ->
                             if not(exceptionHandler ex) then
-                                reraise())
+                                reraise()
+                    )
             with ex ->
                 if not(exceptionHandler ex) then
                     reraise()
