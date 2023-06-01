@@ -219,8 +219,7 @@ module ViewAdapters =
                             Reconciler.update canReuseView (ValueSome prevWidget) currentWidget node
                         with ex ->
                             if not(exceptionHandler ex) then
-                                reraise()
-                    )
+                                reraise())
             with ex ->
                 if not(exceptionHandler ex) then
                     reraise()
