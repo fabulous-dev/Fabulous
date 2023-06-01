@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes_
+
+## [2.3.2] - 2023-06-01
+
 ### Changed
 - `view` function now runs only on the UI thread by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1043)
 
@@ -41,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.3.1...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.3.2...HEAD
+[2.3.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.2
 [2.3.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.1
 [2.3.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.0
 [2.2.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.2.1
