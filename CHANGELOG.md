@@ -12,7 +12,7 @@ _No unreleased changes_
 ## [2.3.2] - 2023-06-01
 
 ### Changed
-- `view` function now runs only on the UI thread by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1043)
+- view function now runs only on the UI thread by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1043)
 
 ## [2.3.1] - 2023-05-22
 
