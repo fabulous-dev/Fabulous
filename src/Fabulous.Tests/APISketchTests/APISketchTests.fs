@@ -687,6 +687,59 @@ module Issue104 =
 
         instance.ProcessMessage(Toggle)
 
+module Issue1044 =
+    [<Test>]
+    let ``Multiple Widgets + for loops in builder causes crash`` () =
+        let view model =
+            Stack() {
+                Label($"Foo") // It also crashes only with the multiple for loops
+                Label($"bar") // It also crashes only with the multiple for loops
+
+                for i = 0 to 10 do
+                    Label($"T{i}")
+
+                for i = 10 to 20 do
+                    Label($"T{i}")
+
+                for i = 20 to 30 do
+                    Label($"T{i}")
+
+                for i = 30 to 40 do
+                    Label($"T{i}")
+            }
+
+        let init () = true
+        let update (_: unit) msg = not msg
+        let program = StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        instance.Start() |> ignore
+
+    [<Test>]
+    let ``Multiple for loops in builder causes crash`` () =
+        let view model =
+            Stack() {
+                for i = 0 to 10 do
+                    Label($"T{i}")
+
+                for i = 10 to 20 do
+                    Label($"T{i}")
+
+                for i = 20 to 30 do
+                    Label($"T{i}")
+
+                for i = 30 to 40 do
+                    Label($"T{i}")
+            }
+
+        let init () = true
+        let update (_: unit) msg = not msg
+        let program = StatefulWidget.mkSimpleView init update view
+
+        let instance = Run.Instance program
+        instance.Start() |> ignore
+
+
 module Attributes =
 
     type MyEnum =
