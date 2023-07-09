@@ -18,7 +18,7 @@ The full documentation for Fabulous can be found at [docs.fabulous.dev](https://
 
 Other useful links:
 - [The official Fabulous website](https://fabulous.dev)
-- [Get started](https://fabulous.dev/get-started)
+- [Get started](https://docs.fabulous.dev/get-started)
 - [API Reference](https://api.fabulous.dev)
 - [Contributor Guide](CONTRIBUTING.md)
 
