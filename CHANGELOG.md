@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.4.0] - 2023-08-07
+
+### Changed
+- Remove ambiguity when declaring event attributes by using MsgValue instead of obj by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1044)
+
 ## [2.3.2] - 2023-06-01
 
 ### Changed
