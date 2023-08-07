@@ -84,6 +84,13 @@ type SmallScalarExtensions() =
         ) =
         this.WithValue(value, SmallScalars.IntEnum.encode)
 
+type MsgValue = MsgValue of obj
+
+[<Extension>]
+type SimpleScalarAttributeDefinitionExtensions() =
+    [<Extension>]
+    static member inline WithValue(this: SimpleScalarAttributeDefinition<'args -> MsgValue>, value: 'args -> 'msg) =
+        this.WithValue(value >> box >> MsgValue)
 
 module Attributes =
     /// Define an attribute that can fit into 8 bytes encoded as uint64 (such as float or bool)
@@ -276,11 +283,11 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute for EventHandler
-    let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<obj> =
+    let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<MsgValue> =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
-                (fun _ newValueOpt node ->
+                (fun _ (newValueOpt: MsgValue voption) node ->
                     let event = getEvent node.Target
 
                     match node.TryGetHandler(name) with
@@ -290,7 +297,7 @@ module Attributes =
                     match newValueOpt with
                     | ValueNone -> node.SetHandler(name, ValueNone)
 
-                    | ValueSome msg ->
+                    | ValueSome(MsgValue msg) ->
                         let handler = EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
 
                         event.AddHandler handler
@@ -305,11 +312,11 @@ module Attributes =
     let inline defineEvent<'args>
         name
         ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<'args -> obj> =
+        : SimpleScalarAttributeDefinition<'args -> MsgValue> =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
-                (fun _ (newValueOpt: ('args -> obj) voption) (node: IViewNode) ->
+                (fun _ (newValueOpt: ('args -> MsgValue) voption) (node: IViewNode) ->
                     let event = getEvent node.Target
 
                     match node.TryGetHandler(name) with
@@ -322,7 +329,7 @@ module Attributes =
                     | ValueSome fn ->
                         let handler =
                             EventHandler<'args>(fun _ args ->
-                                let r = fn args
+                                let (MsgValue r) = fn args
                                 Dispatcher.dispatch node r)
 
                         node.SetHandler(name, ValueSome handler)
