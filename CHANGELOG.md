@@ -50,7 +50,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.3.2...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.4.0...HEAD
+[2.4.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.0
 [2.3.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.2
 [2.3.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.1
 [2.3.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.0
