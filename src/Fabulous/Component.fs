@@ -80,7 +80,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
             
             this.Render()
         
-    member this.CreateView() =
+    member this.CreateView(scalars: ScalarAttribute array voption, widgets: WidgetAttribute array voption, widgetColls: WidgetCollectionAttribute array voption) =
         _contextSubscription <- this.Context.RenderNeeded.Subscribe(this.Render)
         
         let rootWidget = this.Body.Invoke(context)
@@ -89,6 +89,35 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         this.Context.AfterRender()
         
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key
+        
+        // Inject the attributes added to the component directly into the root widget
+        let scalars =
+            match scalars with
+            | ValueNone -> ValueNone
+            | ValueSome attrs -> ValueSome (Array.filter (fun (attr: ScalarAttribute) -> attr.DebugName <> "Component_Body" && attr.DebugName <> "Component_Context") attrs)
+        
+        let rootWidget: Widget =
+            { Key = rootWidget.Key
+              DebugName = rootWidget.DebugName
+              ScalarAttributes =
+                  match struct (rootWidget.ScalarAttributes, scalars) with
+                  | ValueNone, ValueNone -> ValueNone
+                  | ValueSome attrs, ValueNone
+                  | ValueNone, ValueSome attrs -> ValueSome attrs
+                  | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome (Array.append widgetAttrs componentAttrs)
+              WidgetAttributes =
+                  match struct (rootWidget.WidgetAttributes, widgets) with
+                  | ValueNone, ValueNone -> ValueNone
+                  | ValueSome attrs, ValueNone
+                  | ValueNone, ValueSome attrs -> ValueSome attrs
+                  | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome (Array.append widgetAttrs componentAttrs)
+              WidgetCollectionAttributes =
+                  match struct (rootWidget.WidgetCollectionAttributes, widgetColls) with
+                  | ValueNone, ValueNone -> ValueNone
+                  | ValueSome attrs, ValueNone
+                  | ValueNone, ValueSome attrs -> ValueSome attrs
+                  | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome (Array.append widgetAttrs componentAttrs)  }
+        
         let struct (node, view) = widgetDef.CreateView(rootWidget, treeContext, ValueNone)
         _view <- view
 
@@ -157,7 +186,7 @@ module Component =
                             | None -> ComponentContext()
 
                         let comp = new Component(treeContext, body, context)
-                        let struct(node, view) = comp.CreateView()
+                        let struct(node, view) = comp.CreateView(widget.ScalarAttributes, widget.WidgetAttributes, widget.WidgetCollectionAttributes)
 
                         struct (node, view) }
             
@@ -170,19 +199,7 @@ type ComponentModifiers =
     [<Extension>]
     static member inline withContext(this: WidgetBuilder<'msg, 'marker>, context: ComponentContext) =
         this.AddScalar(Component.Context.WithValue(context))
-        
-[<Extension>]
-type ComponentExtensions =
-    [<Extension>]
-    static member inline WithValue(this: SimpleScalarAttributeDefinition<ComponentBody>, [<InlineIfLambda>] value: ComponentBodyBuilder<'msg, 'marker>) =
-        let compiledBody =
-            ComponentBody(fun ctx ->
-                let widgetBuilder = value.Invoke(ctx)
-                widgetBuilder.Compile()
-            )
-        
-        this.WithValue(compiledBody)
-        
+           
 type ViewBuilder() =        
     member inline this.Yield(widget: WidgetBuilder<'msg, 'marker>) =
         ComponentBodyBuilder(fun ctx -> widget)
@@ -201,9 +218,15 @@ type ViewBuilder() =
         )
         
     member inline this.Run([<InlineIfLambda>] body: ComponentBodyBuilder<'msg, 'marker>) =
+        let compiledBody =
+            ComponentBody(fun ctx ->
+                let widgetBuilder = body.Invoke(ctx)
+                widgetBuilder.Compile()
+            )
+            
         WidgetBuilder<'msg, 'marker>(
             Component.WidgetKey,
-            Component.Body.WithValue(body)
+            Component.Body.WithValue(compiledBody)
         )
 
             
