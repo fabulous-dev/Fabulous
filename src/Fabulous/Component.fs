@@ -41,34 +41,7 @@ type ComponentContext() =
 type ComponentBody = delegate of ComponentContext -> Widget
 type ComponentBodyBuilder<'msg, 'marker> = delegate of ComponentContext -> WidgetBuilder<'msg, 'marker>
 
-type ViewBuilder() =        
-    member inline this.Yield(widget: WidgetBuilder<'msg, 'marker>) =
-        ComponentBodyBuilder(fun ctx -> widget)
-        
-    member inline this.Combine([<InlineIfLambda>] a: ComponentBodyBuilder<'msg, 'marker>, [<InlineIfLambda>] b: ComponentBodyBuilder<'msg, 'marker>) =
-        ComponentBodyBuilder(fun ctx ->
-            let _ = a.Invoke(ctx) // discard the previous widget in the chain
-            let result = b.Invoke(ctx)
-            result
-        )
-        
-    member inline this.Delay([<InlineIfLambda>] fn: unit -> ComponentBodyBuilder<'msg, 'marker>) =
-        ComponentBodyBuilder(fun ctx ->
-            let sub = fn()
-            sub.Invoke(ctx)
-        )
-        
-    member inline this.Run([<InlineIfLambda>] result: ComponentBodyBuilder<'msg, 'marker>) =
-        result
 
-[<AutoOpen>]
-module ViewBuilder =
-    let view = ViewBuilder()
-    
-    
-    
-    
-    
 ////////////// Component holder //////////////
 
 type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
@@ -193,6 +166,12 @@ module Component =
         key
         
 [<Extension>]
+type ComponentModifiers =
+    [<Extension>]
+    static member inline withContext(this: WidgetBuilder<'msg, 'marker>, context: ComponentContext) =
+        this.AddScalar(Component.Context.WithValue(context))
+        
+[<Extension>]
 type ComponentExtensions =
     [<Extension>]
     static member inline WithValue(this: SimpleScalarAttributeDefinition<ComponentBody>, [<InlineIfLambda>] value: ComponentBodyBuilder<'msg, 'marker>) =
@@ -203,6 +182,29 @@ type ComponentExtensions =
             )
         
         this.WithValue(compiledBody)
+        
+type ViewBuilder() =        
+    member inline this.Yield(widget: WidgetBuilder<'msg, 'marker>) =
+        ComponentBodyBuilder(fun ctx -> widget)
+        
+    member inline this.Combine([<InlineIfLambda>] a: ComponentBodyBuilder<'msg, 'marker>, [<InlineIfLambda>] b: ComponentBodyBuilder<'msg, 'marker>) =
+        ComponentBodyBuilder(fun ctx ->
+            let _ = a.Invoke(ctx) // discard the previous widget in the chain
+            let result = b.Invoke(ctx)
+            result
+        )
+        
+    member inline this.Delay([<InlineIfLambda>] fn: unit -> ComponentBodyBuilder<'msg, 'marker>) =
+        ComponentBodyBuilder(fun ctx ->
+            let sub = fn()
+            sub.Invoke(ctx)
+        )
+        
+    member inline this.Run([<InlineIfLambda>] body: ComponentBodyBuilder<'msg, 'marker>) =
+        WidgetBuilder<'msg, 'marker>(
+            Component.WidgetKey,
+            Component.Body.WithValue(body)
+        )
 
             
 ////////////// State //////////////
