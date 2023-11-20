@@ -40,6 +40,7 @@
     <Compile Include="Dispatch.fs" />
     <Compile Include="Attributes.fs" />
     <Compile Include="Memo.fs" />
+    <Compile Include="Component.fs" />
     <Compile Include="View.fs" />
     <Compile Include="ViewRef.fs" />
   </ItemGroup>
