@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.5.0-preview.1] - 2023-11-22
+
+### Added
+- Add new Component API by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1051)
+
 ## [2.4.0] - 2023-08-07
 
 ### Changed
@@ -50,7 +55,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.4.0...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.5.0-preview.1...HEAD
+[2.5.0-preview.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-preview.1
 [2.4.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.0
 [2.3.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.2
 [2.3.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.1
