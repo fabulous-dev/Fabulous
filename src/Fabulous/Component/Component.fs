@@ -203,11 +203,11 @@ avatar1.Background <- Blue
 *)
 
 
-type ComponentBody = delegate of ComponentContext voption -> struct (ComponentContext * Widget)
+type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * Widget)
 
-type Component(treeContext: ViewTreeContext, body: ComponentBody) =
+type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
     let mutable _body = body
-    let mutable _context = Unchecked.defaultof<ComponentContext>
+    let mutable _context = context
     let mutable _widget = Unchecked.defaultof<_>
     let mutable _view = null
     let mutable _contextSubscription: IDisposable = null
@@ -237,13 +237,8 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody) =
         _context <- context
         this.Render()
 
-    member this.CreateView(componentWidget: Widget, ?sharedContext: ComponentContext) =
-        let initialContext =
-            match sharedContext with
-            | None -> ValueNone
-            | Some ctx -> ValueSome ctx
-
-        let struct (context, rootWidget) = _body.Invoke(initialContext)
+    member this.CreateView(componentWidget: Widget) =
+        let struct (context, rootWidget) = _body.Invoke(_context)
         _widget <- rootWidget
         _context <- context
 
@@ -251,12 +246,13 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody) =
         let scalars =
             match componentWidget.ScalarAttributes with
             | ValueNone -> ValueNone
-            | ValueSome attrs ->
-                ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.DebugName <> "Component_Body" && attr.DebugName <> "Component_Context") attrs)
+            | ValueSome attrs -> ValueSome(Array.skip 2 attrs) // Skip the Component_Body and Component_Context attributes
 
         let rootWidget: Widget =
             { Key = rootWidget.Key
+#if DEBUG
               DebugName = rootWidget.DebugName
+#endif
               ScalarAttributes =
                 match struct (rootWidget.ScalarAttributes, scalars) with
                 | ValueNone, ValueNone -> ValueNone
@@ -290,7 +286,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody) =
     member this.Render() =
         let prevRootWidget = _widget
         let prevContext = _context
-        let struct (context, currRootWidget) = _body.Invoke(ValueSome _context)
+        let struct (context, currRootWidget) = _body.Invoke(_context)
         _widget <- currRootWidget
 
         if prevContext <> context then
@@ -308,14 +304,10 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody) =
                 _contextSubscription.Dispose()
                 _contextSubscription <- null
 
-
-
-
-////////////// Component widget //////////////
 module Component =
     /// TODO: This is actually broken. On every call of the parent, the body will be reassigned to the Component triggering a re-render because of the noCompare.
     /// This is not what was expected. The body should actually be invalidated based on its context.
-    let Body: SimpleScalarAttributeDefinition<ComponentBody> =
+    let Body =
         Attributes.defineSimpleScalar "Component_Body" ScalarAttributeComparers.noCompare (fun _ currOpt node ->
             let target = Component.GetAttachedComponent(node.Target)
 
@@ -323,12 +315,12 @@ module Component =
             | ValueNone -> failwith "Component widget must have a body"
             | ValueSome body -> target.SetBody(body))
 
-    let Context: SimpleScalarAttributeDefinition<ComponentContext> =
+    let Context =
         Attributes.defineSimpleScalar "Component_Context" ScalarAttributeComparers.equalityCompare (fun _ currOpt node ->
             let target = Component.GetAttachedComponent(node.Target)
 
             match currOpt with
-            | ValueNone -> failwith "Component widget must have a body"
+            | ValueNone -> target.SetContext(ComponentContext())
             | ValueSome context -> target.SetContext(context))
 
     let WidgetKey =
@@ -351,11 +343,11 @@ module Component =
 
                         let context =
                             match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Context.Key) attrs with
-                            | None -> None
-                            | Some attr -> Some(attr.Value :?> ComponentContext)
+                            | Some attr -> attr.Value :?> ComponentContext
+                            | None -> failwith "Component widget must have a context"
 
-                        let comp = new Component(treeContext, body)
-                        let struct (node, view) = comp.CreateView(widget, ?sharedContext = context)
+                        let comp = new Component(treeContext, body, context)
+                        let struct (node, view) = comp.CreateView(widget)
 
                         struct (node, view) }
 

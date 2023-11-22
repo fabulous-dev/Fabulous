@@ -26,12 +26,7 @@ type ComponentBuilder() =
 
     member inline this.Run([<InlineIfLambda>] body: ComponentBodyBuilder<'msg, 'marker>) =
         let compiledBody =
-            ComponentBody(fun ctxOpt ->
-                let ctx =
-                    match ctxOpt with
-                    | ValueNone -> ComponentContext()
-                    | ValueSome ctx -> ctx
-
+            ComponentBody(fun ctx ->
                 let struct (_, result) = body.Invoke(0<binding>, ctx)
                 struct (ctx, result.Compile()))
 
