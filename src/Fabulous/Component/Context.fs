@@ -14,7 +14,8 @@ we can leverage the inlining capabilities of the ComponentBuilder to create an a
 *)
 
 /// This measure type is used to count the number of bindings in a component while building the computation expression
-type [<Measure>] binding
+[<Measure>]
+type binding
 
 /// <summary>
 /// Holds the values for the various states of a component.
@@ -22,12 +23,12 @@ type [<Measure>] binding
 type ComponentContext() =
     // We assume that most components will have few values, so initialize it with a small array
     let mutable values = Array.zeroCreate 3
-    
+
     let renderNeeded = Event<unit>()
     member this.RenderNeeded = renderNeeded.Publish
     member this.NeedsRender() = renderNeeded.Trigger()
-    
-    member private this.ResizeIfNeeded(count: int) =        
+
+    member private this.ResizeIfNeeded(count: int) =
         // If the array is already big enough, we don't need to do anything
         // Otherwise, we create a new array and copy the values from the old one
         // It is assumed the component will have a stable amount of values, so this should not happen often
@@ -36,20 +37,19 @@ type ComponentContext() =
             let newArray = Array.zeroCreate newLength
             Array.blit values 0 newArray 0 values.Length
             values <- newArray
-    
+
     member this.TryGetValue<'T>(key: int) =
         this.ResizeIfNeeded(key + 1)
-        
+
         let value = values[key]
+
         if isNull value then
             ValueNone
         else
-            ValueSome (unbox<'T> value)
-    
-    member internal this.SetValueInternal(key: int, value: 'T) =
-        values[key] <- box value
-        
+            ValueSome(unbox<'T> value)
+
+    member internal this.SetValueInternal(key: int, value: 'T) = values[key] <- box value
+
     member this.SetValue(key: int, value: 'T) =
         values[key] <- box value
         this.NeedsRender()
-

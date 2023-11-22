@@ -26,36 +26,46 @@ let parent =
 
 *)
 
-type ComponentBindingRequest<'T> = delegate of unit -> ComponentState<'T>
+type Binding<'T> = delegate of unit -> StateValue<'T>
 
-type [<Struct>] ComponentBinding<'T> =
+[<Struct>]
+type BindingValue<'T> =
     val public Context: ComponentContext
-    val public Source: ComponentState<'T>
-    
-    new (ctx, source) = { Context = ctx; Source = source }
-        
-    member inline this.Current = this.Source.Current
-    
+    val public SourceContext: ComponentContext
+    val public SourceKey: int
+    val public SourceCurrentValue: 'T
+
+    new(ctx, sourceCtx, sourceKey, sourceCurrentValue) =
+        { Context = ctx
+          SourceContext = sourceCtx
+          SourceKey = sourceKey
+          SourceCurrentValue = sourceCurrentValue }
+
+    member inline this.Current = this.SourceCurrentValue
+
     member inline this.Set(value: 'T) =
-        this.Source.Set(value)
+        this.SourceContext.SetValue(this.SourceKey, value)
+        this.Context.NeedsRender()
 
 [<Extension>]
 type BindingExtensions =
     [<Extension>]
-    static member inline Bind(_: ComponentBuilder, [<InlineIfLambda>] request: ComponentBindingRequest<'T>, [<InlineIfLambda>] continuation: ComponentBinding<'T> -> ComponentBodyBuilder<'msg, 'marker>) =
+    static member inline Bind
+        (
+            _: ComponentBuilder,
+            [<InlineIfLambda>] request: Binding<'T>,
+            [<InlineIfLambda>] continuation: BindingValue<'T> -> ComponentBodyBuilder<'msg, 'marker>
+        ) =
         // Despite its name, ComponentBinding actual value is not stored in this component, but in the source component
         // So, we do not need to increment the number of bindings here
         ComponentBodyBuilder(fun bindings ctx ->
             let source = request.Invoke()
-            
+
             source.Context.RenderNeeded.Add(fun () -> ctx.NeedsRender())
-            
-            let state = ComponentBinding<'T>(ctx, source)
-            (continuation state).Invoke(bindings, ctx)
-        )
-        
+
+            let state = BindingValue<'T>(ctx, source.Context, source.Key, source.Current)
+            (continuation state).Invoke(bindings, ctx))
+
 [<AutoOpen>]
 module BindingHelpers =
-    let inline ofState (source: ComponentState<'T>) = ComponentBindingRequest(fun () -> source)
-    let inline bind (binding: ComponentBinding<'T>) = binding
-
+    let inline ``$`` (source: StateValue<'T>) = Binding(fun () -> source)
