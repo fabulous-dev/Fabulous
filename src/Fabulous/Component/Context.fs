@@ -1,5 +1,7 @@
 namespace Fabulous
 
+open System.ComponentModel
+
 (*
 ARCHITECTURE NOTES:
 
@@ -20,11 +22,14 @@ type binding
 /// <summary>
 /// Holds the values for the various states of a component.
 /// </summary>
-type ComponentContext() =
-    // We assume that most components will have few values, so initialize it with a small array
-    let mutable values = Array.zeroCreate 3
+type ComponentContext(initialSize: int) =
+    let mutable values = Array.zeroCreate initialSize
 
     let renderNeeded = Event<unit>()
+    
+    // We assume that most components will have few values, so initialize it with a small array
+    new () = ComponentContext(3)
+    
     member this.RenderNeeded = renderNeeded.Publish
     member this.NeedsRender() = renderNeeded.Trigger()
 
@@ -48,7 +53,8 @@ type ComponentContext() =
         else
             ValueSome(unbox<'T> value)
 
-    member internal this.SetValueInternal(key: int, value: 'T) = values[key] <- box value
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member this.SetValueInternal(key: int, value: 'T) = values[key] <- box value
 
     member this.SetValue(key: int, value: 'T) =
         values[key] <- box value

@@ -47,6 +47,7 @@
     <Compile Include="Component\Builder.fs" />
     <Compile Include="Component\State.fs" />
     <Compile Include="Component\Binding.fs" />
+    <Compile Include="Component\MvuComponent.fs" />
   </ItemGroup>
   <ItemGroup>
     <!--
