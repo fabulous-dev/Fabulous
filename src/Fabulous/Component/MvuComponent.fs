@@ -1,14 +1,10 @@
 namespace Fabulous
 
+open Fabulous.Runners
 open Fabulous.ScalarAttributeDefinitions
 
 type Init<'msg, 'model> = unit -> 'model * Cmd<'msg>
 type Update<'msg, 'model> = 'msg -> 'model -> 'model * Cmd<'msg>
-
-[<Struct; NoEquality; NoComparison>]
-type MvuProgram(init: Init<obj, obj>, update: Update<obj, obj>) =
-    member this.Init = init
-    member this.Update = update
     
 // This MvuComponent is a proxy widget just like Component
 // but its specificity is to override the ViewTreeContext.Dispatch
@@ -18,23 +14,24 @@ type MvuComponentBody = delegate of obj -> Widget
 
 [<Struct; NoEquality; NoComparison>]
 type MvuComponentData =
-    { MvuProgram: MvuProgram
+    { Program: Program<obj, obj, obj>
       Body: MvuComponentBody }
 
 type IMvuComponent =
     inherit IBaseComponent
     abstract member SetData: MvuComponentData -> unit
 
-type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context: ComponentContext) =
-    let mutable _data = data
+type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context: ComponentContext) as this =
+    let mutable _body = data.Body
+    let mutable _runner = Runner<obj, obj, obj>(0, this.GetModel, this.SetModel, data.Program)
     let mutable _context = context
     let mutable _widget = Unchecked.defaultof<Widget>
     let mutable _view = null
     let mutable _contextSubscription = null
     
     interface IMvuComponent with
-        member this.SetData(body: MvuComponentData) =
-            _data <- body
+        member this.SetData(data: MvuComponentData) =
+            _body <- data.Body
             this.Render()
         
         member this.Dispose() =
@@ -42,23 +39,26 @@ type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context:
                 _contextSubscription.Dispose()
                 _contextSubscription <- null
                 
-    member this.Dispatch(msg: obj) =
-        match _context.TryGetValue(0) with
-        | ValueNone -> failwith "MvuComponent must have a model"
-        | ValueSome model ->
-            let newModel, _ = _data.MvuProgram.Update msg model
-            _context.SetValue(0, newModel)
-    
-    member this.CreateView() =
-        let model =
-            match _context.TryGetValue(0) with
-            | ValueSome model -> model
-            | ValueNone ->
-                let initialModel, _ = _data.MvuProgram.Init()
-                _context.SetValueInternal(0, initialModel)
-                initialModel
+    member private this.GetModel(key: StateKey) =
+        match _context.TryGetValue(key) with
+        | ValueSome model -> model
+        | ValueNone ->
+            let initialModel, cmd = _runner.Program.Init()
+            _context.SetValueInternal(0, initialModel)
             
-        let widget = _data.Body.Invoke(model)
+            for sub in cmd do
+                _runner.Dispatch(sub)
+            
+            initialModel
+        
+    member private this.SetModel (key: StateKey) (model: obj) =
+        _context.SetValue(key, model)
+                
+    member this.Dispatch(msg: obj) =
+        _runner.Dispatch(msg)
+    
+    member this.CreateView() =            
+        let widget = _body.Invoke(this.GetModel(0))
         _widget <- widget
         
         // Replace the global dispatch with the one from the MvuComponent
@@ -74,14 +74,9 @@ type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context:
 
         struct (node, view)
         
-    member this.Render() =
-        let model =
-            match _context.TryGetValue(0) with
-            | ValueNone -> failwith "MvuComponent must have a model"
-            | ValueSome model -> model
-        
+    member this.Render() =        
         let prevWidget = _widget
-        let widget = _data.Body.Invoke(model)
+        let widget = _body.Invoke(this.GetModel(0))
         _widget <- widget
 
         let viewNode = treeContext.GetViewNode _view
@@ -132,20 +127,18 @@ type Mvu =
 /// It is almost identical to SingleChildBuilder, except the resulting WidgetBuilder will have a 'msg type of unit
 /// because the MvuContext widget will handle its own dispatching internally
 [<Struct>]
-type MvuComponentBuilder<'msg, 'model, 'marker> =
-    val public Init: unit -> obj * Cmd<obj>
-    val public Update: obj -> obj -> obj * Cmd<obj>
+type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
+    val public Program: Program<obj, obj, obj>
     
-    new (init: Init<'msg, 'model>, update: Update<'msg, 'model>) =
-        let init () =
-            let model, cmd = init()
-            box model, Cmd.map box cmd
-            
-        let update msg model =
-            let model, cmd = update (unbox<'msg> msg) (unbox<'model> model)
-            box model, Cmd.map box cmd
-            
-        { Init = init; Update = update }
+    new (program: Program<'arg, 'model, 'msg>) =
+        let program: Program<obj, obj, obj> =
+            { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
+              Update = fun(msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
+              Subscribe = fun model -> Cmd.map box (program.Subscribe(unbox model))
+              Logger = program.Logger
+              ExceptionHandler = program.ExceptionHandler }
+        
+        { Program = program }
     
     member inline this.Bind(_value: MvuStateRequest, [<InlineIfLambda>] continuation: 'model -> MvuComponentBodyStep<'msg, 'model, 'marker>) =
         MvuComponentBodyStep(fun model ->
@@ -171,7 +164,7 @@ type MvuComponentBuilder<'msg, 'model, 'marker> =
             )
             
         let data =
-            { MvuProgram = MvuProgram(this.Init, this.Update)
+            { Program = this.Program
               Body = body }
         
         WidgetBuilder<unit, 'marker>(

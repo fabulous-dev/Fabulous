@@ -35,6 +35,7 @@
     <Compile Include="State.fs" />
     <Compile Include="Cmd.fs" />
     <Compile Include="Runners.fs" />
+    <Compile Include="Program.fs" />
     <Compile Include="MapMsg.fs" />
     <Compile Include="Lifecycle.fs" />
     <Compile Include="Dispatch.fs" />
