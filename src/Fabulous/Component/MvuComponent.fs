@@ -15,6 +15,7 @@ type MvuComponentBody = delegate of obj -> Widget
 [<Struct; NoEquality; NoComparison>]
 type MvuComponentData =
     { Program: Program<obj, obj, obj>
+      Arg: obj
       Body: MvuComponentBody }
 
 type IMvuComponent =
@@ -23,6 +24,7 @@ type IMvuComponent =
 
 type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context: ComponentContext) as this =
     let mutable _body = data.Body
+    let mutable _arg = data.Arg
     let mutable _runner = Runner<obj, obj, obj>(0, this.GetModel, this.SetModel, data.Program)
     let mutable _context = context
     let mutable _widget = Unchecked.defaultof<Widget>
@@ -32,6 +34,8 @@ type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context:
     interface IMvuComponent with
         member this.SetData(data: MvuComponentData) =
             _body <- data.Body
+            _arg <- data.Arg
+            // TODO: We should probably reset the runner here
             this.Render()
         
         member this.Dispose() =
@@ -43,7 +47,7 @@ type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context:
         match _context.TryGetValue(key) with
         | ValueSome model -> model
         | ValueNone ->
-            let initialModel, cmd = _runner.Program.Init()
+            let initialModel, cmd = _runner.Program.Init _arg
             _context.SetValueInternal(0, initialModel)
             
             for sub in cmd do
@@ -129,8 +133,9 @@ type Mvu =
 [<Struct>]
 type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
     val public Program: Program<obj, obj, obj>
+    val public Arg: obj
     
-    new (program: Program<'arg, 'model, 'msg>) =
+    new (program: Program<'arg, 'model, 'msg>, arg: 'arg) =
         let program: Program<obj, obj, obj> =
             { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
               Update = fun(msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
@@ -138,7 +143,8 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
               Logger = program.Logger
               ExceptionHandler = program.ExceptionHandler }
         
-        { Program = program }
+        { Program = program
+          Arg = arg }
     
     member inline this.Bind(_value: MvuStateRequest, [<InlineIfLambda>] continuation: 'model -> MvuComponentBodyStep<'msg, 'model, 'marker>) =
         MvuComponentBodyStep(fun model ->
@@ -165,6 +171,7 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
             
         let data =
             { Program = this.Program
+              Arg = this.Arg
               Body = body }
         
         WidgetBuilder<unit, 'marker>(
