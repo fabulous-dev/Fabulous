@@ -7,8 +7,10 @@ type EnvironmentSetter<'T> = delegate of unit -> struct (string * 'T)
 
 type Environment =
     static member inline Get<'T>(key: string) = EnvironmentGetter<'T>(fun () -> key)
-    static member inline Set<'T>(key: string, value: 'T) = EnvironmentSetter<'T>(fun () -> struct (key, value))
-    
+
+    static member inline Set<'T>(key: string, value: 'T) =
+        EnvironmentSetter<'T>(fun () -> struct (key, value))
+
 [<Extension>]
 type EnvironmentExtensions =
     [<Extension>]
@@ -22,7 +24,7 @@ type EnvironmentExtensions =
             let key = fn.Invoke()
             let value = env.GetValue<'T>(key)
             (continuation value).Invoke(bindings, env, ctx))
-        
+
     [<Extension>]
     static member inline Bind
         (

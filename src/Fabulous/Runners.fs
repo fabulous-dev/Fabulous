@@ -76,7 +76,8 @@ module Runners =
 
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
-    type Runner<'arg, 'model, 'msg>(key: StateKey, getState: StateKey -> 'model, setState: StateKey -> 'model -> unit, program: Program<'arg, 'model, 'msg>) as this =
+    type Runner<'arg, 'model, 'msg>(key: StateKey, getState: StateKey -> 'model, setState: StateKey -> 'model -> unit, program: Program<'arg, 'model, 'msg>) as this
+        =
         let mutable _program = program
         let mutable _reentering = false
         let queue = ConcurrentQueue<'msg>()
@@ -127,7 +128,7 @@ module Runners =
                     reraise()
 
         interface IRunner
-        
+
         member _.Program
             with get () = _program
             and set value = _program <- value

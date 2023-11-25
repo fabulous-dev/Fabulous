@@ -268,7 +268,9 @@ type Component(treeContext: ViewTreeContext, context: ComponentContext, body: Co
                 _contextSubscription <- null
 
     member this.CreateView(componentWidget: Widget) =
-        let struct (env, context, rootWidget) = _body.Invoke(treeContext.EnvironmentContext, _context)
+        let struct (env, context, rootWidget) =
+            _body.Invoke(treeContext.EnvironmentContext, _context)
+
         _widget <- rootWidget
         _context <- context
 
@@ -317,7 +319,10 @@ type Component(treeContext: ViewTreeContext, context: ComponentContext, body: Co
     member this.Render() =
         let prevRootWidget = _widget
         let prevContext = _context
-        let struct (env, context, currRootWidget) = _body.Invoke(treeContext.EnvironmentContext, _context)
+
+        let struct (env, context, currRootWidget) =
+            _body.Invoke(treeContext.EnvironmentContext, _context)
+
         _widget <- currRootWidget
 
         if prevContext <> context then
@@ -367,11 +372,12 @@ type ComponentModifiers =
     [<Extension>]
     static member inline withContext(this: WidgetBuilder<'msg, 'marker>, context: ComponentContext) =
         this.AddScalar(Component.Context.WithValue(context))
-        
+
 /// Delegate used by the ComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
 type ComponentBodyBuilder<'marker> =
-    delegate of bindings: int<binding> * environmentContext: EnvironmentContext * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
+    delegate of
+        bindings: int<binding> * environmentContext: EnvironmentContext * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
 
 type ComponentBuilder() =
     member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
@@ -398,7 +404,4 @@ type ComponentBuilder() =
                 let struct (_, result) = body.Invoke(0<binding>, env, ctx)
                 struct (env, ctx, result.Compile()))
 
-        WidgetBuilder<unit, 'marker>(
-            ComponentWidget.WidgetKey,
-            Component.Body.WithValue(compiledBody)
-        )
+        WidgetBuilder<unit, 'marker>(ComponentWidget.WidgetKey, Component.Body.WithValue(compiledBody))
