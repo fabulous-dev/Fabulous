@@ -34,7 +34,8 @@ type ViewTreeContext =
     { CanReuseView: Widget -> Widget -> bool
       GetViewNode: obj -> IViewNode
       Logger: Logger
-      Dispatch: obj -> unit }
+      Dispatch: obj -> unit
+      EnvironmentContext: EnvironmentContext }
 
 and IViewNode =
     /// The view that is being rendered

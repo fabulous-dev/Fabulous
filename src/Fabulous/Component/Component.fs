@@ -203,7 +203,7 @@ avatar1.Background <- Blue
 *)
 
 
-type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * Widget)
+type ComponentBody = delegate of EnvironmentContext * ComponentContext -> struct (EnvironmentContext * ComponentContext * Widget)
 
 type IBaseComponent =
     inherit IDisposable
@@ -244,7 +244,7 @@ module Component =
             | ValueNone -> target.SetContext(ComponentContext())
             | ValueSome context -> target.SetContext(context))
 
-type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
+type Component(treeContext: ViewTreeContext, context: ComponentContext, body: ComponentBody) =
     let mutable _body = body
     let mutable _context = context
     let mutable _widget = Unchecked.defaultof<_>
@@ -268,7 +268,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
                 _contextSubscription <- null
 
     member this.CreateView(componentWidget: Widget) =
-        let struct (context, rootWidget) = _body.Invoke(_context)
+        let struct (env, context, rootWidget) = _body.Invoke(treeContext.EnvironmentContext, _context)
         _widget <- rootWidget
         _context <- context
 
@@ -317,7 +317,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
     member this.Render() =
         let prevRootWidget = _widget
         let prevContext = _context
-        let struct (context, currRootWidget) = _body.Invoke(_context)
+        let struct (env, context, currRootWidget) = _body.Invoke(treeContext.EnvironmentContext, _context)
         _widget <- currRootWidget
 
         if prevContext <> context then
@@ -353,7 +353,7 @@ module ComponentWidget =
                             | Some attr -> attr.Value :?> ComponentContext
                             | None -> ComponentContext()
 
-                        let comp = new Component(treeContext, body, context)
+                        let comp = new Component(treeContext, context, body)
                         let struct (node, view) = comp.CreateView(widget)
 
                         struct (node, view) }
@@ -367,3 +367,38 @@ type ComponentModifiers =
     [<Extension>]
     static member inline withContext(this: WidgetBuilder<'msg, 'marker>, context: ComponentContext) =
         this.AddScalar(Component.Context.WithValue(context))
+        
+/// Delegate used by the ComponentBuilder to compose a component body
+/// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
+type ComponentBodyBuilder<'marker> =
+    delegate of bindings: int<binding> * environmentContext: EnvironmentContext * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
+
+type ComponentBuilder() =
+    member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
+        ComponentBodyBuilder<'marker>(fun bindings env ctx -> struct (bindings, widgetBuilder))
+
+    member inline this.Combine([<InlineIfLambda>] a: ComponentBodyBuilder<'marker>, [<InlineIfLambda>] b: ComponentBodyBuilder<'marker>) =
+        ComponentBodyBuilder<'marker>(fun bindings env ctx ->
+            let struct (bindingsA, _) = a.Invoke(bindings, env, ctx) // discard the previous widget in the chain but we still need to count the bindings
+            let struct (bindingsB, resultB) = b.Invoke(bindings, env, ctx)
+
+            // Calculate the total number of bindings between A and B
+            let resultBindings = (bindingsA + bindingsB) - bindings
+
+            struct (resultBindings, resultB))
+
+    member inline this.Delay([<InlineIfLambda>] fn: unit -> ComponentBodyBuilder<'marker>) =
+        ComponentBodyBuilder<'marker>(fun bindings env ctx ->
+            let sub = fn()
+            sub.Invoke(bindings, env, ctx))
+
+    member inline this.Run([<InlineIfLambda>] body: ComponentBodyBuilder<'marker>) =
+        let compiledBody =
+            ComponentBody(fun env ctx ->
+                let struct (_, result) = body.Invoke(0<binding>, env, ctx)
+                struct (env, ctx, result.Compile()))
+
+        WidgetBuilder<unit, 'marker>(
+            ComponentWidget.WidgetKey,
+            Component.Body.WithValue(compiledBody)
+        )

@@ -76,7 +76,8 @@ module Runners =
 
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
-    type Runner<'arg, 'model, 'msg>(key: StateKey, getState: StateKey -> 'model, setState: StateKey -> 'model -> unit, program: Program<'arg, 'model, 'msg>) =
+    type Runner<'arg, 'model, 'msg>(key: StateKey, getState: StateKey -> 'model, setState: StateKey -> 'model -> unit, program: Program<'arg, 'model, 'msg>) as this =
+        let mutable _program = program
         let mutable _reentering = false
         let queue = ConcurrentQueue<'msg>()
 
@@ -91,7 +92,7 @@ module Runners =
 
                     while lastMsg.IsSome do
                         let model = getState key
-                        let newModel, cmd = program.Update(lastMsg.Value, model)
+                        let newModel, cmd = this.Program.Update(lastMsg.Value, model)
                         setState key newModel
 
                         for sub in cmd do
@@ -106,15 +107,15 @@ module Runners =
             with ex ->
                 _reentering <- false
 
-                if not(program.ExceptionHandler ex) then
+                if not(this.Program.ExceptionHandler ex) then
                     reraise()
 
         let start arg =
             try
-                let model, cmd = program.Init(arg)
+                let model, cmd = this.Program.Init(arg)
                 setState key model
 
-                let subs = program.Subscribe(model)
+                let subs = this.Program.Subscribe(model)
 
                 for sub in subs do
                     sub dispatch
@@ -122,12 +123,14 @@ module Runners =
                 for sub in cmd do
                     sub dispatch
             with ex ->
-                if not(program.ExceptionHandler(ex)) then
+                if not(this.Program.ExceptionHandler(ex)) then
                     reraise()
 
         interface IRunner
-
-        member _.Program = program
+        
+        member _.Program
+            with get () = _program
+            and set value = _program <- value
 
         /// Start the Runner loop
         member _.Start(arg) = start arg
@@ -179,7 +182,8 @@ module ViewAdapters =
                 { CanReuseView = canReuseView
                   GetViewNode = getViewNode
                   Logger = logger
-                  Dispatch = this.Dispatch }
+                  Dispatch = this.Dispatch
+                  EnvironmentContext = EnvironmentContext() }
 
             let definition = WidgetDefinitionStore.get widget.Key
 
@@ -197,7 +201,8 @@ module ViewAdapters =
                 { CanReuseView = canReuseView
                   GetViewNode = getViewNode
                   Logger = logger
-                  Dispatch = this.Dispatch }
+                  Dispatch = this.Dispatch
+                  EnvironmentContext = EnvironmentContext() }
 
             let definition = WidgetDefinitionStore.get widget.Key
 

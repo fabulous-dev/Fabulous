@@ -72,7 +72,7 @@ type StateExtensions =
             [<InlineIfLambda>] fn: State<'T>,
             [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'marker>
         ) =
-        ComponentBodyBuilder<'marker>(fun bindings ctx ->
+        ComponentBodyBuilder<'marker>(fun bindings env ctx ->
             let key = int bindings
 
             let value =
@@ -84,7 +84,7 @@ type StateExtensions =
                     newValue
 
             let state = StateValue(ctx, key, value)
-            (continuation state).Invoke((bindings + 1<binding>), ctx))
+            (continuation state).Invoke((bindings + 1<binding>), env, ctx))
 
 [<AutoOpen>]
 module StateHelpers =

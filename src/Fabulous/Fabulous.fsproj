@@ -26,6 +26,7 @@
     <Compile Include="Primitives.fs" />
     <Compile Include="Logger.fs" />
     <Compile Include="WidgetDiff.fs" />
+    <Compile Include="EnvironmentContext.fs" />
     <Compile Include="IViewNode.fs" />
     <Compile Include="AttributeDefinitions.fs" />
     <Compile Include="WidgetDefinitions.fs" />
@@ -45,9 +46,9 @@
     <Compile Include="ViewRef.fs" />
     <Compile Include="Component\Context.fs" />
     <Compile Include="Component\Component.fs" />
-    <Compile Include="Component\Builder.fs" />
     <Compile Include="Component\State.fs" />
     <Compile Include="Component\Binding.fs" />
+    <Compile Include="Component\Environment.fs" />
     <Compile Include="Component\MvuComponent.fs" />
   </ItemGroup>
   <ItemGroup>

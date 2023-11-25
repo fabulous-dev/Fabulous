@@ -58,13 +58,13 @@ type BindingExtensions =
         ) =
         // Despite its name, ComponentBinding actual value is not stored in this component, but in the source component
         // So, we do not need to increment the number of bindings here
-        ComponentBodyBuilder(fun bindings ctx ->
+        ComponentBodyBuilder(fun bindings env ctx ->
             let source = request.Invoke()
 
             source.Context.RenderNeeded.Add(fun () -> ctx.NeedsRender())
 
             let state = BindingValue<'T>(ctx, source.Context, source.Key, source.Current)
-            (continuation state).Invoke(bindings, ctx))
+            (continuation state).Invoke(bindings, env, ctx))
 
 [<AutoOpen>]
 module BindingHelpers =

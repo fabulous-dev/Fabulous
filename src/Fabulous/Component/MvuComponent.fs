@@ -22,7 +22,7 @@ type IMvuComponent =
     inherit IBaseComponent
     abstract member SetData: MvuComponentData -> unit
 
-type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context: ComponentContext) as this =
+type MvuComponent(treeContext: ViewTreeContext, context: ComponentContext, data: MvuComponentData) as this =
     let mutable _body = data.Body
     let mutable _arg = data.Arg
 
@@ -38,7 +38,7 @@ type MvuComponent(treeContext: ViewTreeContext, data: MvuComponentData, context:
         member this.SetData(data: MvuComponentData) =
             _body <- data.Body
             _arg <- data.Arg
-            // TODO: We should probably reset the runner here
+            _runner.Program <- data.Program
             this.Render()
 
         member this.Dispose() =
@@ -108,20 +108,19 @@ module MvuComponent =
               Name = "MvuContext"
               TargetType = typeof<MvuComponent>
               AttachView = fun _ -> failwith "MvuComponent widget cannot be attached"
-              CreateView =
-                (fun (widget, treeContext, _parentNode) ->
-                    let data =
-                        match widget.ScalarAttributes with
-                        | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
-                        | ValueSome attrs ->
-                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Data.Key) attrs with
-                            | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
-                            | Some attr -> attr.Value :?> MvuComponentData
-
-                    let comp = new MvuComponent(treeContext, data, ComponentContext(1))
-                    let struct (node, view) = comp.CreateView()
-                    struct (node, view)) }
-
+              CreateView = (fun (widget, treeContext, _parentNode) ->
+                let data =
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
+                    | ValueSome attrs ->
+                        match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Data.Key) attrs with
+                        | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
+                        | Some attr -> attr.Value :?> MvuComponentData
+                
+                let comp = new MvuComponent(treeContext, ComponentContext(1), data)
+                let struct (node, view) = comp.CreateView()
+                struct (node, view)) }
+            
         WidgetDefinitionStore.set key definition
 
         key
