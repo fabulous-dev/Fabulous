@@ -205,6 +205,45 @@ avatar1.Background <- Blue
 
 type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * Widget)
 
+type IBaseComponent =
+    inherit IDisposable
+
+type IComponent =
+    inherit IBaseComponent
+    abstract member SetBody: ComponentBody -> unit
+    abstract member SetContext: ComponentContext -> unit
+
+module Component =
+    // TODO: This is a big code smell. We should not do this but I can't think of a better way to do it right now.
+    // The implementation of this method is set by the consuming project: Fabulous.XamarinForms, Fabulous.Maui, Fabulous.Avalonia
+    let mutable setAttachedComponent: obj -> IBaseComponent -> unit =
+        fun _ _ -> failwith "Please call Component.SetComponentFunctions() before using Component"
+
+    let mutable getAttachedComponent: obj -> IBaseComponent =
+        fun _ -> failwith "Please call Component.SetComponentFunctions() before using Component"
+
+    let setComponentFunctions (get: obj -> IBaseComponent, set: obj -> IBaseComponent -> unit) =
+        getAttachedComponent <- get
+        setAttachedComponent <- set
+
+    /// TODO: This is actually broken. On every call of the parent, the body will be reassigned to the Component triggering a re-render because of the noCompare.
+    /// This is not what was expected. The body should actually be invalidated based on its context.
+    let Body =
+        Attributes.defineSimpleScalar "Component_Body" ScalarAttributeComparers.noCompare (fun _ currOpt node ->
+            let target = getAttachedComponent(node.Target) :?> IComponent
+
+            match currOpt with
+            | ValueNone -> failwith "Component widget must have a body"
+            | ValueSome body -> target.SetBody(body))
+
+    let Context =
+        Attributes.defineSimpleScalar "Component_Context" ScalarAttributeComparers.equalityCompare (fun _ currOpt node ->
+            let target = getAttachedComponent(node.Target) :?> IComponent
+
+            match currOpt with
+            | ValueNone -> target.SetContext(ComponentContext())
+            | ValueSome context -> target.SetContext(context))
+
 type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
     let mutable _body = body
     let mutable _context = context
@@ -212,30 +251,21 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
     let mutable _view = null
     let mutable _contextSubscription: IDisposable = null
 
-    // TODO: This is a big code smell. We should not do this but I can't think of a better way to do it right now.
-    // The implementation of this method is set by the consuming project: Fabulous.XamarinForms, Fabulous.Maui, Fabulous.Avalonia
-    static let mutable _setAttachedComponent: obj -> Component -> unit =
-        fun _ _ -> failwith "Please call Component.SetComponentFunctions() before using Component"
+    interface IComponent with
+        member this.SetBody(body: ComponentBody) =
+            _body <- body
+            this.Render()
 
-    static let mutable _getAttachedComponent: obj -> Component =
-        fun _ -> failwith "Please call Component.SetComponentFunctions() before using Component"
+        member this.SetContext(context: ComponentContext) =
+            _contextSubscription.Dispose()
+            _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
+            _context <- context
+            this.Render()
 
-    static member SetComponentFunctions(get: obj -> Component, set: obj -> Component -> unit) =
-        _getAttachedComponent <- get
-        _setAttachedComponent <- set
-
-    static member GetAttachedComponent(view: obj) = _getAttachedComponent view
-    static member SetAttachedComponent(view: obj, comp: Component) = _setAttachedComponent view comp
-
-    member this.SetBody(body: ComponentBody) =
-        _body <- body
-        this.Render()
-
-    member this.SetContext(context: ComponentContext) =
-        _contextSubscription.Dispose()
-        _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
-        _context <- context
-        this.Render()
+        member this.Dispose() =
+            if _contextSubscription <> null then
+                _contextSubscription.Dispose()
+                _contextSubscription <- null
 
     member this.CreateView(componentWidget: Widget) =
         let struct (context, rootWidget) = _body.Invoke(_context)
@@ -246,7 +276,8 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let scalars =
             match componentWidget.ScalarAttributes with
             | ValueNone -> ValueNone
-            | ValueSome attrs -> ValueSome(Array.skip 2 attrs) // Skip the Component_Body and Component_Context attributes
+            | ValueSome attrs ->
+                ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.Key <> Component.Body.Key && attr.Key <> Component.Context.Key) attrs)
 
         let rootWidget: Widget =
             { Key = rootWidget.Key
@@ -277,7 +308,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let struct (node, view) = widgetDef.CreateView(rootWidget, treeContext, ValueNone)
         _view <- view
 
-        Component.SetAttachedComponent(view, this)
+        Component.setAttachedComponent view this
 
         _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
 
@@ -298,31 +329,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
 
         Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
 
-    interface IDisposable with
-        member this.Dispose() =
-            if _contextSubscription <> null then
-                _contextSubscription.Dispose()
-                _contextSubscription <- null
-
-module Component =
-    /// TODO: This is actually broken. On every call of the parent, the body will be reassigned to the Component triggering a re-render because of the noCompare.
-    /// This is not what was expected. The body should actually be invalidated based on its context.
-    let Body =
-        Attributes.defineSimpleScalar "Component_Body" ScalarAttributeComparers.noCompare (fun _ currOpt node ->
-            let target = Component.GetAttachedComponent(node.Target)
-
-            match currOpt with
-            | ValueNone -> failwith "Component widget must have a body"
-            | ValueSome body -> target.SetBody(body))
-
-    let Context =
-        Attributes.defineSimpleScalar "Component_Context" ScalarAttributeComparers.equalityCompare (fun _ currOpt node ->
-            let target = Component.GetAttachedComponent(node.Target)
-
-            match currOpt with
-            | ValueNone -> target.SetContext(ComponentContext())
-            | ValueSome context -> target.SetContext(context))
-
+module ComponentWidget =
     let WidgetKey =
         let key = WidgetDefinitionStore.getNextKey()
 
@@ -334,17 +341,17 @@ module Component =
               CreateView =
                 fun (widget, treeContext, _) ->
                     match widget.ScalarAttributes with
-                    | ValueNone -> failwith "Component widget must have a body"
+                    | ValueNone -> failwith "Component widget must have a body and a context"
                     | ValueSome attrs ->
                         let body =
-                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Body.Key) attrs with
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Body.Key) attrs with
                             | Some attr -> attr.Value :?> ComponentBody
                             | None -> failwith "Component widget must have a body"
 
                         let context =
-                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Context.Key) attrs with
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Context.Key) attrs with
                             | Some attr -> attr.Value :?> ComponentContext
-                            | None -> failwith "Component widget must have a context"
+                            | None -> ComponentContext()
 
                         let comp = new Component(treeContext, body, context)
                         let struct (node, view) = comp.CreateView(widget)

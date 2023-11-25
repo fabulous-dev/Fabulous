@@ -54,7 +54,7 @@ type BindingExtensions =
         (
             _: ComponentBuilder,
             [<InlineIfLambda>] request: Binding<'T>,
-            [<InlineIfLambda>] continuation: BindingValue<'T> -> ComponentBodyBuilder<'msg, 'marker>
+            [<InlineIfLambda>] continuation: BindingValue<'T> -> ComponentBodyBuilder<'marker>
         ) =
         // Despite its name, ComponentBinding actual value is not stored in this component, but in the source component
         // So, we do not need to increment the number of bindings here

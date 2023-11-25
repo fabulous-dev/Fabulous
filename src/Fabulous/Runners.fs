@@ -3,11 +3,10 @@ namespace Fabulous
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
-open System.Runtime.ExceptionServices
 open Fabulous
 
 /// Configuration of the Fabulous application
-type Program<'arg, 'model, 'msg, 'marker> =
+type Program<'arg, 'model, 'msg> =
     {
         /// Give the initial state for the application
         Init: 'arg -> 'model * Cmd<'msg>
@@ -15,17 +14,22 @@ type Program<'arg, 'model, 'msg, 'marker> =
         Update: 'msg * 'model -> 'model * Cmd<'msg>
         /// Add a subscription that can dispatch messages
         Subscribe: 'model -> Cmd<'msg>
+        /// Configuration for logging all output messages from Fabulous
+        Logger: Logger
+        /// Exception handler for all uncaught exceptions happening in the MVU loop.
+        /// Returns true if the exception was handled, false otherwise.
+        ExceptionHandler: exn -> bool
+    }
+
+type Program<'arg, 'model, 'msg, 'marker> =
+    {
+        Program: Program<'arg, 'model, 'msg>
         /// Render the application state
         View: 'model -> WidgetBuilder<'msg, 'marker>
         /// Indicates if a previous Widget's view can be reused
         CanReuseView: Widget -> Widget -> bool
         /// Runs the View function on the main thread
         SyncAction: (unit -> unit) -> unit
-        /// Configuration for logging all output messages from Fabulous
-        Logger: Logger
-        /// Exception handler for all uncaught exceptions happening in the MVU loop.
-        /// Returns true if the exception was handled, false otherwise.
-        ExceptionHandler: exn -> bool
     }
 
 type IRunner =
@@ -42,8 +46,8 @@ type IViewAdapter =
 module RunnerStore =
     let private _runners = Dictionary<StateKey, IRunner>()
 
-    let get key = _runners.[key]
-    let set key value = _runners.[key] <- value
+    let get key = _runners[key]
+    let set key value = _runners[key] <- value
     let remove key = _runners.Remove(key) |> ignore
 
 module ViewAdapterStore =
@@ -51,8 +55,8 @@ module ViewAdapterStore =
 
     let mutable private _nextKey = 0
 
-    let get key = _viewAdapters.[key]
-    let set key value = _viewAdapters.[key] <- value
+    let get key = _viewAdapters[key]
+    let set key value = _viewAdapters[key] <- value
 
     let remove key =
         match _viewAdapters.TryGetValue(key) with
@@ -72,7 +76,7 @@ module Runners =
 
     // Runner is created for the component itself. No point in reusing a runner for another component
     /// Create a new Runner handling the update loop for the component
-    type Runner<'arg, 'model, 'msg, 'marker>(key: StateKey, program: Program<'arg, 'model, 'msg, 'marker>) =
+    type Runner<'arg, 'model, 'msg>(key: StateKey, getState: StateKey -> 'model, setState: StateKey -> 'model -> unit, program: Program<'arg, 'model, 'msg>) =
         let mutable _reentering = false
         let queue = ConcurrentQueue<'msg>()
 
@@ -86,9 +90,9 @@ module Runners =
                     let mutable lastMsg = ValueSome msg
 
                     while lastMsg.IsSome do
-                        let model = unbox(StateStore.get key)
+                        let model = getState key
                         let newModel, cmd = program.Update(lastMsg.Value, model)
-                        StateStore.set key newModel
+                        setState key newModel
 
                         for sub in cmd do
                             sub dispatch
@@ -108,7 +112,7 @@ module Runners =
         let start arg =
             try
                 let model, cmd = program.Init(arg)
-                StateStore.set key model
+                setState key model
 
                 let subs = program.Subscribe(model)
 
@@ -123,7 +127,6 @@ module Runners =
 
         interface IRunner
 
-        member _.Key = key
         member _.Program = program
 
         /// Start the Runner loop
@@ -133,9 +136,8 @@ module Runners =
         member _.Dispatch(msg) = dispatch msg
 
     /// Create a new Runner for the component
-    let create<'arg, 'model, 'msg, 'marker> (program: Program<'arg, 'model, 'msg, 'marker>) =
-        let key = StateStore.getNextKey()
-        let runner = Runner(key, program)
+    let create<'arg, 'model, 'msg, 'marker> (key: StateKey) (program: Program<'arg, 'model, 'msg>) =
+        let runner = Runner(key, StateStore.get >> unbox<'model>, StateStore.set, program)
         RunnerStore.set key runner
         runner
 
@@ -148,8 +150,9 @@ module ViewAdapters =
     /// Create a new ViewAdapter handling view updates for the component
     type ViewAdapter<'model, 'msg, 'marker>
         (
-            key: ViewAdapterKey,
+            _key: ViewAdapterKey,
             stateKey: StateKey,
+            getState: StateKey -> 'model,
             view: 'model -> WidgetBuilder<'msg, 'marker>,
             canReuseView: Widget -> Widget -> bool,
             syncAction: (unit -> unit) -> unit,
@@ -168,7 +171,7 @@ module ViewAdapters =
 
         /// Instantiates a new view using the current state associated with this ViewAdapter
         member this.CreateView() =
-            let state = unbox(StateStore.get stateKey)
+            let state = getState stateKey
             let widget = (view state).Compile()
             _widget <- widget
 
@@ -186,7 +189,7 @@ module ViewAdapters =
             _root
 
         member _.Attach(root) =
-            let state = unbox(StateStore.get stateKey)
+            let state = getState stateKey
             let widget = (view state).Compile()
             _widget <- widget
 
@@ -233,18 +236,24 @@ module ViewAdapters =
             member x.Attach(root) = x.Attach(root)
 
     /// Create a new ViewAdapter for the component
-    let create<'arg, 'model, 'msg, 'marker> (getViewNode: obj -> IViewNode) (runner: Runner<'arg, 'model, 'msg, 'marker>) =
+    let create<'arg, 'model, 'msg, 'marker>
+        (getViewNode: obj -> IViewNode)
+        (stateKey: StateKey)
+        (program: Program<'arg, 'model, 'msg, 'marker>)
+        (runner: Runner<'arg, 'model, 'msg>)
+        =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
             new ViewAdapter<'model, 'msg, 'marker>(
                 key,
-                runner.Key,
-                runner.Program.View,
-                runner.Program.CanReuseView,
-                runner.Program.SyncAction,
-                runner.Program.Logger,
-                runner.Program.ExceptionHandler,
+                stateKey,
+                StateStore.get >> unbox<'model>,
+                program.View,
+                program.CanReuseView,
+                program.SyncAction,
+                program.Program.Logger,
+                program.Program.ExceptionHandler,
                 runner.Dispatch,
                 getViewNode
             )

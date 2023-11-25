@@ -70,9 +70,9 @@ type StateExtensions =
         (
             _: ComponentBuilder,
             [<InlineIfLambda>] fn: State<'T>,
-            [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'msg, 'marker>
+            [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'marker>
         ) =
-        ComponentBodyBuilder<'msg, 'marker>(fun bindings ctx ->
+        ComponentBodyBuilder<'marker>(fun bindings ctx ->
             let key = int bindings
 
             let value =
