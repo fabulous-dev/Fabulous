@@ -26,10 +26,10 @@ type ComponentContext(initialSize: int) =
     let mutable values = Array.zeroCreate initialSize
 
     let renderNeeded = Event<unit>()
-    
+
     // We assume that most components will have few values, so initialize it with a small array
-    new () = ComponentContext(3)
-    
+    new() = ComponentContext(3)
+
     member this.RenderNeeded = renderNeeded.Publish
     member this.NeedsRender() = renderNeeded.Trigger()
 

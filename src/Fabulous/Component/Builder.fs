@@ -2,8 +2,7 @@ namespace Fabulous
 
 /// Delegate used by the ComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
-type ComponentBodyBuilder<'marker> =
-    delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
+type ComponentBodyBuilder<'marker> = delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
 
 type ComponentBuilder() =
     member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
@@ -30,7 +29,4 @@ type ComponentBuilder() =
                 let struct (_, result) = body.Invoke(0<binding>, ctx)
                 struct (ctx, result.Compile()))
 
-        WidgetBuilder<unit, 'marker>(
-            ComponentWidget.WidgetKey,
-            Component.Body.WithValue(compiledBody)
-        )
+        WidgetBuilder<unit, 'marker>(ComponentWidget.WidgetKey, Component.Body.WithValue(compiledBody))

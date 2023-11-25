@@ -205,13 +205,14 @@ avatar1.Background <- Blue
 
 type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * Widget)
 
-type IBaseComponent = inherit IDisposable
+type IBaseComponent =
+    inherit IDisposable
 
 type IComponent =
     inherit IBaseComponent
     abstract member SetBody: ComponentBody -> unit
     abstract member SetContext: ComponentContext -> unit
-    
+
 module Component =
     // TODO: This is a big code smell. We should not do this but I can't think of a better way to do it right now.
     // The implementation of this method is set by the consuming project: Fabulous.XamarinForms, Fabulous.Maui, Fabulous.Avalonia
@@ -221,10 +222,10 @@ module Component =
     let mutable getAttachedComponent: obj -> IBaseComponent =
         fun _ -> failwith "Please call Component.SetComponentFunctions() before using Component"
 
-    let setComponentFunctions(get: obj -> IBaseComponent, set: obj -> IBaseComponent -> unit) =
+    let setComponentFunctions (get: obj -> IBaseComponent, set: obj -> IBaseComponent -> unit) =
         getAttachedComponent <- get
         setAttachedComponent <- set
-    
+
     /// TODO: This is actually broken. On every call of the parent, the body will be reassigned to the Component triggering a re-render because of the noCompare.
     /// This is not what was expected. The body should actually be invalidated based on its context.
     let Body =
@@ -249,7 +250,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
     let mutable _widget = Unchecked.defaultof<_>
     let mutable _view = null
     let mutable _contextSubscription: IDisposable = null
-    
+
     interface IComponent with
         member this.SetBody(body: ComponentBody) =
             _body <- body
@@ -260,7 +261,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
             _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
             _context <- context
             this.Render()
-            
+
         member this.Dispose() =
             if _contextSubscription <> null then
                 _contextSubscription.Dispose()
@@ -275,7 +276,8 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let scalars =
             match componentWidget.ScalarAttributes with
             | ValueNone -> ValueNone
-            | ValueSome attrs -> ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.Key <> Component.Body.Key && attr.Key <> Component.Context.Key) attrs)
+            | ValueSome attrs ->
+                ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.Key <> Component.Body.Key && attr.Key <> Component.Context.Key) attrs)
 
         let rootWidget: Widget =
             { Key = rootWidget.Key

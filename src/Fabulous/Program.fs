@@ -31,24 +31,19 @@ module Program =
               Subscribe = fun _ -> Cmd.none
               Logger = ProgramHelpers.defaultLogger()
               ExceptionHandler = ProgramHelpers.defaultExceptionHandler }
-            
+
         /// Create a program using an MVU loop
         let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) =
             define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none)
-            
+
         /// Create a program using an MVU loop
-        let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) =
-            define init update
-            
+        let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) = define init update
+
         /// Create a program using an MVU loop. Add support for CmdMsg
-        let statefulWithCmdMsg
-            (init: 'arg -> 'model * 'cmdMsg list)
-            (update: 'msg -> 'model -> 'model * 'cmdMsg list)
-            (mapCmd: 'cmdMsg -> Cmd<'msg>)
-            =
+        let statefulWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
             let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
             define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
-            
+
         /// Subscribe to external source of events.
         /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
         let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg>) =
@@ -56,7 +51,7 @@ module Program =
                 Cmd.batch [ program.Subscribe model; subscribe model ]
 
             { program with Subscribe = sub }
-            
+
         /// Configure how the output messages from Fabulous will be handled
         let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg>) = { program with Logger = logger }
 
@@ -85,7 +80,7 @@ module Program =
             { program with
                 Init = traceInit
                 Update = traceUpdate }
-            
+
         /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
         let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg>) =
             { program with

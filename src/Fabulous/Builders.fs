@@ -218,7 +218,7 @@ type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
 
             res
     end
-    
+
 type SingleChildBuilderStep<'msg, 'marker> = delegate of unit -> WidgetBuilder<'msg, 'marker>
 
 [<Struct>]
@@ -226,39 +226,43 @@ type SingleChildBuilder<'msg, 'marker, 'childMarker> =
     val WidgetKey: WidgetKey
     val Attr: WidgetAttributeDefinition
     val AttributesBundle: AttributesBundle
-    
-    new (widgetKey: WidgetKey, attr: WidgetAttributeDefinition) =
+
+    new(widgetKey: WidgetKey, attr: WidgetAttributeDefinition) =
         { WidgetKey = widgetKey
           Attr = attr
           AttributesBundle = AttributesBundle(StackList.empty(), ValueNone, ValueNone) }
-    
-    new (widgetKey: WidgetKey, attr: WidgetAttributeDefinition, attributesBundle: AttributesBundle) =
+
+    new(widgetKey: WidgetKey, attr: WidgetAttributeDefinition, attributesBundle: AttributesBundle) =
         { WidgetKey = widgetKey
           Attr = attr
           AttributesBundle = attributesBundle }
-    
+
     member inline this.Yield(widget: WidgetBuilder<'msg, 'childMarker>) =
         SingleChildBuilderStep(fun () -> widget)
 
-    member inline this.Combine([<InlineIfLambda>] a: SingleChildBuilderStep<'msg, 'childMarker>, [<InlineIfLambda>] _b: SingleChildBuilderStep<'msg, 'childMarker>) =
+    member inline this.Combine
+        (
+            [<InlineIfLambda>] a: SingleChildBuilderStep<'msg, 'childMarker>,
+            [<InlineIfLambda>] _b: SingleChildBuilderStep<'msg, 'childMarker>
+        ) =
         SingleChildBuilderStep(fun () ->
             // We only want one child, so we ignore the second one
-            a.Invoke()
-        )
-        
+            a.Invoke())
+
     member inline this.Delay([<InlineIfLambda>] fn: unit -> SingleChildBuilderStep<'msg, 'childMarker>) =
         SingleChildBuilderStep(fun () -> fn().Invoke())
-        
+
     member inline this.Run([<InlineIfLambda>] result: SingleChildBuilderStep<'msg, 'childMarker>) =
         let childAttr = this.Attr.WithValue(result.Invoke().Compile())
         let struct (scalars, widgets, widgetCollections) = this.AttributesBundle
+
         WidgetBuilder<'msg, 'marker>(
             this.WidgetKey,
             AttributesBundle(
                 scalars,
                 (match widgets with
-                | ValueNone -> ValueSome [| childAttr |]
-                | ValueSome widgets -> ValueSome(Array.appendOne childAttr widgets)),
+                 | ValueNone -> ValueSome [| childAttr |]
+                 | ValueSome widgets -> ValueSome(Array.appendOne childAttr widgets)),
                 widgetCollections
             )
         )

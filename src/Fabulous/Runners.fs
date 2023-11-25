@@ -126,7 +126,7 @@ module Runners =
                     reraise()
 
         interface IRunner
-        
+
         member _.Program = program
 
         /// Start the Runner loop
@@ -236,7 +236,12 @@ module ViewAdapters =
             member x.Attach(root) = x.Attach(root)
 
     /// Create a new ViewAdapter for the component
-    let create<'arg, 'model, 'msg, 'marker> (getViewNode: obj -> IViewNode) (stateKey: StateKey) (program: Program<'arg, 'model, 'msg, 'marker>) (runner: Runner<'arg, 'model, 'msg>) =
+    let create<'arg, 'model, 'msg, 'marker>
+        (getViewNode: obj -> IViewNode)
+        (stateKey: StateKey)
+        (program: Program<'arg, 'model, 'msg, 'marker>)
+        (runner: Runner<'arg, 'model, 'msg>)
+        =
         let key = ViewAdapterStore.getNextKey()
 
         let viewAdapter =
