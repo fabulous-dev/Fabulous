@@ -2,13 +2,13 @@ namespace Fabulous
 
 open System.Runtime.CompilerServices
 
-type EnvironmentGetter<'T> = delegate of unit -> EnvironmentKey
-type EnvironmentSetter<'T> = delegate of unit -> struct (EnvironmentKey * 'T)
+type EnvironmentGetter<'T> = delegate of unit -> EnvironmentKey<'T>
+type EnvironmentSetter<'T> = delegate of unit -> struct (EnvironmentKey<'T> * 'T)
 
 type Environment =
-    static member inline Get<'T>(key: EnvironmentKey) = EnvironmentGetter<'T>(fun () -> key)
+    static member inline Get<'T>(key: EnvironmentKey<'T>) = EnvironmentGetter<'T>(fun () -> key)
 
-    static member inline Set<'T>(key: EnvironmentKey, value: 'T) =
+    static member inline Set<'T>(key: EnvironmentKey<'T>, value: 'T) =
         EnvironmentSetter<'T>(fun () -> struct (key, value))
 
 [<Extension>]
