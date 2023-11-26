@@ -5,7 +5,7 @@ open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
 [<Sealed>]
-type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
+type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, environmentContext: EnvironmentContext, targetRef: System.WeakReference) =
 
     let mutable _isDisconnected = false
 
@@ -106,6 +106,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
     interface IViewNode with
         member _.Target = targetRef.Target
         member _.TreeContext = treeContext
+        member _.EnvironmentContext = environmentContext
         member val MemoizedWidget: Widget option = None with get, set
         member _.Parent = parent
         member val MapMsg: (obj -> obj) option = None with get, set

@@ -74,7 +74,7 @@ module Memo =
           Name = "Memo"
           TargetType = Unchecked.defaultof<_>
           CreateView =
-            fun (widget, context, parentNode) ->
+            fun (widget, context, env, parentNode) ->
 
                 let memoData = getMemoData widget
 
@@ -83,12 +83,12 @@ module Memo =
                 let memoizedDef = WidgetDefinitionStore.get memoizedWidget.Key
 
                 let struct (node, view) =
-                    memoizedDef.CreateView(memoizedWidget, context, parentNode)
+                    memoizedDef.CreateView(memoizedWidget, context, env, parentNode)
 
                 // store widget that was used to produce this node
                 // to pass it to reconciler later on
                 node.MemoizedWidget <- Some memoizedWidget
                 struct (node, view)
-          AttachView = fun (_widget, _context, _parentNode, _view) -> failwith "Memo widget cannot be attached" }
+          AttachView = fun (_widget, _context, _env, _parentNode, _view) -> failwith "Memo widget cannot be attached" }
 
     WidgetDefinitionStore.set MemoWidgetKey widgetDefinition

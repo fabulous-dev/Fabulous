@@ -183,12 +183,11 @@ module ViewAdapters =
                 { CanReuseView = canReuseView
                   GetViewNode = getViewNode
                   Logger = logger
-                  Dispatch = this.Dispatch
-                  EnvironmentContext = EnvironmentContext() }
+                  Dispatch = this.Dispatch }
 
             let definition = WidgetDefinitionStore.get widget.Key
 
-            let struct (_node, root) = definition.CreateView(widget, treeContext, ValueNone)
+            let struct (_node, root) = definition.CreateView(widget, treeContext, ValueNone, ValueNone)
 
             _root <- root
             _root
@@ -202,12 +201,11 @@ module ViewAdapters =
                 { CanReuseView = canReuseView
                   GetViewNode = getViewNode
                   Logger = logger
-                  Dispatch = this.Dispatch
-                  EnvironmentContext = EnvironmentContext() }
+                  Dispatch = this.Dispatch }
 
             let definition = WidgetDefinitionStore.get widget.Key
 
-            let _node = definition.AttachView(widget, treeContext, ValueNone, root)
+            let _node = definition.AttachView(widget, treeContext, ValueNone, ValueNone, root)
 
             _root <- root
 

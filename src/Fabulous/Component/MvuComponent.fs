@@ -22,7 +22,7 @@ type IMvuComponent =
     inherit IBaseComponent
     abstract member SetData: MvuComponentData -> unit
 
-type MvuComponent(treeContext: ViewTreeContext, context: ComponentContext, data: MvuComponentData) as this =
+type MvuComponent(treeContext: ViewTreeContext, environmentContext: EnvironmentContext, context: ComponentContext, data: MvuComponentData) as this =
     let mutable _body = data.Body
     let mutable _arg = data.Arg
 
@@ -74,7 +74,7 @@ type MvuComponent(treeContext: ViewTreeContext, context: ComponentContext, data:
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get widget.Key
-        let struct (node, view) = widgetDef.CreateView(widget, treeContext, ValueNone)
+        let struct (node, view) = widgetDef.CreateView(widget, treeContext, ValueSome environmentContext, ValueNone)
         _view <- view
 
         _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
@@ -109,7 +109,7 @@ module MvuComponent =
               TargetType = typeof<MvuComponent>
               AttachView = fun _ -> failwith "MvuComponent widget cannot be attached"
               CreateView =
-                (fun (widget, treeContext, _parentNode) ->
+                (fun (widget, treeContext, env, _parentNode) ->
                     let data =
                         match widget.ScalarAttributes with
                         | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
@@ -117,8 +117,13 @@ module MvuComponent =
                             match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Data.Key) attrs with
                             | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
                             | Some attr -> attr.Value :?> MvuComponentData
+                            
+                    let env =
+                        match env with
+                        | ValueNone -> EnvironmentContext()
+                        | ValueSome env -> env
 
-                    let comp = new MvuComponent(treeContext, ComponentContext(1), data)
+                    let comp = new MvuComponent(treeContext, env, ComponentContext(1), data)
                     let struct (node, view) = comp.CreateView()
                     struct (node, view)) }
 

@@ -2,9 +2,30 @@ namespace Fabulous
 
 open System.Collections.Generic
 
-type EnvironmentContext() =
-    let values = Dictionary<string, obj>()
+type EnvironmentKey = EnvironmentKey of string
 
-    member this.GetValue<'T>(key: string) = unbox<'T> values[key]
+[<AllowNullLiteral>]
+type EnvironmentContext(inheritedContext: EnvironmentContext) =
+    let valueChanged = Event<_>()
+    let values = Dictionary<EnvironmentKey, obj>()
+    
+    new () = EnvironmentContext(null)
+    
+    member private this.Values = values
 
-    member this.SetValue<'T>(key: string, value: 'T) = values.[key] <- box value
+    member this.ValueChanged = valueChanged.Publish
+        
+    member this.Get<'T>(key: EnvironmentKey) =
+        if values.ContainsKey(key) then
+            unbox<'T> values[key]
+        elif inheritedContext <> null then
+            inheritedContext.Get<'T>(key)
+        else
+            failwithf $"Key '%A{key}' not found in environment"
+
+    member this.Set<'T>(key: EnvironmentKey, value: 'T) =
+        values[key] <- box value
+        valueChanged.Trigger(key)
+        
+    member this.Remove(key: EnvironmentKey) =
+        values.Remove(key) |> ignore

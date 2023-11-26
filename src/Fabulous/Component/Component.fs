@@ -244,7 +244,7 @@ module Component =
             | ValueNone -> target.SetContext(ComponentContext())
             | ValueSome context -> target.SetContext(context))
 
-type Component(treeContext: ViewTreeContext, context: ComponentContext, body: ComponentBody) =
+type Component(treeContext: ViewTreeContext, environmentContext: EnvironmentContext, context: ComponentContext, body: ComponentBody) =
     let mutable _body = body
     let mutable _context = context
     let mutable _widget = Unchecked.defaultof<_>
@@ -269,7 +269,7 @@ type Component(treeContext: ViewTreeContext, context: ComponentContext, body: Co
 
     member this.CreateView(componentWidget: Widget) =
         let struct (env, context, rootWidget) =
-            _body.Invoke(treeContext.EnvironmentContext, _context)
+            _body.Invoke(environmentContext, _context)
 
         _widget <- rootWidget
         _context <- context
@@ -307,7 +307,7 @@ type Component(treeContext: ViewTreeContext, context: ComponentContext, body: Co
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key
-        let struct (node, view) = widgetDef.CreateView(rootWidget, treeContext, ValueNone)
+        let struct (node, view) = widgetDef.CreateView(rootWidget, treeContext, ValueSome environmentContext, ValueNone)
         _view <- view
 
         Component.setAttachedComponent view this
@@ -321,7 +321,7 @@ type Component(treeContext: ViewTreeContext, context: ComponentContext, body: Co
         let prevContext = _context
 
         let struct (env, context, currRootWidget) =
-            _body.Invoke(treeContext.EnvironmentContext, _context)
+            _body.Invoke(environmentContext, _context)
 
         _widget <- currRootWidget
 
@@ -344,7 +344,7 @@ module ComponentWidget =
               TargetType = typeof<Component>
               AttachView = fun _ -> failwith "Component widget cannot be attached"
               CreateView =
-                fun (widget, treeContext, _) ->
+                fun (widget, treeContext, env, _) ->
                     match widget.ScalarAttributes with
                     | ValueNone -> failwith "Component widget must have a body and a context"
                     | ValueSome attrs ->
@@ -357,8 +357,13 @@ module ComponentWidget =
                             match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Context.Key) attrs with
                             | Some attr -> attr.Value :?> ComponentContext
                             | None -> ComponentContext()
+                            
+                        let env =
+                            match env with
+                            | ValueNone -> EnvironmentContext()
+                            | ValueSome env -> EnvironmentContext(env)
 
-                        let comp = new Component(treeContext, context, body)
+                        let comp = new Component(treeContext, env, context, body)
                         let struct (node, view) = comp.CreateView(widget)
 
                         struct (node, view) }

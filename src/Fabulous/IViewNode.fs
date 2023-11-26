@@ -34,8 +34,7 @@ type ViewTreeContext =
     { CanReuseView: Widget -> Widget -> bool
       GetViewNode: obj -> IViewNode
       Logger: Logger
-      Dispatch: obj -> unit
-      EnvironmentContext: EnvironmentContext }
+      Dispatch: obj -> unit }
 
 and IViewNode =
     /// The view that is being rendered
@@ -43,6 +42,9 @@ and IViewNode =
 
     /// The context of the whole view tree
     abstract member TreeContext: ViewTreeContext
+    
+    /// The environment context
+    abstract member EnvironmentContext: EnvironmentContext
 
     // note that Widget is struct type, thus we have boxing via option
     // we don't have MemoizedWidget set for 99.9% of the cases

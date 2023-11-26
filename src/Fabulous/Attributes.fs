@@ -12,7 +12,7 @@ module Helpers =
     let inline createViewForWidget (parent: IViewNode) (widget: Widget) =
         let widgetDefinition = WidgetDefinitionStore.get widget.Key
 
-        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent)
+        widgetDefinition.CreateView(widget, parent.TreeContext, ValueSome parent.EnvironmentContext, ValueSome parent)
 
 module ScalarAttributeComparers =
     let inline noCompare _ _ = ScalarAttributeComparison.Different
