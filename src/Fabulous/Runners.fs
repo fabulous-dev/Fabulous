@@ -5,9 +5,14 @@ open System.Collections.Concurrent
 open System.Collections.Generic
 open Fabulous
 
+type EnvironmentProgram =
+    { Initialize: EnvironmentContext -> unit
+      Subscribe: EnvironmentContext * obj -> IDisposable }
+
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg> =
     {
+        Environment: EnvironmentProgram
         /// Give the initial state for the application
         Init: 'arg -> 'model * Cmd<'msg>
         /// Update the application state based on a message
@@ -163,13 +168,16 @@ module ViewAdapters =
             logger: Logger,
             exceptionHandler: exn -> bool,
             dispatch: 'msg -> unit,
-            getViewNode: obj -> IViewNode
+            getViewNode: obj -> IViewNode,
+            initializeEnv: EnvironmentContext -> unit,
+            subscribeEnv: EnvironmentContext * obj -> IDisposable
         ) as this =
 
         let mutable _widget: Widget = Unchecked.defaultof<Widget>
         let mutable _root = Unchecked.defaultof<obj>
 
         let _stateSubscription = StateStore.StateChanged.Subscribe(this.OnStateChanged)
+        let mutable _environmentSubscription = null
 
         member private _.Dispatch(msg) = dispatch(unbox msg)
 
@@ -186,8 +194,13 @@ module ViewAdapters =
                   Dispatch = this.Dispatch }
 
             let definition = WidgetDefinitionStore.get widget.Key
+            let env = new EnvironmentContext()
 
-            let struct (_node, root) = definition.CreateView(widget, treeContext, ValueNone, ValueNone)
+            initializeEnv env
+            
+            let struct (_node, root) = definition.CreateView(widget, treeContext, env, ValueNone)
+            
+            _environmentSubscription <- subscribeEnv(env, root)
 
             _root <- root
             _root
@@ -204,8 +217,12 @@ module ViewAdapters =
                   Dispatch = this.Dispatch }
 
             let definition = WidgetDefinitionStore.get widget.Key
+            let env = new EnvironmentContext()
+            
+            initializeEnv env
+            _environmentSubscription <- subscribeEnv(env, root)
 
-            let _node = definition.AttachView(widget, treeContext, ValueNone, ValueNone, root)
+            let _node = definition.AttachView(widget, treeContext, env, ValueNone, root)
 
             _root <- root
 
@@ -232,7 +249,10 @@ module ViewAdapters =
                     reraise()
 
         /// Disposes the ViewAdapter
-        member _.Dispose() = _stateSubscription.Dispose()
+        member _.Dispose() =
+            _stateSubscription.Dispose()
+            if _environmentSubscription <> null then
+                _environmentSubscription.Dispose()
 
         interface IViewAdapter with
             member x.Dispose() = x.Dispose()
@@ -259,7 +279,9 @@ module ViewAdapters =
                 program.Program.Logger,
                 program.Program.ExceptionHandler,
                 runner.Dispatch,
-                getViewNode
+                getViewNode,
+                program.Program.Environment.Initialize,
+                program.Program.Environment.Subscribe
             )
 
         ViewAdapterStore.set key viewAdapter

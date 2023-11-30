@@ -1,58 +1,67 @@
 namespace Fabulous
 
+open System.ComponentModel
 open System.Runtime.CompilerServices
+  
+type Environment<'T> = delegate of unit -> EnvironmentKey<'T>
 
-type EnvironmentGetter<'T> = delegate of unit -> EnvironmentKey<'T>
-type EnvironmentSetter<'T> = delegate of unit -> struct (EnvironmentKey<'T> * 'T)
+[<Struct>]
+type EnvironmentValue<'T> =
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    val public Environment: EnvironmentContext
+    
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    val public Key: EnvironmentKey<'T>
+    
+    new(env, key) = { Environment = env; Key = key }
+    
+    member inline this.Current =
+        this.Environment.Get(this.Key)
+    
+    member inline this.Set(value: 'T) =
+        this.Environment.Set(this.Key, value)
 
-type Environment =
-    static member inline Get<'T>(key: EnvironmentKey<'T>) = EnvironmentGetter<'T>(fun () -> key)
+[<AutoOpen>]
+module EnvironmentHelpers =
+    let inline Environment (key: EnvironmentKey<'T>) = Environment<'T>(fun () -> key)
+        
+type EnvironmentAttrValue =
+    { Key: string
+      Value: obj }
 
-    static member inline Set<'T>(key: EnvironmentKey<'T>, value: 'T) =
-        EnvironmentSetter<'T>(fun () -> struct (key, value))
-
+module EnvironmentAttrs =
+    let Environment = Attributes.defineSimpleScalar "Environment" ScalarAttributeComparers.noCompare (fun prevOpt currOpt node ->
+        match struct(prevOpt, currOpt) with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueNone ->
+            node.EnvironmentContext.RemoveInternal(prev.Key, true)
+            
+        | _, ValueSome curr ->
+            node.EnvironmentContext.SetInternal(curr.Key, curr.Value, true)
+    )
+    
 [<Extension>]
 type EnvironmentExtensions =
     [<Extension>]
-    static member inline Bind
-        (
-            _: ComponentBuilder,
-            [<InlineIfLambda>] fn: EnvironmentGetter<'T>,
-            [<InlineIfLambda>] continuation: 'T -> ComponentBodyBuilder<'marker>
-        ) =
-        ComponentBodyBuilder<'marker>(fun bindings env ctx ->
-            let key = fn.Invoke()
-            let value = env.Get<'T>(key)
-            (continuation value).Invoke(bindings, env, ctx))
+    static member inline Bind(_: ComponentBuilder, [<InlineIfLambda>] value: Environment<'T>, [<InlineIfLambda>] continuation: EnvironmentValue<'T> -> ComponentBodyBuilder<'marker>) =
+        ComponentBodyBuilder(fun bindings env ctx ->
+            let envKey = value.Invoke()
+            
+            // Listen to changes in the environment
+            ctx.AddDisposable(
+                envKey.Key,
+                env.ValueChanged.Subscribe(fun args ->
+                    if args.Key = envKey.Key then
+                        ctx.NeedsRender()
+                )
+            )
+            
+            let state = EnvironmentValue<'T>(env, envKey)
+            (continuation state).Invoke(bindings, env, ctx)
+        )
 
+[<Extension>]
+type EnvironmentModifiers =
     [<Extension>]
-    static member inline Bind
-        (
-            _: ComponentBuilder,
-            [<InlineIfLambda>] fn: EnvironmentSetter<'T>,
-            [<InlineIfLambda>] continuation: unit -> ComponentBodyBuilder<'marker>
-        ) =
-        ComponentBodyBuilder<'marker>(fun bindings env ctx ->
-            let struct (key, value) = fn.Invoke()
-            env.Set<'T>(key, value)
-            (continuation()).Invoke(bindings, env, ctx))
-
-
-
-// type EnvironmentValue(key: string, value: obj) =
-//     member this.Key = key
-//     member this.Value = value
-//
-// module EnvironmentAttributes =
-//     let Environment = Attributes.defineSimpleScalarWithEquality<EnvironmentValue> "Environment" (fun prevOpt currOpt node ->
-//         match struct (prevOpt, currOpt) with
-//         | ValueNone, ValueNone -> ()
-//         | ValueSome prev, ValueNone -> node.EnvironmentContext.Remove(prev.Key)
-//         | _, ValueSome curr -> node.EnvironmentContext.Set(curr.Key, curr.Value)
-//     )
-//     
-// [<Extension>]
-// type EnvironmentModifiers =
-//     [<Extension>]
-//     static member inline environment(this: WidgetBuilder<'msg, 'marker>, key: string, value: obj) =
-//         this.AddScalar(EnvironmentAttributes.Environment.WithValue(EnvironmentValue(key, value)))
+    static member inline environment(this: WidgetBuilder<unit, 'marker>, key: EnvironmentKey<'T>, value: 'T) =
+        this.AddScalar(EnvironmentAttrs.Environment.WithValue({ Key = key.Key; Value = box value }))

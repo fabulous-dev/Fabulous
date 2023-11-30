@@ -1,5 +1,7 @@
 namespace Fabulous
 
+open System
+open System.Collections.Generic
 open System.ComponentModel
 
 (*
@@ -15,20 +17,17 @@ Given each state is assigned to a specific index and that Components will most l
 we can leverage the inlining capabilities of the ComponentBuilder to create an array with the right size.
 *)
 
-/// This measure type is used to count the number of bindings in a component while building the computation expression
-[<Measure>]
-type binding
-
 /// <summary>
 /// Holds the values for the various states of a component.
 /// </summary>
 type ComponentContext(initialSize: int) =
+    let disposables = Dictionary<string, IDisposable>()
     let mutable values = Array.zeroCreate initialSize
 
     let renderNeeded = Event<unit>()
 
     // We assume that most components will have few values, so initialize it with a small array
-    new() = ComponentContext(3)
+    new() = new ComponentContext(3)
 
     member this.RenderNeeded = renderNeeded.Publish
     member this.NeedsRender() = renderNeeded.Trigger()
@@ -59,3 +58,16 @@ type ComponentContext(initialSize: int) =
     member this.SetValue(key: int, value: 'T) =
         values[key] <- box value
         this.NeedsRender()
+        
+    member this.AddDisposable(key: string, value: IDisposable) =
+        if disposables.ContainsKey(key) then
+            disposables[key].Dispose()
+        
+        disposables[key] <- value
+
+    interface IDisposable with
+        member this.Dispose() =
+            values <- Array.empty
+            for kvp in disposables do
+                kvp.Value.Dispose()
+            disposables.Clear()

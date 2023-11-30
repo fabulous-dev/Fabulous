@@ -3,9 +3,6 @@ namespace Fabulous
 open Fabulous.Runners
 open Fabulous.ScalarAttributeDefinitions
 
-type Init<'msg, 'model> = unit -> 'model * Cmd<'msg>
-type Update<'msg, 'model> = 'msg -> 'model -> 'model * Cmd<'msg>
-
 // This MvuComponent is a proxy widget just like Component
 // but its specificity is to override the ViewTreeContext.Dispatch
 // with its own mvu.Dispatch to allow implicit dispatching in its children just like with Fabulous 2 DSL
@@ -22,17 +19,22 @@ type IMvuComponent =
     inherit IBaseComponent
     abstract member SetData: MvuComponentData -> unit
 
-type MvuComponent(treeContext: ViewTreeContext, environmentContext: EnvironmentContext, context: ComponentContext, data: MvuComponentData) as this =
+type MvuComponent(
+    treeContext,
+    envContext,
+    context,
+    data: MvuComponentData
+    ) as this =
+    inherit BaseComponent(treeContext, envContext, context)
+    
     let mutable _body = data.Body
     let mutable _arg = data.Arg
 
     let mutable _runner =
         Runner<obj, obj, obj>(0, this.GetModel, this.SetModel, data.Program)
 
-    let mutable _context = context
     let mutable _widget = Unchecked.defaultof<Widget>
     let mutable _view = null
-    let mutable _contextSubscription = null
 
     interface IMvuComponent with
         member this.SetData(data: MvuComponentData) =
@@ -41,24 +43,19 @@ type MvuComponent(treeContext: ViewTreeContext, environmentContext: EnvironmentC
             _runner.Program <- data.Program
             this.Render()
 
-        member this.Dispose() =
-            if _contextSubscription <> null then
-                _contextSubscription.Dispose()
-                _contextSubscription <- null
-
     member private this.GetModel(key: StateKey) =
-        match _context.TryGetValue(key) with
+        match this.Context.TryGetValue(key) with
         | ValueSome model -> model
         | ValueNone ->
             let initialModel, cmd = _runner.Program.Init _arg
-            _context.SetValueInternal(0, initialModel)
+            this.Context.SetValueInternal(0, initialModel)
 
             for sub in cmd do
                 _runner.Dispatch(sub)
 
             initialModel
 
-    member private this.SetModel (key: StateKey) (model: obj) = _context.SetValue(key, model)
+    member private this.SetModel (key: StateKey) (model: obj) = this.Context.SetValue(key, model)
 
     member this.Dispatch(msg: obj) = _runner.Dispatch(msg)
 
@@ -74,10 +71,10 @@ type MvuComponent(treeContext: ViewTreeContext, environmentContext: EnvironmentC
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get widget.Key
-        let struct (node, view) = widgetDef.CreateView(widget, treeContext, ValueSome environmentContext, ValueNone)
+        let struct (node, view) = widgetDef.CreateView(widget, treeContext, this.EnvironmentContext, ValueNone)
         _view <- view
 
-        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+        this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
 
         struct (node, view)
 
@@ -94,7 +91,7 @@ type MvuComponent(treeContext: ViewTreeContext, environmentContext: EnvironmentC
 module MvuComponent =
     let Data: SimpleScalarAttributeDefinition<MvuComponentData> =
         Attributes.defineSimpleScalar "MvuComponent_Data" ScalarAttributeComparers.noCompare (fun _ currOpt node ->
-            let comp = Component.getAttachedComponent(node.Target) :?> IMvuComponent
+            let comp = BaseComponent.getAttachedComponent(node.Target) :?> IMvuComponent
 
             match currOpt with
             | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
@@ -118,12 +115,9 @@ module MvuComponent =
                             | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
                             | Some attr -> attr.Value :?> MvuComponentData
                             
-                    let env =
-                        match env with
-                        | ValueNone -> EnvironmentContext()
-                        | ValueSome env -> env
+                    let env = new EnvironmentContext(env)
 
-                    let comp = new MvuComponent(treeContext, env, ComponentContext(1), data)
+                    let comp = new MvuComponent(treeContext, env, new ComponentContext(1), data)
                     let struct (node, view) = comp.CreateView()
                     struct (node, view)) }
 
@@ -147,7 +141,8 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
 
     new(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
         let program: Program<obj, obj, obj> =
-            { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
+            { Environment = program.Environment
+              Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
               Update = fun (msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
               Subscribe = fun model -> Cmd.map box (program.Subscribe(unbox model))
               Logger = program.Logger

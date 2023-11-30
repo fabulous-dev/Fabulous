@@ -1,36 +1,88 @@
 namespace Fabulous
 
+open System
 open System.Collections.Generic
-
-type DecodedEnvironmentKey = DecodedEnvironmentKey of string
-type EnvironmentKey<'T> =
-    { Key: string }
     
-type EnvironmentKey =
-    static member inline Create<'T>(key: string) = { Key = key } : EnvironmentKey<'T>
+[<NoComparison; NoEquality>]
+type EnvironmentKey<'T>(key: string, defaultValue: 'T) =
+    member this.Key = key
+    member this.DefaultValue = defaultValue
 
+[<Struct>]
+type EnvironmentValueChanged(originEnvId: Guid, fromUserCode: bool, key: string, value: obj voption) =
+    member this.OriginEnvId = originEnvId
+    member this.FromUserCode = fromUserCode
+    member this.Key = key
+    member this.Value = value
+    
 [<AllowNullLiteral>]
 type EnvironmentContext(inheritedContext: EnvironmentContext) =
-    let values = Dictionary<DecodedEnvironmentKey, obj>()
+    let id = Guid.NewGuid()
+    let values = Dictionary<string, obj>()
+    let valueChanged = Event<EnvironmentValueChanged>()
     
-    new () = EnvironmentContext(null)
+    do printfn $"EnvironmentContext '{id}' created"
     
-    member private this.Values = values
+    let valuePropagationSubscription =
+        if inheritedContext = null then
+            null
+        else
+            printfn $"EnvironmentContext '{id}' inherited from '{inheritedContext.Id}'"
+            inheritedContext.ValueChanged.Subscribe(fun args ->
+                printfn $"Env '{id}': Propagating '{args.Key}' change from '{args.OriginEnvId}'"
+                valueChanged.Trigger(args)
+            )
+    
+    new () = new EnvironmentContext(null)
+    
+    member this.Id = id
+    
+    member private this.TryGetValue<'T>(key: string) =
+        if values.ContainsKey(key) then
+            ValueSome(unbox<'T> values[key])
+        elif inheritedContext <> null then
+            inheritedContext.TryGetValue(key)
+        else
+            ValueNone
+            
+    member private this.TrySetValue<'T>(key: string, value: 'T, fromUserCode: bool) =
+        if values.ContainsKey(key) then
+            printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
+            values[key] <- box value
+            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome (box value)))
+            true
+        elif inheritedContext <> null then
+            inheritedContext.TrySetValue(key, value, fromUserCode)
+        else
+            false
+            
+    member internal this.SetInternal<'T>(key: string, value: 'T, fromUserCode: bool) =
+        if not (this.TrySetValue(key, value, fromUserCode)) then
+            printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
+            let boxedValue = box value
+            values[key] <- boxedValue
+            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
+        
+    member internal this.RemoveInternal(key: string, fromUserCode: bool) =
+        if values.Remove(key) then
+            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueNone))
+    
+    member this.ValueChanged: IEvent<EnvironmentValueChanged> = valueChanged.Publish
         
     member this.Get<'T>(key: EnvironmentKey<'T>) =
-        let actualKey = DecodedEnvironmentKey key.Key
-        
-        if values.ContainsKey(actualKey) then
-            unbox<'T> values[actualKey]
-        elif inheritedContext <> null then
-            inheritedContext.Get(key)
-        else
-            failwithf $"Key '%A{key}' not found in environment"
+        match this.TryGetValue<'T>(key.Key) with
+        | ValueSome value -> value
+        | ValueNone ->
+            let value = unbox<'T> key.DefaultValue
+            this.Set(key, value)
+            value
 
-    member this.Set<'T>(key: EnvironmentKey<'T>, value: 'T) =
-        let actualKey = DecodedEnvironmentKey key.Key
-        values[actualKey] <- box value
+    member this.Set<'T>(key: EnvironmentKey<'T>, value: 'T, ?fromUserCode: bool) =
+        let fromUserCode = defaultArg fromUserCode true
+        this.SetInternal<'T>(key.Key, value, fromUserCode)
         
-    member this.Remove(key: EnvironmentKey<'T>) =
-        let actualKey = DecodedEnvironmentKey key.Key
-        values.Remove(actualKey) |> ignore
+    interface IDisposable with
+        member this.Dispose() =
+            printfn $"EnvironmentContext '{id}' disposed"
+            if valuePropagationSubscription <> null then
+                valuePropagationSubscription.Dispose()
