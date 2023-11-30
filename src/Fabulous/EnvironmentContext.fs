@@ -45,23 +45,11 @@ type EnvironmentContext(inheritedContext: EnvironmentContext) =
         else
             ValueNone
             
-    member private this.TrySetValue<'T>(key: string, value: 'T, fromUserCode: bool) =
-        if values.ContainsKey(key) then
-            printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
-            values[key] <- box value
-            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome (box value)))
-            true
-        elif inheritedContext <> null then
-            inheritedContext.TrySetValue(key, value, fromUserCode)
-        else
-            false
-            
     member internal this.SetInternal<'T>(key: string, value: 'T, fromUserCode: bool) =
-        if not (this.TrySetValue(key, value, fromUserCode)) then
-            printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
-            let boxedValue = box value
-            values[key] <- boxedValue
-            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
+        printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
+        let boxedValue = box value
+        values[key] <- boxedValue
+        valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
         
     member internal this.RemoveInternal(key: string, fromUserCode: bool) =
         if values.Remove(key) then
@@ -79,7 +67,13 @@ type EnvironmentContext(inheritedContext: EnvironmentContext) =
 
     member this.Set<'T>(key: EnvironmentKey<'T>, value: 'T, ?fromUserCode: bool) =
         let fromUserCode = defaultArg fromUserCode true
-        this.SetInternal<'T>(key.Key, value, fromUserCode)
+        if values.ContainsKey(key.Key) || inheritedContext = null then
+            printfn $"EnvironmentContext '{id}' set value '{key.Key}' to '{value}'"
+            let boxedValue = box value
+            values[key.Key] <- boxedValue
+            valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key.Key, ValueSome boxedValue))
+        else
+            inheritedContext.Set<'T>(key, value, fromUserCode)
         
     interface IDisposable with
         member this.Dispose() =
