@@ -305,7 +305,7 @@ module Component =
               Name = "Component"
               TargetType = typeof<Component>
               AttachView =
-                fun (widget, treeContext, _, root) ->
+                fun (widget, treeContext, _parentNode, view) ->
                     match widget.ScalarAttributes with
                     | ValueNone -> failwith "Component widget must have a body and a context"
                     | ValueSome attrs ->
@@ -320,7 +320,7 @@ module Component =
                             | None -> ComponentContext()
 
                         let comp = new Component(treeContext, body, context)
-                        let node = comp.Attach(root)
+                        let node = comp.AttachView(view)
                         node
               CreateView =
                 fun (widget, treeContext, _) ->
