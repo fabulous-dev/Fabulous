@@ -47,6 +47,25 @@ type MvuComponent(treeContext, envContext, context, data: MvuComponentData) as t
 
     member this.Dispatch(msg: obj) = _runner.Dispatch(msg)
 
+    member this.AttachView(view) =
+        let widget = _body.Invoke(this.GetModel(0))
+        _widget <- widget
+
+        // Replace the global dispatch with the one from the MvuComponent
+        // so the child widgets can dispatch implicitly
+        let treeContext =
+            { treeContext with
+                Dispatch = this.Dispatch }
+
+        // Create the actual view
+        let widgetDef = WidgetDefinitionStore.get widget.Key
+        let node = widgetDef.AttachView(widget, treeContext, ValueNone, view)
+        _view <- view
+
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
+        node
+
     member this.CreateView() =
         _runner.Start(_arg)
 
@@ -99,7 +118,19 @@ module MvuComponent =
             { Key = key
               Name = "MvuContext"
               TargetType = typeof<MvuComponent>
-              AttachView = fun _ -> failwith "MvuComponent widget cannot be attached"
+              AttachView =
+                fun (widget, treeContext, _parentNode, view) ->
+                    let data =
+                        match widget.ScalarAttributes with
+                        | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
+                        | ValueSome attrs ->
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Data.Key) attrs with
+                            | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
+                            | Some attr -> attr.Value :?> MvuComponentData
+
+                    let comp = new MvuComponent(treeContext, data, ComponentContext(1))
+                    let node = comp.AttachView(view)
+                    node
               CreateView =
                 (fun (widget, treeContext, env, _parentNode) ->
                     let data =
