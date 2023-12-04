@@ -304,7 +304,24 @@ module Component =
             { Key = key
               Name = "Component"
               TargetType = typeof<Component>
-              AttachView = fun _ -> failwith "Component widget cannot be attached"
+              AttachView =
+                fun (widget, treeContext, _, root) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body and a context"
+                    | ValueSome attrs ->
+                        let body =
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Body.Key) attrs with
+                            | Some attr -> attr.Value :?> ComponentBody
+                            | None -> failwith "Component widget must have a body"
+
+                        let context =
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Context.Key) attrs with
+                            | Some attr -> attr.Value :?> ComponentContext
+                            | None -> ComponentContext()
+
+                        let comp = new Component(treeContext, body, context)
+                        let node = comp.Attach(root)
+                        node
               CreateView =
                 fun (widget, treeContext, _) ->
                     match widget.ScalarAttributes with
