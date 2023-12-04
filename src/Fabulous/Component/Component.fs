@@ -267,6 +267,21 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
                 _contextSubscription.Dispose()
                 _contextSubscription <- null
 
+    member this.Attach(root) =
+        let struct (context, rootWidget) = _body.Invoke(_context)
+        _widget <- rootWidget
+        _context <- context
+
+        let widgetDef = WidgetDefinitionStore.get rootWidget.Key
+        let node = widgetDef.AttachView(rootWidget, treeContext, ValueNone, root)
+        _view <- root
+
+        Component.setAttachedComponent root this
+
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
+        node
+
     member this.CreateView(componentWidget: Widget) =
         let struct (context, rootWidget) = _body.Invoke(_context)
         _widget <- rootWidget
@@ -337,7 +352,24 @@ module ComponentWidget =
             { Key = key
               Name = "Component"
               TargetType = typeof<Component>
-              AttachView = fun _ -> failwith "Component widget cannot be attached"
+              AttachView =
+                fun (widget, treeContext, _, root) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body and a context"
+                    | ValueSome attrs ->
+                        let body =
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Body.Key) attrs with
+                            | Some attr -> attr.Value :?> ComponentBody
+                            | None -> failwith "Component widget must have a body"
+
+                        let context =
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Context.Key) attrs with
+                            | Some attr -> attr.Value :?> ComponentContext
+                            | None -> ComponentContext()
+
+                        let comp = new Component(treeContext, body, context)
+                        let node = comp.Attach(root)
+                        node
               CreateView =
                 fun (widget, treeContext, _) ->
                     match widget.ScalarAttributes with
