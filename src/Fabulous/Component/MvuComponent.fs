@@ -19,14 +19,9 @@ type IMvuComponent =
     inherit IBaseComponent
     abstract member SetData: MvuComponentData -> unit
 
-type MvuComponent(
-    treeContext,
-    envContext,
-    context,
-    data: MvuComponentData
-    ) as this =
+type MvuComponent(treeContext, envContext, context, data: MvuComponentData) as this =
     inherit BaseComponent(treeContext, envContext, context)
-    
+
     let mutable _body = data.Body
     let mutable _arg = data.Arg
 
@@ -46,20 +41,15 @@ type MvuComponent(
     member private this.GetModel(key: StateKey) =
         match this.Context.TryGetValue(key) with
         | ValueSome model -> model
-        | ValueNone ->
-            let initialModel, cmd = _runner.Program.Init _arg
-            this.Context.SetValueInternal(0, initialModel)
-
-            for sub in cmd do
-                _runner.Dispatch(sub)
-
-            initialModel
+        | ValueNone -> failwith "Model not found"
 
     member private this.SetModel (key: StateKey) (model: obj) = this.Context.SetValue(key, model)
 
     member this.Dispatch(msg: obj) = _runner.Dispatch(msg)
 
     member this.CreateView() =
+        _runner.Start(_arg)
+
         let widget = _body.Invoke(this.GetModel(0))
         _widget <- widget
 
@@ -71,8 +61,13 @@ type MvuComponent(
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get widget.Key
-        let struct (node, view) = widgetDef.CreateView(widget, treeContext, this.EnvironmentContext, ValueNone)
+
+        let struct (node, view) =
+            widgetDef.CreateView(widget, treeContext, this.EnvironmentContext, ValueNone)
+
         _view <- view
+
+        BaseComponent.setAttachedComponent view this
 
         this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
 
@@ -114,7 +109,7 @@ module MvuComponent =
                             match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Data.Key) attrs with
                             | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
                             | Some attr -> attr.Value :?> MvuComponentData
-                            
+
                     let env = new EnvironmentContext(env)
 
                     let comp = new MvuComponent(treeContext, env, new ComponentContext(1), data)
@@ -135,11 +130,11 @@ type Mvu =
 /// It is almost identical to SingleChildBuilder, except the resulting WidgetBuilder will have a 'msg type of unit
 /// because the MvuContext widget will handle its own dispatching internally
 [<Struct>]
-type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
+type MvuComponentBuilder<'msg, 'marker, 'cArg, 'cMsg, 'cModel> =
     val public Program: Program<obj, obj, obj>
     val public Arg: obj
 
-    new(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
+    new(program: Program<'cArg, 'cModel, 'cMsg>, arg: 'cArg) =
         let program: Program<obj, obj, obj> =
             { Environment = program.Environment
               Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
@@ -150,31 +145,31 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
 
         { Program = program; Arg = arg }
 
-    member inline this.Bind(_value: MvuStateRequest, [<InlineIfLambda>] continuation: 'model -> MvuComponentBodyStep<'msg, 'model, 'marker>) =
+    member inline this.Bind(_value: MvuStateRequest, [<InlineIfLambda>] continuation: 'cModel -> MvuComponentBodyStep<'cMsg, 'cModel, 'cMarker>) =
         MvuComponentBodyStep(fun model -> (continuation model).Invoke(model))
 
-    member inline this.Yield(widget: WidgetBuilder<'msg, 'marker>) =
+    member inline this.Yield(widget: WidgetBuilder<'cMsg, 'marker>) =
         MvuComponentBodyStep(fun model -> widget)
 
     member inline this.Combine
         (
-            [<InlineIfLambda>] a: MvuComponentBodyStep<'msg, 'model, 'marker>,
-            [<InlineIfLambda>] _b: MvuComponentBodyStep<'msg, 'model, 'marker>
+            [<InlineIfLambda>] a: MvuComponentBodyStep<'cMsg, 'cModel, 'marker>,
+            [<InlineIfLambda>] _b: MvuComponentBodyStep<'cMsg, 'cModel, 'marker>
         ) =
         MvuComponentBodyStep(fun model ->
             // We only want one child, so we ignore the second one
             a.Invoke(model))
 
-    member inline this.Delay([<InlineIfLambda>] fn: unit -> MvuComponentBodyStep<'msg, 'model, 'marker>) =
+    member inline this.Delay([<InlineIfLambda>] fn: unit -> MvuComponentBodyStep<'cMsg, 'cModel, 'marker>) =
         MvuComponentBodyStep(fun model -> fn().Invoke(model))
 
-    member this.Run(result: MvuComponentBodyStep<'msg, 'model, 'marker>) =
+    member this.Run(result: MvuComponentBodyStep<'cMsg, 'cModel, 'marker>) =
         let body =
-            MvuComponentBody(fun model -> result.Invoke(unbox<'model> model).Compile())
+            MvuComponentBody(fun model -> result.Invoke(unbox<'cModel> model).Compile())
 
         let data =
             { Program = this.Program
               Arg = this.Arg
               Body = body }
 
-        WidgetBuilder<unit, 'marker>(MvuComponent.WidgetKey, MvuComponent.Data.WithValue(data))
+        WidgetBuilder<'msg, 'marker>(MvuComponent.WidgetKey, MvuComponent.Data.WithValue(data))

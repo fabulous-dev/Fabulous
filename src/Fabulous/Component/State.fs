@@ -68,7 +68,7 @@ type StateExtensions =
     [<Extension>]
     static member inline Bind
         (
-            _: ComponentBuilder,
+            _: ComponentBuilder<'msg, 'marker>,
             [<InlineIfLambda>] fn: State<'T>,
             [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'marker>
         ) =
@@ -85,7 +85,3 @@ type StateExtensions =
 
             let state = StateValue(ctx, key, value)
             (continuation state).Invoke((bindings + 1<binding>), env, ctx))
-
-[<AutoOpen>]
-module StateHelpers =
-    let inline State<'T> (value: 'T) = State<'T>(fun () -> value)

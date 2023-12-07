@@ -223,28 +223,23 @@ module Component =
             | ValueNone -> failwith "Component widget must have data"
             | ValueSome data -> target.SetData(data))
 
-type Component(
-    treeContext,
-    envContext,
-    context,
-    body: ComponentBody
-    ) =
+type Component(treeContext, envContext, context, body: ComponentBody) =
     inherit BaseComponent(treeContext, envContext, context)
-    
+
     let mutable _body = body
     let mutable _widget = Unchecked.defaultof<_>
     let mutable _view = null
-        
+
     interface IComponent with
         member this.SetData(data: ComponentData) =
             _body <- data.Body
-            
+
             let prevContext = this.Context
             (prevContext :> IDisposable).Dispose()
-            
+
             this.Context <- context
             this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
-            
+
             this.Render()
 
     member this.CreateView(componentWidget: Widget) =
@@ -255,8 +250,7 @@ type Component(
         let scalars =
             match componentWidget.ScalarAttributes with
             | ValueNone -> ValueNone
-            | ValueSome attrs ->
-                ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.Key <> Component.Data.Key) attrs)
+            | ValueSome attrs -> ValueSome(Array.filter (fun (attr: ScalarAttribute) -> attr.Key <> Component.Data.Key) attrs)
 
         let widget: Widget =
             { Key = widget.Key
@@ -284,11 +278,14 @@ type Component(
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get widget.Key
-        let struct (node, view) = widgetDef.CreateView(widget, treeContext, this.EnvironmentContext, ValueNone)
+
+        let struct (node, view) =
+            widgetDef.CreateView(widget, treeContext, this.EnvironmentContext, ValueNone)
+
         _view <- view
 
         BaseComponent.setAttachedComponent view this
-        
+
         this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
 
         struct (node, view)
@@ -325,7 +322,7 @@ module ComponentWidget =
                             match data.Context with
                             | Some ctx -> ctx
                             | None -> new ComponentContext()
-                            
+
                         let env = new EnvironmentContext(env)
 
                         let comp = new Component(treeContext, env, context, data.Body)
@@ -347,8 +344,8 @@ type ComponentBodyBuilder<'marker> =
     delegate of
         bindings: int<binding> * environmentContext: EnvironmentContext * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
 
-type ComponentBuilder() =
-    
+type ComponentBuilder<'msg, 'marker>() =
+
     member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
         ComponentBodyBuilder<'marker>(fun bindings env ctx -> struct (bindings, widgetBuilder))
 
@@ -372,9 +369,7 @@ type ComponentBuilder() =
             ComponentBody(fun env ctx ->
                 let struct (_, result) = body.Invoke(0<binding>, env, ctx)
                 result.Compile())
-            
-        let data =
-            { Body = compiledBody
-              Context = None }
 
-        WidgetBuilder<unit, 'marker>(ComponentWidget.WidgetKey, Component.Data.WithValue(data))
+        let data = { Body = compiledBody; Context = None }
+
+        WidgetBuilder<'msg, 'marker>(ComponentWidget.WidgetKey, Component.Data.WithValue(data))

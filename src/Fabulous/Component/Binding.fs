@@ -52,7 +52,7 @@ type BindingExtensions =
     [<Extension>]
     static member inline Bind
         (
-            _: ComponentBuilder,
+            _: ComponentBuilder<'msg, 'marker>,
             [<InlineIfLambda>] request: Binding<'T>,
             [<InlineIfLambda>] continuation: BindingValue<'T> -> ComponentBodyBuilder<'marker>
         ) =

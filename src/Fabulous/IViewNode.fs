@@ -42,7 +42,7 @@ and IViewNode =
 
     /// The context of the whole view tree
     abstract member TreeContext: ViewTreeContext
-    
+
     /// The environment context
     abstract member EnvironmentContext: EnvironmentContext
 

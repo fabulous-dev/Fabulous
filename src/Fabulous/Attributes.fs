@@ -309,10 +309,7 @@ module Attributes =
         { Key = key; Name = name }
 
     /// Define an attribute for EventHandler<'T>
-    let inline defineEvent<'args>
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<'args -> MsgValue> =
+    let defineEvent<'args> name (getEvent: obj -> IEvent<EventHandler<'args>, 'args>) : SimpleScalarAttributeDefinition<'args -> MsgValue> =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
@@ -339,10 +336,7 @@ module Attributes =
 
         { Key = key; Name = name }
 
-    let inline defineEventNoArgNoDispatch
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
-        : SimpleScalarAttributeDefinition<unit -> unit> =
+    let defineEventNoArgNoDispatch name (getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<unit -> unit> =
         let key =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,

@@ -197,9 +197,10 @@ module ViewAdapters =
             let env = new EnvironmentContext()
 
             initializeEnv env
-            
-            let struct (_node, root) = definition.CreateView(widget, treeContext, env, ValueNone)
-            
+
+            let struct (_node, root) =
+                definition.CreateView(widget, treeContext, env, ValueNone)
+
             _environmentSubscription <- subscribeEnv(env, root)
 
             _root <- root
@@ -218,7 +219,7 @@ module ViewAdapters =
 
             let definition = WidgetDefinitionStore.get widget.Key
             let env = new EnvironmentContext()
-            
+
             initializeEnv env
             _environmentSubscription <- subscribeEnv(env, root)
 
@@ -251,6 +252,7 @@ module ViewAdapters =
         /// Disposes the ViewAdapter
         member _.Dispose() =
             _stateSubscription.Dispose()
+
             if _environmentSubscription <> null then
                 _environmentSubscription.Dispose()
 

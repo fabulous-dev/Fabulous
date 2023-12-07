@@ -58,16 +58,18 @@ type ComponentContext(initialSize: int) =
     member this.SetValue(key: int, value: 'T) =
         values[key] <- box value
         this.NeedsRender()
-        
+
     member this.AddDisposable(key: string, value: IDisposable) =
         if disposables.ContainsKey(key) then
             disposables[key].Dispose()
-        
+
         disposables[key] <- value
 
     interface IDisposable with
         member this.Dispose() =
             values <- Array.empty
+
             for kvp in disposables do
                 kvp.Value.Dispose()
+
             disposables.Clear()
