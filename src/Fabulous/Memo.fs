@@ -90,14 +90,14 @@ module Memo =
                 node.MemoizedWidget <- Some memoizedWidget
                 struct (node, view)
           AttachView =
-            fun (widget, context, parentNode, view) ->
+            fun (widget, context, env, parentNode, view) ->
                 let memoData = getMemoData widget
 
                 let memoizedWidget = memoData.CreateWidget memoData.KeyData
 
                 let memoizedDef = WidgetDefinitionStore.get memoizedWidget.Key
 
-                let node = memoizedDef.AttachView(memoizedWidget, context, parentNode, view)
+                let node = memoizedDef.AttachView(memoizedWidget, context, env, parentNode, view)
 
                 // store widget that was used to produce this node
                 // to pass it to reconciler later on

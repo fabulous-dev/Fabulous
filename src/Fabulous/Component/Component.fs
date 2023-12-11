@@ -243,17 +243,16 @@ type Component(treeContext, envContext, context, body: ComponentBody) =
             this.Render()
 
     member this.AttachView(view) =
-        let struct (context, rootWidget) = _body.Invoke(_context)
-        _widget <- rootWidget
-        _context <- context
+        let widget = _body.Invoke(this.EnvironmentContext, this.Context)
+        _widget <- _widget
 
-        let widgetDef = WidgetDefinitionStore.get rootWidget.Key
-        let node = widgetDef.AttachView(rootWidget, treeContext, ValueNone, view)
+        let widgetDef = WidgetDefinitionStore.get widget.Key
+        let node = widgetDef.AttachView(widget, treeContext, this.EnvironmentContext, ValueNone, view)
         _view <- view
 
-        Component.setAttachedComponent view this
+        BaseComponent.setAttachedComponent view this
 
-        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+        this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
 
         node
 
@@ -323,21 +322,23 @@ module ComponentWidget =
               Name = "Component"
               TargetType = typeof<Component>
               AttachView =
-                fun (widget, treeContext, _parentNode, view) ->
+                fun (widget, treeContext, env, _parentNode, view) ->
                     match widget.ScalarAttributes with
                     | ValueNone -> failwith "Component widget must have a body and a context"
                     | ValueSome attrs ->
-                        let body =
-                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Body.Key) attrs with
-                            | Some attr -> attr.Value :?> ComponentBody
-                            | None -> failwith "Component widget must have a body"
+                        let data =
+                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Data.Key) attrs with
+                            | Some attr -> attr.Value :?> ComponentData
+                            | None -> failwith "Component widget must have data"
 
                         let context =
-                            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = Component.Context.Key) attrs with
-                            | Some attr -> attr.Value :?> ComponentContext
-                            | None -> ComponentContext()
+                            match data.Context with
+                            | Some ctx -> ctx
+                            | None -> new ComponentContext()
 
-                        let comp = new Component(treeContext, body, context)
+                        let env = new EnvironmentContext(env)
+
+                        let comp = new Component(treeContext, env, context, data.Body)
                         let node = comp.AttachView(view)
                         node
               CreateView =

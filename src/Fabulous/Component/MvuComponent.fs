@@ -59,10 +59,12 @@ type MvuComponent(treeContext, envContext, context, data: MvuComponentData) as t
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get widget.Key
-        let node = widgetDef.AttachView(widget, treeContext, ValueNone, view)
+        let node = widgetDef.AttachView(widget, treeContext, this.EnvironmentContext, ValueNone, view)
         _view <- view
+        
+        BaseComponent.setAttachedComponent view this
 
-        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+        this.Context.AddDisposable("context", this.Context.RenderNeeded.Subscribe(this.Render))
 
         node
 
@@ -119,7 +121,7 @@ module MvuComponent =
               Name = "MvuContext"
               TargetType = typeof<MvuComponent>
               AttachView =
-                fun (widget, treeContext, _parentNode, view) ->
+                fun (widget, treeContext, env, _parentNode, view) ->
                     let data =
                         match widget.ScalarAttributes with
                         | ValueNone -> failwith "MvuComponent widget must have an associated MvuComponentData"
@@ -128,7 +130,7 @@ module MvuComponent =
                             | None -> failwith "MvuComponent widget must have an associated MvuComponentData"
                             | Some attr -> attr.Value :?> MvuComponentData
 
-                    let comp = new MvuComponent(treeContext, data, ComponentContext(1))
+                    let comp = new MvuComponent(treeContext, env, new ComponentContext(1), data)
                     let node = comp.AttachView(view)
                     node
               CreateView =
