@@ -48,6 +48,7 @@ type MvuComponent(treeContext, envContext, context, data: MvuComponentData) as t
     member this.Dispatch(msg: obj) = _runner.Dispatch(msg)
 
     member this.AttachView(view) =
+        _runner.Start(_arg)
         let widget = _body.Invoke(this.GetModel(0))
         _widget <- widget
 
