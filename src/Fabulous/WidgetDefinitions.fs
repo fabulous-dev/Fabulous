@@ -17,8 +17,8 @@ module WidgetDefinitionStore =
 
     let mutable private _nextKey = 0
 
-    let get key = _widgets.[key]
-    let set key value = _widgets.[key] <- value
+    let get key = _widgets[key]
+    let set key value = _widgets[key] <- value
 
     let getNextKey () : WidgetKey =
         _widgets.Add(Unchecked.defaultof<WidgetDefinition>)

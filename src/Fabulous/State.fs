@@ -11,13 +11,13 @@ module StateStore =
 
     let StateChanged = _stateChangedEvent.Publish
 
-    let get key = _states.[key]
+    let get key = _states[key]
 
     let set key newState =
         match _states.TryGetValue(key) with
         | true, prevState when prevState = newState -> ()
         | _ ->
-            _states.[key] <- newState
+            _states[key] <- newState
             _stateChangedEvent.Trigger({ Key = key; NewState = newState })
 
     let remove key = _states.Remove(key) |> ignore
