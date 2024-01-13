@@ -42,7 +42,7 @@ module ArraySlice =
         // noop if we don't have enough space
         if (used + by <= arr.Length) then
             for i = used + by - 1 downto int by do
-                arr.[i] <- arr.[i - by]
+                arr[i] <- arr[i - by]
 
         arr
 
@@ -50,7 +50,7 @@ module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
         let res = Array.zeroCreate(arr.Length + 1)
         Array.blit arr 0 res 0 arr.Length
-        res.[arr.Length] <- v
+        res[arr.Length] <- v
         res
 
     /// This is insertion sort that is O(n*n) but it performs better
@@ -63,13 +63,13 @@ module Array =
 
         for i in [ 1 .. N - 1 ] do
             for j = i downto 1 do
-                let key = getKey attrs.[j]
-                let prevKey = getKey attrs.[j - 1]
+                let key = getKey attrs[j]
+                let prevKey = getKey attrs[j - 1]
 
                 if key < prevKey then
-                    let temp = attrs.[j]
-                    attrs.[j] <- attrs.[j - 1]
-                    attrs.[j - 1] <- temp
+                    let temp = attrs[j]
+                    attrs[j] <- attrs[j - 1]
+                    attrs[j - 1] <- temp
 
         attrs
 
@@ -127,18 +127,18 @@ module StackAllocatedCollections =
                         let used =
                             match data.size % 3us with
                             | 0us -> // copy 3 items
-                                arr.[size - 1] <- v2
-                                arr.[size - 2] <- v1
-                                arr.[size - 3] <- v0
+                                arr[size - 1] <- v2
+                                arr[size - 2] <- v1
+                                arr[size - 3] <- v0
                                 3
                             | 1us ->
                                 // copy 1 item
-                                arr.[size - 1] <- v0
+                                arr[size - 1] <- v0
                                 1
                             | 2us ->
                                 // copy 2 item
-                                arr.[size - 1] <- v1
-                                arr.[size - 2] <- v0
+                                arr[size - 1] <- v1
+                                arr[size - 2] <- v0
                                 2
                             | _ -> 0
 
@@ -149,9 +149,9 @@ module StackAllocatedCollections =
                             match leftToCopy with
                             | Empty -> i <- -1
                             | Filled((v0, v1, v2), before) ->
-                                arr.[i] <- v2
-                                arr.[i - 1] <- v1
-                                arr.[i - 2] <- v0
+                                arr[i] <- v2
+                                arr[i - 1] <- v1
+                                arr[i - 2] <- v0
                                 i <- i - 3
                                 leftToCopy <- before
 
@@ -305,7 +305,7 @@ module StackAllocatedCollections =
                     | 1 -> v1
                     | _ -> v2
 
-            | Many arr -> arr.[index]
+            | Many arr -> arr[index]
 
 
         let find (test: 'v -> bool) (arr: StackArray3<'v> inref) : 'v =
@@ -417,7 +417,7 @@ module StackAllocatedCollections =
             | Many struct (count, mutArr) ->
                 if mutArr.Length > (int count) then
                     // we can fit it in
-                    mutArr.[int count] <- value
+                    mutArr[int count] <- value
                     Many(count + 1us, mutArr)
                 else
                     // in this branch we reached the capacity of the array, thus needs to grow
@@ -430,7 +430,7 @@ module StackAllocatedCollections =
                         Array.zeroCreate(grow mutArr.Length)
 
                     Array.blit mutArr 0 res 0 mutArr.Length
-                    res.[countInt] <- value
+                    res[countInt] <- value
                     Many(count + 1us, res)
 
         let inline toArray (arr: T<'v> inref) : 'v array =
@@ -442,7 +442,7 @@ module StackAllocatedCollections =
         let inline fromArray (arr: 'v array) : T<'v> =
             match arr.Length with
             | 0 -> Empty
-            | 1 -> One arr.[0]
+            | 1 -> One arr[0]
             | size -> Many(uint16 size, arr)
 
         let inline toArraySlice (arr: T<'v> inref) : ArraySlice<'v> voption =
@@ -470,7 +470,7 @@ module StackAllocatedCollections =
                     if arr.Length >= (int used) + 1 then
                         // it means that arr can fit one more element
                         let arr = ArraySlice.shiftByMut &sliceB 1us
-                        arr.[0] <- av
+                        arr[0] <- av
                         Many(used + 1us, arr)
                     else
                         // we need to allocate a new one more
@@ -478,7 +478,7 @@ module StackAllocatedCollections =
                         let newArr = Array.zeroCreate(grow arr.Length)
 
                         Array.blit arr 0 newArr 1 (int used)
-                        newArr.[0] <- av
+                        newArr[0] <- av
                         Many(used + 1us, newArr)
 
                 | Many sliceA ->
@@ -633,7 +633,7 @@ module StackAllocatedCollections =
             let encodedValue = ((uint16 op <<< 14) &&& opMask)
             let encodedValue = encodedValue ||| (index &&& valueMask)
 
-            builder.ops.[builder.cursor] <- encodedValue
+            builder.ops[builder.cursor] <- encodedValue
             builder.cursor <- builder.cursor + 1
 
 
@@ -655,6 +655,6 @@ module StackAllocatedCollections =
             let res = Array.zeroCreate<'t> len
 
             for i = 0 to len - 1 do
-                res.[i] <- map(decode builder.ops.[i])
+                res[i] <- map(decode builder.ops[i])
 
             res

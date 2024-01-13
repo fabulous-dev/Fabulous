@@ -92,7 +92,7 @@ type WidgetBuilder<'msg, 'marker> =
                 | ValueSome attribs ->
                     let attribs2 = Array.zeroCreate(attribs.Length + 1)
                     Array.blit attribs 0 attribs2 0 attribs.Length
-                    attribs2.[attribs.Length] <- attr
+                    attribs2[attribs.Length] <- attr
                     attribs2
 
             WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, ValueSome res, widgetCollectionAttributes))
@@ -110,7 +110,7 @@ type WidgetBuilder<'msg, 'marker> =
                 | ValueSome attribs ->
                     let attribs2 = Array.zeroCreate(attribs.Length + 1)
                     Array.blit attribs 0 attribs2 0 attribs.Length
-                    attribs2.[attribs.Length] <- attr
+                    attribs2[attribs.Length] <- attr
                     attribs2
 
             WidgetBuilder<'msg, 'marker>(x.Key, struct (scalarAttributes, widgetAttributes, ValueSome res))

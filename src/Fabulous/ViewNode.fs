@@ -119,7 +119,7 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
         member _.SetHandler<'T>(key: string, handlerOpt: 'T voption) =
             match handlerOpt with
             | ValueNone -> _handlers.Remove(key) |> ignore
-            | ValueSome v -> _handlers.[key] <- box v
+            | ValueSome v -> _handlers[key] <- box v
 
         member _.Disconnect() = _isDisconnected <- true
 
