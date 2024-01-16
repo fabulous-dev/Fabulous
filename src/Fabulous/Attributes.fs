@@ -1,4 +1,4 @@
-﻿namespace Fabulous
+namespace Fabulous
 
 open System
 open System.Runtime.CompilerServices
@@ -213,7 +213,7 @@ module Attributes =
             for diff in diffs do
                 match diff with
                 | WidgetCollectionItemChange.Remove(index, widget) ->
-                    let itemNode = node.TreeContext.GetViewNode(box targetColl.[index])
+                    let itemNode = node.TreeContext.GetViewNode(box targetColl[index])
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
@@ -236,12 +236,12 @@ module Attributes =
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Mounted
 
                 | WidgetCollectionItemChange.Update(index, widgetDiff) ->
-                    let childNode = node.TreeContext.GetViewNode(box targetColl.[index])
+                    let childNode = node.TreeContext.GetViewNode(box targetColl[index])
 
                     childNode.ApplyDiff(&widgetDiff)
 
                 | WidgetCollectionItemChange.Replace(index, oldWidget, newWidget) ->
-                    let prevItemNode = node.TreeContext.GetViewNode(box targetColl.[index])
+                    let prevItemNode = node.TreeContext.GetViewNode(box targetColl[index])
 
                     let struct (nextItemNode, view) = Helpers.createViewForWidget node newWidget
 
@@ -250,7 +250,7 @@ module Attributes =
                     prevItemNode.Disconnect()
 
                     // Replace the existing child in the UI tree at the index with the new one
-                    targetColl.[index] <- unbox view
+                    targetColl[index] <- unbox view
 
                     // Trigger the mounted event for the new child
                     Dispatcher.dispatchEventForAllChildren nextItemNode newWidget Lifecycle.Mounted

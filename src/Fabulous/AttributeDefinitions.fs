@@ -191,15 +191,15 @@ module AttributeDefinitionStore =
 
     let getScalar (key: ScalarAttributeKey) : ScalarAttributeData =
         let index = ScalarAttributeKey.getKeyValue key
-        _scalars.[index]
+        _scalars[index]
 
     let getSmallScalar (key: ScalarAttributeKey) : SmallScalarAttributeData =
         let index = ScalarAttributeKey.getKeyValue key
-        _smallScalars.[index]
+        _smallScalars[index]
 
-    let getWidget (key: WidgetAttributeKey) : WidgetAttributeData = _widgets.[int key]
+    let getWidget (key: WidgetAttributeKey) : WidgetAttributeData = _widgets[int key]
 
-    let getWidgetCollection (key: WidgetCollectionAttributeKey) : WidgetCollectionAttributeData = _widgetCollections.[int key]
+    let getWidgetCollection (key: WidgetCollectionAttributeKey) : WidgetCollectionAttributeData = _widgetCollections[int key]
 
 module AttributeHelpers =
     open ScalarAttributeDefinitions

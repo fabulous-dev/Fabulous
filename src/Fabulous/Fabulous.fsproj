@@ -32,21 +32,20 @@
     <Compile Include="Builders.fs" />
     <Compile Include="Reconciler.fs" />
     <Compile Include="ViewNode.fs" />
-    <Compile Include="State.fs" />
     <Compile Include="Cmd.fs" />
-    <Compile Include="Runners.fs" />
+    <Compile Include="Program.fs" />
+    <Compile Include="Runner.fs" />
     <Compile Include="MapMsg.fs" />
-    <Compile Include="Lifecycle.fs" />
     <Compile Include="Dispatch.fs" />
+    <Compile Include="Lifecycle.fs" />
     <Compile Include="Attributes.fs" />
+    <Compile Include="ComponentContext.fs" />
+    <Compile Include="Component.fs" />
+    <Compile Include="State.fs" />
+    <Compile Include="MvuComponent.fs" />
     <Compile Include="Memo.fs" />
     <Compile Include="View.fs" />
     <Compile Include="ViewRef.fs" />
-    <Compile Include="Component\Context.fs" />
-    <Compile Include="Component\Component.fs" />
-    <Compile Include="Component\Builder.fs" />
-    <Compile Include="Component\State.fs" />
-    <Compile Include="Component\Binding.fs" />
   </ItemGroup>
   <ItemGroup>
     <!--

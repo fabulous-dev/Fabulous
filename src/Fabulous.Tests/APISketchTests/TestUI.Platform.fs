@@ -47,7 +47,7 @@ module Platform =
         interface IText with
             member x.Text
                 with get () = text
-                and set (value) =
+                and set value =
                     if x.record then
                         x.changeList <- List.append x.changeList [ TextSet value ]
 
@@ -55,7 +55,7 @@ module Platform =
 
             member x.TextColor
                 with get () = textColor
-                and set (value) =
+                and set value =
                     if x.record then
                         x.changeList <- List.append x.changeList [ ColorSet value ]
 

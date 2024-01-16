@@ -50,10 +50,10 @@ module private SkipRepeatingScalars =
             pos
         else
             // that means that there is at least one more element ahead
-            let key = scalars.[pos].Key
+            let key = scalars[pos].Key
             let mutable resultingIndex = pos
 
-            while (length - 1 > resultingIndex) && (scalars.[resultingIndex + 1].Key = key) do
+            while (length - 1 > resultingIndex) && (scalars[resultingIndex + 1].Key = key) do
                 resultingIndex <- resultingIndex + 1
 
             resultingIndex
@@ -172,7 +172,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
             let i = e.prevIndex
 
             if i < attributes.Length then
-                let attribute = attributes.[i]
+                let attribute = attributes[i]
 
                 e.current <-
                     match added with
@@ -199,20 +199,20 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                 if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
-                        e.current <- ScalarChange.Added next.[nextIndex]
+                        e.current <- ScalarChange.Added next[nextIndex]
                         res <- ValueSome true
                         nextIndex <- nextIndex + 1
 
                     elif nextIndex = nextLength then
                         // that means that we are done with new items and only need prev's tail to removed
-                        e.current <- ScalarChange.Removed prev.[prevIndex]
+                        e.current <- ScalarChange.Removed prev[prevIndex]
                         res <- ValueSome true
                         prevIndex <- prevIndex + 1
 
                     else
                         // we haven't reached either of the ends
-                        let prevAttr = prev.[prevIndex]
-                        let nextAttr = next.[nextIndex]
+                        let prevAttr = prev[prevIndex]
+                        let nextAttr = next[nextIndex]
 
                         let prevKey = prevAttr.Key
                         let nextKey = nextAttr.Key
@@ -220,13 +220,13 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                         match ScalarAttributeKey.compare prevKey nextKey with
                         | c when c < 0 ->
                             // prev key is less than next -> remove prev key
-                            e.current <- ScalarChange.Removed prev.[prevIndex]
+                            e.current <- ScalarChange.Removed prev[prevIndex]
                             res <- ValueSome true
                             prevIndex <- prevIndex + 1
 
                         | c when c > 0 ->
                             // prev key is more than next -> add next item
-                            e.current <- ScalarChange.Added next.[nextIndex]
+                            e.current <- ScalarChange.Added next[nextIndex]
                             res <- ValueSome true
                             nextIndex <- nextIndex + 1
 
@@ -235,7 +235,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
                             match ScalarAttributeKey.getKind prevKey with
                             | ScalarAttributeKey.Kind.Inline ->
                                 if prevAttr.NumericValue <> nextAttr.NumericValue then
-                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    e.current <- ScalarChange.Updated(prev[prevIndex], next[nextIndex])
                                     res <- ValueSome true
 
                             | ScalarAttributeKey.Kind.Boxed ->
@@ -245,7 +245,7 @@ and [<Struct; IsByRefLike>] ScalarChangesEnumerator
 
                                 // New value completely replaces the old value
                                 | ScalarAttributeComparison.Different ->
-                                    e.current <- ScalarChange.Updated(prev.[prevIndex], next.[nextIndex])
+                                    e.current <- ScalarChange.Updated(prev[prevIndex], next[nextIndex])
                                     res <- ValueSome true
 
                             // move both pointers
@@ -288,7 +288,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
             let i = e.prevIndex
 
             if i < values.Length then
-                let value = values.[i]
+                let value = values[i]
 
                 e.current <-
                     match added with
@@ -314,20 +314,20 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
                 if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
-                        e.current <- WidgetChange.Added next.[nextIndex]
+                        e.current <- WidgetChange.Added next[nextIndex]
                         res <- ValueSome true
                         nextIndex <- nextIndex + 1
 
                     elif nextIndex = nextLength then
                         // that means that we are done with new items and only need prev's tail to removed
-                        e.current <- WidgetChange.Removed prev.[prevIndex]
+                        e.current <- WidgetChange.Removed prev[prevIndex]
                         res <- ValueSome true
                         prevIndex <- prevIndex + 1
 
                     else
                         // we haven't reached either of the ends
-                        let prevAttr = prev.[prevIndex]
-                        let nextAttr = next.[nextIndex]
+                        let prevAttr = prev[prevIndex]
+                        let nextAttr = next[nextIndex]
 
                         let prevKey = prevAttr.Key
                         let nextKey = nextAttr.Key
@@ -405,7 +405,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
             let i = e.prevIndex
 
             if i < values.Length then
-                let value = values.[i]
+                let value = values[i]
 
                 e.current <-
                     match added with
@@ -430,17 +430,17 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
                 if not(prevIndex >= prevLength && nextIndex >= nextLength) then
                     if prevIndex = prevLength then
                         // that means we are done with the prev and only need to add next's tail to added
-                        e.current <- WidgetCollectionChange.Added next.[nextIndex]
+                        e.current <- WidgetCollectionChange.Added next[nextIndex]
                         nextIndex <- nextIndex + 1
 
                     elif nextIndex = nextLength then
                         // that means that we are done with new items and only need prev's tail to removed
-                        e.current <- WidgetCollectionChange.Removed prev.[prevIndex]
+                        e.current <- WidgetCollectionChange.Removed prev[prevIndex]
                         prevIndex <- prevIndex + 1
                     else
                         // we haven't reached either of the ends
-                        let prevAttr = prev.[prevIndex]
-                        let nextAttr = next.[nextIndex]
+                        let prevAttr = prev[prevIndex]
+                        let nextAttr = next[nextIndex]
 
                         let prevKey = prevAttr.Key
                         let nextKey = nextAttr.Key
@@ -504,15 +504,15 @@ and [<Struct; IsByRefLike>] WidgetCollectionItemChangesEnumerator
         if prev.Length > next.Length && tailIndex < prev.Length - next.Length then
 
             let index = prev.Length - tailIndex - 1
-            e.current <- WidgetCollectionItemChange.Remove(index, prev.[index])
+            e.current <- WidgetCollectionItemChange.Remove(index, prev[index])
             e.tailIndex <- tailIndex + 1
 
             true
 
         elif i < next.Length then
-            let currItem = next.[i]
+            let currItem = next[i]
 
-            let prevItemOpt = if (i >= prev.Length) then ValueNone else ValueSome prev.[i]
+            let prevItemOpt = if (i >= prev.Length) then ValueNone else ValueSome prev[i]
 
             match prevItemOpt with
             | ValueNone -> e.current <- WidgetCollectionItemChange.Insert(i, currItem)

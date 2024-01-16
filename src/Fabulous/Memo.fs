@@ -55,7 +55,7 @@ module Memo =
 
     let inline private getMemoData (widget: Widget) : MemoData =
         match widget.ScalarAttributes with
-        | ValueSome attrs when attrs.Length = 1 -> attrs.[0].Value :?> MemoData
+        | ValueSome attrs when attrs.Length = 1 -> attrs[0].Value :?> MemoData
         | _ -> failwith "Memo widget cannot have extra attributes"
 
     let internal canReuseMemoizedWidget prev next =
