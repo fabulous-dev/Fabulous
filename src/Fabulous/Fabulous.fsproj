@@ -41,6 +41,7 @@
     <Compile Include="Attributes.fs" />
     <Compile Include="ComponentContext.fs" />
     <Compile Include="Component.fs" />
+    <Compile Include="State.fs" />
     <Compile Include="MvuComponent.fs" />
     <Compile Include="Memo.fs" />
     <Compile Include="View.fs" />

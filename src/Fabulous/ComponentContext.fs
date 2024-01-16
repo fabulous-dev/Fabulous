@@ -55,3 +55,8 @@ type ComponentContext(initialSize: int) =
     member this.SetValue(key: int, value: 'T) =
         this.SetValueInternal(key, value)
         this.NeedsRender()
+
+[<AbstractClass; Sealed>]
+type Context private () =
+    class
+    end
