@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Include="APISketchTests\TestUI.Platform.fs" />
     <Compile Include="APISketchTests\TestUI.ViewNode.fs" />
+    <Compile Include="APISketchTests\TestUI.Component.fs" />
     <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
     <Compile Include="APISketchTests\TestUI.Attributes.fs" />
     <Compile Include="APISketchTests\TestUI.Widgets.fs" />

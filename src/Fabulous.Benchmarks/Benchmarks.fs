@@ -1,7 +1,6 @@
 module Fabulous.Tests.Benchmarks
 
 open BenchmarkDotNet.Attributes
-open BenchmarkDotNet.Jobs
 
 open BenchmarkDotNet.Running
 open Fabulous.Tests.APISketchTests.TestUI_Widgets
@@ -95,7 +94,7 @@ module DiffingAttributes =
 
             let instance = Run.Instance program
 
-            let _tree = (instance.Start())
+            let _tree = instance.Start()
 
             for i in 1..100 do
                 instance.ProcessMessage(IncBy i)
@@ -171,7 +170,7 @@ module DiffingSmallScalars =
 
             let instance = Run.Instance program
 
-            let _tree = (instance.Start())
+            let _tree = instance.Start()
 
             for i in 1..100 do
                 instance.ProcessMessage(IncBy 1UL)
@@ -179,7 +178,7 @@ module DiffingSmallScalars =
 
 
 [<EntryPoint>]
-let main argv =
+let main _argv =
     //    BenchmarkRunner.Run<NestedTreeCreation.Benchmarks>()
     //    |> ignore
     //
