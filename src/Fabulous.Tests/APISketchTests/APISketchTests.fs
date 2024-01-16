@@ -4,7 +4,6 @@ open Fabulous.StackAllocatedCollections
 open Fabulous.Tests.APISketchTests.Platform
 open NUnit.Framework
 
-open Platform
 open TestUI_Widgets
 open Fabulous
 
@@ -75,7 +74,7 @@ module ButtonTests =
 
     let update msg model =
         match msg with
-        | Increment -> { model with count = model.count + 1 }
+        | Increment -> { count = model.count + 1 }
 
 
     let view model =
@@ -137,7 +136,7 @@ module SimpleStackTests =
         instance.ProcessMessage(AddNew(1, "yo"))
         Assert.AreEqual(1, stack.Children.Count)
 
-        let label = stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "yo")
 
@@ -145,14 +144,14 @@ module SimpleStackTests =
         instance.ProcessMessage(AddNew(2, "yo2"))
         Assert.AreEqual(2, stack.Children.Count)
 
-        let label = stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "yo2")
 
         // modify the initial one
         instance.ProcessMessage(ChangeText(1, "just 1"))
 
-        let label = stack.Children.[1] :?> TestLabel :> IText
+        let label = stack.Children[1] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "just 1")
 
@@ -160,7 +159,7 @@ module SimpleStackTests =
         instance.ProcessMessage(Delete 2)
         Assert.AreEqual(stack.Children.Count, 1)
 
-        let label = stack.Children.[0] :?> TestLabel :> IText
+        let label = stack.Children[0] :?> TestLabel :> IText
 
         Assert.AreEqual(label.Text, "just 1")
 
@@ -549,9 +548,7 @@ module SmallScalars =
 
     let update msg model =
         match msg with
-        | Inc value ->
-            { model with
-                value = model.value + value }
+        | Inc value -> { value = model.value + value }
 
     let view model =
         InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
@@ -690,7 +687,7 @@ module Issue104 =
 module Issue1044 =
     [<Test>]
     let ``Multiple Widgets + for loops in builder causes crash`` () =
-        let view model =
+        let view _model =
             Stack() {
                 Label($"Foo") // It also crashes only with the multiple for loops
                 Label($"bar") // It also crashes only with the multiple for loops
@@ -717,7 +714,7 @@ module Issue1044 =
 
     [<Test>]
     let ``Multiple for loops in builder causes crash`` () =
-        let view model =
+        let view _model =
             Stack() {
                 for i = 0 to 10 do
                     Label($"T{i}")
@@ -815,7 +812,7 @@ module ViewHelpers =
 
         let childView = Button("Child button", ChildClick).automationId("childButton")
 
-        let parentView model =
+        let parentView _model =
             Stack() {
                 Button("Parent button", ParentClick).automationId("parentButton")
 
@@ -846,7 +843,7 @@ module ViewHelpers =
     let ``Adding property modifiers to widget converted with View.map is valid`` () =
         let childView = Button("Child button", ChildClick).automationId("childButton")
 
-        let parentView model =
+        let parentView _model =
             Stack() { (View.map ChildMessage childView).textColor("blue") }
 
         let init () = true
@@ -867,7 +864,7 @@ module ViewHelpers =
 
         let childView = Button("Child button", ChildClick).automationId("childButton")
 
-        let parentView model =
+        let parentView _model =
             Stack() { (View.map ChildMessage childView).tap(ParentTap) }
 
         let init () = true
@@ -899,7 +896,7 @@ module ViewHelpers =
                 (View.map ChildMessage childView).tap(ParentTap)
             }
 
-        let grandParentView model =
+        let grandParentView _model =
             Stack() {
                 Button("Grand Parent button", GrandParentClick)
                     .automationId("grandParentButton")
@@ -951,7 +948,7 @@ module ViewHelpers =
 
         let parentView = (View.map ChildMessage childView).tap(ParentTap)
 
-        let grandParentView model =
+        let grandParentView _model =
             (View.map ParentMessage parentView).tap2(GrandParentTap)
 
         let init () = true

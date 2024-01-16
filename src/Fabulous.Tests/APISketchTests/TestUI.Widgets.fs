@@ -10,6 +10,7 @@ module TestUI_Widgets =
     open Platform
     open TestUI_Attributes
     open TestUI_ViewNode
+    open TestUI_Component
 
 
     //----WidgetsBuilderCE---
@@ -29,7 +30,7 @@ module TestUI_Widgets =
                   TargetType = typeof<'T>
                   CreateView =
                     fun (widget, context, parentNode) ->
-                        let name = typeof<'T>.Name
+                        // let name = typeof<'T>.Name
                         //                      printfn $"Creating view for {name}"
 
                         let view = new 'T()
@@ -211,7 +212,8 @@ module TestUI_Widgets =
                   Logger =
                     { Log = fun _ -> ()
                       MinLogLevel = LogLevel.Fatal }
-                  Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage }
+                  Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
+                  GetComponent = Component.getComponent }
 
             member x.ProcessMessage(msg: 'msg) =
                 match state with
@@ -237,7 +239,7 @@ module TestUI_Widgets =
                     ()
 
             member x.Start(arg: 'arg) =
-                let model = (program.Init(arg))
+                let model = program.Init(arg)
                 let widget = program.View(model).Compile()
                 let widgetDef = WidgetDefinitionStore.get widget.Key
 

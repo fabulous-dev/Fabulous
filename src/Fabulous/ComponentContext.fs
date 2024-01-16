@@ -15,10 +15,6 @@ Given each state is assigned to a specific index and that Components will most l
 we can leverage the inlining capabilities of the ComponentBuilder to create an array with the right size.
 *)
 
-/// This measure type is used to count the number of bindings in a component while building the computation expression
-[<Measure>]
-type binding
-
 /// <summary>
 /// Holds the values for the various states of a component.
 /// </summary>
@@ -57,5 +53,10 @@ type ComponentContext(initialSize: int) =
     member this.SetValueInternal(key: int, value: 'T) = values[key] <- box value
 
     member this.SetValue(key: int, value: 'T) =
-        values[key] <- box value
+        this.SetValueInternal(key, value)
         this.NeedsRender()
+
+[<AbstractClass; Sealed>]
+type Context private () =
+    class
+    end

@@ -3,7 +3,34 @@ namespace Fabulous
 open System
 open System.Diagnostics
 
-module ProgramHelpers =
+/// Configuration of the Fabulous application
+type Program<'arg, 'model, 'msg> =
+    {
+        /// Give the initial state for the application
+        Init: 'arg -> 'model * Cmd<'msg>
+        /// Update the application state based on a message
+        Update: 'msg * 'model -> 'model * Cmd<'msg>
+        /// Add a subscription that can dispatch messages
+        Subscribe: 'model -> Cmd<'msg>
+        /// Configuration for logging all output messages from Fabulous
+        Logger: Logger
+        /// Exception handler for all uncaught exceptions happening in the MVU loop.
+        /// Returns true if the exception was handled, false otherwise.
+        ExceptionHandler: exn -> bool
+    }
+
+type Program<'arg, 'model, 'msg, 'marker> =
+    {
+        Program: Program<'arg, 'model, 'msg>
+        /// Render the application state
+        View: 'model -> WidgetBuilder<'msg, 'marker>
+        /// Indicates if a previous Widget's view can be reused
+        CanReuseView: Widget -> Widget -> bool
+        /// Runs the View function on the main thread
+        SyncAction: (unit -> unit) -> unit
+    }
+
+module ProgramDefaults =
     let defaultLogger () =
         let log (level, message) =
             let traceLevel =
@@ -24,64 +51,63 @@ module ProgramHelpers =
         false
 
 module Program =
-    module ForComponent =
-        let inline define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) =
-            { Init = init
-              Update = (fun (msg, model) -> update msg model)
-              Subscribe = fun _ -> Cmd.none
-              Logger = ProgramHelpers.defaultLogger()
-              ExceptionHandler = ProgramHelpers.defaultExceptionHandler }
+    let inline private define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) =
+        { Init = init
+          Update = (fun (msg, model) -> update msg model)
+          Subscribe = fun _ -> Cmd.none
+          Logger = ProgramDefaults.defaultLogger()
+          ExceptionHandler = ProgramDefaults.defaultExceptionHandler }
 
-        /// Create a program using an MVU loop
-        let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) =
-            define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none)
+    /// Create a program using an MVU loop
+    let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) =
+        define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none)
 
-        /// Create a program using an MVU loop
-        let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) = define init update
+    /// Create a program using an MVU loop
+    let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) = define init update
 
-        /// Create a program using an MVU loop. Add support for CmdMsg
-        let statefulWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
-            let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
-            define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
+    /// Create a program using an MVU loop. Add support for CmdMsg
+    let statefulWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
+        let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
+        define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
 
-        /// Subscribe to external source of events.
-        /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
-        let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg>) =
-            let sub model =
-                Cmd.batch [ program.Subscribe model; subscribe model ]
+    /// Subscribe to external source of events.
+    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg>) =
+        let sub model =
+            Cmd.batch [ program.Subscribe model; subscribe model ]
 
-            { program with Subscribe = sub }
+        { program with Subscribe = sub }
 
-        /// Configure how the output messages from Fabulous will be handled
-        let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg>) = { program with Logger = logger }
+    /// Configure how the output messages from Fabulous will be handled
+    let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg>) = { program with Logger = logger }
 
-        /// Trace all the updates to the debug output
-        let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg>) =
-            let traceInit arg =
-                try
-                    let initModel, cmd = program.Init(arg)
-                    trace("Initial model: {0}", $"%0A{initModel}")
-                    initModel, cmd
-                with e ->
-                    trace("Error in init function: {0}", $"%0A{e}")
-                    reraise()
+    /// Trace all the updates to the debug output
+    let withTrace (trace: string * string -> unit) (program: Program<'arg, 'model, 'msg>) =
+        let traceInit arg =
+            try
+                let initModel, cmd = program.Init(arg)
+                trace("Initial model: {0}", $"%0A{initModel}")
+                initModel, cmd
+            with e ->
+                trace("Error in init function: {0}", $"%0A{e}")
+                reraise()
 
-            let traceUpdate (msg, model) =
-                trace("Message: {0}", $"%0A{msg}")
+        let traceUpdate (msg, model) =
+            trace("Message: {0}", $"%0A{msg}")
 
-                try
-                    let newModel, cmd = program.Update(msg, model)
-                    trace("Updated model: {0}", $"%0A{newModel}")
-                    newModel, cmd
-                with e ->
-                    trace("Error in model function: {0}", $"%0A{e}")
-                    reraise()
+            try
+                let newModel, cmd = program.Update(msg, model)
+                trace("Updated model: {0}", $"%0A{newModel}")
+                newModel, cmd
+            with e ->
+                trace("Error in model function: {0}", $"%0A{e}")
+                reraise()
 
-            { program with
-                Init = traceInit
-                Update = traceUpdate }
+        { program with
+            Init = traceInit
+            Update = traceUpdate }
 
-        /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
-        let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg>) =
-            { program with
-                ExceptionHandler = handler }
+    /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
+    let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg>) =
+        { program with
+            ExceptionHandler = handler }

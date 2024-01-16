@@ -3,7 +3,6 @@ namespace Fabulous.Tests
 open System
 open Fabulous.StackAllocatedCollections
 open NUnit.Framework
-open Fabulous
 
 [<TestFixture>]
 type ``Array tests``() =

@@ -3,7 +3,6 @@ namespace Fabulous.Tests
 open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open NUnit.Framework
-open FsCheck.NUnit
 
 type ITestControl =
     interface
