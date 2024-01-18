@@ -21,7 +21,7 @@ type Program<'arg, 'model, 'msg> =
 
 type Program<'arg, 'model, 'msg, 'marker> =
     {
-        Program: Program<'arg, 'model, 'msg>
+        State: Program<'arg, 'model, 'msg>
         /// Render the application state
         View: 'model -> WidgetBuilder<'msg, 'marker>
         /// Indicates if a previous Widget's view can be reused
