@@ -19,12 +19,21 @@ we can leverage the inlining capabilities of the ComponentBuilder to create an a
 /// Holds the values for the various states of a component.
 /// </summary>
 type ComponentContext(initialSize: int) =
+    static let mutable nextId = 0
+
+    static let getNextId () =
+        nextId <- nextId + 1
+        nextId
+
+    let id = getNextId()
     let mutable values = Array.zeroCreate initialSize
 
     let renderNeeded = Event<unit>()
 
     // We assume that most components will have few values, so initialize it with a small array
     new() = ComponentContext(3)
+
+    member this.Id = id
 
     member this.RenderNeeded = renderNeeded.Publish
     member this.NeedsRender() = renderNeeded.Trigger()

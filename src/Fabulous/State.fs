@@ -76,7 +76,7 @@ type StateExtensions =
     [<Extension>]
     static member inline Bind
         (
-            _: ComponentBuilder,
+            _: ComponentBuilder<'parentMsg>,
             [<InlineIfLambda>] fn: StateRequest<'T>,
             [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'marker>
         ) =
