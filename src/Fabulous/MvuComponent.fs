@@ -58,7 +58,7 @@ type MvuComponentBodyBuilder<'msg, 'marker> =
     delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<'msg, 'marker>)
 
 [<Struct>]
-type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
+type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
     val public Program: Program<obj, obj, obj>
     val public Arg: obj
 
@@ -101,7 +101,7 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker> =
               Arg = this.Arg
               Body = compiledBody }
 
-        WidgetBuilder<unit, 'marker>(MvuComponent.WidgetKey, MvuComponent.Data.WithValue(data))
+        WidgetBuilder<'parentMsg, 'marker>(MvuComponent.WidgetKey, MvuComponent.Data.WithValue(data))
 
 type MvuStateRequest =
     struct
@@ -115,11 +115,16 @@ type MvuContextExtensions =
     [<Extension>]
     static member inline Bind
         (
-            _: MvuComponentBuilder<'arg, 'msg, 'model, 'marker>,
+            _: MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg>,
             _: MvuStateRequest,
             [<InlineIfLambda>] continuation: 'model -> MvuComponentBodyBuilder<'msg, 'marker>
         ) =
         MvuComponentBodyBuilder<'msg, 'marker>(fun bindings ctx ->
             let key = int bindings
-            let value = ctx.TryGetValue<'model>(key).Value
+
+            let value =
+                match ctx.TryGetValue<'model>(key) with
+                | ValueSome value -> value
+                | ValueNone -> failwith $"[MvuComponent.Bind] Model not found in ComponentContext {ctx.Id}"
+
             (continuation value).Invoke((bindings + 1<binding>, ctx)))

@@ -333,7 +333,7 @@ module Component =
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
 type ComponentBodyBuilder<'marker> = delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
 
-type ComponentBuilder() =
+type ComponentBuilder<'parentMsg>() =
     member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
         ComponentBodyBuilder<'marker>(fun bindings ctx -> struct (bindings, widgetBuilder))
 
@@ -360,4 +360,4 @@ type ComponentBuilder() =
 
         let data = { Body = compiledBody }
 
-        WidgetBuilder<unit, 'marker>(Component.WidgetKey, Component.Data.WithValue(data))
+        WidgetBuilder<'parentMsg, 'marker>(Component.WidgetKey, Component.Data.WithValue(data))
