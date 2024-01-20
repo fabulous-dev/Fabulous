@@ -12,7 +12,7 @@ _No unreleased changes_
 ## [2.5.0-pre5] - 2024-01-20
 
 ### Added
-- Add support for Component in frameworks requiring AttachView (like Fabulous.Avalonia) by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1058)
+- Add support for Component in frameworks requiring AttachView (like Fabulous.Avalonia) by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1059)
 
 ## [2.5.0-pre4] - 2024-01-18
 
