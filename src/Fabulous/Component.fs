@@ -281,6 +281,32 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
 
         struct (node, view)
 
+    member this.AttachView(componentWidget: Widget, view: obj) =
+        let struct (context, rootWidget) = _body.Invoke(_context)
+        _widget <- rootWidget
+        _context <- context
+
+        let struct (scalars, widgets, widgetColls) =
+            this.MergeAttributes(rootWidget, ValueSome componentWidget)
+
+        let rootWidget: Widget =
+            { Key = rootWidget.Key
+#if DEBUG
+              DebugName = rootWidget.DebugName
+#endif
+              ScalarAttributes = scalars
+              WidgetAttributes = widgets
+              WidgetCollectionAttributes = widgetColls }
+
+        // Attach the widget to the existing view
+        let widgetDef = WidgetDefinitionStore.get rootWidget.Key
+        let node = widgetDef.AttachView(rootWidget, treeContext, ValueNone, view)
+
+        _view <- view
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
+        node
+
     member this.Render() =
         let prevRootWidget = _widget
         let prevContext = _context
@@ -304,7 +330,6 @@ module Component =
             { Key = key
               Name = "Component"
               TargetType = typeof<Component>
-              AttachView = fun _ -> failwith "Component widget cannot be attached"
               CreateView =
                 fun (widget, treeContext, _) ->
                     match widget.ScalarAttributes with
@@ -321,7 +346,24 @@ module Component =
 
                         // TODO: Attach component to view so component is not discarded by GC
 
-                        struct (node, view) }
+                        struct (node, view)
+              AttachView =
+                fun (widget, treeContext, _, view) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body"
+                    | ValueSome attrs ->
+                        let data =
+                            match Array.tryHead attrs with
+                            | Some attr -> attr.Value :?> ComponentData
+                            | None -> failwith "Component widget must have a body"
+
+                        let ctx = ComponentContext()
+                        let comp = new Component(treeContext, data.Body, ctx)
+                        let node = comp.AttachView(widget, view)
+
+                        // TODO: Attach component to view so component is not discarded by GC
+
+                        node }
 
         WidgetDefinitionStore.set key definition
         key
