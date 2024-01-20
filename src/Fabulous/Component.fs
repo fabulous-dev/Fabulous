@@ -281,6 +281,32 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
 
         struct (node, view)
 
+    member this.AttachView(componentWidget: Widget voption, view: obj) =
+        let struct (context, rootWidget) = _body.Invoke(_context)
+        _widget <- rootWidget
+        _context <- context
+
+        let struct (scalars, widgets, widgetColls) =
+            this.MergeAttributes(rootWidget, componentWidget)
+
+        let rootWidget: Widget =
+            { Key = rootWidget.Key
+#if DEBUG
+              DebugName = rootWidget.DebugName
+#endif
+              ScalarAttributes = scalars
+              WidgetAttributes = widgets
+              WidgetCollectionAttributes = widgetColls }
+
+        // Attach the widget to the existing view
+        let widgetDef = WidgetDefinitionStore.get rootWidget.Key
+        let node = widgetDef.AttachView(rootWidget, treeContext, ValueNone, view)
+
+        _view <- view
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
+        node
+
     member this.Render() =
         let prevRootWidget = _widget
         let prevContext = _context
