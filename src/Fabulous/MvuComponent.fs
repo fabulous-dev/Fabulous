@@ -16,7 +16,6 @@ module MvuComponent =
             { Key = key
               Name = "MvuComponent"
               TargetType = typeof<Component>
-              AttachView = fun _ -> failwith "Component widget cannot be attached"
               CreateView =
                 fun (widget, treeContext, _) ->
                     match widget.ScalarAttributes with
@@ -44,7 +43,35 @@ module MvuComponent =
 
                         // TODO: Attach component to view so component is not discarded by GC
 
-                        struct (node, view) }
+                        struct (node, view)
+              AttachView =
+                fun (widget, treeContext, _, view) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body"
+                    | ValueSome attrs ->
+                        let data =
+                            match Array.tryHead attrs with
+                            | Some attr -> attr.Value :?> MvuComponentData
+                            | None -> failwith "Component widget must have a body"
+
+                        let ctx = ComponentContext(1)
+
+                        let runner =
+                            Runner((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+
+                        runner.Start(data.Arg)
+
+                        // Redirect messages to runner
+                        let treeContext =
+                            { treeContext with
+                                Dispatch = runner.Dispatch }
+
+                        let comp = new Component(treeContext, data.Body, ctx)
+                        let node = comp.AttachView(widget, view)
+
+                        // TODO: Attach component to view so component is not discarded by GC
+
+                        node }
 
         WidgetDefinitionStore.set key definition
         key
