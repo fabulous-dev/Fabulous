@@ -34,6 +34,11 @@ _No unreleased changes_
 ### Added
 - Add new Component API by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1051)
 
+## [2.4.1] - 2024-01-29
+
+### Added
+- Add Cmd.debounce to issue a message if no other message has been issued within the specified timeout by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1062)
+
 ## [2.4.0] - 2023-08-07
 
 ### Changed
@@ -81,6 +86,7 @@ _No unreleased changes_
 [2.5.0-pre3]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre3
 [2.5.0-pre2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre2
 [2.5.0-pre1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre1
+[2.4.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.1
 [2.4.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.0
 [2.3.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.2
 [2.3.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.1
