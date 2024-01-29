@@ -31,4 +31,13 @@ type ``Cmd tests``() =
             do! Async.Sleep 125
 
             Assert.AreEqual(Some(NewValue 3), actualValue)
+
+            actualValue <- None
+
+            triggerCmd 4 |> CmdTestsHelper.execute dispatch
+            do! Async.Sleep 75
+            triggerCmd 5 |> CmdTestsHelper.execute dispatch
+            do! Async.Sleep 125
+
+            Assert.AreEqual(Some(NewValue 5), actualValue)
         }

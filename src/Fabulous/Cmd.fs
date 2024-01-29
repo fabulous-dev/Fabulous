@@ -122,6 +122,9 @@ module Cmd =
                       async {
                           do! Async.Sleep(timeout)
                           dispatch(fn value)
+
+                          cts.Dispose()
+                          cts <- null
                       },
                       cts.Token
                   ) ]
