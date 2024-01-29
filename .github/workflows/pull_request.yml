@@ -18,7 +18,7 @@ jobs:
     - name: Check code formatting
       run: |
         dotnet tool restore
-        dotnet fantomas --check -r src
+        dotnet fantomas --check src
     - name: Restore
       run: dotnet restore ${SLN_FILE}
     - name: Build
