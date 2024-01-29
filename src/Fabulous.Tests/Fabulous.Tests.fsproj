@@ -15,6 +15,7 @@
     <Compile Include="AttributesTests.fs" />
     <Compile Include="ViewTests.fs" />
     <Compile Include="ArrayTests.fs" />
+    <Compile Include="CmdTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
