@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.5.0-pre6] - 2024-01-29
+
+### Added
+- Add Cmd.debounce to issue a message if no other message has been issued within the specified timeout by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1062)
+
 ## [2.5.0-pre5] - 2024-01-20
 
 ### Added
@@ -80,7 +85,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.5.0-pre5...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.5.0-pre6...HEAD
+[2.5.0-pre6]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre6
 [2.5.0-pre5]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre5
 [2.5.0-pre4]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre4
 [2.5.0-pre3]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre3
