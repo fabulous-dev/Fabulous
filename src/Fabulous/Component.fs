@@ -307,7 +307,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
 
         node
 
-    member this.Render() =
+    member private this.RenderInternal() =
         let prevRootWidget = _widget
         let prevContext = _context
         let struct (context, currRootWidget) = _body.Invoke(_context)
@@ -321,6 +321,9 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let viewNode = treeContext.GetViewNode _view
 
         Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
+
+    member this.Render() =
+        treeContext.SyncAction(this.RenderInternal)
 
 module Component =
     let WidgetKey =
