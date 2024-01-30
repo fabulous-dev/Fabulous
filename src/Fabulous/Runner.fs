@@ -11,26 +11,25 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
     let mutable _activeSubs = Sub.Internal.empty
     let mutable _reentering = false
     let queue = ConcurrentQueue<'msg>()
-                
+
     let onError (message, exn) =
         let ex = Exception(message, exn)
+
         if not(program.ExceptionHandler ex) then
             raise ex
-            
+
     let processMsgs dispatch msg =
         let mutable lastMsg = ValueSome msg
-        
+
         while lastMsg.IsSome do
             let model = getState()
             let newModel, cmd = program.Update(lastMsg.Value, model)
             let subs = program.Subscribe(newModel)
-            
+
             setState newModel
-            
-            _activeSubs <-
-                Sub.Internal.diff _activeSubs subs
-                |> Sub.Internal.Fx.change onError dispatch
-                
+
+            _activeSubs <- Sub.Internal.diff _activeSubs subs |> Sub.Internal.Fx.change onError dispatch
+
             Cmd.exec (fun ex -> onError("Error updating", ex)) dispatch cmd
 
             lastMsg <-
@@ -48,37 +47,38 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
                 _reentering <- false
         with ex ->
             _reentering <- false
+
             if not(program.ExceptionHandler ex) then
                 reraise()
 
     let start arg =
         try
             _reentering <- true
-            
+
             let model, cmd = program.Init(arg)
             setState model
 
             // Start the subscriptions
             let subs = program.Subscribe(model)
-            _activeSubs <-
-                Sub.Internal.diff _activeSubs subs
-                |> Sub.Internal.Fx.change onError dispatch
+            _activeSubs <- Sub.Internal.diff _activeSubs subs |> Sub.Internal.Fx.change onError dispatch
 
             // Execute the commands
             Cmd.exec (fun ex -> onError("Error initializing", ex)) dispatch cmd
-                
+
             _reentering <- false
         with ex ->
             _reentering <- false
+
             if not(program.ExceptionHandler(ex)) then
                 reraise()
-                
+
     let stop () =
         try
             _reentering <- true
             Sub.Internal.Fx.stop onError _activeSubs
         with ex ->
             _reentering <- false
+
             if not(program.ExceptionHandler(ex)) then
                 reraise()
 
@@ -89,4 +89,4 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
     member _.Dispatch(msg) = dispatch msg
 
     interface IDisposable with
-        member _.Dispose() = stop ()
+        member _.Dispose() = stop()

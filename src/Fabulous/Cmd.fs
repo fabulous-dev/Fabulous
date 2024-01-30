@@ -17,8 +17,13 @@ type Cmd<'msg> = Effect<'msg> list
 module Cmd =
     /// Execute the commands using the supplied dispatcher
     let internal exec onError (dispatch: Dispatch<'msg>) (cmd: Cmd<'msg>) =
-        cmd |> List.iter (fun call -> try call dispatch with ex -> onError ex)
-    
+        cmd
+        |> List.iter(fun call ->
+            try
+                call dispatch
+            with ex ->
+                onError ex)
+
     /// None - no commands, also known as `[]`
     let none: Cmd<'msg> = []
 
@@ -41,29 +46,29 @@ module Cmd =
               match msg with
               | None -> ()
               | Some msg -> dispatch msg ]
-        
+
     module OfFunc =
         /// Command to evaluate a simple function and map the result
         /// into success or error (of exception)
         let either (task: 'a -> _) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 try
-                    task arg
-                    |> (ofSuccess >> dispatch)
+                    task arg |> (ofSuccess >> dispatch)
                 with x ->
                     x |> (ofError >> dispatch)
-            [bind]
+
+            [ bind ]
 
         /// Command to evaluate a simple function and map the success to a message
         /// discarding any possible error
         let perform (task: 'a -> _) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 try
-                    task arg
-                    |> (ofSuccess >> dispatch)
+                    task arg |> (ofSuccess >> dispatch)
                 with x ->
                     ()
-            [bind]
+
+            [ bind ]
 
         /// Command to evaluate a simple function and map the error (in case of exception)
         let attempt (task: 'a -> unit) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
@@ -72,140 +77,116 @@ module Cmd =
                     task arg
                 with x ->
                     x |> (ofError >> dispatch)
-            [bind]
+
+            [ bind ]
 
     module OfAsyncWith =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
-        let either (start: Async<unit> -> unit)
-                   (task: 'a -> Async<_>)
-                   (arg: 'a)
-                   (ofSuccess: _ -> 'msg)
-                   (ofError: _ -> 'msg) : Cmd<'msg> =
+        let either (start: Async<unit> -> unit) (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 async {
                     let! r = task arg |> Async.Catch
-                    dispatch (match r with
-                             | Choice1Of2 x -> ofSuccess x
-                             | Choice2Of2 x -> ofError x)
+
+                    dispatch(
+                        match r with
+                        | Choice1Of2 x -> ofSuccess x
+                        | Choice2Of2 x -> ofError x
+                    )
                 }
-            [bind >> start]
+
+            [ bind >> start ]
 
         /// Command that will evaluate an async block and map the success
-        let perform (start: Async<unit> -> unit)
-                    (task: 'a -> Async<_>)
-                    (arg: 'a)
-                    (ofSuccess: _ -> 'msg) : Cmd<'msg> =
+        let perform (start: Async<unit> -> unit) (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 async {
                     let! r = task arg |> Async.Catch
+
                     match r with
-                    | Choice1Of2 x -> dispatch (ofSuccess x)
+                    | Choice1Of2 x -> dispatch(ofSuccess x)
                     | _ -> ()
                 }
-            [bind >> start]
+
+            [ bind >> start ]
 
         /// Command that will evaluate an async block and map the error (of exception)
-        let attempt (start: Async<unit> -> unit)
-                    (task: 'a -> Async<_>)
-                    (arg: 'a)
-                    (ofError: _ -> 'msg) : Cmd<'msg> =
+        let attempt (start: Async<unit> -> unit) (task: 'a -> Async<_>) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 async {
                     let! r = task arg |> Async.Catch
+
                     match r with
-                    | Choice2Of2 x -> dispatch (ofError x)
+                    | Choice2Of2 x -> dispatch(ofError x)
                     | _ -> ()
                 }
-            [bind >> start]
+
+            [ bind >> start ]
 
         /// Command that will evaluate an async block and map the success
-        let performOption (start: Async<unit> -> unit)
-                    (task: 'a -> Async<_ option>)
-                    (arg: 'a)
-                    (ofSuccess: _ -> 'msg) : Cmd<'msg> =
+        let performOption (start: Async<unit> -> unit) (task: 'a -> Async<_ option>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
                 async {
                     let! r = task arg
+
                     match r with
-                    | Some x -> dispatch (ofSuccess x)
+                    | Some x -> dispatch(ofSuccess x)
                     | None -> ()
                 }
-            [bind >> start]
+
+            [ bind >> start ]
 
     module OfAsync =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
-        let inline either (task: 'a -> Async<_>)
-                          (arg: 'a)
-                          (ofSuccess: _ -> 'msg)
-                          (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline either (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.either Async.Start task arg ofSuccess ofError
 
         /// Command that will evaluate an async block and map the success
-        let inline perform (task: 'a -> Async<_>)
-                           (arg: 'a)
-                           (ofSuccess: _ -> 'msg) : Cmd<'msg> =
+        let inline perform (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.perform Async.Start task arg ofSuccess
 
         /// Command that will evaluate an async block and map the error (of exception)
-        let inline attempt (task: 'a -> Async<_>)
-                           (arg: 'a)
-                           (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline attempt (task: 'a -> Async<_>) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.attempt Async.Start task arg ofError
-            
+
         let inline msg (task: Async<'msg>) =
             OfAsyncWith.perform Async.Start (fun () -> task) () id
-            
+
         let inline msgOption (task: Async<'msg option>) =
             OfAsyncWith.performOption Async.Start (fun () -> task) () id
 
     module OfAsyncImmediate =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
-        let inline either (task: 'a -> Async<_>)
-                          (arg: 'a)
-                          (ofSuccess: _ -> 'msg)
-                          (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline either (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.either Async.StartImmediate task arg ofSuccess ofError
 
         /// Command that will evaluate an async block and map the success
-        let inline perform (task: 'a -> Async<_>)
-                           (arg: 'a)
-                           (ofSuccess: _ -> 'msg) : Cmd<'msg> =
+        let inline perform (task: 'a -> Async<_>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.perform Async.StartImmediate task arg ofSuccess
 
         /// Command that will evaluate an async block and map the error (of exception)
-        let inline attempt (task: 'a -> Async<_>)
-                           (arg: 'a)
-                           (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline attempt (task: 'a -> Async<_>) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.attempt Async.StartImmediate task arg ofError
 
     module OfTask =
         /// Command to call a task and map the results
-        let inline either (task: 'a -> Task<_>)
-                          (arg:'a)
-                          (ofSuccess: _ -> 'msg)
-                          (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline either (task: 'a -> Task<_>) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsync.either (task >> Async.AwaitTask) arg ofSuccess ofError
 
         /// Command to call a task and map the success
-        let inline perform (task: 'a -> Task<_>)
-                           (arg:'a)
-                           (ofSuccess: _ -> 'msg) : Cmd<'msg> =
+        let inline perform (task: 'a -> Task<_>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             OfAsync.perform (task >> Async.AwaitTask) arg ofSuccess
 
         /// Command to call a task and map the error
-        let inline attempt (task: 'a -> #Task)
-                           (arg:'a)
-                           (ofError: _ -> 'msg) : Cmd<'msg> =
+        let inline attempt (task: 'a -> #Task) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsync.attempt (task >> Async.AwaitTask) arg ofError
-            
-        let inline msg (task: Task<'msg>) =
-            OfAsync.msg (task |> Async.AwaitTask)
-            
+
+        let inline msg (task: Task<'msg>) = OfAsync.msg(task |> Async.AwaitTask)
+
         let inline msgOption (task: Task<'msg option>) =
-            OfAsync.msgOption (task |> Async.AwaitTask)
+            OfAsync.msgOption(task |> Async.AwaitTask)
 
     /// Command to issue a message if no other message has been issued within the specified timeout
     let debounce (timeout: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =

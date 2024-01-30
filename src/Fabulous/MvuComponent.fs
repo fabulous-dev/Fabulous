@@ -28,7 +28,9 @@ module MvuComponent =
 
                         let ctx = new ComponentContext(1)
 
-                        let runner = new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+                        let runner =
+                            new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+
                         ctx.LinkDisposable(runner)
 
                         runner.Start(data.Arg)
@@ -38,7 +40,7 @@ module MvuComponent =
                             { treeContext with
                                 Dispatch = runner.Dispatch }
 
-                        let comp = new Component(treeContext, data.Body, ctx)                        
+                        let comp = new Component(treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
                         treeContext.SetComponent view comp
@@ -56,7 +58,9 @@ module MvuComponent =
 
                         let ctx = new ComponentContext(1)
 
-                        let runner = new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+                        let runner =
+                            new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+
                         ctx.LinkDisposable(runner)
 
                         runner.Start(data.Arg)

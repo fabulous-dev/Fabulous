@@ -315,14 +315,14 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let viewNode = treeContext.GetViewNode _view
 
         Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
-        
+
     member this.Dispose() =
         if _contextSubscription <> null then
             _contextSubscription.Dispose()
-            
+
         if _context <> null then
             _context.Dispose()
-            
+
         _body <- null
         _widget <- Unchecked.defaultof<_>
         _view <- null

@@ -73,12 +73,12 @@ module Program =
     /// Subscribe to external source of events, overrides existing subscription.
     /// Return the subscriptions that should be active based on the current model.
     /// Subscriptions will be started or stopped automatically to match.
-    let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) =
-        { program with Subscribe = subscribe }
-        
+    let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) = { program with Subscribe = subscribe }
+
     /// Map existing subscription to external source of events.
     let mapSubscription map (program: Program<'arg, 'model, 'msg>) =
-        { program with Subscribe = map program.Subscribe }
+        { program with
+            Subscribe = map program.Subscribe }
 
     /// Configure how the output messages from Fabulous will be handled
     let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg>) = { program with Logger = logger }

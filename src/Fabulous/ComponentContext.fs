@@ -67,17 +67,17 @@ type ComponentContext(initialSize: int) =
     member this.SetValue(key: int, value: 'T) =
         this.SetValueInternal(key, value)
         this.NeedsRender()
-        
-    member this.LinkDisposable(disposable: IDisposable) =
-        disposables.Add(disposable)
-        
+
+    member this.LinkDisposable(disposable: IDisposable) = disposables.Add(disposable)
+
     member this.Dispose() =
         for disposable in disposables do
             disposable.Dispose()
+
         disposables.Clear()
-        
+
         values <- Array.empty
-        
+
     interface IDisposable with
         member this.Dispose() = this.Dispose()
 
