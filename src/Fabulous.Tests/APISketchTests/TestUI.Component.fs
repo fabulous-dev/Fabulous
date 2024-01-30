@@ -9,4 +9,9 @@ module TestUI_Component =
         let ComponentProperty = "ComponentProperty"
 
         let getComponent (target: obj) =
-            (target :?> TestViewElement).PropertyBag.Item ComponentProperty
+            match (target :?> TestViewElement).PropertyBag.TryGetValue(ComponentProperty) with
+            | true, comp -> comp
+            | _ -> null
+
+        let setComponent (comp: obj) (target: obj) =
+            (target :?> TestViewElement).PropertyBag.Add(ComponentProperty, comp)

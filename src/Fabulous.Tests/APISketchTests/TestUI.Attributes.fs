@@ -18,18 +18,22 @@ module TestUI_Attributes =
 
                         let btn = node.Target :?> IButton
 
-                        match node.TryGetHandler<int>(name) with
+                        match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handlerId -> btn.RemovePressListener handlerId
+                        | ValueSome handler -> handler.Dispose()
 
                         match newValueOpt with
-                        | ValueNone -> node.SetHandler(name, ValueNone)
+                        | ValueNone -> node.RemoveHandler(name)
 
                         | ValueSome msg ->
                             let handler () = Dispatcher.dispatch node msg
-
                             let handlerId = btn.AddPressListener handler
-                            node.SetHandler<int>(name, ValueSome handlerId))
+
+                            let disposable =
+                                { new IDisposable with
+                                    member _.Dispose() = btn.RemovePressListener handlerId }
+
+                            node.SetHandler(name, disposable))
                 )
                 |> AttributeDefinitionStore.registerScalar
 
@@ -44,18 +48,22 @@ module TestUI_Attributes =
 
                         let btn = node.Target :?> IButton
 
-                        match node.TryGetHandler<int>(name) with
+                        match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handlerId -> btn.RemoveTapListener handlerId
+                        | ValueSome handler -> handler.Dispose()
 
                         match newValueOpt with
-                        | ValueNone -> node.SetHandler(name, ValueNone)
+                        | ValueNone -> node.RemoveHandler(name)
 
                         | ValueSome msg ->
                             let handler () = Dispatcher.dispatch node msg
-
                             let handlerId = btn.AddTapListener handler
-                            node.SetHandler<int>(name, ValueSome handlerId))
+
+                            let disposable =
+                                { new IDisposable with
+                                    member _.Dispose() = btn.RemoveTapListener handlerId }
+
+                            node.SetHandler(name, disposable))
                 )
                 |> AttributeDefinitionStore.registerScalar
 
@@ -70,18 +78,22 @@ module TestUI_Attributes =
 
                         let btn = node.Target :?> IButton
 
-                        match node.TryGetHandler<int>(name) with
+                        match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handlerId -> btn.RemoveTap2Listener handlerId
+                        | ValueSome handler -> handler.Dispose()
 
                         match newValueOpt with
-                        | ValueNone -> node.SetHandler(name, ValueNone)
+                        | ValueNone -> node.RemoveHandler(name)
 
                         | ValueSome msg ->
                             let handler () = Dispatcher.dispatch node msg
-
                             let handlerId = btn.AddTap2Listener handler
-                            node.SetHandler<int>(name, ValueSome handlerId))
+
+                            let disposable =
+                                { new IDisposable with
+                                    member _.Dispose() = btn.RemoveTap2Listener handlerId }
+
+                            node.SetHandler(name, disposable))
                 )
                 |> AttributeDefinitionStore.registerScalar
 
@@ -96,18 +108,22 @@ module TestUI_Attributes =
 
                         let btn = node.Target :?> IContainer
 
-                        match node.TryGetHandler<int>(name) with
+                        match node.TryGetHandler(name) with
                         | ValueNone -> ()
-                        | ValueSome handlerId -> btn.RemoveTapListener handlerId
+                        | ValueSome handler -> handler.Dispose()
 
                         match newValueOpt with
-                        | ValueNone -> node.SetHandler(name, ValueNone)
+                        | ValueNone -> node.RemoveHandler(name)
 
                         | ValueSome msg ->
                             let handler () = Dispatcher.dispatch node msg
-
                             let handlerId = btn.AddTapListener handler
-                            node.SetHandler<int>(name, ValueSome handlerId))
+
+                            let disposable =
+                                { new IDisposable with
+                                    member _.Dispose() = btn.RemoveTapListener handlerId }
+
+                            node.SetHandler(name, disposable))
                 )
                 |> AttributeDefinitionStore.registerScalar
 
