@@ -217,7 +217,7 @@ module Attributes =
 
                     // Trigger the unmounted event
                     Dispatcher.dispatchEventForAllChildren itemNode widget Lifecycle.Unmounted
-                    itemNode.Disconnect()
+                    itemNode.Dispose()
 
                     // Remove the child from the UI tree
                     targetColl.RemoveAt(index)
@@ -247,7 +247,7 @@ module Attributes =
 
                     // Trigger the unmounted event for the old child
                     Dispatcher.dispatchEventForAllChildren prevItemNode oldWidget Lifecycle.Unmounted
-                    prevItemNode.Disconnect()
+                    prevItemNode.Dispose()
 
                     // Replace the existing child in the UI tree at the index with the new one
                     targetColl[index] <- unbox view
@@ -288,20 +288,16 @@ module Attributes =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
                 (fun _ (newValueOpt: MsgValue voption) node ->
-                    let event = getEvent node.Target
-
                     match node.TryGetHandler(name) with
                     | ValueNone -> ()
-                    | ValueSome handler -> event.RemoveHandler handler
+                    | ValueSome handler -> handler.Dispose()
 
                     match newValueOpt with
-                    | ValueNone -> node.SetHandler(name, ValueNone)
-
+                    | ValueNone -> node.RemoveHandler(name)
                     | ValueSome(MsgValue msg) ->
-                        let handler = EventHandler(fun _ _ -> Dispatcher.dispatch node msg)
-
-                        event.AddHandler handler
-                        node.SetHandler(name, ValueSome handler))
+                        let event = getEvent node.Target
+                        let handler = event.Subscribe(fun _ -> Dispatcher.dispatch node msg)
+                        node.SetHandler(name, handler))
             )
 
             |> AttributeDefinitionStore.registerScalar
@@ -317,23 +313,21 @@ module Attributes =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
                 (fun _ (newValueOpt: ('args -> MsgValue) voption) (node: IViewNode) ->
-                    let event = getEvent node.Target
-
                     match node.TryGetHandler(name) with
                     | ValueNone -> ()
-                    | ValueSome handler -> event.RemoveHandler handler
+                    | ValueSome handler -> handler.Dispose()
 
                     match newValueOpt with
-                    | ValueNone -> node.SetHandler(name, ValueNone)
-
+                    | ValueNone -> node.RemoveHandler(name)
                     | ValueSome fn ->
+                        let event = getEvent node.Target
+
                         let handler =
-                            EventHandler<'args>(fun _ args ->
+                            event.Subscribe(fun args ->
                                 let (MsgValue r) = fn args
                                 Dispatcher.dispatch node r)
 
-                        node.SetHandler(name, ValueSome handler)
-                        event.AddHandler handler)
+                        node.SetHandler(name, handler))
             )
             |> AttributeDefinitionStore.registerScalar
 
@@ -347,20 +341,15 @@ module Attributes =
             SimpleScalarAttributeDefinition.CreateAttributeData(
                 ScalarAttributeComparers.noCompare,
                 (fun _ (newValueOpt: (unit -> unit) voption) node ->
-                    let event = getEvent(node.Target)
-
                     match node.TryGetHandler(name) with
                     | ValueNone -> ()
-                    | ValueSome handler -> event.RemoveHandler handler
+                    | ValueSome handler -> handler.Dispose()
 
                     match newValueOpt with
-                    | ValueNone -> node.SetHandler(name, ValueNone)
-
+                    | ValueNone -> node.RemoveHandler(name)
                     | ValueSome(fn) ->
-                        let handler = EventHandler(fun _ _ -> fn())
-
-                        event.AddHandler handler
-                        node.SetHandler(name, ValueSome handler))
+                        let event = getEvent node.Target
+                        node.SetHandler(name, event.Subscribe(fun _ -> fn())))
             )
 
             |> AttributeDefinitionStore.registerScalar

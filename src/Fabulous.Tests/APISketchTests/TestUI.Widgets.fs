@@ -41,7 +41,7 @@ module TestUI_Widgets =
                             | ValueNone -> None
                             | ValueSome parent -> Some parent
 
-                        let viewNode = ViewNode(parentNode, context, weakReference)
+                        let viewNode = new ViewNode(parentNode, context, weakReference)
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
@@ -214,6 +214,7 @@ module TestUI_Widgets =
                       MinLogLevel = LogLevel.Fatal }
                   Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
                   GetComponent = Component.getComponent
+                  SetComponent = Component.setComponent
                   SyncAction = fun fn -> fn() }
 
             member x.ProcessMessage(msg: 'msg) =

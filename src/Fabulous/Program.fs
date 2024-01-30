@@ -11,7 +11,7 @@ type Program<'arg, 'model, 'msg> =
         /// Update the application state based on a message
         Update: 'msg * 'model -> 'model * Cmd<'msg>
         /// Add a subscription that can dispatch messages
-        Subscribe: 'model -> Cmd<'msg>
+        Subscribe: 'model -> Sub<'msg>
         /// Configuration for logging all output messages from Fabulous
         Logger: Logger
         /// Exception handler for all uncaught exceptions happening in the MVU loop.
@@ -54,7 +54,7 @@ module Program =
     let inline private define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) =
         { Init = init
           Update = (fun (msg, model) -> update msg model)
-          Subscribe = fun _ -> Cmd.none
+          Subscribe = fun _ -> Sub.none
           Logger = ProgramDefaults.defaultLogger()
           ExceptionHandler = ProgramDefaults.defaultExceptionHandler }
 
@@ -70,13 +70,15 @@ module Program =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
         define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
 
-    /// Subscribe to external source of events.
-    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
-    let withSubscription (subscribe: 'model -> Cmd<'msg>) (program: Program<'arg, 'model, 'msg>) =
-        let sub model =
-            Cmd.batch [ program.Subscribe model; subscribe model ]
+    /// Subscribe to external source of events, overrides existing subscription.
+    /// Return the subscriptions that should be active based on the current model.
+    /// Subscriptions will be started or stopped automatically to match.
+    let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) = { program with Subscribe = subscribe }
 
-        { program with Subscribe = sub }
+    /// Map existing subscription to external source of events.
+    let mapSubscription map (program: Program<'arg, 'model, 'msg>) =
+        { program with
+            Subscribe = map program.Subscribe }
 
     /// Configure how the output messages from Fabulous will be handled
     let withLogger (logger: Logger) (program: Program<'arg, 'model, 'msg>) = { program with Logger = logger }
