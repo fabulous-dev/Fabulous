@@ -213,7 +213,8 @@ module TestUI_Widgets =
                     { Log = fun _ -> ()
                       MinLogLevel = LogLevel.Fatal }
                   Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
-                  GetComponent = Component.getComponent }
+                  GetComponent = Component.getComponent
+                  SyncAction = fun fn -> fn() }
 
             member x.ProcessMessage(msg: 'msg) =
                 match state with

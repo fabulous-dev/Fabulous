@@ -35,6 +35,7 @@ type ViewTreeContext =
       GetViewNode: obj -> IViewNode
       Logger: Logger
       Dispatch: obj -> unit
+      SyncAction: (unit -> unit) -> unit
       GetComponent: obj -> obj }
 
 and IViewNode =
