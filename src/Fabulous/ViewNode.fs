@@ -1,18 +1,32 @@
 ﻿namespace Fabulous
 
+open System
 open System.Collections.Generic
 open Fabulous
 
 /// Define the logic to apply diffs and store event handlers of its target control
 [<Sealed>]
-type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef: System.WeakReference) =
-
-    let mutable _isDisconnected = false
+type ViewNode =
+    val mutable parent: IViewNode option
+    val mutable treeContext: ViewTreeContext
+    val mutable targetRef: WeakReference
+    val mutable isDisposed: bool
+    val mutable memoizedWidget: Widget option
+    val mutable mapMsg: (obj -> obj) option
 
     // TODO consider combine handlers mapMsg and property bag
     // also we can probably use just Dictionary instead of Map because
     // ViewNode is supposed to be mutable, stateful and persistent object
-    let _handlers = Dictionary<string, obj>()
+    val handlers: Dictionary<string, IDisposable>
+
+    new(parent: IViewNode option, treeContext: ViewTreeContext, target: WeakReference) =
+        { parent = parent
+          treeContext = treeContext
+          targetRef = target
+          handlers = Dictionary<string, IDisposable>()
+          isDisposed = false
+          memoizedWidget = None
+          mapMsg = None }
 
     member inline private this.ApplyScalarDiffs(diffs: ScalarChanges inref) : unit =
         let node = this :> IViewNode
@@ -47,8 +61,6 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                     let scalar = (AttributeDefinitionStore.getScalar key)
 
                     scalar.UpdateNode (ValueSome removed.Value) ValueNone node
-
-
 
             | ScalarChange.Updated(oldAttr, newAttr) ->
                 let key = oldAttr.Key
@@ -91,12 +103,10 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
 
                 definition.UpdateNode ValueNone (ValueSome added.Value) (this :> IViewNode)
 
-
             | WidgetCollectionChange.Removed removed ->
                 let definition = (AttributeDefinitionStore.getWidgetCollection removed.Key)
 
                 definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
-
 
             | WidgetCollectionChange.Updated struct (oldAttr, newAttr, diffs) ->
                 let definition = (AttributeDefinitionStore.getWidgetCollection newAttr.Key)
@@ -104,29 +114,59 @@ type ViewNode(parent: IViewNode option, treeContext: ViewTreeContext, targetRef:
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 
     interface IViewNode with
-        member _.Target = targetRef.Target
-        member _.TreeContext = treeContext
-        member val MemoizedWidget: Widget option = None with get, set
-        member _.Parent = parent
-        member val MapMsg: (obj -> obj) option = None with get, set
-        member _.IsDisconnected = _isDisconnected
+        member this.Target = this.targetRef.Target
+        member this.TreeContext = this.treeContext
 
-        member _.TryGetHandler<'T>(key: string) =
-            match _handlers.TryGetValue(key) with
+        member this.MemoizedWidget
+            with get () = this.memoizedWidget
+            and set value = this.memoizedWidget <- value
+
+        member this.Parent = this.parent
+
+        member this.MapMsg
+            with get () = this.mapMsg
+            and set value = this.mapMsg <- value
+
+        member this.IsDisconnected = this.isDisposed
+
+        member this.TryGetHandler(key: string) =
+            match this.handlers.TryGetValue(key) with
             | false, _ -> ValueNone
-            | true, v -> ValueSome(unbox<'T> v)
+            | true, handler -> ValueSome(handler)
 
-        member _.SetHandler<'T>(key: string, handlerOpt: 'T voption) =
-            match handlerOpt with
-            | ValueNone -> _handlers.Remove(key) |> ignore
-            | ValueSome v -> _handlers[key] <- box v
+        member this.SetHandler(key: string, handler: IDisposable) = this.handlers[key] <- handler
 
-        member _.Disconnect() = _isDisconnected <- true
+        member this.RemoveHandler(key: string) =
+            if this.handlers.ContainsKey(key) then
+                let handler = this.handlers[key]
+                this.handlers.Remove(key) |> ignore
+                handler.Dispose()
 
-        member x.ApplyDiff(diff) =
-            if not targetRef.IsAlive then
+        member this.Dispose() =
+            this.isDisposed <- true
+
+            // Dispose all the event handlers of this node
+            for kvp in this.handlers do
+                kvp.Value.Dispose()
+
+            this.handlers.Clear()
+
+            // Dispose the attached Component if any
+            if this.targetRef.IsAlive then
+                let comp = this.treeContext.GetComponent(this.targetRef.Target) :?> IDisposable
+
+                if comp <> null then
+                    comp.Dispose()
+                    this.treeContext.SetComponent null this.targetRef.Target
+
+            this.parent <- None
+            this.treeContext <- Unchecked.defaultof<_>
+            this.targetRef <- null
+
+        member this.ApplyDiff(diff) =
+            if not this.targetRef.IsAlive then
                 ()
             else
-                x.ApplyWidgetDiffs(&diff.WidgetChanges)
-                x.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
-                x.ApplyScalarDiffs(&diff.ScalarChanges)
+                this.ApplyWidgetDiffs(&diff.WidgetChanges)
+                this.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
+                this.ApplyScalarDiffs(&diff.ScalarChanges)

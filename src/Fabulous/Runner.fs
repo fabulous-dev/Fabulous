@@ -76,6 +76,7 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
         try
             _reentering <- true
             Sub.Internal.Fx.stop onError _activeSubs
+            _activeSubs <- Sub.Internal.empty
         with ex ->
             _reentering <- false
 

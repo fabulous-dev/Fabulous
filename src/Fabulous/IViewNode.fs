@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open Fabulous
 
 type ViewRef(onAttached, onDetached) =
@@ -40,6 +41,8 @@ type ViewTreeContext =
       SetComponent: obj -> obj -> unit }
 
 and IViewNode =
+    inherit IDisposable
+
     /// The view that is being rendered
     abstract member Target: obj
 
@@ -62,13 +65,12 @@ and IViewNode =
     abstract member MapMsg: (obj -> obj) option with get, set
 
     /// Return the event handler for a given attribute key if set
-    abstract member TryGetHandler<'T> : string -> 'T voption
+    abstract member TryGetHandler: string -> IDisposable voption
 
     /// Set the event handler for a given attribute name
-    abstract member SetHandler<'T> : string * 'T voption -> unit
+    abstract member SetHandler: string * IDisposable -> unit
 
-    /// Disconnect the node from the tree
-    abstract member Disconnect: unit -> unit
+    abstract member RemoveHandler: string -> unit
 
     /// Apply the diffing result to this node
     abstract member ApplyDiff: WidgetDiff inref -> unit

@@ -43,7 +43,7 @@ module MvuComponent =
                         let comp = new Component(treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
-                        treeContext.SetComponent view comp
+                        treeContext.SetComponent comp view
 
                         struct (node, view)
               AttachView =
@@ -73,7 +73,7 @@ module MvuComponent =
                         let comp = new Component(treeContext, data.Body, ctx)
                         let node = comp.AttachView(widget, view)
 
-                        treeContext.SetComponent view comp
+                        treeContext.SetComponent comp view
 
                         node }
 
