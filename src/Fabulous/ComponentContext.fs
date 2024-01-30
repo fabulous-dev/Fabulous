@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open System.ComponentModel
 
 (*
@@ -18,6 +19,7 @@ we can leverage the inlining capabilities of the ComponentBuilder to create an a
 /// <summary>
 /// Holds the values for the various states of a component.
 /// </summary>
+[<AllowNullLiteral>]
 type ComponentContext(initialSize: int) =
     static let mutable nextId = 0
 
@@ -27,11 +29,12 @@ type ComponentContext(initialSize: int) =
 
     let id = getNextId()
     let mutable values = Array.zeroCreate initialSize
+    let disposables = System.Collections.Generic.List<IDisposable>()
 
     let renderNeeded = Event<unit>()
 
     // We assume that most components will have few values, so initialize it with a small array
-    new() = ComponentContext(3)
+    new() = new ComponentContext(3)
 
     member this.Id = id
 
@@ -64,6 +67,19 @@ type ComponentContext(initialSize: int) =
     member this.SetValue(key: int, value: 'T) =
         this.SetValueInternal(key, value)
         this.NeedsRender()
+
+    member this.LinkDisposable(disposable: IDisposable) = disposables.Add(disposable)
+
+    member this.Dispose() =
+        for disposable in disposables do
+            disposable.Dispose()
+
+        disposables.Clear()
+
+        values <- Array.empty
+
+    interface IDisposable with
+        member this.Dispose() = this.Dispose()
 
 [<AbstractClass; Sealed>]
 type Context private () =

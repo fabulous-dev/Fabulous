@@ -26,10 +26,12 @@ module MvuComponent =
                             | Some attr -> attr.Value :?> MvuComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let ctx = ComponentContext(1)
+                        let ctx = new ComponentContext(1)
 
                         let runner =
-                            Runner((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+                            new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+
+                        ctx.LinkDisposable(runner)
 
                         runner.Start(data.Arg)
 
@@ -41,7 +43,7 @@ module MvuComponent =
                         let comp = new Component(treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
-                        // TODO: Attach component to view so component is not discarded by GC
+                        treeContext.SetComponent comp view
 
                         struct (node, view)
               AttachView =
@@ -54,10 +56,12 @@ module MvuComponent =
                             | Some attr -> attr.Value :?> MvuComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let ctx = ComponentContext(1)
+                        let ctx = new ComponentContext(1)
 
                         let runner =
-                            Runner((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+                            new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+
+                        ctx.LinkDisposable(runner)
 
                         runner.Start(data.Arg)
 
@@ -69,7 +73,7 @@ module MvuComponent =
                         let comp = new Component(treeContext, data.Body, ctx)
                         let node = comp.AttachView(widget, view)
 
-                        // TODO: Attach component to view so component is not discarded by GC
+                        treeContext.SetComponent comp view
 
                         node }
 
@@ -93,7 +97,7 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
         let program: Program<obj, obj, obj> =
             { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
               Update = fun (msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
-              Subscribe = fun model -> Cmd.map box (program.Subscribe(unbox model))
+              Subscribe = fun model -> Sub.map "mvu" box (program.Subscribe(unbox model))
               Logger = program.Logger
               ExceptionHandler = program.ExceptionHandler }
 

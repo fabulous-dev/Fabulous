@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [2.5.0-pre8] - 2024-01-30
+
+### Changed
+- Dispose properly ViewNode and Component when Widget is removed from tree by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1066)
+
 ## [2.5.0-pre7] - 2024-01-30
 
 ### Added
@@ -90,7 +95,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.5.0-pre7...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.5.0-pre8...HEAD
+[2.5.0-pre8]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre8
 [2.5.0-pre7]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre7
 [2.5.0-pre6]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre6
 [2.5.0-pre5]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre5
