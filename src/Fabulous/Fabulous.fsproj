@@ -33,6 +33,7 @@
     <Compile Include="Reconciler.fs" />
     <Compile Include="ViewNode.fs" />
     <Compile Include="Cmd.fs" />
+    <Compile Include="Sub.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Runner.fs" />
     <Compile Include="MapMsg.fs" />

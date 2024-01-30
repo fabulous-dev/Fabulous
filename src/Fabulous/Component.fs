@@ -216,12 +216,6 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
     let mutable _view = null
     let mutable _contextSubscription: IDisposable = null
 
-    interface IDisposable with
-        member this.Dispose() =
-            if _contextSubscription <> null then
-                _contextSubscription.Dispose()
-                _contextSubscription <- null
-
     member private this.MergeAttributes(rootWidget: Widget, componentWidgetOpt: Widget voption) =
         match componentWidgetOpt with
         | ValueNone -> struct (rootWidget.ScalarAttributes, rootWidget.WidgetAttributes, rootWidget.WidgetCollectionAttributes)
@@ -321,6 +315,22 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         let viewNode = treeContext.GetViewNode _view
 
         Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
+        
+    member this.Dispose() =
+        if _contextSubscription <> null then
+            _contextSubscription.Dispose()
+            
+        if _context <> null then
+            _context.Dispose()
+            
+        _body <- null
+        _widget <- Unchecked.defaultof<_>
+        _view <- null
+        _contextSubscription <- null
+        _context <- null
+
+    interface IDisposable with
+        member this.Dispose() = this.Dispose()
 
     member this.Render() =
         treeContext.SyncAction(this.RenderInternal)
@@ -343,11 +353,11 @@ module Component =
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let ctx = ComponentContext()
+                        let ctx = new ComponentContext()
                         let comp = new Component(treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
-                        // TODO: Attach component to view so component is not discarded by GC
+                        treeContext.SetComponent view comp
 
                         struct (node, view)
               AttachView =
@@ -360,11 +370,11 @@ module Component =
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let ctx = ComponentContext()
+                        let ctx = new ComponentContext()
                         let comp = new Component(treeContext, data.Body, ctx)
                         let node = comp.AttachView(widget, view)
 
-                        // TODO: Attach component to view so component is not discarded by GC
+                        treeContext.SetComponent view comp
 
                         node }
 
