@@ -81,6 +81,7 @@ module Cmd =
               | None -> ()
               | Some msg -> dispatch msg ]
 
+    //TODO what do I use this for?
     /// For building Commands from the return values or exceptions of simple functions,
     /// similar to a try/with or try/catch statement.
     module OfFunc =
@@ -116,6 +117,7 @@ module Cmd =
 
             [ bind ]
 
+    //TODO what do I use this for? Compared to other OfAsync... modules?
     /// For building Commands from the return values or exceptions of Async functions,
     /// similar to a try/with or try/catch statement.
     module OfAsyncWith =
@@ -174,6 +176,7 @@ module Cmd =
 
             [ bind >> start ]
 
+    //TODO what do I use this for? Compared to other OfAsync... modules?
     /// For building Commands from Async functions started on the thread pool.
     module OfAsync =
         /// Command that will evaluate an async block and map the result
@@ -195,6 +198,7 @@ module Cmd =
         let inline msgOption (task: Async<'msg option>) =
             OfAsyncWith.performOption Async.Start (fun () -> task) () id
 
+    //TODO what do I use this for? Compared to other OfAsync... modules?
     /// For building Commands from Async functions started immediately on the current operating system thread.
     module OfAsyncImmediate =
         /// Command that will evaluate an async block and map the result
@@ -210,6 +214,7 @@ module Cmd =
         let inline attempt (task: 'a -> Async<_>) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.attempt Async.StartImmediate task arg ofError
 
+    //TODO what do I use this for? Compared to other OfAsync... modules?
     /// For building Commands from Task results.
     module OfTask =
         /// Command to call a task and map the results

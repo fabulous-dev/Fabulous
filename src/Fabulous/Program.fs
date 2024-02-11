@@ -3,6 +3,11 @@ namespace Fabulous
 open System
 open System.Diagnostics
 
+(*TODO Is either of these a program in the Elm sense? If so, where's the view in this one?
+Or are these rather abstractions of or pre-cursors to an Elm Program?
+AFAIU in the Elm architecture a "program" manages the application's (or component's) state, actions, and view rendering.
+Please help me as a MVU/Elm newbie understand these types. *)
+//TODO what's the 'arg?
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg> =
     {
@@ -21,6 +26,7 @@ type Program<'arg, 'model, 'msg> =
         ExceptionHandler: exn -> bool
     }
 
+//TODO how is this different to the above? What's a 'marker? what's the 'arg?
 type Program<'arg, 'model, 'msg, 'marker> =
     {
         State: Program<'arg, 'model, 'msg>
@@ -66,31 +72,44 @@ module Program =
           Logger = ProgramDefaults.defaultLogger()
           ExceptionHandler = ProgramDefaults.defaultExceptionHandler }
 
+    //TODO when would I use this one? How does it compare to the other stateful* builders?
+    //TODO what's expected for 'arg?
     /// Create a program using an MVU loop
     let stateful (init: 'arg -> 'model) (update: 'msg -> 'model -> 'model) =
         define (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none)
 
+    //TODO when would I use this one? How does it compare to the other stateful* builders?
+    //TODO please explain the concept Cmd<'msg>
+    //TODO what's expected for 'arg?
     /// Create a program using an MVU loop
     let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) = define init update
 
+    //TODO when would I use this one? How does it compare to the other stateful* builders?
+    //TODO please explain the concept CmdMsg vs. Cmd<'msg>
+    //TODO what's expected for 'arg?
     /// <summary>
     /// Create a program using an MVU loop supporting CmdMsg.
     /// See also
     /// <seealso href="https://elmprogramming.com/elm-architecture-conclusion.html" />
+    /// ?
     /// </summary>
     let statefulWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
         define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
 
+    (*TODO Subscriptions will be started or stopped automatically to match.
+        - I don't understand what that means. What (other?) Subscriptions - or - to match what?*)
     /// <summary>
     /// Subscribe to external source of events, overrides existing subscription.
     /// Return the subscriptions that should be active based on the current model.
     /// Subscriptions will be started or stopped automatically to match.
     /// See also
     /// <seealso href="https://elmprogramming.com/subscriptions.html" />
+    /// ?
     /// </summary>
     let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) = { program with Subscribe = subscribe }
 
+    //TODO In what scenario would I want to use this?
     /// Map existing subscription to external source of events.
     let mapSubscription map (program: Program<'arg, 'model, 'msg>) =
         { program with
