@@ -2,14 +2,17 @@ namespace Fabulous
 
 open System
 
+//TODO if this is a Subscription ID...
 /// Subscription ID, alias for string list
 type SubId = string list
 
+//TODO ...then is this not rather the Subscription...
 /// Starts a subscription by supplying a Dispatch{'msg}
 /// which it may use to start dispatching messages similar to Effect{'msg}.
 /// Returns an IDisposable to stop it.
 type Subscribe<'msg> = Dispatch<'msg> -> IDisposable
 
+//TODO ...and this an ID'd Subscription list?
 /// Subscription - Generates new messages when running
 type Sub<'msg> = (SubId * Subscribe<'msg>) list
 
@@ -21,6 +24,7 @@ module Sub =
     /// Aggregate multiple subscriptions
     let batch (subs: Sub<'msg> list) : Sub<'msg> = List.concat subs
 
+    //TODO How does this relate to Program.mapSubscription ?
     /// When emitting the message, map to another type.
     /// To avoid ID conflicts with other components, scope SubIds with a prefix.
     let map (idPrefix: string) (f: 'a -> 'msg) (sub: Sub<'a>) : Sub<'msg> =

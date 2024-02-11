@@ -3,6 +3,11 @@ namespace Fabulous
 open System
 open System.Diagnostics
 
+(*TODO Is either of these a program in the Elm sense? If so, where's the view in this one?
+Or are these rather abstractions of or pre-cursors to an Elm Program?
+AFAIU in the Elm architecture a "program" manages the application's (or component's) state, actions, and view rendering.
+Please help me as a MVU/Elm newbie understand these types. *)
+//TODO what's the 'arg?
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg> =
     {
@@ -21,6 +26,7 @@ type Program<'arg, 'model, 'msg> =
         ExceptionHandler: exn -> bool
     }
 
+//TODO how is this different to the above? What's a 'marker? what's the 'arg?
 type Program<'arg, 'model, 'msg, 'marker> =
     {
         State: Program<'arg, 'model, 'msg>
@@ -112,6 +118,7 @@ module Program =
     /// </summary>
     let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) = { program with Subscribe = subscribe }
 
+    //TODO In what scenario would I want to use this?
     /// Map existing subscription to external source of events.
     let mapSubscription map (program: Program<'arg, 'model, 'msg>) =
         { program with

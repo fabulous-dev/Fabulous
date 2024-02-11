@@ -163,6 +163,9 @@ module Cmd =
 
             [ bind >> start ]
 
+        (*  TODO this doesn't use Async.Catch - is that intended?
+            Is this misplaced here or should that be documented?
+            Or is there some magic involved that turns an exn into None? *)
         /// Command that will evaluate an async block and map the success
         let performOption (start: Async<unit> -> unit) (task: 'a -> Async<_ option>) (arg: 'a) (ofSuccess: _ -> 'msg) : Cmd<'msg> =
             let bind dispatch =
@@ -176,6 +179,12 @@ module Cmd =
 
             [ bind >> start ]
 
+    //TODO Feel free to trim the fat from this description.
+    (*  TODO There are some caveats and warnings against using Async.Start in the chapter behind that first link.
+        Do they need to be reflected here? *)
+    (*  TODO When would I use this instead of OfAsyncImmediate?
+        Why would I not always use OfAsyncImmediate? Are there some typical use cases?
+        How can we help devs decide which sub-module to use? *)
     /// For building Commands from Async functions queued to be run in the background, started on a thread pool thread using Async.Start.
     /// Suitable for long-running or CPU-bound computations where you want to free up the UI thread to remain responsive to do other work.
     /// See https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async#asyncstart
@@ -202,6 +211,10 @@ module Cmd =
         let inline msgOption (task: Async<'msg option>) =
             OfAsyncWith.performOption Async.Start (fun () -> task) () id
 
+    (*  TODO I took parts of this description from the link source,
+        suggesting this has an effect on async ops updating the UI.
+        But using Cmd.OfAsync seems to work just fine for them as well. So why use this then?
+        Is there an example out there demonstrating the effect - or can one be made up? *)
     /// For building Commands from Async functions started immediately on the current operating system thread
     /// using Async.StartImmediate. This is helpful if you need to update something on the calling thread during the computation.
     /// For example if an asynchronous computation must update a UI (such as updating a progress bar).
