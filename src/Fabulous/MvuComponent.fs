@@ -28,8 +28,14 @@ module MvuComponent =
 
                         let ctx = new ComponentContext(1)
 
-                        let runner =
-                            new Runner<obj, obj, obj>((fun () -> ctx.TryGetValue(0).Value), (fun v -> ctx.SetValue(0, v)), data.Program)
+                        let getModel () =
+                            match ctx.TryGetValue(0) with
+                            | ValueNone -> failwith("Model not found in ComponentContext " + ctx.Id.ToString())
+                            | ValueSome model -> model
+
+                        let setModel v = ctx.SetValue(0, v)
+
+                        let runner = new Runner<obj, obj, obj>(getModel, setModel, data.Program)
 
                         ctx.LinkDisposable(runner)
 
