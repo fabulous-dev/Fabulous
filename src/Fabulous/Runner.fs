@@ -10,6 +10,7 @@ open System.Collections.Concurrent
 type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> unit, program: Program<'arg, 'model, 'msg>) =
     let mutable _activeSubs = Sub.Internal.empty
     let mutable _reentering = false
+    let mutable _stopped = false
     let queue = ConcurrentQueue<'msg>()
 
     let onError (message, exn) =
@@ -21,7 +22,7 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
     let processMsgs dispatch msg =
         let mutable lastMsg = ValueSome msg
 
-        while lastMsg.IsSome do
+        while not _stopped && lastMsg.IsSome do
             let model = getState()
             let newModel, cmd = program.Update(lastMsg.Value, model)
             let subs = program.Subscribe(newModel)
@@ -39,7 +40,9 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
 
     let rec dispatch msg =
         try
-            if _reentering then
+            if _stopped then
+                () // Message arrived after Runner got disposed, simply discard it
+            else if _reentering then
                 queue.Enqueue(msg)
             else
                 _reentering <- true
@@ -74,7 +77,8 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
 
     let stop () =
         try
-            _reentering <- true
+            _stopped <- true
+            queue.Clear()
             Sub.Internal.Fx.stop onError _activeSubs
             _activeSubs <- Sub.Internal.empty
         with ex ->
