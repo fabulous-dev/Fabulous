@@ -194,19 +194,23 @@ module Cmd =
 
         fun (value: 'value) ->
             [ fun dispatch ->
-                  if cts <> null then
-                      cts.Cancel()
-                      cts.Dispose()
+                lock fn (fun () ->
+                    if cts <> null then
+                        cts.Cancel()
+                        cts.Dispose()
 
-                  cts <- new CancellationTokenSource()
+                    cts <- new CancellationTokenSource()
 
-                  Async.Start(
-                      async {
-                          do! Async.Sleep(timeout)
-                          dispatch(fn value)
+                    Async.Start(
+                        async {
+                            do! Async.Sleep(timeout)
+                            lock fn (fun () ->
+                                dispatch(fn value)
 
-                          cts.Dispose()
-                          cts <- null
-                      },
-                      cts.Token
-                  ) ]
+                                if cts <> null then
+                                    cts.Dispose()
+                                    cts <- null
+                            )
+                        },
+                        cts.Token
+                    ) ) ]
