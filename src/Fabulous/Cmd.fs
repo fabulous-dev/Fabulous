@@ -190,27 +190,28 @@ module Cmd =
 
     /// Command to issue a message if no other message has been issued within the specified timeout
     let debounce (timeout: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
+        let funLock = obj()
         let mutable cts: CancellationTokenSource = null
 
         fun (value: 'value) ->
             [ fun dispatch ->
-                lock fn (fun () ->
-                    if cts <> null then
-                        cts.Cancel()
-                        cts.Dispose()
+                  lock funLock (fun () ->
+                      if cts <> null then
+                          cts.Cancel()
+                          cts.Dispose()
 
-                    cts <- new CancellationTokenSource()
+                      cts <- new CancellationTokenSource()
 
-                    Async.Start(
-                        async {
-                            do! Async.Sleep(timeout)
-                            lock fn (fun () ->
-                                dispatch(fn value)
+                      Async.Start(
+                          async {
+                              do! Async.Sleep(timeout)
 
-                                if cts <> null then
-                                    cts.Dispose()
-                                    cts <- null
-                            )
-                        },
-                        cts.Token
-                    ) ) ]
+                              lock funLock (fun () ->
+                                  dispatch(fn value)
+
+                                  if cts <> null then
+                                      cts.Dispose()
+                                      cts <- null)
+                          },
+                          cts.Token
+                      )) ]
