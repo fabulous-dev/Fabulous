@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open System.Runtime.CompilerServices
 
 [<Struct; NoEquality; NoComparison>]
@@ -88,6 +89,20 @@ module MvuComponent =
 
     let Data =
         Attributes.defineSimpleScalar<MvuComponentData> "MvuComponent_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
+
+    let canReuseMvuComponent (prev: Widget) (curr: Widget) =
+        let prevData =
+            match prev.ScalarAttributes with
+            | ValueSome attrs when attrs.Length > 0 -> attrs[0].Value :?> MvuComponentData
+            | _ -> failwith "Component widget must have a body"
+
+        let currData =
+            match curr.ScalarAttributes with
+            | ValueSome attrs when attrs.Length > 0 -> attrs[0].Value :?> MvuComponentData
+            | _ -> failwith "Component widget must have a body"
+
+        // NOTE: Somehow using = here crashes the app and prevents debugging...
+        Object.Equals(prevData.Arg, currData.Arg)
 
 /// Delegate used by the MvuComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
