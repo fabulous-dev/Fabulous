@@ -2,10 +2,12 @@ namespace Fabulous
 
 open System
 
-/// SubId - Subscription ID, alias for string list
+/// Subscription ID, alias for string list
 type SubId = string list
 
-/// Subscribe - Starts a subscription, returns IDisposable to stop it
+/// Starts a subscription by supplying a Dispatch{'msg}
+/// which it may use to start dispatching messages similar to Effect{'msg}.
+/// Returns an IDisposable to stop it.
 type Subscribe<'msg> = Dispatch<'msg> -> IDisposable
 
 /// Subscription - Generates new messages when running
