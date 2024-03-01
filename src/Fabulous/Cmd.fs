@@ -229,3 +229,85 @@ module Cmd =
                           },
                           cts.Token
                       )) ]
+
+    /// <summary>Creates a factory for Commands that dispatch a message only
+    /// if the factory produced no other Command within the specified interval.
+    /// This limits how often a message is dispatched by ensuring to only dispatch once within a certain time interval
+    /// and dropping messages that are produces during the cooldown.
+    /// Useful for limiting how often a progress message is shown or preventing too many updates to a UI element in a short time.
+    /// Note that this creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.</summary>
+    /// <param name="interval">The minimum time interval between two consecutive Command executions in milliseconds.</param>
+    /// <param name="fn">Maps a factory input value to a message for dispatch.</param>
+    /// <returns>A Command factory function that maps an input value to a "throttled" Command which dispatches a message (mapped from the value)
+    /// if the minimum time interval has elapsed since the last Command execution; otherwise, it does nothing.</returns>
+    let throttle (interval: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
+        let mutable lastDispatch = System.DateTime.MinValue
+
+        // return a factory function mapping input values to "throttled" Commands that only dispatch if enough time passed
+        fun (value: 'value) ->
+            [ fun dispatch ->
+                  let now = System.DateTime.UtcNow
+
+                  // If the interval has elapsed since the last execution, dispatch the message
+                  if now - lastDispatch >= System.TimeSpan.FromMilliseconds(float interval) then
+                      lastDispatch <- now
+                      dispatch(fn value) ]
+
+    /// <summary>
+    /// Creates a Command factory that dispatches the most recent message in a given interval - even if delayed.
+    /// This makes it similar to <see cref="throttle"/> in that it rate-limits the message dispatch
+    /// and similar to <see cref="debounce"/> in that it guarantees the last message (within the interval or in total) is dispatched.
+    /// Helpful for scenarios where you want to throttle, but cannot risk losing the last message to throttling
+    /// - like the last progress update that completes a progress.
+    /// Note that this function creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.
+    /// </summary>
+    /// <param name="interval">The minimum time interval between two consecutive Command executions in milliseconds.</param>
+    /// <param name="fn">A function that maps a factory input value to a message for dispatch.</param>
+    /// <returns>
+    /// A Command factory function that maps an input value to a Command which dispatches a message (mapped from the value), either immediately
+    /// or after a delay respecting the interval, while cancelling older commands if the factory produces another Command before the interval has elapsed.
+    /// </returns>
+    let bufferedThrottle (interval: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
+        let rateLimit = System.TimeSpan.FromMilliseconds(float interval)
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable lastDispatch = System.DateTime.MinValue
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
+
+        // Return a factory function mapping input values to sleeper Commands with delayed dispatch of the most recent message
+        fun (value: 'value) ->
+            [ fun dispatch ->
+                  lock funLock (fun () ->
+                      let now = System.DateTime.UtcNow
+                      let elapsedSinceLastDispatch = now - lastDispatch
+
+                      // If the interval has elapsed since the last dispatch, dispatch immediately
+                      if elapsedSinceLastDispatch >= rateLimit then
+                          dispatch(fn value)
+                          lastDispatch <- now
+                      else // schedule the dispatch for when the interval is up
+                          // cancel the last sleeper Command issued earlier from this factory
+                          if cts <> null then
+                              cts.Cancel()
+                              cts.Dispose()
+
+                          // make cancellation available to the factory's next Command
+                          cts <- new CancellationTokenSource()
+
+                          // asynchronously wait for the remaining time before dispatch
+                          Async.Start(
+                              async {
+                                  do! Async.Sleep(rateLimit - elapsedSinceLastDispatch)
+
+                                  lock funLock (fun () ->
+                                      dispatch(fn value)
+                                      lastDispatch <- System.DateTime.UtcNow
+
+                                      // done; invalidate own cancellation token
+                                      if cts <> null then
+                                          cts.Dispose()
+                                          cts <- null)
+                              },
+                              cts.Token
+                          )) ]
