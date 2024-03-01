@@ -6,9 +6,11 @@ open System.Diagnostics
 /// Configuration of the Fabulous application
 type Program<'arg, 'model, 'msg> =
     {
-        /// Give the initial state for the application
+        /// Returns the initial model/state of the application and an intial Command
         Init: 'arg -> 'model * Cmd<'msg>
-        /// Update the application state based on a message
+        /// Returns a new model/application state
+        /// updated from a message applied to the current model
+        /// and optionally another Command
         Update: 'msg * 'model -> 'model * Cmd<'msg>
         /// Add a subscription that can dispatch messages
         Subscribe: 'model -> Sub<'msg>
@@ -22,7 +24,7 @@ type Program<'arg, 'model, 'msg> =
 type Program<'arg, 'model, 'msg, 'marker> =
     {
         State: Program<'arg, 'model, 'msg>
-        /// Render the application state
+        /// Renders the model/application state
         View: 'model -> WidgetBuilder<'msg, 'marker>
         /// Indicates if a previous Widget's view can be reused
         CanReuseView: Widget -> Widget -> bool
@@ -50,6 +52,12 @@ module ProgramDefaults =
         Trace.WriteLine(String.Format("Unhandled exception: {0}", exn.ToString()), "Debug")
         false
 
+/// <summary>
+/// A module for building and configuring Elm programs using an MVU loop.
+/// See also
+/// <seealso href="https://docs.fabulous.dev/advanced/composing-larger-applications/splitting-into-independent-mvu-states" />
+/// <seealso href="https://docs.fabulous.dev/basics/mvu" />
+/// </summary>
 module Program =
     let inline private define (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) =
         { Init = init
@@ -65,14 +73,22 @@ module Program =
     /// Create a program using an MVU loop
     let statefulWithCmd (init: 'arg -> 'model * Cmd<'msg>) (update: 'msg -> 'model -> 'model * Cmd<'msg>) = define init update
 
-    /// Create a program using an MVU loop. Add support for CmdMsg
+    /// <summary>
+    /// Create a program using an MVU loop supporting CmdMsg.
+    /// See also
+    /// <seealso href="https://elmprogramming.com/elm-architecture-conclusion.html" />
+    /// </summary>
     let statefulWithCmdMsg (init: 'arg -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (mapCmd: 'cmdMsg -> Cmd<'msg>) =
         let mapCmds cmdMsgs = cmdMsgs |> List.map mapCmd |> Cmd.batch
         define (fun arg -> let m, c = init arg in m, mapCmds c) (fun msg model -> let m, c = update msg model in m, mapCmds c)
 
+    /// <summary>
     /// Subscribe to external source of events, overrides existing subscription.
     /// Return the subscriptions that should be active based on the current model.
     /// Subscriptions will be started or stopped automatically to match.
+    /// See also
+    /// <seealso href="https://elmprogramming.com/subscriptions.html" />
+    /// </summary>
     let withSubscription (subscribe: 'model -> Sub<'msg>) (program: Program<'arg, 'model, 'msg>) = { program with Subscribe = subscribe }
 
     /// Map existing subscription to external source of events.

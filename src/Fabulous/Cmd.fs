@@ -3,16 +3,35 @@
 open System.Threading
 open System.Threading.Tasks
 
-/// Dispatch - feed new message into the processing loop
+/// <summary>
+/// A function that feeds a new Message into the processing loop.
+/// <seealso href="https://elmish.github.io/elmish/#dispatch-loop" />
+/// </summary>
 type Dispatch<'msg> = 'msg -> unit
 
-/// Subscription - return immediately, but may schedule dispatch of a message at any time
+/// <summary>
+/// A function that returns immediately, but may schedule dispatch of one or multiple Messages at any time
+/// via its access to a Dispatch function.
+/// This is an abstraction over raw Messages passed along to the MVU processing loop
+/// necessary to deal with real-world scenarios in which Effect functions may take a while to complete.
+/// This models an Elm "side-effect" like in
+/// <seealso href="https://elmish.github.io/elmish/#tasks-and-side-effects" />
+/// or
+/// <seealso href="https://elmprogramming.com/side-effects.html" />
+/// </summary>
 type Effect<'msg> = Dispatch<'msg> -> unit
 
-/// Cmd - container for effects that may produce messages
+/// <summary>
+/// A list of Effects that may dispatch Messages;
+/// the carriers of instructions you issue from the init and update functions.
+/// See
+/// <seealso href="https://elmish.github.io/elmish/#commands" />
+/// </summary>
 type Cmd<'msg> = Effect<'msg> list
 
-/// Cmd module for creating and manipulating commands
+/// A module for creating and manipulating Commands
+/// with a Command being a list of Message-dispatching Effects you issue from the init and update functions
+/// and an Effect being a function with access to a Dispatch function receiving a Message.
 [<RequireQualifiedAccess>]
 module Cmd =
     /// Execute the commands using the supplied dispatcher
@@ -24,29 +43,46 @@ module Cmd =
             with ex ->
                 onError ex)
 
-    /// None - no commands, also known as `[]`
+    /// No command; an empty list of Message-dispatching Effects equivalent to `[]`.
+    /// For when you don't want to issue a Command.
     let none: Cmd<'msg> = []
 
-    /// When emitting the message, map to another type
+    /// <summary>
+    /// Converts a Command of type 'a into a Command of type 'msg.
+    /// This is useful for emitting Commands of a uniform type,
+    /// like when receiving child messages in a parent-child composition scenario. See
+    /// <seealso href="https://elmish.github.io/elmish/docs/parent-child.html" />
+    /// </summary>
     let map (f: 'a -> 'msg) (cmd: Cmd<'a>) : Cmd<'msg> =
         cmd |> List.map(fun g -> (fun dispatch -> f >> dispatch) >> g)
 
-    /// Aggregate multiple commands
+    /// <summary>
+    /// Concatenates the Effects of multiple Commands into one list.
+    /// Use for emitting multiple Commands at the same time from the init or update function.
+    /// E.g. in an parent-child composition scenario:
+    /// <seealso href="https://elmish.github.io/elmish/docs/parent-child.html" />
+    /// </summary>
     let batch (cmds: Cmd<'msg> list) : Cmd<'msg> = List.concat cmds
 
-    /// Command to call the effect
+    /// <summary>
+    /// Returns a command to call a custom Effect function with access to a dispatch function.
+    /// Use for example to dispatch status updates or yield partial results from long-running background tasks.
+    /// </summary>
     let ofEffect (effect: Effect<'msg>) : Cmd<'msg> = [ effect ]
 
-    /// Command to issue a specific message
+    /// Command to issue a specific message.
+    /// Wraps the message into the Command structure returned from the update and init functions.
     let ofMsg (msg: 'msg) : Cmd<'msg> = [ fun dispatch -> dispatch msg ]
 
-    /// Command to issue a specific message, only when Option.IsSome = true
+    /// Command to issue the message from the message option if Option.IsSome = true
     let ofMsgOption (msg: 'msg option) : Cmd<'msg> =
         [ fun dispatch ->
               match msg with
               | None -> ()
               | Some msg -> dispatch msg ]
 
+    /// For building Commands from the return values or exceptions of simple functions,
+    /// similar to a try/with or try/catch statement.
     module OfFunc =
         /// Command to evaluate a simple function and map the result
         /// into success or error (of exception)
@@ -80,6 +116,8 @@ module Cmd =
 
             [ bind ]
 
+    /// For building Commands from the return values or exceptions of Async functions,
+    /// similar to a try/with or try/catch statement.
     module OfAsyncWith =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
@@ -136,6 +174,7 @@ module Cmd =
 
             [ bind >> start ]
 
+    /// For building Commands from Async functions started on the thread pool.
     module OfAsync =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
@@ -156,6 +195,7 @@ module Cmd =
         let inline msgOption (task: Async<'msg option>) =
             OfAsyncWith.performOption Async.Start (fun () -> task) () id
 
+    /// For building Commands from Async functions started immediately on the current operating system thread.
     module OfAsyncImmediate =
         /// Command that will evaluate an async block and map the result
         /// into success or error (of exception)
@@ -170,6 +210,7 @@ module Cmd =
         let inline attempt (task: 'a -> Async<_>) (arg: 'a) (ofError: _ -> 'msg) : Cmd<'msg> =
             OfAsyncWith.attempt Async.StartImmediate task arg ofError
 
+    /// For building Commands from Task results.
     module OfTask =
         /// Command to call a task and map the results
         let inline either (task: 'a -> Task<_>) (arg: 'a) (ofSuccess: _ -> 'msg) (ofError: _ -> 'msg) : Cmd<'msg> =
