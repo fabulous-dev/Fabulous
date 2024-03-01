@@ -188,20 +188,33 @@ module Cmd =
         let inline msgOption (task: Task<'msg option>) =
             OfAsync.msgOption(task |> Async.AwaitTask)
 
-    /// Command to issue a message if no other message has been issued within the specified timeout
+    /// <summary>Creates a factory for Commands that dispatch a message only
+    /// if the factory produces no other Command within the specified timeout.
+    /// Helps control how often a message is dispatched by delaying the dispatch after a period of inactivity.
+    /// Useful for handling noisy inputs like keypresses or scrolling, and preventing too many actions in a short time, like rapid button clicks.
+    /// Note that this creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.</summary>
+    /// <param name="timeout">The time to wait for the next Command from the factory in milliseconds.</param>
+    /// <param name="fn">Maps a factory input value to a message for delayed dispatch.</param>
+    /// <returns>A Command factory function that maps an input value to a "sleeper" Command which dispatches a delayed message (mapped from the value).
+    /// This command is cancelled if the factory produces another Command within the specified timeout; otherwise it succeeds and the message is dispatched.</returns>
     let debounce (timeout: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
-        let funLock = obj()
-        let mutable cts: CancellationTokenSource = null
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
 
+        // return a factory function mapping input values to "sleeper" Commands with delayed dispatch
         fun (value: 'value) ->
             [ fun dispatch ->
                   lock funLock (fun () ->
+                      // cancel the last sleeping Command issued earlier from this factory
                       if cts <> null then
                           cts.Cancel()
                           cts.Dispose()
 
+                      // make cancellation available to the factory's next Command
                       cts <- new CancellationTokenSource()
 
+                      // asynchronously wait for the specified time before dispatch
                       Async.Start(
                           async {
                               do! Async.Sleep(timeout)
@@ -209,6 +222,7 @@ module Cmd =
                               lock funLock (fun () ->
                                   dispatch(fn value)
 
+                                  // done; invalidate own cancellation token
                                   if cts <> null then
                                       cts.Dispose()
                                       cts <- null)
