@@ -61,7 +61,7 @@ module Memo =
     let internal canReuseMemoizedWidget prev next =
         let prevMemoData = getMemoData prev
         let currMemoData = getMemoData next
-        
+
         prevMemoData.MarkerType = currMemoData.MarkerType
         && prevMemoData.KeyData = currMemoData.KeyData
 
