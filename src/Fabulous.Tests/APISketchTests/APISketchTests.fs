@@ -445,6 +445,7 @@ module MemoTests =
             instance.ProcessMessage(SetMemoPart 99)
 
             // rerendered because of memo key changed
+            let memoLabel = find<TestLabel> tree "memo" :> IText
             Assert.AreEqual(2, renderCount)
             Assert.AreEqual("99", memoLabel.Text)
 
@@ -534,11 +535,11 @@ module MemoTests =
 
             let labelAgain = find<TestLabel> tree "label"
 
-            // same instance
-            Assert.AreSame(label, labelAgain)
+            // not same instance
+            Assert.AreNotSame(label, labelAgain)
 
             // just changes text but kept the same color
-            Assert.AreEqual([ TextSet "one"; ColorSet "blue"; TextSet "two" ], label.changeList)
+            Assert.AreEqual([ TextSet "two"; ColorSet "blue" ], labelAgain.changeList)
 
 
 
