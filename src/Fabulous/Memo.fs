@@ -59,11 +59,7 @@ module Memo =
         | _ -> failwith "Memo widget cannot have extra attributes"
 
     let internal canReuseMemoizedWidget prev next =
-        let prevMemoData = getMemoData prev
-        let currMemoData = getMemoData next
-
-        prevMemoData.MarkerType = currMemoData.MarkerType
-        && prevMemoData.KeyData = currMemoData.KeyData
+        (getMemoData prev).MarkerType = (getMemoData next).MarkerType
 
     let internal MemoAttribute: SimpleScalarAttributeDefinition<MemoData> =
         { Key = MemoAttributeKey

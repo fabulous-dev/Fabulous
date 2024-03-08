@@ -9,11 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
-## [2.4.2] - 2024-03-04
-
-### Changed
-- Include Memo.KeyData in CanReuseMemo by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1071)
-
 ## [2.4.1] - 2024-01-29
 
 ### Added
@@ -60,8 +55,7 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.4.2...HEAD
-[2.4.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.2
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/2.4.1...HEAD
 [2.4.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.1
 [2.4.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.4.0
 [2.3.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.3.2
