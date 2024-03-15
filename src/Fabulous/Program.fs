@@ -109,7 +109,14 @@ module Program =
             Init = traceInit
             Update = traceUpdate }
 
-    /// Configure how the unhandled exceptions happening during the execution of a Fabulous app with be handled
+    /// <summary>
+    /// Configures how unhandled exceptions happening in the MVU loop
+    /// during the execution of a <paramref name="program" /> will be handled
+    /// by setting its <see cref="Program.ExceptionHandler" />
+    /// to the specified <paramref name="handler" />
+    /// - which should return true if the exception was handled and the <paramref name="program" /> may continue
+    /// and false otherwise, re-raising the error and terminating the <paramref name="program" />.
+    /// </summary>
     let withExceptionHandler (handler: exn -> bool) (program: Program<'arg, 'model, 'msg>) =
         { program with
             ExceptionHandler = handler }
