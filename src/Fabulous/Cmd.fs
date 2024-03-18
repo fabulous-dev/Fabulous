@@ -311,3 +311,72 @@ module Cmd =
                               },
                               cts.Token
                           )) ]
+
+    /// <summary>
+    /// Creates a factory for Commands that dispatch messages with a list of pending values at a fixed maximum rate,
+    /// ensuring that all pending values are dispatched when the specified interval elapses.
+    /// This function is similar to <see cref="bufferedThrottle"/>, but instead of dispatching only the last value,
+    /// it remembers and dispatches all undispatched values within the specified interval.
+    /// Helpful for scenarios where you want to throttle messages but cannot afford to lose any of the values they carry,
+    /// ensuring all values are processed at a controlled rate.
+    /// Note that this function creates an object with internal state and is intended to be used per Program
+    /// or longer-running background process rather than once per message in the update function.
+    /// </summary>
+    /// <param name="interval">The minimum time interval between two consecutive Command executions in milliseconds.</param>
+    /// <param name="fn">A function that maps a list of factory input values to a message for dispatch.</param>
+    /// <returns>
+    /// A Command factory function that maps a list of input values to a Command which dispatches a message (mapped from the pending values),
+    /// either immediately or after a delay respecting the interval, while remembering and dispatching all remembered values
+    /// when the interval has elapsed, ensuring no values are lost.
+    /// </returns>
+    let batchedThrottle (interval: int) (mapValuesToMsg: 'value list -> 'msg) : 'value -> Cmd<'msg> =
+        let rateLimit = System.TimeSpan.FromMilliseconds(float interval)
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable lastDispatch = System.DateTime.MinValue
+        let mutable pendingValues: 'value list = []
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
+
+        // dispatches all pendingValues and resets them while updating lastDispatch
+        let dispatchBatch (dispatch: 'msg -> unit) =
+            // Dispatch in the order they were received
+            pendingValues |> List.rev |> mapValuesToMsg |> dispatch
+
+            lastDispatch <- System.DateTime.UtcNow
+            pendingValues <- []
+
+        // Return a factory function mapping input values to sleeping Commands dispatching all pending messages
+        fun (value: 'value) ->
+            [ fun dispatch ->
+                  lock funLock (fun () ->
+                      let now = System.DateTime.UtcNow
+                      let elapsedSinceLastDispatch = now - lastDispatch
+                      pendingValues <- value :: pendingValues
+
+                      // If the interval has elapsed since the last dispatch, dispatch all pending messages
+                      if elapsedSinceLastDispatch >= rateLimit then
+                          dispatchBatch dispatch
+                      else // schedule dispatch
+
+                          // if the the last sleeping dispatch can still be cancelled, do so
+                          if cts <> null then
+                              cts.Cancel()
+                              cts.Dispose()
+
+                          // used to enable cancelling this dispatch if newer values come into the factory
+                          cts <- new CancellationTokenSource()
+
+                          Async.Start(
+                              async {
+                                  // wait only as long as we have to before next dispatch
+                                  do! Async.Sleep(rateLimit - elapsedSinceLastDispatch)
+
+                                  lock funLock (fun () ->
+                                      dispatchBatch dispatch
+
+                                      // done; invalidate own cancellation
+                                      if cts <> null then
+                                          cts.Dispose()
+                                          cts <- null)
+                              },
+                              cts.Token
+                          )) ]
