@@ -3,7 +3,9 @@ namespace Fabulous.Tests
 open Fabulous
 open NUnit.Framework
 
-type CmdTestsMsg = NewValue of int
+type CmdTestsMsg =
+    | NewValue of int
+    | NewValues of int list
 
 module CmdTestsHelper =
     let execute dispatch (cmd: Cmd<'msg>) =
@@ -148,4 +150,65 @@ type ``Cmd tests``() =
             // the second message should have been dispatched delayed
             Assert.AreEqual(2, messageCount)
             Assert.AreEqual(Some(NewValue 2), actualValue)
+        }
+
+    [<Test>]
+    member _.``Cmd.batchedThrottle dispatches all undispatched values on interval expiry``() =
+        async {
+            let mutable messageCount = 0
+            let mutable dispatched = [] // records dispatched messages latest first
+
+            let dispatch msg =
+                messageCount <- messageCount + 1
+                dispatched <- msg :: dispatched
+
+            let batchedThrottleCmd = Cmd.batchedThrottle 100 NewValues
+
+            batchedThrottleCmd 1 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 2 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 3 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 4 |> CmdTestsHelper.execute dispatch
+
+            do! Async.Sleep 200 // Wait longer than the throttle interval
+
+            // All three values should have been dispatched
+            Assert.AreEqual(2, messageCount)
+            Assert.AreEqual([ NewValues [ 2; 3; 4 ]; NewValues [ 1 ] ], dispatched)
+        }
+
+    [<Test>]
+    member _.``Cmd.batchedThrottle dispatches messages immediately if interval not expired``() =
+        async {
+            let mutable messageCount = 0
+            let mutable dispatched = [] // records dispatched messages latest first
+
+            let dispatch msg =
+                messageCount <- messageCount + 1
+                dispatched <- msg :: dispatched
+
+            let batchedThrottleCmd = Cmd.batchedThrottle 100 NewValues
+
+            batchedThrottleCmd 1 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 2 |> CmdTestsHelper.execute dispatch
+
+            // Only the first value should have been dispatched immediately
+            Assert.AreEqual(1, messageCount)
+            Assert.AreEqual([ NewValues[1] ], dispatched)
+
+            (*  Wait for longer than twice the throttle interval,
+                giving second value time to dispatch and elapsing time until next dispatch *)
+            do! Async.Sleep 210
+
+            batchedThrottleCmd 3 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 4 |> CmdTestsHelper.execute dispatch
+
+            // Second value should have dispatched delayed, third immediately
+            Assert.AreEqual(3, messageCount)
+            Assert.AreEqual([ NewValues[3]; NewValues[2]; NewValues[1] ], dispatched)
+
+            do! Async.Sleep 110 // Wait longer than the throttle interval
+
+            // All values should have been dispatched eventually
+            Assert.AreEqual(4, messageCount)
+            Assert.AreEqual([ NewValues[4]; NewValues[3]; NewValues[2]; NewValues[1] ], dispatched)
         }
