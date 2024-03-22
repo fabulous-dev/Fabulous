@@ -31,7 +31,7 @@ type ComponentContext(initialSize: int) =
     let mutable values = Array.zeroCreate initialSize
     let disposables = System.Collections.Generic.List<IDisposable>()
 
-    let renderNeeded = Event<unit>()
+    let renderNeeded = Event<int>()
 
     // We assume that most components will have few values, so initialize it with a small array
     new() = new ComponentContext(3)
@@ -39,7 +39,7 @@ type ComponentContext(initialSize: int) =
     member this.Id = id
 
     member this.RenderNeeded = renderNeeded.Publish
-    member this.NeedsRender() = renderNeeded.Trigger()
+    member this.NeedsRender(key: int) = renderNeeded.Trigger(key)
 
     member private this.ResizeIfNeeded(count: int) =
         // If the array is already big enough, we don't need to do anything
@@ -66,7 +66,7 @@ type ComponentContext(initialSize: int) =
 
     member this.SetValue(key: int, value: 'T) =
         this.SetValueInternal(key, value)
-        this.NeedsRender()
+        this.NeedsRender(key)
 
     member this.LinkDisposable(disposable: IDisposable) = disposables.Add(disposable)
 
@@ -75,6 +75,10 @@ type ComponentContext(initialSize: int) =
             disposable.Dispose()
 
         disposables.Clear()
+
+        for value in values do
+            if value :? IDisposable then
+                (value :?> IDisposable).Dispose()
 
         values <- Array.empty
 
