@@ -48,9 +48,11 @@ type BindingExtensions =
             | ValueSome d -> d.Dispose()
 
             // Subscribe to source context changes
+            let sourceKey = stateValue.Key
+
             let sub =
                 stateValue.Context.RenderNeeded.Subscribe(fun k ->
-                    if k = stateValue.Key then
+                    if k = sourceKey then
                         ctx.NeedsRender(key))
 
             ctx.SetValueInternal(key, sub)
