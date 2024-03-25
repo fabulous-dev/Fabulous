@@ -332,7 +332,7 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
     interface IDisposable with
         member this.Dispose() = this.Dispose()
 
-    member this.Render() =
+    member this.Render(_) =
         treeContext.SyncAction(this.RenderInternal)
 
 module Component =
