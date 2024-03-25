@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre2] - 2024-03-025
+
+### Added
+- Add support for Binding in Components (https://github.com/fabulous-dev/Fabulous/pull/1074)
+
 ## [3.0.0-pre1] - 2024-03-01
 
 ### Changed
@@ -115,7 +120,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre1...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre2...HEAD
+[3.0.0-pre2]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre2
 [3.0.0-pre1]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre1
 [2.5.0-pre11]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre11
 [2.5.0-pre10]: https://github.com/fabulous-dev/Fabulous/releases/tag/2.5.0-pre10
