@@ -153,7 +153,7 @@ type ``Cmd tests``() =
         }
 
     [<Test>]
-    member _.``Cmd.batchedThrottle dispatches all undispatched values on interval expiry``() =
+    member _.``Dispatch.batchThrottled dispatches all undispatched values on interval expiry``() =
         async {
             let mutable messageCount = 0
             let mutable dispatched = [] // records dispatched messages latest first
@@ -162,12 +162,12 @@ type ``Cmd tests``() =
                 messageCount <- messageCount + 1
                 dispatched <- msg :: dispatched
 
-            let batchedThrottleCmd, _ = Cmd.batchedThrottle 100 NewValues
+            let batchedThrottleCmd, _ = dispatch.batchThrottled(100, NewValues)
 
-            batchedThrottleCmd 1 |> CmdTestsHelper.execute dispatch
-            batchedThrottleCmd 2 |> CmdTestsHelper.execute dispatch
-            batchedThrottleCmd 3 |> CmdTestsHelper.execute dispatch
-            batchedThrottleCmd 4 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 1
+            batchedThrottleCmd 2
+            batchedThrottleCmd 3
+            batchedThrottleCmd 4
 
             do! Async.Sleep 200 // Wait longer than the throttle interval
 
@@ -177,7 +177,7 @@ type ``Cmd tests``() =
         }
 
     [<Test>]
-    member _.``Cmd.batchedThrottle dispatches messages immediately if interval not expired``() =
+    member _.``Dispatch.batchThrottled dispatches messages immediately if interval not expired``() =
         async {
             let mutable messageCount = 0
             let mutable dispatched = [] // records dispatched messages latest first
@@ -186,10 +186,10 @@ type ``Cmd tests``() =
                 messageCount <- messageCount + 1
                 dispatched <- msg :: dispatched
 
-            let batchedThrottleCmd, _ = Cmd.batchedThrottle 100 NewValues
+            let batchedThrottleCmd, _ = dispatch.batchThrottled(100, NewValues)
 
-            batchedThrottleCmd 1 |> CmdTestsHelper.execute dispatch
-            batchedThrottleCmd 2 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 1
+            batchedThrottleCmd 2
 
             // Only the first value should have been dispatched immediately
             Assert.AreEqual(1, messageCount)
@@ -199,8 +199,8 @@ type ``Cmd tests``() =
                 giving second value time to dispatch and elapsing time until next dispatch *)
             do! Async.Sleep 210
 
-            batchedThrottleCmd 3 |> CmdTestsHelper.execute dispatch
-            batchedThrottleCmd 4 |> CmdTestsHelper.execute dispatch
+            batchedThrottleCmd 3
+            batchedThrottleCmd 4
 
             // Second value should have dispatched delayed, third immediately
             Assert.AreEqual(3, messageCount)
@@ -214,7 +214,7 @@ type ``Cmd tests``() =
         }
 
     [<Test>]
-    member _.``Cmd.batchedThrottle factory can be awaited for completion``() =
+    member _.``Dispatch.batchThrottled factory can be awaited for completion``() =
         async {
             let mutable messageCount = 0
             let mutable dispatched = [] // records dispatched messages latest first
@@ -223,10 +223,10 @@ type ``Cmd tests``() =
                 messageCount <- messageCount + 1
                 dispatched <- msg :: dispatched
 
-            let createCmd, awaitNextDispatch = Cmd.batchedThrottle 100 NewValues
+            let createCmd, awaitNextDispatch = dispatch.batchThrottled(100, NewValues)
 
-            createCmd 1 |> CmdTestsHelper.execute dispatch
-            createCmd 2 |> CmdTestsHelper.execute dispatch
+            createCmd 1
+            createCmd 2
 
             // Only the first value should have been dispatched immediately
             Assert.AreEqual(1, messageCount)
