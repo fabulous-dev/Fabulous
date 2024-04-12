@@ -26,7 +26,10 @@ module MvuComponent =
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
                         let data =
-                            match Array.tryHead attrs with
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> MvuComponentData
                             | None -> failwith "Component widget must have a body"
 

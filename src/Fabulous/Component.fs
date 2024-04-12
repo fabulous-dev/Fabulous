@@ -354,6 +354,7 @@ module Component =
                         let data =
                             let scalarAttrsOpt =
                                 attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
                             match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
@@ -371,7 +372,10 @@ module Component =
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
                         let data =
-                            match Array.tryHead attrs with
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
