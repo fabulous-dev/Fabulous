@@ -10,6 +10,9 @@ type MvuComponentData =
       Arg: obj }
 
 module MvuComponent =
+    let Data =
+        Attributes.defineSimpleScalar<MvuComponentData> "MvuComponent_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
+
     let WidgetKey =
         let key = WidgetDefinitionStore.getNextKey()
 
@@ -59,7 +62,10 @@ module MvuComponent =
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
                         let data =
-                            match Array.tryHead attrs with
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> MvuComponentData
                             | None -> failwith "Component widget must have a body"
 
@@ -86,9 +92,6 @@ module MvuComponent =
 
         WidgetDefinitionStore.set key definition
         key
-
-    let Data =
-        Attributes.defineSimpleScalar<MvuComponentData> "MvuComponent_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
 
     let canReuseMvuComponent (prev: Widget) (curr: Widget) =
         let prevData =
