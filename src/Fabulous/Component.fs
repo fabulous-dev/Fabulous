@@ -336,6 +336,9 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         treeContext.SyncAction(this.RenderInternal)
 
 module Component =
+    let Data =
+        Attributes.defineSimpleScalar<ComponentData> "Component_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
+
     let WidgetKey =
         let key = WidgetDefinitionStore.getNextKey()
 
@@ -349,7 +352,10 @@ module Component =
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
                         let data =
-                            match Array.tryHead attrs with
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
@@ -366,7 +372,10 @@ module Component =
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
                         let data =
-                            match Array.tryHead attrs with
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
@@ -380,9 +389,6 @@ module Component =
 
         WidgetDefinitionStore.set key definition
         key
-
-    let Data =
-        Attributes.defineSimpleScalar<ComponentData> "Component_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
 
 /// Delegate used by the ComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
