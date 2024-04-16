@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre4] - 2024-04-16
+
+### Changed
+- Find the component data key in ScalarAttributes by @edgarfgp (https://github.com/fabulous-dev/Fabulous/pull/1076)
+
 ## [3.0.0-pre3] - 2024-04-12
 
 ### Changed
@@ -125,7 +130,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre3...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre4...HEAD
+[3.0.0-pre4]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre4
 [3.0.0-pre3]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre3
 [3.0.0-pre2]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre2
 [3.0.0-pre1]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre1
