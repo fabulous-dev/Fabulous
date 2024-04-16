@@ -99,12 +99,25 @@ module MvuComponent =
     let canReuseMvuComponent (prev: Widget) (curr: Widget) =
         let prevData =
             match prev.ScalarAttributes with
-            | ValueSome attrs when attrs.Length > 0 -> attrs[0].Value :?> MvuComponentData
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> MvuComponentData
+
             | _ -> failwith "Component widget must have a body"
 
         let currData =
             match curr.ScalarAttributes with
-            | ValueSome attrs when attrs.Length > 0 -> attrs[0].Value :?> MvuComponentData
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> MvuComponentData
             | _ -> failwith "Component widget must have a body"
 
         // NOTE: Somehow using = here crashes the app and prevents debugging...
