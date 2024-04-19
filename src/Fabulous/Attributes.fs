@@ -355,3 +355,26 @@ module Attributes =
             |> AttributeDefinitionStore.registerScalar
 
         { Key = key; Name = name }
+
+    let inline defineEventNoDispatch<'args>
+        name
+        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+        : SimpleScalarAttributeDefinition<'args -> unit> =
+        let key =
+            SimpleScalarAttributeDefinition.CreateAttributeData(
+                ScalarAttributeComparers.noCompare,
+                (fun _ (newValueOpt: ('args -> unit) voption) node ->
+                    match node.TryGetHandler(name) with
+                    | ValueNone -> ()
+                    | ValueSome handler -> handler.Dispose()
+
+                    match newValueOpt with
+                    | ValueNone -> node.RemoveHandler(name)
+                    | ValueSome(fn) ->
+                        let event = getEvent node.Target
+                        node.SetHandler(name, event.Subscribe(fun args -> fn args)))
+            )
+
+            |> AttributeDefinitionStore.registerScalar
+
+        { Key = key; Name = name }
