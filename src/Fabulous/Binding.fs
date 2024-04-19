@@ -58,4 +58,4 @@ type BindingExtensions =
             ctx.SetValueInternal(key, sub)
 
             let bindingValue = BindingValue<'T>(stateValue)
-            (continuation bindingValue).Invoke(bindings, ctx))
+            (continuation bindingValue).Invoke(bindings + 1<binding>, ctx))
