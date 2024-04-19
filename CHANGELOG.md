@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
-## [3.0.0-pre4] - 2024-04-16
+## [3.0.0-pre4] - 2024-04-19
 
-### Changed
-- Find the component data key in ScalarAttributes by @edgarfgp (https://github.com/fabulous-dev/Fabulous/pull/1076)
+### Added
+- Add `defineEventNoDispatch` by @edgarfgp in https://github.com/fabulous-dev/Fabulous/pull/1077
+
+### Fixed
+- Fix ScalarAttributes data key lookup by @edgarfgp in https://github.com/fabulous-dev/Fabulous/pull/1076
+- Fix bindings + 1 to increment the key when using a Binding by @edgarfgp in https://github.com/fabulous-dev/Fabulous/pull/1078
 
 ## [3.0.0-pre3] - 2024-04-12
 
