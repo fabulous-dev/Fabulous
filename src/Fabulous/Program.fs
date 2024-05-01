@@ -120,6 +120,12 @@ module Program =
 
     //TODO In what scenario would I want to use this?
     /// Map existing subscription to external source of events.
+    /// <summary>
+    /// Converts messages emitted from the existing subscriptions Command of type 'a into a Command of type 'msg.
+    /// This is useful for emitting Commands of a uniform type,
+    /// like when receiving child messages in a parent-child composition scenario. See
+    /// <seealso href="https://elmish.github.io/elmish/docs/parent-child.html" />
+    /// </summary>
     let mapSubscription map (program: Program<'arg, 'model, 'msg>) =
         { program with
             Subscribe = map program.Subscribe }
