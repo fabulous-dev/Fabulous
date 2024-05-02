@@ -7,7 +7,7 @@ open System.Collections.Concurrent
 // Runner is created for the component itself. No point in reusing a runner for another component
 
 /// Create a new Runner handling the update loop for the component
-type Runner<'arg, 'model, 'msg when 'msg : null>(getState: unit -> 'model, setState: 'model -> unit, program: Program<'arg, 'model, 'msg>) =
+type Runner<'arg, 'model, 'msg when 'msg: null>(getState: unit -> 'model, setState: 'model -> unit, program: Program<'arg, 'model, 'msg>) =
     let mutable _activeSubs = Sub.Internal.empty
     let mutable _reentering = false
     let mutable _stopped = false
@@ -23,9 +23,10 @@ type Runner<'arg, 'model, 'msg when 'msg : null>(getState: unit -> 'model, setSt
         // In cases where you have a Component() which itself is in a Component(program) and a side effect happens in the inner component, the outer component will dispatch a message that is null
         // So here we need make sure that we don't process null messages `ValueSome null`
         let mutable lastMsg = ValueOption.ofObj(msg)
+
         while not _stopped && lastMsg.IsSome do
             let model = getState()
-            
+
             let newModel, cmd = program.Update(unbox lastMsg.Value, model)
             let subs = program.Subscribe(newModel)
 
