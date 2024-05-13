@@ -125,36 +125,45 @@ type Content<'msg> = { Widgets: MutStackArray1.T<Widget> }
 type CollectionBuilder<'msg, 'marker, 'itemMarker> =
     struct
         val WidgetKey: WidgetKey
-        val Scalars: StackList<ScalarAttribute>
         val Attr: WidgetCollectionAttributeDefinition
+        val Scalars: AttributesBundle
 
-        new(widgetKey: WidgetKey, scalars: StackList<ScalarAttribute>, attr: WidgetCollectionAttributeDefinition) =
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalars: AttributesBundle) =
             { WidgetKey = widgetKey
               Scalars = scalars
               Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition) =
             { WidgetKey = widgetKey
-              Scalars = StackList.empty()
+              Scalars = AttributesBundle(StackList.empty(), ValueNone, ValueNone)
               Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalar: ScalarAttribute) =
             { WidgetKey = widgetKey
-              Scalars = StackList.one scalar
+              Scalars = AttributesBundle(StackList.one scalar, ValueNone, ValueNone)
               Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
             { WidgetKey = widgetKey
-              Scalars = StackList.two(scalarA, scalarB)
+              Scalars = AttributesBundle(StackList.two(scalarA, scalarB), ValueNone, ValueNone)
               Attr = attr }
 
         member inline x.Run(c: Content<'msg>) =
+            let struct (scalars, widgets, widgetCollections) = x.Scalars
+
             let attrValue =
                 match MutStackArray1.toArraySlice &c.Widgets with
                 | ValueNone -> ArraySlice.emptyWithNull()
                 | ValueSome slice -> slice
 
-            WidgetBuilder<'msg, 'marker>(x.WidgetKey, AttributesBundle(x.Scalars, ValueNone, ValueSome [| x.Attr.WithValue(attrValue) |]))
+            let widgetCollAttr = x.Attr.WithValue(attrValue)
+
+            let widgetCollections =
+                match widgetCollections with
+                | ValueNone -> ValueSome([| widgetCollAttr |])
+                | ValueSome widgetCollectionAttributes -> ValueSome(Array.appendOne widgetCollAttr widgetCollectionAttributes)
+
+            WidgetBuilder<'msg, 'marker>(x.WidgetKey, AttributesBundle(scalars, widgets, widgetCollections))
 
         member inline _.Combine(a: Content<'msg>, b: Content<'msg>) : Content<'msg> =
             let res = MutStackArray1.combineMut(&a.Widgets, b.Widgets)
@@ -177,7 +186,14 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =
-            CollectionBuilder<'msg, 'marker, 'itemMarker>(x.WidgetKey, StackList.add(&x.Scalars, attr), x.Attr)
+            let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
+                x.Scalars
+
+            CollectionBuilder<'msg, 'marker, 'itemMarker>(
+                x.WidgetKey,
+                x.Attr,
+                struct (StackList.add(&scalarAttributes, attr), widgetAttributes, widgetCollectionAttributes)
+            )
 
     end
 
