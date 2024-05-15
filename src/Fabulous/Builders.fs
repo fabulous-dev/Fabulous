@@ -126,7 +126,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
     struct
         val WidgetKey: WidgetKey
         val Attr: WidgetCollectionAttributeDefinition
-        val Scalars: AttributesBundle
+        val Attributes: AttributesBundle
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalars: AttributesBundle) =
             { WidgetKey = widgetKey
