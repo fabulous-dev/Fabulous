@@ -128,10 +128,15 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         val Attr: WidgetCollectionAttributeDefinition
         val Attributes: AttributesBundle
 
-        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalars: AttributesBundle) =
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, attributes: AttributesBundle) =
             { WidgetKey = widgetKey
-              Scalars = scalars
-              Attr = attr }
+              Attr = attr
+              Attributes = attributes }
+              
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalars: StackList<ScalarAttribute>) =
+            { WidgetKey = widgetKey
+              Attr = attr
+              Attributes = AttributesBundle(scalars, ValueNone, ValueNone) }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition) =
             { WidgetKey = widgetKey
