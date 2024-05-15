@@ -155,11 +155,7 @@ module TestUI_Widgets =
             )
 
         static member Stack<'msg, 'marker when 'marker :> IMarker>() =
-            CollectionBuilder<'msg, TestStackMarker, 'marker>(
-                TestStackKey,
-                Attributes.Container.Children,
-                AttributesBundle(StackList.empty(), ValueNone, ValueNone)
-            )
+            CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, StackList.empty(), Attributes.Container.Children)
 
     [<Extension>]
     type CollectionBuilderExtensions =

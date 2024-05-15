@@ -128,33 +128,33 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         val Attr: WidgetCollectionAttributeDefinition
         val Attributes: AttributesBundle
 
-        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, attributes: AttributesBundle) =
+        new(widgetKey: WidgetKey, scalars: StackList<ScalarAttribute>, attr: WidgetCollectionAttributeDefinition) =
             { WidgetKey = widgetKey
-              Attr = attr
-              Attributes = attributes }
-              
-        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalars: StackList<ScalarAttribute>) =
-            { WidgetKey = widgetKey
-              Attr = attr
-              Attributes = AttributesBundle(scalars, ValueNone, ValueNone) }
+              Attributes = AttributesBundle(scalars, ValueNone, ValueNone)
+              Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition) =
             { WidgetKey = widgetKey
-              Scalars = AttributesBundle(StackList.empty(), ValueNone, ValueNone)
+              Attributes = AttributesBundle(StackList.empty(), ValueNone, ValueNone)
+              Attr = attr }
+
+        new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, attributes: AttributesBundle) =
+            { WidgetKey = widgetKey
+              Attributes = attributes
               Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalar: ScalarAttribute) =
             { WidgetKey = widgetKey
-              Scalars = AttributesBundle(StackList.one scalar, ValueNone, ValueNone)
+              Attributes = AttributesBundle(StackList.one scalar, ValueNone, ValueNone)
               Attr = attr }
 
         new(widgetKey: WidgetKey, attr: WidgetCollectionAttributeDefinition, scalarA: ScalarAttribute, scalarB: ScalarAttribute) =
             { WidgetKey = widgetKey
-              Scalars = AttributesBundle(StackList.two(scalarA, scalarB), ValueNone, ValueNone)
+              Attributes = AttributesBundle(StackList.two(scalarA, scalarB), ValueNone, ValueNone)
               Attr = attr }
 
         member inline x.Run(c: Content<'msg>) =
-            let struct (scalars, widgets, widgetCollections) = x.Scalars
+            let struct (scalars, widgets, widgetCollections) = x.Attributes
 
             let attrValue =
                 match MutStackArray1.toArraySlice &c.Widgets with
@@ -192,7 +192,7 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker> =
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =
             let struct (scalarAttributes, widgetAttributes, widgetCollectionAttributes) =
-                x.Scalars
+                x.Attributes
 
             CollectionBuilder<'msg, 'marker, 'itemMarker>(
                 x.WidgetKey,
