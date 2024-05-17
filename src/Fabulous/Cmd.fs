@@ -1,5 +1,6 @@
 ﻿namespace Fabulous
 
+open System.Runtime.CompilerServices
 open System.Threading
 open System.Threading.Tasks
 
@@ -188,20 +189,33 @@ module Cmd =
         let inline msgOption (task: Task<'msg option>) =
             OfAsync.msgOption(task |> Async.AwaitTask)
 
-    /// Command to issue a message if no other message has been issued within the specified timeout
+    /// <summary>Creates a factory for Commands that dispatch a message only
+    /// if the factory produces no other Command within the specified timeout.
+    /// Helps control how often a message is dispatched by delaying the dispatch after a period of inactivity.
+    /// Useful for handling noisy inputs like keypresses or scrolling, and preventing too many actions in a short time, like rapid button clicks.
+    /// Note that this creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.</summary>
+    /// <param name="timeout">The time to wait for the next Command from the factory in milliseconds.</param>
+    /// <param name="fn">Maps a factory input value to a message for delayed dispatch.</param>
+    /// <returns>A Command factory function that maps an input value to a "sleeper" Command which dispatches a delayed message (mapped from the value).
+    /// This command is cancelled if the factory produces another Command within the specified timeout; otherwise it succeeds and the message is dispatched.</returns>
     let debounce (timeout: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
-        let funLock = obj()
-        let mutable cts: CancellationTokenSource = null
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
 
+        // return a factory function mapping input values to "sleeper" Commands with delayed dispatch
         fun (value: 'value) ->
             [ fun dispatch ->
                   lock funLock (fun () ->
+                      // cancel the last sleeping Command issued earlier from this factory
                       if cts <> null then
                           cts.Cancel()
                           cts.Dispose()
 
+                      // make cancellation available to the factory's next Command
                       cts <- new CancellationTokenSource()
 
+                      // asynchronously wait for the specified time before dispatch
                       Async.Start(
                           async {
                               do! Async.Sleep(timeout)
@@ -209,9 +223,185 @@ module Cmd =
                               lock funLock (fun () ->
                                   dispatch(fn value)
 
+                                  // done; invalidate own cancellation token
                                   if cts <> null then
                                       cts.Dispose()
                                       cts <- null)
                           },
                           cts.Token
                       )) ]
+
+    /// <summary>Creates a factory for Commands that dispatch a message only
+    /// if the factory produced no other Command within the specified interval.
+    /// This limits how often a message is dispatched by ensuring to only dispatch once within a certain time interval
+    /// and dropping messages that are produces during the cooldown.
+    /// Useful for limiting how often a progress message is shown or preventing too many updates to a UI element in a short time.
+    /// Note that this creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.</summary>
+    /// <param name="interval">The minimum time interval between two consecutive Command executions in milliseconds.</param>
+    /// <param name="fn">Maps a factory input value to a message for dispatch.</param>
+    /// <returns>A Command factory function that maps an input value to a "throttled" Command which dispatches a message (mapped from the value)
+    /// if the minimum time interval has elapsed since the last Command execution; otherwise, it does nothing.</returns>
+    let throttle (interval: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
+        let mutable lastDispatch = System.DateTime.MinValue
+
+        // return a factory function mapping input values to "throttled" Commands that only dispatch if enough time passed
+        fun (value: 'value) ->
+            [ fun dispatch ->
+                  let now = System.DateTime.UtcNow
+
+                  // If the interval has elapsed since the last execution, dispatch the message
+                  if now - lastDispatch >= System.TimeSpan.FromMilliseconds(float interval) then
+                      lastDispatch <- now
+                      dispatch(fn value) ]
+
+    /// <summary>
+    /// Creates a Command factory that dispatches the most recent message in a given interval - even if delayed.
+    /// This makes it similar to <see cref="throttle"/> in that it rate-limits the message dispatch
+    /// and similar to <see cref="debounce"/> in that it guarantees the last message (within the interval or in total) is dispatched.
+    /// Helpful for scenarios where you want to throttle, but cannot risk losing the last message to throttling
+    /// - like the last progress update that completes a progress.
+    /// Note that this function creates an object with internal state and is intended to be used per Program or longer-running background process
+    /// rather than once per message in the update function.
+    /// </summary>
+    /// <param name="interval">The minimum time interval between two consecutive Command executions in milliseconds.</param>
+    /// <param name="fn">A function that maps a factory input value to a message for dispatch.</param>
+    /// <returns>
+    /// A Command factory function that maps an input value to a Command which dispatches a message (mapped from the value), either immediately
+    /// or after a delay respecting the interval, while cancelling older commands if the factory produces another Command before the interval has elapsed.
+    /// </returns>
+    let bufferedThrottle (interval: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
+        let rateLimit = System.TimeSpan.FromMilliseconds(float interval)
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable lastDispatch = System.DateTime.MinValue
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
+
+        // Return a factory function mapping input values to sleeper Commands with delayed dispatch of the most recent message
+        fun (value: 'value) ->
+            [ fun dispatch ->
+                  lock funLock (fun () ->
+                      let now = System.DateTime.UtcNow
+                      let elapsedSinceLastDispatch = now - lastDispatch
+
+                      // If the interval has elapsed since the last dispatch, dispatch immediately
+                      if elapsedSinceLastDispatch >= rateLimit then
+                          dispatch(fn value)
+                          lastDispatch <- now
+                      else // schedule the dispatch for when the interval is up
+                          // cancel the last sleeper Command issued earlier from this factory
+                          if cts <> null then
+                              cts.Cancel()
+                              cts.Dispose()
+
+                          // make cancellation available to the factory's next Command
+                          cts <- new CancellationTokenSource()
+
+                          // asynchronously wait for the remaining time before dispatch
+                          Async.Start(
+                              async {
+                                  do! Async.Sleep(rateLimit - elapsedSinceLastDispatch)
+
+                                  lock funLock (fun () ->
+                                      dispatch(fn value)
+                                      lastDispatch <- System.DateTime.UtcNow
+
+                                      // done; invalidate own cancellation token
+                                      if cts <> null then
+                                          cts.Dispose()
+                                          cts <- null)
+                              },
+                              cts.Token
+                          )) ]
+
+type DispatchExtensions =
+
+    /// <summary>
+    /// Creates a throttled dispatch factory that dispatches values in batches at a fixed minimum interval/maximum rate
+    /// while ensuring that all values are dispatched eventually.
+    /// This helps throttle the message dispatch of a rapid producer to avoid overloading the MVU loop
+    /// without dropping any of the carried values - ensuring all values are processed in batches at a controlled rate.
+    /// Note that this function creates an object with internal state and is intended to be used per Program
+    /// or longer-running background process rather than once per message in the update function.
+    /// </summary>
+    /// <param name="interval">The minimum time interval between two consecutive dispatches in milliseconds.</param>
+    /// <param name="mapBatchToMsg">A function that maps a list of pending input values to a message for dispatch.</param>
+    /// <returns>
+    /// Two functions. The first has a Dispatch signature and is used to feed a single value into the factory,
+    /// where it is either dispatched immediately or after a delay respecting the interval,
+    /// batched with other pending values in the order they were fed in.
+    /// The second can be used for awaiting the next dispatch from the outside
+    /// - while optionally adding some buffer time (in milliseconds) to account for race condiditions.
+    /// </returns>
+    [<Extension>]
+    static member batchThrottled((dispatch: Dispatch<'msg>), interval, (mapBatchToMsg: 'value list -> 'msg)) =
+        let rateLimit = System.TimeSpan.FromMilliseconds(interval)
+        let funLock = obj() // ensures safe access to resources shared across different threads
+        let mutable lastDispatch = System.DateTime.MinValue
+        let mutable pendingValues: 'value list = []
+        let mutable cts: CancellationTokenSource = null // if set, allows cancelling the last issued Command
+
+        // gets the time to wait until the next allowed dispatch returning a negative timespan if the time is up
+        let getTimeUntilNextDispatch () =
+            lastDispatch.Add(rateLimit) - System.DateTime.UtcNow
+
+        // dispatches all pendingValues and resets them while updating lastDispatch
+        let dispatchBatch () =
+            // Dispatch in the order they were received
+            pendingValues |> List.rev |> mapBatchToMsg |> dispatch
+
+            lastDispatch <- System.DateTime.UtcNow
+            pendingValues <- []
+
+        // a function with the Dispatch signature for feeding a single value into the throttled batch factory
+        let dispatchSingle =
+            fun (value: 'value) ->
+                lock funLock (fun () ->
+                    let untilNextDispatch = getTimeUntilNextDispatch()
+                    pendingValues <- value :: pendingValues
+
+                    // If the interval has elapsed since the last dispatch, dispatch all pending messages
+                    if untilNextDispatch <= System.TimeSpan.Zero then
+                        dispatchBatch()
+                    else // schedule dispatch
+
+                        // if the the last sleeping dispatch can still be cancelled, do so
+                        if cts <> null then
+                            cts.Cancel()
+                            cts.Dispose()
+
+                        // used to enable cancelling this dispatch if newer values come into the factory
+                        cts <- new CancellationTokenSource()
+
+                        Async.Start(
+                            async {
+                                // wait only as long as we have to before next dispatch
+                                do! Async.Sleep(untilNextDispatch)
+
+                                lock funLock (fun () ->
+                                    dispatchBatch()
+
+                                    // done; invalidate own cancellation
+                                    if cts <> null then
+                                        cts.Dispose()
+                                        cts <- null)
+                            },
+                            cts.Token
+                        ))
+
+        // a function to wait until after the next async dispatch + some buffer time to ensure the dispatch is complete
+        let awaitNextDispatch buffer =
+            lock funLock (fun () ->
+                async {
+                    if not pendingValues.IsEmpty then
+                        let untilAfterNextDispatch =
+                            getTimeUntilNextDispatch()
+                            + match buffer with
+                              | Some value -> System.TimeSpan.FromMilliseconds(value)
+                              | None -> System.TimeSpan.Zero
+
+                        if untilAfterNextDispatch > System.TimeSpan.Zero then
+                            do! Async.Sleep(untilAfterNextDispatch)
+                })
+
+        // return both the dispatch and the await helper
+        dispatchSingle, awaitNextDispatch
