@@ -40,6 +40,8 @@
     <Compile Include="Dispatch.fs" />
     <Compile Include="Lifecycle.fs" />
     <Compile Include="Attributes.fs" />
+    <Compile Include="Attributes.Components.fs" />
+    <Compile Include="Attributes.Mvu.fs" />
     <Compile Include="ComponentContext.fs" />
     <Compile Include="Component.fs" />
     <Compile Include="State.fs" />
