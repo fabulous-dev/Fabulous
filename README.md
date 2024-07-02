@@ -138,4 +138,10 @@ Feel free to contact us: [support@fabulous.dev](mailto:support@fabulous.dev)
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date)](https://star-history.com/#fabulous-dev/Fabulous&fabulous-dev/Fabulous.Avalonia&fabulous-dev/Fabulous.MauiControls&Date)
+<a href="https://star-history.com/#fabulous-dev/Fabulous&fabulous-dev/Fabulous.Avalonia&fabulous-dev/Fabulous.MauiControls&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
+ </picture>
+</a>
