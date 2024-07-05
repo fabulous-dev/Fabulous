@@ -33,7 +33,6 @@ Fabulous will help you create mobile and desktop apps quickly and with confidenc
 Fabulous also aims to be performant by having low memory consumption and efficient view diffing mechanisms.
 
 Note that Fabulous itself does not provide any UI rendering. You'll need to combine it with another framework like:
-- [Xamarin.Forms](https://dotnet.microsoft.com/en-us/apps/xamarin/xamarin-forms) with [Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms)
 - [.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui) with [Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 - [AvaloniaUI](https://avaloniaui.net) with [Fabulous.Avalonia](https://github.com/fabulous-dev/Fabulous.Avalonia)
 
@@ -136,3 +135,13 @@ If you would like us to provide you with:
 - and consulting services.
 
 Feel free to contact us: [support@fabulous.dev](mailto:support@fabulous.dev)
+
+## Star History
+
+<a href="https://star-history.com/#fabulous-dev/Fabulous&fabulous-dev/Fabulous.Avalonia&fabulous-dev/Fabulous.MauiControls&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
+ </picture>
+</a>
