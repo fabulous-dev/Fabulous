@@ -148,7 +148,7 @@ module TestUI_Attributes =
 
         module Container =
             let Children =
-                Attributes.defineListWidgetCollection "Container_Children" (fun target ->
+                ComponentAttributes.defineListWidgetCollection "Container_Children" (fun target ->
                     (target :?> IContainer).Children :> System.Collections.Generic.IList<_>)
 
             let Tap = defineContainerTappable "Container_Tap"
