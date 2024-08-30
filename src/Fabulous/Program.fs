@@ -19,7 +19,7 @@ type Program<'arg, 'model, 'msg> =
         ExceptionHandler: exn -> bool
     }
 
-type Program<'arg, 'model, 'msg, 'marker> =
+type Program<'arg, 'model, 'msg, 'marker when 'msg : equality> =
     {
         State: Program<'arg, 'model, 'msg>
         /// Render the application state

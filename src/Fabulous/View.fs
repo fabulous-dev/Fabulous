@@ -15,7 +15,7 @@ module ViewHelpers =
 
 module View =
     /// Avoid recomputing the whole subtree when the key doesn't change
-    let lazy'<'msg, 'key, 'marker when 'key: equality> (fn: 'key -> WidgetBuilder<'msg, 'marker>) (key: 'key) : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
+    let lazy'<'msg, 'key, 'marker when 'msg : equality and 'key: equality> (fn: 'key -> WidgetBuilder<'msg, 'marker>) (key: 'key) : WidgetBuilder<'msg, Memo.Memoized<'marker>> =
 
         let memo: Memo.MemoData =
             { KeyData = box key

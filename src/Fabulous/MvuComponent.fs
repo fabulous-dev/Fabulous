@@ -125,11 +125,11 @@ module MvuComponent =
 
 /// Delegate used by the MvuComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
-type MvuComponentBodyBuilder<'msg, 'marker> =
+type MvuComponentBodyBuilder<'msg, 'marker when 'msg : equality> =
     delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<'msg, 'marker>)
 
 [<Struct>]
-type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
+type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg when 'msg : equality and 'parentMsg : equality> =
     val public Program: Program<obj, obj, obj>
     val public Arg: obj
 
