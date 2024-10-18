@@ -86,6 +86,4 @@ type ComponentContext(initialSize: int) =
         member this.Dispose() = this.Dispose()
 
 [<AbstractClass; Sealed>]
-type Context private () =
-    class
-    end
+type Context private () = class end

@@ -59,9 +59,7 @@ module TestUI_Widgets =
 
 
     //-----MARKERS-----------
-    type IMarker =
-        interface
-        end
+    type IMarker = interface end
 
     type TextMarker =
         inherit IMarker
@@ -89,10 +87,8 @@ module TestUI_Widgets =
 
         [<Extension>]
         static member inline automationId<'msg, 'marker, 'itemMarker when 'marker :> IMarker>
-            (
-                this: CollectionBuilder<'msg, 'marker, 'itemMarker>,
-                value: string
-            ) =
+            (this: CollectionBuilder<'msg, 'marker, 'itemMarker>, value: string)
+            =
             this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
         [<Extension>]
@@ -161,26 +157,20 @@ module TestUI_Widgets =
     type CollectionBuilderExtensions =
         [<Extension>]
         static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
-            (
-                _: CollectionBuilder<'msg, 'marker, IMarker>,
-                x: WidgetBuilder<'msg, 'itemMarker>
-            ) : Content<'msg> =
+            (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker>)
+            : Content<'msg> =
             CollectionBuilder.yieldImpl x
 
         [<Extension>]
         static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
-            (
-                _: CollectionBuilder<'msg, 'marker, IMarker>,
-                x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>
-            ) : Content<'msg> =
+            (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>)
+            : Content<'msg> =
             CollectionBuilder.yieldImpl x
 
         [<Extension>]
         static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
-            (
-                _: CollectionBuilder<'msg, 'marker, IMarker>,
-                x: WidgetBuilder<'msg, 'itemMarker> seq
-            ) : Content<'msg> =
+            (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker> seq)
+            : Content<'msg> =
             // TODO optimize this one with addMut
             { Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toArray |> MutStackArray1.fromArray }
 
