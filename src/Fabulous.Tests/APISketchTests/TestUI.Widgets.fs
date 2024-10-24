@@ -82,37 +82,37 @@ module TestUI_Widgets =
     [<Extension>]
     type WidgetExtensions() =
         [<Extension>]
-        static member inline automationId<'msg, 'marker when 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+        static member inline automationId<'msg, 'marker when 'msg: equality and 'marker :> IMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
         [<Extension>]
-        static member inline automationId<'msg, 'marker, 'itemMarker when 'marker :> IMarker>
+        static member inline automationId<'msg, 'marker, 'itemMarker when 'msg: equality and 'marker :> IMarker>
             (this: CollectionBuilder<'msg, 'marker, 'itemMarker>, value: string)
             =
             this.AddScalar(Attributes.Automation.AutomationId.WithValue(value))
 
         [<Extension>]
-        static member inline textColor<'msg, 'marker when 'marker :> TextMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
+        static member inline textColor<'msg, 'marker when 'msg: equality and 'marker :> TextMarker>(this: WidgetBuilder<'msg, 'marker>, value: string) =
             this.AddScalar(Attributes.TextStyle.TextColor.WithValue(value))
 
 
         [<Extension>]
-        static member inline record<'msg, 'marker when 'marker :> TestLabelMarker>(this: WidgetBuilder<'msg, 'marker>, value: bool) =
+        static member inline record<'msg, 'marker when 'msg: equality and 'marker :> TestLabelMarker>(this: WidgetBuilder<'msg, 'marker>, value: bool) =
             this.AddScalar(Attributes.Text.Record.WithValue(value))
 
 
         [<Extension>]
-        static member inline tap<'msg, 'marker when 'marker :> TestButtonMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
+        static member inline tap<'msg, 'marker when 'msg: equality and 'marker :> TestButtonMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
             this.AddScalar(Attributes.Button.Tap.WithValue(value))
 
 
         [<Extension>]
-        static member inline tap2<'msg, 'marker when 'marker :> TestButtonMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
+        static member inline tap2<'msg, 'marker when 'msg: equality and 'marker :> TestButtonMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
             this.AddScalar(Attributes.Button.Tap2.WithValue(value))
 
 
         [<Extension>]
-        static member inline tapContainer<'msg, 'marker when 'marker :> TestStackMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
+        static member inline tapContainer<'msg, 'marker when 'msg: equality and 'marker :> TestStackMarker>(this: WidgetBuilder<'msg, 'marker>, value: 'msg) =
             this.AddScalar(Attributes.Container.Tap.WithValue(value))
 
     ///----------------
@@ -125,14 +125,14 @@ module TestUI_Widgets =
         static let TestStackKey = Widgets.register<TestStack>()
         static let TestNumericBagKey = Widgets.register<TestNumericBag>()
 
-        static member Label<'msg>(text: string) =
+        static member Label(text: string) =
             WidgetBuilder<'msg, TestLabelMarker>(TestLabelKey, Attributes.Text.Text.WithValue(text))
 
 
-        static member Button<'msg>(text: string, onClicked: 'msg) =
+        static member Button(text: string, onClicked: 'msg) =
             WidgetBuilder<'msg, TestButtonMarker>(TestButtonKey, Attributes.Text.Text.WithValue(text), Attributes.Button.Pressed.WithValue(onClicked))
 
-        static member BoxedNumericBag<'msg>(one, two, three) =
+        static member BoxedNumericBag(one, two, three) =
             WidgetBuilder<'msg, TestNumericBagMarker>(
                 TestNumericBagKey,
                 Attributes.NumericBag.BoxedValueOne.WithValue(one),
@@ -140,7 +140,7 @@ module TestUI_Widgets =
                 Attributes.NumericBag.BoxedValueThree.WithValue(three)
             )
 
-        static member InlineNumericBag<'msg>(one, two, three) =
+        static member InlineNumericBag(one, two, three) =
             WidgetBuilder<'msg, TestNumericBagMarker>(
                 TestNumericBagKey,
                 Attributes.NumericBag.InlineValueOne.WithValue(one, (fun x -> x)),
@@ -150,25 +150,25 @@ module TestUI_Widgets =
                 Attributes.NumericBag.InlineValueThree.WithValue(three, BitConverter.DoubleToUInt64Bits)
             )
 
-        static member Stack<'msg, 'marker when 'marker :> IMarker>() =
+        static member Stack<'msg, 'marker when 'msg: equality and 'marker :> IMarker>() =
             CollectionBuilder<'msg, TestStackMarker, 'marker>(TestStackKey, StackList.empty(), Attributes.Container.Children)
 
     [<Extension>]
     type CollectionBuilderExtensions =
         [<Extension>]
-        static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        static member inline Yield<'msg, 'marker, 'itemMarker when 'msg: equality and 'itemMarker :> IMarker>
             (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker>)
             : Content<'msg> =
             CollectionBuilder.yieldImpl x
 
         [<Extension>]
-        static member inline Yield<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        static member inline Yield<'msg, 'marker, 'itemMarker when 'msg: equality and 'itemMarker :> IMarker>
             (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, Memo.Memoized<'itemMarker>>)
             : Content<'msg> =
             CollectionBuilder.yieldImpl x
 
         [<Extension>]
-        static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'itemMarker :> IMarker>
+        static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'msg: equality and 'itemMarker :> IMarker>
             (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker> seq)
             : Content<'msg> =
             // TODO optimize this one with addMut
@@ -178,7 +178,7 @@ module TestUI_Widgets =
 
 
     ///------------------
-    type StatefulView<'arg, 'model, 'msg, 'marker> =
+    type StatefulView<'arg, 'model, 'msg, 'marker when 'msg: equality> =
         { Init: 'arg -> 'model
           Update: 'msg -> 'model -> 'model
           View: 'model -> WidgetBuilder<'msg, 'marker> }
@@ -191,7 +191,7 @@ module TestUI_Widgets =
 
 
     module Run =
-        type Instance<'arg, 'model, 'msg, 'marker>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
+        type Instance<'arg, 'model, 'msg, 'marker when 'msg: equality>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
             let mutable state: ('model * obj * Widget) option = None
 
             member private x.viewContext: ViewTreeContext =
