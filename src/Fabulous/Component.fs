@@ -207,7 +207,7 @@ type binding
 type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * Widget)
 
 [<Struct; NoEquality; NoComparison>]
-type ComponentData = { Body: ComponentBody }
+type ComponentData = { Key: string; Body: ComponentBody }
 
 type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
     let mutable _body = body
@@ -302,19 +302,22 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         node
 
     member private this.RenderInternal() =
-        let prevRootWidget = _widget
-        let prevContext = _context
-        let struct (context, currRootWidget) = _body.Invoke(_context)
-        _widget <- currRootWidget
+        if _body = null then
+            () // Component has been disposed
+        else
+            let prevRootWidget = _widget
+            let prevContext = _context
+            let struct (context, currRootWidget) = _body.Invoke(_context)
+            _widget <- currRootWidget
 
-        if prevContext <> context then
-            _contextSubscription.Dispose()
-            _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
-            _context <- context
+            if prevContext <> context then
+                _contextSubscription.Dispose()
+                _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
+                _context <- context
 
-        let viewNode = treeContext.GetViewNode _view
+            let viewNode = treeContext.GetViewNode _view
 
-        Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
+            Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
 
     member this.Dispose() =
         if _contextSubscription <> null then
@@ -333,7 +336,10 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         member this.Dispose() = this.Dispose()
 
     member this.Render(_) =
-        treeContext.SyncAction(this.RenderInternal)
+        if _body = null then
+            () // Component has been disposed
+        else
+            treeContext.SyncAction(this.RenderInternal)
 
 module Component =
     let Data =
@@ -390,11 +396,42 @@ module Component =
         WidgetDefinitionStore.set key definition
         key
 
+    let canReuseComponent (prev: Widget) (curr: Widget) =
+        let prevData =
+            match prev.ScalarAttributes with
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> ComponentData
+
+            | _ -> failwith "Component widget must have a body"
+
+        let currData =
+            match curr.ScalarAttributes with
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> ComponentData
+            | _ -> failwith "Component widget must have a body"
+
+        // NOTE: Somehow using = here crashes the app and prevents debugging...
+        Object.Equals(prevData.Key, currData.Key)
+
 /// Delegate used by the ComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
 type ComponentBodyBuilder<'marker> = delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<unit, 'marker>)
 
-type ComponentBuilder<'parentMsg>() =
+type ComponentBuilder<'parentMsg when 'parentMsg: equality> =
+    val public Key: string
+
+    new(key: string) = { Key = key }
+
     member inline this.Yield(widgetBuilder: WidgetBuilder<unit, 'marker>) =
         ComponentBodyBuilder<'marker>(fun bindings ctx -> struct (bindings, widgetBuilder))
 
@@ -419,6 +456,6 @@ type ComponentBuilder<'parentMsg>() =
                 let struct (_, result) = body.Invoke(0<binding>, ctx)
                 struct (ctx, result.Compile()))
 
-        let data = { Body = compiledBody }
+        let data = { Key = this.Key; Body = compiledBody }
 
         WidgetBuilder<'parentMsg, 'marker>(Component.WidgetKey, Component.Data.WithValue(data))

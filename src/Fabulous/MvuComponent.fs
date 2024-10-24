@@ -5,7 +5,8 @@ open System.Runtime.CompilerServices
 
 [<Struct; NoEquality; NoComparison>]
 type MvuComponentData =
-    { Body: ComponentBody
+    { Key: String
+      Body: ComponentBody
       Program: Program<obj, obj, obj>
       Arg: obj }
 
@@ -121,19 +122,21 @@ module MvuComponent =
             | _ -> failwith "Component widget must have a body"
 
         // NOTE: Somehow using = here crashes the app and prevents debugging...
-        Object.Equals(prevData.Arg, currData.Arg)
+        Object.Equals(prevData.Key, currData.Key)
+        && Object.Equals(prevData.Arg, currData.Arg)
 
 /// Delegate used by the MvuComponentBuilder to compose a component body
 /// It will be aggressively inlined by the compiler leaving no overhead, only a pure function that returns a WidgetBuilder
-type MvuComponentBodyBuilder<'msg, 'marker> =
+type MvuComponentBodyBuilder<'msg, 'marker when 'msg: equality> =
     delegate of bindings: int<binding> * context: ComponentContext -> struct (int<binding> * WidgetBuilder<'msg, 'marker>)
 
 [<Struct>]
-type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
+type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg when 'msg: equality and 'parentMsg: equality> =
+    val public Key: string
     val public Program: Program<obj, obj, obj>
     val public Arg: obj
 
-    new(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
+    new(key: string, program: Program<'arg, 'model, 'msg>, arg: 'arg) =
         let program: Program<obj, obj, obj> =
             { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
               Update = fun (msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
@@ -141,7 +144,9 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
               Logger = program.Logger
               ExceptionHandler = program.ExceptionHandler }
 
-        { Program = program; Arg = arg }
+        { Key = key
+          Program = program
+          Arg = arg }
 
     member inline this.Yield(widgetBuilder: WidgetBuilder<'msg, 'marker>) =
         MvuComponentBodyBuilder<'msg, 'marker>(fun bindings ctx -> struct (bindings, widgetBuilder))
@@ -168,15 +173,14 @@ type MvuComponentBuilder<'arg, 'msg, 'model, 'marker, 'parentMsg> =
                 struct (ctx, result.Compile()))
 
         let data =
-            { Program = this.Program
+            { Key = this.Key
+              Program = this.Program
               Arg = this.Arg
               Body = compiledBody }
 
         WidgetBuilder<'parentMsg, 'marker>(MvuComponent.WidgetKey, MvuComponent.Data.WithValue(data))
 
-type MvuStateRequest =
-    struct
-    end
+type MvuStateRequest = struct end
 
 type Mvu =
     static member inline State = MvuStateRequest()
