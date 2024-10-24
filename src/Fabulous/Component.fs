@@ -302,19 +302,22 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
         node
 
     member private this.RenderInternal() =
-        let prevRootWidget = _widget
-        let prevContext = _context
-        let struct (context, currRootWidget) = _body.Invoke(_context)
-        _widget <- currRootWidget
+        if _body = null then
+            () // Component has been disposed
+        else
+            let prevRootWidget = _widget
+            let prevContext = _context
+            let struct (context, currRootWidget) = _body.Invoke(_context)
+            _widget <- currRootWidget
 
-        if prevContext <> context then
-            _contextSubscription.Dispose()
-            _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
-            _context <- context
+            if prevContext <> context then
+                _contextSubscription.Dispose()
+                _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
+                _context <- context
 
-        let viewNode = treeContext.GetViewNode _view
+            let viewNode = treeContext.GetViewNode _view
 
-        Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
+            Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
 
     member this.Dispose() =
         if _contextSubscription <> null then
