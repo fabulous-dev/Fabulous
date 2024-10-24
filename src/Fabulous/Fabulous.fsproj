@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
     <PackageId>Fabulous</PackageId>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
@@ -40,6 +40,8 @@
     <Compile Include="Dispatch.fs" />
     <Compile Include="Lifecycle.fs" />
     <Compile Include="Attributes.fs" />
+    <Compile Include="Attributes.Components.fs" />
+    <Compile Include="Attributes.Mvu.fs" />
     <Compile Include="ComponentContext.fs" />
     <Compile Include="Component.fs" />
     <Compile Include="State.fs" />
