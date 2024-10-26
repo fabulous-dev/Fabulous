@@ -320,10 +320,10 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
             Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
 
     member this.Dispose() =
-        if not (isNull _contextSubscription) then
+        if not(isNull _contextSubscription) then
             _contextSubscription.Dispose()
 
-        if not (isNull _context) then
+        if not(isNull _context) then
             _context.Dispose()
 
         _body <- null
