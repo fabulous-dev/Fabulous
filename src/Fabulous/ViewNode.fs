@@ -155,7 +155,7 @@ type ViewNode =
             if this.targetRef.IsAlive then
                 let comp = this.treeContext.GetComponent(this.targetRef.Target) :?> IDisposable
 
-                if comp <> null then
+                if not (isNull comp) then
                     comp.Dispose()
                     this.treeContext.SetComponent null this.targetRef.Target
 
