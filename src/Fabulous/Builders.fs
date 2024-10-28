@@ -10,7 +10,7 @@ open Microsoft.FSharp.Core
 type AttributesBundle = (struct (StackList<ScalarAttribute> * WidgetAttribute[] voption * WidgetCollectionAttribute[] voption))
 
 [<Struct; NoComparison; NoEquality>]
-type WidgetBuilder<'msg, 'marker> =
+type WidgetBuilder<'msg, 'marker when 'msg: equality> =
     struct
         val Key: WidgetKey
         val Attributes: AttributesBundle
@@ -122,7 +122,7 @@ type WidgetBuilder<'msg, 'marker> =
 type Content<'msg> = { Widgets: MutStackArray1.T<Widget> }
 
 [<Struct; NoComparison; NoEquality>]
-type CollectionBuilder<'msg, 'marker, 'itemMarker> =
+type CollectionBuilder<'msg, 'marker, 'itemMarker when 'msg: equality> =
     struct
         val WidgetKey: WidgetKey
         val Attr: WidgetCollectionAttributeDefinition
@@ -207,7 +207,7 @@ module CollectionBuilder =
         { Widgets = MutStackArray1.One(builder.Compile()) }
 
 [<Struct>]
-type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
+type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker when 'msg: equality> =
     struct
         val Widget: WidgetBuilder<'msg, 'marker>
         val Attr: WidgetCollectionAttributeDefinition
@@ -240,10 +240,10 @@ type AttributeCollectionBuilder<'msg, 'marker, 'itemMarker> =
             res
     end
 
-type SingleChildBuilderStep<'msg, 'marker> = delegate of unit -> WidgetBuilder<'msg, 'marker>
+type SingleChildBuilderStep<'msg, 'marker when 'msg: equality> = delegate of unit -> WidgetBuilder<'msg, 'marker>
 
 [<Struct>]
-type SingleChildBuilder<'msg, 'marker, 'childMarker> =
+type SingleChildBuilder<'msg, 'marker, 'childMarker when 'msg: equality> =
     val WidgetKey: WidgetKey
     val Attr: WidgetAttributeDefinition
     val AttributesBundle: AttributesBundle
@@ -262,10 +262,8 @@ type SingleChildBuilder<'msg, 'marker, 'childMarker> =
         SingleChildBuilderStep(fun () -> widget)
 
     member inline this.Combine
-        (
-            [<InlineIfLambda>] a: SingleChildBuilderStep<'msg, 'childMarker>,
-            [<InlineIfLambda>] _b: SingleChildBuilderStep<'msg, 'childMarker>
-        ) =
+        ([<InlineIfLambda>] a: SingleChildBuilderStep<'msg, 'childMarker>, [<InlineIfLambda>] _b: SingleChildBuilderStep<'msg, 'childMarker>)
+        =
         SingleChildBuilderStep(fun () ->
             // We only want one child, so we ignore the second one
             a.Invoke())

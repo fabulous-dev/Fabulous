@@ -78,10 +78,8 @@ type SmallScalarExtensions() =
 
     [<Extension>]
     static member inline WithValue< ^T when ^T: enum<int> and ^T: (static member op_Explicit: ^T -> uint64)>
-        (
-            this: SmallScalarAttributeDefinition< ^T >,
-            value
-        ) =
+        (this: SmallScalarAttributeDefinition< ^T >, value)
+        =
         this.WithValue(value, SmallScalars.IntEnum.encode)
 
 type MsgValue = MsgValue of obj

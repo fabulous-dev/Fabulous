@@ -4,9 +4,7 @@ open Fabulous
 open Fabulous.StackAllocatedCollections.StackList
 open NUnit.Framework
 
-type ITestControl =
-    interface
-    end
+type ITestControl = interface end
 
 module TestControl =
     let WidgetKey: WidgetKey = 1

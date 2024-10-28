@@ -31,10 +31,8 @@ module ScalarAttributeDefinitions =
               Value = null }
 
         static member inline CreateAttributeData<'T>
-            (
-                [<InlineIfLambda>] decode: uint64 -> 'T,
-                [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit
-            ) : SmallScalarAttributeData =
+            ([<InlineIfLambda>] decode: uint64 -> 'T, [<InlineIfLambda>] updateNode: 'T voption -> 'T voption -> IViewNode -> unit)
+            : SmallScalarAttributeData =
             { UpdateNode =
                 (fun oldValueOpt newValueOpt node ->
                     let oldValueOpt =
@@ -64,10 +62,8 @@ module ScalarAttributeDefinitions =
               Value = value }
 
         static member CreateAttributeData
-            (
-                compare: 'T -> 'T -> ScalarAttributeComparison,
-                updateNode: 'T voption -> 'T voption -> IViewNode -> unit
-            ) : ScalarAttributeData =
+            (compare: 'T -> 'T -> ScalarAttributeComparison, updateNode: 'T voption -> 'T voption -> IViewNode -> unit)
+            : ScalarAttributeData =
             { CompareBoxed = (fun a b -> compare (unbox<'T> a) (unbox<'T> b))
               UpdateNode =
                 (fun oldValueOpt newValueOpt node ->
