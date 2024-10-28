@@ -9,13 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre7] - 2024-09-28
+
+### Fixed
+- Fixed an issue where a modifier applied on a Component itself would not be applied correctly
+
 ## [3.0.0-pre6] - 2024-09-24
 
 ### Changed
 - Add equality constraint on 'msg to prevent confusion with new non-MVU modifiers by @TimLariviere https://github.com/fabulous-dev/Fabulous/pull/1084
-
-### Added
-- Add new `CollectionBuilder` constructor using an `AttributesBundle` by @edgarfgp in https://github.com/fabulous-dev/Fabulous/pull/1081
 
 ## [3.0.0-pre5] - 2024-05-17
 
@@ -147,7 +149,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre6...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre7...HEAD
+[3.0.0-pre7]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre7
 [3.0.0-pre6]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre6
 [3.0.0-pre5]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre5
 [3.0.0-pre4]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre4

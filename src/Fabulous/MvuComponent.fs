@@ -54,7 +54,7 @@ module MvuComponent =
                             { treeContext with
                                 Dispatch = runner.Dispatch }
 
-                        let comp = new Component(treeContext, data.Body, ctx)
+                        let comp = new Component(Data.Key, treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
                         treeContext.SetComponent comp view
@@ -87,7 +87,7 @@ module MvuComponent =
                             { treeContext with
                                 Dispatch = runner.Dispatch }
 
-                        let comp = new Component(treeContext, data.Body, ctx)
+                        let comp = new Component(Data.Key, treeContext, data.Body, ctx)
                         let node = comp.AttachView(widget, view)
 
                         treeContext.SetComponent comp view

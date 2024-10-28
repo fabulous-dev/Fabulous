@@ -209,7 +209,7 @@ type ComponentBody = delegate of ComponentContext -> struct (ComponentContext * 
 [<Struct; NoEquality; NoComparison>]
 type ComponentData = { Key: string; Body: ComponentBody }
 
-type Component(treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
+type Component(componentDataKey: ScalarAttributeKey, treeContext: ViewTreeContext, body: ComponentBody, context: ComponentContext) =
     let mutable _body = body
     let mutable _context = context
     let mutable _widget = Unchecked.defaultof<_>
@@ -224,7 +224,9 @@ type Component(treeContext: ViewTreeContext, body: ComponentBody, context: Compo
             let componentScalars =
                 match componentWidget.ScalarAttributes with
                 | ValueNone -> ValueNone
-                | ValueSome attrs -> ValueSome(Array.skip 1 attrs) // skip the first attribute which is the component data
+                | ValueSome attrs ->
+                    let filteredAttrs = attrs |> Array.filter(fun scalarAttr -> scalarAttr.Key <> componentDataKey)
+                    ValueSome(filteredAttrs) // skip the component data
 
             let scalars =
                 match struct (rootWidget.ScalarAttributes, componentScalars) with
@@ -366,7 +368,7 @@ module Component =
                             | None -> failwith "Component widget must have a body"
 
                         let ctx = new ComponentContext()
-                        let comp = new Component(treeContext, data.Body, ctx)
+                        let comp = new Component(Data.Key, treeContext, data.Body, ctx)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
 
                         treeContext.SetComponent comp view
@@ -386,7 +388,7 @@ module Component =
                             | None -> failwith "Component widget must have a body"
 
                         let ctx = new ComponentContext()
-                        let comp = new Component(treeContext, data.Body, ctx)
+                        let comp = new Component(Data.Key, treeContext, data.Body, ctx)
                         let node = comp.AttachView(widget, view)
 
                         treeContext.SetComponent comp view
