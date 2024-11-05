@@ -76,21 +76,22 @@ type StateExtensions =
     [<Extension>]
     static member inline Bind
         (
-            _: ComponentBuilder<'parentMsg>,
+            _: ComponentBuilder<'parentMsg, 'marker>,
             [<InlineIfLambda>] fn: StateRequest<'T>,
-            [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'marker>
+            [<InlineIfLambda>] continuation: StateValue<'T> -> ComponentBodyBuilder<'msg, 'marker>
         ) =
-        ComponentBodyBuilder<'marker>(fun bindings ctx ->
+        ComponentBodyBuilder<'msg, 'marker>(fun envContext treeContext context bindings ->
             let key = int bindings
 
             let value =
-                match ctx.TryGetValue<'T>(key) with
+                match context.TryGetValue<'T>(key) with
                 | ValueSome value -> value
                 | ValueNone ->
                     let value = fn.Invoke()
-                    ctx.SetValue(key, value)
+                    context.SetValue(key, value)
                     value
 
-            let stateValue = StateValue<'T>(ctx, key, value)
+            let stateValue = StateValue<'T>(context, key, value)
 
-            (continuation stateValue).Invoke((bindings + 1<binding>, ctx)))
+            (continuation stateValue)
+                .Invoke(envContext, treeContext, context, bindings + 1<binding>))

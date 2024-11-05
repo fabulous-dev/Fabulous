@@ -49,6 +49,9 @@ and IViewNode =
     /// The context of the whole view tree
     abstract member TreeContext: ViewTreeContext
 
+    /// The environment context
+    abstract member EnvironmentContext: EnvironmentContext
+
     // note that Widget is struct type, thus we have boxing via option
     // we don't have MemoizedWidget set for 99.9% of the cases
     // thus makes sense to have overhead of boxing

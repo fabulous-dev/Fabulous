@@ -1,0 +1,87 @@
+namespace Fabulous
+
+open System
+
+module Component' =
+    let Data =
+        Attributes.defineSimpleScalar<ComponentData> "Component_Data" ScalarAttributeComparers.noCompare (fun _ _ _ -> ())
+
+    let WidgetKey =
+        let key = WidgetDefinitionStore.getNextKey()
+
+        let definition =
+            { Key = key
+              Name = "Component"
+              TargetType = typeof<Component>
+              CreateView =
+                fun (widget, treeContext, envContext, _) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body"
+                    | ValueSome attrs ->
+                        let data =
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
+                            | Some attr -> attr.Value :?> ComponentData
+                            | None -> failwith "Component widget must have a body"
+
+                        let envContext = new EnvironmentContext(envContext)
+                        let context = new ComponentContext()
+                        let comp = new Component(Data.Key, envContext, treeContext, context, data.Body)
+                        let struct (node, view) = comp.CreateView(ValueSome widget)
+
+                        treeContext.SetComponent comp view
+
+                        struct (node, view)
+              AttachView =
+                fun (widget, treeContext, envContext, _, view) ->
+                    match widget.ScalarAttributes with
+                    | ValueNone -> failwith "Component widget must have a body"
+                    | ValueSome attrs ->
+                        let data =
+                            let scalarAttrsOpt =
+                                attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                            match scalarAttrsOpt with
+                            | Some attr -> attr.Value :?> ComponentData
+                            | None -> failwith "Component widget must have a body"
+
+                        let envContext = new EnvironmentContext(envContext)
+                        let context = new ComponentContext()
+                        let comp = new Component(Data.Key, envContext, treeContext, context, data.Body)
+                        let node = comp.AttachView(widget, view)
+
+                        treeContext.SetComponent comp view
+
+                        node }
+
+        WidgetDefinitionStore.set key definition
+        key
+
+    let canReuseComponent (prev: Widget) (curr: Widget) =
+        let prevData =
+            match prev.ScalarAttributes with
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> ComponentData
+
+            | _ -> failwith "Component widget must have a body"
+
+        let currData =
+            match curr.ScalarAttributes with
+            | ValueSome attrs ->
+                let scalarAttrsOpt =
+                    attrs |> Array.tryFind(fun scalarAttr -> scalarAttr.Key = Data.Key)
+
+                match scalarAttrsOpt with
+                | None -> failwithf "Component widget must have a body"
+                | Some value -> value.Value :?> ComponentData
+            | _ -> failwith "Component widget must have a body"
+
+        // NOTE: Somehow using = here crashes the app and prevents debugging...
+        Object.Equals(prevData.Key, currData.Key)
