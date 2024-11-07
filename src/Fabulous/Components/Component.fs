@@ -124,7 +124,7 @@ type Component
         node
 
     member private this.RenderInternal() =
-        if _body = null then
+        if isNull _body then
             () // Component has been disposed
         else
             let prevRootWidget = _widget
@@ -147,10 +147,10 @@ type Component
             Reconciler.update treeContext.CanReuseView (ValueSome prevRootWidget) currRootWidget viewNode
 
     member this.Dispose() =
-        if _contextSubscription <> null then
+        if not (isNull _contextSubscription) then
             _contextSubscription.Dispose()
 
-        if _context <> null then
+        if not (isNull _context) then
             _context.Dispose()
 
         _body <- null
@@ -165,7 +165,7 @@ type Component
         member this.Dispose() = this.Dispose()
 
     member this.Render _ =
-        if _body = null then
+        if isNull _body then
             () // Component has been disposed
         else
             treeContext.SyncAction(this.RenderInternal)
