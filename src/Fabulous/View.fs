@@ -8,10 +8,8 @@ module ViewHelpers =
             false
         else if (prevKey = Memo.MemoWidgetKey) then
             Memo.canReuseMemoizedWidget prevWidget currWidget
-        else if (prevKey = Component.WidgetKey) then
-            Component.canReuseComponent prevWidget currWidget
-        else if (prevKey = MvuComponent.WidgetKey) then
-            MvuComponent.canReuseMvuComponent prevWidget currWidget
+        else if (prevKey = Component'.WidgetKey) then
+            Component'.canReuseComponent prevWidget currWidget
         else
             true
 

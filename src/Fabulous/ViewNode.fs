@@ -8,6 +8,7 @@ open Fabulous
 [<Sealed>]
 type ViewNode =
     val mutable parent: IViewNode option
+    val mutable envContext: EnvironmentContext
     val mutable treeContext: ViewTreeContext
     val mutable targetRef: WeakReference
     val mutable isDisposed: bool
@@ -19,8 +20,9 @@ type ViewNode =
     // ViewNode is supposed to be mutable, stateful and persistent object
     val handlers: Dictionary<string, IDisposable>
 
-    new(parent: IViewNode option, treeContext: ViewTreeContext, target: WeakReference) =
+    new(parent: IViewNode option, envContext: EnvironmentContext, treeContext: ViewTreeContext, target: WeakReference) =
         { parent = parent
+          envContext = envContext
           treeContext = treeContext
           targetRef = target
           handlers = Dictionary<string, IDisposable>()
@@ -116,6 +118,7 @@ type ViewNode =
     interface IViewNode with
         member this.Target = this.targetRef.Target
         member this.TreeContext = this.treeContext
+        member this.EnvironmentContext = this.envContext
 
         member this.MemoizedWidget
             with get () = this.memoizedWidget
@@ -167,6 +170,6 @@ type ViewNode =
             if not this.targetRef.IsAlive then
                 ()
             else
+                this.ApplyScalarDiffs(&diff.ScalarChanges)
                 this.ApplyWidgetDiffs(&diff.WidgetChanges)
                 this.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
-                this.ApplyScalarDiffs(&diff.ScalarChanges)

@@ -29,7 +29,7 @@ module TestUI_Widgets =
                   Name = typeof<'T>.Name
                   TargetType = typeof<'T>
                   CreateView =
-                    fun (widget, context, parentNode) ->
+                    fun (widget, envContext, treeContext, parentNode) ->
                         // let name = typeof<'T>.Name
                         //                      printfn $"Creating view for {name}"
 
@@ -41,15 +41,15 @@ module TestUI_Widgets =
                             | ValueNone -> None
                             | ValueSome parent -> Some parent
 
-                        let viewNode = new ViewNode(parentNode, context, weakReference)
+                        let viewNode = new ViewNode(parentNode, envContext, treeContext, weakReference)
 
                         view.PropertyBag.Add(ViewNode.ViewNodeProperty, viewNode)
 
                         let oldWidget: Widget voption = ValueNone
 
-                        Reconciler.update context.CanReuseView oldWidget widget viewNode
+                        Reconciler.update treeContext.CanReuseView oldWidget widget viewNode
                         struct (viewNode :> IViewNode, box view)
-                  AttachView = fun (_widget, _context, _parentNode, _view) -> failwith "not implemented" }
+                  AttachView = fun (_widget, _envContext, _treeContext, _parentNode, _view) -> failwith "not implemented" }
 
             WidgetDefinitionStore.set key definition
             key
@@ -194,7 +194,9 @@ module TestUI_Widgets =
         type Instance<'arg, 'model, 'msg, 'marker when 'msg: equality>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
             let mutable state: ('model * obj * Widget) option = None
 
-            member private x.viewContext: ViewTreeContext =
+            member private x.envContext = new EnvironmentContext()
+
+            member private x.treeContext: ViewTreeContext =
                 { CanReuseView = ViewHelpers.canReuseView
                   GetViewNode = ViewNode.getViewNode
                   Logger =
@@ -225,7 +227,7 @@ module TestUI_Widgets =
 
                     state <- Some(newModel, target, newWidget)
 
-                    Reconciler.update x.viewContext.CanReuseView (ValueSome oldWidget) newWidget viewNode
+                    Reconciler.update x.treeContext.CanReuseView (ValueSome oldWidget) newWidget viewNode
                     ()
 
             member x.Start(arg: 'arg) =
@@ -233,7 +235,8 @@ module TestUI_Widgets =
                 let widget = program.View(model).Compile()
                 let widgetDef = WidgetDefinitionStore.get widget.Key
 
-                let struct (_node, view) = widgetDef.CreateView(widget, x.viewContext, ValueNone)
+                let struct (_node, view) =
+                    widgetDef.CreateView(widget, x.envContext, x.treeContext, ValueNone)
 
                 state <- Some(model, view, widget)
 
