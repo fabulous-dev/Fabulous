@@ -14,7 +14,7 @@ module Component' =
               Name = "Component"
               TargetType = typeof<Component>
               CreateView =
-                fun (widget, treeContext, envContext, _) ->
+                fun (widget, envContext, treeContext, _) ->
                     match widget.ScalarAttributes with
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->
@@ -35,7 +35,7 @@ module Component' =
 
                         struct (node, view)
               AttachView =
-                fun (widget, treeContext, envContext, _, view) ->
+                fun (widget, envContext, treeContext, _, view) ->
                     match widget.ScalarAttributes with
                     | ValueNone -> failwith "Component widget must have a body"
                     | ValueSome attrs ->

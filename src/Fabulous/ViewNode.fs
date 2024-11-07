@@ -8,8 +8,8 @@ open Fabulous
 [<Sealed>]
 type ViewNode =
     val mutable parent: IViewNode option
-    val mutable treeContext: ViewTreeContext
     val mutable envContext: EnvironmentContext
+    val mutable treeContext: ViewTreeContext
     val mutable targetRef: WeakReference
     val mutable isDisposed: bool
     val mutable memoizedWidget: Widget option
@@ -20,10 +20,10 @@ type ViewNode =
     // ViewNode is supposed to be mutable, stateful and persistent object
     val handlers: Dictionary<string, IDisposable>
 
-    new(parent: IViewNode option, treeContext: ViewTreeContext, envContext, target: WeakReference) =
+    new(parent: IViewNode option, envContext: EnvironmentContext, treeContext: ViewTreeContext, target: WeakReference) =
         { parent = parent
-          treeContext = treeContext
           envContext = envContext
+          treeContext = treeContext
           targetRef = target
           handlers = Dictionary<string, IDisposable>()
           isDisposed = false

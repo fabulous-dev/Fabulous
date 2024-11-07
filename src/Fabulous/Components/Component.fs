@@ -84,7 +84,7 @@ type Component
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key
 
         let struct (node, view) =
-            widgetDef.CreateView(rootWidget, treeContext, envContext, ValueNone)
+            widgetDef.CreateView(rootWidget, envContext, treeContext, ValueNone)
 
         _view <- view
         _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
@@ -116,7 +116,7 @@ type Component
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key
 
         let node =
-            widgetDef.AttachView(rootWidget, treeContext, envContext, ValueNone, view)
+            widgetDef.AttachView(rootWidget, envContext, treeContext, ValueNone, view)
 
         _view <- view
         _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
