@@ -193,7 +193,7 @@ module TestUI_Widgets =
     module Run =
         type Instance<'arg, 'model, 'msg, 'marker when 'msg: equality>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
             let mutable state: ('model * obj * Widget) option = None
-            
+
             member private x.envContext = new EnvironmentContext()
 
             member private x.treeContext: ViewTreeContext =
@@ -235,7 +235,8 @@ module TestUI_Widgets =
                 let widget = program.View(model).Compile()
                 let widgetDef = WidgetDefinitionStore.get widget.Key
 
-                let struct (_node, view) = widgetDef.CreateView(widget, x.envContext, x.treeContext, ValueNone)
+                let struct (_node, view) =
+                    widgetDef.CreateView(widget, x.envContext, x.treeContext, ValueNone)
 
                 state <- Some(model, view, widget)
 
