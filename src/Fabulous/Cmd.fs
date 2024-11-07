@@ -196,7 +196,7 @@ module Cmd =
         fun (value: 'value) ->
             [ fun dispatch ->
                   lock funLock (fun () ->
-                      if cts <> null then
+                      if not(isNull cts) then
                           cts.Cancel()
                           cts.Dispose()
 
@@ -209,7 +209,7 @@ module Cmd =
                               lock funLock (fun () ->
                                   dispatch(fn value)
 
-                                  if cts <> null then
+                                  if not(isNull cts) then
                                       cts.Dispose()
                                       cts <- null)
                           },

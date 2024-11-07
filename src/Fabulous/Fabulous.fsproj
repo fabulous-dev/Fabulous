@@ -26,6 +26,7 @@
     <Compile Include="Primitives.fs" />
     <Compile Include="Logger.fs" />
     <Compile Include="WidgetDiff.fs" />
+    <Compile Include="EnvironmentContext.fs" />
     <Compile Include="IViewNode.fs" />
     <Compile Include="AttributeDefinitions.fs" />
     <Compile Include="WidgetDefinitions.fs" />
@@ -40,14 +41,19 @@
     <Compile Include="Dispatch.fs" />
     <Compile Include="Lifecycle.fs" />
     <Compile Include="Attributes.fs" />
-    <Compile Include="ComponentContext.fs" />
-    <Compile Include="Component.fs" />
-    <Compile Include="State.fs" />
-    <Compile Include="Binding.fs" />
-    <Compile Include="MvuComponent.fs" />
     <Compile Include="Memo.fs" />
-    <Compile Include="View.fs" />
     <Compile Include="ViewRef.fs" />
+    <None Include="Components\README.md" />
+    <Compile Include="Components\ComponentContext.fs" />
+    <Compile Include="Components\Component.fs" />
+    <Compile Include="Components\Widget.fs" />
+    <Compile Include="Components\Builder.fs" />
+    <Compile Include="Components\State.fs" />
+    <Compile Include="Components\Binding.fs" />
+    <Compile Include="Components\Environment.fs" />
+    <Compile Include="Components\EnvironmentObject.fs" />
+    <Compile Include="Components\Mvu.fs" />
+    <Compile Include="View.fs" />
   </ItemGroup>
   <ItemGroup>
     <!--

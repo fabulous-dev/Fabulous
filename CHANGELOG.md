@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre8] - 2024-11-07
+
+### Changed
+- Replaced custom MvuComponentBuilder with a Mvu binding by @TimLariviere
+
+### Fixed
+- Fixed an invalid cast exception when using a null or unit model with MVU in Component by @TimLariviere 
+
 ## [3.0.0-pre7] - 2024-09-28
 
 ### Fixed
@@ -149,7 +157,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre7...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre8...HEAD
+[3.0.0-pre8]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre8
 [3.0.0-pre7]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre7
 [3.0.0-pre6]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre6
 [3.0.0-pre5]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre5
