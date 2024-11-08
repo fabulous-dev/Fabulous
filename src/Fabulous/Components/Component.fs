@@ -22,6 +22,9 @@ type Component
     let mutable _view = null
     let mutable _contextSubscription: IDisposable = null
 
+    let mutable _isReadyForRenderRequest = false
+    let mutable _pendingRenderRequested = false
+
     member private this.MergeAttributes(rootWidget: Widget, componentWidgetOpt: Widget voption) =
         match componentWidgetOpt with
         | ValueNone -> struct (rootWidget.ScalarAttributes, rootWidget.WidgetAttributes, rootWidget.WidgetCollectionAttributes)
@@ -60,6 +63,9 @@ type Component
             struct (scalars, widgets, widgetColls)
 
     member this.CreateView(componentWidget: Widget voption) =
+        _isReadyForRenderRequest <- false
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
         let struct (envContext, treeContext, context, rootWidget) =
             _body.Invoke(_envContext, _treeContext, _context)
 
@@ -87,11 +93,20 @@ type Component
             widgetDef.CreateView(rootWidget, envContext, treeContext, ValueNone)
 
         _view <- view
-        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+        _isReadyForRenderRequest <- true
+
+        // ComponentContext.SetNeedsRender has been called before the view is created
+        // We need to re-render the component now because the state has changed before we were ready
+        if _pendingRenderRequested then
+            _pendingRenderRequested <- false
+            this.Render()
 
         struct (node, view)
 
     member this.AttachView(componentWidget: Widget, view: obj) =
+        _isReadyForRenderRequest <- false
+        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+
         let struct (envContext, treeContext, context, rootWidget) =
             _body.Invoke(_envContext, _treeContext, _context)
 
@@ -119,7 +134,13 @@ type Component
             widgetDef.AttachView(rootWidget, envContext, treeContext, ValueNone, view)
 
         _view <- view
-        _contextSubscription <- _context.RenderNeeded.Subscribe(this.Render)
+        _isReadyForRenderRequest <- true
+
+        // ComponentContext.SetNeedsRender has been called before the view is created
+        // We need to re-render the component now because the state has changed before we were ready
+        if _pendingRenderRequested then
+            _pendingRenderRequested <- false
+            this.Render()
 
         node
 
@@ -139,6 +160,7 @@ type Component
 
             if prevContext <> context then
                 _contextSubscription.Dispose()
+                prevContext.Dispose()
                 _contextSubscription <- context.RenderNeeded.Subscribe(this.Render)
                 _context <- context
 
@@ -164,8 +186,10 @@ type Component
     interface IDisposable with
         member this.Dispose() = this.Dispose()
 
-    member this.Render _ =
+    member this.Render() =
         if isNull _body then
             () // Component has been disposed
+        else if not _isReadyForRenderRequest then
+            _pendingRenderRequested <- true
         else
             treeContext.SyncAction(this.RenderInternal)

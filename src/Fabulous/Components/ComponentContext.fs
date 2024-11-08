@@ -68,9 +68,9 @@ type ComponentContext(initialSize: int) =
         this.SetValueInternal(key, value)
         this.NeedsRender()
 
-    member this.LinkDisposable(key: string, disposable: unit -> IDisposable) =
+    member this.LinkDisposable<'T when 'T :> IDisposable>(key: string, disposable: unit -> 'T) =
         if disposables.ContainsKey(key) then
-            disposables[key]
+            disposables[key] :?> 'T
         else
             let disposable = disposable()
             disposables[key] <- disposable

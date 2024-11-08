@@ -30,13 +30,6 @@ type MvuExtensions =
                 | ValueNone ->
                     let struct (program, arg) = fn.Invoke()
 
-                    let programObj: Program<obj, obj, obj> =
-                        { Init = fun arg -> let model, cmd = program.Init(unbox arg) in (box model, Cmd.map box cmd)
-                          Update = fun (msg, model) -> let model, cmd = program.Update(unbox msg, unbox model) in (box model, Cmd.map box cmd)
-                          Subscribe = fun model -> Sub.map "mvu" box (program.Subscribe(unbox model))
-                          Logger = program.Logger
-                          ExceptionHandler = program.ExceptionHandler }
-
                     let runner =
                         context.LinkDisposable(
                             "runner",
@@ -44,21 +37,19 @@ type MvuExtensions =
                                 let getModel () =
                                     match context.TryGetValue<ModelValue<'model>>(key) with
                                     | ValueNone -> failwith("Model not found in ComponentContext " + context.Id.ToString())
-                                    | ValueSome(ModelValue model) -> box model
+                                    | ValueSome(ModelValue model) -> model
 
-                                let setModel v =
-                                    context.SetValue(key, ModelValue(unbox<'model> v))
-                                    context.NeedsRender()
+                                let setModel v = context.SetValue(key, ModelValue v)
 
-                                let runner = new Runner<obj, obj, obj>(getModel, setModel, programObj)
-                                runner.Start(arg)
-                                runner
+                                new Runner<'arg, 'model, 'msg>(getModel, setModel, program)
                         )
 
                     // Redirect messages to runner
                     let treeContext =
                         { treeContext with
-                            Dispatch = (runner :?> Runner<obj, obj, obj>).Dispatch }
+                            Dispatch = unbox >> runner.Dispatch }
+
+                    runner.Start(arg)
 
                     let (ModelValue state) = context.TryGetValue(key).Value
 
