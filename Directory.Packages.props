@@ -12,7 +12,7 @@
     <PackageVersion Include="NUnit" Version="3.13.3" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageVersion Include="System.Memory" Version="4.5.5" />
-    <PackageVersion Include="BenchmarkDotNet" Version="0.13.2" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 

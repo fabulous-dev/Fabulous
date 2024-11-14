@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -11,17 +11,19 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Benchmarks", "src\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Tests", "src\Fabulous.Tests\Fabulous.Tests.fsproj", "{31A18443-E05B-47F1-812E-4FEECCCA06DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Files", "_Solution Files", "{20E44B0C-FA62-4DE4-8017-95AAE3B178CE}" 
-	ProjectSection(SolutionItems) = preProject 
-		README.md = README.md 
-		CHANGELOG.md = CHANGELOG.md 
-		LICENSE.md = LICENSE.md 
-	    .gitignore = .gitignore 
-	    pull_request.yml = .github/workflows/pull_request.yml 
-	    build.yml = .github/workflows/build.yml 
-	    release.yml = .github/workflows/release.yml 
-	EndProjectSection 
-EndProject 
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Files", "_Solution Files", "{20E44B0C-FA62-4DE4-8017-95AAE3B178CE}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE.md = LICENSE.md
+					.gitignore = .gitignore
+					pull_request.yml = .github/workflows/pull_request.yml
+					build.yml = .github/workflows/build.yml
+					release.yml = .github/workflows/release.yml
+		Directory.Packages.props = Directory.Packages.props
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

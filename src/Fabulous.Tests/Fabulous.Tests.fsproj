@@ -19,7 +19,6 @@
     <Compile Include="CmdTests.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" />
     <PackageReference Include="FsCheck.NUnit" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NUnit" />
