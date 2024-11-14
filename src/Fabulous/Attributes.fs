@@ -280,99 +280,98 @@ module Attributes =
 
         { Key = key; Name = name }
 
-    /// Define an attribute for EventHandler
-    let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<MsgValue> =
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun _ (newValueOpt: MsgValue voption) node ->
-                    match node.TryGetHandler(name) with
-                    | ValueNone -> ()
-                    | ValueSome handler -> handler.Dispose()
+    module Mvu =
+        /// Define an attribute for EventHandler
+        let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<MsgValue> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ (newValueOpt: MsgValue voption) node ->
+                        match node.TryGetHandler(name) with
+                        | ValueNone -> ()
+                        | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone -> node.RemoveHandler(name)
-                    | ValueSome(MsgValue msg) ->
-                        let event = getEvent node.Target
-                        let handler = event.Subscribe(fun _ -> Dispatcher.dispatch node msg)
-                        node.SetHandler(name, handler))
-            )
+                        match newValueOpt with
+                        | ValueNone -> node.RemoveHandler(name)
+                        | ValueSome(MsgValue msg) ->
+                            let event = getEvent node.Target
+                            let handler = event.Subscribe(fun _ -> Dispatcher.dispatch node msg)
+                            node.SetHandler(name, handler))
+                )
 
-            |> AttributeDefinitionStore.registerScalar
+                |> AttributeDefinitionStore.registerScalar
 
-        { Key = key; Name = name }
+            { Key = key; Name = name }
 
-    /// Define an attribute for EventHandler<'T>
-    let inline defineEvent<'args>
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<'args -> MsgValue> =
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun _ (newValueOpt: ('args -> MsgValue) voption) (node: IViewNode) ->
-                    match node.TryGetHandler(name) with
-                    | ValueNone -> ()
-                    | ValueSome handler -> handler.Dispose()
+        /// Define an attribute for EventHandler<'T>
+        let inline defineEvent<'args>
+            name
+            ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+            : SimpleScalarAttributeDefinition<'args -> MsgValue> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ (newValueOpt: ('args -> MsgValue) voption) (node: IViewNode) ->
+                        match node.TryGetHandler(name) with
+                        | ValueNone -> ()
+                        | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone -> node.RemoveHandler(name)
-                    | ValueSome fn ->
-                        let event = getEvent node.Target
+                        match newValueOpt with
+                        | ValueNone -> node.RemoveHandler(name)
+                        | ValueSome fn ->
+                            let event = getEvent node.Target
 
-                        let handler =
-                            event.Subscribe(fun args ->
-                                let (MsgValue r) = fn args
-                                Dispatcher.dispatch node r)
+                            let handler =
+                                event.Subscribe(fun args ->
+                                    let (MsgValue r) = fn args
+                                    Dispatcher.dispatch node r)
 
-                        node.SetHandler(name, handler))
-            )
-            |> AttributeDefinitionStore.registerScalar
+                            node.SetHandler(name, handler))
+                )
+                |> AttributeDefinitionStore.registerScalar
 
-        { Key = key; Name = name }
+            { Key = key; Name = name }
 
-    let inline defineEventNoArgNoDispatch
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>)
-        : SimpleScalarAttributeDefinition<unit -> unit> =
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun _ (newValueOpt: (unit -> unit) voption) node ->
-                    match node.TryGetHandler(name) with
-                    | ValueNone -> ()
-                    | ValueSome handler -> handler.Dispose()
+    module Component =
+        let inline defineEventNoArg name ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler, EventArgs>) : SimpleScalarAttributeDefinition<unit -> unit> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ (newValueOpt: (unit -> unit) voption) node ->
+                        match node.TryGetHandler(name) with
+                        | ValueNone -> ()
+                        | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone -> node.RemoveHandler(name)
-                    | ValueSome(fn) ->
-                        let event = getEvent node.Target
-                        node.SetHandler(name, event.Subscribe(fun _ -> fn())))
-            )
+                        match newValueOpt with
+                        | ValueNone -> node.RemoveHandler(name)
+                        | ValueSome(fn) ->
+                            let event = getEvent node.Target
+                            node.SetHandler(name, event.Subscribe(fun _ -> fn())))
+                )
 
-            |> AttributeDefinitionStore.registerScalar
+                |> AttributeDefinitionStore.registerScalar
 
-        { Key = key; Name = name }
+            { Key = key; Name = name }
 
-    let inline defineEventNoDispatch<'args>
-        name
-        ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
-        : SimpleScalarAttributeDefinition<'args -> unit> =
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun _ (newValueOpt: ('args -> unit) voption) node ->
-                    match node.TryGetHandler(name) with
-                    | ValueNone -> ()
-                    | ValueSome handler -> handler.Dispose()
+        let inline defineEvent<'args>
+            name
+            ([<InlineIfLambda>] getEvent: obj -> IEvent<EventHandler<'args>, 'args>)
+            : SimpleScalarAttributeDefinition<'args -> unit> =
+            let key =
+                SimpleScalarAttributeDefinition.CreateAttributeData(
+                    ScalarAttributeComparers.noCompare,
+                    (fun _ (newValueOpt: ('args -> unit) voption) node ->
+                        match node.TryGetHandler(name) with
+                        | ValueNone -> ()
+                        | ValueSome handler -> handler.Dispose()
 
-                    match newValueOpt with
-                    | ValueNone -> node.RemoveHandler(name)
-                    | ValueSome(fn) ->
-                        let event = getEvent node.Target
-                        node.SetHandler(name, event.Subscribe(fun args -> fn args)))
-            )
+                        match newValueOpt with
+                        | ValueNone -> node.RemoveHandler(name)
+                        | ValueSome(fn) ->
+                            let event = getEvent node.Target
+                            node.SetHandler(name, event.Subscribe(fun args -> fn args)))
+                )
 
-            |> AttributeDefinitionStore.registerScalar
+                |> AttributeDefinitionStore.registerScalar
 
-        { Key = key; Name = name }
+            { Key = key; Name = name }
