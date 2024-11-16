@@ -194,14 +194,16 @@ module TestUI_Widgets =
         type Instance<'arg, 'model, 'msg, 'marker when 'msg: equality>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
             let mutable state: ('model * obj * Widget) option = None
 
-            member private x.envContext = new EnvironmentContext()
+            let logger = 
+                { Log = fun _ -> ()
+                  MinLogLevel = LogLevel.Fatal }
+
+            member private x.envContext = new EnvironmentContext(logger)
 
             member private x.treeContext: ViewTreeContext =
                 { CanReuseView = ViewHelpers.canReuseView
                   GetViewNode = ViewNode.getViewNode
-                  Logger =
-                    { Log = fun _ -> ()
-                      MinLogLevel = LogLevel.Fatal }
+                  Logger = logger
                   Dispatch = fun msg -> unbox<'msg> msg |> x.ProcessMessage
                   GetComponent = Component.getComponent
                   SetComponent = Component.setComponent
