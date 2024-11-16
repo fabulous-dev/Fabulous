@@ -26,7 +26,7 @@ module Component' =
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let envContext = new EnvironmentContext(envContext)
+                        let envContext = new EnvironmentContext(treeContext.Logger, envContext)
                         let context = new ComponentContext()
                         let comp = new Component(Data.Key, envContext, treeContext, context, data.Body)
                         let struct (node, view) = comp.CreateView(ValueSome widget)
@@ -47,7 +47,7 @@ module Component' =
                             | Some attr -> attr.Value :?> ComponentData
                             | None -> failwith "Component widget must have a body"
 
-                        let envContext = new EnvironmentContext(envContext)
+                        let envContext = new EnvironmentContext(treeContext.Logger, envContext)
                         let context = new ComponentContext()
                         let comp = new Component(Data.Key, envContext, treeContext, context, data.Body)
                         let node = comp.AttachView(widget, view)

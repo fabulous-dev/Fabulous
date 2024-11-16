@@ -27,8 +27,6 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
             let newModel, cmd = program.Update(lastMsg.Value, model)
             let subs = program.Subscribe(newModel)
 
-            printfn $"Updating model. Was %A{model}, Is %A{newModel}"
-
             setState newModel
 
             _activeSubs <- Sub.Internal.diff _activeSubs subs |> Sub.Internal.Fx.change onError dispatch
