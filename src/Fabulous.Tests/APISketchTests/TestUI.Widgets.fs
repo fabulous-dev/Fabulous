@@ -194,7 +194,7 @@ module TestUI_Widgets =
         type Instance<'arg, 'model, 'msg, 'marker when 'msg: equality>(program: StatefulView<'arg, 'model, 'msg, 'marker>) =
             let mutable state: ('model * obj * Widget) option = None
 
-            let logger = 
+            let logger =
                 { Log = fun _ -> ()
                   MinLogLevel = LogLevel.Fatal }
 
