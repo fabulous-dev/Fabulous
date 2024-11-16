@@ -14,26 +14,26 @@ type EnvironmentValueChanged(originEnvId: Guid, fromUserCode: bool, key: string,
 type EnvironmentKey<'T>(key: string) =
     member this.Key = key
 
-and [<AllowNullLiteral>] EnvironmentContext(inheritedContext: EnvironmentContext) =
+and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: EnvironmentContext) =
     let id = Guid.NewGuid()
     let values = Dictionary<string, obj>()
     let valueChanged = Event<EnvironmentValueChanged>()
 
     do
         if inheritedContext = null then
-            printfn $"EnvironmentContext '{id}' created"
+            logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' created")
         else
-            printfn $"EnvironmentContext '{id}' created and inherited from '{inheritedContext.Id}'"
+            logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' created and inherited from '{inheritedContext.Id}'")
 
     let valuePropagationSubscription =
         if inheritedContext = null then
             null
         else
             inheritedContext.ValueChanged.Subscribe(fun args ->
-                printfn $"Env '{id}': Propagating '{args.Key}' change from '{args.OriginEnvId}'"
+                logger.Log(LogLevel.Debug, $"Env '{id}': Propagating '{args.Key}' change from '{args.OriginEnvId}'")
                 valueChanged.Trigger(args))
 
-    new() = new EnvironmentContext(null)
+    new(logger: Logger) = new EnvironmentContext(logger, null)
 
     member this.Id = id
 
@@ -46,7 +46,7 @@ and [<AllowNullLiteral>] EnvironmentContext(inheritedContext: EnvironmentContext
             ValueNone
 
     member internal this.SetInternal<'T>(key: string, value: 'T, fromUserCode: bool) =
-        printfn $"EnvironmentContext '{id}' set value '{key}' to '{value}'"
+        logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' set value '{key}' to '{value}'")
         let boxedValue = box value
         values[key] <- boxedValue
         valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
@@ -66,7 +66,7 @@ and [<AllowNullLiteral>] EnvironmentContext(inheritedContext: EnvironmentContext
         let fromUserCode = defaultArg fromUserCode true
 
         if values.ContainsKey(key.Key) || inheritedContext = null then
-            printfn $"EnvironmentContext '{id}' set value '{key.Key}' to '{value}'"
+            logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' set value '{key.Key}' to '{value}'")
             let boxedValue = box value
             values[key.Key] <- boxedValue
             valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key.Key, ValueSome boxedValue))
@@ -75,7 +75,7 @@ and [<AllowNullLiteral>] EnvironmentContext(inheritedContext: EnvironmentContext
 
     interface IDisposable with
         member this.Dispose() =
-            printfn $"EnvironmentContext '{id}' disposed"
+            logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' disposed")
 
             if valuePropagationSubscription <> null then
                 valuePropagationSubscription.Dispose()
