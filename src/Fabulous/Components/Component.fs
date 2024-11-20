@@ -27,7 +27,8 @@ type Component
 
     member private this.MergeAttributes(rootWidget: Widget, componentWidgetOpt: Widget voption) =
         match componentWidgetOpt with
-        | ValueNone -> struct (rootWidget.ScalarAttributes, rootWidget.WidgetAttributes, rootWidget.WidgetCollectionAttributes)
+        | ValueNone ->
+            struct (rootWidget.ScalarAttributes, rootWidget.WidgetAttributes, rootWidget.WidgetCollectionAttributes, rootWidget.EnvironmentAttributes)
 
         | ValueSome componentWidget ->
             let componentScalars =
@@ -60,7 +61,14 @@ type Component
                 | ValueNone, ValueSome attrs -> ValueSome attrs
                 | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
 
-            struct (scalars, widgets, widgetColls)
+            let environments =
+                match struct (rootWidget.EnvironmentAttributes, componentWidget.EnvironmentAttributes) with
+                | ValueNone, ValueNone -> ValueNone
+                | ValueSome attrs, ValueNone
+                | ValueNone, ValueSome attrs -> ValueSome attrs
+                | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
+
+            struct (scalars, widgets, widgetColls, environments)
 
     member this.CreateView(componentWidget: Widget voption) =
         _isReadyForRenderRequest <- false
@@ -74,7 +82,7 @@ type Component
         _treeContext <- treeContext
         _context <- context
 
-        let struct (scalars, widgets, widgetColls) =
+        let struct (scalars, widgets, widgetColls, environments) =
             this.MergeAttributes(rootWidget, componentWidget)
 
         let rootWidget: Widget =
@@ -84,7 +92,8 @@ type Component
 #endif
               ScalarAttributes = scalars
               WidgetAttributes = widgets
-              WidgetCollectionAttributes = widgetColls }
+              WidgetCollectionAttributes = widgetColls
+              EnvironmentAttributes = environments }
 
         // Create the actual view
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key
@@ -115,7 +124,7 @@ type Component
         _treeContext <- treeContext
         _context <- context
 
-        let struct (scalars, widgets, widgetColls) =
+        let struct (scalars, widgets, widgetColls, environments) =
             this.MergeAttributes(rootWidget, ValueSome componentWidget)
 
         let rootWidget: Widget =
@@ -125,7 +134,8 @@ type Component
 #endif
               ScalarAttributes = scalars
               WidgetAttributes = widgets
-              WidgetCollectionAttributes = widgetColls }
+              WidgetCollectionAttributes = widgetColls
+              EnvironmentAttributes = environments }
 
         // Attach the widget to the existing view
         let widgetDef = WidgetDefinitionStore.get rootWidget.Key

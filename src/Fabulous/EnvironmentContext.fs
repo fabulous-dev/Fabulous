@@ -4,7 +4,7 @@ open System
 open System.Collections.Generic
 
 [<Struct>]
-type EnvironmentValueChanged(originEnvId: Guid, fromUserCode: bool, key: string, value: obj voption) =
+type EnvironmentValueChanged(originEnvId: Guid, fromUserCode: bool, key: EnvironmentAttributeKey, value: obj voption) =
     member this.OriginEnvId = originEnvId
     member this.FromUserCode = fromUserCode
     member this.Key = key
@@ -12,11 +12,11 @@ type EnvironmentValueChanged(originEnvId: Guid, fromUserCode: bool, key: string,
 
 [<NoComparison; NoEquality>]
 type EnvironmentKey<'T>(key: string) =
-    member this.Key = key
+    member this.Key = EnvironmentAttributeKey key
 
 and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: EnvironmentContext) =
     let id = Guid.NewGuid()
-    let values = Dictionary<string, obj>()
+    let values = Dictionary<EnvironmentAttributeKey, obj>()
     let valueChanged = Event<EnvironmentValueChanged>()
 
     do
@@ -37,7 +37,7 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
 
     member this.Id = id
 
-    member private this.TryGetValue<'T>(key: string) =
+    member private this.TryGetValue<'T>(key: EnvironmentAttributeKey) =
         if values.ContainsKey(key) then
             ValueSome(unbox<'T> values[key])
         elif inheritedContext <> null then
@@ -45,13 +45,13 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
         else
             ValueNone
 
-    member internal this.SetInternal<'T>(key: string, value: 'T, fromUserCode: bool) =
+    member internal this.SetInternal<'T>(key: EnvironmentAttributeKey, value: 'T, fromUserCode: bool) =
         logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' set value '{key}' to '{value}'")
         let boxedValue = box value
         values[key] <- boxedValue
         valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
 
-    member internal this.RemoveInternal(key: string, fromUserCode: bool) =
+    member internal this.RemoveInternal(key: EnvironmentAttributeKey, fromUserCode: bool) =
         if values.Remove(key) then
             valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueNone))
 
@@ -60,7 +60,9 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
     member this.Get<'T>(key: EnvironmentKey<'T>) =
         match this.TryGetValue<'T>(key.Key) with
         | ValueSome value -> value
-        | ValueNone -> failwithf $"EnvironmentContext '{id}' does not contain value for key '{key.Key}'"
+        | ValueNone ->
+            let (EnvironmentAttributeKey key) = key.Key
+            failwithf $"EnvironmentContext '{id}' does not contain value for key '{key}'"
 
     member this.Set<'T>(key: EnvironmentKey<'T>, value: 'T, ?fromUserCode: bool) =
         let fromUserCode = defaultArg fromUserCode true
