@@ -643,7 +643,7 @@ module Issue104 =
     let ControlWidgetKey = Widgets.register<TestButton>()
 
     let Control () =
-        WidgetBuilder<'msg, TestButtonMarker>(ControlWidgetKey, AttributesBundle(StackList.StackList.empty(), ValueNone, ValueNone))
+        WidgetBuilder<'msg, TestButtonMarker>(ControlWidgetKey)
 
     [<System.Runtime.CompilerServices.Extension>]
     type WidgetExtensions() =

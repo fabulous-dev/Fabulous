@@ -12,21 +12,6 @@ module EnvironmentBuilders =
 
 type EnvironmentAttrValue = { Key: string; Value: obj }
 
-module Environment' =
-    let Environment =
-        let key =
-            SimpleScalarAttributeDefinition.CreateAttributeData(
-                ScalarAttributeComparers.noCompare,
-                (fun oldValueOpt (newValueOpt: EnvironmentAttrValue voption) node ->
-                    match struct (oldValueOpt, newValueOpt) with
-                    | ValueNone, ValueNone -> ()
-                    | ValueSome prev, ValueNone -> node.EnvironmentContext.RemoveInternal(prev.Key, true)
-                    | _, ValueSome curr -> node.EnvironmentContext.SetInternal(curr.Key, curr.Value, true))
-            )
-            |> AttributeDefinitionStore.registerScalar
-
-        { Key = key; Name = "Environment" }: SimpleScalarAttributeDefinition<EnvironmentAttrValue>
-
 [<Extension>]
 type EnvironmentExtensions =
     [<Extension>]
@@ -55,5 +40,4 @@ type EnvironmentExtensions =
 [<Extension>]
 type EnvironmentModifiers =
     [<Extension>]
-    static member inline environment(this: WidgetBuilder<'msg, 'marker>, key: EnvironmentKey<'T>, value: 'T) =
-        this.AddScalar(Environment'.Environment.WithValue(({ Key = key.Key; Value = box value }: EnvironmentAttrValue)))
+    static member inline environment(this: WidgetBuilder<'msg, 'marker>, key: EnvironmentKey<'T>, value: 'T) = this.AddEnvironment(key.Key, value)

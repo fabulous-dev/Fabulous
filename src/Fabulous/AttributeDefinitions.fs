@@ -160,7 +160,6 @@ module AttributeDefinitionStore =
     let private _scalars = ResizeArray<ScalarAttributeData>()
     let private _smallScalars = ResizeArray<SmallScalarAttributeData>()
     let private _widgets = ResizeArray<WidgetAttributeData>()
-
     let private _widgetCollections = ResizeArray<WidgetCollectionAttributeData>()
 
     let registerSmallScalar (data: SmallScalarAttributeData) : ScalarAttributeKey =

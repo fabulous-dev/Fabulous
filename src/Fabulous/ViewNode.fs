@@ -115,6 +115,23 @@ type ViewNode =
 
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
 
+    member inline private this.ApplyEnvironmentDiffs(diffs: EnvironmentChanges inref) : unit =
+        let node = this :> IViewNode
+
+        for diff in diffs do
+            match diff with
+            | EnvironmentChange.Added added ->
+                let key = added.Key
+                node.EnvironmentContext.SetInternal(key, added.Value, true)
+
+            | EnvironmentChange.Removed removed ->
+                let key = removed.Key
+                node.EnvironmentContext.RemoveInternal(key, true)
+
+            | EnvironmentChange.Updated(oldAttr, newAttr) ->
+                let key = oldAttr.Key
+                node.EnvironmentContext.SetInternal(key, newAttr.Value, true)
+
     interface IViewNode with
         member this.Target = this.targetRef.Target
         member this.TreeContext = this.treeContext
@@ -170,6 +187,7 @@ type ViewNode =
             if not this.targetRef.IsAlive then
                 ()
             else
-                this.ApplyScalarDiffs(&diff.ScalarChanges)
+                this.ApplyEnvironmentDiffs(&diff.EnvironmentChanges)
                 this.ApplyWidgetDiffs(&diff.WidgetChanges)
                 this.ApplyWidgetCollectionDiffs(&diff.WidgetCollectionChanges)
+                this.ApplyScalarDiffs(&diff.ScalarChanges)

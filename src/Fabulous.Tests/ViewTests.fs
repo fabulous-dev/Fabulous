@@ -17,8 +17,7 @@ type ``View helper functions tests``() =
     /// Test: https://github.com/fabulous-dev/Fabulous/pull/1037
     [<Test>]
     member _.``Mapping a WidgetBuilder with Unit Msg to another Msg is supported``() =
-        let widgetBuilder =
-            WidgetBuilder<unit, ITestControl>(TestControl.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+        let widgetBuilder = WidgetBuilder<unit, ITestControl>(TestControl.WidgetKey)
 
         let mapMsg (oldMsg: unit) = ChildMsg oldMsg
 
@@ -26,7 +25,7 @@ type ``View helper functions tests``() =
 
         Assert.AreEqual(widgetBuilder.Key, mappedWidgetBuilder.Key)
 
-        let struct (scalars, _, _) = mappedWidgetBuilder.Attributes
+        let struct (scalars, _, _, _) = mappedWidgetBuilder.Attributes
         let scalars = StackList.toArray &scalars
 
         Assert.AreEqual(1, scalars.Length)

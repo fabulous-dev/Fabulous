@@ -33,6 +33,9 @@ type WidgetAttributeKey = int<widgetAttributeKey>
 /// Key identifying a widget collection attribute (e.g. Children, Items, etc.)
 type WidgetCollectionAttributeKey = int<widgetCollectionAttributeKey>
 
+/// Key identifying an environment attribute (e.g. Theme, etc.)
+type EnvironmentAttributeKey = EnvironmentAttributeKey of string
+
 module ScalarAttributeKey =
     [<Struct>]
     type Kind =
@@ -80,6 +83,9 @@ module WidgetCollectionAttributeKey =
         let b = int b
         a.CompareTo b
 
+module EnvironmentAttributeKey =
+    let inline compare (EnvironmentAttributeKey a) (EnvironmentAttributeKey b) = a.CompareTo b
+
 type WidgetKey = int
 type StateKey = int
 type ViewAdapterKey = int
@@ -114,6 +120,17 @@ and [<Struct>] WidgetCollectionAttribute =
 #endif
       Value: ArraySlice<Widget> }
 
+/// Represents an environment value of a widget
+and [<Struct>] EnvironmentAttribute =
+    {
+        Key: EnvironmentAttributeKey
+#if DEBUG
+        DebugName: string
+#endif
+        /// Stores the value as object (boxed)
+        Value: obj
+    }
+
 /// Represents a virtual UI element such as a Label, a Button, etc.
 and [<Struct>] Widget =
     { Key: WidgetKey
@@ -122,4 +139,5 @@ and [<Struct>] Widget =
 #endif
       ScalarAttributes: ScalarAttribute[] voption
       WidgetAttributes: WidgetAttribute[] voption
-      WidgetCollectionAttributes: WidgetCollectionAttribute[] voption }
+      WidgetCollectionAttributes: WidgetCollectionAttribute[] voption
+      EnvironmentAttributes: EnvironmentAttribute[] voption }
