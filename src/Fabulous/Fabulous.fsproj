@@ -61,6 +61,5 @@
       This version will be used as the lower bound in the NuGet package
     -->
     <PackageReference Include="FSharp.Core" VersionOverride="7.0.0" />
-    <PackageReference Include="System.Memory" />
   </ItemGroup>
 </Project>
