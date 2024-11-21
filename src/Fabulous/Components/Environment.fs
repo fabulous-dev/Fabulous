@@ -23,10 +23,11 @@ type EnvironmentExtensions =
         ) =
         ComponentBodyBuilder<'msg, 'marker>(fun envContext treeContext context bindings ->
             let envKey = value.Invoke()
+            let (EnvironmentAttributeKey key) = envKey.Key
 
             // Listen to changes in the environment
             context.LinkDisposable(
-                $"env_{envKey.Key}",
+                $"env_{key}",
                 fun () ->
                     envContext.ValueChanged.Subscribe(fun args ->
                         if args.Key = envKey.Key then
