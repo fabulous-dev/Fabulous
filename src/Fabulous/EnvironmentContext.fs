@@ -30,7 +30,7 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
             null
         else
             inheritedContext.ValueChanged.Subscribe(fun args ->
-                logger.Log(LogLevel.Debug, $"Env '{id}': Propagating '{args.Key}' change from '{args.OriginEnvId}'")
+                logger.Log(LogLevel.Debug, let (EnvironmentAttributeKey key) = args.Key in $"Env '{id}': Propagating '{key}' change from '{args.OriginEnvId}'")
                 valueChanged.Trigger(args))
 
     new(logger: Logger) = new EnvironmentContext(logger, null)
@@ -46,7 +46,7 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
             ValueNone
 
     member internal this.SetInternal<'T>(key: EnvironmentAttributeKey, value: 'T, fromUserCode: bool) =
-        logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' set value '{key}' to '{value}'")
+        logger.Log(LogLevel.Debug, let (EnvironmentAttributeKey key) = key in $"EnvironmentContext '{id}' set value '{key}' to '{value}'")
         let boxedValue = box value
         values[key] <- boxedValue
         valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key, ValueSome boxedValue))
@@ -68,7 +68,7 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
         let fromUserCode = defaultArg fromUserCode true
 
         if values.ContainsKey(key.Key) || inheritedContext = null then
-            logger.Log(LogLevel.Debug, $"EnvironmentContext '{id}' set value '{key.Key}' to '{value}'")
+            logger.Log(LogLevel.Debug, let (EnvironmentAttributeKey key) = key.Key in $"EnvironmentContext '{id}' set value '{key}' to '{value}'")
             let boxedValue = box value
             values[key.Key] <- boxedValue
             valueChanged.Trigger(EnvironmentValueChanged(id, fromUserCode, key.Key, ValueSome boxedValue))
