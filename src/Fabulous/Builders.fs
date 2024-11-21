@@ -138,7 +138,7 @@ type WidgetBuilder<'msg, 'marker when 'msg: equality> =
             let attr =
                 { Key = key
 #if DEBUG
-                  DebugName = $"Environment.{key}"
+                  DebugName = let (EnvironmentAttributeKey key) = key in "Environment." + key
 #endif
                   Value = value }
 

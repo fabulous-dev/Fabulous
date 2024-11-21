@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre14] - 2024-11-21
+
+### Added
+- Unwrap EnvironmentAttributeKey for logging by @TimLariviere
+
+## [3.0.0-pre13] - 2024-11-21
+
+### Added
+- Add IDisposable to EnvironmentObject by @TimLariviere
+
 ## [3.0.0-pre12] - 2024-11-20
 
 ### Added
@@ -177,7 +187,9 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre12...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre14...HEAD
+[3.0.0-pre14]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre14
+[3.0.0-pre13]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre13
 [3.0.0-pre12]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre12
 [3.0.0-pre11]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre11
 [3.0.0-pre10]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre10
