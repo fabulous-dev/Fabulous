@@ -81,3 +81,9 @@ and [<AllowNullLiteral>] EnvironmentContext(logger: Logger, inheritedContext: En
 
             if valuePropagationSubscription <> null then
                 valuePropagationSubscription.Dispose()
+
+            for value in values.Values do
+                if value :? IDisposable then
+                    (value :?> IDisposable).Dispose()
+
+            values.Clear()

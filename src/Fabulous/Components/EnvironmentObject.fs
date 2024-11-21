@@ -1,5 +1,6 @@
 namespace Fabulous
 
+open System
 open System.Runtime.CompilerServices
 
 type EnvironmentObjectRequest<'T> = delegate of unit -> EnvironmentKey<'T>
@@ -9,6 +10,11 @@ type EnvironmentObject() =
     let changed = Event<unit>()
     member this.Changed = changed.Publish
     member this.NotifyChanged() = changed.Trigger()
+    abstract member Dispose: unit -> unit
+    default this.Dispose() = ()
+
+    interface IDisposable with
+        member this.Dispose() = this.Dispose()
 
 [<AutoOpen>]
 module EnvironmentObjectBuilders =
