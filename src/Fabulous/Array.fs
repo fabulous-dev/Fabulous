@@ -49,7 +49,7 @@ module ArraySlice =
 module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
         let res = Array.zeroCreate(arr.Length + 1)
-        Array.blit arr 0 res 0 arr.Length
+        res[..arr.Length - 1] <- arr
         res[arr.Length] <- v
         res
 

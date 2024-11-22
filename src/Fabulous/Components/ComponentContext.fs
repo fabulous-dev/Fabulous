@@ -48,7 +48,7 @@ type ComponentContext(initialSize: int) =
         if values.Length < count then
             let newLength = max (values.Length * 2) count
             let newArray = Array.zeroCreate newLength
-            Array.blit values 0 newArray 0 values.Length
+            newArray[..values.Length - 1] <- values
             values <- newArray
 
     member this.TryGetValue<'T>(key: int) =
