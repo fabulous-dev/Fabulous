@@ -11,9 +11,9 @@ type ScalarAttributeComparison =
 
 [<Struct; IsByRefLike; RequireQualifiedAccess; NoComparison; NoEquality>]
 type EnumerationMode<'a> =
-    | AllAddedOrRemoved of struct ('a[] * bool)
+    | AllAddedOrRemoved of prev: 'a[] * bool // the first element is either prev or next depending on the bool, but using prev as the label allows the compiler to reuse struct fields between cases
     | Empty
-    | ActualDiff of prevNext: struct ('a[] * 'a[])
+    | ActualDiff of prev: 'a[] * next: 'a[]
 
 module EnumerationMode =
     let fromOptions prev next =
@@ -314,7 +314,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
     member e.MoveNext() =
         match mode with
         | EnumerationMode.Empty -> false
-        | EnumerationMode.AllAddedOrRemoved(struct (values, added)) ->
+        | EnumerationMode.AllAddedOrRemoved(values, added) ->
             // use prevIndex regardless if it is for adding or removal
             let i = e.prevIndex
 
@@ -331,7 +331,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
             else
                 false
 
-        | EnumerationMode.ActualDiff(struct (prev, next)) ->
+        | EnumerationMode.ActualDiff(prev, next) ->
             let mutable prevIndex = e.prevIndex
             let mutable nextIndex = e.nextIndex
 
@@ -431,7 +431,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
     member e.MoveNext() =
         match mode with
         | EnumerationMode.Empty -> false
-        | EnumerationMode.AllAddedOrRemoved(struct (values, added)) ->
+        | EnumerationMode.AllAddedOrRemoved(values, added) ->
             // use prevIndex regardless if it is for adding or removal
             let i = e.prevIndex
 
@@ -448,7 +448,7 @@ and [<Struct; IsByRefLike>] WidgetCollectionChangesEnumerator
             else
                 false
 
-        | EnumerationMode.ActualDiff(struct (prev, next)) ->
+        | EnumerationMode.ActualDiff(prev, next) ->
             let mutable prevIndex = e.prevIndex
             let mutable nextIndex = e.nextIndex
 
