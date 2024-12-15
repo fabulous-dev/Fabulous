@@ -11,9 +11,9 @@ type ScalarAttributeComparison =
 
 [<Struct; IsByRefLike; RequireQualifiedAccess; NoComparison; NoEquality>]
 type EnumerationMode<'a> =
-    | AllAddedOrRemoved of prev: 'a[] * bool // the first element is either prev or next depending on the bool, but using prev as the label allows the compiler to reuse struct fields between cases
+    | AllAddedOrRemoved of prevAdd: 'a[] * bool // the first element is either prev or next depending on the bool, but using prev as the label allows the compiler to reuse struct fields between cases
     | Empty
-    | ActualDiff of prev: 'a[] * next: 'a[]
+    | ActualDiff of prevDiff: 'a[] * next: 'a[]
 
 module EnumerationMode =
     let fromOptions prev next =
