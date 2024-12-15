@@ -41,28 +41,28 @@ type Component
                     ValueSome(filteredAttrs) // skip the component data
 
             let scalars =
-                match struct (rootWidget.ScalarAttributes, componentScalars) with
+                match rootWidget.ScalarAttributes, componentScalars with
                 | ValueNone, ValueNone -> ValueNone
                 | ValueSome attrs, ValueNone
                 | ValueNone, ValueSome attrs -> ValueSome attrs
                 | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
 
             let widgets =
-                match struct (rootWidget.WidgetAttributes, componentWidget.WidgetAttributes) with
+                match rootWidget.WidgetAttributes, componentWidget.WidgetAttributes with
                 | ValueNone, ValueNone -> ValueNone
                 | ValueSome attrs, ValueNone
                 | ValueNone, ValueSome attrs -> ValueSome attrs
                 | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
 
             let widgetColls =
-                match struct (rootWidget.WidgetCollectionAttributes, componentWidget.WidgetCollectionAttributes) with
+                match rootWidget.WidgetCollectionAttributes, componentWidget.WidgetCollectionAttributes with
                 | ValueNone, ValueNone -> ValueNone
                 | ValueSome attrs, ValueNone
                 | ValueNone, ValueSome attrs -> ValueSome attrs
                 | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
 
             let environments =
-                match struct (rootWidget.EnvironmentAttributes, componentWidget.EnvironmentAttributes) with
+                match rootWidget.EnvironmentAttributes, componentWidget.EnvironmentAttributes with
                 | ValueNone, ValueNone -> ValueNone
                 | ValueSome attrs, ValueNone
                 | ValueNone, ValueSome attrs -> ValueSome attrs
