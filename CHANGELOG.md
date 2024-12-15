@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre17] - 2024-12-15
+
+### Changed
+- Remove `match struct` by @kerams
+- Refactor `EnumerationMode` by @kerams
+
 ## [3.0.0-pre16] - 2024-11-22
 
 ### Changed
@@ -200,7 +206,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre16...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre17...HEAD
+[3.0.0-pre17]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre17
 [3.0.0-pre16]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre16
 [3.0.0-pre15]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre15
 [3.0.0-pre14]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre14
