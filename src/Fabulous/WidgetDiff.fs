@@ -18,10 +18,10 @@ type EnumerationMode<'a> =
 module EnumerationMode =
     let fromOptions prev next =
         match prev, next with
-        | ValueNone, ValueNone -> EnumerationMode.Empty
-        | ValueSome prev, ValueNone -> EnumerationMode.AllAddedOrRemoved(prev, false)
-        | ValueNone, ValueSome next -> EnumerationMode.AllAddedOrRemoved(next, true)
-        | ValueSome prev, ValueSome next -> EnumerationMode.ActualDiff(prev, next)
+        | [||], [||] -> EnumerationMode.Empty
+        | prev, [||] -> EnumerationMode.AllAddedOrRemoved(prev, false)
+        | [||], next -> EnumerationMode.AllAddedOrRemoved(next, true)
+        | prev, next -> EnumerationMode.ActualDiff(prev, next)
 
 module private SkipRepeatingScalars =
     /// Context:
@@ -117,22 +117,22 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
 
         let prevScalarAttributes =
             match prevOpt with
-            | ValueNone -> ValueNone
+            | ValueNone -> [||]
             | ValueSome widget -> widget.ScalarAttributes
 
         let prevWidgetAttributes =
             match prevOpt with
-            | ValueNone -> ValueNone
+            | ValueNone -> [||]
             | ValueSome widget -> widget.WidgetAttributes
 
         let prevWidgetCollectionAttributes =
             match prevOpt with
-            | ValueNone -> ValueNone
+            | ValueNone -> [||]
             | ValueSome widget -> widget.WidgetCollectionAttributes
 
         let prevEnvironmentAttributes =
             match prevOpt with
-            | ValueNone -> ValueNone
+            | ValueNone -> [||]
             | ValueSome widget -> widget.EnvironmentAttributes
 
         { ScalarChanges = ScalarChanges(prevScalarAttributes, next.ScalarAttributes, compareScalars)
@@ -141,14 +141,14 @@ and [<Struct; NoComparison; NoEquality>] WidgetDiff =
           EnvironmentChanges = EnvironmentChanges(prevEnvironmentAttributes, next.EnvironmentAttributes) }
 
 and [<Struct; NoComparison; NoEquality>] ScalarChanges
-    (prev: ScalarAttribute[] voption, next: ScalarAttribute[] voption, compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison) =
+    (prev: ScalarAttribute[], next: ScalarAttribute[], compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison) =
     member _.GetEnumerator() =
         ScalarChangesEnumerator(EnumerationMode.fromOptions prev next, compareScalars)
 
 and [<Struct; NoComparison; NoEquality>] WidgetChanges
     (
-        prev: WidgetAttribute[] voption,
-        next: WidgetAttribute[] voption,
+        prev: WidgetAttribute[],
+        next: WidgetAttribute[],
         canReuseView: Widget -> Widget -> bool,
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
@@ -157,8 +157,8 @@ and [<Struct; NoComparison; NoEquality>] WidgetChanges
 
 and [<Struct; NoComparison; NoEquality>] WidgetCollectionChanges
     (
-        prev: WidgetCollectionAttribute[] voption,
-        next: WidgetCollectionAttribute[] voption,
+        prev: WidgetCollectionAttribute[],
+        next: WidgetCollectionAttribute[],
         canReuseView: Widget -> Widget -> bool,
         compareScalars: struct (ScalarAttributeKey * obj * obj) -> ScalarAttributeComparison
     ) =
@@ -176,7 +176,7 @@ and [<Struct; NoComparison; NoEquality>] WidgetCollectionItemChanges
     member _.GetEnumerator() =
         WidgetCollectionItemChangesEnumerator(ArraySlice.toSpan prev, ArraySlice.toSpan next, canReuseView, compareScalars)
 
-and [<Struct; NoComparison; NoEquality>] EnvironmentChanges(prev: EnvironmentAttribute[] voption, next: EnvironmentAttribute[] voption) =
+and [<Struct; NoComparison; NoEquality>] EnvironmentChanges(prev: EnvironmentAttribute[], next: EnvironmentAttribute[]) =
     member _.GetEnumerator() =
         EnvironmentChangesEnumerator(EnumerationMode.fromOptions prev next)
 
