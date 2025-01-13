@@ -52,19 +52,22 @@ type WidgetBuilder<'msg, 'marker when 'msg: equality> =
                 | _ -> Array.sortInPlace _.Key (StackList.toArray &scalarAttributes)
 
               WidgetAttributes =
-                match widgetAttributes with
-                | [||] -> [||]
-                | _ -> Array.sortInPlace _.Key widgetAttributes
+                if widgetAttributes.Length > 1 then
+                    Array.sortInPlace _.Key widgetAttributes
+                else
+                    widgetAttributes
 
               WidgetCollectionAttributes =
-                match widgetCollectionAttributes with
-                | [||] -> [||]
-                | _ -> Array.sortInPlace _.Key widgetCollectionAttributes
+                if widgetCollectionAttributes.Length > 1 then
+                    Array.sortInPlace _.Key widgetCollectionAttributes
+                else
+                    widgetCollectionAttributes
 
               EnvironmentAttributes =
-                match environmentAttributes with
-                | [||] -> [||]
-                | _ -> Array.sortInPlace _.Key environmentAttributes }
+                if environmentAttributes.Length > 1 then
+                    Array.sortInPlace _.Key environmentAttributes
+                else
+                    environmentAttributes }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =
