@@ -55,5 +55,4 @@ type MvuExtensions =
 
                     treeContext, state
 
-            (continuation state)
-                .Invoke(envContext, treeContext, context, bindings + 1<binding>))
+            (continuation state).Invoke(envContext, treeContext, context, bindings + 1<binding>))

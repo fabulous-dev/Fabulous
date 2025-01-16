@@ -33,40 +33,40 @@ type Component
         | ValueSome componentWidget ->
             let componentScalars =
                 match componentWidget.ScalarAttributes with
-                | ValueNone -> ValueNone
-                | ValueSome attrs ->
+                | [||] -> [||]
+                | attrs ->
                     let filteredAttrs =
                         attrs |> Array.filter(fun scalarAttr -> scalarAttr.Key <> componentDataKey)
 
-                    ValueSome(filteredAttrs) // skip the component data
+                    filteredAttrs // skip the component data
 
             let scalars =
                 match rootWidget.ScalarAttributes, componentScalars with
-                | ValueNone, ValueNone -> ValueNone
-                | ValueSome attrs, ValueNone
-                | ValueNone, ValueSome attrs -> ValueSome attrs
-                | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
+                | [||], [||] -> [||]
+                | attrs, [||]
+                | [||], attrs -> attrs
+                | widgetAttrs, componentAttrs -> Array.append componentAttrs widgetAttrs
 
             let widgets =
                 match rootWidget.WidgetAttributes, componentWidget.WidgetAttributes with
-                | ValueNone, ValueNone -> ValueNone
-                | ValueSome attrs, ValueNone
-                | ValueNone, ValueSome attrs -> ValueSome attrs
-                | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
+                | [||], [||] -> [||]
+                | attrs, [||]
+                | [||], attrs -> attrs
+                | widgetAttrs, componentAttrs -> Array.append componentAttrs widgetAttrs
 
             let widgetColls =
                 match rootWidget.WidgetCollectionAttributes, componentWidget.WidgetCollectionAttributes with
-                | ValueNone, ValueNone -> ValueNone
-                | ValueSome attrs, ValueNone
-                | ValueNone, ValueSome attrs -> ValueSome attrs
-                | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
+                | [||], [||] -> [||]
+                | attrs, [||]
+                | [||], attrs -> attrs
+                | widgetAttrs, componentAttrs -> Array.append componentAttrs widgetAttrs
 
             let environments =
                 match rootWidget.EnvironmentAttributes, componentWidget.EnvironmentAttributes with
-                | ValueNone, ValueNone -> ValueNone
-                | ValueSome attrs, ValueNone
-                | ValueNone, ValueSome attrs -> ValueSome attrs
-                | ValueSome widgetAttrs, ValueSome componentAttrs -> ValueSome(Array.append componentAttrs widgetAttrs)
+                | [||], [||] -> [||]
+                | attrs, [||]
+                | [||], attrs -> attrs
+                | widgetAttrs, componentAttrs -> Array.append componentAttrs widgetAttrs
 
             struct (scalars, widgets, widgetColls, environments)
 

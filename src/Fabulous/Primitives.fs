@@ -137,7 +137,7 @@ and [<Struct>] Widget =
 #if DEBUG
       DebugName: string
 #endif
-      ScalarAttributes: ScalarAttribute[] voption
-      WidgetAttributes: WidgetAttribute[] voption
-      WidgetCollectionAttributes: WidgetCollectionAttribute[] voption
-      EnvironmentAttributes: EnvironmentAttribute[] voption }
+      ScalarAttributes: ScalarAttribute[]
+      WidgetAttributes: WidgetAttribute[]
+      WidgetCollectionAttributes: WidgetCollectionAttribute[]
+      EnvironmentAttributes: EnvironmentAttribute[] }

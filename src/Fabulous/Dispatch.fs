@@ -46,14 +46,14 @@ module Dispatcher =
             | ValueSome msg -> dispatch msg
 
             match widget.WidgetAttributes with
-            | ValueNone -> ()
-            | ValueSome widgetAttrs ->
+            | [||] -> ()
+            | widgetAttrs ->
                 for childAttr in widgetAttrs do
                     dispatchAndVisitChildren false dispatch childAttr.Value
 
             match widget.WidgetCollectionAttributes with
-            | ValueNone -> ()
-            | ValueSome widgetCollAttrs ->
+            | [||] -> ()
+            | widgetCollAttrs ->
                 for widgetCollAttr in widgetCollAttrs do
                     for childWidget in ArraySlice.toSpan widgetCollAttr.Value do
                         dispatchAndVisitChildren false dispatch childWidget

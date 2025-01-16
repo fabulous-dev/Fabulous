@@ -1,3 +1,4 @@
 [*.fs]
 max_line_length=160
 fsharp_space_before_lowercase_invocation = false
+fsharp_max_dot_get_expression_width = 60
