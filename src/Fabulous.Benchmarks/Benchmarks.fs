@@ -62,13 +62,9 @@ module DiffingAttributes =
 
     let rec viewInner depth counter =
         Stack() {
-            Label($"label1:{counter} {depth}")
-                .textColor("red")
-                .automationId($"label1:{depth}")
+            Label($"label1:{counter} {depth}").textColor("red").automationId($"label1:{depth}")
 
-            Label($"label2:{counter} {depth}")
-                .textColor("green")
-                .automationId($"label2:{depth}")
+            Label($"label2:{counter} {depth}").textColor("green").automationId($"label2:{depth}")
 
             Button($"btn: {depth}", IncBy 2)
 

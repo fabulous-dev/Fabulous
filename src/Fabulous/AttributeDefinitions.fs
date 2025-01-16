@@ -200,9 +200,6 @@ module AttributeHelpers =
     open ScalarAttributeDefinitions
 
     let tryFindSimpleScalarAttribute (definition: SimpleScalarAttributeDefinition<'T>) (widget: Widget) =
-        match widget.ScalarAttributes with
-        | ValueNone -> ValueNone
-        | ValueSome attrs ->
-            match attrs |> Array.tryFind(fun attr -> attr.Key = definition.Key) with
-            | None -> ValueNone
-            | Some attr -> ValueSome(unbox<'T> attr.Value)
+        match widget.ScalarAttributes |> Array.tryFind(fun attr -> attr.Key = definition.Key) with
+        | None -> ValueNone
+        | Some attr -> ValueSome(unbox<'T> attr.Value)

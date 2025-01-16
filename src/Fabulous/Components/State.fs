@@ -93,5 +93,4 @@ type StateExtensions =
 
             let stateValue = StateValue<'T>(context, key, value)
 
-            (continuation stateValue)
-                .Invoke(envContext, treeContext, context, bindings + 1<binding>))
+            (continuation stateValue).Invoke(envContext, treeContext, context, bindings + 1<binding>))

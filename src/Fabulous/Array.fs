@@ -61,7 +61,7 @@ module Array =
     let inline sortInPlace<'T, 'V when 'V: comparison> ([<InlineIfLambda>] getKey: 'T -> 'V) (attrs: 'T[]) : 'T[] =
         let N = attrs.GetLength(0)
 
-        for i in [ 1 .. N - 1 ] do
+        for i in 1 .. N - 1 do
             for j = i downto 1 do
                 let key = getKey attrs[j]
                 let prevKey = getKey attrs[j - 1]

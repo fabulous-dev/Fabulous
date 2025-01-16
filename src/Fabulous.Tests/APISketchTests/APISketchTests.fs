@@ -551,8 +551,7 @@ module SmallScalars =
         | Inc value -> { value = model.value + value }
 
     let view model =
-        InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL))
-            .automationId("numbers")
+        InlineNumericBag(model.value, model.value + 1UL, float(model.value + 2UL)).automationId("numbers")
 
     let init () = { value = 0UL }
 
@@ -898,12 +897,9 @@ module ViewHelpers =
 
         let grandParentView _model =
             Stack() {
-                Button("Grand Parent button", GrandParentClick)
-                    .automationId("grandParentButton")
+                Button("Grand Parent button", GrandParentClick).automationId("grandParentButton")
 
-                (View.map ParentMessage parentView)
-                    .automationId("parentStack")
-                    .tapContainer(GrandParentTap)
+                (View.map ParentMessage parentView).automationId("parentStack").tapContainer(GrandParentTap)
             }
 
 
