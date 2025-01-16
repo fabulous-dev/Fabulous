@@ -59,5 +59,4 @@ type BindingExtensions =
 
             let bindingValue = BindingValue<'T>(stateValue)
 
-            (continuation bindingValue)
-                .Invoke(envContext, treeContext, context, bindings + 1<binding>))
+            (continuation bindingValue).Invoke(envContext, treeContext, context, bindings + 1<binding>))

@@ -16,10 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Files", "_Solutio
 		README.md = README.md
 		CHANGELOG.md = CHANGELOG.md
 		LICENSE.md = LICENSE.md
-					.gitignore = .gitignore
-					pull_request.yml = .github/workflows/pull_request.yml
-					build.yml = .github/workflows/build.yml
-					release.yml = .github/workflows/release.yml
+        .gitignore = .gitignore
+        pull_request.yml = .github/workflows/pull_request.yml
+        build.yml = .github/workflows/build.yml
+        release.yml = .github/workflows/release.yml
+        .editorconfig = .editorconfig
 		Directory.Packages.props = Directory.Packages.props
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
