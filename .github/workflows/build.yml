@@ -40,7 +40,7 @@ jobs:
     - name: Pack
       run: dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --property PackageOutputPath=${PWD}/nupkgs
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Packages
         path: nupkgs/
