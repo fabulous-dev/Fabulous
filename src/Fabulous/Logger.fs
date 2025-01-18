@@ -3,7 +3,6 @@ namespace Fabulous
 open System
 open System.Runtime.CompilerServices
 
-[<Struct>]
 type LogLevel =
     | Debug = 0
     | Info = 1
