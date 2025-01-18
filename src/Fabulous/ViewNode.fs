@@ -92,7 +92,7 @@ type ViewNode =
 
                 definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
 
-            | WidgetChange.Updated (newAttr, diffs) ->
+            | WidgetChange.Updated(newAttr, diffs) ->
                 let definition = (AttributeDefinitionStore.getWidget newAttr.Key)
 
                 definition.ApplyDiff diffs (this :> IViewNode)
@@ -110,7 +110,7 @@ type ViewNode =
 
                 definition.UpdateNode (ValueSome removed.Value) ValueNone (this :> IViewNode)
 
-            | WidgetCollectionChange.Updated (oldAttr, newAttr, diffs) ->
+            | WidgetCollectionChange.Updated(oldAttr, newAttr, diffs) ->
                 let definition = (AttributeDefinitionStore.getWidgetCollection newAttr.Key)
 
                 definition.ApplyDiff oldAttr.Value diffs (this :> IViewNode)
