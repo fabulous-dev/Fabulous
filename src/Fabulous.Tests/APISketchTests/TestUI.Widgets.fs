@@ -167,16 +167,6 @@ module TestUI_Widgets =
             : Content<'msg> =
             CollectionBuilder.yieldImpl x
 
-        [<Extension>]
-        static member inline YieldFrom<'msg, 'marker, 'itemMarker when 'msg: equality and 'itemMarker :> IMarker>
-            (_: CollectionBuilder<'msg, 'marker, IMarker>, x: WidgetBuilder<'msg, 'itemMarker> seq)
-            : Content<'msg> =
-            // TODO optimize this one with addMut
-            { Widgets = x |> Seq.map(fun wb -> wb.Compile()) |> Seq.toArray |> MutStackArray1.fromArray }
-
-
-
-
     ///------------------
     type StatefulView<'arg, 'model, 'msg, 'marker when 'msg: equality> =
         { Init: 'arg -> 'model
