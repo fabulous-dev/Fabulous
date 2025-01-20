@@ -82,7 +82,7 @@ type ScalarChange =
 and [<Struct; RequireQualifiedAccess>] WidgetChange =
     | Added of widget: WidgetAttribute
     | Removed of widget: WidgetAttribute
-    | Updated of widget: WidgetAttribute * diff: WidgetDiff // old * diff
+    | Updated of widget: WidgetAttribute * diff: WidgetDiff // updated * diff
     | ReplacedBy of widget: WidgetAttribute
 
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
