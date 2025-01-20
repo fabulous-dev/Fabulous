@@ -183,7 +183,7 @@ let main _argv =
 
     printfn "Hello"
 
-    BenchmarkRunner.Run<DiffingSmallScalars.Benchmarks>() |> ignore
+    BenchmarkRunner.Run(typeof<DiffingSmallScalars.Benchmarks>.Assembly) |> ignore
 
     0 // return an integer exit code
 
