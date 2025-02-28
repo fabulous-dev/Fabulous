@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre20] - 2025-02-28
+
+### Changed
+- Optimize diffing by @kerams in https://github.com/fabulous-dev/Fabulous/pull/1097
+- Target net8 to fix `AttributeTargets` incompatibilities. by @edgarfgp in https://github.com/fabulous-dev/Fabulous/pull/1101
+
 ## [3.0.0-pre19] - 2025-01-16
 
 ### Changed
@@ -216,8 +222,9 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre19...HEAD
-[3.0.0-pre18]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre19
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre20...HEAD
+[3.0.0-pre20]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre20
+[3.0.0-pre19]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre19
 [3.0.0-pre18]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre18
 [3.0.0-pre17]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre17
 [3.0.0-pre16]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre16
