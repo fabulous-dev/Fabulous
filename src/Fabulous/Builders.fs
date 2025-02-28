@@ -1,7 +1,6 @@
 namespace Fabulous
 
 open System.ComponentModel
-open Fabulous.WidgetAttributeDefinitions
 open Fabulous.WidgetCollectionAttributeDefinitions
 open Fabulous.StackAllocatedCollections
 open Fabulous.StackAllocatedCollections.StackList
