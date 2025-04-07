@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre21] - 2025-04-07
+
+### Added
+- Add YieldFrom to CollectionBuilder by @kerams in https://github.com/fabulous-dev/Fabulous/pull/1098
+
 ## [3.0.0-pre20] - 2025-02-28
 
 ### Changed
@@ -222,7 +227,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre20...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre21...HEAD
+[3.0.0-pre21]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre21
 [3.0.0-pre20]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre20
 [3.0.0-pre19]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre19
 [3.0.0-pre18]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre18
