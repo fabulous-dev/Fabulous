@@ -30,7 +30,7 @@ module View =
         WidgetBuilder<'msg, Memo.Memoized<'marker>>(Memo.MemoWidgetKey, Memo.MemoAttribute.WithValue(memo))
 
     /// Map the widget's message type to the parent's message type to allow for view composition
-    let inline map (fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
+    let inline map ([<InlineIfLambda>] fn: 'oldMsg -> 'newMsg) (x: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
         let replaceWith (oldAttr: ScalarAttribute) =
             let fnWithBoxing (msg: obj) =
                 let oldFn = unbox<obj -> obj> oldAttr.Value
@@ -56,4 +56,4 @@ module View =
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
 
     /// Combine map and lazy. Map the widget's message type to the parent's message type, and then memoize it
-    let inline lazyMap (mapFn: 'oldMsg -> 'newMsg) (viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) = lazy' (viewFn >> map mapFn) model
+    let inline lazyMap ([<InlineIfLambda>] mapFn: 'oldMsg -> 'newMsg) ([<InlineIfLambda>] viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) = lazy' (viewFn >> map mapFn) model
