@@ -172,60 +172,57 @@ module Cmd =
 
     module OfTask =
         /// Command to call a task and map the results
-        let inline either ([<InlineIfLambda>] task: 'a -> Task<_>) (arg: 'a) ([<InlineIfLambda>] ofSuccess: _ -> 'msg) ([<InlineIfLambda>] ofError: _ -> 'msg) : Cmd<'msg> =
-            [
-                fun dispatch ->
-                    backgroundTask {
-                        try
-                            let! r = task arg
-                            ofSuccess r |> dispatch
-                        with e ->
-                            ofError e |> dispatch
-                    }
-                    |> ignore<Task<_>>
-            ]
+        let inline either
+            ([<InlineIfLambda>] task: 'a -> Task<_>)
+            (arg: 'a)
+            ([<InlineIfLambda>] ofSuccess: _ -> 'msg)
+            ([<InlineIfLambda>] ofError: _ -> 'msg)
+            : Cmd<'msg> =
+            [ fun dispatch ->
+                  backgroundTask {
+                      try
+                          let! r = task arg
+                          ofSuccess r |> dispatch
+                      with e ->
+                          ofError e |> dispatch
+                  }
+                  |> ignore<Task<_>> ]
 
         /// Command to call a task and map the success
         let inline perform ([<InlineIfLambda>] task: 'a -> Task<_>) (arg: 'a) ([<InlineIfLambda>] ofSuccess: _ -> 'msg) : Cmd<'msg> =
-            [
-                fun dispatch ->
-                    backgroundTask {
-                        try
-                            let! r = task arg
-                            ofSuccess r |> dispatch
-                        with _ ->
-                            ()
-                    }
-                    |> ignore<Task<_>>
-            ]
+            [ fun dispatch ->
+                  backgroundTask {
+                      try
+                          let! r = task arg
+                          ofSuccess r |> dispatch
+                      with _ ->
+                          ()
+                  }
+                  |> ignore<Task<_>> ]
 
         /// Command to call a task and map the error
         let inline attempt ([<InlineIfLambda>] task: 'a -> #Task) (arg: 'a) ([<InlineIfLambda>] ofError: _ -> 'msg) : Cmd<'msg> =
-            [
-                fun dispatch ->
-                    backgroundTask {
-                        try
-                            do! task arg
-                        with e ->
-                            ofError e |> dispatch
-                    }
-                    |> ignore<Task<_>>
-            ]
+            [ fun dispatch ->
+                  backgroundTask {
+                      try
+                          do! task arg
+                      with e ->
+                          ofError e |> dispatch
+                  }
+                  |> ignore<Task<_>> ]
 
         let inline msg (task: Task<'msg>) = perform (fun () -> task) () id
 
         let inline msgOption (task: Task<'msg option>) =
-            [
-                fun dispatch ->
-                    backgroundTask {
-                        let! r = task
+            [ fun dispatch ->
+                  backgroundTask {
+                      let! r = task
 
-                        match r with
-                        | Some x -> dispatch x
-                        | None -> ()
-                    }
-                    |> ignore<Task<_>>
-            ]
+                      match r with
+                      | Some x -> dispatch x
+                      | None -> ()
+                  }
+                  |> ignore<Task<_>> ]
 
     /// Command to issue a message if no other message has been issued within the specified timeout
     let debounce (timeout: int) (fn: 'value -> 'msg) : 'value -> Cmd<'msg> =
