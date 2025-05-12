@@ -56,4 +56,5 @@ module View =
         WidgetBuilder<'newMsg, 'marker>(builder.Key, builder.Attributes)
 
     /// Combine map and lazy. Map the widget's message type to the parent's message type, and then memoize it
-    let inline lazyMap ([<InlineIfLambda>] mapFn: 'oldMsg -> 'newMsg) ([<InlineIfLambda>] viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) = lazy' (viewFn >> map mapFn) model
+    let inline lazyMap ([<InlineIfLambda>] mapFn: 'oldMsg -> 'newMsg) ([<InlineIfLambda>] viewFn: 'key -> WidgetBuilder<'oldMsg, 'marker>) (model: 'key) =
+        lazy' (viewFn >> map mapFn) model

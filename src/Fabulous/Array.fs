@@ -49,7 +49,7 @@ module ArraySlice =
 module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
         let res = Array.zeroCreate(arr.Length + 1)
-        arr.CopyTo (res.AsSpan ())
+        arr.CopyTo(res.AsSpan())
         res[arr.Length] <- v
         res
 
