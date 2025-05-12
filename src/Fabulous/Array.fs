@@ -49,7 +49,7 @@ module ArraySlice =
 module Array =
     let inline appendOne (v: 'v) (arr: 'v array) =
         let res = Array.zeroCreate(arr.Length + 1)
-        res[.. arr.Length - 1] <- arr
+        arr.CopyTo(res.AsSpan())
         res[arr.Length] <- v
         res
 
@@ -89,7 +89,7 @@ module StackAllocatedCollections =
         [<NoComparison; NoEquality>]
         type private Part<'v> =
             | Empty
-            | Filled of struct (Items<'v> * Part<'v>)
+            | Filled of Items<'v> * Part<'v>
 
         [<Struct; NoComparison; NoEquality>]
         type StackList<'v> =
@@ -258,8 +258,8 @@ module StackAllocatedCollections =
 
     [<Struct; NoComparison; NoEquality>]
     type StackArray3<'v> =
-        | Few of data: struct (Size * 'v * 'v * 'v)
         | Many of arr: 'v array
+        | Few of data: Size * 'v * 'v * 'v
 
     module StackArray3 =
 
@@ -278,7 +278,7 @@ module StackAllocatedCollections =
 
         let add (arr: StackArray3<'v> inref, v: 'v) : StackArray3<'v> =
             match arr with
-            | Few(struct (size, v0, v1, v2)) ->
+            | Few(size, v0, v1, v2) ->
                 match size with
                 | Size.Zero -> one v
                 | Size.One -> two(v0, v)
@@ -290,13 +290,13 @@ module StackAllocatedCollections =
 
         let inline length (arr: StackArray3<'v> inref) : int =
             match arr with
-            | Few(struct (size, _, _, _)) -> int size
+            | Few(size, _, _, _) -> int size
             | Many arr -> arr.Length
 
 
         let get (arr: StackArray3<'v> inref) (index: int) : 'v =
             match arr with
-            | Few(struct (size, v0, v1, v2)) ->
+            | Few(size, v0, v1, v2) ->
                 if (index >= int size) then
                     IndexOutOfRangeException() |> raise
                 else
@@ -310,7 +310,7 @@ module StackAllocatedCollections =
 
         let find (test: 'v -> bool) (arr: StackArray3<'v> inref) : 'v =
             match arr with
-            | Few(struct (size, v0, v1, v2)) ->
+            | Few(size, v0, v1, v2) ->
                 match (size, test v0, test v1, test v2) with
                 | Size.One, true, _, _
                 | Size.Two, true, _, _
@@ -327,7 +327,7 @@ module StackAllocatedCollections =
         /// In Many case it sorts the Many variant inline for optimization reasons
         let rec inline sortInPlace<'T, 'V when 'V: comparison> ([<InlineIfLambda>] getKey: 'T -> 'V) (arr: StackArray3<'T> inref) : StackArray3<'T> =
             match arr with
-            | Few(struct (size, v0, v1, v2)) ->
+            | Few(size, v0, v1, v2) ->
                 match size with
                 | Size.Zero
                 | Size.One -> arr
@@ -358,15 +358,13 @@ module StackAllocatedCollections =
                 | _ -> empty() // should never happen but don't want to throw there
             | Many arr -> many(Array.sortInPlace getKey arr)
 
-
-        let inline private arr0 () = [||]
         let inline private arr1 (v: 'v) = [| v |]
         let inline private arr2 (v0: 'v, v1: 'v) = [| v0; v1 |]
         let inline private arr3 (v0: 'v, v1: 'v, v2: 'v) = [| v0; v1; v2 |]
 
         let toArray (arr: StackArray3<'v> inref) : 'v array =
             match arr with
-            | Few(struct (size, v0, v1, v2)) ->
+            | Few(size, v0, v1, v2) ->
                 match size with
                 | Size.Zero -> Array.empty
                 | Size.One -> arr1 v0
@@ -377,7 +375,7 @@ module StackAllocatedCollections =
 
         let combine (a: StackArray3<'v>) (b: StackArray3<'v>) : StackArray3<'v> =
             match (a, b) with
-            | Few(struct (asize, a0, a1, a2)), Few(struct (bsize, b0, b1, b2)) ->
+            | Few(asize, a0, a1, a2), Few(bsize, b0, b1, b2) ->
                 match (asize, bsize) with
                 | Size.Zero, _ -> b
                 | _, Size.Zero -> a
@@ -609,10 +607,9 @@ module StackAllocatedCollections =
 
         [<Struct>]
         type Op =
-            | Added of added: uint16
-            | Removed of removed: uint16
-            | Changed of changed: uint16
-
+            | Added of value: uint16
+            | Removed of value: uint16
+            | Changed of value: uint16
 
         let inline create () = DiffBuilder(stackalloc<uint16> 8, 0)
 
@@ -650,7 +647,7 @@ module StackAllocatedCollections =
             | OpCode.ChangeCode -> Changed(value)
             | _ -> IndexOutOfRangeException() |> raise
 
-        let inline toArray (builder: DiffBuilder byref) (map: Op -> 't) : 't array =
+        let inline toArray (builder: DiffBuilder byref) ([<InlineIfLambda>] map: Op -> 't) : 't array =
             let len = lenght &builder
             let res = Array.zeroCreate<'t> len
 
