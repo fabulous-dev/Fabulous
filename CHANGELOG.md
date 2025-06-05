@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes_
 
+## [3.0.0-pre23] - 2025-06-05
+
+### Changed
+- Ensure old widgets are disposed when replaced by new ones by @TimLariviere in https://github.com/fabulous-dev/Fabulous/pull/1105
+
 ## [3.0.0-pre22] - 2025-05-18
 
 ### Changed
@@ -233,7 +238,8 @@ _No unreleased changes_
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre22...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre23...HEAD
+[3.0.0-pre23]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre23
 [3.0.0-pre22]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre22
 [3.0.0-pre21]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre21
 [3.0.0-pre20]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre20
