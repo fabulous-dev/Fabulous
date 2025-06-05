@@ -26,10 +26,9 @@ type BindingValue<'T> =
 [<AutoOpen>]
 module BindingBuilders =
     type Context with
-
+        [<Experimental("Binding is experimental and may change in the future")>]
         static member inline Binding(value: StateValue<'T>) = BindingRequest<'T>(fun () -> value)
 
-[<Extension>]
 type BindingExtensions =
     [<Extension>]
     static member inline Bind

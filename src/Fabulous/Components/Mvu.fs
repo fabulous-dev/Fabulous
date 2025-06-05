@@ -15,7 +15,6 @@ module MvuBuilders =
         static member inline Mvu(program: Program<'arg, 'model, 'msg>, arg: 'arg) =
             MvuRequest<'arg, 'model, 'msg>(fun () -> program, arg)
 
-[<Extension>]
 type MvuExtensions =
     [<Extension>]
     static member Bind

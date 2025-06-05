@@ -1,13 +1,13 @@
 namespace Fabulous
 
 open System.Runtime.CompilerServices
-open Fabulous.ScalarAttributeDefinitions
 
 type EnvironmentRequest<'T> = delegate of unit -> EnvironmentKey<'T>
 
 [<AutoOpen>]
 module EnvironmentBuilders =
     type Context with
+        [<Experimental("Environment is experimental and may change in the future")>]
         static member inline Environment(key: EnvironmentKey<'T>) = EnvironmentRequest(fun () -> key)
 
 type EnvironmentAttrValue = { Key: string; Value: obj }
@@ -38,7 +38,7 @@ type EnvironmentExtensions =
             let state = envContext.Get(envKey)
             (continuation state).Invoke(envContext, treeContext, context, bindings))
 
-[<Extension>]
 type EnvironmentModifiers =
     [<Extension>]
+    [<Experimental("environment is experimental and may change in the future")>]
     static member inline environment(this: WidgetBuilder<'msg, 'marker>, key: EnvironmentKey<'T>, value: 'T) = this.AddEnvironment(key.Key, value)
