@@ -193,12 +193,19 @@ module Attributes =
 
             childNode.ApplyDiff(&diff)
 
-        let updateNode _ (newValueOpt: Widget voption) (node: IViewNode) =
+        let updateNode (oldValueOpt: Widget voption) (newValueOpt: Widget voption) (node: IViewNode) =
+            if oldValueOpt.IsSome then
+                // Dispose the existing child if it exists
+                let childView = get node.Target
+
+                if not(isNull childView) then
+                    let childNode = node.TreeContext.GetViewNode(childView)
+                    childNode.Dispose()
+
             match newValueOpt with
             | ValueNone -> set node.Target null
             | ValueSome widget ->
                 let struct (_, view) = Helpers.createViewForWidget node widget
-
                 set node.Target (unbox view)
 
         defineWidget name applyDiff updateNode
@@ -255,8 +262,21 @@ module Attributes =
 
                 | _ -> ()
 
-        let updateNode _ (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
+        let updateNode (oldValueOpt: ArraySlice<Widget> voption) (newValueOpt: ArraySlice<Widget> voption) (node: IViewNode) =
             let targetColl = getCollection node.Target
+
+            if oldValueOpt.IsSome then
+                // Dispose the existing children if they exist
+                let oldWidgets = oldValueOpt.Value
+                let span = ArraySlice.toSpan oldWidgets
+
+                for index = 0 to span.Length do
+                    let childView = box targetColl[index]
+
+                    if not(isNull childView) then
+                        let childNode = node.TreeContext.GetViewNode(childView)
+                        childNode.Dispose()
+
             targetColl.Clear()
 
             match newValueOpt with
