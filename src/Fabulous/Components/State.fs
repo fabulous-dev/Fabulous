@@ -67,11 +67,10 @@ type StateValue<'T> =
 [<AutoOpen>]
 module StateBuilders =
     type Context with
-
+        [<Experimental("State is experimental and may change in the future")>]
         static member inline State(defaultValue: 'T) =
             StateRequest<'T>(fun () -> defaultValue)
 
-[<Extension>]
 type StateExtensions =
     [<Extension>]
     static member inline Bind

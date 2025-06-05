@@ -19,9 +19,9 @@ type EnvironmentObject() =
 [<AutoOpen>]
 module EnvironmentObjectBuilders =
     type Context with
+        [<Experimental("EnvironmentObject is experimental and may change in the future")>]
         static member inline EnvironmentObject<'T when 'T :> EnvironmentObject>(key: EnvironmentKey<'T>) = EnvironmentObjectRequest(fun () -> key)
 
-[<Extension>]
 type EnvironmentObjectExtensions =
     [<Extension>]
     static member inline Bind<'parentMsg, 'marker, 'msg, 'T when 'parentMsg: equality and 'msg: equality and 'T :> EnvironmentObject>
