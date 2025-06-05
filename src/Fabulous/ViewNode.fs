@@ -81,11 +81,15 @@ type ViewNode =
     member inline private this.ApplyWidgetDiffs(diffs: WidgetChanges inref) =
         for diff in diffs do
             match diff with
-            | WidgetChange.Added newWidget
-            | WidgetChange.ReplacedBy newWidget ->
+            | WidgetChange.Added newWidget ->
                 let definition = (AttributeDefinitionStore.getWidget newWidget.Key)
 
                 definition.UpdateNode ValueNone (ValueSome newWidget.Value) (this :> IViewNode)
+
+            | WidgetChange.ReplacedBy(oldWidget, newWidget) ->
+                let definition = (AttributeDefinitionStore.getWidget newWidget.Key)
+
+                definition.UpdateNode (ValueSome oldWidget.Value) (ValueSome newWidget.Value) (this :> IViewNode)
 
             | WidgetChange.Removed removed ->
                 let definition = (AttributeDefinitionStore.getWidget removed.Key)

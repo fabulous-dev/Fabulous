@@ -83,7 +83,7 @@ and [<Struct; RequireQualifiedAccess>] WidgetChange =
     | Added of widget: WidgetAttribute
     | Removed of widget: WidgetAttribute
     | Updated of widget: WidgetAttribute * diff: WidgetDiff // updated * diff
-    | ReplacedBy of widget: WidgetAttribute
+    | ReplacedBy of oldWidget: WidgetAttribute * newWidget: WidgetAttribute
 
 and [<Struct; RequireQualifiedAccess>] WidgetCollectionChange =
     | Added of attr: WidgetCollectionAttribute
@@ -395,7 +395,7 @@ and [<Struct; IsByRefLike>] WidgetChangesEnumerator
 
                                         WidgetChange.Updated(nextAttr, diff)
                                     else
-                                        WidgetChange.ReplacedBy nextAttr
+                                        WidgetChange.ReplacedBy(prevAttr, nextAttr)
 
                                 e.current <- change
                                 res <- ValueSome true
