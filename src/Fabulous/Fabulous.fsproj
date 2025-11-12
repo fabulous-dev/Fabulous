@@ -53,6 +53,7 @@
     <Compile Include="Components\Environment.fs" />
     <Compile Include="Components\EnvironmentObject.fs" />
     <Compile Include="Components\Mvu.fs" />
+    <Compile Include="Components\Modifiers.fs" />
     <Compile Include="View.fs" />
   </ItemGroup>
   <ItemGroup>

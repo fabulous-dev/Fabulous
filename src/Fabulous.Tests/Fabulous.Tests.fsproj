@@ -11,7 +11,9 @@
     <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
     <Compile Include="APISketchTests\TestUI.Attributes.fs" />
     <Compile Include="APISketchTests\TestUI.Widgets.fs" />
+    <Compile Include="APISketchTests\TestUI.ComponentBuilders.fs" />
     <Compile Include="APISketchTests\APISketchTests.fs" />
+    <Compile Include="APISketchTests\ComponentOnReceiveTests.fs" />
     <Compile Include="Generators.fs" />
     <Compile Include="AttributesTests.fs" />
     <Compile Include="ViewTests.fs" />

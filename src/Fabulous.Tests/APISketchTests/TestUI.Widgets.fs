@@ -234,6 +234,30 @@ module TestUI_Widgets =
 
                 view :?> TestViewElement
 
+        let startView (view: WidgetBuilder<'msg, 'marker>) : TestViewElement =
+            let logger =
+                { Log = fun _ -> ()
+                  MinLogLevel = LogLevel.Fatal }
+
+            let envContext = new EnvironmentContext(logger)
+
+            let treeContext: ViewTreeContext =
+                { CanReuseView = ViewHelpers.canReuseView
+                  GetViewNode = ViewNode.getViewNode
+                  Logger = logger
+                  Dispatch = fun _ -> ()
+                  GetComponent = Component.getComponent
+                  SetComponent = Component.setComponent
+                  SyncAction = fun fn -> fn() }
+
+            let widget = view.Compile()
+            let widgetDef = WidgetDefinitionStore.get widget.Key
+
+            let struct (_node, rootView) =
+                widgetDef.CreateView(widget, envContext, treeContext, ValueNone)
+
+            rootView :?> TestViewElement
+
 //module View =
 //    let inline map (fn: 'oldMsg -> 'newMsg) (this: WidgetBuilder<'oldMsg, 'marker>) : WidgetBuilder<'newMsg, 'marker> =
 //        this.MapMsg fn
