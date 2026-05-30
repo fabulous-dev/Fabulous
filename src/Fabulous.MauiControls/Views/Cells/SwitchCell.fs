@@ -26,7 +26,7 @@ module SwitchCellBuilders =
         /// <param name="text">The text value</param>
         /// <param name="value">The toggle state value</param>
         /// <param name="onChanged">Change callback</param>
-        static member inline SwitchCell<'msg>(text: string, value: bool, onChanged: bool -> 'msg) =
+        static member inline SwitchCell<'msg when 'msg: equality>(text: string, value: bool, onChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitchCell>(
                 SwitchCell.WidgetKey,
                 SwitchCell.OnWithEvent.WithValue(ValueEventData.create value (fun (args: ToggledEventArgs) -> onChanged args.Value)),

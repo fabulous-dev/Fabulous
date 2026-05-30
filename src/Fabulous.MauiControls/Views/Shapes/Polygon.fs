@@ -40,7 +40,7 @@ module PolygonBuilders =
 
         /// <summary>Create a Polygon widget with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline Polygon<'msg>(points: string) =
+        static member inline Polygon<'msg when 'msg: equality>(points: string) =
             WidgetBuilder<'msg, IFabPolygon>(Polygon.WidgetKey, Polygon.PointsString.WithValue(points))
 
         /// <summary>Create a Polygon widget with a list of points</summary>

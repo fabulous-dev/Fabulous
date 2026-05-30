@@ -26,7 +26,7 @@ type ViewModifiers =
     /// <summary>Set the gesture recognizers associated with this widget</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline gestureRecognizers<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> View'.GestureRecognizers this
 
     /// <summary>Set the LayoutOptions that define how the widget gets laid in a layout cycle</summary>

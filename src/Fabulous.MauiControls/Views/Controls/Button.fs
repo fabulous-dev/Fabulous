@@ -22,10 +22,10 @@ module Button =
         Attributes.defineBindableFloat Button.CharacterSpacingProperty
 
     let Clicked =
-        Attributes.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+        Attributes.Mvu.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
 
     let Clicked' =
-        Attributes.defineEventNoArgNoDispatch "Button_Clicked" (fun target -> (target :?> Button).Clicked)
+        Attributes.Component.defineEventNoArg "Button_Clicked" (fun target -> (target :?> Button).Clicked)
 
     let ContentLayout =
         Attributes.defineBindableWithEquality<Button.ButtonContentLayout> Button.ContentLayoutProperty
@@ -52,10 +52,10 @@ module Button =
         Attributes.defineBindableWithEquality<Thickness> Button.PaddingProperty
 
     let Pressed =
-        Attributes.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
+        Attributes.Mvu.defineEventNoArg "Button_Pressed" (fun target -> (target :?> Button).Pressed)
 
     let Released =
-        Attributes.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
+        Attributes.Mvu.defineEventNoArg "Button_Released" (fun target -> (target :?> Button).Released)
 
     let Text = Attributes.defineBindableWithEquality<string> Button.TextProperty
 
@@ -71,7 +71,7 @@ module ButtonBuilders =
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>
         /// <param name="text">The button on the tex</param>
         /// <param name="onClicked">Message to dispatch</param>
-        static member inline Button<'msg>(text: string, onClicked: 'msg) =
+        static member inline Button<'msg when 'msg: equality>(text: string, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabButton>(Button.WidgetKey, Button.Text.WithValue(text), Button.Clicked.WithValue(MsgValue(onClicked)))
 
         /// <summary>Create a Button widget with a text and listen for the Click event</summary>

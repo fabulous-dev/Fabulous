@@ -31,12 +31,12 @@ module PathGeometryBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a PathGeometry widget</summary>
-        static member inline PathGeometry<'msg>() =
+        static member inline PathGeometry<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(PathGeometry.WidgetKey, PathGeometry.FiguresWidgets)
 
         /// <summary>Create a PathGeometry widget with the fill rule</summary>
         /// <param name="fillRule">The fill rule</param>
-        static member inline PathGeometry<'msg>(fillRule: FillRule) =
+        static member inline PathGeometry<'msg when 'msg: equality>(fillRule: FillRule) =
             CollectionBuilder<'msg, IFabPathGeometry, IFabPathFigure>(
                 PathGeometry.WidgetKey,
                 PathGeometry.FiguresWidgets,
@@ -45,13 +45,13 @@ module PathGeometryBuilders =
 
         /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
         /// <param name="figures">The figure data string</param>
-        static member inline PathGeometry<'msg>(figures: string) =
+        static member inline PathGeometry<'msg when 'msg: equality>(figures: string) =
             WidgetBuilder<'msg, IFabPathGeometry>(PathGeometry.WidgetKey, PathGeometry.FiguresString.WithValue(figures))
 
         /// <summary>Create a PathGeometry widget with a figure data string and a fill rule</summary>
         /// <param name="figures">The figure data string</param>
         /// <param name="fillRule">The fill rule</param>
-        static member inline PathGeometry<'msg>(figures: string, fillRule: FillRule) =
+        static member inline PathGeometry<'msg when 'msg: equality>(figures: string, fillRule: FillRule) =
             WidgetBuilder<'msg, IFabPathGeometry>(
                 PathGeometry.WidgetKey,
                 PathGeometry.FiguresString.WithValue(figures),

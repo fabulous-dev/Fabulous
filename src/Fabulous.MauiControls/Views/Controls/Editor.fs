@@ -15,7 +15,7 @@ module Editor =
         Attributes.defineBindableEnum<EditorAutoSizeOption> Editor.AutoSizeProperty
 
     let Completed =
-        Attributes.defineEventNoArg "Editor_Completed" (fun target -> (target :?> Editor).Completed)
+        Attributes.Mvu.defineEventNoArg "Editor_Completed" (fun target -> (target :?> Editor).Completed)
 
     let CursorPosition = Attributes.defineBindableInt Editor.CursorPositionProperty
 
@@ -48,7 +48,7 @@ module EditorBuilders =
         /// <summary>Create an Editor widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline Editor<'msg>(text: string, onTextChanged: string -> 'msg) =
+        static member inline Editor<'msg when 'msg: equality>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEditor>(
                 Editor.WidgetKey,
                 InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))

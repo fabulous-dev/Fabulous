@@ -24,7 +24,7 @@ module RotateTransformBuilders =
         /// <param name="angle">The angle value</param>
         /// <param name="centerX">The X position</param>
         /// <param name="centerY">The Y position</param>
-        static member inline RotateTransform<'msg>(angle: float, centerX: float, centerY: float) =
+        static member inline RotateTransform<'msg when 'msg: equality>(angle: float, centerX: float, centerY: float) =
             WidgetBuilder<'msg, IFabRotateTransform>(
                 RotateTransform.WidgetKey,
                 RotateTransform.Angle.WithValue(angle),

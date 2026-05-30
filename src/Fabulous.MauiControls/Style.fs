@@ -9,7 +9,7 @@ type FabElementExtensions =
     /// <param name="this">Current widget</param>
     /// <param name="fn">The style modifier function</param>
     [<Extension>]
-    static member inline style<'msg, 'marker when 'marker :> IFabElement>
+    static member inline style<'msg, 'marker when 'msg: equality and 'marker :> IFabElement>
         (
             this: WidgetBuilder<'msg, 'marker>,
             fn: WidgetBuilder<'msg, 'marker> -> WidgetBuilder<'msg, 'marker>

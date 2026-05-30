@@ -15,7 +15,7 @@ module MultiPageOfPage =
 
     [<Obsolete("Use CurrentPageWithEvent instead")>]
     let CurrentPageChanged =
-        Attributes.defineEventNoArg "MultiPageOfPage_CurrentPageChanged" (fun target -> (target :?> MultiPage<Page>).CurrentPageChanged)
+        Attributes.Mvu.defineEventNoArg "MultiPageOfPage_CurrentPageChanged" (fun target -> (target :?> MultiPage<Page>).CurrentPageChanged)
 
     let CurrentPageWithEvent =
         let name = "MultiPageOfPage_CurrentPageWithEvent"

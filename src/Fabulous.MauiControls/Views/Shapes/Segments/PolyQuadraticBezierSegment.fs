@@ -37,12 +37,12 @@ module PolyQuadraticBezierSegmentBuilders =
 
         /// <summary>Create a PolyQuadraticBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyQuadraticBezierSegment<'msg>(points: string) =
+        static member inline PolyQuadraticBezierSegment<'msg when 'msg: equality>(points: string) =
             WidgetBuilder<'msg, IFabPolyQuadraticBezierSegment>(PolyQuadraticBezierSegment.WidgetKey, PolyQuadraticBezierSegment.PointsString.WithValue(points))
 
         /// <summary>Create a PolyQuadraticBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyQuadraticBezierSegment<'msg>(points: seq<Point>) =
+        static member inline PolyQuadraticBezierSegment<'msg when 'msg: equality>(points: seq<Point>) =
             WidgetBuilder<'msg, IFabPolyQuadraticBezierSegment>(
                 PolyQuadraticBezierSegment.WidgetKey,
                 PolyQuadraticBezierSegment.PointsList.WithValue(Array.ofSeq points)

@@ -55,22 +55,22 @@ module ListView =
     let IsRefreshing = Attributes.defineBindableBool ListView.IsRefreshingProperty
 
     let ItemAppearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
+        Attributes.Mvu.defineEvent<ItemVisibilityEventArgs> "ListView_ItemAppearing" (fun target -> (target :?> ListView).ItemAppearing)
 
     let ItemDisappearing =
-        Attributes.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
+        Attributes.Mvu.defineEvent<ItemVisibilityEventArgs> "ListView_ItemDisappearing" (fun target -> (target :?> ListView).ItemDisappearing)
 
     let ItemSelected =
-        Attributes.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
+        Attributes.Mvu.defineEvent<SelectedItemChangedEventArgs> "ListView_ItemSelected" (fun target -> (target :?> ListView).ItemSelected)
 
     let ItemTapped =
-        Attributes.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
+        Attributes.Mvu.defineEvent<ItemTappedEventArgs> "ListView_ItemTapped" (fun target -> (target :?> ListView).ItemTapped)
 
     let RefreshControlColor =
         Attributes.defineBindableColor ListView.RefreshControlColorProperty
 
     let Refreshing =
-        Attributes.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
+        Attributes.Mvu.defineEventNoArg "ListView_Refreshing" (fun target -> (target :?> ListView).Refreshing)
 
     let RowHeight = Attributes.defineBindableInt ListView.RowHeightProperty
 
@@ -83,10 +83,10 @@ module ListView =
         Attributes.defineBindableEnum<SeparatorVisibility> ListView.SeparatorVisibilityProperty
 
     let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
+        Attributes.Mvu.defineEvent<ScrolledEventArgs> "ListView_Scrolled" (fun target -> (target :?> ListView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
+        Attributes.Mvu.defineEvent<ScrollToRequestedEventArgs> "ListView_ScrollToRequested" (fun target -> (target :?> ListView).ScrollToRequested)
 
     let VerticalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ListView.VerticalScrollBarVisibilityProperty
@@ -97,13 +97,13 @@ module ListViewBuilders =
 
         /// <summary>Create a ListView with a list of items</summary>
         /// <param name="items">The items list</param>
-        static member inline ListView<'msg, 'itemData, 'itemMarker when 'itemMarker :> IFabCell>(items: seq<'itemData>) =
+        static member inline ListView<'msg, 'itemData, 'itemMarker when 'msg: equality and 'itemMarker :> IFabCell>(items: seq<'itemData>) =
             WidgetHelpers.buildItems<'msg, IFabListView, 'itemData, 'itemMarker> ListView.WidgetKey ItemsViewOfCell.ItemsSource items
 
         /// <summary>Create a ListView with a list of grouped items</summary>
         /// <param name="items">The grouped items list</param>
         static member inline GroupedListView<'msg, 'groupData, 'groupMarker, 'itemData, 'itemMarker
-            when 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
+            when 'msg: equality and 'itemMarker :> IFabCell and 'groupMarker :> IFabCell and 'groupData :> System.Collections.Generic.IEnumerable<'itemData>>
             (items: seq<'groupData>)
             =
             WidgetHelpers.buildGroupItemsNoFooter<'msg, IFabListView, 'groupData, 'itemData, 'groupMarker, 'itemMarker>

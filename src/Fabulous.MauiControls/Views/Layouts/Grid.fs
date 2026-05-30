@@ -83,13 +83,13 @@ module GridBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a Grid widget with only one cell</summary>
-        static member inline Grid<'msg>() =
+        static member inline Grid<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabGrid, IFabView>(Grid.WidgetKey, LayoutOfView.Children)
 
         /// <summary>Create a Grid widget with the given column and row definitions</summary>
         /// <param name="coldefs">The column definitions</param>
         /// <param name="rowdefs">The row definitions</param>
-        static member inline Grid<'msg>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
+        static member inline Grid<'msg when 'msg: equality>(coldefs: seq<Dimension>, rowdefs: seq<Dimension>) =
             CollectionBuilder<'msg, IFabGrid, IFabView>(
                 Grid.WidgetKey,
                 LayoutOfView.Children,

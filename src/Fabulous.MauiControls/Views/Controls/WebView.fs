@@ -21,10 +21,10 @@ module WebView =
         Attributes.defineBindableWithEquality<CookieContainer> WebView.CookiesProperty
 
     let Navigated =
-        Attributes.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
+        Attributes.Mvu.defineEvent<WebNavigatedEventArgs> "WebView_Navigated" (fun target -> (target :?> WebView).Navigated)
 
     let Navigating =
-        Attributes.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
+        Attributes.Mvu.defineEvent<WebNavigatingEventArgs> "WebView_Navigating" (fun target -> (target :?> WebView).Navigating)
 
     let Source =
         Attributes.defineBindableWithEquality<WebViewSource> WebView.SourceProperty
@@ -58,13 +58,13 @@ module WebViewBuilders =
 
         /// <summary>Create a WebView with a source</summary>
         /// <param name="source">The web source</param>
-        static member inline WebView<'msg>(source: WebViewSource) =
+        static member inline WebView<'msg when 'msg: equality>(source: WebViewSource) =
             WidgetBuilder<'msg, IFabWebView>(WebView.WidgetKey, WebView.Source.WithValue(source))
 
         /// <summary>Create a WebView with an HTML content</summary>
         /// <param name="html">The HTML content</param>
         /// <param name="baseUrl">The base URL</param>
-        static member inline WebView<'msg>(html: string, ?baseUrl: string) =
+        static member inline WebView<'msg when 'msg: equality>(html: string, ?baseUrl: string) =
             let source =
                 match baseUrl with
                 | Some url -> HtmlWebViewSource(Html = html, BaseUrl = url)
@@ -74,12 +74,12 @@ module WebViewBuilders =
 
         /// <summary>Create a WebView with a Uri source</summary>
         /// <param name="uri">The Uri source</param>
-        static member inline WebView<'msg>(uri: Uri) =
+        static member inline WebView<'msg when 'msg: equality>(uri: Uri) =
             View.WebView<'msg>(WebViewSource.op_Implicit uri)
 
         /// <summary>Create a WebView with a Url source</summary>
         /// <param name="url">The Url source</param>
-        static member inline WebView<'msg>(url: string) =
+        static member inline WebView<'msg when 'msg: equality>(url: string) =
             View.WebView<'msg>(WebViewSource.op_Implicit url)
 
 [<Extension>]

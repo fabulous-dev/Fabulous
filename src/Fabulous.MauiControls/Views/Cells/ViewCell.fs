@@ -20,7 +20,7 @@ module ViewCellBuilders =
 
         /// <summary>Create a ViewCell with a content widget</summary>
         /// <param name="view">The content widget</param>
-        static member inline ViewCell<'msg, 'marker when 'marker :> IFabView>(view: WidgetBuilder<'msg, 'marker>) =
+        static member inline ViewCell<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(view: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IFabViewCell> ViewCell.WidgetKey [| ViewCell.View.WithValue(view.Compile()) |]
 
 [<Extension>]

@@ -29,7 +29,7 @@ module RoundRectangleGeometryBuilders =
         /// <summary>Create a RoundRectangleGeometry widget with a corner radius and a dimension</summary>
         /// <param name="cornerRadius">The corner radius</param>
         /// <param name="rect">The dimension</param>
-        static member inline RoundRectangleGeometry<'msg>(cornerRadius: CornerRadius, rect: Rect) =
+        static member inline RoundRectangleGeometry<'msg when 'msg: equality>(cornerRadius: CornerRadius, rect: Rect) =
             WidgetBuilder<'msg, IFabRoundRectangleGeometry>(
                 RoundRectangleGeometry.WidgetKey,
                 RoundRectangleGeometry.CornerRadius.WithValue(cornerRadius),

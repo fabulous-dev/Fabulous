@@ -24,7 +24,7 @@ module LineGeometryBuilders =
         /// <summary>Create a LineGeometry widget with a start point and an end point</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
-        static member inline LineGeometry<'msg>(startPoint: Point, endPoint: Point) =
+        static member inline LineGeometry<'msg when 'msg: equality>(startPoint: Point, endPoint: Point) =
             WidgetBuilder<'msg, IFabLineGeometry>(
                 LineGeometry.WidgetKey,
                 LineGeometry.StartPoint.WithValue(startPoint),

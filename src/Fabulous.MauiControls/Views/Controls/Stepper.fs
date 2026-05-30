@@ -45,7 +45,7 @@ module StepperBuilders =
         /// <param name="max">The maximum value</param>
         /// <param name="value">The current value</param>
         /// <param name="onValueChanged">Message to dispatch</param>
-        static member inline Stepper<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
+        static member inline Stepper<'msg when 'msg: equality>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IFabStepper>(
                 Stepper.WidgetKey,
                 Stepper.MinimumMaximum.WithValue(struct (min, max)),

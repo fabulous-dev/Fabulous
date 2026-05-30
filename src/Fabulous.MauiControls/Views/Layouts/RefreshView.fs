@@ -17,7 +17,7 @@ module RefreshView =
     let RefreshColor = Attributes.defineBindableColor RefreshView.RefreshColorProperty
 
     let Refreshing =
-        Attributes.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
+        Attributes.Mvu.defineEventNoArg "RefreshView_Refreshing" (fun target -> (target :?> RefreshView).Refreshing)
 
 [<AutoOpen>]
 module RefreshViewBuilders =
@@ -32,8 +32,9 @@ module RefreshViewBuilders =
                 RefreshView.WidgetKey,
                 AttributesBundle(
                     StackList.two(RefreshView.IsRefreshing.WithValue(isRefreshing), RefreshView.Refreshing.WithValue(MsgValue(onRefreshing))),
-                    ValueSome [| ContentView.Content.WithValue(content.Compile()) |],
-                    ValueNone
+                    [| ContentView.Content.WithValue(content.Compile()) |],
+                    [||],
+                    [||]
                 )
             )
 

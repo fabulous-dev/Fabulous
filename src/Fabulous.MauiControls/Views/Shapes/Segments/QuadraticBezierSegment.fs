@@ -24,7 +24,7 @@ module QuadraticBezierSegmentBuilders =
         /// <summary>Create a QuadraticBezierSegment with a list of points</summary>
         /// <param name="point1">The first point</param>
         /// <param name="point2">The second point</param>
-        static member inline QuadraticBezierSegment<'msg>(point1: Point, point2: Point) =
+        static member inline QuadraticBezierSegment<'msg when 'msg: equality>(point1: Point, point2: Point) =
             WidgetBuilder<'msg, IFabQuadraticBezierSegment>(
                 QuadraticBezierSegment.WidgetKey,
                 QuadraticBezierSegment.Point1.WithValue(point1),

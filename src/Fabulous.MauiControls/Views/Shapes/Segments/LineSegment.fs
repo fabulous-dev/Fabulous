@@ -19,7 +19,7 @@ module LineSegmentBuilders =
 
         /// <summary>Create a LineSegment widget with a start and end point</summary>
         /// <param name="point">The start and end point</param>
-        static member inline LineSegment<'msg>(point: Point) =
+        static member inline LineSegment<'msg when 'msg: equality>(point: Point) =
             WidgetBuilder<'msg, IFabLineSegment>(LineSegment.WidgetKey, LineSegment.Point.WithValue(point))
 
 [<Extension>]

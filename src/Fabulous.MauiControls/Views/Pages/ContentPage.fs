@@ -31,7 +31,7 @@ module ContentPage =
     let Content = Attributes.defineBindableWidget ContentPage.ContentProperty
 
     let SizeAllocated =
-        Attributes.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabContentPage).SizeAllocated)
+        Attributes.Mvu.defineEvent<SizeAllocatedEventArgs> "ContentPage_SizeAllocated" (fun target -> (target :?> FabContentPage).SizeAllocated)
 
 [<AutoOpen>]
 module ContentPageBuilders =
@@ -39,14 +39,11 @@ module ContentPageBuilders =
 
         /// <summary>Create a ContentPage with a content widget</summary>
         /// <param name="content">The content widget</param>
-        static member inline ContentPage<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ContentPage<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetBuilder<'msg, IFabContentPage>(
                 ContentPage.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| ContentPage.Content.WithValue(content.Compile()) |], ValueNone)
+                AttributesBundle(StackList.empty(), [| ContentPage.Content.WithValue(content.Compile()) |], [||], [||])
             )
-
-        static member inline ContentPage<'msg, 'childMarker>() =
-            SingleChildBuilder<'msg, IFabContentPage, 'childMarker>(ContentPage.WidgetKey, ContentPage.Content)
 
 [<Extension>]
 type ContentPageModifiers =

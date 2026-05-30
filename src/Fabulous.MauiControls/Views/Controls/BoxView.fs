@@ -21,7 +21,7 @@ module BoxViewBuilders =
 
         /// <summary>Create a BoxView widget with a color</summary>
         /// <param name="color">The color value</param>
-        static member inline BoxView<'msg>(color: Color) =
+        static member inline BoxView<'msg when 'msg: equality>(color: Color) =
             WidgetBuilder<'msg, IFabBoxView>(BoxView.WidgetKey, BoxView.Color.WithValue(color))
 
 [<Extension>]

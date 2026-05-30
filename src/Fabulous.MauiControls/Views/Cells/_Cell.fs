@@ -10,10 +10,10 @@ type IFabCell =
 
 module Cell =
     let Appearing =
-        Attributes.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
+        Attributes.Mvu.defineEventNoArg "Cell_Appearing" (fun target -> (target :?> Cell).Appearing)
 
     let Disappearing =
-        Attributes.defineEventNoArg "Cell_Disappearing" (fun target -> (target :?> Cell).Disappearing)
+        Attributes.Mvu.defineEventNoArg "Cell_Disappearing" (fun target -> (target :?> Cell).Disappearing)
 
     let Height =
         Attributes.defineFloat "Cell_Height" (fun _ newValueOpt node ->
@@ -29,7 +29,7 @@ module Cell =
     let IsEnabled = Attributes.defineBindableBool Cell.IsEnabledProperty
 
     let Tapped =
-        Attributes.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
+        Attributes.Mvu.defineEventNoArg "Cell_Tapped" (fun target -> (target :?> Cell).Tapped)
 
     let ContextActions =
         Attributes.defineListWidgetCollection "Cell_ContextActions" (fun target -> (target :?> Cell).ContextActions)
@@ -74,13 +74,13 @@ type CellModifiers =
     /// <summary>Set the context actions of the cell</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline contextActions<'msg, 'marker when 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline contextActions<'msg, 'marker when 'msg: equality and 'marker :> IFabCell>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabMenuItem> Cell.ContextActions this
 
 [<Extension>]
 type CellYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabCell and 'itemType :> IFabMenuItem>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabCell and 'itemType :> IFabMenuItem>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IFabMenuItem>,
             x: WidgetBuilder<'msg, 'itemType>

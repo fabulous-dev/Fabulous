@@ -20,7 +20,7 @@ module RectangleGeometryBuilders =
 
         /// <summary>Create a RectangleGeometry widget with a dimension</summary>
         /// <param name="rect">The dimension value</param>
-        static member inline RectangleGeometry<'msg>(rect: Rect) =
+        static member inline RectangleGeometry<'msg when 'msg: equality>(rect: Rect) =
             WidgetBuilder<'msg, IFabRectangleGeometry>(RectangleGeometry.WidgetKey, RectangleGeometry.Rect.WithValue(rect))
 
 [<Extension>]

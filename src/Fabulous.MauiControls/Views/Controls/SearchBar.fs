@@ -35,7 +35,7 @@ module SearchBar =
         Attributes.defineBindableBool SearchBar.IsTextPredictionEnabledProperty
 
     let SearchButtonPressed =
-        Attributes.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> SearchBar).SearchButtonPressed)
+        Attributes.Mvu.defineEventNoArg "SearchBar_SearchButtonPressed" (fun target -> (target :?> SearchBar).SearchButtonPressed)
 
     let SelectionLength = Attributes.defineBindableInt SearchBar.SelectionLengthProperty
 
@@ -50,7 +50,7 @@ module SearchBarBuilders =
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
         /// <param name="onSearchButtonPressed">Message to dispatch</param>
-        static member inline SearchBar<'msg>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
+        static member inline SearchBar<'msg when 'msg: equality>(text: string, onTextChanged: string -> 'msg, onSearchButtonPressed: 'msg) =
             WidgetBuilder<'msg, IFabSearchBar>(
                 SearchBar.WidgetKey,
                 InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue)),

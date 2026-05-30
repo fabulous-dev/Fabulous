@@ -49,7 +49,7 @@ module SpanBuilders =
 
         /// <summary>Create a Span widget with a text</summary>
         /// <param name="text">The text value</param>
-        static member inline Span<'msg>(text: string) =
+        static member inline Span<'msg when 'msg: equality>(text: string) =
             WidgetBuilder<'msg, IFabSpan>(Span.WidgetKey, Span.Text.WithValue(text))
 
 [<Extension>]
@@ -100,7 +100,7 @@ type SpanModifiers =
     /// <summary>Set the gesture recognizers</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline gestureRecognizers<'msg, 'marker when 'marker :> IFabSpan>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline gestureRecognizers<'msg, 'marker when 'msg: equality and 'marker :> IFabSpan>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabGestureRecognizer> Span.GestureRecognizers this
 
     /// <summary>Set the line height</summary>

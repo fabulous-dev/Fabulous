@@ -27,7 +27,7 @@ module ScrollView =
         Attributes.defineBindableEnum<ScrollOrientation> ScrollView.OrientationProperty
 
     let Scrolled =
-        Attributes.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
+        Attributes.Mvu.defineEvent<ScrolledEventArgs> "ScrollView_Scrolled" (fun target -> (target :?> ScrollView).Scrolled)
 
     let ScrollPosition =
         Attributes.defineSimpleScalarWithEquality<ScrollToData> "ScrollView_ScrollPosition" (fun _ newValueOpt node ->
@@ -55,7 +55,7 @@ module ScrollViewBuilders =
 
         /// <summary>Create a ScrollView widget with a content</summary>
         /// <param name="content">The content of the ScrollView</param>
-        static member inline ScrollView<'msg, 'marker when 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
+        static member inline ScrollView<'msg, 'marker when 'msg: equality and 'marker :> IFabView>(content: WidgetBuilder<'msg, 'marker>) =
             WidgetHelpers.buildWidgets<'msg, IFabScrollView> ScrollView.WidgetKey [| ScrollView.Content.WithValue(content.Compile()) |]
 
 [<Extension>]

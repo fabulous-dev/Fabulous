@@ -22,7 +22,7 @@ module RectangleBuilders =
 
         /// <summary>Create a Rectangle widget</summary>
         static member inline Rectangle() =
-            WidgetBuilder<'msg, IFabRectangle>(Rectangle.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+            WidgetBuilder<'msg, IFabRectangle>(Rectangle.WidgetKey, AttributesBundle(StackList.empty(), [||], [||], [||]))
 
 [<Extension>]
 type RectangleModifiers =

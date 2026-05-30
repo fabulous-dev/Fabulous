@@ -38,14 +38,14 @@ module ProgressBarBuilders =
 
         /// <summary>Create a ProgressBar widget with a current progress value</summary>
         /// <param name="progress">The progress value</param>
-        static member inline ProgressBar<'msg>(progress: float) =
+        static member inline ProgressBar<'msg when 'msg: equality>(progress: float) =
             WidgetBuilder<'msg, IFabProgressBar>(ProgressBar.WidgetKey, ProgressBar.Progress.WithValue(progress))
 
         /// <summary>Create a ProgressBar widget with a progress value that will animate when changed</summary>
         /// <param name="progress">The progress value</param>
         /// <param name="duration">The duration of the animation</param>
         /// <param name="easing">The easing of the animation</param>
-        static member inline ProgressBar<'msg>(progress: float, duration: int, easing: Easing) =
+        static member inline ProgressBar<'msg when 'msg: equality>(progress: float, duration: int, easing: Easing) =
             WidgetBuilder<'msg, IFabProgressBar>(
                 ProgressBar.WidgetKey,
                 ProgressBarAnimations.ProgressTo.WithValue(

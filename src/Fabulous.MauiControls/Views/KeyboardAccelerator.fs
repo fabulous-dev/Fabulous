@@ -23,13 +23,13 @@ module KeyboardAcceleratorBuilders =
 
         /// <summary>Create a KeyboardAccelerator widget with a key</summary>
         /// <param name="key">The key triggering the accelerator</param>
-        static member inline KeyboardAccelerator<'msg>(key: string) =
+        static member inline KeyboardAccelerator<'msg when 'msg: equality>(key: string) =
             WidgetBuilder<'msg, IFabKeyboardAccelerator>(KeyboardAccelerator.WidgetKey, KeyboardAccelerator.Key.WithValue(key))
 
         /// <summary>Create a KeyboardAccelerator widget with a key and a modifier</summary>
         /// <param name="key">The key triggering the accelerator</param>
         /// <param name="modifiers">The modifiers required to trigger the accelerator</param>
-        static member inline KeyboardAccelerator<'msg>(key: string, modifiers: KeyboardAcceleratorModifiers) =
+        static member inline KeyboardAccelerator<'msg when 'msg: equality>(key: string, modifiers: KeyboardAcceleratorModifiers) =
             WidgetBuilder<'msg, IFabKeyboardAccelerator>(
                 KeyboardAccelerator.WidgetKey,
                 KeyboardAccelerator.Key.WithValue(key),

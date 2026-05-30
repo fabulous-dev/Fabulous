@@ -17,8 +17,8 @@ module EllipseBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create an Ellipse widget</summary>
-        static member inline Ellipse<'msg>() =
-            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+        static member inline Ellipse<'msg when 'msg: equality>() =
+            WidgetBuilder<'msg, IFabEllipse>(Ellipse.WidgetKey, AttributesBundle(StackList.empty(), [||], [||], [||]))
 
 [<Extension>]
 type EllipseModifiers =

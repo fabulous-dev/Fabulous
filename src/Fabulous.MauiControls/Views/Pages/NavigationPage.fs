@@ -269,10 +269,10 @@ module NavigationPage =
     let WidgetKey = Widgets.register<FabNavigationPage>()
 
     let BackButtonPressed =
-        Attributes.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
+        Attributes.Mvu.defineEventNoArg "NavigationPage_BackButtonPressed" (fun target -> (target :?> FabNavigationPage).BackButtonPressed)
 
     let BackNavigated =
-        Attributes.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
+        Attributes.Mvu.defineEventNoArg "NavigationPage_BackNavigated" (fun target -> (target :?> FabNavigationPage).BackNavigated)
 
     let BarBackground =
         Attributes.defineBindableWithEquality NavigationPage.BarBackgroundProperty
@@ -345,7 +345,7 @@ module NavigationPageBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a NavigationPage widget</summary>
-        static member inline NavigationPage<'msg>() =
+        static member inline NavigationPage<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabNavigationPage, IFabPage>(NavigationPage.WidgetKey, NavigationPage.Pages)
 
 [<Extension>]

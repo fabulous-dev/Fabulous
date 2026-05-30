@@ -104,7 +104,7 @@ module DatePickerBuilders =
         /// <param name="max">The maximum date allowed</param>
         /// <param name="date">The selected date</param>
         /// <param name="onDateSelected">Message to dispatch</param>
-        static member inline DatePicker<'msg>(min: DateTime, max: DateTime, date: DateTime, onDateSelected: DateTime -> 'msg) =
+        static member inline DatePicker<'msg when 'msg: equality>(min: DateTime, max: DateTime, date: DateTime, onDateSelected: DateTime -> 'msg) =
             WidgetBuilder<'msg, IFabDatePicker>(
                 DatePicker.WidgetKey,
                 DatePicker.DateWithEvent.WithValue(

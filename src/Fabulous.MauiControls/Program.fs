@@ -8,20 +8,14 @@ open Microsoft.Maui.Controls
 
 module MauiViewHelpers =
     let private tryGetScalarValue (widget: Widget) (def: SimpleScalarAttributeDefinition<'data>) =
-        match widget.ScalarAttributes with
-        | ValueNone -> ValueNone
-        | ValueSome scalarAttrs ->
-            match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = def.Key) scalarAttrs with
-            | None -> ValueNone
-            | Some attr -> ValueSome(unbox<'data> attr.Value)
+        match Array.tryFind (fun (attr: ScalarAttribute) -> attr.Key = def.Key) widget.ScalarAttributes with
+        | None -> ValueNone
+        | Some attr -> ValueSome(unbox<'data> attr.Value)
 
     let private tryGetWidgetCollectionValue (widget: Widget) (def: WidgetCollectionAttributeDefinition) =
-        match widget.WidgetCollectionAttributes with
-        | ValueNone -> ValueNone
-        | ValueSome collectionAttrs ->
-            match Array.tryFind (fun (attr: WidgetCollectionAttribute) -> attr.Key = def.Key) collectionAttrs with
-            | None -> ValueNone
-            | Some attr -> ValueSome attr.Value
+        match Array.tryFind (fun (attr: WidgetCollectionAttribute) -> attr.Key = def.Key) widget.WidgetCollectionAttributes with
+        | None -> ValueNone
+        | Some attr -> ValueSome attr.Value
 
     let defaultSyncAction (action: unit -> unit) =
         MainThread.BeginInvokeOnMainThread(action)

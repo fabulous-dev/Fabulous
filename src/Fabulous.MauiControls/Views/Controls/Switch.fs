@@ -25,7 +25,7 @@ module SwitchBuilders =
         /// <summary>Create a Switch widget with a toggle state and listen for toggle state changes</summary>
         /// <param name="isToggled">The toggle state</param>
         /// <param name="onToggled">Message to dispatch</param>
-        static member inline Switch<'msg>(isToggled: bool, onToggled: bool -> 'msg) =
+        static member inline Switch<'msg when 'msg: equality>(isToggled: bool, onToggled: bool -> 'msg) =
             WidgetBuilder<'msg, IFabSwitch>(
                 Switch.WidgetKey,
                 Switch.IsToggledWithEvent.WithValue(ValueEventData.create isToggled (fun (args: ToggledEventArgs) -> onToggled args.Value))

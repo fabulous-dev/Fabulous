@@ -30,46 +30,46 @@ module ImageBuilders =
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
-        static member inline Image<'msg>(source: ImageSource) =
+        static member inline Image<'msg when 'msg: equality>(source: ImageSource) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Source source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
-        static member inline Image<'msg>(source: ImageSource, aspect: Aspect) =
+        static member inline Image<'msg when 'msg: equality>(source: ImageSource, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Source source), Image.Aspect.WithValue(aspect))
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
-        static member inline Image<'msg>(source: string) =
+        static member inline Image<'msg when 'msg: equality>(source: string) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.File source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
-        static member inline Image<'msg>(source: string, aspect: Aspect) =
+        static member inline Image<'msg when 'msg: equality>(source: string, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.File source), Image.Aspect.WithValue(aspect))
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
-        static member inline Image<'msg>(source: Uri) =
+        static member inline Image<'msg when 'msg: equality>(source: Uri) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Uri source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
-        static member inline Image<'msg>(source: Uri, aspect: Aspect) =
+        static member inline Image<'msg when 'msg: equality>(source: Uri, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Uri source), Image.Aspect.WithValue(aspect))
 
         /// <summary>Create an Image widget with a source</summary>
         /// <param name="source">The image source</param>
-        static member inline Image<'msg>(source: Stream) =
+        static member inline Image<'msg when 'msg: equality>(source: Stream) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Stream source))
 
         /// <summary>Create an Image widget with a source and an aspect</summary>
         /// <param name="source">The image source</param>
         /// <param name="aspect">The image aspect</param>
-        static member inline Image<'msg>(source: Stream, aspect: Aspect) =
+        static member inline Image<'msg when 'msg: equality>(source: Stream, aspect: Aspect) =
             WidgetBuilder<'msg, IFabImage>(Image.WidgetKey, Image.Source.WithValue(ImageSourceValue.Stream source), Image.Aspect.WithValue(aspect))
 
 [<Extension>]

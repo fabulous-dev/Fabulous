@@ -35,7 +35,7 @@ module SkewTransformBuilders =
         /// <param name="angleY">The Y component of the angle</param>
         /// <param name="centerX">The X position of the center</param>
         /// <param name="centerY">The Y position of the center</param>
-        static member inline SkewTransform<'msg>(angleX: float, angleY: float, centerX: float, centerY: float) =
+        static member inline SkewTransform<'msg when 'msg: equality>(angleX: float, angleY: float, centerX: float, centerY: float) =
             WidgetBuilder<'msg, IFabSkewTransform>(
                 SkewTransform.WidgetKey,
                 SkewTransform.AnglesXY.WithValue(struct (angleX, angleY)),

@@ -21,7 +21,7 @@ module TranslateTransformBuilders =
         /// <summary>Create a TranslateTransform widget with translation value</summary>
         /// <param name="x">The X component of the translation</param>
         /// <param name="y">The Y component of the translation</param>
-        static member inline TranslateTransform<'msg>(x: float, y: float) =
+        static member inline TranslateTransform<'msg when 'msg: equality>(x: float, y: float) =
             WidgetBuilder<'msg, IFabTranslateTransform>(TranslateTransform.WidgetKey, TranslateTransform.X.WithValue(x), TranslateTransform.Y.WithValue(y))
 
 [<Extension>]

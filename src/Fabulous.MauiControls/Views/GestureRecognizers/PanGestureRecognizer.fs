@@ -11,7 +11,7 @@ module PanGestureRecognizer =
     let WidgetKey = Widgets.register<PanGestureRecognizer>()
 
     let PanUpdated =
-        Attributes.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizer_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
+        Attributes.Mvu.defineEvent<PanUpdatedEventArgs> "PanGestureRecognizer_PanUpdated" (fun target -> (target :?> PanGestureRecognizer).PanUpdated)
 
     let TouchPoints =
         Attributes.defineBindableInt PanGestureRecognizer.TouchPointsProperty
@@ -22,7 +22,7 @@ module PanGestureRecognizerBuilders =
 
         /// <summary>Create a PanGestureRecognizer that listens for Pan event</summary>
         /// <param name="onPanUpdated">Message to dispatch</param>
-        static member inline PanGestureRecognizer<'msg>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
+        static member inline PanGestureRecognizer<'msg when 'msg: equality>(onPanUpdated: PanUpdatedEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabPanGestureRecognizer>(
                 PanGestureRecognizer.WidgetKey,
                 PanGestureRecognizer.PanUpdated.WithValue(fun args -> onPanUpdated args |> box)

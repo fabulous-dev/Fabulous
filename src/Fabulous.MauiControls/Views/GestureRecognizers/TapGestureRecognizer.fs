@@ -14,7 +14,7 @@ module TapGestureRecognizer =
         Attributes.defineBindableInt TapGestureRecognizer.NumberOfTapsRequiredProperty
 
     let Tapped =
-        Attributes.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
+        Attributes.Mvu.defineEvent "TapGestureRecognizer_Tapped" (fun target -> (target :?> TapGestureRecognizer).Tapped)
 
 [<AutoOpen>]
 module TapGestureRecognizerBuilders =
@@ -22,7 +22,7 @@ module TapGestureRecognizerBuilders =
 
         /// <summary>Create a TapGestureRecognizer that listens for Tapped event</summary>
         /// <param name="onTapped">Message to dispatch</param>
-        static member inline TapGestureRecognizer<'msg>(onTapped: 'msg) =
+        static member inline TapGestureRecognizer<'msg when 'msg: equality>(onTapped: 'msg) =
             WidgetBuilder<'msg, IFabTapGestureRecognizer>(TapGestureRecognizer.WidgetKey, TapGestureRecognizer.Tapped.WithValue(fun _ -> box onTapped))
 
 [<Extension>]

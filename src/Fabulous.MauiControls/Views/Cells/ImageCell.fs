@@ -21,7 +21,7 @@ module ImageCellBuilders =
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
-        static member inline ImageCell<'msg>(text: string, source: ImageSource) =
+        static member inline ImageCell<'msg when 'msg: equality>(text: string, source: ImageSource) =
             WidgetBuilder<'msg, IFabImageCell>(
                 ImageCell.WidgetKey,
                 TextCell.Text.WithValue(text),
@@ -31,7 +31,7 @@ module ImageCellBuilders =
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
-        static member inline ImageCell<'msg>(text: string, source: string) =
+        static member inline ImageCell<'msg when 'msg: equality>(text: string, source: string) =
             WidgetBuilder<'msg, IFabImageCell>(
                 ImageCell.WidgetKey,
                 TextCell.Text.WithValue(text),
@@ -41,13 +41,13 @@ module ImageCellBuilders =
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
-        static member inline ImageCell<'msg>(text: string, source: Uri) =
+        static member inline ImageCell<'msg when 'msg: equality>(text: string, source: Uri) =
             WidgetBuilder<'msg, IFabImageCell>(ImageCell.WidgetKey, TextCell.Text.WithValue(text), ImageCell.ImageSource.WithValue(ImageSourceValue.Uri source))
 
         /// <summary>Create an ImageCell widget with a text and an image source</summary>
         /// <param name="text">The text of the cell</param>
         /// <param name="source">The image source</param>
-        static member inline ImageCell<'msg>(text: string, source: Stream) =
+        static member inline ImageCell<'msg when 'msg: equality>(text: string, source: Stream) =
             WidgetBuilder<'msg, IFabImageCell>(
                 ImageCell.WidgetKey,
                 TextCell.Text.WithValue(text),

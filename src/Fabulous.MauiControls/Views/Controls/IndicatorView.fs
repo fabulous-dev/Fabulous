@@ -43,7 +43,7 @@ module IndicatorViewBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create an IndicatorView widget with a reference</summary>
-        static member inline IndicatorView<'msg>(reference: ViewRef<IndicatorView>) =
+        static member inline IndicatorView<'msg when 'msg: equality>(reference: ViewRef<IndicatorView>) =
             WidgetBuilder<'msg, IFabIndicatorView>(IndicatorView.WidgetKey, ViewRefAttributes.ViewRef.WithValue(reference.Unbox))
 
 [<Extension>]

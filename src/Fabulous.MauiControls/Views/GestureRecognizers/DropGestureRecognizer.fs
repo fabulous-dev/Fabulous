@@ -14,13 +14,13 @@ module DropGestureRecognizer =
         Attributes.defineBindableBool DropGestureRecognizer.AllowDropProperty
 
     let Drop =
-        Attributes.defineEvent<DropEventArgs> "DropGestureRecognizer_Drop" (fun target -> (target :?> DropGestureRecognizer).Drop)
+        Attributes.Mvu.defineEvent<DropEventArgs> "DropGestureRecognizer_Drop" (fun target -> (target :?> DropGestureRecognizer).Drop)
 
     let DragOver =
-        Attributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragOver" (fun target -> (target :?> DropGestureRecognizer).DragOver)
+        Attributes.Mvu.defineEvent<DragEventArgs> "DropGestureRecognizer_DragOver" (fun target -> (target :?> DropGestureRecognizer).DragOver)
 
     let DragLeave =
-        Attributes.defineEvent<DragEventArgs> "DropGestureRecognizer_DragLeave" (fun target -> (target :?> DropGestureRecognizer).DragLeave)
+        Attributes.Mvu.defineEvent<DragEventArgs> "DropGestureRecognizer_DragLeave" (fun target -> (target :?> DropGestureRecognizer).DragLeave)
 
 [<AutoOpen>]
 module DropGestureRecognizerBuilders =
@@ -28,7 +28,7 @@ module DropGestureRecognizerBuilders =
 
         /// <summary>Create a DropGestureRecognizer that listens for Drop event</summary>
         /// <param name="onDrop">Message to dispatch</param>
-        static member inline DropGestureRecognizer<'msg>(onDrop: DropEventArgs -> 'msg) =
+        static member inline DropGestureRecognizer<'msg when 'msg: equality>(onDrop: DropEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDropGestureRecognizer>(
                 DropGestureRecognizer.WidgetKey,
                 DropGestureRecognizer.Drop.WithValue(fun args -> onDrop args |> box)

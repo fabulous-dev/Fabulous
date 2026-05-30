@@ -21,7 +21,7 @@ module ActivityIndicatorBuilders =
 
         /// <summary>Create an ActivityIndicator widget with a running state</summary>
         /// <param name="isRunning">The running state</param>
-        static member inline ActivityIndicator<'msg>(isRunning: bool) =
+        static member inline ActivityIndicator<'msg when 'msg: equality>(isRunning: bool) =
             WidgetBuilder<'msg, IFabActivityIndicator>(ActivityIndicator.WidgetKey, ActivityIndicator.IsRunning.WithValue(isRunning))
 
 [<Extension>]

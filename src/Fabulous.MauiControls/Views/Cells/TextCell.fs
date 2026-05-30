@@ -25,7 +25,7 @@ module TextCellBuilders =
 
         /// <summary>Create a TextCell widget with a text</summary>
         /// <param name="text">The text value</param>
-        static member inline TextCell<'msg>(text: string) =
+        static member inline TextCell<'msg when 'msg: equality>(text: string) =
             WidgetBuilder<'msg, IFabTextCell>(TextCell.WidgetKey, TextCell.Text.WithValue(text))
 
 [<Extension>]

@@ -13,23 +13,23 @@ module SwipeView =
     let BottomSwipeItems = Attributes.defineBindableWidget SwipeView.BottomItemsProperty
 
     let CloseRequested =
-        Attributes.defineEvent<CloseRequestedEventArgs> "SwipeView_CloseRequested" (fun target -> (target :?> SwipeView).CloseRequested)
+        Attributes.Mvu.defineEvent<CloseRequestedEventArgs> "SwipeView_CloseRequested" (fun target -> (target :?> SwipeView).CloseRequested)
 
     let LeftSwipeItems = Attributes.defineBindableWidget SwipeView.LeftItemsProperty
 
     let OpenRequested =
-        Attributes.defineEvent<OpenRequestedEventArgs> "SwipeView_OpenRequested" (fun target -> (target :?> SwipeView).OpenRequested)
+        Attributes.Mvu.defineEvent<OpenRequestedEventArgs> "SwipeView_OpenRequested" (fun target -> (target :?> SwipeView).OpenRequested)
 
     let RightSwipeItems = Attributes.defineBindableWidget SwipeView.RightItemsProperty
 
     let SwipeChanging =
-        Attributes.defineEvent<SwipeChangingEventArgs> "SwipeView_SwipeChanging" (fun target -> (target :?> SwipeView).SwipeChanging)
+        Attributes.Mvu.defineEvent<SwipeChangingEventArgs> "SwipeView_SwipeChanging" (fun target -> (target :?> SwipeView).SwipeChanging)
 
     let SwipeEnded =
-        Attributes.defineEvent<SwipeEndedEventArgs> "SwipeView_SwipeEnded" (fun target -> (target :?> SwipeView).SwipeEnded)
+        Attributes.Mvu.defineEvent<SwipeEndedEventArgs> "SwipeView_SwipeEnded" (fun target -> (target :?> SwipeView).SwipeEnded)
 
     let SwipeStarted =
-        Attributes.defineEvent<SwipeStartedEventArgs> "SwipeView_SwipeStarted" (fun target -> (target :?> SwipeView).SwipeStarted)
+        Attributes.Mvu.defineEvent<SwipeStartedEventArgs> "SwipeView_SwipeStarted" (fun target -> (target :?> SwipeView).SwipeStarted)
 
     let SwipeThreshold = Attributes.defineBindableInt SwipeView.ThresholdProperty
 

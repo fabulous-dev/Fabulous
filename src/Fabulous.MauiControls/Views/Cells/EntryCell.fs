@@ -47,7 +47,7 @@ module EntryCell =
     let LabelColor = Attributes.defineBindableColor EntryCell.LabelColorProperty
 
     let OnCompleted =
-        Attributes.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
+        Attributes.Mvu.defineEventNoArg "EntryCell_Completed" (fun target -> (target :?> EntryCell).Completed)
 
     let Placeholder =
         Attributes.defineBindableWithEquality<string> EntryCell.PlaceholderProperty
@@ -66,7 +66,7 @@ module EntryCellBuilders =
         /// <param name="label">The label value</param>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline EntryCell<'msg>(label: string, text: string, onTextChanged: string -> 'msg) =
+        static member inline EntryCell<'msg when 'msg: equality>(label: string, text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntryCell>(
                 EntryCell.WidgetKey,
                 EntryCell.Label.WithValue(label),

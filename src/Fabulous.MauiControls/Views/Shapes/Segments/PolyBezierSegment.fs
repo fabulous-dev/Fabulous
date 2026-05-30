@@ -37,12 +37,12 @@ module PolyBezierSegmentBuilders =
 
         /// <summary>Create a PolyBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyBezierSegment<'msg>(points: string) =
+        static member inline PolyBezierSegment<'msg when 'msg: equality>(points: string) =
             WidgetBuilder<'msg, IFabPolyBezierSegment>(PolyBezierSegment.WidgetKey, PolyBezierSegment.PointsString.WithValue(points))
 
         /// <summary>Create a PolyBezierSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyBezierSegment<'msg>(points: seq<Point>) =
+        static member inline PolyBezierSegment<'msg when 'msg: equality>(points: seq<Point>) =
             WidgetBuilder<'msg, IFabPolyBezierSegment>(PolyBezierSegment.WidgetKey, PolyBezierSegment.PointsList.WithValue(Array.ofSeq points))
 
 [<Extension>]

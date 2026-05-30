@@ -82,7 +82,7 @@ module BorderBuilders =
         static member inline Border(content: WidgetBuilder<'msg, #IFabView>) =
             WidgetBuilder<'msg, IFabBorder>(
                 Border.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| Border.Content.WithValue(content.Compile()) |], ValueNone)
+                AttributesBundle(StackList.empty(), [| Border.Content.WithValue(content.Compile()) |], [||], [||])
             )
 
 [<Extension>]

@@ -22,7 +22,7 @@ module RadialGradientBrushBuilders =
         /// <summary>Create a RadialGradientBrush widget that paints an area with a radial gradient, which blends two or more colors across a circle</summary>
         /// <param name="center">Center, of type Point, which represents the center point of the circle for the radial gradient</param>
         /// <param name="radius">Radius, of type float, which represents the radius of the circle for the radial gradient</param>
-        static member inline RadialGradientBrush<'msg>(center: Point, radius: float) =
+        static member inline RadialGradientBrush<'msg when 'msg: equality>(center: Point, radius: float) =
             CollectionBuilder<'msg, IFabRadialGradientBrush, IFabGradientStop>(
                 RadialGradientBrush.WidgetKey,
                 GradientBrush.Children,
@@ -31,5 +31,5 @@ module RadialGradientBrushBuilders =
             )
 
         /// <summary>Create a RadialGradientBrush widget that paints an area with a radial gradient, which blends two or more colors across a circle</summary>
-        static member inline RadialGradientBrush<'msg>() =
+        static member inline RadialGradientBrush<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabRadialGradientBrush, IFabGradientStop>(RadialGradientBrush.WidgetKey, GradientBrush.Children)

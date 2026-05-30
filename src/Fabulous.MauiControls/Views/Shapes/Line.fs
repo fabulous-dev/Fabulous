@@ -36,7 +36,7 @@ module LineBuilders =
         /// <summary>Create a Line widget with a start point, an end point, a stroke thickness, and a stroke brush</summary>
         /// <param name="startPoint">The start point</param>
         /// <param name="endPoint">The end point</param>
-        static member inline Line<'msg>(startPoint: Point, endPoint: Point) =
+        static member inline Line<'msg when 'msg: equality>(startPoint: Point, endPoint: Point) =
             WidgetBuilder<'msg, IFabLine>(Line.WidgetKey, Line.Points.WithValue(struct (startPoint, endPoint)))
 
 [<Extension>]

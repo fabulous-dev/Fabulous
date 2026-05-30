@@ -28,12 +28,12 @@ module PathFigureBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a PathFigure widget</summary>
-        static member inline PathFigure<'msg>() =
+        static member inline PathFigure<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabPathFigure, IFabPathSegment>(PathFigure.WidgetKey, PathFigure.Segments)
 
         /// <summary>Create a PathFigure widget with a start point</summary>
         /// <param name="startPoint">The start point</param>
-        static member inline PathFigure<'msg>(startPoint: Point) =
+        static member inline PathFigure<'msg when 'msg: equality>(startPoint: Point) =
             CollectionBuilder<'msg, IFabPathFigure, IFabPathSegment>(PathFigure.WidgetKey, PathFigure.Segments, PathFigure.StartPoint.WithValue(startPoint))
 
 [<Extension>]

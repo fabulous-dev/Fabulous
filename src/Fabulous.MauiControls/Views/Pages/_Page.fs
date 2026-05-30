@@ -14,13 +14,13 @@ type IFabPage =
 
 module Page =
     let Appearing =
-        Attributes.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
+        Attributes.Mvu.defineEventNoArg "Page_Appearing" (fun target -> (target :?> Page).Appearing)
 
     let BackgroundImageSource =
         Attributes.defineBindableImageSource Page.BackgroundImageSourceProperty
 
     let Disappearing =
-        Attributes.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
+        Attributes.Mvu.defineEventNoArg "Page_Disappearing" (fun target -> (target :?> Page).Disappearing)
 
     let IconImageSource =
         Attributes.defineBindableImageSource Page.IconImageSourceProperty
@@ -28,10 +28,10 @@ module Page =
     let IsBusy = Attributes.defineBindableBool Page.IsBusyProperty
 
     let NavigatedTo =
-        Attributes.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
+        Attributes.Mvu.defineEvent "NavigatedTo" (fun target -> (target :?> Page).NavigatedTo)
 
     let NavigatedFrom =
-        Attributes.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
+        Attributes.Mvu.defineEvent "NavigatedFrom" (fun target -> (target :?> Page).NavigatedFrom)
 
     let Padding = Attributes.defineBindableWithEquality Page.PaddingProperty
 
@@ -113,7 +113,7 @@ type PageModifiers =
     /// <summary>Set the toolbar items of this page menu</summary>
     /// <param name="this">Current widget</param>
     [<Extension>]
-    static member inline toolbarItems<'msg, 'marker when 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline toolbarItems<'msg, 'marker when 'msg: equality and 'marker :> IFabPage>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IFabToolbarItem> Page.ToolbarItems this
 
 [<Extension>]

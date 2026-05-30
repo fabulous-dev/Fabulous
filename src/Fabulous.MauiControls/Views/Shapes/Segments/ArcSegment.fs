@@ -30,7 +30,7 @@ module ArcSegmentBuilders =
         /// <summary>Create a ArcSegment widget</summary>
         /// <param name="point">The point</param>
         /// <param name="size">The size</param>
-        static member inline ArcSegment<'msg>(point: Point, size: Size) =
+        static member inline ArcSegment<'msg when 'msg: equality>(point: Point, size: Size) =
             WidgetBuilder<'msg, IFabArcSegment>(ArcSegment.WidgetKey, ArcSegment.Point.WithValue(point), ArcSegment.Size.WithValue(size))
 
 [<Extension>]

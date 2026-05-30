@@ -68,31 +68,31 @@ module Application =
             (target :?> Application).MainPage <- value)
 
     let ModalPopped =
-        Attributes.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
+        Attributes.Mvu.defineEvent<ModalPoppedEventArgs> "Application_ModalPopped" (fun target -> (target :?> Application).ModalPopped)
 
     let ModalPopping =
-        Attributes.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
+        Attributes.Mvu.defineEvent<ModalPoppingEventArgs> "Application_ModalPopping" (fun target -> (target :?> Application).ModalPopping)
 
     let ModalPushed =
-        Attributes.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
+        Attributes.Mvu.defineEvent<ModalPushedEventArgs> "Application_ModalPushed" (fun target -> (target :?> Application).ModalPushed)
 
     let ModalPushing =
-        Attributes.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
+        Attributes.Mvu.defineEvent<ModalPushingEventArgs> "Application_ModalPushing" (fun target -> (target :?> Application).ModalPushing)
 
     let RequestedThemeChanged =
-        Attributes.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
+        Attributes.Mvu.defineEvent<AppThemeChangedEventArgs> "Application_RequestedThemeChanged" (fun target -> (target :?> Application).RequestedThemeChanged)
 
     let Resume =
-        Attributes.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
+        Attributes.Mvu.defineEventNoArg "Application_Resume" (fun target -> (target :?> FabApplication).Resume)
 
     let Sleep =
-        Attributes.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
+        Attributes.Mvu.defineEventNoArg "Application_Sleep" (fun target -> (target :?> FabApplication).Sleep)
 
     let Start =
-        Attributes.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
+        Attributes.Mvu.defineEventNoArg "Application_Start" (fun target -> (target :?> FabApplication).Start)
 
     let AppLinkRequestReceived =
-        Attributes.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
+        Attributes.Mvu.defineEvent "Application_AppLinkRequestReceived" (fun target -> (target :?> FabApplication).AppLinkRequestReceived)
 
     let UserAppTheme =
         Attributes.defineEnum<AppTheme> "Application_UserAppTheme" (fun _ newValueOpt node ->
@@ -118,7 +118,7 @@ module ApplicationBuilders =
             WidgetHelpers.buildWidgets<'msg, IFabApplication> Application.WidgetKey [| Application.MainPage.WithValue(mainPage.Compile()) |]
 
         /// <summary>Create an Application widget with a list of windows</summary>
-        static member inline Application<'msg, 'itemMarker when 'itemMarker :> IFabWindow>() =
+        static member inline Application<'msg, 'itemMarker when 'msg: equality and 'itemMarker :> IFabWindow>() =
             CollectionBuilder<'msg, IFabApplication, 'itemMarker>(Application.WidgetKey, Application.Windows)
 
 [<Extension>]
@@ -203,7 +203,7 @@ type ApplicationModifiers =
 [<Extension>]
 type ApplicationYieldExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'marker :> IFabApplication and 'itemType :> IFabWindow>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'marker :> IFabApplication and 'itemType :> IFabWindow>
         (
             _: CollectionBuilder<'msg, 'marker, IFabWindow>,
             x: WidgetBuilder<'msg, 'itemType>

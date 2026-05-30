@@ -23,7 +23,7 @@ module CheckBoxBuilders =
         /// <summary>Create a CheckBox widget with a state and listen for state changes</summary>
         /// <param name="isChecked">The state of the checkbox</param>
         /// <param name="onCheckedChanged">Message to dispatch</param>
-        static member inline CheckBox<'msg>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
+        static member inline CheckBox<'msg when 'msg: equality>(isChecked: bool, onCheckedChanged: bool -> 'msg) =
             WidgetBuilder<'msg, IFabCheckBox>(
                 CheckBox.WidgetKey,
                 CheckBox.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onCheckedChanged args.Value))

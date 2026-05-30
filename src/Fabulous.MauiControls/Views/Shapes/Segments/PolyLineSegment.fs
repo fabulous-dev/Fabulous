@@ -37,12 +37,12 @@ module PolyLineSegmentBuilders =
 
         /// <summary>Create a PolyLineSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyLineSegment<'msg>(points: string) =
+        static member inline PolyLineSegment<'msg when 'msg: equality>(points: string) =
             WidgetBuilder<'msg, IFabPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsString.WithValue(points))
 
         /// <summary>Create a PolyLineSegment with a list of points</summary>
         /// <param name="points">The points list</param>
-        static member inline PolyLineSegment<'msg>(points: seq<Point>) =
+        static member inline PolyLineSegment<'msg when 'msg: equality>(points: seq<Point>) =
             WidgetBuilder<'msg, IFabPolyLineSegment>(PolyLineSegment.WidgetKey, PolyLineSegment.PointsList.WithValue(Array.ofSeq points))
 
 [<Extension>]

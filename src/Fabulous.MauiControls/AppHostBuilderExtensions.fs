@@ -30,7 +30,8 @@ type AppHostBuilderExtensions =
                   SetComponent = Component.set }
 
             let def = WidgetDefinitionStore.get widget.Key
-            let struct (_, view) = def.CreateView(widget, treeContext, ValueNone)
+            let envContext = new EnvironmentContext(logger)
+            let struct (_, view) = def.CreateView(widget, envContext, treeContext, ValueNone)
             let app = view :?> Microsoft.Maui.Controls.Application
             Theme.ListenForChanges(app)
             app)
@@ -42,8 +43,8 @@ type AppHostBuilderExtensions =
             program.State.Logger,
             program.SyncAction,
             fun () ->
-                (View.Component(program.State, arg) {
-                    let! model = Mvu.State
+                (View.Component("_") {
+                    let! model = Context.Mvu(program.State, arg)
                     program.View model
                 })
                     .Compile()
@@ -72,5 +73,5 @@ type AppHostBuilderExtensions =
             (match syncAction with
              | Some synAction -> synAction
              | None -> MauiViewHelpers.defaultSyncAction),
-            fun () -> (View.Component() { view() }).Compile()
+            fun () -> (View.Component("_") { view() }).Compile()
         )

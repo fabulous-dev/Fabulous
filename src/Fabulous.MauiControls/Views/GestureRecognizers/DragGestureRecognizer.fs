@@ -13,10 +13,10 @@ module DragGestureRecognizer =
     let CanDrag = Attributes.defineBindableBool DragGestureRecognizer.CanDragProperty
 
     let DragStarting =
-        Attributes.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
+        Attributes.Mvu.defineEvent<DragStartingEventArgs> "DragGestureRecognizer_DragStarting" (fun target -> (target :?> DragGestureRecognizer).DragStarting)
 
     let DropCompleted =
-        Attributes.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
+        Attributes.Mvu.defineEvent<DropCompletedEventArgs> "DragGestureRecognizer_DropCompleted" (fun target -> (target :?> DragGestureRecognizer).DropCompleted)
 
 [<AutoOpen>]
 module DragGestureRecognizerBuilders =
@@ -24,7 +24,7 @@ module DragGestureRecognizerBuilders =
 
         /// <summary>Create a DragGestureRecognizer that listens for DragStarting event</summary>
         /// <param name="onDragStarting">Message to dispatch</param>
-        static member inline DragGestureRecognizer<'msg>(onDragStarting: DragStartingEventArgs -> 'msg) =
+        static member inline DragGestureRecognizer<'msg when 'msg: equality>(onDragStarting: DragStartingEventArgs -> 'msg) =
             WidgetBuilder<'msg, IFabDragGestureRecognizer>(
                 DragGestureRecognizer.WidgetKey,
                 DragGestureRecognizer.DragStarting.WithValue(fun args -> onDragStarting args |> box)

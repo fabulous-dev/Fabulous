@@ -20,7 +20,7 @@ module TransformGroupBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a TransformGroup widget</summary>
-        static member inline TransformGroup<'msg>() =
+        static member inline TransformGroup<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabTransformGroup, IFabTransform>(TransformGroup.WidgetKey, TransformGroup.Children)
 
 [<Extension>]

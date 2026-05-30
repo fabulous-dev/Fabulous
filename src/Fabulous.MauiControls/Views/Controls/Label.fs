@@ -58,7 +58,7 @@ module LabelBuilders =
 
         /// <summary>Create a Label widget with a text</summary>
         /// <param name="text">The text value</param>
-        static member inline Label<'msg>(text: string) =
+        static member inline Label<'msg when 'msg: equality>(text: string) =
             WidgetBuilder<'msg, IFabLabel>(Label.WidgetKey, Label.Text.WithValue(text))
 
 [<Extension>]

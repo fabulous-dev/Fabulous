@@ -17,7 +17,7 @@ module Entry =
         Attributes.defineBindableEnum<ClearButtonVisibility> Entry.ClearButtonVisibilityProperty
 
     let Completed =
-        Attributes.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
+        Attributes.Mvu.defineEventNoArg "Entry_Completed" (fun target -> (target :?> Entry).Completed)
 
     let CursorPosition = Attributes.defineBindableInt Entry.CursorPositionProperty
 
@@ -66,7 +66,7 @@ module EntryBuilders =
         /// <summary>Create an Entry widget with a text and listen for text changes</summary>
         /// <param name="text">The text value</param>
         /// <param name="onTextChanged">Message to dispatch</param>
-        static member inline Entry<'msg>(text: string, onTextChanged: string -> 'msg) =
+        static member inline Entry<'msg when 'msg: equality>(text: string, onTextChanged: string -> 'msg) =
             WidgetBuilder<'msg, IFabEntry>(
                 Entry.WidgetKey,
                 InputView.TextWithEvent.WithValue(ValueEventData.create text (fun (args: TextChangedEventArgs) -> onTextChanged args.NewTextValue))

@@ -71,7 +71,7 @@ module CompositeTransformBuilders =
         /// <param name="scaleY">The Y component of the scale</param>
         /// <param name="skewX">The X component of the skew</param>
         /// <param name="skewY">The Y component of the skew</param>
-        static member inline CompositeTransform<'msg>(centerX: float, centerY: float, scaleX: float, scaleY: float, skewX: float, skewY: float) =
+        static member inline CompositeTransform<'msg when 'msg: equality>(centerX: float, centerY: float, scaleX: float, scaleY: float, skewX: float, skewY: float) =
             WidgetBuilder<'msg, IFabCompositeTransform>(
                 CompositeTransform.WidgetKey,
                 CompositeTransform.CenterXY.WithValue(struct (centerX, centerY)),

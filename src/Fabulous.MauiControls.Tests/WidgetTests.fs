@@ -63,8 +63,9 @@ type WidgetTests() =
 
         let navPage = FabNavigationPage()
         let weakRef = WeakReference(navPage)
+        let envContext = new EnvironmentContext(treeContext.Logger)
 
-        let node = new ViewNode(None, treeContext, weakRef)
+        let node = new ViewNode(None, envContext, treeContext, weakRef)
 
         Reconciler.update treeContext.CanReuseView ValueNone (oldWidget.Compile()) node
         Reconciler.update treeContext.CanReuseView (ValueSome(oldWidget.Compile())) (newWidget.Compile()) node

@@ -26,7 +26,7 @@ module EllipseGeometryBuilders =
         /// <param name="center">The center point</param>
         /// <param name="radiusX">The X component of the radius</param>
         /// <param name="radiusY">The Y component of the radius</param>
-        static member inline EllipseGeometry<'msg>(center: Point, radiusX: float, radiusY: float) =
+        static member inline EllipseGeometry<'msg when 'msg: equality>(center: Point, radiusX: float, radiusY: float) =
             WidgetBuilder<'msg, IFabEllipseGeometry>(
                 EllipseGeometry.WidgetKey,
                 EllipseGeometry.Center.WithValue(center),

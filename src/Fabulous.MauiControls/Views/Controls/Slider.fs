@@ -32,10 +32,10 @@ module Slider =
     let WidgetKey = Widgets.register<Slider>()
 
     let DragCompleted =
-        Attributes.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
+        Attributes.Mvu.defineEventNoArg "Slider_DragCompleted" (fun target -> (target :?> Slider).DragCompleted)
 
     let DragStarted =
-        Attributes.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
+        Attributes.Mvu.defineEventNoArg "Slider_DragStarted" (fun target -> (target :?> Slider).DragStarted)
 
     let MaximumTrackColor =
         Attributes.defineBindableColor Slider.MaximumTrackColorProperty
@@ -63,7 +63,7 @@ module SliderBuilders =
         /// <param name="max">The maximum bound</param>
         /// <param name="value">The current value</param>
         /// <param name="onValueChanged">Message to dispatch</param>
-        static member inline Slider<'msg>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
+        static member inline Slider<'msg when 'msg: equality>(min: float, max: float, value: float, onValueChanged: float -> 'msg) =
             WidgetBuilder<'msg, IFabSlider>(
                 Slider.WidgetKey,
                 Slider.MinimumMaximum.WithValue(struct (min, max)),

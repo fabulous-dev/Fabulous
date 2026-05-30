@@ -40,7 +40,7 @@ module TabbedPageBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a TabbedPage widget</summary>
-        static member inline TabbedPage<'msg>() =
+        static member inline TabbedPage<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabTabbedPage, IFabPage>(TabbedPage.WidgetKey, MultiPageOfPage.Children)
 
 [<Extension>]

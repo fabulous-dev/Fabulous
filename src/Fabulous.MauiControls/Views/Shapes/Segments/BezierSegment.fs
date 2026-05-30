@@ -28,7 +28,7 @@ module BezierSegmentBuilders =
         /// <param name="point1">The first point</param>
         /// <param name="point2">The second point</param>
         /// <param name="point3">The third point</param>
-        static member inline BezierSegment<'msg>(point1: Point, point2: Point, point3: Point) =
+        static member inline BezierSegment<'msg when 'msg: equality>(point1: Point, point2: Point, point3: Point) =
             WidgetBuilder<'msg, IFabBezierSegment>(
                 BezierSegment.WidgetKey,
                 BezierSegment.Point1.WithValue(point1),

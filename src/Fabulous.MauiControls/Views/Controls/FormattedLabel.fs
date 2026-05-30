@@ -25,7 +25,7 @@ module FormattedLabelBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a FormattedLabel widget</summary>
-        static member inline FormattedLabel<'msg>() =
+        static member inline FormattedLabel<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabFormattedLabel, IFabSpan>(FormattedLabel.WidgetKey, FormattedLabel.Spans)
 
 [<Extension>]

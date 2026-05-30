@@ -18,7 +18,7 @@ module MenuItem =
     let Accelerator = Attributes.defineBindableWithEquality MenuItem.AcceleratorProperty
 
     let Clicked =
-        Attributes.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
+        Attributes.Mvu.defineEventNoArg "MenuItem_Clicked" (fun target -> (target :?> MenuItem).Clicked)
 
     let IconImageSource =
         Attributes.defineBindableImageSource MenuItem.IconImageSourceProperty
@@ -34,7 +34,7 @@ module MenuItemBuilders =
         /// <summary>Create a MenuItem widget with a text and a Click callback</summary>
         /// <param name="text">The text</param>
         /// <param name="onClicked">The click callback</param>
-        static member inline MenuItem<'msg>(text: string, onClicked: 'msg) =
+        static member inline MenuItem<'msg when 'msg: equality>(text: string, onClicked: 'msg) =
             WidgetBuilder<'msg, IFabMenuItem>(MenuItem.WidgetKey, MenuItem.Text.WithValue(text), MenuItem.Clicked.WithValue(MsgValue(onClicked)))
 
 [<Extension>]

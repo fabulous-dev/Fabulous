@@ -35,7 +35,7 @@ module ScaleTransformBuilders =
         /// <param name="scaleY">The Y component of the scale</param>
         /// <param name="centerX">The X position of the center</param>
         /// <param name="centerY">The Y position of the center</param>
-        static member inline ScaleTransform<'msg>(scaleX: float, scaleY: float, centerX: float, centerY: float) =
+        static member inline ScaleTransform<'msg when 'msg: equality>(scaleX: float, scaleY: float, centerX: float, centerY: float) =
             WidgetBuilder<'msg, IFabScaleTransform>(
                 ScaleTransform.WidgetKey,
                 ScaleTransform.ScaleXY.WithValue(struct (scaleX, scaleY)),

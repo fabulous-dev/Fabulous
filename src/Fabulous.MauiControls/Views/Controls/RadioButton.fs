@@ -61,7 +61,7 @@ module RadioButtonBuilders =
         /// <param name="content">The content</param>
         /// <param name="isChecked">The checked state</param>
         /// <param name="onChecked">Message to dispatch</param>
-        static member inline RadioButton<'msg>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
+        static member inline RadioButton<'msg when 'msg: equality>(content: string, isChecked: bool, onChecked: bool -> 'msg) =
             WidgetBuilder<'msg, IFabRadioButton>(
                 RadioButton.WidgetKey,
                 RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value)),
@@ -79,8 +79,9 @@ module RadioButtonBuilders =
                     StackList.one(
                         RadioButton.IsCheckedWithEvent.WithValue(ValueEventData.create isChecked (fun (args: CheckedChangedEventArgs) -> onChecked args.Value))
                     ),
-                    ValueSome [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
-                    ValueNone
+                    [| RadioButton.ContentWidget.WithValue(content.Compile()) |],
+                    [||],
+                    [||]
                 )
             )
 

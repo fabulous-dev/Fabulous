@@ -37,13 +37,13 @@ module ItemsView =
         Attributes.defineBindableInt ItemsView.RemainingItemsThresholdProperty
 
     let RemainingItemsThresholdReached =
-        Attributes.defineEventNoArg "ItemsView_RemainingItemsThresholdReached" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
+        Attributes.Mvu.defineEventNoArg "ItemsView_RemainingItemsThresholdReached" (fun target -> (target :?> ItemsView).RemainingItemsThresholdReached)
 
     let Scrolled =
-        Attributes.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
+        Attributes.Mvu.defineEvent<ItemsViewScrolledEventArgs> "ItemsView_Scrolled" (fun target -> (target :?> ItemsView).Scrolled)
 
     let ScrollToRequested =
-        Attributes.defineEvent<ScrollToRequestEventArgs> "ItemsView_ScrolledRequested" (fun target -> (target :?> ItemsView).ScrollToRequested)
+        Attributes.Mvu.defineEvent<ScrollToRequestEventArgs> "ItemsView_ScrolledRequested" (fun target -> (target :?> ItemsView).ScrollToRequested)
 
     let VerticalScrollBarVisibility =
         Attributes.defineBindableEnum<ScrollBarVisibility> ItemsView.VerticalScrollBarVisibilityProperty

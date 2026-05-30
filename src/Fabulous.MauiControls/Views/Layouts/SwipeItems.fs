@@ -27,7 +27,7 @@ module SwipeItemsBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>Create a SwipeItems widget</summary>
-        static member inline SwipeItems<'msg>() =
+        static member inline SwipeItems<'msg when 'msg: equality>() =
             CollectionBuilder<'msg, IFabSwipeItems, IFabSwipeItem>(SwipeItems.WidgetKey, SwipeItems.SwipeItems)
 
 [<Extension>]

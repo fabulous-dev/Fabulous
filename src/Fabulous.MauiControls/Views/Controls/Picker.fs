@@ -100,7 +100,7 @@ module PickerBuilders =
         /// <param name="items">The items list</param>
         /// <param name="selectedIndex">The selected index</param>
         /// <param name="onSelectedIndexChanged">Message to dispatch</param>
-        static member inline Picker<'msg>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
+        static member inline Picker<'msg when 'msg: equality>(items: string list, selectedIndex: int, onSelectedIndexChanged: int -> 'msg) =
             WidgetBuilder<'msg, IFabPicker>(
                 Picker.WidgetKey,
                 Picker.ItemsSource.WithValue(Array.ofList items),

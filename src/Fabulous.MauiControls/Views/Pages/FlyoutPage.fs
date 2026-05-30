@@ -26,7 +26,7 @@ module FlyoutPage =
     let WidgetKey = Widgets.register<FabFlyoutPage>()
 
     let BackButtonPressed =
-        Attributes.defineEvent "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
+        Attributes.Mvu.defineEvent "FlyoutPage_BackButtonPressed" (fun target -> (target :?> FlyoutPage).BackButtonPressed)
 
     let Detail =
         Attributes.definePropertyWidget "FlyoutPage_Detail" (fun target -> (target :?> FlyoutPage).Detail :> obj) (fun target value ->

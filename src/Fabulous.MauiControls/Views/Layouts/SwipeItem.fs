@@ -15,7 +15,7 @@ module SwipeItem =
         Attributes.defineBindableColor SwipeItem.BackgroundColorProperty
 
     let Invoked =
-        Attributes.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
+        Attributes.Mvu.defineEvent "SwipeItem_Invoked" (fun target -> (target :?> SwipeItem).Invoked)
 
     let IsVisible = Attributes.defineBindableBool SwipeItem.IsVisibleProperty
 
@@ -25,7 +25,7 @@ module SwipeItemBuilders =
 
         /// <summary>Create a SwipeItem widget and listen for the Invoke event</summary>
         /// <param name="onInvoked">Message to dispatch</param>
-        static member inline SwipeItem<'msg>(onInvoked: 'msg) =
+        static member inline SwipeItem<'msg when 'msg: equality>(onInvoked: 'msg) =
             WidgetBuilder<'msg, IFabSwipeItem>(SwipeItem.WidgetKey, SwipeItem.Invoked.WithValue(fun _ -> box onInvoked))
 
 [<Extension>]

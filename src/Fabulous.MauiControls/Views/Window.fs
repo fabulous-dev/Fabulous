@@ -31,31 +31,31 @@ module Window =
     let MinimumWidth = Attributes.defineBindableWithEquality Window.MinimumWidthProperty
 
     let Activated =
-        Attributes.defineEventNoArg "Window_Activated" (fun target -> (target :?> Window).Activated)
+        Attributes.Mvu.defineEventNoArg "Window_Activated" (fun target -> (target :?> Window).Activated)
 
     let Backgrounding =
-        Attributes.defineEvent "Window_Backgrounding" (fun target -> (target :?> Window).Backgrounding)
+        Attributes.Mvu.defineEvent "Window_Backgrounding" (fun target -> (target :?> Window).Backgrounding)
 
     let Created =
-        Attributes.defineEventNoArg "Window_Created" (fun target -> (target :?> Window).Created)
+        Attributes.Mvu.defineEventNoArg "Window_Created" (fun target -> (target :?> Window).Created)
 
     let Deactivated =
-        Attributes.defineEventNoArg "Window_Deactivated" (fun target -> (target :?> Window).Deactivated)
+        Attributes.Mvu.defineEventNoArg "Window_Deactivated" (fun target -> (target :?> Window).Deactivated)
 
     let Destroying =
-        Attributes.defineEventNoArg "Window_Destroying" (fun target -> (target :?> Window).Destroying)
+        Attributes.Mvu.defineEventNoArg "Window_Destroying" (fun target -> (target :?> Window).Destroying)
 
     let DisplayDensityChanged =
-        Attributes.defineEvent "Window_DisplayDensityChanged" (fun target -> (target :?> Window).DisplayDensityChanged)
+        Attributes.Mvu.defineEvent "Window_DisplayDensityChanged" (fun target -> (target :?> Window).DisplayDensityChanged)
 
     let SizeChanged =
-        Attributes.defineEventNoArg "Window_SizeChanged" (fun target -> (target :?> Window).SizeChanged)
+        Attributes.Mvu.defineEventNoArg "Window_SizeChanged" (fun target -> (target :?> Window).SizeChanged)
 
     let Resumed =
-        Attributes.defineEventNoArg "Window_Resumed" (fun target -> (target :?> Window).Resumed)
+        Attributes.Mvu.defineEventNoArg "Window_Resumed" (fun target -> (target :?> Window).Resumed)
 
     let Stopped =
-        Attributes.defineEventNoArg "Window_Stopped" (fun target -> (target :?> Window).Stopped)
+        Attributes.Mvu.defineEventNoArg "Window_Stopped" (fun target -> (target :?> Window).Stopped)
 
     let Title = Attributes.defineBindableWithEquality Window.TitleProperty
 
@@ -72,7 +72,7 @@ module WindowBuilders =
         static member inline Window(content: WidgetBuilder<'msg, #IFabPage>) =
             WidgetBuilder<'msg, IFabWindow>(
                 Window.WidgetKey,
-                AttributesBundle(StackList.empty(), ValueSome [| Window.Page.WithValue(content.Compile()) |], ValueNone)
+                AttributesBundle(StackList.empty(), [| Window.Page.WithValue(content.Compile()) |], [||], [||])
             )
 
 [<Extension>]

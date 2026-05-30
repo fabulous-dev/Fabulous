@@ -40,7 +40,7 @@ module PathBuilders =
 
         /// <summary>Create a Path widget with a data path string</summary>
         /// <param name="data">The data path</param>
-        static member inline Path<'msg>(data: string) =
+        static member inline Path<'msg when 'msg: equality>(data: string) =
             WidgetBuilder<'msg, IFabPath>(Path.WidgetKey, Path.DataString.WithValue(data))
 
         /// <summary>Create a Path widget with a Geometry widget</summary>
