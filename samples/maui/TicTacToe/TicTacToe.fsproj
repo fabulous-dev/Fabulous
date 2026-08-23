@@ -33,6 +33,8 @@
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'tizen'">6.5</SupportedOSPlatformVersion>
   </PropertyGroup>
 
+  <Import Project="..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
+
   <ItemGroup>
     <Compile Include="App.fs" />
     <Compile Include="MauiProgram.fs" />
@@ -83,8 +85,6 @@
     <AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
     <Compile Include="$(WindowsProjectFolder)App.fs" />
     <Compile Include="$(WindowsProjectFolder)Main.fs" />
-
-    <PackageReference Include="FSharp.Maui.WinUICompat" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'tizen'">
@@ -104,6 +104,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\maui\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
+    <ProjectReference Include="..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
   </ItemGroup>
 
 </Project>
