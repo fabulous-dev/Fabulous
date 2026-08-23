@@ -157,16 +157,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
-      - name: Select installed .NET 9 SDK
+          dotnet-version: 10.x
+      - name: Select installed .NET 10 SDK
         run: |
-          sdk_version=$(dotnet --list-sdks | awk '/^9\.0\./ { version=$1 } END { print version }')
+          sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
           test -n "$sdk_version"
           dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
-        run: dotnet publish samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:FabulousAndroidOnly=true -p:AndroidPackageFormats=apk
+        run: dotnet publish samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:AndroidPackageFormats=apk
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -179,7 +179,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-android -name '*.apk' -print -quit)
+            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net10.0-android -name '*.apk' -print -quit)
             test -n "$apk"
             adb install -r "$apk"
             adb shell monkey -p org.fabulous.maui.helloworld 1
@@ -198,22 +198,22 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
-      - name: Select installed .NET 9 SDK
+          dotnet-version: 10.x
+      - name: Select installed .NET 10 SDK
         run: |
-          sdk_version=$(dotnet --list-sdks | awk '/^9\.0\./ { version=$1 } END { print version }')
+          sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
           test -n "$sdk_version"
           dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
       - name: Install Apple workloads
         run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
       - name: Build iOS sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-x64
       - name: Build Mac Catalyst sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-x64
       - name: Launch and assert Mac Catalyst process
         shell: bash
         run: |
-          app=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-maccatalyst -name '*.app' -print -quit)
+          app=$(find samples/maui/HelloWorld/bin/${CONFIG}/net10.0-maccatalyst -name '*.app' -print -quit)
           test -n "$app"
           open "$app"
           for attempt in {1..10}; do
@@ -285,7 +285,7 @@ jobs:
             Stop-Process -Id $process.Id
           }
       - name: Build TicTacToe sample
-        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0 -p:FabulousWindowsOnly=true -p:RuntimeIdentifier=win10-x64 -p:WindowsPackageType=None
+        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net10.0-windows10.0.19041.0 -p:FabulousWindowsOnly=true -p:RuntimeIdentifier=win-x64 -p:Platform=x64 -p:WindowsPackageType=None
       - name: Launch and assert Windows sample process
         run: |
           $executable = Get-ChildItem samples/maui/TicTacToe/bin/$env:CONFIG -Recurse -Filter TicTacToe.exe | Select-Object -First 1
