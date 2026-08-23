@@ -98,6 +98,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Select installed .NET 9 SDK
+        run: |
+          sdk_version=$(dotnet --list-sdks | awk '/^9\.0\./ { version=$1 } END { print version }')
+          test -n "$sdk_version"
+          printf '{"sdk":{"version":"%s","rollForward":"latestPatch"}}\n' "$sdk_version" > global.json
+          dotnet --version
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build every Android sample
