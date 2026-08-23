@@ -1,13 +1,14 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows:
-      - Build and test
-    types:
-      - completed
+  push:
+    branches:
+      - main
+    paths:
+      - CHANGELOG.md
 
 permissions:
+  actions: read
   contents: write
   id-token: write
 
@@ -16,15 +17,15 @@ env:
   SLN_FILE: Fabulous.sln
 
 jobs:
-  release:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main'
+  detect:
     runs-on: ubuntu-latest
-    environment: nuget
+    outputs:
+      changed: ${{ steps.release.outputs.changed }}
+      version: ${{ steps.release.outputs.version }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 2
       - name: Detect new release section
         id: release
@@ -40,43 +41,59 @@ jobs:
           python3 eng/monorepo/changelog.py notes CHANGELOG.md "$CURRENT_VERSION" > "$RUNNER_TEMP/release-notes.md"
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+
+  release:
+    needs: detect
+    if: needs.detect.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for matching Build and test run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in {1..30}; do
+            RUN_ID=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow pull_request.yml --commit "$GITHUB_SHA" --event push --json databaseId --jq '.[0].databaseId // empty')
+            if [ -n "$RUN_ID" ]; then
+              gh run watch "$RUN_ID" --repo "$GITHUB_REPOSITORY" --exit-status
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Build and test run not found for $GITHUB_SHA" >&2
+          exit 1
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Write release notes
+        run: python3 eng/monorepo/changelog.py notes CHANGELOG.md "${{ needs.detect.outputs.version }}" > "$RUNNER_TEMP/release-notes.md"
       - name: Setup .NET
-        if: steps.release.outputs.changed == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
       - name: Restore
-        if: steps.release.outputs.changed == 'true'
         run: dotnet restore ${SLN_FILE}
       - name: Build and test
-        if: steps.release.outputs.changed == 'true'
-        run: dotnet test ${SLN_FILE} -p:Version=${{ steps.release.outputs.version }} -c ${CONFIG} --no-restore
+        run: dotnet test ${SLN_FILE} -p:Version=${{ needs.detect.outputs.version }} -c ${CONFIG} --no-restore
       - name: Prepare templates
-        if: steps.release.outputs.changed == 'true'
-        run: python3 eng/monorepo/prepare-templates.py ${{ steps.release.outputs.version }}
+        run: python3 eng/monorepo/prepare-templates.py ${{ needs.detect.outputs.version }}
       - name: Pack
-        if: steps.release.outputs.changed == 'true'
-        run: dotnet pack ${SLN_FILE} -p:Version=${{ steps.release.outputs.version }} -p:PackageReleaseNotesFile="$RUNNER_TEMP/release-notes.md" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
+        run: dotnet pack ${SLN_FILE} -p:Version=${{ needs.detect.outputs.version }} -p:PackageReleaseNotesFile="$RUNNER_TEMP/release-notes.md" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
       - name: Validate package count
-        if: steps.release.outputs.changed == 'true'
         run: test "$(find nupkgs -maxdepth 1 -name '*.nupkg' ! -name '*.symbols.nupkg' | wc -l)" -eq 13
       - name: Upload artifacts
-        if: steps.release.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: Packages
           path: nupkgs/
       - name: NuGet login
-        if: steps.release.outputs.changed == 'true'
         id: nuget-login
         uses: NuGet/login@v1
         with:
           user: fabulous
       - name: Push packages
-        if: steps.release.outputs.changed == 'true'
         run: dotnet nuget push "nupkgs/*" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --skip-duplicate
       - name: Create GitHub release
-        if: steps.release.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ steps.release.outputs.version }}" --target "${{ github.event.workflow_run.head_sha }}" --title "${{ steps.release.outputs.version }}" --notes-file "$RUNNER_TEMP/release-notes.md"
+        run: gh release create "${{ needs.detect.outputs.version }}" --target "$GITHUB_SHA" --title "${{ needs.detect.outputs.version }}" --notes-file "$RUNNER_TEMP/release-notes.md"

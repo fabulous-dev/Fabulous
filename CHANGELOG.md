@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Release publishing now starts only for changelog changes, waits for the matching successful CI run, and no longer requests approval for ordinary builds.
+
 ### Added
 - Consolidate the Fabulous core, Avalonia, .NET MAUI, extensions, templates, tests, documentation, and engineering into one repository.
 
