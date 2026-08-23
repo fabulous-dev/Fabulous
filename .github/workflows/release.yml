@@ -70,7 +70,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
+      - name: Install MAUI workload packs
+        run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Restore
         run: dotnet restore ${SLN_FILE}
       - name: Build and test
