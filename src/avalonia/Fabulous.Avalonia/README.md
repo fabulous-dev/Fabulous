@@ -13,7 +13,7 @@ For a starter guide see [Build an Avalonia app](https://fabulous-dev.github.io/F
 dotnet new install Fabulous.Avalonia.Templates
 dotnet new fabulous-avalonia -n MyApp
 ```
-net8.0-ios is not supported on Linux, thus net8.0-ios is excluded from build on a Linux host.
+net10.0-ios is not supported on Linux, thus net10.0-ios is excluded from build on a Linux host.
 
 ## Documentation
 
