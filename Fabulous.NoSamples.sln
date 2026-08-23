@@ -33,6 +33,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Avalonia.ColorPick
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Avalonia.Diagnostics", "src\Fabulous.Avalonia.Diagnostics\Fabulous.Avalonia.Diagnostics.fsproj", "{FA8718BB-3D28-46BB-BBA9-FF1CC98ECEC8}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Maps", "src\Fabulous.MauiControls.Maps\Fabulous.MauiControls.Maps.fsproj", "{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +189,18 @@ Global
 		{FA8718BB-3D28-46BB-BBA9-FF1CC98ECEC8}.Release|x64.Build.0 = Release|Any CPU
 		{FA8718BB-3D28-46BB-BBA9-FF1CC98ECEC8}.Release|x86.ActiveCfg = Release|Any CPU
 		{FA8718BB-3D28-46BB-BBA9-FF1CC98ECEC8}.Release|x86.Build.0 = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Debug|x86.Build.0 = Debug|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|x64.Build.0 = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|x86.ActiveCfg = Release|Any CPU
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,5 +218,6 @@ Global
 		{6D5E24DD-91EE-48AE-8382-10CF1B86CB8D} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
 		{2A9272C3-A06C-4A7C-99E1-71A8DBF558C9} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
 		{FA8718BB-3D28-46BB-BBA9-FF1CC98ECEC8} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
+		{F74A63AC-AE24-4DC0-B78D-D9C723D4B5E1} = {5358A8DD-221C-A68E-DDFB-CD91B98A505E}
 	EndGlobalSection
 EndGlobal

@@ -34,7 +34,8 @@
       "destination": "src/Fabulous.MauiControls.Maps",
       "ref": "main",
       "wave": 2,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from 46f2e57416913811b345fed621eedf0e7a02ef38 and aligned with the local Fabulous 3 / .NET 8 Maui backend."
     },
     {
       "name": "Fabulous.MauiControls.MediaElement",

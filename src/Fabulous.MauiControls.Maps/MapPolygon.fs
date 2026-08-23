@@ -32,10 +32,10 @@ module MapPolygonBuilders =
 
         /// <summary>A Polygon object can be added to a map by instantiating it and adding it to the map's MapElements collection. A Location is a fully enclosed shape. The first and last points will automatically be connected if they do not match.</summary>
         /// <param name ="geoPaths">Contains a list of Location objects defining the geographic coordinates of the polygon points. A Location object is rendered on the map once it has been added to the MapElements collection of the Map.</param>
-        static member inline MapPolygon<'msg>(geoPaths: Location list) =
+        static member inline MapPolygon<'msg when 'msg: equality>(geoPaths: Location list) =
             WidgetBuilder<'msg, IFabMapPolygon>(
                 MapPolygon.WidgetKey,
-                AttributesBundle(StackList.one(MapPolygon.GeoPathList.WithValue(geoPaths)), ValueNone, ValueNone)
+                AttributesBundle(StackList.one(MapPolygon.GeoPathList.WithValue(geoPaths)), [||], [||], [||])
             )
 
 [<Extension>]

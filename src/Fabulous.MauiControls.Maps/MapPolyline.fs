@@ -29,10 +29,10 @@ module MapPolylineBuilders =
 
         /// <summary>A Polyline object can be added to a map by instantiating it and adding it to the map's MapElements collection.</summary>
         /// <param name ="geoPaths">Contains a list of Location objects defining the geographic coordinates of the polyline points. A Polyline object is rendered on the map once it has been added to the MapElements collection of the Map.</param>
-        static member inline MapPolyline<'msg>(geoPaths: Location list) =
+        static member inline MapPolyline<'msg when 'msg: equality>(geoPaths: Location list) =
             WidgetBuilder<'msg, IFabMapPolyline>(
                 MapPolyline.WidgetKey,
-                AttributesBundle(StackList.one(MapPolyline.GeoPathList.WithValue(geoPaths)), ValueNone, ValueNone)
+                AttributesBundle(StackList.one(MapPolyline.GeoPathList.WithValue(geoPaths)), [||], [||], [||])
             )
 
 [<Extension>]

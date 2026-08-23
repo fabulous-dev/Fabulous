@@ -49,7 +49,7 @@ module Map =
         Attributes.defineListWidgetCollection "Map_MapElements" (fun target -> (target :?> Map).MapElements)
 
     let MapClicked =
-        Attributes.defineEvent<MapClickedEventArgs> "Map_MapClicked" (fun target -> (target :?> Map).MapClicked)
+        Attributes.Mvu.defineEvent<MapClickedEventArgs> "Map_MapClicked" (fun target -> (target :?> Map).MapClicked)
 
 [<AutoOpen>]
 module MapBuilders =
@@ -57,12 +57,15 @@ module MapBuilders =
 
         /// <summary>The Map control is a cross-platform view for displaying and annotating maps</summary>
         /// <param name ="requestRegion">The region of a map to display when a map is loaded can be set by passing a MapSpan.</param>
-        static member inline Map<'msg>(requestRegion: MapSpan) =
-            WidgetBuilder<'msg, IFabMap>(Map.WidgetKey, AttributesBundle(StackList.one(Map.RequestedRegion.WithValue(requestRegion)), ValueNone, ValueNone))
+        static member inline Map<'msg when 'msg: equality>(requestRegion: MapSpan) =
+            WidgetBuilder<'msg, IFabMap>(
+                Map.WidgetKey,
+                AttributesBundle(StackList.one(Map.RequestedRegion.WithValue(requestRegion)), [||], [||], [||])
+            )
 
         /// <summary>The Map control is a cross-platform view for displaying and annotating maps</summary>
         /// <param name ="requestRegion">The region of a map to display when a map is loaded can be set by passing a MapSpan.</param>
-        static member inline MapWithPins<'msg>(requestRegion: MapSpan) =
+        static member inline MapWithPins<'msg when 'msg: equality>(requestRegion: MapSpan) =
             CollectionBuilder<'msg, IFabMap, IMapPin>(Map.WidgetKey, Map.Pins, Map.RequestedRegion.WithValue(requestRegion))
 
 [<Extension>]
@@ -100,7 +103,7 @@ type MapModifiers =
 
     /// <summary>Represents the list of elements on the map, such as polygons, circles and polylines.</summary>
     [<Extension>]
-    static member inline mapElements<'msg, 'marker when 'marker :> IFabMap>(this: WidgetBuilder<'msg, 'marker>) =
+    static member inline mapElements<'msg, 'marker when 'msg: equality and 'marker :> IFabMap>(this: WidgetBuilder<'msg, 'marker>) =
         WidgetHelpers.buildAttributeCollection<'msg, 'marker, IMapElement> Map.MapElements this
 
     /// <summary>Link a ViewRef to access the direct Map control instance</summary>
@@ -111,7 +114,7 @@ type MapModifiers =
 [<Extension>]
 type MapCollectionBuilderExtensions =
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabMapElement>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'itemType :> IFabMapElement>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IMapElement>,
             x: WidgetBuilder<'msg, 'itemType>
@@ -119,7 +122,7 @@ type MapCollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabMapElement>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'itemType :> IFabMapElement>
         (
             _: AttributeCollectionBuilder<'msg, 'marker, IMapElement>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
@@ -128,7 +131,7 @@ type MapCollectionBuilderExtensions =
 
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabMapPin>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'itemType :> IFabMapPin>
         (
             _: CollectionBuilder<'msg, 'marker, IMapPin>,
             x: WidgetBuilder<'msg, Memo.Memoized<'itemType>>
@@ -136,7 +139,7 @@ type MapCollectionBuilderExtensions =
         { Widgets = MutStackArray1.One(x.Compile()) }
 
     [<Extension>]
-    static member inline Yield<'msg, 'marker, 'itemType when 'itemType :> IFabMapPin>
+    static member inline Yield<'msg, 'marker, 'itemType when 'msg: equality and 'itemType :> IFabMapPin>
         (
             _: CollectionBuilder<'msg, 'marker, IMapPin>,
             x: WidgetBuilder<'msg, 'itemType>

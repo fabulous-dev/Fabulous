@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -65,7 +65,7 @@
 		<Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
 		<Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
 
-		<PackageReference Include="FSharp.Android.Resource" Version="1.0.4" />
+		<PackageReference Include="FSharp.Android.Resource" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'ios'">
@@ -98,9 +98,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fabulous.MauiControls" />
 	  <PackageReference Include="FSharp.Core"/>
-	  <ProjectReference Include="..\..\src\Fabulous.MauiControls.Maps.fsproj" />
+	  <ProjectReference Include="..\..\..\..\src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
+	  <ProjectReference Include="..\..\..\..\src\Fabulous.MauiControls.Maps\Fabulous.MauiControls.Maps.fsproj" />
 	</ItemGroup>
 
 </Project>

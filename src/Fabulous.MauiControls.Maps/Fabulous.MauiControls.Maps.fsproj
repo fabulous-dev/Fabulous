@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net7.0-ios;net7.0-android</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <UseMaui>true</UseMaui>
         <UseMauiCore>true</UseMauiCore>
         <IsPackable>true</IsPackable>
@@ -24,7 +24,7 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="\" />
+        <None Include="../../logo/nuget-icon.png" Pack="true" PackagePath="\" />
         <Compile Include="MapElement.fs" />
         <Compile Include="MapPolygon.fs" />
         <Compile Include="MapPolyline.fs" />
@@ -35,10 +35,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls.Maps" VersionOverride="7.0.59" />
-        <PackageReference Include="Fabulous.MauiControls" VersionOverride="[2.4.0, 3.0.0)" />
-        <PackageReference Include="FSharp.Core" VersionOverride="7.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" />
+        <PackageReference Include="FSharp.Core" VersionOverride="8.0.300" PrivateAssets="All" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
     </ItemGroup>
 
 </Project>

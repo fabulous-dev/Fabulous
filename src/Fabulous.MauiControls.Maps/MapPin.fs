@@ -21,10 +21,10 @@ module MapPin =
     let Label = Attributes.defineBindableWithEquality<string> Pin.LabelProperty
 
     let MarkerClicked =
-        Attributes.defineEvent<PinClickedEventArgs> "Pin_MarkerClicked" (fun target -> (target :?> Pin).MarkerClicked)
+        Attributes.Mvu.defineEvent<PinClickedEventArgs> "Pin_MarkerClicked" (fun target -> (target :?> Pin).MarkerClicked)
 
     let InfoWindowClicked =
-        Attributes.defineEvent<PinClickedEventArgs> "Pin_InfoWindowClicked" (fun target -> (target :?> Pin).InfoWindowClicked)
+        Attributes.Mvu.defineEvent<PinClickedEventArgs> "Pin_InfoWindowClicked" (fun target -> (target :?> Pin).InfoWindowClicked)
 
 [<AutoOpen>]
 module MapPinBuilders =
@@ -32,7 +32,7 @@ module MapPinBuilders =
 
         /// <summary>Map control allows locations to be marked with Pin objects. A Pin is a map marker that opens an information window.</summary>
         /// <param name ="location">Represents the latitude and longitude of the pin.</param>
-        static member inline MapPin<'msg>(location: Location) =
+        static member inline MapPin<'msg when 'msg: equality>(location: Location) =
             WidgetBuilder<'msg, IFabMapPin>(MapPin.WidgetKey, MapPin.Location.WithValue(location))
 
 [<Extension>]

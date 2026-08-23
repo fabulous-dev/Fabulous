@@ -28,7 +28,7 @@ module MapCircleBuilders =
         /// <summary>A Circle object can be added to a map by instantiating it and adding it to the map's MapElements collection</summary>
         /// <param name ="center">Location object that defines the center of the circle, in latitude and longitude.</param>
         /// <param name ="radius">Distance object that defines the radius of the circle in meters, kilometers, or miles.</param>
-        static member inline MapCircle<'msg>(center: Location, radius: Distance) =
+        static member inline MapCircle<'msg when 'msg: equality>(center: Location, radius: Distance) =
             WidgetBuilder<'msg, IFabMapCircle>(MapCircle.WidgetKey, MapCircle.Center.WithValue(center), MapCircle.Radius.WithValue(radius))
 
 [<Extension>]
