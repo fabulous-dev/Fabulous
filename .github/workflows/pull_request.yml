@@ -177,7 +177,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-android -name '*-Signed.apk' -print -quit)
+            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-android -name '*.apk' -print -quit)
             test -n "$apk"
             adb install -r "$apk"
             adb shell monkey -p org.fabulous.maui.helloworld 1
