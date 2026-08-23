@@ -132,5 +132,15 @@ jobs:
           dotnet new fabulous-mauicontrols -n MauiTemplateApp -o "$env:RUNNER_TEMP/maui-template"
       - name: Build generated MAUI app
         run: |
-          dotnet restore "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -p:FabulousWindowsOnly=true --source "${{ github.workspace }}\nupkgs" --source "https://api.nuget.org/v3/index.json"
+          @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <clear />
+              <add key="ci-packages" value="${{ github.workspace }}\nupkgs" />
+              <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+            </packageSources>
+          </configuration>
+          "@ | Set-Content "$env:RUNNER_TEMP/NuGet.Config"
+          dotnet restore "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -p:FabulousWindowsOnly=true --configfile "$env:RUNNER_TEMP/NuGet.Config"
           dotnet build "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -c $env:CONFIG -p:FabulousWindowsOnly=true --no-restore
