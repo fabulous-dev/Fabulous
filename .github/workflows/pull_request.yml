@@ -55,7 +55,11 @@ jobs:
       - name: Validate SourceLink mappings
         run: |
           dotnet tool install --global sourcelink
-          find nupkgs -maxdepth 1 -name '*.snupkg' -print0 | xargs -0 -n 1 sourcelink test
+          while IFS= read -r -d '' package; do
+            mappings="$(sourcelink print-urls "$package")"
+            test -n "$mappings"
+            grep -Fq 'https://raw.githubusercontent.com/fabulous-dev/Fabulous/' <<< "$mappings"
+          done < <(find nupkgs -maxdepth 1 -name '*.snupkg' -print0)
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
@@ -143,10 +147,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
+      - name: Select installed .NET 9 SDK
+        run: |
+          sdk_version=$(dotnet --list-sdks | awk '/^9\.0\./ { version=$1 } END { print version }')
+          test -n "$sdk_version"
+          dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:TargetFrameworks=net8.0-android
       - name: Launch and assert Android process
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -170,12 +179,17 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
+      - name: Select installed .NET 9 SDK
+        run: |
+          sdk_version=$(dotnet --list-sdks | awk '/^9\.0\./ { version=$1 } END { print version }')
+          test -n "$sdk_version"
+          dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
       - name: Install Apple workloads
         run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
       - name: Build iOS sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:RuntimeIdentifier=iossimulator-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:TargetFrameworks=net8.0-ios -p:RuntimeIdentifier=iossimulator-x64
       - name: Build Mac Catalyst sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:TargetFrameworks=net8.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-x64
       - name: Launch and assert Mac Catalyst process
         shell: bash
         run: |

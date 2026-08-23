@@ -71,7 +71,8 @@ module App =
 #if MOBILE
         SingleViewApplication(content())
 #else
-        DesktopApplication(Window(content()))
+        DesktopApplication() { Window(content()) }
 #endif
+
     let create () =
         FabulousAppBuilder.Configure(FluentTheme, view)
