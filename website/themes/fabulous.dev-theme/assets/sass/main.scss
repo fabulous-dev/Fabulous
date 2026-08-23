@@ -1,0 +1,427 @@
+@import 'colors', 'fonts';
+
+@mixin padding-page {
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @media (min-width: 700px) {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    @media (min-width: 1000px) {
+        padding-left: 88px;
+        padding-right: 88px;
+    }
+}
+
+* {
+    @include font-paragraph;
+    padding: 0px;
+    margin: 0px;
+}
+
+html {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    position: relative;
+    background-color: $primary-color;
+    color: $white;
+    background-repeat: no-repeat;
+    -webkit-tap-highlight-color: transparent;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    @include font-header1;
+}
+
+h2 {
+    @include font-header2;
+}
+
+h3 {
+    @include font-header3;
+}
+
+a {
+    color: $white;
+    font-weight: $semibold;
+
+    &:hover {
+        color: $secondary-color-1;
+    }
+
+    &.button {
+        display: flex;
+        width: 160px;
+        height: 50px;
+        background: $secondary-color-1;
+        color: $primary-color;
+        justify-content: center;
+        align-items: center;
+        @include font-button;
+        text-decoration: none;
+        border-radius: 8px;
+    
+        &.outlined {
+            background-color: transparent;
+            border: 1px solid $secondary-color-1;
+            color: $secondary-color-1;
+        }
+
+        &:hover {
+            filter: drop-shadow(2px 2px 10px $shadow-color);
+        }
+    }
+}
+
+.spotlight {
+    position: absolute;
+    border-radius: 50%;
+
+    // https://graffino.com/til/CjT2jrcLHP-how-to-fix-filter-blur-performance-issue-in-safari
+    transform: translate3d(0, 0, 0);
+}
+
+.spotlights {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+
+    #spotlight-top {
+        top: -85px;
+        right: -156px;
+        width: 200px;
+        height: 300px;
+        filter: blur(72px);
+        background-color: $spotlight-top-color;
+    }
+
+    #spotlight-bottom {
+        bottom: -240px;
+        width: 360px;
+        height: 360px;
+        filter: blur(65px);
+        background-color: $spotlight-bottom-color;
+    }
+}
+
+header {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    @include padding-page;
+    padding-top: 30px;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    .logo {
+        a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            @include font-fabulous;
+            text-decoration: none;
+
+            img {
+                height: 40px;
+                width: 40px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    #menu-button {
+        #menu-button-checkbox {
+            display: none;
+        }
+
+        label {
+            display: block;
+            width: 36px;
+            height: 30px;
+            cursor: pointer;
+
+            div {
+                background-color: $secondary-color-1;
+                position: relative;
+                top: 0;
+                height: 7px;
+                margin-bottom: 5px;
+                border-radius: 4px;
+                transition: 0.3s ease all;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        #menu-button-checkbox:checked + label {
+            &::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 99;
+            }
+
+            div {
+                &:first-child {
+                    transform: translateY(12px) rotate(-45deg);
+                }
+
+                &:nth-child(2) {
+                    transform: scaleX(0);
+                }
+
+                &:last-child {
+                    transform: translateY(-12px) rotate(45deg);
+                }
+            }
+        }
+    }
+
+    .menu {
+        display: none;
+        padding: 20px 30px;
+        gap: 24px;
+        z-index: 100;
+        border-radius: 18px;
+
+        .menu-item {
+            @include font-menu;
+            text-decoration: none;
+        }
+
+        .left-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .right-menu {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            gap: 20px;
+
+            a i {
+                font-size: 20px;
+            }
+        }
+    }
+
+    #menu-button:has(#menu-button-checkbox:checked) + .menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 16px;
+        top: 70px;
+        background-color: $secondary-color-3;
+    }
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    @include padding-page;
+    padding-bottom: 30px;
+
+    .footer-social {
+        ul {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            list-style: none;
+
+            i {
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+main:has(.not-found) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .not-found {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 48px;
+
+        .not-found-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+
+            hgroup {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                h1, h2 {
+                    color: $secondary-color-1;
+                }
+            }
+
+            img {
+                width: 96px;
+                height: 96px;
+                object-fit: contain;
+            }
+        }
+
+        .button {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+}
+
+/* Tablet mode (700px to 999px) */
+@media only screen and (min-width: 700px) {
+    header {
+        padding-top: 48px;
+
+        #menu-button:has(#menu-button-checkbox:checked) + .menu {
+            top: 98px;
+            right: 30px;
+        }
+    }
+
+    .spotlights {
+        #spotlight-top {
+            top: -138px;
+            right: -174px;
+            width: 250px;
+            height: 375px;
+            filter: blur(90px);
+        }
+
+        #spotlight-bottom {
+            bottom: -569px;
+            width: 700px;
+            height: 700px;
+            filter: blur(84px);
+        }
+    }
+
+    footer .design-by {
+        max-width: unset;
+    }
+
+    main:has(.not-found) {    
+        .not-found {
+            .not-found-container {
+                flex-direction: row;
+                gap: 34px;
+    
+                hgroup {
+                    align-items: start;
+                }
+    
+                img {
+                    width: 141px;
+                    height: 141px;
+                }
+            }
+        }
+    }
+    
+}
+
+/* Desktop mode (1000px and more) */
+@media only screen and (min-width: 1000px) {
+    header {
+        height: 55px;
+        padding-top: 54px;
+        justify-content: start;
+        gap: 72px;
+
+        .logo a img {
+            width: 56px;
+            height: 56px;
+        }
+
+        #menu-button {
+            display: none;
+        }
+
+        .menu {
+            display: flex;
+            flex-grow: 1;
+            justify-content: space-between;
+            padding: 0px;
+            align-items: center;
+
+            .left-menu {
+                display: flex;
+                flex-direction: row;
+                gap: 66px;
+            }
+
+            .right-menu {
+                gap: 35px;
+
+                a i {
+                    font-size: 26px;
+                }
+            }
+        }
+    }
+
+    footer .footer-social ul {
+        gap: 35px;
+
+        i {
+            font-size: 26px;
+        }
+    }
+
+    .spotlights {
+        #spotlight-top {
+            top: -138px;
+            right: -224px;
+            width: 312px;
+            height: 468px;
+            filter: blur(112px);
+        }
+
+        #spotlight-bottom {
+            bottom: -835px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            max-width: 1300px;
+            height: 1000px;
+            filter: blur(170px);
+        }
+    }
+}

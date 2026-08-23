@@ -1,0 +1,19 @@
+/* Design system: colors */
+
+$black: #0E0F10;
+$white: rgba($color: #FFFFFF, $alpha: 0.9);
+$grey: #CACBCF;
+$primary-color: #1F1F2D;
+$secondary-color-1: #8AB7FF;
+$secondary-color-2: #CED8EA;
+$secondary-color-3: #2D2D41;
+$shadow-color: rgba($color: #81A4CD, $alpha: 0.3);
+$menu-backdrop-color: rgba($color: #414141, $alpha: 0.5);
+
+$spotlight-top-color: rgba($color: #9185E6, $alpha: 0.8);
+$spotlight-bottom-color: rgba($color: #8AB7FF, $alpha: 0.8);
+
+@mixin shadow {
+    background: #D9D9D9;
+    box-shadow: 0px 0px 20px rgba($color: #FFFFFF, $alpha: 0.4);
+}

@@ -1,0 +1,12 @@
+name = "Fabulous"
+license = "Apache-2.0"
+licenselink = "https://github.com/fabulous-dev/fabulous.dev-theme/blob/main/LICENSE"
+description = "Hugo theme for the Fabulous website"
+homepage = "https://fabulous.dev"
+tags = []
+features = []
+min_version = "0.41.0"
+
+[author]
+  name = "Fabulous contributors"
+  homepage = "https://fabulous.dev"

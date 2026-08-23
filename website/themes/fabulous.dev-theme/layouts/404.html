@@ -1,0 +1,15 @@
+{{ define "main"}}
+
+{{ $robot := resources.Get "images/robot.png" }}
+
+<div class="not-found">
+    <div class="not-found-container">
+        <img src="{{ $robot.RelPermalink }}" alt="A little robot" />
+        <hgroup>
+            <h1>404</h1>
+            <h2>Page not found</h2>
+        </hgroup>
+    </div>
+    <a class="button" href="/">Back to home page</a>
+</div>
+{{ end }}

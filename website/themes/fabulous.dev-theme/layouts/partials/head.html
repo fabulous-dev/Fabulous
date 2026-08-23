@@ -1,0 +1,23 @@
+{{ $sass := resources.Get "sass/main.scss" }}
+{{ $style := $sass | resources.ToCSS }}
+
+{{ $logo := resources.Get "images/logo.svg" }}
+{{ $logoTitle := resources.Get "images/logo-title.svg" }}
+
+<meta charset="utf-8"/>
+<link rel="icon" href="{{ $logo.RelPermalink }}" />
+<link rel="apple-touch-icon" href="{{ $logo.RelPermalink }}" />
+<title>{{ .Site.Title }}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="{{ .Site.Params.Description }}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@FabulousAppDev" />
+<meta property="og:title" content="{{ .Site.Title }}" />
+<meta property="og:url" content="{{ .Site.BaseURL }}" />
+<meta property="og:description" content="{{ .Site.Params.Description }}" />
+<meta property="og:image" content="{{ $logoTitle.RelPermalink }}" />
+<link rel="stylesheet" href="{{ $style.Permalink }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/2912990da2.js" crossorigin="anonymous"></script>

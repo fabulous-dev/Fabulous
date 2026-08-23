@@ -1,0 +1,32 @@
+{{ $logo := resources.Get "images/logo.svg" }}
+{{ $githubLogo := resources.Get "images/github.svg" }}
+
+<header>
+    <div class="logo">
+        <a href="/">
+            <img src="{{ $logo.RelPermalink }}" alt="Fabulous" />
+            Fabulous
+        </a>
+    </div>
+    <div id="menu-button">
+        <input type="checkbox" id="menu-button-checkbox" />
+        <label for="menu-button-checkbox">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+    </div>
+    <div class="menu">
+        <div class="left-menu">
+            <a class="menu-item" href="https://docs.fabulous.dev">Documentation</a>
+            <a class="menu-item" href="https://fabulous.dev/about" style="display: none;">About</a>
+            <a class="menu-item" href="mailto:maintainers@fabulous.dev">Contact us</a>
+        </div>
+        <div class="right-menu">
+            <a href="https://github.com/fabulous-dev/Fabulous"><i class="fa-brands fa-github"></i></a>
+            <a href="https://twitter.com/FabulousAppDev"><i class="fa-brands fa-twitter"></i></a>
+            <a rel="me" href="https://mastodon.social/@FabulousAppDev"><i class="fa-brands fa-mastodon"></i></a>
+            <a href="https://discord.gg/bpTJMbSSYK"><i class="fa-brands fa-discord"></i></a>
+        </div>
+    </div>
+</header>
