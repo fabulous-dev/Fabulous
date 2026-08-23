@@ -5,6 +5,7 @@ open System.Collections.Generic
 open System.Diagnostics
 open Avalonia.Controls.Notifications
 open Avalonia.Input
+open Avalonia.Input.Platform
 open Avalonia.Platform.Storage
 open Fabulous.Avalonia
 open Fabulous
@@ -39,27 +40,30 @@ module ClipboardPage =
     let pasteText () =
         task {
             let clipboard = FabApplication.Current.Clipboard
-            let! text = clipboard.GetTextAsync()
-            return PastedText text
+            let! text = clipboard.TryGetTextAsync()
+            return PastedText(if text = null then "" else text)
         }
 
     let copyTextDataObject (clipboardText: string) =
         task {
             let clipboard = FabApplication.Current.Clipboard
-            let dataObject = DataObject()
+            let dataTransfer = new DataTransfer()
             let text = if clipboardText = null then "" else clipboardText
-            dataObject.Set(DataFormats.Text, text)
-            do! clipboard.SetDataObjectAsync(dataObject)
+            dataTransfer.Add(DataTransferItem.CreateText(text))
+            do! clipboard.SetDataAsync(dataTransfer)
             return CopiedText
         }
 
     let pasteTextDataObject () =
         task {
             let clipboard = FabApplication.Current.Clipboard
-            let! dataObject = clipboard.GetDataAsync(DataFormats.Text)
-            let res = (dataObject :?> string)
-            let text = if res = null then "" else res
-            return PastedText text
+            use! dataTransfer = clipboard.TryGetDataAsync()
+
+            if dataTransfer = null then
+                return PastedText ""
+            else
+                let! text = dataTransfer.TryGetTextAsync()
+                return PastedText(if text = null then "" else text)
         }
 
     let copyFilesDataObject (clipboardText: string) =
@@ -91,9 +95,12 @@ module ClipboardPage =
                     notificationManager.Show(Notification("Warning", "There is one o more invalid path.", NotificationType.Warning))
 
                 if files.Count > 0 then
-                    let dataObject = DataObject()
-                    dataObject.Set(DataFormats.Files, files)
-                    do! clipboard.SetDataObjectAsync(dataObject)
+                    let dataTransfer = new DataTransfer()
+
+                    for file in files do
+                        dataTransfer.Add(DataTransferItem.CreateFile(file))
+
+                    do! clipboard.SetDataAsync(dataTransfer)
                     notificationManager.Show(Notification("Success", "Copy completed.", NotificationType.Success))
                     return CopiedText
                 else
@@ -104,20 +111,17 @@ module ClipboardPage =
     let pasteFilesDataObject () =
         task {
             let clipboard = FabApplication.Current.Clipboard
-            let! files = clipboard.GetDataAsync(DataFormats.Files)
-            let files = (files :?> IEnumerable<IStorageItem>)
-
-            let files =
-                files
-                |> Seq.map(fun f ->
-                    let tryGetLocalPath = f.TryGetLocalPath()
-                    if tryGetLocalPath = null then f.Name else tryGetLocalPath)
+            let! files = clipboard.TryGetFilesAsync()
 
             let text =
                 if files = null then
                     ""
                 else
-                    files |> Seq.reduce(fun acc f -> acc + Environment.NewLine + f)
+                    files
+                    |> Seq.map(fun f ->
+                        let tryGetLocalPath = f.TryGetLocalPath()
+                        if tryGetLocalPath = null then f.Name else tryGetLocalPath)
+                    |> String.concat Environment.NewLine
 
             return PastedText text
         }
@@ -125,7 +129,7 @@ module ClipboardPage =
     let getFormats () =
         task {
             let clipboard = FabApplication.Current.Clipboard
-            let! formats = clipboard.GetFormatsAsync()
+            let! formats = clipboard.GetDataFormatsAsync()
 
             let text =
                 if formats = null then
@@ -151,11 +155,11 @@ module ClipboardPage =
         | CopiedText -> model, Cmd.none
         | PasteText -> model, Cmd.OfTask.msg(pasteText())
         | PastedText s -> { ClipboardContentText = s }, Cmd.none
-        | CopyTextDataObject -> model, Cmd.OfTask.msg(pasteTextDataObject())
-        | PasteTextDataObject -> model, Cmd.OfTask.msg(pasteFilesDataObject())
-        | CopyFilesDataObject -> model, Cmd.none
-        | PasteFilesDataObject -> model, Cmd.none
-        | GetFormats -> model, Cmd.none
+        | CopyTextDataObject -> model, Cmd.OfTask.msg(copyTextDataObject(model.ClipboardContentText))
+        | PasteTextDataObject -> model, Cmd.OfTask.msg(pasteTextDataObject())
+        | CopyFilesDataObject -> model, Cmd.OfTask.msg(copyFilesDataObject(model.ClipboardContentText))
+        | PasteFilesDataObject -> model, Cmd.OfTask.msg(pasteFilesDataObject())
+        | GetFormats -> model, Cmd.OfTask.msg(getFormats())
         | Clear -> model, Cmd.OfTask.msg(clear())
         | ClipboardContentChanged text -> { ClipboardContentText = text }, Cmd.none
         | Cleared -> model, Cmd.none
@@ -196,7 +200,7 @@ module ClipboardPage =
                 Button("Clear clipboard", Clear)
 
                 TextBox(model.ClipboardContentText, ClipboardContentChanged)
-                    .watermark("Text to copy of file names per line")
+                    .placeholderText("Text to copy of file names per line")
                     .minHeight(100.)
                     .acceptsReturn(true)
             }

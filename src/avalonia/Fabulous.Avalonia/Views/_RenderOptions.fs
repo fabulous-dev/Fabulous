@@ -43,10 +43,10 @@ module RenderOptions =
             "RenderOptions_TextRenderingMode"
             (fun target ->
                 let target = target :?> Visual
-                RenderOptions.GetTextRenderingMode(target))
+                TextOptions.GetTextRenderingMode(target))
             (fun target value ->
                 let target = target :?> Visual
-                RenderOptions.SetTextRenderingMode(target, value))
+                TextOptions.SetTextRenderingMode(target, value))
 
 type RenderOptionsModifiers =
     /// <summary>Sets the BitmapInterpolationMode property.</summary>

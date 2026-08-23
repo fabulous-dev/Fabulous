@@ -124,12 +124,7 @@ type FileTreeNodeModel(path, isDirectory, ?isRoot) =
     member this.OnCreated(e: FileSystemEventArgs) =
         Dispatcher.UIThread.Post(fun _ ->
             let node =
-                FileTreeNodeModel(
-                    e.FullPath,
-                    File
-                        .GetAttributes(e.FullPath)
-                        .HasFlag(FileAttributes.Directory)
-                )
+                FileTreeNodeModel(e.FullPath, File.GetAttributes(e.FullPath).HasFlag(FileAttributes.Directory))
 
             this.Children.Add(node))
 
@@ -176,7 +171,10 @@ type FileTreeNodeModel(path, isDirectory, ?isRoot) =
         member this.EndEdit() = _undoName <- null
 
     static member SortAscending(selector: Func<FileTreeNodeModel, 'T>) =
-        fun (x: FileTreeNodeModel) (y: FileTreeNodeModel) ->
+        Comparison<obj>(fun x y ->
+            let x = x :?> FileTreeNodeModel
+            let y = y :?> FileTreeNodeModel
+
             if (x = Unchecked.defaultof<_> && y = Unchecked.defaultof<_>) then
                 0
             elif (x = Unchecked.defaultof<_>) then
@@ -184,15 +182,17 @@ type FileTreeNodeModel(path, isDirectory, ?isRoot) =
             elif (y = Unchecked.defaultof<_>) then
                 1
             elif (x.IsDirectory = y.IsDirectory) then
-                Comparer<'T>.Default
-                    .Compare(selector.Invoke x, selector.Invoke y)
+                Comparer<'T>.Default.Compare(selector.Invoke x, selector.Invoke y)
             elif x.IsDirectory then
                 -1
             else
-                1
+                1)
 
     static member SortDescending(selector: Func<FileTreeNodeModel, 'T>) =
-        fun (x: FileTreeNodeModel) (y: FileTreeNodeModel) ->
+        Comparison<obj>(fun x y ->
+            let x = x :?> FileTreeNodeModel
+            let y = y :?> FileTreeNodeModel
+
             if (x = Unchecked.defaultof<_> && y = Unchecked.defaultof<_>) then
                 0
             elif (x = Unchecked.defaultof<_>) then
@@ -200,9 +200,8 @@ type FileTreeNodeModel(path, isDirectory, ?isRoot) =
             elif (y = Unchecked.defaultof<_>) then
                 -1
             elif (x.IsDirectory = y.IsDirectory) then
-                Comparer<'T>.Default
-                    .Compare(selector.Invoke y, selector.Invoke x)
+                Comparer<'T>.Default.Compare(selector.Invoke y, selector.Invoke x)
             elif x.IsDirectory then
                 -1
             else
-                1
+                1)

@@ -13,5 +13,5 @@ Once chosen, please refer to the corresponding "Get Started" documentation to le
 
 | Flavor                     | Documentation                              |
 | -------------------------- | ------------------------------------------ |
-| Fabulous for .NET MAUI     | [Get Started](maui/get-started.md)         |
-| Fabulous for Avalonia      | [Get Started](avalonia/get-started.md)     |
+| Fabulous for .NET MAUI     | [Tutorial](tutorials/maui.md)               |
+| Fabulous for Avalonia      | [Tutorial](tutorials/avalonia.md)           |

@@ -64,7 +64,7 @@ Go into the `GetStartedApp` directory and run:
 
 ```bash
 # run the Desktop app
-dotnet run -f net8.0
+dotnet run -f net10.0
 ```
 
 You can also open the solution `GetStartedApp.sln` with your favorite IDE and select the platform you want, then press debug to deploy and run the app.

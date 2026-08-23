@@ -42,11 +42,11 @@ module CalendarDatePickerPage =
                 TextBlock($"Selected date: {model.Date}")
 
                 CalendarDatePicker(model.Date, SelectedDateChanged)
-                    .watermark("Select a date")
+                    .placeholderText("Select a date")
                     .displayDateStart(Some startFromYesterday)
                     .displayDateEnd(Some showUpToTomorrow)
                     .isTodayHighlighted(true)
-                    .useFloatingWatermark(true)
+                    .useFloatingPlaceholder(true)
                     .isDropDownOpen(true)
                     .centerHorizontal()
             }

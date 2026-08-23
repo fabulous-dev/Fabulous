@@ -10,8 +10,9 @@ module Sample =
     /// We instantiate a single NavigationController that will be used for the lifetime of the app
     let nav = NavigationController()
 
-    /// The Model needs only to store the current navigation stack
-    type Model = { Navigation: NavigationStack }
+    type Model =
+        { Navigation: NavigationStack<NavigationState.Model>
+          NextRouteId: int }
 
     type Msg =
         | NavigationPushed of NavigationPath
@@ -30,30 +31,48 @@ module Sample =
     /// In the init function, we initialize the NavigationStack and subscribe to the navigation events
     let init () =
         let rootPage = NavigationState.init NavigationPath.PageA
-        { Navigation = NavigationStack.Init(rootPage) }, navSubscription()
+        let navigation = NavigationStack.create(Route.create "page-0" rootPage)
+
+        let model =
+            { Navigation = navigation
+              NextRouteId = 1 }
+
+        model, navSubscription()
 
     let update msg model =
         match msg with
         | NavigationPushed path ->
-            // When a new path is pushed, we create a new page and push it on the stack
             let newPage = NavigationState.init path
+            let route = Route.create $"page-{model.NextRouteId}" newPage
+            let navigation = NavigationStack.push route model.Navigation
 
-            { Navigation = model.Navigation.Push(newPage) }, Cmd.none
+            let nextModel =
+                { model with
+                    Navigation = navigation
+                    NextRouteId = model.NextRouteId + 1 }
+
+            nextModel, Cmd.none
 
         | BackNavigated ->
-            // BackNavigated handles both the back button and the programmatic back navigation
-            // We simply pop the current page from the stack
-            { Navigation = model.Navigation.Pop() }, Cmd.none
+            { model with
+                Navigation = NavigationStack.pop model.Navigation },
+            Cmd.none
 
         | NavigationMsg navMsg ->
-            let m, navCmd = NavigationState.update nav navMsg model.Navigation.CurrentPage
+            let currentRoute = NavigationStack.current model.Navigation
+            let m, navCmd = NavigationState.update nav navMsg currentRoute.Value
 
-            { Navigation = model.Navigation.UpdateCurrentPage(m) }, Cmd.map NavigationMsg navCmd
+            { model with
+                Navigation = NavigationStack.replaceTop (Route.create currentRoute.Id m) model.Navigation },
+            Cmd.map NavigationMsg navCmd
 
         | BackButtonPressed ->
-            let m, navCmd = NavigationState.updateBackButton nav model.Navigation.CurrentPage
+            let currentRoute = NavigationStack.current model.Navigation
+            let m, navCmd = NavigationState.updateBackButton nav currentRoute.Value
 
-            { Navigation = model.Navigation.UpdateCurrentPage(m) }, Cmd.map NavigationMsg navCmd
+            { model with
+                Navigation = NavigationStack.replaceTop (Route.create currentRoute.Id m) model.Navigation },
+            Cmd.map NavigationMsg navCmd
 
     /// The view function contains the NavigationPage control that will display the different pages
     /// and handle the navigation animations (push, pop) as well has displaying a back button by default
@@ -63,13 +82,8 @@ module Sample =
     let view model =
         Application(
             (NavigationPage() {
-                // We inject in the NavigationPage history the back stack of our navigation
-                for navModel in List.rev model.Navigation.BackStack do
-                    (View.map NavigationMsg (NavigationState.view navModel)).hasBackButton(false)
-
-                // The page currently displayed is the one on top of the stack
-                (View.map NavigationMsg (NavigationState.view model.Navigation.CurrentPage))
-                    .hasBackButton(false)
+                for route in NavigationStack.routes model.Navigation do
+                    (View.map NavigationMsg (NavigationState.view route.Value)).hasBackButton(false)
             })
                 .onBackButtonPressed(BackButtonPressed)
         )

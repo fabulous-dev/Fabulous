@@ -11,4 +11,9 @@ module RegisteredSamples =
           Border.sample
           Shadow.sample
           Shapes.sample
-          FormattedLabel.sample ]
+          FormattedLabel.sample
+          ListView.sample
+          GroupedListView.sample
+          CollectionView.sample
+          GroupedCollectionView.sample
+          CarouselView.sample ]

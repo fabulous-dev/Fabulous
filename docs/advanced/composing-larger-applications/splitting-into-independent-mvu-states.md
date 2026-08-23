@@ -142,6 +142,19 @@ val View.map :
 
 View.map takes as a first parameter a function converting a message from the child to the parent, and as a second parameter the child widget itself.
 
+When composing inside `NavigationPage`, the child view must return a page such as `ContentPage`, not an `Application`. `View.map` preserves the widget kind while changing only its message type. Keep `Application(...)` at the root and map the child page:
+
+```fsharp
+let childView model = ContentPage(Label(model.Name))
+
+let view model =
+    Application(
+        NavigationPage() {
+            View.map ChildMsg (childView model.Child)
+        }
+    )
+```
+
 In our example, we would need to convert Form1.Msg and Form2.Msg into a common App.Msg type.
 
 {% code title="App.fs" %}

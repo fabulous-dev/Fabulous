@@ -1,28 +1,19 @@
 # Table of contents
 
 * [Welcome](README.md)
-* [Get Started](get-started.md)
-* [Samples & Tutorials](samples-and-tutorials/README.md)
-  * [Samples](samples-and-tutorials/samples.md)
-  * [Videos](samples-and-tutorials/videos.md)
-* [Basics](basics/README.md)
-  * [MVU](basics/mvu.md)
-  * [Application state](basics/application-state/README.md)
-    * [Commands](basics/application-state/commands.md)
-    * [State validation](basics/application-state/state-validation.md)
-  * [User interface](basics/user-interface/README.md)
-    * [Widgets and modifiers](basics/user-interface/widgets-and-modifiers.md)
-    * [Styling](basics/user-interface/styling.md)
-    * [Animations](basics/user-interface/animations.md)
-  * [Testing](basics/testing.md)
-  * [Error monitoring](basics/error-monitoring.md)
-* [Advanced](advanced/README.md)
-  * [Saving and Restoring app state](advanced/saving-and-restoring-app-state.md)
-  * [Performance optimization](advanced/performance-optimization.md)
-  * [Composing larger applications](advanced/composing-larger-applications/README.md)
-    * [Splitting into independent MVU states](advanced/composing-larger-applications/splitting-into-independent-mvu-states.md)
-    * [Integrating commands](advanced/composing-larger-applications/integrating-commands.md)
-    * [Communicating between MVU states](advanced/composing-larger-applications/communicating-between-mvu-states.md)
+* [Choose a backend](get-started.md)
+* [Glossary](glossary.md)
+* Tutorials
+  * [.NET MAUI](tutorials/maui.md)
+  * [Avalonia](tutorials/avalonia.md)
+* Core concepts
+  * [Programs and commands](concepts/programs.md)
+  * [UI and interaction](concepts/ui.md)
+* Guides
+  * [Testing and debugging](guides/testing-debugging.md)
+  * [Performance and collections](guides/performance.md)
+  * [Deployment](guides/deployment.md)
+  * [Migrate to 10.0.x](guides/migration.md)
 * [Architecture](architecture/README.md)
   * [Attribute definitions](architecture/attribute-definitions.md)
   * [Virtualized collections](architecture/virtualized-collections.md)
@@ -31,7 +22,11 @@
 ## .NET MAUI <a href="#maui" id="maui"></a>
 
 * [Get Started](maui/get-started.md)
+* [Virtualized collections](maui/virtualized-collections.md)
+* [Route-based navigation](maui/navigation.md)
 
 ## Avalonia
 
 * [Get Started](avalonia/get-started.md)
+* [Migrate to Avalonia 12](avalonia/migrate-to-12.md)
+* [API reference](api/README.md)
