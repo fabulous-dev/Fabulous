@@ -102,11 +102,11 @@ jobs:
       - name: Instantiate template
         run: |
           dotnet new install nupkgs/Fabulous.Avalonia.Templates.*.nupkg
-          dotnet new fabulous-avalonia-desktop -n AvaloniaTemplateApp -o template-smoke/avalonia
+          dotnet new fabulous-avalonia-desktop -n AvaloniaTemplateApp -o "${RUNNER_TEMP}/avalonia-template"
       - name: Build generated app
         run: |
-          dotnet restore template-smoke/avalonia/AvaloniaTemplateApp.fsproj --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build template-smoke/avalonia/AvaloniaTemplateApp.fsproj -c ${CONFIG} --no-restore
+          dotnet restore "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" -c ${CONFIG} --no-restore
 
   windows-compat:
     name: Windows compatibility
@@ -133,8 +133,8 @@ jobs:
       - name: Instantiate MAUI template
         run: |
           dotnet new install (Get-ChildItem nupkgs/Fabulous.MauiControls.Templates.*.nupkg).FullName
-          dotnet new fabulous-mauicontrols -n MauiTemplateApp -o template-smoke/maui
+          dotnet new fabulous-mauicontrols -n MauiTemplateApp -o "$env:RUNNER_TEMP/maui-template"
       - name: Build generated MAUI app
         run: |
-          dotnet restore template-smoke/maui/MauiTemplateApp.fsproj --source "$PWD/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build template-smoke/maui/MauiTemplateApp.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0 --no-restore
+          dotnet restore "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" --source "$PWD/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -c $env:CONFIG -f net8.0-windows10.0.19041.0 --no-restore
