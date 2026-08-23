@@ -132,6 +132,8 @@ jobs:
           } | ConvertTo-Json | Set-Content global.json
           dotnet --version
           dotnet workload list
+      - name: Install missing Tizen workload
+        run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
