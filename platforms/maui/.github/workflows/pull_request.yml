@@ -1,0 +1,32 @@
+name: Pull Request
+on: pull_request
+
+env:
+  SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+  CONFIG: Release
+  XCODE_PATH: /Applications/Xcode_15.0.1.app/Contents/Developer
+
+jobs:
+  pull_request:
+    runs-on: macos-13
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.x
+    - name: Check code formatting
+      run: |
+        dotnet tool restore
+        dotnet fantomas --check src samples templates
+    - name: Use correct Xcode version
+      run: sudo xcode-select -s ${XCODE_PATH}
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} -c ${CONFIG} --no-restore
+    - name: Test
+      run: dotnet test ${SLN_FILE} -c ${CONFIG} --no-build

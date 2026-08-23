@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3E7017C-80B3-4759-9E46-E485F9D28AD6}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls", "src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj", "{09EE9FB7-A5EB-477E-B709-55887D66D5A4}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Tests", "src\Fabulous.MauiControls.Tests\Fabulous.MauiControls.Tests.fsproj", "{601B45BF-2CEB-4B8A-A222-EB151FF876C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09EE9FB7-A5EB-477E-B709-55887D66D5A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EE9FB7-A5EB-477E-B709-55887D66D5A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EE9FB7-A5EB-477E-B709-55887D66D5A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EE9FB7-A5EB-477E-B709-55887D66D5A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{601B45BF-2CEB-4B8A-A222-EB151FF876C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{601B45BF-2CEB-4B8A-A222-EB151FF876C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{601B45BF-2CEB-4B8A-A222-EB151FF876C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{601B45BF-2CEB-4B8A-A222-EB151FF876C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09EE9FB7-A5EB-477E-B709-55887D66D5A4} = {B3E7017C-80B3-4759-9E46-E485F9D28AD6}
+		{601B45BF-2CEB-4B8A-A222-EB151FF876C3} = {B3E7017C-80B3-4759-9E46-E485F9D28AD6}
+	EndGlobalSection
+EndGlobal

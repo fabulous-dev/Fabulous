@@ -1,0 +1,66 @@
+name: Build
+on:
+  push:
+    branches: [ 'main' ]
+    paths-ignore: [ 'docs/**' ]
+
+permissions: write-all
+
+env:
+  CONFIG: Release
+  SLN_FILE: Fabulous.MauiControls.NoSamples.sln
+  TEMPLATE_PROJ: templates/Fabulous.MauiControls.Templates.proj
+  TEMPLATE_PKG: nupkgs/Fabulous.MauiControls.Templates
+  NUPKG_FOLDER: nupkgs
+  XCODE_PATH: /Applications/Xcode_15.2.app/Contents/Developer
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+    - name: Read last version from CHANGELOG.md
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        validation_level: warn
+        path: ./CHANGELOG.md
+    - name: Set nightly version
+      run: |
+        NIGHTLY_VERSION=${{ steps.changelog_reader.outputs.version }}-nightly-${GITHUB_RUN_ID}
+        echo "Nightly version is $NIGHTLY_VERSION"
+        echo "NIGHTLY_VERSION=$NIGHTLY_VERSION" >> "$GITHUB_ENV"
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.x
+    - name: Use correct Xcode version
+      run: sudo xcode-select -s ${XCODE_PATH}
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-restore
+    - name: Test
+      run: dotnet test ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build
+    - name: Pack
+      run: |
+        find templates -type f -name template.json | xargs sed -i bak "s/PKG_VERSION/${NIGHTLY_VERSION}/g"
+        dotnet pack ${SLN_FILE} -p:Version=${NIGHTLY_VERSION} -c ${CONFIG} --no-build --property PackageOutputPath=${PWD}/${NUPKG_FOLDER}
+        dotnet pack ${TEMPLATE_PROJ} -p:Version=${NIGHTLY_VERSION} -p:IsNightlyBuild=true -c ${CONFIG} --property PackageOutputPath=${PWD}/${NUPKG_FOLDER}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Packages
+        path: nupkgs/
+    - name: Test templates
+      run: |
+        LOCAL_NUGET_PATH=$(readlink -f ${NUPKG_FOLDER})
+        dotnet nuget add source $LOCAL_NUGET_PATH --name local
+        dotnet new install Fabulous.MauiControls.Templates::${NIGHTLY_VERSION}
+        dotnet new fabulous-mauicontrols -n TestTemplates
+        dotnet build TestTemplates -p:ManagePackageVersionsCentrally=false
+    - name: Push
+      run: dotnet nuget push "nupkgs/*.nupkg" -s https://nuget.pkg.github.com/fabulous-dev/index.json -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
