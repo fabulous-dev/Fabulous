@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+    <PropertyGroup Condition="'$(FabulousSamplesDesktopOnly)' == 'true'">
+        <TargetFrameworks>net8.0</TargetFrameworks>
+    </PropertyGroup>
+
     <ItemGroup>
         <None Include="Properties\**" />
     </ItemGroup>

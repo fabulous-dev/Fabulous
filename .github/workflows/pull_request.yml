@@ -68,8 +68,49 @@ jobs:
           name: Packages
           path: nupkgs/
 
+  avalonia-samples:
+    name: Avalonia sample tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Test view logic
+        run: dotnet test samples/avalonia/TestableApp.UnitTests/TestableApp.UnitTests.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
+      - name: Test headless UI
+        run: dotnet test samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
+
+  avalonia-template:
+    name: Avalonia template smoke test
+    needs: pack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: nupkgs
+      - name: Instantiate template
+        run: |
+          dotnet new install nupkgs/Fabulous.Avalonia.Templates.*.nupkg
+          dotnet new fabulous-avalonia-desktop -n AvaloniaTemplateApp -o template-smoke/avalonia
+      - name: Build generated app
+        run: |
+          dotnet restore template-smoke/avalonia/AvaloniaTemplateApp.fsproj --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build template-smoke/avalonia/AvaloniaTemplateApp.fsproj -c ${CONFIG} --no-restore
+
   windows-compat:
     name: Windows compatibility
+    needs: pack
     runs-on: windows-latest
     steps:
       - name: Checkout sources
@@ -80,5 +121,20 @@ jobs:
           dotnet-version: 8.x
       - name: Install MAUI workload
         run: dotnet workload install maui
-      - name: Build
+      - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
+      - name: Build TicTacToe sample
+        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: nupkgs
+      - name: Instantiate MAUI template
+        run: |
+          dotnet new install (Get-ChildItem nupkgs/Fabulous.MauiControls.Templates.*.nupkg).FullName
+          dotnet new fabulous-mauicontrols -n MauiTemplateApp -o template-smoke/maui
+      - name: Build generated MAUI app
+        run: |
+          dotnet restore template-smoke/maui/MauiTemplateApp.fsproj --source "$PWD/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build template-smoke/maui/MauiTemplateApp.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0 --no-restore

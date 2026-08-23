@@ -33,7 +33,7 @@
         <DefineConstants>DESKTOP;$(DefineConstants)</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\neutral\Fabulous.Core\Fabulous.Core.fsproj')">
         <ProjectReference Include="$(MSBuildThisFileDirectory)..\neutral\Fabulous.Core\Fabulous.Core.fsproj" />
     </ItemGroup>
 </Project>
