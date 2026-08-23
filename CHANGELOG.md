@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Rename the core project and assembly from `Fabulous` to `Fabulous.Core`. The NuGet package ID and F# namespaces remain `Fabulous`.
 - Build and publish all Fabulous packages and templates from one solution and release workflow.
+- Unify all Fabulous package versions on the `10.0.x` release line.
 
 ## [3.0.0-pre23] - 2025-06-05
 

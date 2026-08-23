@@ -1,69 +1,65 @@
-<a href="https://fabulous.dev/">
-  <h1 align="center">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="logo/logo-title.png">
-      <img alt="Fabulous" src="logo/logo-title.png" height="180px">
-    </picture>
-  </h1>
-</a>
+<h1 align="center">
+  <a href="https://fabulous-dev.github.io/Fabulous/">
+    <img alt="Fabulous" src="logo/logo-title.png" height="180">
+  </a>
+</h1>
 
-[![build](https://img.shields.io/github/actions/workflow/status/fabulous-dev/Fabulous/build.yml?branch=v2.1)](https://github.com/fabulous-dev/Fabulous/actions/workflows/build.yml) [![NuGet version](https://img.shields.io/nuget/v/Fabulous)](https://www.nuget.org/packages/Fabulous) [![NuGet downloads](https://img.shields.io/nuget/dt/Fabulous)](https://www.nuget.org/packages/Fabulous) [![Discord](https://img.shields.io/discord/716980335593914419?label=discord&logo=discord)](https://discord.gg/bpTJMbSSYK) [![Twitter Follow](https://img.shields.io/twitter/follow/FabulousAppDev?style=social)](https://twitter.com/FabulousAppDev)
+<p align="center">
+  Declarative, functional applications for .NET using F#.
+</p>
 
-Fabulous is a modern declarative UI framework for crafting cross-platform mobile and desktop apps in .NET.  
-It aims to bring you a great development experience and confidence in your code by combining an expressive UI syntax, the simple & robust Model-View-Update (MVU) architecture, and functional programming.
+<p align="center">
+  <a href="https://github.com/fabulous-dev/Fabulous/actions/workflows/pull_request.yml"><img alt="Build and test" src="https://github.com/fabulous-dev/Fabulous/actions/workflows/pull_request.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/fabulous-dev/Fabulous/actions/workflows/pages.yml"><img alt="Documentation" src="https://github.com/fabulous-dev/Fabulous/actions/workflows/pages.yml/badge.svg?branch=main"></a>
+  <a href="https://www.nuget.org/packages/Fabulous"><img alt="NuGet version" src="https://img.shields.io/nuget/v/Fabulous"></a>
+  <a href="https://www.nuget.org/packages/Fabulous"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/Fabulous"></a>
+  <a href="https://discord.gg/bpTJMbSSYK"><img alt="Discord" src="https://img.shields.io/discord/716980335593914419?label=discord&logo=discord"></a>
+</p>
+
+Fabulous combines F#, declarative UI, and Model-View-Update (MVU) to build mobile and desktop applications with explicit state transitions and testable application logic.
+
+Fabulous provides the application architecture and declarative DSL. Choose a UI backend for rendering:
+
+- **.NET MAUI** with `Fabulous.MauiControls`
+- **Avalonia** with `Fabulous.Avalonia`
+
+Core, both backends, extensions, templates, samples, tests, documentation, packaging, and CI are maintained together in this repository.
 
 ## Documentation
 
-The full documentation for Fabulous can be found at [docs.fabulous.dev](https://docs.fabulous.dev).
+- [Documentation home](https://fabulous-dev.github.io/Fabulous/)
+- [Get started](https://fabulous-dev.github.io/Fabulous/docs/get-started/)
+- [Authored documentation](https://fabulous-dev.github.io/Fabulous/docs/)
+- [API reference](https://fabulous-dev.github.io/Fabulous/docs/api/)
+- [Samples](samples/)
+- [Contributing](CONTRIBUTING.md)
 
-Other useful links:
-- [The official Fabulous website](https://fabulous.dev)
-- [Get started](https://docs.fabulous.dev/get-started)
-- [API Reference](https://api.fabulous.dev)
-- [Contributor Guide](CONTRIBUTING.md)
+For questions and community support, join the [Fabulous Discord server](https://discord.gg/bpTJMbSSYK).
 
-Additionally, we have the [Fabulous Discord server](https://discord.gg/bpTJMbSSYK) where you can ask any of your Fabulous related questions.
+## Example
 
-## About Fabulous
+An MVU application keeps state and transitions separate from its declarative view:
 
-We believe declarative UI, functional programming, and the MVU state management are a perfect fit for app development.
-
-Fabulous will help you create mobile and desktop apps quickly and with confidence thanks to declarative UI and the [MVU](https://zaid-ajaj.github.io/the-elmish-book/#/chapters/elm/) architecture, all in one single language: [F#](https://fsharp.org) - a functional programing language.
-
-Fabulous also aims to be performant by having low memory consumption and efficient view diffing mechanisms.
-
-Note that Fabulous itself does not provide any UI rendering. You'll need to combine it with another framework like:
-- [.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui) with [Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
-- [AvaloniaUI](https://avaloniaui.net) with [Fabulous.Avalonia](https://github.com/fabulous-dev/Fabulous.Avalonia)
-
-### Declarative UI
-
-Typical UI development can be a nightmare if not done properly.  
-It is generally created in one place, then mutated here and there based on the need and what the user is doing. Related UI pieces end up in several places, making it hard to mentally think of all the possibilities; until the inevitable race condition or bug due to an unintended user flow.
-
-Fabulous makes it easier to reason about UI thanks to its declarative UI inspired by SwiftUI.  
-The UI of a component is defined in a single place and Fabulous will call it everytime the state of that component is changed.  
-
-You don't need to think about how to mutate the UI, Fabulous will handle it for you to always match the latest UI you need.
-
-```fs
-/// A simple Counter app made with Fabulous.MauiControls
-type Model =
-    { Count: int }
+```fsharp
+type Model = { Count: int }
 
 type Msg =
     | Increment
     | Decrement
 
+let init () = { Count = 0 }
+
+let update msg model =
+    match msg with
+    | Increment -> { model with Count = model.Count + 1 }
+    | Decrement -> { model with Count = model.Count - 1 }
+
 let view model =
     Application(
         ContentPage(
-            "Counter app",
+            "Counter",
             VStack(spacing = 16.) {
-                Image(Aspect.AspectFit, "fabulous.png")
-
                 Label($"Count is {model.Count}")
-
                 Button("Increment", Increment)
                 Button("Decrement", Decrement)
             }
@@ -71,77 +67,42 @@ let view model =
     )
 ```
 
-### MVU architecture
+Fabulous reconciles successive widget descriptions with the native UI. Application state remains ordinary F# data, making update functions straightforward to test.
 
-MVU makes every state and transition between those states explicit.  
-You don't need to worry about unintended actions that could lead to an invalid state which would crash the app.
+## Repository layout
 
-Instead, you can very easily model the state of your app or component and transitions between them using F# records and discriminated unions types.  
-When starting, Fabulous will initialize the state. Then, when messages are being dispatched, Fabulous will let you transition from one state to the other given a specific message.
-
-If several messages are received at the same time, Fabulous will queue them to let you update the state properly.
-
-```fs
-let init () =
-    { Count = 0 }
-
-let update msg model =
-    match msg with
-    | Increment -> { model with Count = model.Count + 1 }
-    | Decrement -> { model with Count = model.Count - 1 }
+```text
+src/neutral/       Fabulous.Core, tests, and benchmarks
+src/maui/          .NET MAUI backend and extensions
+src/avalonia/      Avalonia backend and extensions
+samples/           MAUI and Avalonia applications
+templates/         dotnet new template packages
+docs/              Authored and API documentation
+website/           GitHub Pages site
+eng/               Migration and release tooling
 ```
 
-And finally, given the functional nature of MVU, it is extremely simple to unit test each and every possible state of your application.
+`Fabulous.sln` is the consolidated build and package solution. The package ID remains `Fabulous`; its core assembly is named `Fabulous.Core.dll`.
 
-```fs
-[<Test>]
-let ``When clicking the Increment button, increment the count by one``() =
-    let previousState = { Count = 10 }
-    let expectedState = { Count = 11 }
+## Build and test
 
-    let actualState = App.update Increment previousState
+Prerequisites are a supported .NET SDK and any workloads required by the platform projects you build.
 
-    actualState |> should equal expectedState
+```bash
+dotnet restore Fabulous.sln
+dotnet test Fabulous.sln -c Release
 ```
 
-### Powered by .NET
+CI additionally validates formatting, package creation, Avalonia headless UI tests, generated templates, a Windows MAUI sample, WinUI compatibility, and documentation deployment.
 
-.NET is a very mature and broad framework by Microsoft. It can run on any device and platform, is very efficient, and has a vast ecosystem of open-source and licensed libraries, plugins, and other frameworks.  
-You will be able to benefit from the .NET ecosystem by using 3rd party packages directly in your Fabulous application.
+## Packages and releases
 
-## Supporting this project
-
-The simplest way to show us your support is by giving the project a star.
-
-You can also support us by becoming our sponsor on the GitHub Sponsors program.  
-This is a fantastic way to support all the efforts going into making Fabulous the best declarative UI framework for dotnet.
-
-If you need support see Commercial Support section below.
+All Fabulous packages use the unified `10.0.x` version line and are released from [.github/workflows/release.yml](.github/workflows/release.yml). NuGet publishing uses GitHub OIDC trusted publishing; no long-lived NuGet API key is stored in the repository.
 
 ## Contributing
 
-Have you found a bug or have a suggestion of how to enhance Fabulous? Open an issue and we will take a look at it as soon as possible.
+Issues and pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), and discuss substantial API changes in an issue before implementation.
 
-Do you want to contribute with a PR? PRs are always welcome, just make sure to create it from the correct branch (main) and follow the [Contributor Guide](CONTRIBUTING.md).
+## License
 
-For bigger changes, or if in doubt, make sure to talk about your contribution to the team. Either via an issue, GitHub discussion, or reach out to the team either using the [Discord server](https://discord.gg/bpTJMbSSYK).
-
-## Commercial support
-
-If you would like us to provide you with:
-
-- training and workshops,
-- support services,
-- and consulting services.
-
-Feel free to contact us: [support@fabulous.dev](mailto:support@fabulous.dev)
-
-## Star History
-
-<a href="https://star-history.com/#fabulous-dev/Fabulous&fabulous-dev/Fabulous.Avalonia&fabulous-dev/Fabulous.MauiControls&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=fabulous-dev/Fabulous,fabulous-dev/Fabulous.Avalonia,fabulous-dev/Fabulous.MauiControls&type=Date" />
- </picture>
-</a>
+Fabulous is licensed under the [Apache License 2.0](LICENSE.md).

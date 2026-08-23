@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    tags: ['[0-9]+.[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+-pre[0-9]+']
+    tags: ['10.0.*']
     paths-ignore: [ 'docs/**' ]
 
 permissions:
