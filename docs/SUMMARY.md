@@ -31,6 +31,7 @@
 ## .NET MAUI <a href="#maui" id="maui"></a>
 
 * [Get Started](maui/get-started.md)
+* [Virtualized collections](maui/virtualized-collections.md)
 
 ## Avalonia
 

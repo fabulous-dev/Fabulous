@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
     <TargetFramework>net8.0-ios</TargetFramework>
+    <TargetFramework Condition="'$(FabulousWindowsOnly)' == 'true'">net8.0-windows10.0.19041.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
@@ -56,6 +57,11 @@
     <Compile Include="Samples\ImageButton.fs" />
     <Compile Include="Samples\Label.fs" />
     <Compile Include="Samples\ThemeAware.fs" />
+    <Compile Include="Samples\ListView.fs" />
+    <Compile Include="Samples\GroupedListView.fs" />
+    <Compile Include="Samples\CollectionView.fs" />
+    <Compile Include="Samples\GroupedCollectionView.fs" />
+    <Compile Include="Samples\CarouselView.fs" />
     <Compile Include="Samples.fs" />
     <Compile Include="Overview.fs" />
     <Compile Include="SamplePage.fs" />

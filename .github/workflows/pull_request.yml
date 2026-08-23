@@ -138,6 +138,8 @@ jobs:
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
         run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
+      - name: Build MAUI Gallery samples
+        run: dotnet build samples/maui/Gallery/Gallery.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
