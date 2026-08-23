@@ -143,7 +143,7 @@ jobs:
           project="${RUNNER_TEMP}/avalonia-template/${{ matrix.project }}"
           build_args=()
           if [[ "${{ matrix.template }}" == "blank" ]]; then
-            build_args=(-p:TargetFrameworks=net8.0)
+            build_args=(-p:TargetFrameworks=net10.0)
           fi
           dotnet restore "$project" "${build_args[@]}" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
           dotnet build "$project" -c ${CONFIG} "${build_args[@]}" --no-restore
@@ -166,7 +166,7 @@ jobs:
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
-        run: dotnet publish samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:AndroidPackageFormats=apk
+        run: dotnet publish samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:RuntimeIdentifier=android-x64 -p:AndroidPackageFormats=apk
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -187,14 +187,14 @@ jobs:
 
   apple-runtime:
     name: Apple build and launch
-    runs-on: macos-14
+    runs-on: macos-26
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Select Xcode 16.2
+      - name: Select Xcode 26.0
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.2'
+          xcode-version: '26.0'
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -207,9 +207,9 @@ jobs:
       - name: Install Apple workloads
         run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
       - name: Build iOS sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-arm64
       - name: Build Mac Catalyst sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-arm64
       - name: Launch and assert Mac Catalyst process
         shell: bash
         run: |
@@ -256,7 +256,7 @@ jobs:
       - name: Install missing Tizen workload
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Build compatibility package
-        run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
+        run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG -p:RuntimeIdentifier=win-x64 -p:Platform=x64
       - name: Build and launch unpackaged F# WinUI compatibility samples
         run: |
           $samples = @(
