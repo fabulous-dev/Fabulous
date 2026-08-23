@@ -124,7 +124,7 @@ jobs:
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
-        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:TargetFrameworks=net8.0-windows10.0.19041.0
+        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
@@ -136,5 +136,5 @@ jobs:
           dotnet new fabulous-mauicontrols -n MauiTemplateApp -o "$env:RUNNER_TEMP/maui-template"
       - name: Build generated MAUI app
         run: |
-          dotnet restore "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -p:TargetFrameworks=net8.0-windows10.0.19041.0 --source "$PWD/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -c $env:CONFIG -p:TargetFrameworks=net8.0-windows10.0.19041.0 --no-restore
+          dotnet restore "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -p:FabulousWindowsOnly=true --source "$PWD/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "$env:RUNNER_TEMP/maui-template/MauiTemplateApp.fsproj" -c $env:CONFIG -p:FabulousWindowsOnly=true --no-restore

@@ -90,7 +90,7 @@ This command edits template JSON files. Use it only in a disposable checkout or 
 
 - Root workflows are under `.github/workflows/`; do not add nested workflows.
 - CI must remain green on `main` before opening follow-up upgrade PRs.
-- Releases are triggered by `10.0.*` tags through `release.yml`.
+- Releases are triggered by adding a new topmost `## [10.0.x] - YYYY-MM-DD` section to `CHANGELOG.md` and pushing it to `main`. The workflow creates the tag after publishing succeeds.
 - NuGet publishing uses `NuGet/login@v1` with GitHub OIDC trusted publishing. Never add a long-lived NuGet API key.
 - Do not create or push release tags without explicit authorization.
 

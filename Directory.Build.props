@@ -23,6 +23,7 @@
   <PropertyGroup>
     <OtherFlags>$(OtherFlags) --test:GraphBasedChecking --test:ParallelOptimization --test:ParallelIlxGen</OtherFlags>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <PackageReleaseNotes Condition="'$(PackageReleaseNotesFile)' != ''">$([System.IO.File]::ReadAllText('$(PackageReleaseNotesFile)'))</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>

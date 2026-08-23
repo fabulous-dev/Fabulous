@@ -1,11 +1,14 @@
 name: Release
+
 on:
   push:
-    tags: ['10.0.*']
-    paths-ignore: [ 'docs/**' ]
+    branches:
+      - main
+    paths:
+      - CHANGELOG.md
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 env:
@@ -17,49 +20,61 @@ jobs:
     runs-on: ubuntu-latest
     environment: nuget
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Extract version from tag
-      uses: damienaicheh/extract-version-from-tag-action@v1.0.0
-    - name: Set release version
-      run: |
-        if [ "${PRE_RELEASE}" == "" ]; then
-          RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}
-        else
-          RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}-${PRE_RELEASE}
-        fi
-        echo "Release version is $RELEASE_VERSION"
-        echo "RELEASE_VERSION=$RELEASE_VERSION" >> "$GITHUB_ENV"
-    - name: Get Changelog Entry
-      id: changelog_reader
-      uses: mindsers/changelog-reader-action@v2
-      with:
-        validation_level: warn
-        version: '${{ env.RELEASE_VERSION }}'
-        path: ./CHANGELOG.md
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.x
-    - name: Restore
-      run: dotnet restore ${SLN_FILE}
-    - name: Build
-      run: dotnet build ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-restore
-    - name: Test
-      run: dotnet test ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-build
-    - name: Prepare templates
-      run: python3 eng/monorepo/prepare-templates.py ${RELEASE_VERSION}
-    - name: Pack
-      run: dotnet pack ${SLN_FILE} -p:Version=${RELEASE_VERSION} -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Packages
-        path: nupkgs/
-    - name: NuGet login
-      id: nuget-login
-      uses: NuGet/login@v1
-      with:
-        user: fabulous
-    - name: Push
-      run: dotnet nuget push "nupkgs/*" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --skip-duplicate
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect new release section
+        id: release
+        run: |
+          CURRENT_VERSION=$(python3 eng/monorepo/changelog.py current-version CHANGELOG.md)
+          git show HEAD^:CHANGELOG.md > "$RUNNER_TEMP/previous-changelog.md"
+          PREVIOUS_VERSION=$(python3 eng/monorepo/changelog.py current-version "$RUNNER_TEMP/previous-changelog.md")
+          if [ "$CURRENT_VERSION" = "$PREVIOUS_VERSION" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python3 eng/monorepo/changelog.py validate-version CHANGELOG.md "$CURRENT_VERSION"
+          python3 eng/monorepo/changelog.py notes CHANGELOG.md "$CURRENT_VERSION" > "$RUNNER_TEMP/release-notes.md"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+      - name: Setup .NET
+        if: steps.release.outputs.changed == 'true'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Restore
+        if: steps.release.outputs.changed == 'true'
+        run: dotnet restore ${SLN_FILE}
+      - name: Build and test
+        if: steps.release.outputs.changed == 'true'
+        run: dotnet test ${SLN_FILE} -p:Version=${{ steps.release.outputs.version }} -c ${CONFIG} --no-restore
+      - name: Prepare templates
+        if: steps.release.outputs.changed == 'true'
+        run: python3 eng/monorepo/prepare-templates.py ${{ steps.release.outputs.version }}
+      - name: Pack
+        if: steps.release.outputs.changed == 'true'
+        run: dotnet pack ${SLN_FILE} -p:Version=${{ steps.release.outputs.version }} -p:PackageReleaseNotesFile="$RUNNER_TEMP/release-notes.md" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
+      - name: Validate package count
+        if: steps.release.outputs.changed == 'true'
+        run: test "$(find nupkgs -maxdepth 1 -name '*.nupkg' ! -name '*.symbols.nupkg' | wc -l)" -eq 13
+      - name: Upload artifacts
+        if: steps.release.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Packages
+          path: nupkgs/
+      - name: NuGet login
+        if: steps.release.outputs.changed == 'true'
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: fabulous
+      - name: Push packages
+        if: steps.release.outputs.changed == 'true'
+        run: dotnet nuget push "nupkgs/*" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --skip-duplicate
+      - name: Create GitHub release
+        if: steps.release.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ steps.release.outputs.version }}" --target "$GITHUB_SHA" --title "${{ steps.release.outputs.version }}" --notes-file "$RUNNER_TEMP/release-notes.md"
