@@ -11,6 +11,7 @@ Usage:
 Imports a repository below the current repository using git subtree without
 squashing its history. Run --check first, then run --import from a migration
 branch after reviewing the source ref and destination in repositories.json.
+Set ALLOW_MAIN_IMPORT=1 only when a direct import to main is intentional.
 EOF
 }
 
@@ -69,8 +70,8 @@ if [[ -z "$current_branch" ]]; then
     exit 1
 fi
 
-if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
-    echo "Create and check out a migration branch before importing." >&2
+if [[ ( "$current_branch" == "main" || "$current_branch" == "master" ) && "${ALLOW_MAIN_IMPORT:-}" != "1" ]]; then
+    echo "Create a migration branch or explicitly set ALLOW_MAIN_IMPORT=1." >&2
     exit 1
 fi
 

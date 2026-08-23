@@ -39,8 +39,9 @@ python3 eng/monorepo/validate-inventory.py
 
 ## Import procedure
 
-Start each repository on a fresh branch from an up-to-date `main` branch. From
-the root of `Fabulous`, validate the import before executing it:
+By default, start each repository on a fresh branch from an up-to-date `main`
+branch. An explicitly authorized direct import can set `ALLOW_MAIN_IMPORT=1`.
+From the root of `Fabulous`, validate the import before executing it:
 
 ```bash
 eng/monorepo/import-repository.sh \
