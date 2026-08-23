@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>HelloWorld</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<EnableDefaultItems>false</EnableDefaultItems>
+		<DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+
+		<!-- Display name -->
+		<ApplicationTitle>HelloWorld</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>org.fabulous.winuicompat.helloworld</ApplicationId>
+		<ApplicationIdGuid>115AE839-A3CB-4576-AD9B-206DDBC3EB89</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
+
+		<SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+
+	<Import Project="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
+	
+
+	<ItemGroup>
+		<EmbeddedResource Include="MainPage.xaml" />
+		<Compile Include="MainPage.xaml.fs">
+			<DependentUpon>MainPage.xaml</DependentUpon>
+		</Compile>
+		<EmbeddedResource Include="AppShell.xaml" />
+		<Compile Include="AppShell.xaml.fs">
+			<DependentUpon>AppShell.xaml</DependentUpon>
+		</Compile>
+		<EmbeddedResource Include="App.xaml" />
+		<Compile Include="App.xaml.fs">
+			<DependentUpon>App.xaml</DependentUpon>
+		</Compile>
+		<Compile Include="MauiProgram.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Styles -->
+		<EmbeddedResource Include="Resources\Styles\*" Exclude="Resources\Styles\Styles.fs" />
+		<Compile Include="Resources\Styles\Styles.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Manifest Include="$(WindowsProjectFolder)app.manifest" />
+		<AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
+		<Compile Include="$(WindowsProjectFolder)\App.fs" />
+		<Compile Include="$(WindowsProjectFolder)\Main.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FSharp.Core" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
+	</ItemGroup>
+
+</Project>

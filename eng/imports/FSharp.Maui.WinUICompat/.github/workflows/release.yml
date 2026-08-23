@@ -1,0 +1,58 @@
+name: Release
+on:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+', '[0-9]+.[0-9]+.[0-9]+-preview.[0-9]+']
+    paths-ignore: [ 'docs/**' ]
+
+permissions: write-all
+
+env:
+  CONFIG: Release
+  SLN_FILE: FSharp.Maui.WinUICompat.NoSamples.sln
+
+jobs:
+  build:
+    runs-on: windows-latest
+    environment: nuget
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+    - name: Extract version from tag
+      uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+    - name: Set release version
+      run: |
+        $env:RELEASE_VERSION = ""
+        if ("$env:PRE_RELEASE" -eq "") {
+          $env:RELEASE_VERSION = "$env:MAJOR.$env:MINOR.$env:PATCH"
+        }
+        else {
+          $env:RELEASE_VERSION = "$env:MAJOR.$env:MINOR.$env:PATCH-$env:PRE_RELEASE"
+        }
+        echo "Release version is $env:RELEASE_VERSION"
+        echo "RELEASE_VERSION=$env:RELEASE_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
+    - name: Get Changelog Entry
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        validation_level: warn
+        version: '${{ env.RELEASE_VERSION }}'
+        path: ./CHANGELOG.md
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore $env:SLN_FILE
+    - name: Build
+      run: dotnet build $env:SLN_FILE -p:Version=$env:RELEASE_VERSION -c $env:CONFIG --no-restore
+    - name: Pack
+      run: dotnet pack $env:SLN_FILE -p:Version=$env:RELEASE_VERSION -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c $env:CONFIG --no-build --property PackageOutputPath=${PWD}/nupkgs
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Packages
+        path: nupkgs/
+    - name: Push
+      run: dotnet nuget push "nupkgs\*" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate

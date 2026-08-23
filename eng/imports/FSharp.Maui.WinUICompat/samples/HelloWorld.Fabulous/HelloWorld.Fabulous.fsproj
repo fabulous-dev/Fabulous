@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>HelloWorld</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+
+    <!-- Display name -->
+    <ApplicationTitle>HelloWorld</ApplicationTitle>
+
+    <!-- App Identifier -->
+    <ApplicationId>org.fabulous.mauicontrols.HelloWorld</ApplicationId>
+    <ApplicationIdGuid>17232767-DEF2-403C-8B38-CDB7F6218E6A</ApplicationIdGuid>
+
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+
+    <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
+
+    <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
+
+  <ItemGroup>
+    <Compile Include="App.fs" />
+    <Compile Include="MauiProgram.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
+
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
+    <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+    <MauiAsset Include="Resources\Raw\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Manifest Include="$(WindowsProjectFolder)app.manifest" />
+    <AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
+	<Compile Include="$(WindowsProjectFolder)\App.fs" />
+	<Compile Include="$(WindowsProjectFolder)\Main.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fabulous.MauiControls" />
+    <PackageReference Include="FSharp.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
+  </ItemGroup>
+
+</Project>

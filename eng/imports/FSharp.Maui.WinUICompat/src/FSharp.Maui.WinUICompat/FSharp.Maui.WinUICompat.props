@@ -1,0 +1,9 @@
+﻿<Project>
+
+	<PropertyGroup Condition=" '$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows' ">
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN;$(DefineConstants)</DefineConstants>
+		<WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
+	</PropertyGroup>
+
+	<Target Name="XamlPreCompile"></Target>
+</Project>

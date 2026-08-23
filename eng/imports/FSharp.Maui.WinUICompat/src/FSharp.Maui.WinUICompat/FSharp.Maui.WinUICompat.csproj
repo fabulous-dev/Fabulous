@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+    <PackageId>FSharp.Maui.WinUICompat</PackageId>
+    <IsPackable>true</IsPackable>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <Description>Enables compiling a Maui application targeting WinUI</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" PackagePath="\" Pack="true" />
+    <None Include="..\..\logo\nuget-icon.png" PackagePath="\" Pack="true" />
+    <None Include="FSharp.Maui.WinUICompat.props" PackagePath="build/FSharp.Maui.WinUICompat.props" Pack="true" />
+	</ItemGroup>
+  <ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
