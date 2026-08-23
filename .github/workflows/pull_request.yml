@@ -57,6 +57,7 @@ jobs:
           dotnet tool install --global sourcelink
           while IFS= read -r -d '' package; do
             package_dir="${RUNNER_TEMP}/sourcelink/$(basename "$package" .snupkg)"
+            mkdir -p "$package_dir"
             unzip -q "$package" -d "$package_dir"
             while IFS= read -r -d '' pdb; do
               mappings="$(sourcelink print-urls "$pdb")"
@@ -160,6 +161,11 @@ jobs:
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
         run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:FabulousAndroidOnly=true
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - name: Launch and assert Android process
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -179,6 +185,10 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+      - name: Select Xcode 16.2
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2'
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
