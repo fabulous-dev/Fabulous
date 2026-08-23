@@ -37,30 +37,3 @@ module Navigation =
 
     let navigateToPageC nav someArgs stepCount =
         navigateTo nav (NavigationRoute.PageC(someArgs, stepCount))
-
-/// The NavigationStack represents the history of the navigation.
-/// This is a simple stack of pages that the app will use to remember and display the pages needed.
-type NavigationStack =
-    { BackStack: NavigationRoute list
-      CurrentPage: NavigationRoute
-      ForwardStack: NavigationRoute list }
-
-    static member Init(path: NavigationRoute) =
-        { BackStack = []
-          CurrentPage = path
-          ForwardStack = [] }
-
-    member this.Push(path: NavigationRoute) =
-        { BackStack = this.CurrentPage :: this.BackStack
-          CurrentPage = path
-          ForwardStack = [] }
-
-    member this.Pop() =
-        match this.BackStack with
-        | [] -> this
-        | head :: tail ->
-            { BackStack = tail
-              CurrentPage = head
-              ForwardStack = [] }
-
-    member this.UpdateCurrentPage(path: NavigationRoute) = { this with CurrentPage = path }
