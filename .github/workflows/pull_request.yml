@@ -28,7 +28,9 @@ jobs:
       - name: Check core code formatting
         run: |
           dotnet tool restore
-          dotnet fantomas --check src
+          dotnet fantomas --check src/Fabulous
+          dotnet fantomas --check src/Fabulous.Tests
+          dotnet fantomas --check src/Fabulous.Benchmarks
 
   build-and-test:
     name: Build and test

@@ -31,6 +31,8 @@
     <None Include="FSharp.Maui.WinUICompat.props" PackagePath="build/FSharp.Maui.WinUICompat.props" Pack="true" />
 	</ItemGroup>
   <ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
   </ItemGroup>
 </Project>
