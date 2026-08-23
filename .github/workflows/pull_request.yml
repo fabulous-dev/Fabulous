@@ -50,6 +50,12 @@ jobs:
         run: dotnet pack Fabulous.sln -c ${CONFIG} -p:Version=0.0.0-ci.${GITHUB_RUN_ID} --no-restore --property PackageOutputPath=${PWD}/nupkgs
       - name: Validate package count
         run: test "$(find nupkgs -maxdepth 1 -name '*.nupkg' ! -name '*.symbols.nupkg' | wc -l)" -eq 13
+      - name: Validate package contents
+        run: python3 eng/monorepo/validate-packages.py nupkgs
+      - name: Validate SourceLink mappings
+        run: |
+          dotnet tool install --global sourcelink
+          find nupkgs -maxdepth 1 -name '*.snupkg' -print0 | xargs -0 -n 1 sourcelink test
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
@@ -78,11 +84,33 @@ jobs:
           name: Screenshots-Avalonia
           path: artifacts/screenshots/*.png
           if-no-files-found: error
+      - name: Build all desktop samples
+        shell: bash
+        run: |
+          find samples/avalonia -name '*.fsproj' \
+            ! -path '*/TestableApp.UnitTests/*' \
+            ! -path '*/TestableApp.Headless.XUnit/*' \
+            -print0 | sort -z | while IFS= read -r -d '' project; do
+              dotnet build "$project" -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
+            done
 
   avalonia-template:
-    name: Avalonia template smoke test
+    name: Avalonia template (${{ matrix.template }})
     needs: build-and-test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - template: blank
+            short-name: fabulous-avalonia
+            project: AvaloniaTemplateApp.fsproj
+          - template: desktop
+            short-name: fabulous-avalonia-desktop
+            project: AvaloniaTemplateApp.fsproj
+          - template: multi-project
+            short-name: fabulous-avalonia-multi
+            project: AvaloniaTemplateApp.Desktop/AvaloniaTemplateApp.Desktop.fsproj
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -98,11 +126,70 @@ jobs:
       - name: Instantiate template
         run: |
           dotnet new install nupkgs/Fabulous.Avalonia.Templates.*.nupkg
-          dotnet new fabulous-avalonia-desktop -n AvaloniaTemplateApp -o "${RUNNER_TEMP}/avalonia-template"
+          dotnet new ${{ matrix.short-name }} -n AvaloniaTemplateApp -o "${RUNNER_TEMP}/avalonia-template"
       - name: Build generated app
         run: |
-          dotnet restore "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" -c ${CONFIG} --no-restore
+          project="${RUNNER_TEMP}/avalonia-template/${{ matrix.project }}"
+          dotnet restore "$project" -p:TargetFrameworks=net8.0 --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "$project" -c ${CONFIG} -p:TargetFrameworks=net8.0 --no-restore
+
+  android-runtime:
+    name: Android build and launch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Install Android workload
+        run: dotnet workload install maui-android --skip-manifest-update
+      - name: Build Android sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android
+      - name: Launch and assert Android process
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          disable-animations: true
+          script: |
+            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-android -name '*-Signed.apk' -print -quit)
+            test -n "$apk"
+            adb install -r "$apk"
+            adb shell monkey -p org.fabulous.maui.helloworld 1
+            adb shell pidof org.fabulous.maui.helloworld
+
+  apple-runtime:
+    name: Apple build and launch
+    runs-on: macos-14
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Install Apple workloads
+        run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
+      - name: Build iOS sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:RuntimeIdentifier=iossimulator-x64
+      - name: Build Mac Catalyst sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-x64
+      - name: Launch and assert Mac Catalyst process
+        shell: bash
+        run: |
+          app=$(find samples/maui/HelloWorld/bin/${CONFIG}/net8.0-maccatalyst -name '*.app' -print -quit)
+          test -n "$app"
+          open "$app"
+          for attempt in {1..10}; do
+            if pgrep -f "$app/Contents/MacOS"; then
+              pkill -f "$app/Contents/MacOS"
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
 
   windows-compat:
     name: Windows compatibility
@@ -138,6 +225,18 @@ jobs:
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
         run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
+      - name: Launch and assert Windows sample process
+        run: |
+          $executable = Get-ChildItem samples/maui/TicTacToe/bin/$env:CONFIG -Recurse -Filter TicTacToe.exe | Select-Object -First 1
+          if (-not $executable) {
+            throw 'TicTacToe executable was not produced.'
+          }
+          $process = Start-Process $executable.FullName -PassThru
+          Start-Sleep -Seconds 10
+          if ($process.HasExited) {
+            throw "TicTacToe exited during startup with code $($process.ExitCode)."
+          }
+          Stop-Process -Id $process.Id
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
