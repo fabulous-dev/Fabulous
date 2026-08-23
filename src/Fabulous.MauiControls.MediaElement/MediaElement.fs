@@ -113,19 +113,19 @@ module MediaElement =
     // ---- Events -----
 
     let MediaOpened =
-        Attributes.defineEventNoArg "MediaElement_MediaOpened" (fun target -> (target :?> MediaElement).MediaOpened)
+        Attributes.Mvu.defineEventNoArg "MediaElement_MediaOpened" (fun target -> (target :?> MediaElement).MediaOpened)
 
     let MediaEnded =
-        Attributes.defineEventNoArg "MediaElement_MediaEnded" (fun target -> (target :?> MediaElement).MediaEnded)
+        Attributes.Mvu.defineEventNoArg "MediaElement_MediaEnded" (fun target -> (target :?> MediaElement).MediaEnded)
 
     let MediaFailed =
-        Attributes.defineEvent<MediaFailedEventArgs> "MediaElement_MediaFailed" (fun target -> (target :?> MediaElement).MediaFailed)
+        Attributes.Mvu.defineEvent<MediaFailedEventArgs> "MediaElement_MediaFailed" (fun target -> (target :?> MediaElement).MediaFailed)
 
     let PositionChanged =
-        Attributes.defineEvent<MediaPositionChangedEventArgs> "MediaElement_PositionChanged" (fun target -> (target :?> MediaElement).PositionChanged)
+        Attributes.Mvu.defineEvent<MediaPositionChangedEventArgs> "MediaElement_PositionChanged" (fun target -> (target :?> MediaElement).PositionChanged)
 
     let SeekCompleted =
-        Attributes.defineEventNoArg "MediaElement_SeekCompleted" (fun target -> (target :?> MediaElement).SeekCompleted)
+        Attributes.Mvu.defineEventNoArg "MediaElement_SeekCompleted" (fun target -> (target :?> MediaElement).SeekCompleted)
 
 
 [<AutoOpen>]
@@ -133,12 +133,12 @@ module MediaElementBuilders =
     type Fabulous.Maui.View with
 
         /// <summary>MediaElement is a cross-platform control for playing video and audio.</summary>
-        static member MediaElement<'msg>() =
-            WidgetBuilder<'msg, IFabMediaElement>(MediaElement.WidgetKey, AttributesBundle(StackList.empty(), ValueNone, ValueNone))
+        static member inline MediaElement<'msg when 'msg: equality>() =
+            WidgetBuilder<'msg, IFabMediaElement>(MediaElement.WidgetKey, AttributesBundle(StackList.empty(), [||], [||], [||]))
 
         /// <summary>MediaElement is a cross-platform control for playing video and audio.</summary>
         /// <param name ="source">The source of the media loaded into the control.</param>
-        static member inline MediaElement<'msg>(source: string) =
+        static member inline MediaElement<'msg when 'msg: equality>(source: string) =
             WidgetBuilder<'msg, IFabMediaElement>(MediaElement.WidgetKey, MediaElement.Source.WithValue(source))
 
 
@@ -201,14 +201,14 @@ type MediaElementModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onMediaOpened(this: WidgetBuilder<'msg, #IFabMediaElement>, msg: 'msg) =
-        this.AddScalar(MediaElement.MediaOpened.WithValue(msg))
+        this.AddScalar(MediaElement.MediaOpened.WithValue(MsgValue msg))
 
     /// <summary>Listen to the OnMediaOpened event</summary>
     /// <param name="this">Current widget</param>
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onMediaEnded(this: WidgetBuilder<'msg, #IFabMediaElement>, msg: 'msg) =
-        this.AddScalar(MediaElement.MediaEnded.WithValue(msg))
+        this.AddScalar(MediaElement.MediaEnded.WithValue(MsgValue msg))
 
     /// <summary>Listen to the OnMediaFailed event</summary>
     /// <param name="this">Current widget</param>
@@ -229,4 +229,4 @@ type MediaElementModifiers =
     /// <param name="msg">Message to dispatch</param>
     [<Extension>]
     static member inline onSeekCompleted(this: WidgetBuilder<'msg, #IFabMediaElement>, msg: 'msg) =
-        this.AddScalar(MediaElement.SeekCompleted.WithValue(msg))
+        this.AddScalar(MediaElement.SeekCompleted.WithValue(MsgValue msg))

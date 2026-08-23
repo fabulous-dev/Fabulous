@@ -21,6 +21,8 @@
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="coverlet.collector" Version="3.1.2" />
+    <PackageVersion Include="CommunityToolkit.Maui" Version="4.0.0" />
+    <PackageVersion Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
     <PackageVersion Include="FsCheck.NUnit" Version="2.16.6" />
     <PackageVersion Include="FSharp.Android.Resource" Version="1.0.4" />
     <PackageVersion Include="FSharp.Maui.WinUICompat" Version="1.1.0" />

@@ -43,7 +43,8 @@
       "destination": "src/Fabulous.MauiControls.MediaElement",
       "ref": "main",
       "wave": 2,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from fd27fe21a6e94ebe76d41944b95aff065e3e3948 and aligned with the local Fabulous 3 / .NET 8 Maui backend."
     },
     {
       "name": "FSharp.Maui.WinUICompat",
