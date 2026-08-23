@@ -44,7 +44,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Build
-        run: hugo --source website --destination "$GITHUB_WORKSPACE/public" --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --source website --destination "$GITHUB_WORKSPACE/public" --minify --baseURL "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
       - name: Build authored documentation
         run: |
           python -m pip install mkdocs==1.6.1

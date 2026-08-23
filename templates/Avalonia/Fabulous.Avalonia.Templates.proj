@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Fabulous.Avalonia.Templates</PackageId>
     <IsPackable>true</IsPackable>
     <PackageType>Template</PackageType>
     <Description>Templates for Fabulous.Avalonia</Description>
@@ -33,6 +34,6 @@ content/*/nuget.config;
       <PackagePath>content/</PackagePath>
     </Content>
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="../logo/nuget-icon.png" Pack="true" PackagePath="\" />
+    <None Include="../../logo/nuget-icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

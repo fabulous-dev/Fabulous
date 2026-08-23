@@ -13,7 +13,7 @@
     {
       "name": "Fabulous.Avalonia",
       "repository": "fabulous-dev/Fabulous.Avalonia",
-      "destination": "src/Fabulous.Avalonia",
+      "destination": "src/avalonia/Fabulous.Avalonia",
       "ref": "main",
       "wave": 1,
       "status": "imported",
@@ -22,7 +22,7 @@
     {
       "name": "Fabulous.MauiControls",
       "repository": "fabulous-dev/Fabulous.MauiControls",
-      "destination": "src/Fabulous.MauiControls",
+      "destination": "src/maui/Fabulous.MauiControls",
       "ref": "update-fabulous-api",
       "wave": 1,
       "status": "imported",
@@ -31,7 +31,7 @@
     {
       "name": "Fabulous.MauiControls.Maps",
       "repository": "fabulous-dev/Fabulous.MauiControls.Maps",
-      "destination": "src/Fabulous.MauiControls.Maps",
+      "destination": "src/maui/Fabulous.MauiControls.Maps",
       "ref": "main",
       "wave": 2,
       "status": "imported",
@@ -40,7 +40,7 @@
     {
       "name": "Fabulous.MauiControls.MediaElement",
       "repository": "fabulous-dev/Fabulous.MauiControls.MediaElement",
-      "destination": "src/Fabulous.MauiControls.MediaElement",
+      "destination": "src/maui/Fabulous.MauiControls.MediaElement",
       "ref": "main",
       "wave": 2,
       "status": "imported",
@@ -49,19 +49,11 @@
     {
       "name": "FSharp.Maui.WinUICompat",
       "repository": "fabulous-dev/FSharp.Maui.WinUICompat",
-      "destination": "src/FSharp.Maui.WinUICompat",
+      "destination": "src/maui/FSharp.Maui.WinUICompat",
       "ref": "main",
       "wave": 2,
       "status": "imported",
       "notes": "Imported from c6c139ed136a2c39409a206da9ce28c7bf54e6ea and upgraded to .NET 8 with root Windows CI coverage."
-    },
-    {
-      "name": "FSharp.Mobile.Templates",
-      "repository": "fabulous-dev/FSharp.Mobile.Templates",
-      "destination": "templates/mobile",
-      "ref": "main",
-      "wave": 3,
-      "status": "pending"
     },
     {
       "name": "docs.fabulous.dev",

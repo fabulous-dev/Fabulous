@@ -85,6 +85,23 @@ repository_root = inventory_path.parents[2]
 if (repository_root / "platforms").exists():
     fail("the retired platforms directory must not exist")
 
+source_root = repository_root / "src"
+source_groups = {path.name for path in source_root.iterdir() if path.is_dir()}
+if source_groups != {"neutral", "maui", "avalonia"}:
+    fail("src must contain only neutral, maui, and avalonia directories")
+
+core_project = source_root / "neutral/Fabulous.Core/Fabulous.Core.fsproj"
+if not core_project.is_file():
+    fail("the core project must be src/neutral/Fabulous.Core/Fabulous.Core.fsproj")
+
+avalonia_props = (source_root / "avalonia/Fabulous.Avalonia.props").read_text(encoding="utf-8")
+if "..\\neutral\\Fabulous.Core\\Fabulous.Core.fsproj" not in avalonia_props:
+    fail("Avalonia sample properties must reference Fabulous.Core")
+
+solution_files = list(repository_root.glob("*.sln"))
+if solution_files != [repository_root / "Fabulous.sln"]:
+    fail("Fabulous.sln must be the only root solution")
+
 for nested_path in repository_root.rglob("*"):
     relative_path = nested_path.relative_to(repository_root)
     if ".git" in relative_path.parts:

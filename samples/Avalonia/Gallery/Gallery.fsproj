@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\..\src\Fabulous.Avalonia.props" />
+  <Import Project="..\..\..\src\avalonia\Fabulous.Avalonia.props" />
   
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -172,13 +172,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.ColorPicker\Fabulous.Avalonia.ColorPicker.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.DataGrid\Fabulous.Avalonia.DataGrid.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.Diagnostics\Fabulous.Avalonia.Diagnostics.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.ItemsRepeater\Fabulous.Avalonia.ItemsRepeater.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.Labs\Fabulous.Avalonia.Labs.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia.TreeDataGrid\Fabulous.Avalonia.TreeDataGrid.fsproj" />
-    <ProjectReference Include="..\..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.ColorPicker\Fabulous.Avalonia.ColorPicker.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.DataGrid\Fabulous.Avalonia.DataGrid.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.Diagnostics\Fabulous.Avalonia.Diagnostics.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.ItemsRepeater\Fabulous.Avalonia.ItemsRepeater.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.Labs\Fabulous.Avalonia.Labs.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.TreeDataGrid\Fabulous.Avalonia.TreeDataGrid.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
     <ProjectReference Include="..\ControlSamples\ControlSamples.csproj" />
   </ItemGroup>
 

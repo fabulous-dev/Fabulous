@@ -90,7 +90,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
+    <ProjectReference Include="..\..\..\..\src\maui\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />

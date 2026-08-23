@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <UseMaui>true</UseMaui>
+        <UseMauiCore>true</UseMauiCore>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <!-- NuGet Package -->
+    <PropertyGroup>
+        <Description>Maps implementation for Fabulous</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+
+    <!-- SourceLink -->
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="../../../logo/nuget-icon.png" Pack="true" PackagePath="\" />
+        <Compile Include="MapElement.fs" />
+        <Compile Include="MapPolygon.fs" />
+        <Compile Include="MapPolyline.fs" />
+        <Compile Include="MapCircle.fs" />
+        <Compile Include="MapPin.fs" />
+        <Compile Include="Map.fs" />
+        <Compile Include="AppHostBuilderExtensions.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" />
+        <PackageReference Include="FSharp.Core" VersionOverride="8.0.300" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
+    </ItemGroup>
+
+</Project>

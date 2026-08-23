@@ -14,9 +14,9 @@ profile metadata in `fabulous-dev/.github` is also outside the product monorepo.
 - Import repositories with full history; do not squash or copy source trees.
 - Import one migration wave at a time and keep each import independently
   reviewable.
-- Keep every product, extension, compatibility, and test project under root
-  `src/`; keep examples under root `samples/` and templates under root
-  `templates/`.
+- Keep every product, extension, compatibility, and test project under
+  `src/neutral`, `src/maui`, or `src/avalonia`; keep examples under root
+  `samples/` and templates under root `templates/`.
 - Keep one root engineering system. Nested workflows, tool manifests, package
   catalogs, build properties, solutions, and repository policy files are
   removed after each history import.
@@ -80,7 +80,8 @@ For each wave:
 
 Wave 1 brought in Avalonia and the already-aligned Maui branch, including their
 current samples and templates. The older standalone Avalonia samples repository
-is therefore not a migration input. Wave 2 adds Maui extensions and compatibility
-support. Wave 3 evaluates the remaining mobile template repository. Website and
-documentation content already publish through GitHub Pages. The Xamarin.Forms
-repositories remain outside the monorepo and can be archived independently.
+is therefore not a migration input. Wave 2 added Maui extensions and compatibility
+support. `FSharp.Mobile.Templates` remains separate because it publishes plain
+.NET platform templates and has no Fabulous dependency. Website and documentation
+content publish through GitHub Pages. The Xamarin.Forms repositories remain
+outside the monorepo and can be archived independently.

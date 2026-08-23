@@ -99,8 +99,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="FSharp.Core"/>
-	  <ProjectReference Include="..\..\..\..\src\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
-	  <ProjectReference Include="..\..\..\..\src\Fabulous.MauiControls.Maps\Fabulous.MauiControls.Maps.fsproj" />
+	  <ProjectReference Include="..\..\..\..\src\maui\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
+	  <ProjectReference Include="..\..\..\..\src\maui\Fabulous.MauiControls.Maps\Fabulous.MauiControls.Maps.fsproj" />
 	</ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@
 	</PropertyGroup>
 
 
-	<Import Project="..\..\..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
+	<Import Project="..\..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
 	
 
 	<ItemGroup>
@@ -79,7 +79,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
+	  <ProjectReference Include="..\..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -28,9 +28,9 @@ jobs:
       - name: Check core code formatting
         run: |
           dotnet tool restore
-          dotnet fantomas --check src/Fabulous
-          dotnet fantomas --check src/Fabulous.Tests
-          dotnet fantomas --check src/Fabulous.Benchmarks
+          dotnet fantomas --check src/neutral/Fabulous.Core
+          dotnet fantomas --check src/neutral/Fabulous.Tests
+          dotnet fantomas --check src/neutral/Fabulous.Benchmarks
 
   build-and-test:
     name: Build and test
@@ -43,7 +43,7 @@ jobs:
         with:
           dotnet-version: 9.x
       - name: Test
-        run: dotnet test Fabulous.NoSamples.sln -c ${CONFIG}
+        run: dotnet test Fabulous.sln -c ${CONFIG}
 
   windows-compat:
     name: Windows compatibility
@@ -58,4 +58,4 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
       - name: Build
-        run: dotnet build src/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
+        run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG

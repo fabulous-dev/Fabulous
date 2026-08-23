@@ -16,7 +16,7 @@ jobs:
     environment: nuget
     steps:
     - name: Checkout sources
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Extract version from tag
       uses: damienaicheh/extract-version-from-tag-action@v1.0.0
     - name: Set release version
@@ -36,7 +36,7 @@ jobs:
         version: '${{ env.RELEASE_VERSION }}'
         path: ./CHANGELOG.md
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.x
     - name: Restore
@@ -45,8 +45,10 @@ jobs:
       run: dotnet build ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-restore
     - name: Test
       run: dotnet test ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-build
+    - name: Prepare templates
+      run: python3 eng/release/prepare-templates.py ${RELEASE_VERSION}
     - name: Pack
-      run: dotnet pack ${SLN_FILE} -p:Version=${RELEASE_VERSION} -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c ${CONFIG} --no-build --property PackageOutputPath=${PWD}/nupkgs
+      run: dotnet pack ${SLN_FILE} -p:Version=${RELEASE_VERSION} -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:

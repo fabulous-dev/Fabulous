@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="APISketchTests\TestUI.Platform.fs" />
+    <Compile Include="APISketchTests\TestUI.ViewNode.fs" />
+    <Compile Include="APISketchTests\TestUI.Component.fs" />
+    <Compile Include="APISketchTests\TestUI.ViewUpdaters.fs" />
+    <Compile Include="APISketchTests\TestUI.Attributes.fs" />
+    <Compile Include="APISketchTests\TestUI.Widgets.fs" />
+    <Compile Include="APISketchTests\APISketchTests.fs" />
+    <Compile Include="Generators.fs" />
+    <Compile Include="AttributesTests.fs" />
+    <Compile Include="ViewTests.fs" />
+    <Compile Include="ArrayTests.fs" />
+    <Compile Include="CmdTests.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FsCheck.NUnit" />
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="FSharp.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous.Core\Fabulous.Core.fsproj" />
+  </ItemGroup>
+</Project>

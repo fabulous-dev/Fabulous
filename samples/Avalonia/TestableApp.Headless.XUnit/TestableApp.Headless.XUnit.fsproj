@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+      <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
       <ProjectReference Include="..\TestableApp\TestableApp.fsproj" />
     </ItemGroup>
 
