@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp", "NewApp\NewApp.fsproj", "{F5326282-392A-4018-A065-72225A879492}"
+EndProject
+#if (Platform == Android)
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp.Android", "NewApp.Android\NewApp.Android.fsproj", "{826164D6-5A87-4C91-B950-7A197CAD6026}"
+EndProject
+#endif
+#if (Platform == Desktop)
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp.Desktop", "NewApp.Desktop\NewApp.Desktop.fsproj", "{C2BEAE84-EFD1-4CB8-9323-4CF23DF2E310}"
+EndProject
+#endif
+#if (Platform == iOS)
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp.iOS", "NewApp.iOS\NewApp.iOS.fsproj", "{A87412B3-7CB7-4C27-933F-25853A1B860C}"
+EndProject
+#endif
+#if (Platform == Browser)
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp.Browser", "NewApp.Browser\NewApp.Browser.fsproj", "{68A88C98-EE56-4C1D-B895-31D6D40FAD4D}"
+EndProject
+#endif
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5326282-392A-4018-A065-72225A879492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5326282-392A-4018-A065-72225A879492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5326282-392A-4018-A065-72225A879492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5326282-392A-4018-A065-72225A879492}.Release|Any CPU.Build.0 = Release|Any CPU
+#if (Platform == Android)
+		{826164D6-5A87-4C91-B950-7A197CAD6026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826164D6-5A87-4C91-B950-7A197CAD6026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826164D6-5A87-4C91-B950-7A197CAD6026}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{826164D6-5A87-4C91-B950-7A197CAD6026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826164D6-5A87-4C91-B950-7A197CAD6026}.Release|Any CPU.Build.0 = Release|Any CPU
+#endif
+#if (Platform == Desktop)
+		{C2BEAE84-EFD1-4CB8-9323-4CF23DF2E310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2BEAE84-EFD1-4CB8-9323-4CF23DF2E310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2BEAE84-EFD1-4CB8-9323-4CF23DF2E310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2BEAE84-EFD1-4CB8-9323-4CF23DF2E310}.Release|Any CPU.Build.0 = Release|Any CPU
+#endif
+#if (Platform == iOS)
+		{A87412B3-7CB7-4C27-933F-25853A1B860C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87412B3-7CB7-4C27-933F-25853A1B860C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87412B3-7CB7-4C27-933F-25853A1B860C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A87412B3-7CB7-4C27-933F-25853A1B860C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87412B3-7CB7-4C27-933F-25853A1B860C}.Release|Any CPU.Build.0 = Release|Any CPU
+#endif
+#if (Platform == Browser)
+		{68A88C98-EE56-4C1D-B895-31D6D40FAD4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A88C98-EE56-4C1D-B895-31D6D40FAD4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A88C98-EE56-4C1D-B895-31D6D40FAD4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A88C98-EE56-4C1D-B895-31D6D40FAD4D}.Release|Any CPU.Build.0 = Release|Any CPU
+#endif
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5976E122-ADE7-4648-B2FD-553BA63FB66A}
+	EndGlobalSection
+EndGlobal

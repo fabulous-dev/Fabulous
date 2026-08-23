@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <PublishTrimmed>True</PublishTrimmed>
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+    <!-- https://github.com/dotnet/runtime/issues/79910 -->
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.5" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel" Version="2.6.2.2" />
+    <PackageReference Include="Avalonia.Android" Version="AvaloniaAndroidPkgVersion" />
+    <ProjectReference Include="..\NewApp\NewApp.fsproj" />
+
+    <None Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\**\*" />
+    <Compile Include="MainActivity.fs" />
+    <Compile Include="SplashActivity.fs" />
+  </ItemGroup>
+</Project>

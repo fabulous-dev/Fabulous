@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Setup.fs" />
+        <Compile Include="Generators.fs" />
+        <Compile Include="ViewHelperTests.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FsCheck.NUnit" />
+        <PackageReference Include="FsUnit" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="NUnit" />
+        <PackageReference Include="NUnit3TestAdapter" />
+        <PackageReference Include="FSharp.Core" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+</Project>

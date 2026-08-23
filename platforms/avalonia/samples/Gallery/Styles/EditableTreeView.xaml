@@ -1,0 +1,17 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:gallery="clr-namespace:Gallery">
+
+  <!-- strict DataType declaration here is optional and just for reference -->
+  <Style Selector="TreeViewItem" x:DataType="gallery:EditableNode">
+    <!--  Binds Avalonia.Controls.TreeViewItem.IsExpanded to EditableNode.IsExpanded
+          to preserve tree node expansion on re-render, see
+          https://github.com/AvaloniaUI/Avalonia/discussions/13903
+          https://github.com/AvaloniaUI/Avalonia/discussions/12397  -->
+    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+    <!--  Uncomment the following to similarly bind Avalonia.Controls.TreeViewItem.IsSelected to EditableNode.IsSelected
+          This may be useful to preserve tree node selection on re-render. -->
+    <!--<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />-->
+  </Style>
+</Styles>

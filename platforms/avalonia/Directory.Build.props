@@ -1,0 +1,30 @@
+<Project>
+
+  <PropertyGroup>
+    <RepositoryUrl>https://github.com/fabulous-dev/Fabulous.Avalonia</RepositoryUrl>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <AvaloniaVersion>11.3.0</AvaloniaVersion>
+    <AvaloniaLabsVersion>11.3.0</AvaloniaLabsVersion>
+    <FabulousVersion>3.0.0-pre22</FabulousVersion>
+  </PropertyGroup>
+
+  <!-- Shared NuGet Package info -->
+  <PropertyGroup>
+    <Authors>Fabulous contributors</Authors>
+    <PackageTags>Fabulous;F#;Declarative UI;MVU;Avalonia;Android;iOS;macOS;Windows;Linux</PackageTags>
+    <PackageIcon>nuget-icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/fabulous-dev/Fabulous.Avalonia</PackageProjectUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OtherFlags>$(OtherFlags) --test:GraphBasedChecking --test:ParallelOptimization --test:ParallelIlxGen</OtherFlags>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <NoWarn>$(NoWarn);FS1063</NoWarn>
+  </PropertyGroup>
+
+</Project>

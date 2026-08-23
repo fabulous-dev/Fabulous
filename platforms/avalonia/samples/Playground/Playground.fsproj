@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\src\Fabulous.Avalonia.props" />
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net8.0;net8.0-android</TargetFrameworks>
+        <!-- net8.0-ios is not supported on Linux, so we do not add it there. -->
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux')) == false">$(TargetFrameworks);net8.0-ios</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+        <WarningsAsErrors>FS0025</WarningsAsErrors>
+        <NoWarn>MT7091;NETSDK1206</NoWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'Android'">
+        <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'iOS'">
+        <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(AvaloniaPlatform)|$(Configuration)' == 'iOS|Debug' ">
+        <CodesignKey>Apple Development: Timothé Larivière (X6N2KN9WK3)</CodesignKey>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CodesignKey>iPhone Developer</CodesignKey>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Themes.Fluent" />
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Fabulous" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\extensions\Fabulous.Avalonia.Diagnostics\Fabulous.Avalonia.Diagnostics.fsproj" />
+        <ProjectReference Include="..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+    <Import Project="..\Fabulous.Avalonia.Samples.targets" />
+</Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <ItemGroup>
+        <None Include="Properties\**" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="$(AvaloniaPlatform) == 'Android'">
+        <AndroidResource Include="$(AndroidPlatformFolder)Resources\**\*" />
+        <None Include="$(AndroidPlatformFolder)AndroidManifest.xml" />
+        <Compile Include="$(AndroidPlatformFolder)MainActivity.fs" />
+        <Compile Include="$(AndroidPlatformFolder)SplashActivity.fs" />
+        <PackageReference Include="Avalonia.Android" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="$(AvaloniaPlatform) == 'iOS'">
+        <None Include="$(iOSPlatformFolder)Entitlements.plist" />
+        <None Include="$(iOSPlatformFolder)Info.plist" />
+        <InterfaceDefinition Include="$(iOSPlatformFolder)*.storyboard;$(iOSPlatformFolder)*.xib" />
+        <Compile Include="$(iOSPlatformFolder)AppDelegate.fs" />
+        <PackageReference Include="Avalonia.iOS" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(AvaloniaPlatform) == 'Desktop'">
+        <Compile Include="$(DesktopPlatformFolder)Program.fs" />
+        <PackageReference Include="Avalonia.Desktop" />
+    </ItemGroup>
+    
+<!--    <Target Name="DebugFabulous" BeforeTargets="_ReadAppManifest">-->
+<!--        <Error Text="AvaloniaPlatform is '$(AppBundleManifest)'" />-->
+<!--    </Target>-->
+</Project>

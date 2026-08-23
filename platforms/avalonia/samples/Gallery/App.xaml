@@ -1,0 +1,207 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:labs="using:Avalonia.Labs.Controls"
+    xmlns:gallery="clr-namespace:Gallery">
+    <FluentTheme />
+    <labs:ControlThemes/>
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+    <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+    <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
+    <!--     <FluentTheme.Palettes> -->
+    <!--         ~1~ Palette for Light theme variant @1@ -->
+    <!--         <ColorPaletteResources x:Key="Light" Accent="Green" RegionColor="White" ErrorText="Red" /> -->
+    <!--         ~1~ Palette for Dark theme variant @1@ -->
+    <!--         <ColorPaletteResources x:Key="Dark" Accent="DarkGreen" RegionColor="Black" ErrorText="Yellow" /> -->
+    <!--     </FluentTheme.Palettes> -->
+    <!-- </FluentTheme> -->
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://ControlSamples/HamburgerMenu/HamburgerMenu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key='Light'>
+                    <SolidColorBrush x:Key='BackgroundBrush'>SpringGreen</SolidColorBrush>
+                    <SolidColorBrush x:Key='ForegroundBrush'>Black</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key='Dark'>
+                    <SolidColorBrush x:Key='BackgroundBrush'>DodgerBlue</SolidColorBrush>
+                    <SolidColorBrush x:Key='ForegroundBrush'>White</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <x:Double x:Key="ColorSliderSize">24</x:Double>
+            <x:Double x:Key="ColorSliderTrackSize">18</x:Double>
+            <CornerRadius x:Key="ColorSliderCornerRadius">12</CornerRadius>
+            <CornerRadius x:Key="ColorSliderTrackCornerRadius">9</CornerRadius>
+            <ControlTheme x:Key="ColorSliderThumbTheme" TargetType="Thumb">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="CornerRadius" Value="{DynamicResource ColorSliderCornerRadius}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="{TemplateBinding CornerRadius}" />
+                                <Ellipse Height="{TemplateBinding Height}"
+                                         Width="{TemplateBinding Width}"
+                                         Fill="Transparent"
+                                         Stroke="{TemplateBinding Foreground}"
+                                         StrokeThickness="1" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </ControlTheme>
+            <DataTemplate x:Key="RegionCell" DataType="gallery:Country">
+                <TextBlock Text="{Binding Region}" />
+            </DataTemplate>
+            <DataTemplate x:Key="RegionEditCell" DataType="gallery:Country">
+                <ComboBox ItemsSource="{x:Static gallery:Countries.Regions}"
+                          SelectedItem="{Binding Region}" />
+            </DataTemplate>
+            <!-- Template for Name column cells -->
+            <DataTemplate x:Key="FileNameCell" DataType="gallery:FileTreeNodeModel">
+                <StackPanel Orientation="Horizontal">
+                    <Image Margin="0 0 4 0"
+                           VerticalAlignment="Center">
+                        <Image.Source>
+                            <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
+                                <Binding Path="IsDirectory" />
+                                <Binding Path="IsExpanded" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Edit template for Name column cells -->
+            <DataTemplate x:Key="FileNameEditCell" DataType="gallery:FileTreeNodeModel">
+                <StackPanel Orientation="Horizontal">
+                    <Image Margin="0 0 4 0"
+                           VerticalAlignment="Center">
+                        <Image.Source>
+                            <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
+                                <Binding Path="IsDirectory" />
+                                <Binding Path="IsExpanded" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBox Text="{Binding Name}" VerticalAlignment="Center" />
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Styles.Resources>
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+    </Style>
+    <Style Selector="HeaderedContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="HeaderCol" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter Content="{TemplateBinding Header}"
+                                          Grid.Column="0"
+                                          VerticalAlignment="Center" />
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          Grid.Column="1"
+                                          VerticalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style Selector="TreeDataGrid TreeDataGridRow:nth-last-child(2n)">
+        <Setter Property="Background" Value="#20808080" />
+    </Style>
+    <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-last-child(1)">
+        <Setter Property="TextBlock.FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-last-child(1)">
+        <Setter Property="TextBlock.FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="Thumb.drag">
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Name="PART_Rectangle">
+                        <Rectangle.Styles>
+                            <Style Selector="Rectangle">
+                                <Setter Property="Fill" Value="Transparent" />
+                            </Style>
+                        </Rectangle.Styles>
+                    </Rectangle>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Thumb.resize">
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Name="PART_Rectangle">
+                        <Rectangle.Styles>
+                            <Style Selector="Rectangle">
+                                <Setter Property="Fill" Value="White" />
+                                <Setter Property="Stroke" Value="Black" />
+                                <Setter Property="StrokeThickness" Value="2" />
+                                <Setter Property="Margin" Value="-5,-5,0,0" />
+                                <Setter Property="Width" Value="10" />
+                                <Setter Property="Height" Value="10" />
+                            </Style>
+                        </Rectangle.Styles>
+                    </Rectangle>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Thumb:pointerover.sizeAll /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="SizeAll" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.topSide /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="TopSide" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.bottomSide /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="BottomSide" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.leftSide /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="LeftSide" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.rightSide /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="RightSide" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.topLeftCorner /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="TopLeftCorner" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.topRightCorner /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="TopRightCorner" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.bottomLeftCorner /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="BottomLeftCorner" />
+    </Style>
+
+    <Style Selector="Thumb:pointerover.bottomRightCorner /template/ Rectangle#PART_Rectangle">
+        <Setter Property="Cursor" Value="BottomRightCorner" />
+    </Style>
+</Styles>

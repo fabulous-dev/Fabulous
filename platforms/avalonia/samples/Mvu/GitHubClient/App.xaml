@@ -1,0 +1,9 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:labs="using:Avalonia.Labs.Controls">
+    <FluentTheme />
+    <labs:ControlThemes/>
+    <Styles.Resources>
+    </Styles.Resources>
+</Styles>

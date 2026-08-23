@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <!-- NuGet Package -->
+    <PropertyGroup>
+        <Description>ColorPicker for Fabulous.Avalonia</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+    <!-- SourceLink -->
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" PackagePath="\" Pack="true" />
+        <None Include="..\..\logo\nuget-icon.png" PackagePath="\" Pack="true" />
+        <Compile Include="ColorView.fs" />
+        <Compile Include="ColorView.Mvu.fs" />
+        <Compile Include="ColorView.Components.fs" />
+        <Compile Include="ColorPicker.fs" />
+        <Compile Include="ColorPicker.Mvu.fs" />
+        <Compile Include="ColorPicker.Components.fs" />
+        <Compile Include="ColorSpectrum.fs" />
+        <Compile Include="ColorSpectrum.Mvu.fs" />
+        <Compile Include="ColorSpectrum.Components.fs" />
+        <Compile Include="ColorSlider.fs" />
+        <Compile Include="ColorSlider.Mvu.fs" />
+        <Compile Include="ColorSlider.Components.fs" />
+        <Compile Include="ColorPreviewer.fs" />
+        <Compile Include="ColorPreviewer.Mvu.fs" />
+        <Compile Include="ColorPreviewer.Components.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Controls.ColorPicker" VersionOverride="$(AvaloniaVersion)" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+
+</Project>

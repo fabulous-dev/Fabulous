@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <!-- https://github.com/xamarin/xamarin-macios/issues/18469 -->
+  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' != 'true' ">
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CodesignRequireProvisioningProfile>true</CodesignRequireProvisioningProfile>
+    <DisableCodesignVerification>true</DisableCodesignVerification>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <Compile Include="AppDelegate.fs" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewApp\NewApp.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.iOS" Version="AvaloniaiOSPkgVersion" />
+  </ItemGroup>
+</Project>

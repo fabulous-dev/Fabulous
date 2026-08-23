@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net8.0-android</TargetFrameworks>
+    <!-- net8.0-ios is not supported on Linux, so we do not add it there. -->
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux')) == false">$(TargetFrameworks);net8.0-ios</TargetFrameworks>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <PublishTrimmed>true</PublishTrimmed>
+    <WarningsAsErrors>FS0025</WarningsAsErrors>
+    <NoWarn>MT7091;NETSDK1206</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AvaloniaPlatform>$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))</AvaloniaPlatform>
+    <!-- Normalize casing -->
+    <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == ''">Desktop</AvaloniaPlatform>
+    <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'android'">Android</AvaloniaPlatform>
+    <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'ios'">iOS</AvaloniaPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'Android'">
+    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'iOS'">
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+    <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.fs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(AvaloniaPlatform) == 'Android'">
+    <AndroidResource Include="$(AndroidPlatformFolder)Resources\**\*" />
+    <None Include="$(AndroidPlatformFolder)AndroidManifest.xml" />
+    <Compile Include="$(AndroidPlatformFolder)MainActivity.fs" />
+    <Compile Include="$(AndroidPlatformFolder)SplashActivity.fs" />
+    <PackageReference Include="Avalonia.Android" Version="AvaloniaAndroidPkgVersion" />
+  </ItemGroup>
+  <ItemGroup Condition="$(AvaloniaPlatform) == 'iOS'">
+    <None Include="$(iOSPlatformFolder)Entitlements.plist" />
+    <None Include="$(iOSPlatformFolder)Info.plist" />
+    <InterfaceDefinition Include="$(iOSPlatformFolder)*.storyboard;$(iOSPlatformFolder)*.xib" />
+    <Compile Include="$(iOSPlatformFolder)AppDelegate.fs" />
+    <PackageReference Include="Avalonia.iOS" Version="AvaloniaiOSPkgVersion" />
+  </ItemGroup>
+  <ItemGroup Condition="$(AvaloniaPlatform) == 'Desktop'">
+    <Compile Include="$(DesktopPlatformFolder)Program.fs" />
+    <PackageReference Include="Avalonia.Desktop" Version="AvaloniaDesktopPkgVersion" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="AvaloniaThemesFluentPkgVersion" />
+    <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
+    <PackageReference Include="Fabulous" Version="FabulousPkgVersion" />
+    <PackageReference Include="Fabulous.Avalonia" Version="FabulousAvaloniaPkgVersion" />
+  </ItemGroup>
+</Project>

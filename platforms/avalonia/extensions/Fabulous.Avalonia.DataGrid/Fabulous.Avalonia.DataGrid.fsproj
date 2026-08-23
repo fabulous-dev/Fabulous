@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <!-- NuGet Package -->
+    <PropertyGroup>
+        <Description>DataGrid for Fabulous.Avalonia</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+    <!-- SourceLink -->
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" PackagePath="\" Pack="true" />
+        <None Include="..\..\logo\nuget-icon.png" PackagePath="\" Pack="true" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="_DataGridColumn.fs" />
+        <Compile Include="_DataGridBoundColumn.fs" />
+        <Compile Include="DataGridTextColumn.fs" />
+        <Compile Include="DataGridCheckBoxColumn.fs" />
+        <Compile Include="DataGrid.fs" />
+        <Compile Include="DataGrid.Mvu.fs" />
+        <Compile Include="DataGrid.Components.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Controls.DataGrid" VersionOverride="$(AvaloniaVersion)" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+</Project>
+

@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <IsPackable>true</IsPackable>
+        <RootNamespace>Fabulous.Avalonia.Diagnostics</RootNamespace>
+    </PropertyGroup>
+    <!-- NuGet Package -->
+    <PropertyGroup>
+        <Description>Diagnostics for Fabulous.Avalonia</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+    <!-- SourceLink -->
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" PackagePath="\" Pack="true" />
+        <None Include="..\..\logo\nuget-icon.png" PackagePath="\" Pack="true" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="DevTools.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Diagnostics" VersionOverride="$(AvaloniaVersion)">
+            <PrivateAssets>build; native; contentfiles; analyzers</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+</Project>

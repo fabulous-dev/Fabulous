@@ -1,0 +1,62 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="TextBlock.h1, TextBlock.h2, TextBlock.h3, TextBlock.h4, TextBlock.h5, TextBlock.h6, TextBlock.h7, TextBlock.h8, TextBlock.h9">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    
+    <Style Selector="TextBlock.h1">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style Selector="TextBlock.h2">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h3">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h4">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h5">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h6">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h7">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h8">
+        <Setter Property="FontSize" Value="8" />
+        <Setter Property="FontWeight" Value="Bold" />
+
+    </Style>
+
+    <Style Selector="TextBlock.h9">
+        <Setter Property="FontSize" Value="6" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+
+</Styles>

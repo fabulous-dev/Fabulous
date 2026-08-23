@@ -1,0 +1,74 @@
+{
+  "author": "fabulous-dev",
+  "classifications": [
+    "Fabulous",
+    "Avalonia"
+  ],
+  "name": "Fabulous Avalonia Desktop",
+  "groupIdentity": "Fabulous.Avalonia.App.Desktop",
+  "identity": "Fabulous.Avalonia.Desktop",
+  "shortName": "fabulous-avalonia-desktop",
+  "tags": {
+    "language": "F#",
+    "type": "project"
+  },
+  "sourceName": "NewApp",
+  "primaryOutputs": [
+    {
+      "path": "NewApp\\App.fs"
+    }
+  ],
+  "defaultName": "App",
+  "preferNameDirectory": "true",
+  "postActions": [],
+  "sources": [
+    {
+      "include": ["**"],
+      "exclude": [
+        ".template.config/**/*",
+        "[Bb]in/**/*",
+        "[Oo]bj/**/*"
+      ]
+    }
+  ],
+  "guids": [
+    "0E9CB125-F04D-4E4A-8A20-7EB1FD9B43FB"
+  ],
+  "symbols": {
+    "AppIdentifier": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "com.companyname"
+    },
+    "FabulousPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FabulousPkgVersion",
+      "defaultValue": "3.0.0-pre22"
+    },
+    "FabulousAvaloniaPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FabulousAvaloniaPkgVersion",
+      "defaultValue": "PKG_VERSION"
+    },
+    "FSharpCorePkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "FSharpCorePkgVersion",
+      "defaultValue": "8.0.301"
+    },
+    "AvaloniaDesktopPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "AvaloniaDesktopPkgVersion",
+      "defaultValue": "11.3.0"
+    },
+    "AvaloniaThemesFluentPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "AvaloniaThemesFluentPkgVersion",
+      "defaultValue": "11.3.0"
+    }
+  }
+}

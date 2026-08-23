@@ -1,0 +1,390 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <!-- net8.0-ios is not supported on Linux, so we do not add it there. -->
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux')) == false">$(TargetFrameworks);net8.0-ios</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+    <UseLocalProjectReference>false</UseLocalProjectReference>
+  </PropertyGroup>
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <Description>Declarative UIs for AvaloniaUI with F# and MVU, using Fabulous</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AvaloniaPlatform>$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))</AvaloniaPlatform>
+    <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'ios'">iOS</AvaloniaPlatform>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BindingExtensions.fs" />
+    <Compile Include="_ImageSource.fs" />
+    <Compile Include="_Element.fs" />
+    <Compile Include="ViewNode.fs" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="VirtualizedCollection.fs" />
+    <Compile Include="Widgets.fs" />
+    <Compile Include="Views\_RenderOptions.fs" />
+    <Compile Include="Views\_Animatable.fs" />
+    <Compile Include="Views\_StyledElement.fs" />
+    <Compile Include="Views\_StyledElement.Components.fs" />
+    <Compile Include="Views\_StyledElement.Mvu.fs" />
+    <Compile Include="Views\_AutomationProperties.fs" />
+    <Compile Include="Views\_ITransform.fs" />
+    <Compile Include="Views\_ITransform.Components.fs" />
+    <Compile Include="Views\_ITransform.Mvu.fs" />
+    <Compile Include="Views\_Brush.fs" />
+    <Compile Include="Views\SolidColorBrush.fs" />
+    <Compile Include="Views\_Visual.fs" />
+    <Compile Include="Views\_Visual.Mvu.fs" />
+    <Compile Include="Views\_Visual.Components.fs" />
+    <Compile Include="Views\_Layoutable.fs" />
+    <Compile Include="Views\_Layoutable.Components.fs" />
+    <Compile Include="Views\_Layoutable.Mvu.fs" />
+    <Compile Include="Views\_Interactive.fs" />
+    <Compile Include="Views\_InputElement.fs" />
+    <Compile Include="Views\_InputElement.Components.fs" />
+    <Compile Include="Views\_InputElement.Mvu.fs" />
+    <Compile Include="Views\_DragDrop.fs" />
+    <Compile Include="Views\_DragDrop.Components.fs" />
+    <Compile Include="Views\_DragDrop.Mvu.fs" />
+    <Compile Include="Views\_FlyoutBase.fs" />
+    <Compile Include="Views\_FlyoutBase.Components.fs" />
+    <Compile Include="Views\_FlyoutBase.Mvu.fs" />
+    <Compile Include="Views\_PopupFlyoutBase.fs" />
+    <Compile Include="Views\_PopupFlyoutBase.Components.fs" />
+    <Compile Include="Views\_PopupFlyoutBase.Mvu.fs" />
+    <Compile Include="Views\_Control.fs" />
+    <Compile Include="Views\_Control.Components.fs" />
+    <Compile Include="Views\_Control.Mvu.fs" />
+    <Compile Include="Views\_Decorator.fs" />
+    <Compile Include="Views\_TemplatedControl.fs" />
+    <Compile Include="Views\_TemplatedControl.Components.fs" />
+    <Compile Include="Views\_TemplatedControl.Mvu.fs" />
+    <Compile Include="Views\_ContentControl.fs" />
+    <Compile Include="Views\_Spinner.fs" />
+    <Compile Include="Views\_Spinner.Components.fs" />
+    <Compile Include="Views\_Spinner.Mvu.fs" />
+    <Compile Include="Views\_TopLevel.fs" />
+    <Compile Include="Views\_TopLevel.Components.fs" />
+    <Compile Include="Views\_TopLevel.Mvu.fs" />
+    <Compile Include="Views\_TextElement.fs" />
+    <Compile Include="Views\_Panel.fs" />
+    <Compile Include="Views\_VirtualizingPanel.fs" />
+    <Compile Include="Views\ItemsControl.fs" />
+    <Compile Include="Views\ItemsControl.Components.fs" />
+    <Compile Include="Views\ItemsControl.Mvu.fs" />
+    <Compile Include="Views\_HeaderedItemsControl.fs" />
+    <Compile Include="Views\_SelectingItemsControl.fs" />
+    <Compile Include="Views\_SelectingItemsControl.Components.fs" />
+    <Compile Include="Views\_SelectingItemsControl.Mvu.fs" />
+    <Compile Include="Views\_MenuBase.fs" />
+    <Compile Include="Views\_MenuBase.Components.fs" />
+    <Compile Include="Views\_MenuBase.Mvu.fs" />
+    <Compile Include="Views\_HeaderedSelectingItemsControl.fs" />
+    <Compile Include="Views\_WindowBase.fs" />
+    <Compile Include="Views\_WindowBase.Components.fs" />
+    <Compile Include="Views\_WindowBase.Mvu.fs" />
+    <Compile Include="Views\Styling\KeyFrame.fs" />
+    <Compile Include="Views\Styling\Animation.fs" />
+    <Compile Include="Views\Styling\Animation.Mvu.fs" />
+    <Compile Include="Views\Styling\Animation.Components.fs" />
+    <Compile Include="Views\Styling\Transition.fs" />
+    <Compile Include="Views\Styling\Style.fs" />
+    <Compile Include="Views\Media\_IDrawing.fs" />
+    <Compile Include="Views\Media\_TileBrush.fs" />
+    <Compile Include="Views\Media\_IPathSegment.fs" />
+    <Compile Include="Views\Media\_IGeometry.fs" />
+    <Compile Include="Views\Media\_IGeometry.Components.fs" />
+    <Compile Include="Views\Media\_IGeometry.Mvu.fs" />
+    <Compile Include="Views\Media\_Effect.fs" />
+    <Compile Include="Views\Media\_Effect.Components.fs" />
+    <Compile Include="Views\Media\_Effect.Mvu.fs" />
+    <Compile Include="Views\Media\_DropShadowEffectBase.fs" />
+    <Compile Include="Views\Media\Transforms\MatrixTransform.fs" />
+    <Compile Include="Views\Media\Transforms\SkewTransform.fs" />
+    <Compile Include="Views\Media\Transforms\RotateTransform.fs" />
+    <Compile Include="Views\Media\Transforms\TranslateTransform.fs" />
+    <Compile Include="Views\Media\Transforms\ScaleTransform.fs" />
+    <Compile Include="Views\Media\Transforms\Rotate3DTransform.fs" />
+    <Compile Include="Views\Media\Transforms\TransformGroup.fs" />
+    <Compile Include="Views\Media\Brushes\VisualBrush.fs" />
+    <Compile Include="Views\Media\Brushes\ImageBrush.fs" />
+    <Compile Include="Views\Media\Brushes\DrawingBrush.fs" />
+    <Compile Include="Views\Media\Brushes\GradientStop.fs" />
+    <Compile Include="Views\Media\Brushes\_GradientBrush.fs" />
+    <Compile Include="Views\Media\Brushes\_GradientBrush.Components.fs" />
+    <Compile Include="Views\Media\Brushes\_GradientBrush.Mvu.fs" />
+    <Compile Include="Views\Media\Brushes\ConicGradientBrush.fs" />
+    <Compile Include="Views\Media\Brushes\LinearGradientBrush.fs" />
+    <Compile Include="Views\Media\Brushes\RadialGradientBrush.fs" />
+    <Compile Include="Views\Media\PathSegments\ArcSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\BezierSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\LineSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\PolyLineSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\PolyBezierSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\QuadraticBezierSegment.fs" />
+    <Compile Include="Views\Media\PathSegments\PathFigure.fs" />
+    <Compile Include="Views\Media\Geometries\LineGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\EllipseGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\RectangleGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\PolylineGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\PathGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\CombinedGeometry.fs" />
+    <Compile Include="Views\Media\Geometries\GeometryGroup.fs" />
+    <Compile Include="Views\Media\DashStyle.fs" />
+    <Compile Include="Views\Media\Pen.fs" />
+    <Compile Include="Views\Media\Drawing\GeometryDrawing.fs" />
+    <Compile Include="Views\Media\Drawing\GlyphRunDrawing.fs" />
+    <Compile Include="Views\Media\Drawing\DrawingGroup.fs" />
+    <Compile Include="Views\Media\Drawing\ImageDrawing.fs" />
+    <Compile Include="Views\Media\Drawing\DrawingImage.fs" />
+    <Compile Include="Views\Media\Drawing\DrawingImage.Components.fs" />
+    <Compile Include="Views\Media\Drawing\DrawingImage.Mvu.fs" />
+    <Compile Include="Views\Media\Effects\DropShadowEffect.fs" />
+    <Compile Include="Views\Media\Effects\DropShadowDirectionEffect.fs" />
+    <Compile Include="Views\Media\Effects\BlurEffect.fs" />
+    <Compile Include="Views\Controls\Tooltip.fs" />
+    <Compile Include="Views\Controls\Border.fs" />
+    <Compile Include="Views\Controls\RefreshVisualizer.fs" />
+    <Compile Include="Views\Controls\RefreshVisualizer.Components.fs" />
+    <Compile Include="Views\Controls\RefreshVisualizer.Mvu.fs" />
+    <Compile Include="Views\Controls\RefreshContainer.fs" />
+    <Compile Include="Views\Controls\RefreshContainer.Mvu.fs" />
+    <Compile Include="Views\Controls\RefreshContainer.Components.fs" />
+    <Compile Include="Views\Controls\ThemeVariantScope.fs" />
+    <Compile Include="Views\Controls\ThemeVariantScope.Mvu.fs" />
+    <Compile Include="Views\Controls\ThemeVariantScope.Components.fs" />
+    <Compile Include="Views\Controls\ExperimentalAcrylicMaterial.fs" />
+    <Compile Include="Views\Controls\ExperimentalAcrylicMaterial.Mvu.fs" />
+    <Compile Include="Views\Controls\ExperimentalAcrylicMaterial.Components.fs" />
+    <Compile Include="Views\Controls\ExperimentalAcrylicBorder.fs" />
+    <Compile Include="Views\Controls\HeaderedContentControl.fs" />
+    <Compile Include="Views\Controls\LayoutTransformControl.fs" />
+    <Compile Include="Views\Controls\TickBar.fs" />
+    <Compile Include="Views\Controls\DataValidationErrors.fs" />
+    <Compile Include="Views\Controls\Documents\TextDecoration.fs" />
+    <Compile Include="Views\Controls\Documents\_Inline.fs" />
+    <Compile Include="Views\Controls\Documents\Run.fs" />
+    <Compile Include="Views\Controls\Documents\LineBreak.fs" />
+    <Compile Include="Views\Controls\Documents\InlineUIContainer.fs" />
+    <Compile Include="Views\Controls\Documents\Span.fs" />
+    <Compile Include="Views\Controls\Documents\Bold.fs" />
+    <Compile Include="Views\Controls\Documents\Italic.fs" />
+    <Compile Include="Views\Controls\Documents\Underline.fs" />
+    <Compile Include="Views\Controls\TextBlock.fs" />
+    <Compile Include="Views\Controls\Label.fs" />
+    <Compile Include="Views\Controls\SelectableTextBlock.fs" />
+    <Compile Include="Views\Controls\SelectableTextBlock.Mvu.fs" />
+    <Compile Include="Views\Controls\SelectableTextBlock.Components.fs" />
+    <Compile Include="Views\Controls\TextBox.fs" />
+    <Compile Include="Views\Controls\TextBox.Mvu.fs" />
+    <Compile Include="Views\Controls\TextBox.Components.fs" />
+    <Compile Include="Views\Controls\MaskedTextBox.fs" />
+    <Compile Include="Views\Controls\MaskedTextBox.Components.fs" />
+    <Compile Include="Views\Controls\MaskedTextBox.Mvu.fs" />
+    <Compile Include="Views\Controls\Primitives\Thumb.fs" />
+    <Compile Include="Views\Controls\Primitives\Thumb.Mvu.fs" />
+    <Compile Include="Views\Controls\Primitives\Thumb.Components.fs" />
+    <Compile Include="Views\Controls\Primitives\_RangeBase.fs" />
+    <Compile Include="Views\Controls\Primitives\_RangeBase.Mvu.fs" />
+    <Compile Include="Views\Controls\Primitives\_RangeBase.Components.fs" />
+    <Compile Include="Views\Controls\Primitives\AccessText.fs" />
+    <Compile Include="Views\Controls\Primitives\ScrollBar.fs" />
+    <Compile Include="Views\Controls\Primitives\ScrollBar.Components.fs" />
+    <Compile Include="Views\Controls\Primitives\ScrollBar.Mvu.fs" />
+    <Compile Include="Views\Controls\Primitives\Popup.fs" />
+    <Compile Include="Views\Controls\Primitives\Popup.Mvu.fs" />
+    <Compile Include="Views\Controls\Primitives\Popup.Components.fs" />
+    <Compile Include="Views\Controls\Shapes\_Shape.fs" />
+    <Compile Include="Views\Controls\Shapes\Polyline.fs" />
+    <Compile Include="Views\Controls\Shapes\Polygon.fs" />
+    <Compile Include="Views\Controls\Shapes\Rectangle.fs" />
+    <Compile Include="Views\Controls\Shapes\Line.fs" />
+    <Compile Include="Views\Controls\Shapes\Arc.fs" />
+    <Compile Include="Views\Controls\Shapes\Sector.fs" />
+    <Compile Include="Views\Controls\Shapes\Ellipse.fs" />
+    <Compile Include="Views\Controls\Shapes\Path.fs" />
+    <Compile Include="Views\Controls\Buttons\Button.fs" />
+    <Compile Include="Views\Controls\Buttons\Button.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\Button.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\RepeatButton.fs" />
+    <Compile Include="Views\Controls\Buttons\RepeatButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\RepeatButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\SplitButton.fs" />
+    <Compile Include="Views\Controls\Buttons\SplitButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\SplitButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleSplitButton.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleSplitButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleSplitButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleButton.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\ToggleButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\RadioButton.fs" />
+    <Compile Include="Views\Controls\Buttons\RadioButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\RadioButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\ButtonSpinner.fs" />
+    <Compile Include="Views\Controls\Buttons\ButtonSpinner.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\ButtonSpinner.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\DropDownButton.fs" />
+    <Compile Include="Views\Controls\Buttons\DropDownButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\DropDownButton.Components.fs" />
+    <Compile Include="Views\Controls\Buttons\HyperlinkButton.fs" />
+    <Compile Include="Views\Controls\Buttons\HyperlinkButton.Mvu.fs" />
+    <Compile Include="Views\Controls\Buttons\HyperlinkButton.Components.fs" />
+    <Compile Include="Views\Controls\CheckBox.fs" />
+    <Compile Include="Views\Controls\CheckBox.Mvu.fs" />
+    <Compile Include="Views\Controls\CheckBox.Components.fs" />
+    <Compile Include="Views\Controls\NumericUpDown.fs" />
+    <Compile Include="Views\Controls\NumericUpDown.Mvu.fs" />
+    <Compile Include="Views\Controls\NumericUpDown.Components.fs" />
+    <Compile Include="Views\Controls\DatePicker.fs" />
+    <Compile Include="Views\Controls\DatePicker.Mvu.fs" />
+    <Compile Include="Views\Controls\DatePicker.Components.fs" />
+    <Compile Include="Views\Controls\TimePicker.fs" />
+    <Compile Include="Views\Controls\TimePicker.Mvu.fs" />
+    <Compile Include="Views\Controls\TimePicker.Components.fs" />
+    <Compile Include="Views\Controls\Window.fs" />
+    <Compile Include="Views\Controls\Window.Mvu.fs" />
+    <Compile Include="Views\Controls\Window.Components.fs" />
+    <Compile Include="Views\Controls\ProgressBar.fs" />
+    <Compile Include="Views\Controls\ProgressBar.Mvu.fs" />
+    <Compile Include="Views\Controls\ProgressBar.Components.fs" />
+    <Compile Include="Views\Controls\Slider.fs" />
+    <Compile Include="Views\Controls\Slider.Mvu.fs" />
+    <Compile Include="Views\Controls\Slider.Components.fs" />
+    <Compile Include="Views\Controls\ToggleSwitch.fs" />
+    <Compile Include="Views\Controls\ToggleSwitch.Mvu.fs" />
+    <Compile Include="Views\Controls\ToggleSwitch.Components.fs" />
+    <Compile Include="Views\Controls\Separator.fs" />
+    <Compile Include="Views\Controls\TransitioningContentControl.fs" />
+    <Compile Include="Views\Controls\Calendar.fs" />
+    <Compile Include="Views\Controls\Calendar.Mvu.fs" />
+    <Compile Include="Views\Controls\Calendar.Components.fs" />
+    <Compile Include="Views\Controls\CalendarDatePicker.fs" />
+    <Compile Include="Views\Controls\CalendarDatePicker.Mvu.fs" />
+    <Compile Include="Views\Controls\CalendarDatePicker.Components.fs" />
+    <Compile Include="Views\Controls\Viewbox.fs" />
+    <Compile Include="Views\Controls\GridSplitter.fs" />
+    <Compile Include="Views\Controls\Expander.fs" />
+    <Compile Include="Views\Controls\Expander.Mvu.fs" />
+    <Compile Include="Views\Controls\Expander.Components.fs" />
+    <Compile Include="Views\Controls\UserControl.fs" />
+    <Compile Include="Views\Controls\AutoCompleteBox.fs" />
+    <Compile Include="Views\Controls\AutoCompleteBox.Mvu.fs" />
+    <Compile Include="Views\Controls\AutoCompleteBox.Components.fs" />
+    <Compile Include="Views\Controls\Notifications\NotificationCard.fs" />
+    <Compile Include="Views\Controls\Notifications\NotificationCard.Components.fs" />
+    <Compile Include="Views\Controls\Notifications\NotificationCard.Mvu.fs" />
+    <Compile Include="Views\Controls\Notifications\WindowNotificationManager.fs" />
+    <Compile Include="Views\MenuItems\MenuItem.fs" />
+    <Compile Include="Views\MenuItems\MenuItem.Mvu.fs" />
+    <Compile Include="Views\MenuItems\MenuItem.Components.fs" />
+    <Compile Include="Views\MenuItems\ListBoxItem.fs" />
+    <Compile Include="Views\MenuItems\TreeViewItem.fs" />
+    <Compile Include="Views\MenuItems\TreeViewItem.Mvu.fs" />
+    <Compile Include="Views\MenuItems\TreeViewItem.Components.fs" />
+    <Compile Include="Views\MenuItems\ComboBoxItem.fs" />
+    <Compile Include="Views\MenuItems\TabItem.fs" />
+    <Compile Include="Views\Menu\_NativeMenuItemBase.fs" />
+    <Compile Include="Views\Menu\Flyout.fs" />
+    <Compile Include="Views\Menu\Menu.fs" />
+    <Compile Include="Views\Menu\NativeMenuBar.fs" />
+    <Compile Include="Views\Menu\MenuFlyout.fs" />
+    <Compile Include="Views\Menu\ContextMenu.fs" />
+    <Compile Include="Views\Menu\ContextMenu.Mvu.fs" />
+    <Compile Include="Views\Menu\ContextMenu.Components.fs" />
+    <Compile Include="Views\Menu\NativeMenuItem.fs" />
+    <Compile Include="Views\Menu\NativeMenuItem.Mvu.fs" />
+    <Compile Include="Views\Menu\NativeMenuItem.Components.fs" />
+    <Compile Include="Views\Menu\NativeMenu.fs" />
+    <Compile Include="Views\Menu\NativeMenu.Mvu.fs" />
+    <Compile Include="Views\Menu\NativeMenu.Components.fs" />
+    <Compile Include="Views\Menu\NativeMenuSeparator.fs" />
+    <Compile Include="Views\Menu\ComboBox.fs" />
+    <Compile Include="Views\Menu\ComboBox.Mvu.fs" />
+    <Compile Include="Views\Menu\ComboBox.Components.fs" />
+    <Compile Include="Views\Menu\TabStrip.fs" />
+    <Compile Include="Views\Collections\ListBox.fs" />
+    <Compile Include="Views\Collections\Carousel.fs" />
+    <Compile Include="Views\Collections\TabControl.fs" />
+    <Compile Include="Views\Collections\TreeView.fs" />
+    <Compile Include="Views\Collections\TreeView.Components.fs" />
+    <Compile Include="Views\Collections\TreeView.Mvu.fs" />
+    <Compile Include="Views\Imaging\CroppedBitmap.fs" />
+    <Compile Include="Views\Imaging\Image.fs" />
+    <Compile Include="Views\Imaging\_IconElement.fs" />
+    <Compile Include="Views\Imaging\TrayIcon.fs" />
+    <Compile Include="Views\Imaging\TrayIcon.Mvu.fs" />
+    <Compile Include="Views\Imaging\TrayIcon.Components.fs" />
+    <Compile Include="Views\Imaging\PathIcon.fs" />
+    <Compile Include="Views\Layouts\SplitView.fs" />
+    <Compile Include="Views\Layouts\SliptView.Mvu.fs" />
+    <Compile Include="Views\Layouts\SliptView.Components.fs" />
+    <Compile Include="Views\Layouts\ScrollViewer.fs" />
+    <Compile Include="Views\Layouts\ScrollViewer.Mvu.fs" />
+    <Compile Include="Views\Layouts\ScrollViewer.Components.fs" />
+    <Compile Include="Views\Panels\Panel.fs" />
+    <Compile Include="Views\Panels\Canvas.fs" />
+    <Compile Include="Views\Panels\_AdornerLayer.fs" />
+    <Compile Include="Views\Panels\Grid.fs" />
+    <Compile Include="Views\Panels\_StackPanel.fs" />
+    <Compile Include="Views\Panels\_StackPanel.Components.fs" />
+    <Compile Include="Views\Panels\_StackPanel.Mvu.fs" />
+    <Compile Include="Views\Panels\VirtualizingStackPanel.fs" />
+    <Compile Include="Views\Panels\VirtualizingStackPanel.Components.fs" />
+    <Compile Include="Views\Panels\VirtualizingStackPanel.Mvu.fs" />
+    <Compile Include="Views\Panels\ReversibleStackPanel.fs" />
+    <Compile Include="Views\Panels\DockPanel.fs" />
+    <Compile Include="Views\Panels\WrapPanel.fs" />
+    <Compile Include="Views\Panels\UniformGrid.fs" />
+    <Compile Include="Views\Application.fs" />
+    <Compile Include="Views\Application.Mvu.fs" />
+    <Compile Include="Views\Application.Components.fs" />
+    <Compile Include="Async.fs" />
+    <None Include="..\Fabulous.Avalonia.props">
+      <PackagePath>build/Fabulous.Avalonia.props</PackagePath>
+      <Pack>true</Pack>
+      <Link>Fabulous.Avalonia.props</Link>
+    </None>
+    <None Include="..\..\logo\nuget-icon.png">
+      <PackagePath>/</PackagePath>
+      <Pack>true</Pack>
+      <Link>nuget-icon.png</Link>
+    </None>
+    <None Include="README.md">
+      <PackagePath>/</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <Compile Include="Component.fs" />
+    <Compile Include="Environment.fs" />
+    <Compile Include="Any.fs" />
+    <Compile Include="Style.fs" />
+    <Compile Include="ThemeAware.fs" />
+    <Compile Include="Program.fs" />
+    <Compile Include="AppBuilderExtensions.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+      FSharp.Core is fixed to a specific version that is not necessarily the latest one.
+      This version will be used as the lower bound in the NuGet package
+    -->
+    <PackageReference Condition="'$(UseLocalProjectReference)' != 'true'" Include="Fabulous" VersionOverride="[$(FabulousVersion)]" />
+    <PackageReference Include="Avalonia" VersionOverride="$(AvaloniaVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="$(AvaloniaPlatform) == 'iOS'">
+    <PackageReference Include="Avalonia.iOS" VersionOverride="$(AvaloniaVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Condition="'$(UseLocalProjectReference)' == 'true'" Include="..\..\..\Fabulous\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+</Project>

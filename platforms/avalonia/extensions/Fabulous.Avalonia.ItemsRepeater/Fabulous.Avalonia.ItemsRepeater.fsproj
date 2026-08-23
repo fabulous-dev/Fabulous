@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <!-- NuGet Package -->
+    <PropertyGroup>
+        <Description>Items Repeater for Fabulous.Avalonia</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+    <!-- SourceLink -->
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" PackagePath="\" Pack="true" />
+        <None Include="..\..\logo\nuget-icon.png" PackagePath="\" Pack="true" />
+        <Compile Include="ItemsRepeater.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" VersionOverride="11.1.5" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
+    </ItemGroup>
+
+</Project>
