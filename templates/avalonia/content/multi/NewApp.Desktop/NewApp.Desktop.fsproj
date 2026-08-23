@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="AvaloniaDesktopPkgVersion" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.94.1" />
     <ProjectReference Include="..\NewApp\NewApp.fsproj" />
     <Compile Include="Program.fs"/>
   </ItemGroup>

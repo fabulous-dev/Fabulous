@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="AvaloniaDesktopPkgVersion" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="AvaloniaThemesFluentPkgVersion" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.94.1" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
     <PackageReference Include="Fabulous" Version="FabulousPkgVersion" />
     <PackageReference Include="Fabulous.Avalonia" Version="FabulousAvaloniaPkgVersion" />
