@@ -85,11 +85,11 @@ build_samples() {
     slug="${slug// /-}"
 
     echo "::group::Publish $relative"
-    dotnet publish "$project" -c "$configuration" -f net8.0-android \
-      -p:AndroidPackageFormat=apk
+    dotnet publish "$project" -c "$configuration" -f net10.0-android \
+      -p:TargetFrameworks=net10.0-android -p:AndroidPackageFormat=apk
     echo "::endgroup::"
 
-    apk=$(find "$(dirname "$project")/bin/$configuration/net8.0-android" \
+    apk=$(find "$(dirname "$project")/bin/$configuration/net10.0-android" \
       -name '*-Signed.apk' -print -quit)
     if [[ -z "$apk" ]]; then
       echo "$relative did not produce a signed APK." >&2
@@ -97,7 +97,8 @@ build_samples() {
     fi
 
     application_id=$(dotnet msbuild "$project" -getProperty:ApplicationId \
-      -p:TargetFramework=net8.0-android --nologo | tail -n 1)
+      -p:TargetFramework=net10.0-android -p:TargetFrameworks=net10.0-android \
+      --nologo | tail -n 1)
     if [[ -z "$application_id" ]]; then
       echo "$relative has no Android application ID." >&2
       exit 1

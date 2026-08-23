@@ -48,7 +48,7 @@ PY
     screenshot="$output_dir/$capture_slug.png"
 
     mapfile -t existing_windows < <(xdotool search --onlyvisible --name '.*' 2>/dev/null || true)
-    FABULOUS_GALLERY_PAGE="$page" dotnet run --project "$project" -c "$configuration" -f net8.0 \
+    FABULOUS_GALLERY_PAGE="$page" dotnet run --project "$project" -c "$configuration" -f net10.0 \
       -p:FabulousSamplesDesktopOnly=true --no-build >"$log" 2>&1 &
     app_pid=$!
 
