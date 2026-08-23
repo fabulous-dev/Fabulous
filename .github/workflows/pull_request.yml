@@ -257,10 +257,6 @@ jobs:
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
-      - name: Build packaged F# WinUI compatibility samples
-        run: |
-          dotnet build samples/maui/WinUICompat/HelloWorld.Maui/HelloWorld.Maui.fsproj -c $env:CONFIG -p:RuntimeIdentifier=win10-x64
-          dotnet build samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj -c $env:CONFIG -p:RuntimeIdentifier=win10-x64
       - name: Build and launch unpackaged F# WinUI compatibility samples
         run: |
           $samples = @(
@@ -268,7 +264,7 @@ jobs:
             @{ Project = 'samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj'; Name = 'Fabulous' }
           )
           foreach ($sample in $samples) {
-            dotnet build $sample.Project -c $env:CONFIG -p:RuntimeIdentifier=win10-x64 -p:WindowsPackageType=None
+            dotnet build $sample.Project -c $env:CONFIG -p:RuntimeIdentifier=win-x64 -p:Platform=x64 -p:WindowsPackageType=None
             if ($LASTEXITCODE -ne 0) {
               throw "Failed to build the $($sample.Name) WinUI compatibility sample."
             }
