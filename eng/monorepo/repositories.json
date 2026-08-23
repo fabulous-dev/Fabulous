@@ -82,8 +82,8 @@
       "destination": "docs/api",
       "ref": "main",
       "wave": 3,
-      "status": "pending",
-      "notes": "Keep generated API documentation separate from authored documentation."
+      "status": "imported",
+      "notes": "Imported from bb80079031ff7b5ba464376cbc1da0db855ebb65. MAUI and Avalonia references are built separately into /docs/api."
     },
     {
       "name": "fabulous.dev",

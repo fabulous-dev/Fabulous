@@ -1,0 +1,16 @@
+site_name: Fabulous API Reference
+site_description: API reference for Fabulous platform integrations.
+site_url: https://fabulous.dev/docs/api/
+repo_url: https://github.com/fabulous-dev/Fabulous
+edit_uri: edit/main/docs/api/
+
+docs_dir: .
+theme:
+  name: readthedocs
+
+exclude_docs: |
+  SUMMARY.md
+
+markdown_extensions:
+  - fenced_code
+  - tables
