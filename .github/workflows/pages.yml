@@ -6,10 +6,12 @@ on:
       - main
     paths:
       - .github/workflows/pages.yml
+      - docs/**
       - website/**
   pull_request:
     paths:
       - .github/workflows/pages.yml
+      - docs/**
       - website/**
   workflow_dispatch:
 
@@ -34,11 +36,19 @@ jobs:
         with:
           hugo-version: 0.127.0
           extended: true
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build
         run: hugo --source website --destination "$GITHUB_WORKSPACE/public" --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Build authored documentation
+        run: |
+          python -m pip install mkdocs==1.6.1
+          mkdocs build --config-file docs/mkdocs.yml --site-dir "$GITHUB_WORKSPACE/public/docs"
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

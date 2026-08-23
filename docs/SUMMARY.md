@@ -28,21 +28,6 @@
   * [Virtualized collections](architecture/virtualized-collections.md)
   * [Using nightly builds](architecture/using-nightly-builds.md)
 
-## Xamarin.Forms <a href="#xamarinforms" id="xamarinforms"></a>
-
-* [Get Started](xamarinforms/get-started.md)
-* [User interface](xamarinforms/user-interface/README.md)
-  * [Custom controls](xamarinforms/user-interface/custom-controls.md)
-  * [Effects](xamarinforms/user-interface/effects.md)
-  * [Navigation](xamarinforms/user-interface/navigation.md)
-  * [Pop-ups](xamarinforms/user-interface/pop-ups.md)
-* [Extensions](xamarinforms/extensions/README.md)
-  * [FFImageLoading](xamarinforms/extensions/ffimageloading.md)
-  * [OxyPlot](xamarinforms/extensions/oxyplot.md)
-  * [SkiaSharp](xamarinforms/extensions/skiasharp.md)
-  * [VideoManager](xamarinforms/extensions/videomanager.md)
-  * [Xamarin.Forms.Maps](xamarinforms/extensions/xamarin.forms.maps.md)
-
 ## .NET MAUI <a href="#maui" id="maui"></a>
 
 * [Get Started](maui/get-started.md)

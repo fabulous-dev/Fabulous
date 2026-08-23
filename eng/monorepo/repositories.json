@@ -73,8 +73,8 @@
       "destination": "docs",
       "ref": "main",
       "wave": 3,
-      "status": "pending",
-      "notes": "Publish from this monorepo with GitHub Pages."
+      "status": "imported",
+      "notes": "Imported from c46982348fb597c1bf2deff3a7da1468b3b0f467. Built with MkDocs into the monorepo GitHub Pages artifact."
     },
     {
       "name": "api.fabulous.dev",
