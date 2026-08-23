@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "target": "fabulous-dev/Fabulous",
+  "repositories": [
+    {
+      "name": "Fabulous",
+      "repository": "fabulous-dev/Fabulous",
+      "destination": ".",
+      "ref": "main",
+      "wave": 0,
+      "status": "target"
+    },
+    {
+      "name": "Fabulous.Avalonia",
+      "repository": "fabulous-dev/Fabulous.Avalonia",
+      "destination": "platforms/avalonia",
+      "ref": "main",
+      "wave": 1,
+      "status": "pending"
+    },
+    {
+      "name": "Fabulous.MauiControls",
+      "repository": "fabulous-dev/Fabulous.MauiControls",
+      "destination": "platforms/maui",
+      "ref": "update-fabulous-api",
+      "wave": 1,
+      "status": "pending",
+      "notes": "PR #71 at 0059326758cd5530d8676d9b2c9a154e173111ab aligns the backend with Fabulous 3.0.0-pre23+."
+    },
+    {
+      "name": "Fabulous.MauiControls.Maps",
+      "repository": "fabulous-dev/Fabulous.MauiControls.Maps",
+      "destination": "extensions/maui/maps",
+      "ref": "main",
+      "wave": 2,
+      "status": "pending"
+    },
+    {
+      "name": "Fabulous.MauiControls.MediaElement",
+      "repository": "fabulous-dev/Fabulous.MauiControls.MediaElement",
+      "destination": "extensions/maui/media-element",
+      "ref": "main",
+      "wave": 2,
+      "status": "pending"
+    },
+    {
+      "name": "Fabulous.Avalonia.Samples",
+      "repository": "fabulous-dev/Fabulous.Avalonia.Samples",
+      "destination": "samples/avalonia",
+      "ref": "main",
+      "wave": 2,
+      "status": "pending"
+    },
+    {
+      "name": "FSharp.Maui.WinUICompat",
+      "repository": "fabulous-dev/FSharp.Maui.WinUICompat",
+      "destination": "compat/maui-winui",
+      "ref": "main",
+      "wave": 2,
+      "status": "pending"
+    },
+    {
+      "name": "FSharp.Mobile.Templates",
+      "repository": "fabulous-dev/FSharp.Mobile.Templates",
+      "destination": "templates/mobile",
+      "ref": "main",
+      "wave": 3,
+      "status": "pending"
+    },
+    {
+      "name": "docs.fabulous.dev",
+      "repository": "fabulous-dev/docs.fabulous.dev",
+      "destination": "docs",
+      "ref": "main",
+      "wave": 3,
+      "status": "pending",
+      "notes": "Publish from this monorepo with GitHub Pages."
+    },
+    {
+      "name": "api.fabulous.dev",
+      "repository": "fabulous-dev/api.fabulous.dev",
+      "destination": "docs/api",
+      "ref": "main",
+      "wave": 3,
+      "status": "pending",
+      "notes": "Keep generated API documentation separate from authored documentation."
+    },
+    {
+      "name": "fabulous.dev",
+      "repository": "fabulous-dev/fabulous.dev",
+      "destination": "website",
+      "ref": "main",
+      "wave": 3,
+      "status": "pending"
+    },
+    {
+      "name": "fabulous.dev-theme",
+      "repository": "fabulous-dev/fabulous.dev-theme",
+      "destination": "website/themes/fabulous.dev-theme",
+      "ref": "main",
+      "wave": 3,
+      "status": "pending"
+    }
+  ]
+}

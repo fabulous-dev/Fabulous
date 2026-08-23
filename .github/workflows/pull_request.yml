@@ -15,6 +15,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.x
+    - name: Validate monorepo migration inventory
+      run: python3 eng/monorepo/validate-inventory.py
     - name: Check code formatting
       run: |
         dotnet tool restore
