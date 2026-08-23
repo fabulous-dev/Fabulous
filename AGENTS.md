@@ -90,7 +90,9 @@ This command edits template JSON files. Use it only in a disposable checkout or 
 
 - Root workflows are under `.github/workflows/`; do not add nested workflows.
 - CI must remain green on `main` before opening follow-up upgrade PRs.
-- Releases are triggered by adding a new topmost `## [10.0.x] - YYYY-MM-DD` section to `CHANGELOG.md` and pushing it to `main`. The workflow creates the tag after publishing succeeds.
+- Package creation runs at the end of the Linux Build and test job; downstream template and Windows consumer jobs download that artifact.
+- Avalonia headless tests capture rendered screenshots. Successful pull requests receive links to package and screenshot artifacts from the metadata-only `pr-artifacts.yml` workflow.
+- Releases are triggered by adding a new topmost `## [10.0.x] - YYYY-MM-DD` section to `CHANGELOG.md` and pushing it to `main`. Publishing begins only after the full main `Build and test` workflow succeeds, and the release workflow creates the tag after publishing succeeds.
 - NuGet publishing uses `NuGet/login@v1` with GitHub OIDC trusted publishing. Never add a long-lived NuGet API key.
 - Do not create or push release tags without explicit authorization.
 

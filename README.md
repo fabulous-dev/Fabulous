@@ -93,11 +93,11 @@ dotnet restore Fabulous.sln
 dotnet test Fabulous.sln -c Release
 ```
 
-CI additionally validates formatting, package creation, Avalonia headless UI tests, generated templates, a Windows MAUI sample, WinUI compatibility, and documentation deployment.
+CI additionally validates formatting, package creation, Avalonia headless UI tests with rendered screenshot artifacts, generated templates, a Windows MAUI sample, WinUI compatibility, and documentation deployment. Successful pull-request runs receive timeline links to their package and screenshot artifacts.
 
 ## Packages and releases
 
-All Fabulous packages use the unified `10.0.x` version line and are released from [.github/workflows/release.yml](.github/workflows/release.yml). To publish, move the completed notes from `Unreleased` into a new top-level `## [10.0.x] - YYYY-MM-DD` section, add a fresh `Unreleased` section, and push the changelog change to `main`. The workflow publishes packages, creates the matching tag, and creates a GitHub release from that section. NuGet publishing uses GitHub OIDC trusted publishing; no long-lived NuGet API key is stored in the repository.
+All Fabulous packages use the unified `10.0.x` version line and are released from [.github/workflows/release.yml](.github/workflows/release.yml). To publish, move the completed notes from `Unreleased` into a new top-level `## [10.0.x] - YYYY-MM-DD` section, add a fresh `Unreleased` section, and push the changelog change to `main`. After the full `Build and test` workflow succeeds, the release workflow publishes packages, creates the matching tag, and creates a GitHub release from that section. NuGet publishing uses GitHub OIDC trusted publishing; no long-lived NuGet API key is stored in the repository.
 
 ## Contributing
 

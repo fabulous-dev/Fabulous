@@ -1,5 +1,7 @@
 ﻿namespace TestableApp
 
+open System
+open System.IO
 open Avalonia.Controls
 open Avalonia.Headless
 open Avalonia.Headless.XUnit
@@ -11,6 +13,19 @@ open Xunit
 open type Fabulous.Avalonia.View
 
 module FabTests =
+    let saveScreenshot (name: string) (window: Window) =
+        match Environment.GetEnvironmentVariable("FABULOUS_SCREENSHOT_DIR") with
+        | null
+        | "" -> ()
+        | directory ->
+            Directory.CreateDirectory(directory) |> ignore
+
+            use bitmap = window.CaptureRenderedFrame()
+            Assert.NotNull(bitmap)
+
+            use stream = File.Create(Path.Combine(directory, $"{name}.png"))
+            bitmap.Save(stream)
+
     /// It takes the root of the widget tree and create the corresponding Avalonia node, and recursively creating all children nodes
     let mkView<'a> (root: Widget) : 'a =
         let definition = WidgetDefinitionStore.get root.Key
@@ -88,3 +103,12 @@ module FabTests =
         window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None)
 
         Assert.Equal("0", counter.Text)
+
+    [<AvaloniaFact>]
+    let ``Should render counter screenshot`` () =
+        let window = App.view().Compile() |> mkView<Window>
+        window.Width <- 420.
+        window.Height <- 360.
+        window.Show()
+
+        saveScreenshot "avalonia-counter" window
