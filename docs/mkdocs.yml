@@ -16,8 +16,9 @@ nav:
     - .NET MAUI: tutorials/maui.md
     - Avalonia: tutorials/avalonia.md
   - Platforms:
-      - .NET MAUI: maui/get-started.md
-      - Route-based navigation: maui/navigation.md
+      - MAUI: maui/get-started.md
+      - MAUI virtualized collections: maui/virtualized-collections.md
+      - MAUI Route-based navigation: maui/navigation.md
       - Avalonia: avalonia/get-started.md
       - Migrate to Avalonia 12: avalonia/migrate-to-12.md
   - Core concepts:

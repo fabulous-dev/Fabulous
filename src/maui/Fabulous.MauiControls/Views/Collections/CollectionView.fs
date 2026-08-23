@@ -31,15 +31,19 @@ module CollectionView =
                 | ValueSome value ->
                     collectionView.IsGrouped <- true
 
-                    collectionView.SetValue(CollectionView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate))
+                    match collectionView.ItemTemplate with
+                    | :? WidgetDataTemplateSelector as selector -> selector.UpdateTemplate(unbox >> value.ItemTemplate)
+                    | _ -> collectionView.SetValue(CollectionView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.ItemTemplate))
 
-                    collectionView.SetValue(CollectionView.GroupHeaderTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate))
+                    match collectionView.GroupHeaderTemplate with
+                    | :? WidgetDataTemplateSelector as selector -> selector.UpdateTemplate(unbox >> value.HeaderTemplate)
+                    | _ -> collectionView.SetValue(CollectionView.GroupHeaderTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.HeaderTemplate))
 
-                    if value.FooterTemplate.IsSome then
-                        collectionView.SetValue(
-                            CollectionView.GroupFooterTemplateProperty,
-                            WidgetDataTemplateSelector(node, unbox >> value.FooterTemplate.Value)
-                        )
+                    match value.FooterTemplate, collectionView.GroupFooterTemplate with
+                    | Some footerTemplate, (:? WidgetDataTemplateSelector as selector) -> selector.UpdateTemplate(unbox >> footerTemplate)
+                    | Some footerTemplate, _ ->
+                        collectionView.SetValue(CollectionView.GroupFooterTemplateProperty, WidgetDataTemplateSelector(node, unbox >> footerTemplate))
+                    | None, _ -> collectionView.ClearValue(CollectionView.GroupFooterTemplateProperty)
 
                     collectionView.SetValue(CollectionView.ItemsSourceProperty, value.OriginalItems))
 
