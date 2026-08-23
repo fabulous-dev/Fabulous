@@ -13,24 +13,25 @@
     {
       "name": "Fabulous.Avalonia",
       "repository": "fabulous-dev/Fabulous.Avalonia",
-      "destination": "platforms/avalonia",
+      "destination": "src/Fabulous.Avalonia",
       "ref": "main",
       "wave": 1,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from 39ade54a8f00af9b286b47f3245f162708625e93 and consolidated into root src, samples, and templates."
     },
     {
       "name": "Fabulous.MauiControls",
       "repository": "fabulous-dev/Fabulous.MauiControls",
-      "destination": "platforms/maui",
+      "destination": "src/Fabulous.MauiControls",
       "ref": "update-fabulous-api",
       "wave": 1,
-      "status": "pending",
-      "notes": "PR #71 at 0059326758cd5530d8676d9b2c9a154e173111ab aligns the backend with Fabulous 3.0.0-pre23+."
+      "status": "imported",
+      "notes": "Imported from PR #71 at 0059326758cd5530d8676d9b2c9a154e173111ab and consolidated into root src, samples, and templates."
     },
     {
       "name": "Fabulous.MauiControls.Maps",
       "repository": "fabulous-dev/Fabulous.MauiControls.Maps",
-      "destination": "extensions/maui/maps",
+      "destination": "src/Fabulous.MauiControls.Maps",
       "ref": "main",
       "wave": 2,
       "status": "pending"
@@ -38,15 +39,7 @@
     {
       "name": "Fabulous.MauiControls.MediaElement",
       "repository": "fabulous-dev/Fabulous.MauiControls.MediaElement",
-      "destination": "extensions/maui/media-element",
-      "ref": "main",
-      "wave": 2,
-      "status": "pending"
-    },
-    {
-      "name": "Fabulous.Avalonia.Samples",
-      "repository": "fabulous-dev/Fabulous.Avalonia.Samples",
-      "destination": "samples/avalonia",
+      "destination": "src/Fabulous.MauiControls.MediaElement",
       "ref": "main",
       "wave": 2,
       "status": "pending"
@@ -54,7 +47,7 @@
     {
       "name": "FSharp.Maui.WinUICompat",
       "repository": "fabulous-dev/FSharp.Maui.WinUICompat",
-      "destination": "compat/maui-winui",
+      "destination": "src/FSharp.Maui.WinUICompat",
       "ref": "main",
       "wave": 2,
       "status": "pending"

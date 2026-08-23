@@ -14,6 +14,12 @@ profile metadata in `fabulous-dev/.github` is also outside the product monorepo.
 - Import repositories with full history; do not squash or copy source trees.
 - Import one migration wave at a time and keep each import independently
   reviewable.
+- Keep every product, extension, compatibility, and test project under root
+  `src/`; keep examples under root `samples/` and templates under root
+  `templates/`.
+- Keep one root engineering system. Nested workflows, tool manifests, package
+  catalogs, build properties, solutions, and repository policy files are
+  removed after each history import.
 - Replace package references between imported projects with project references.
 - Keep package identities and public APIs stable unless a separately reviewed
   compatibility change requires otherwise.
@@ -72,7 +78,9 @@ For each wave:
 7. Release from the monorepo, verify NuGet and Pages, then archive the replaced
    repositories with a pointer to their new locations.
 
-Wave 1 brings in Avalonia and the already-aligned Maui branch. Wave 2 adds their
-extensions, samples, and compatibility support. Wave 3 moves templates and web
-content, including GitHub Pages documentation. The Xamarin.Forms repositories
-remain outside the monorepo and can be archived independently.
+Wave 1 brought in Avalonia and the already-aligned Maui branch, including their
+current samples and templates. The older standalone Avalonia samples repository
+is therefore not a migration input. Wave 2 adds Maui extensions and compatibility
+support. Wave 3 evaluates the remaining mobile template repository. Website and
+documentation content already publish through GitHub Pages. The Xamarin.Forms
+repositories remain outside the monorepo and can be archived independently.

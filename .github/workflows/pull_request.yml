@@ -30,8 +30,8 @@ jobs:
           dotnet tool restore
           dotnet fantomas --check src
 
-  core:
-    name: Core
+  build-and-test:
+    name: Build and test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -41,32 +41,4 @@ jobs:
         with:
           dotnet-version: 9.x
       - name: Test
-        run: dotnet test src/Fabulous.Tests/Fabulous.Tests.fsproj -c ${CONFIG}
-
-  avalonia:
-    name: Avalonia
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.x
-      - name: Build packages
-        run: dotnet build platforms/avalonia/Fabulous.Avalonia.NoSamples.sln -c ${CONFIG}
-      - name: Test
-        run: dotnet test platforms/avalonia/src/Fabulous.Avalonia.Tests/Fabulous.Avalonia.Tests.fsproj -c ${CONFIG}
-
-  maui:
-    name: Maui
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.x
-      - name: Test
-        run: dotnet test platforms/maui/src/Fabulous.MauiControls.Tests/Fabulous.MauiControls.Tests.fsproj -c ${CONFIG}
+        run: dotnet test Fabulous.NoSamples.sln -c ${CONFIG}

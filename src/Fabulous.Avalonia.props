@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AvaloniaPlatform>$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))</AvaloniaPlatform>
+        
+        <!-- Normalize casing -->
+        <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == ''">Desktop</AvaloniaPlatform>
+        <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'android'">Android</AvaloniaPlatform>
+        <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'ios'">iOS</AvaloniaPlatform>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(AvaloniaPlatform) == 'Android'">
+        <AndroidPlatformFolder Condition="$(AndroidPlatformFolder) == ''">Platform\Android\</AndroidPlatformFolder>
+        <AndroidManifest>$(AndroidPlatformFolder)AndroidManifest.xml</AndroidManifest>
+        <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+        <DefineConstants>MOBILE;$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(AvaloniaPlatform) == 'iOS'">
+        <iOSPlatformFolder Condition="$(iOSPlatformFolder) == ''">Platform\iOS\</iOSPlatformFolder>
+        <AppBundleManifest>$(iOSPlatformFolder)Info.plist</AppBundleManifest>
+        <CodesignEntitlements>$(iOSPlatformFolder)Entitlements.plist</CodesignEntitlements>
+        <EnableDefaultiOSItems>false</EnableDefaultiOSItems>
+        <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+        <ProvisioningProfile>manual</ProvisioningProfile>
+        <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
+        <DefineConstants>MOBILE;$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(AvaloniaPlatform) == 'Desktop'">
+        <DesktopPlatformFolder Condition="$(DesktopPlatformFolder) == ''">Platform\Desktop\</DesktopPlatformFolder>
+        <BuiltInCodeInteropSupport>true</BuiltInCodeInteropSupport>
+        <DefineConstants>DESKTOP;$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)Fabulous\Fabulous.fsproj" />
+    </ItemGroup>
+</Project>

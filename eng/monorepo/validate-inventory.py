@@ -55,6 +55,10 @@ for repository in repositories:
     if repository["repository"] == "fabulous-dev/.github":
         fail("the organization .github repository is outside the monorepo")
 
+    destination_value = repository["destination"]
+    if destination_value and destination_value.startswith(("platforms/", "extensions/", "compat/")):
+        fail(f"{repository['name']} must use the consolidated root layout")
+
     if repository["status"] != "pending":
         continue
 
@@ -75,5 +79,30 @@ if maui is None or maui["ref"] != "update-fabulous-api":
 
 if "0059326758cd5530d8676d9b2c9a154e173111ab" not in maui.get("notes", ""):
     fail("Fabulous.MauiControls must record the validated PR #71 commit")
+
+repository_root = inventory_path.parents[2]
+
+if (repository_root / "platforms").exists():
+    fail("the retired platforms directory must not exist")
+
+for nested_path in repository_root.rglob("*"):
+    relative_path = nested_path.relative_to(repository_root)
+    if ".git" in relative_path.parts:
+        continue
+
+    if relative_path != Path(".github") and nested_path.is_dir() and nested_path.name == ".github":
+        fail(f"nested GitHub configuration is not allowed: {relative_path}")
+
+    allowed_engineering_files = {
+        Path("Directory.Build.props"),
+        Path("Directory.Packages.props"),
+        Path(".config/dotnet-tools.json"),
+    }
+    if relative_path not in allowed_engineering_files and relative_path.name in {
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "dotnet-tools.json",
+    }:
+        fail(f"nested engineering configuration is not allowed: {relative_path}")
 
 print(f"Validated {len(repositories)} monorepo migration entries.")
