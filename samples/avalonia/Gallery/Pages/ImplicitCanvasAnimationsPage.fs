@@ -90,10 +90,7 @@ module ImplicitCanvasAnimationsPage =
         if implicitAnimations <> null then
             implicitAnimations
         else
-            let compositor =
-                ElementComposition
-                    .GetElementVisual(canvasRef.Value)
-                    .Compositor
+            let compositor = ElementComposition.GetElementVisual(canvasRef.Value).Compositor
 
             let sprintEasing1 = SpringEasing(1.5, 2000., 20.)
             let sprintEasing2 = SpringEasing(1., 1000., 20.)
@@ -101,13 +98,13 @@ module ImplicitCanvasAnimationsPage =
             let offsetAnimation = compositor.CreateVector3KeyFrameAnimation()
             offsetAnimation.Target <- "Offset"
             offsetAnimation.InsertExpressionKeyFrame(1.0f, "this.FinalValue", sprintEasing1)
-            offsetAnimation.Duration <- TimeSpan.FromMilliseconds(400)
+            offsetAnimation.Duration <- TimeSpan.FromMilliseconds(400.)
 
             let rotationAnimation = compositor.CreateScalarKeyFrameAnimation()
             rotationAnimation.Target <- "RotationAngle"
             rotationAnimation.InsertKeyFrame(0.0f, 0.0f, sprintEasing2)
             rotationAnimation.InsertKeyFrame(1.0f, float32(Math.PI * 2.0), sprintEasing2)
-            rotationAnimation.Duration <- TimeSpan.FromMilliseconds(400)
+            rotationAnimation.Duration <- TimeSpan.FromMilliseconds(400.)
 
             let animationGroup = compositor.CreateAnimationGroup()
             animationGroup.Add(offsetAnimation)
@@ -205,24 +202,17 @@ module ImplicitCanvasAnimationsPage =
             let! model = Context.Mvu program
 
             Grid(coldefs = [ Star ], rowdefs = [ Star; Auto ]) {
-                Canvas(canvasRef)
-                    .clipToBounds(true)
-                    .background(Brushes.WhiteSmoke)
-                    .gridRow(0)
+                Canvas(canvasRef).clipToBounds(true).background(Brushes.WhiteSmoke).gridRow(0)
 
                 (HStack(6.) {
-                    Button("Clear", ButtonClear)
-                        .horizontalAlignment(HorizontalAlignment.Center)
+                    Button("Clear", ButtonClear).horizontalAlignment(HorizontalAlignment.Center)
 
-                    Button("Start Benchmark", StartBenchmark)
-                        .horizontalAlignment(HorizontalAlignment.Center)
+                    Button("Start Benchmark", StartBenchmark).horizontalAlignment(HorizontalAlignment.Center)
 
-                    Button("Stop Benchmark", StopBenchmark)
-                        .horizontalAlignment(HorizontalAlignment.Center)
+                    Button("Stop Benchmark", StopBenchmark).horizontalAlignment(HorizontalAlignment.Center)
 
 
-                    Button("Add", ButtonAdd)
-                        .horizontalAlignment(HorizontalAlignment.Center)
+                    Button("Add", ButtonAdd).horizontalAlignment(HorizontalAlignment.Center)
 
                 })
                     .margin(0., 6)

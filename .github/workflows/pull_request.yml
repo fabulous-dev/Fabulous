@@ -69,7 +69,7 @@ jobs:
       - name: Test view logic
         run: dotnet test samples/avalonia/TestableApp.UnitTests/TestableApp.UnitTests.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
       - name: Test headless UI
-        run: dotnet test samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
+        run: dotnet run --project samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
         env:
           FABULOUS_SCREENSHOT_DIR: ${{ github.workspace }}/artifacts/screenshots
       - name: Upload screenshots

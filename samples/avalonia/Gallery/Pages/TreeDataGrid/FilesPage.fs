@@ -6,7 +6,6 @@ open System.Diagnostics
 open System.IO
 open System.Runtime.InteropServices
 open Avalonia.Controls
-open Avalonia.Controls.Models.TreeDataGrid
 open Avalonia.Controls.Selection
 open Avalonia.Layout
 open Fabulous.Avalonia
@@ -34,53 +33,38 @@ module FilesPage =
         let source =
             new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
 
-        source.Columns.AddRange(
-            [ CheckBoxColumn<FileTreeNodeModel>(
-                  header = null,
-                  getter = (fun x -> x.IsChecked),
-                  setter = (fun o v -> o.IsChecked <- v),
-                  width = Unchecked.defaultof<_>,
-                  options = CheckBoxColumnOptions<FileTreeNodeModel>(CanUserResizeColumn = false)
-              )
-
-              HierarchicalExpanderColumn<FileTreeNodeModel>(
-                  TemplateColumn<FileTreeNodeModel>(
-                      "Name",
-                      "FileNameCell",
-                      "FileNameEditCell",
-                      GridLength(1, GridUnitType.Star),
-                      TemplateColumnOptions(
-                          CompareAscending = FileTreeNodeModel.SortAscending(fun x -> x.Name),
-                          CompareDescending = FileTreeNodeModel.SortDescending(fun x -> x.Name),
-                          IsTextSearchEnabled = true,
-                          TextSearchValueSelector = fun x -> x.Name
-                      )
-                  ),
-                  (fun x -> x.Children),
-                  (fun x -> x.HasChildren),
-                  (fun x -> x.IsExpanded)
-              )
-
-              TextColumn<FileTreeNodeModel, _>(
-                  header = "Size",
-                  getter = (fun x -> x.Size),
-                  options =
-                      TextColumnOptions<FileTreeNodeModel>(
-                          CompareAscending = FileTreeNodeModel.SortAscending(fun x -> x.Size),
-                          CompareDescending = FileTreeNodeModel.SortDescending(fun x -> x.Size)
-                      )
-              )
-
-              TextColumn<FileTreeNodeModel, DateTimeOffset>(
-                  header = "Modified",
-                  getter = (fun x -> x.Modified),
-                  options =
-                      TextColumnOptions<FileTreeNodeModel>(
-                          CompareAscending = FileTreeNodeModel.SortAscending(fun x -> x.Modified),
-                          CompareDescending = FileTreeNodeModel.SortDescending(fun x -> x.Modified)
-                      )
-              ) ]
-        )
+        source
+            .WithCheckBoxColumn(
+                null,
+                (fun (x: FileTreeNodeModel) -> x.IsChecked),
+                Action<CheckBoxColumnCreateOptions>(fun o -> o.CanUserResize <- Nullable false)
+            )
+            .WithHierarchicalExpanderColumn(
+                "Name",
+                TreeDataGridTemplateColumn("FileNameCell", "FileNameEditCell"),
+                (fun (x: FileTreeNodeModel) -> x.Children),
+                (fun (x: FileTreeNodeModel) -> x.IsExpanded),
+                (fun (x: FileTreeNodeModel) -> x.HasChildren),
+                Action<HierarchicalExpanderColumnCreateOptions<FileTreeNodeModel>>(fun o ->
+                    o.Width <- Nullable(GridLength(1., GridUnitType.Star))
+                    o.CompareAscending <- FileTreeNodeModel.SortAscending(Func<FileTreeNodeModel, string>(fun x -> x.Name))
+                    o.CompareDescending <- FileTreeNodeModel.SortDescending(Func<FileTreeNodeModel, string>(fun x -> x.Name)))
+            )
+            .WithTextColumn(
+                "Size",
+                (fun (x: FileTreeNodeModel) -> x.Size),
+                Action<TextColumnCreateOptions>(fun o ->
+                    o.CompareAscending <- FileTreeNodeModel.SortAscending(Func<FileTreeNodeModel, int64>(fun x -> x.Size))
+                    o.CompareDescending <- FileTreeNodeModel.SortDescending(Func<FileTreeNodeModel, int64>(fun x -> x.Size)))
+            )
+            .WithTextColumn(
+                "Modified",
+                (fun (x: FileTreeNodeModel) -> x.Modified),
+                Action<TextColumnCreateOptions>(fun o ->
+                    o.CompareAscending <- FileTreeNodeModel.SortAscending(Func<FileTreeNodeModel, DateTimeOffset>(fun x -> x.Modified))
+                    o.CompareDescending <- FileTreeNodeModel.SortDescending(Func<FileTreeNodeModel, DateTimeOffset>(fun x -> x.Modified)))
+            )
+        |> ignore
 
         let selectedDrive =
             if RuntimeInformation.IsOSPlatform(OSPlatform.Windows) then
@@ -202,13 +186,9 @@ module FilesPage =
 
             Dock() {
                 (Dock() {
-                    ComboBox(model.Drives)
-                        .selectedItem(model.SelectedDrive)
-                        .dock(Dock.Left)
+                    ComboBox(model.Drives).selectedItem(model.SelectedDrive).dock(Dock.Left)
 
-                    CheckBox("Cell Selection", model.CellSelection, CellSelectionChanged)
-                        .margin(4, 0, 0, 0)
-                        .dock(Dock.Right)
+                    CheckBox("Cell Selection", model.CellSelection, CellSelectionChanged).margin(4, 0, 0, 0).dock(Dock.Right)
 
                     TextBox(model.SelectedPathText, SelectedPathTextChanged)
                         .margin(4, 0, 0, 0)

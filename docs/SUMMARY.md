@@ -36,3 +36,4 @@
 ## Avalonia
 
 * [Get Started](avalonia/get-started.md)
+* [Migrate to Avalonia 12](avalonia/migrate-to-12.md)

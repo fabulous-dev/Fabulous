@@ -34,8 +34,7 @@ module CustomAnimatorPage =
                     .centerHorizontal()
                     .animation(
                         Animations() {
-                            Animation(KeyFrame(TextBlock.TextProperty, "0123456789").cue(1.), TimeSpan.FromSeconds(3.))
-                                .repeatForever()
+                            Animation(KeyFrame(TextBlock.TextProperty, "0123456789").cue(1.), TimeSpan.FromSeconds(3.)).repeatForever()
 
                             Animation(
                                 KeyFrames(
@@ -43,7 +42,7 @@ module CustomAnimatorPage =
                                       Setter(TextBlock.IsVisibleProperty, true) ]
                                 )
                                     .cue(0),
-                                TimeSpan.FromSeconds(3)
+                                TimeSpan.FromSeconds(3.)
                             )
 
                             Animation(
@@ -52,7 +51,7 @@ module CustomAnimatorPage =
                                       Setter(TextBlock.IsVisibleProperty, true) ]
                                 )
                                     .cue(1),
-                                TimeSpan.FromSeconds(3)
+                                TimeSpan.FromSeconds(3.)
                             )
                         }
 
