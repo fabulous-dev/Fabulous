@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <UseMaui>true</UseMaui>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <Description>MediaElement implementation for Fabulous</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\logo\nuget-icon.png" Pack="true" PackagePath="\" />
+    <Compile Include="Attributes.fs" />
+    <Compile Include="MediaElement.fs" />
+    <Compile Include="AppHostBuilderExtensions.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+      FSharp.Core is fixed to a specific version that is not necessarily the latest one.
+      This version will be used as the lower bound in the NuGet package
+    -->
+    <PackageReference Include="CommunityToolkit.Maui" VersionOverride="4.0.0" />
+    <PackageReference Include="CommunityToolkit.Maui.MediaElement" VersionOverride="1.0.2" />
+    <PackageReference Include="Fabulous.MauiControls" VersionOverride="[2.3.0, 3.0.0)" />
+
+    <PackageReference Include="FSharp.Core" VersionOverride="7.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

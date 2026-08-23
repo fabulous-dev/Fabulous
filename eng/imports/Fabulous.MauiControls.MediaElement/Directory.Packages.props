@@ -1,0 +1,20 @@
+<Project>
+  
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="FSharp.Core" Version="7.0.0" />
+    <PackageVersion Include="CommunityToolkit.Maui" Version="4.0.0" />
+    <PackageVersion Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
+    <PackageVersion Include="Fabulous" Version="2.2.1" />
+    <PackageVersion Include="Fabulous.MauiControls" Version="2.4.0" />
+    <PackageVersion Include="FsCheck.NUnit" Version="2.16.4" />
+    <PackageVersion Include="NUnit" Version="3.13.3" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>
