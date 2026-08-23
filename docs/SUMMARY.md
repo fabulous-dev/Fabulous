@@ -32,7 +32,9 @@
 
 * [Get Started](maui/get-started.md)
 * [Virtualized collections](maui/virtualized-collections.md)
+* [Route-based navigation](maui/navigation.md)
 
 ## Avalonia
 
 * [Get Started](avalonia/get-started.md)
+* [Migrate to Avalonia 12](avalonia/migrate-to-12.md)

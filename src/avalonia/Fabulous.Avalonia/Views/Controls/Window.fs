@@ -29,14 +29,11 @@ module Window =
     let ExtendClientAreaToDecorationsHint =
         Attributes.defineAvaloniaPropertyWithEquality Window.ExtendClientAreaToDecorationsHintProperty
 
-    let ExtendClientAreaChromeHints =
-        Attributes.defineAvaloniaPropertyWithEquality Window.ExtendClientAreaChromeHintsProperty
-
     let ExtendClientAreaTitleBarHeightHint =
         Attributes.defineAvaloniaPropertyWithEquality Window.ExtendClientAreaTitleBarHeightHintProperty
 
-    let SystemDecorations =
-        Attributes.defineAvaloniaPropertyWithEquality Window.SystemDecorationsProperty
+    let WindowDecorations =
+        Attributes.defineAvaloniaPropertyWithEquality Window.WindowDecorationsProperty
 
     let ShowActivated =
         Attributes.defineAvaloniaPropertyWithEquality Window.ShowActivatedProperty
@@ -88,25 +85,25 @@ type WindowModifiers =
     static member inline extendClientAreaToDecorationsHint(this: WidgetBuilder<'msg, #IFabWindow>, value: bool) =
         this.AddScalar(Window.ExtendClientAreaToDecorationsHint.WithValue(value))
 
-    /// <summary>Sets the ExtendClientAreaChromeHints property.</summary>
-    /// <param name="this">Current widget.</param>
-    /// <param name="value">The ExtendClientAreaChromeHints value.</param>
-    [<Extension>]
-    static member inline extendClientAreaChromeHints(this: WidgetBuilder<'msg, #IFabWindow>, value: ExtendClientAreaChromeHints) =
-        this.AddScalar(Window.ExtendClientAreaChromeHints.WithValue(value))
-
     /// <summary>Sets the ExtendClientAreaTitleBarHeightHint property.</summary>
     /// <param name="this">Current widget.</param>
     [<Extension>]
     static member inline extendClientAreaTitleBarHeightHint(this: WidgetBuilder<'msg, #IFabWindow>, value: float) =
         this.AddScalar(Window.ExtendClientAreaTitleBarHeightHint.WithValue(value))
 
-    /// <summary>Sets the SystemDecorations property.</summary>
+    /// <summary>Sets the WindowDecorations property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The SystemDecorations value.</param>
+    /// <param name="value">The WindowDecorations value.</param>
     [<Extension>]
-    static member inline systemDecorations(this: WidgetBuilder<'msg, #IFabWindow>, value: SystemDecorations) =
-        this.AddScalar(Window.SystemDecorations.WithValue(value))
+    static member inline windowDecorations(this: WidgetBuilder<'msg, #IFabWindow>, value: WindowDecorations) =
+        this.AddScalar(Window.WindowDecorations.WithValue(value))
+
+    /// <summary>Sets the WindowDecorations property.</summary>
+    /// <param name="this">Current widget.</param>
+    /// <param name="value">The WindowDecorations value.</param>
+    [<Extension>]
+    static member inline systemDecorations(this: WidgetBuilder<'msg, #IFabWindow>, value: WindowDecorations) =
+        this.AddScalar(Window.WindowDecorations.WithValue(value))
 
     /// <summary>Sets the ShowActivated property.</summary>
     /// <param name="this">Current widget.</param>

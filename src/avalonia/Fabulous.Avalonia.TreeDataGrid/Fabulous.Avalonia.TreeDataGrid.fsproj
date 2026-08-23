@@ -27,7 +27,7 @@
         <Compile Include="TreeDataGrid.Components.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Controls.TreeDataGrid" VersionOverride="11.1.1" />
+        <PackageReference Include="Avalonia.Controls.TreeDataGrid" ExcludeAssets="build;buildTransitive;analyzers" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />

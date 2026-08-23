@@ -412,54 +412,45 @@ module AutoCompleteBoxPage =
 
                         AutoCompleteBox(model.UsFederalStates)
                             .minimumPrefixLength(1)
-                            .watermark("Select an item")
+                            .placeholderText("Select an item")
                             .onTextChanged(model.Text, SearchTextChanged)
                     }
 
                     VStack() {
                         TextBlock("MinimumPrefixLength: 3")
 
-                        AutoCompleteBox(model.Items)
-                            .watermark("Select an item")
-                            .minimumPrefixLength(3)
+                        AutoCompleteBox(model.Items).placeholderText("Select an item").minimumPrefixLength(3)
                     }
 
                     VStack() {
                         TextBlock("MinimumPopulateDelay: 1s")
 
-                        AutoCompleteBox(model.Items)
-                            .watermark("Select an item")
-                            .minimumPopulateDelay(TimeSpan.FromSeconds(1.0))
+                        AutoCompleteBox(model.Items).placeholderText("Select an item").minimumPopulateDelay(TimeSpan.FromSeconds(1.0))
                     }
 
                     VStack() {
                         TextBlock("MaxDropDownHeight: 60")
 
-                        AutoCompleteBox(model.Items)
-                            .maxDropDownHeight(60.0)
-                            .watermark("Select an item")
+                        AutoCompleteBox(model.Items).maxDropDownHeight(60.0).placeholderText("Select an item")
                     }
 
                     VStack() {
                         TextBlock("Disabled")
 
-                        AutoCompleteBox(model.Items)
-                            .isEnabled(false)
-                            .watermark("Select an item")
+                        AutoCompleteBox(model.Items).isEnabled(false).placeholderText("Select an item")
                     }
 
                     VStack() {
                         TextBlock("Multi-Binding")
 
                         AutoCompleteBox(model.UsFederalStates)
-                            .watermark("Select an item")
+                            .placeholderText("Select an item")
                             .filterMode(AutoCompleteFilterMode.Contains)
                             .multiBindValue("{0} ({1})", nameof stateData.Name, nameof stateData.Abbreviation)
                     }
 
                     VStack() {
-                        TextBlock("With an item template")
-                            .tip(ToolTip("Somewhere, in pride, an eagle sheds\nA single splendid tear."))
+                        TextBlock("With an item template").tip(ToolTip("Somewhere, in pride, an eagle sheds\nA single splendid tear."))
 
                         AutoCompleteBox(model.UsFederalStates)
                             .itemTemplate(fun state ->
@@ -468,7 +459,7 @@ module AutoCompleteBoxPage =
                                     TextBlock(state.Abbreviation + ",").foreground(Colors.White)
                                     TextBlock(state.Name).foreground(Colors.Red)
                                 })
-                            .watermark("Search a US state or capital")
+                            .placeholderText("Search a US state or capital")
                             .tip(ToolTip("the custom item filter searches the state name as well as the capital"))
                             .itemFilter(fun term item ->
                                 let state = item :?> StateData
@@ -478,17 +469,15 @@ module AutoCompleteBoxPage =
                     VStack() {
                         TextBlock("AsyncBox")
 
-                        AutoCompleteBox(getItemsAsync)
-                            .watermark("Select an item")
-                            .filterMode(AutoCompleteFilterMode.Contains)
+                        AutoCompleteBox(getItemsAsync).placeholderText("Select an item").filterMode(AutoCompleteFilterMode.Contains)
                     }
 
                     VStack() {
                         TextBlock("Async remote-filtered search")
 
                         AutoCompleteBox(model.UsStateSearch.SearchAsync)
-                            .watermark("Search capitals of US federal states by name or state")
-                            .minimumPopulateDelay(TimeSpan.FromMilliseconds 300) // debounce the requests
+                            .placeholderText("Search capitals of US federal states by name or state")
+                            .minimumPopulateDelay(TimeSpan.FromMilliseconds 300.) // debounce the requests
                             .onTextChanged(model.AsyncSearchTerm, AsyncSearchTermChanged)
                             .filterMode(AutoCompleteFilterMode.None) // remote filtered
                             .multiBindValue("{2}, {1} ({0})", nameof stateData.Name, nameof stateData.Abbreviation, nameof stateData.Capital)
@@ -515,7 +504,7 @@ module AutoCompleteBoxPage =
                         TextBlock("Custom AutoComplete")
 
                         AutoCompleteBox(model.Custom)
-                            .watermark("Select an item")
+                            .placeholderText("Select an item")
                             .reference(customAutoCompleteBoxRef)
                             .filterMode(AutoCompleteFilterMode.None)
                             .onLoaded(CustomAutoBoxLoaded)
@@ -525,10 +514,7 @@ module AutoCompleteBoxPage =
                     VStack() {
                         TextBlock("With Validation Errors")
 
-                        AutoCompleteBox(model.Items)
-                            .name("ValidationErrors")
-                            .filterMode(AutoCompleteFilterMode.None)
-                            .dataValidationErrors([ Exception() ])
+                        AutoCompleteBox(model.Items).name("ValidationErrors").filterMode(AutoCompleteFilterMode.None).dataValidationErrors([ Exception() ])
                     }
                 }
             }

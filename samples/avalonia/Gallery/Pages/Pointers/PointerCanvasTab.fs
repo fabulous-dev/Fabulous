@@ -138,7 +138,7 @@ Twist: {_lastProperties.Twist}"
                         _events <- 0
 
                     true
-                , TimeSpan.FromMilliseconds(10)
+                , TimeSpan.FromMilliseconds(10.)
             )
 
     override this.OnDetachedFromVisualTree(e: VisualTreeAttachmentEventArgs) =

@@ -165,16 +165,11 @@ module NumericUpDownPage =
             let! model = Context.Mvu program
 
             VStack(spacing = 4.) {
-                TextBlock("Features:")
-                    .margin(2., 5., 2., 2.)
-                    .fontSize(14.)
-                    .fontWeight(FontWeight.Bold)
+                TextBlock("Features:").margin(2., 5., 2., 2.).fontSize(14.).fontWeight(FontWeight.Bold)
 
                 VWrap() {
                     Grid(coldefs = [ Auto; Auto ], rowdefs = [ Auto; Auto; Auto; Auto; Auto ]) {
-                        TextBlock("ShowButtonSpinner:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
+                        TextBlock("ShowButtonSpinner:").verticalAlignment(VerticalAlignment.Center).margin(2.)
 
                         CheckBox(model.ShowButtonSpinner, ShowButtonSpinnerValueChanged)
                             .verticalAlignment(VerticalAlignment.Center)
@@ -182,35 +177,15 @@ module NumericUpDownPage =
                             .gridRow(0)
                             .gridColumn(1)
 
-                        TextBlock("IsReadOnly:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(1)
-                            .gridColumn(0)
+                        TextBlock("IsReadOnly:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(1).gridColumn(0)
 
-                        CheckBox(model.IsReadOnly, IsReadOnlyValueChanged)
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(1)
-                            .gridColumn(1)
+                        CheckBox(model.IsReadOnly, IsReadOnlyValueChanged).verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(1).gridColumn(1)
 
-                        TextBlock("AllowSpin:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(2)
-                            .gridColumn(0)
+                        TextBlock("AllowSpin:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(2).gridColumn(0)
 
-                        CheckBox(model.AllowSpin, AllowSpinValueChanged)
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(2)
-                            .gridColumn(1)
+                        CheckBox(model.AllowSpin, AllowSpinValueChanged).verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(2).gridColumn(1)
 
-                        TextBlock("Number:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(3)
-                            .gridColumn(0)
+                        TextBlock("Number:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(3).gridColumn(0)
 
                         CheckBox(model.ClipValueToMinMax, ClipValueToMinMaxValueChanged)
                             .verticalAlignment(VerticalAlignment.Center)
@@ -220,9 +195,7 @@ module NumericUpDownPage =
                     }
 
                     (Grid(coldefs = [ Auto; Pixel(120.) ], rowdefs = [ Auto; Auto; Auto; Auto; Auto ]) {
-                        TextBlock("FormatString:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
+                        TextBlock("FormatString:").verticalAlignment(VerticalAlignment.Center).margin(2.)
 
                         ComboBox(
                             model.Formats,
@@ -240,24 +213,11 @@ module NumericUpDownPage =
                             .verticalAlignment(VerticalAlignment.Center)
                             .onSelectionChanged(SelectedFormatChanged)
 
-                        TextBlock("ButtonSpinnerLocation:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(1)
-                            .gridColumn(0)
+                        TextBlock("ButtonSpinnerLocation:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(1).gridColumn(0)
 
-                        ComboBox(model.SpinnerLocations)
-                            .gridRow(1)
-                            .gridColumn(1)
-                            .selectedIndex(0)
-                            .margin(2.)
-                            .verticalAlignment(VerticalAlignment.Center)
+                        ComboBox(model.SpinnerLocations).gridRow(1).gridColumn(1).selectedIndex(0).margin(2.).verticalAlignment(VerticalAlignment.Center)
 
-                        TextBlock("CultureInfo:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(2)
-                            .gridColumn(0)
+                        TextBlock("CultureInfo:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(2).gridColumn(0)
 
                         ComboBox(model.Cultures)
                             .gridRow(2)
@@ -267,38 +227,18 @@ module NumericUpDownPage =
                             .verticalAlignment(VerticalAlignment.Center)
                             .onSelectionChanged(CultureSelectionChanged)
 
-                        TextBlock("Watermark:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(3)
-                            .gridColumn(0)
+                        TextBlock("Watermark:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(3).gridColumn(0)
 
-                        TextBox(model.Watermark, WatermarkTextChanged)
-                            .gridRow(3)
-                            .gridColumn(1)
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
+                        TextBox(model.Watermark, WatermarkTextChanged).gridRow(3).gridColumn(1).verticalAlignment(VerticalAlignment.Center).margin(2.)
 
-                        TextBlock("Text:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(4)
-                            .gridColumn(0)
+                        TextBlock("Text:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(4).gridColumn(0)
 
-                        TextBox(model.Text, TextChanged)
-                            .gridRow(4)
-                            .gridColumn(1)
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
+                        TextBox(model.Text, TextChanged).gridRow(4).gridColumn(1).verticalAlignment(VerticalAlignment.Center).margin(2.)
                     })
                         .margin(8.)
 
                     Grid(coldefs = [ Auto; Auto ], rowdefs = [ Auto; Auto; Auto; Auto; Auto ]) {
-                        TextBlock("Minimum:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(0)
-                            .gridColumn(0)
+                        TextBlock("Minimum:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(0).gridColumn(0)
 
                         NumericUpDown(0., 10., model.MinValue, MinimumValueChanged)
                             .numberFormat(model.NumberFormat)
@@ -308,11 +248,7 @@ module NumericUpDownPage =
                             .margin(2.)
                             .horizontalAlignment(HorizontalAlignment.Center)
 
-                        TextBlock("Maximum:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(1)
-                            .gridColumn(0)
+                        TextBlock("Maximum:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(1).gridColumn(0)
 
                         NumericUpDown(0., 10., model.MaxValue, MaximumValueChanged)
                             .numberFormat(model.NumberFormat)
@@ -322,11 +258,7 @@ module NumericUpDownPage =
                             .margin(2.)
                             .horizontalAlignment(HorizontalAlignment.Center)
 
-                        TextBlock("Increment:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(2)
-                            .gridColumn(0)
+                        TextBlock("Increment:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(2).gridColumn(0)
 
                         NumericUpDown(0., 10., model.IncrementValue, IncrementValueChanged)
                             .gridRow(2)
@@ -335,11 +267,7 @@ module NumericUpDownPage =
                             .margin(2.)
                             .horizontalAlignment(HorizontalAlignment.Center)
 
-                        TextBlock("Value:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .margin(2.)
-                            .gridRow(3)
-                            .gridColumn(0)
+                        TextBlock("Value:").verticalAlignment(VerticalAlignment.Center).margin(2.).gridRow(3).gridColumn(0)
 
                         NumericUpDown(0., 10., model.DecimalValue, DecimalValueChanged)
                             .gridRow(3)
@@ -363,7 +291,7 @@ module NumericUpDownPage =
                             .verticalAlignment(VerticalAlignment.Center)
                             .numberFormat(model.NumberFormat)
                             .formatString(model.SelectedFormat.Value)
-                            .watermark("Enter text")
+                            .placeholderText("Enter text")
                             .textConverter(cultureConverter())
                             .margin(2.)
                     }
@@ -380,7 +308,7 @@ module NumericUpDownPage =
                             .verticalAlignment(VerticalAlignment.Center)
                             .numberFormat(model.NumberFormat)
                             .formatString(model.SelectedFormat.Value)
-                            .watermark("Enter text")
+                            .placeholderText("Enter text")
                             .margin(2.)
                     }
 
@@ -396,24 +324,20 @@ module NumericUpDownPage =
                             .verticalAlignment(VerticalAlignment.Center)
                             .numberFormat(model.NumberFormat)
                             .formatString(model.SelectedFormat.Value)
-                            .watermark("Enter text")
+                            .placeholderText("Enter text")
                             .margin(2.)
                             .dataValidationErrors([ Exception() ])
                     }
 
                     VStack() {
-                        TextBlock("NumericUpDown in HEX mode:")
-                            .verticalAlignment(VerticalAlignment.Center)
-                            .fontWeight(FontWeight.Bold)
-                            .fontSize(14.)
-                            .margin(2.)
+                        TextBlock("NumericUpDown in HEX mode:").verticalAlignment(VerticalAlignment.Center).fontWeight(FontWeight.Bold).fontSize(14.).margin(2.)
 
                         NumericUpDown(0., 10., model.Value, ValueChanged)
                             .increment(0.5)
                             .verticalAlignment(VerticalAlignment.Center)
                             .numberFormat(model.NumberFormat)
                             .formatString(model.SelectedFormat.Value)
-                            .watermark("Enter text")
+                            .placeholderText("Enter text")
                             .margin(2.)
                             .textConverter(hexConverter())
                     }

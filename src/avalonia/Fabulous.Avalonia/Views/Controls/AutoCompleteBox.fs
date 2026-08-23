@@ -13,8 +13,8 @@ type IFabAutoCompleteBox =
 module AutoCompleteBox =
     let WidgetKey = Widgets.register<AutoCompleteBox>()
 
-    let Watermark =
-        Attributes.defineAvaloniaPropertyWithEquality AutoCompleteBox.WatermarkProperty
+    let PlaceholderText =
+        Attributes.defineAvaloniaPropertyWithEquality AutoCompleteBox.PlaceholderTextProperty
 
     let MinimumPrefixLength =
         Attributes.defineAvaloniaPropertyWithEquality AutoCompleteBox.MinimumPrefixLengthProperty
@@ -119,12 +119,12 @@ type AutoCompleteBoxModifiers =
     static member inline isTextCompletionEnabled(this: WidgetBuilder<'msg, #IFabAutoCompleteBox>, value: bool) =
         this.AddScalar(AutoCompleteBox.IsTextCompletionEnabled.WithValue(value))
 
-    /// <summary>Sets the Watermark property.</summary>
+    /// <summary>Sets the PlaceholderText property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The Watermark value.</param>
+    /// <param name="value">The PlaceholderText value.</param>
     [<Extension>]
-    static member inline watermark(this: WidgetBuilder<'msg, #IFabAutoCompleteBox>, value: string) =
-        this.AddScalar(AutoCompleteBox.Watermark.WithValue(value))
+    static member inline placeholderText(this: WidgetBuilder<'msg, #IFabAutoCompleteBox>, value: string) =
+        this.AddScalar(AutoCompleteBox.PlaceholderText.WithValue(value))
 
     /// <summary>Sets the FilterMode property.</summary>
     /// <param name="this">Current widget.</param>

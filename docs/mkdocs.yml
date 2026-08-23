@@ -17,6 +17,7 @@ nav:
       - .NET MAUI: maui/get-started.md
       - MAUI virtualized collections: maui/virtualized-collections.md
       - Avalonia: avalonia/get-started.md
+      - Migrate to Avalonia 12: avalonia/migrate-to-12.md
   - Core concepts:
       - Overview: basics/README.md
       - Model-View-Update: basics/mvu.md

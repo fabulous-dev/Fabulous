@@ -3,7 +3,6 @@ namespace Gallery
 open System
 open System.Diagnostics
 open Avalonia.Controls
-open Avalonia.Controls.Models.TreeDataGrid
 open Avalonia.Controls.Selection
 open Fabulous.Avalonia
 open Fabulous
@@ -288,19 +287,31 @@ module CountriesPage =
         let source = new FlatTreeDataGridSource<Country>(data)
         source.RowSelection.SingleSelect <- false
 
-        source.Columns.AddRange(
-            [ TextColumn<Country, string>(
-                  header = "Country",
-                  getter = (fun x -> x.Name),
-                  width = GridLength(6, GridUnitType.Star),
-                  options = TextColumnOptions(IsTextSearchEnabled = true)
-              )
-
-              TemplateColumn<Country>("Region", "RegionCell", "RegionEditCell")
-              TextColumn<Country, int>(header = "Population", getter = (fun x -> x.Population), width = GridLength(3, GridUnitType.Star))
-              TextColumn<Country, int>(header = "Area", getter = (fun x -> x.Area), width = GridLength(3, GridUnitType.Star))
-              TextColumn<Country, int>(header = "GDP", getter = (fun x -> x.GDP), width = GridLength(3, GridUnitType.Star)) ]
-        )
+        source
+            .WithTextColumn(
+                "Country",
+                (fun (x: Country) -> x.Name),
+                Action<TextColumnCreateOptions>(fun o ->
+                    o.Width <- Nullable(GridLength(6., GridUnitType.Star))
+                    o.IsTextSearchEnabled <- true)
+            )
+            .WithTemplateColumnFromResourceKeys("Region", "RegionCell", "RegionEditCell")
+            .WithTextColumn(
+                "Population",
+                (fun (x: Country) -> x.Population),
+                Action<TextColumnCreateOptions>(fun o -> o.Width <- Nullable(GridLength(3., GridUnitType.Star)))
+            )
+            .WithTextColumn(
+                "Area",
+                (fun (x: Country) -> x.Area),
+                Action<TextColumnCreateOptions>(fun o -> o.Width <- Nullable(GridLength(3., GridUnitType.Star)))
+            )
+            .WithTextColumn(
+                "GDP",
+                (fun (x: Country) -> x.GDP),
+                Action<TextColumnCreateOptions>(fun o -> o.Width <- Nullable(GridLength(3., GridUnitType.Star)))
+            )
+        |> ignore
 
         { Source = source
           CellSelection = false
@@ -359,12 +370,16 @@ module CountriesPage =
             model, Cmd.none
         | RemoveSelected ->
             let selection =
-                (model.Source.Selection :?> ITreeSelectionModel)
-                    .SelectedIndexes
+                (match model.Source.Selection with
+                 | :? TreeDataGridRowSelectionModel<Country> as selection -> selection.SelectedIndexes |> Seq.map(fun index -> index[0])
+                 | :? TreeDataGridCellSelectionModel<Country> as selection -> selection.SelectedIndexes |> Seq.map(fun index -> index.RowIndex[0])
+                 | _ -> Seq.empty)
+                |> Seq.distinct
+                |> Seq.sortDescending
                 |> Seq.toList
 
-            for i in selection.Length - 1 .. -1 .. 0 do
-                data.RemoveAt(selection[i][0])
+            for index in selection do
+                data.RemoveAt(index)
 
             model, Cmd.none
 
@@ -392,23 +407,19 @@ module CountriesPage =
 
                     Label("_Country").target(countryTextBox)
 
-                    TextBox(model.CountryText, CountryTextChanged)
-                        .reference(countryTextBox)
+                    TextBox(model.CountryText, CountryTextChanged).reference(countryTextBox)
 
                     Label("_Region").target(regionTextBox)
 
-                    TextBox(model.RegionText, RegionTextChanged)
-                        .reference(regionTextBox)
+                    TextBox(model.RegionText, RegionTextChanged).reference(regionTextBox)
 
                     Label("_Population").target(populationTextBox)
 
-                    TextBox(model.PopulationText, PopulationTextChanged)
-                        .reference(populationTextBox)
+                    TextBox(model.PopulationText, PopulationTextChanged).reference(populationTextBox)
 
                     Label("_Area").target(areaTextBox)
 
-                    TextBox(model.AreaText, AreaTextChanged)
-                        .reference(areaTextBox)
+                    TextBox(model.AreaText, AreaTextChanged).reference(areaTextBox)
 
                     Label("_GDP").target(gdpTextBox)
 
@@ -421,8 +432,6 @@ module CountriesPage =
                     .margin(4., 0., 0., 0.)
                     .dock(Dock.Right)
 
-                TreeDataGrid(model.Source)
-                    .reference(countries)
-                    .autoDragDropRows(true)
+                TreeDataGrid(model.Source).reference(countries).autoDragDropRows(true)
             }
         }

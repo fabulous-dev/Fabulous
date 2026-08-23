@@ -5,8 +5,8 @@
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-    <AvaloniaVersion>11.3.0</AvaloniaVersion>
-    <AvaloniaLabsVersion>11.3.0</AvaloniaLabsVersion>
+    <AvaloniaVersion>12.1.1</AvaloniaVersion>
+    <AvaloniaLabsVersion>12.0.2</AvaloniaLabsVersion>
   </PropertyGroup>
 
   <!-- Shared NuGet Package info -->
