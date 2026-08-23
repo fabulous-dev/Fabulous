@@ -57,7 +57,7 @@ jobs:
         with:
           dotnet-version: 9.x
       - name: Prepare templates
-        run: python3 eng/release/prepare-templates.py 0.0.0-ci.${GITHUB_RUN_ID}
+        run: python3 eng/monorepo/prepare-templates.py 0.0.0-ci.${GITHUB_RUN_ID}
       - name: Pack
         run: dotnet pack Fabulous.sln -c ${CONFIG} -p:Version=0.0.0-ci.${GITHUB_RUN_ID} --property PackageOutputPath=${PWD}/nupkgs
       - name: Validate package count

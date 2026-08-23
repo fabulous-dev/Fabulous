@@ -47,7 +47,7 @@ jobs:
     - name: Test
       run: dotnet test ${SLN_FILE} -p:Version=${RELEASE_VERSION} -c ${CONFIG} --no-build
     - name: Prepare templates
-      run: python3 eng/release/prepare-templates.py ${RELEASE_VERSION}
+      run: python3 eng/monorepo/prepare-templates.py ${RELEASE_VERSION}
     - name: Pack
       run: dotnet pack ${SLN_FILE} -p:Version=${RELEASE_VERSION} -p:PackageReleaseNotes="${{ steps.changelog_reader.outputs.changes }}" -c ${CONFIG} --no-restore --property PackageOutputPath=${PWD}/nupkgs
     - name: Upload artifacts
