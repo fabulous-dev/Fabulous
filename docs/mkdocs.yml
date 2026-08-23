@@ -10,36 +10,39 @@ theme:
 
 nav:
   - Welcome: README.md
-  - Get started: get-started.md
+  - Choose a backend: get-started.md
   - Glossary: glossary.md
-  - API reference: api/
+  - Tutorials:
+    - .NET MAUI: tutorials/maui.md
+    - Avalonia: tutorials/avalonia.md
   - Platforms:
-      - .NET MAUI: maui/get-started.md
+      - MAUI: maui/get-started.md
+      - MAUI virtualized collections: maui/virtualized-collections.md
+      - MAUI Route-based navigation: maui/navigation.md
       - Avalonia: avalonia/get-started.md
       - Migrate to Avalonia 12: avalonia/migrate-to-12.md
   - Core concepts:
-      - Overview: basics/README.md
-      - Model-View-Update: basics/mvu.md
-      - Application state: basics/application-state/README.md
-      - Commands: basics/application-state/commands.md
-      - State validation: basics/application-state/state-validation.md
-  - Advanced:
-      - Overview: advanced/README.md
-      - Saving and restoring state: advanced/saving-and-restoring-app-state.md
-      - Composing larger applications: advanced/composing-larger-applications/README.md
-      - Independent MVU states: advanced/composing-larger-applications/splitting-into-independent-mvu-states.md
-      - Integrating commands: advanced/composing-larger-applications/integrating-commands.md
-      - Communicating between states: advanced/composing-larger-applications/communicating-between-mvu-states.md
+    - Programs and commands: concepts/programs.md
+    - UI and interaction: concepts/ui.md
+  - Guides:
+    - Testing and debugging: guides/testing-debugging.md
+    - Performance and collections: guides/performance.md
+    - Deployment: guides/deployment.md
+    - Migrate to 10.0.x: guides/migration.md
+  - Architecture: architecture/README.md
+  - API reference: https://fabulous-dev.github.io/Fabulous/docs/api/
 
 exclude_docs: |
   SUMMARY.md
   api/**
-  architecture/**
-  basics/error-monitoring.md
-  basics/testing.md
-  basics/user-interface/**
+  api/README.md
+  api/source-inventory.md
+  advanced/**
+  architecture/attribute-definitions.md
+  architecture/using-nightly-builds.md
+  architecture/virtualized-collections.md
+  basics/**
   samples-and-tutorials/**
-  advanced/performance-optimization.md
 
 markdown_extensions:
   - admonition

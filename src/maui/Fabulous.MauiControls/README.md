@@ -7,7 +7,7 @@ Deploy to any platform supported by .NET MAUI, such as Android, iOS, macOS, Wind
 ### Getting Started
 
 You can start your new Fabulous.MauiControls app in a matter of seconds using the dotnet CLI templates.  
-For a starter guide see our [documentation](https://docs.fabulous.dev/v2/maui.controls/getting-started).
+For a starter guide see [Build a .NET MAUI app](https://fabulous-dev.github.io/Fabulous/docs/tutorials/maui/).
 
 ```sh
 dotnet new install Fabulous.MauiControls.Templates
@@ -16,4 +16,4 @@ dotnet new fabulous-mauicontrols -n MyApp
 
 ### Documentation
 
-Documentation can be found at https://docs.fabulous.dev/v2/maui.controls
+Documentation can be found at https://fabulous-dev.github.io/Fabulous/docs/.
