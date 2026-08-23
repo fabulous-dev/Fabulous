@@ -1,6 +1,6 @@
 site_name: Fabulous Documentation
 site_description: Build cross-platform applications in F# with Fabulous.
-site_url: https://fabulous.dev/docs/
+site_url: https://fabulous-dev.github.io/Fabulous/docs/
 repo_url: https://github.com/fabulous-dev/Fabulous
 edit_uri: edit/main/docs/
 
@@ -11,6 +11,7 @@ theme:
 nav:
   - Welcome: README.md
   - Get started: get-started.md
+  - Glossary: glossary.md
   - API reference: api/
   - Platforms:
       - .NET MAUI: maui/get-started.md

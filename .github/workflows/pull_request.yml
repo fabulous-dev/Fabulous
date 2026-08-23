@@ -115,8 +115,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
-      - name: Install MAUI workload
-        run: dotnet workload install maui
+      - name: Install Windows MAUI workload
+        run: dotnet workload install maui-windows --skip-manifest-update
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample

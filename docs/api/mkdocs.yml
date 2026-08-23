@@ -1,6 +1,6 @@
 site_name: Fabulous API Reference
 site_description: API reference for Fabulous platform integrations.
-site_url: https://fabulous.dev/docs/api/
+site_url: https://fabulous-dev.github.io/Fabulous/docs/api/
 repo_url: https://github.com/fabulous-dev/Fabulous
 edit_uri: edit/main/docs/api/
 
