@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Maps", "src\Fabulous.MauiControls.Maps.fsproj", "{F3C87C20-69E0-47F7-8E9A-764541CE701A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3C87C20-69E0-47F7-8E9A-764541CE701A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C87C20-69E0-47F7-8E9A-764541CE701A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C87C20-69E0-47F7-8E9A-764541CE701A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C87C20-69E0-47F7-8E9A-764541CE701A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

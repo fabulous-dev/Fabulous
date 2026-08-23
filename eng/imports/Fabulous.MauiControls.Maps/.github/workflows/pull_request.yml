@@ -1,0 +1,26 @@
+name: Pull Request
+on: pull_request
+
+jobs:
+  build:
+    runs-on: macos-12
+    env:
+      SLN_FILE: NoSamples.sln
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Check code formatting
+      run: |
+        dotnet tool restore
+        dotnet fantomas --check -r src samples
+    - name: Install dotnet workload
+      run: dotnet workload install maui
+    - name: Restore
+      run: dotnet restore ${SLN_FILE}
+    - name: Build
+      run: dotnet build ${SLN_FILE} --no-restore --configuration Release
+    # - name: Test
+    #   run: dotnet test ${SLN_FILE} --no-build --configuration Release
