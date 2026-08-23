@@ -15,4 +15,17 @@
   * [Deployment](guides/deployment.md)
   * [Migrate to 10.0.x](guides/migration.md)
 * [Architecture](architecture/README.md)
+  * [Attribute definitions](architecture/attribute-definitions.md)
+  * [Virtualized collections](architecture/virtualized-collections.md)
+  * [Using nightly builds](architecture/using-nightly-builds.md)
+
+## .NET MAUI <a href="#maui" id="maui"></a>
+
+* [Get Started](maui/get-started.md)
+* [Route-based navigation](maui/navigation.md)
+
+## Avalonia
+
+* [Get Started](avalonia/get-started.md)
+* [Migrate to Avalonia 12](avalonia/migrate-to-12.md)
 * [API reference](api/README.md)

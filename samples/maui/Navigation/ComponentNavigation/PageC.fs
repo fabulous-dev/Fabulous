@@ -58,8 +58,8 @@ module PageC =
         |> Program.withSubscription(subscribe appMsgDispatcher)
 
     let view nav appMsgDispatcher args =
-        Component(program nav appMsgDispatcher, args) {
-            let! model = Mvu.State
+        Component("PageC") {
+            let! model = Context.Mvu(program nav appMsgDispatcher, args)
 
             ContentPage(
                 Grid(coldefs = [ Star ], rowdefs = [ Star; Auto ]) {

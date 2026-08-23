@@ -26,6 +26,7 @@
     <Compile Include="Attributes.fs" />
     <Compile Include="VirtualizedCollection.fs" />
     <Compile Include="Widgets.fs" />
+    <Compile Include="NavigationStack.fs" />
     <Compile Include="Views\_Element.fs" />
     <Compile Include="Views\_Geometry.fs" />
     <Compile Include="Views\_NavigableElement.fs" />

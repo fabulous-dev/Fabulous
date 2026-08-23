@@ -15,6 +15,11 @@ nav:
   - Tutorials:
     - .NET MAUI: tutorials/maui.md
     - Avalonia: tutorials/avalonia.md
+  - Platforms:
+      - .NET MAUI: maui/get-started.md
+      - Route-based navigation: maui/navigation.md
+      - Avalonia: avalonia/get-started.md
+      - Migrate to Avalonia 12: avalonia/migrate-to-12.md
   - Core concepts:
     - Programs and commands: concepts/programs.md
     - UI and interaction: concepts/ui.md
@@ -35,9 +40,7 @@ exclude_docs: |
   architecture/attribute-definitions.md
   architecture/using-nightly-builds.md
   architecture/virtualized-collections.md
-  avalonia/**
   basics/**
-  maui/**
   samples-and-tutorials/**
 
 markdown_extensions:

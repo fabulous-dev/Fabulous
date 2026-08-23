@@ -7,8 +7,9 @@ open type Fabulous.Maui.View
 
 /// This is the root of the app
 module Sample =
-    /// The Model needs only to store the current navigation stack
-    type Model = { Navigation: NavigationStack }
+    type Model =
+        { Navigation: NavigationStack<NavigationRoute>
+          NextRouteId: int }
 
     type Msg =
         | NavigationMsg of NavigationRoute
@@ -20,12 +21,26 @@ module Sample =
 
     /// In the init function, we initialize the NavigationStack
     let init () =
-        { Navigation = NavigationStack.Init(NavigationRoute.PageA) }, Cmd.none
+        let navigation = NavigationStack.create(Route.create "page-0" NavigationRoute.PageA)
+
+        let model =
+            { Navigation = navigation
+              NextRouteId = 1 }
+
+        model, Cmd.none
 
     let update appMsgDispatcher msg model =
         match msg with
-        | NavigationMsg route -> { Navigation = model.Navigation.Push(route) }, Cmd.none
-        | BackNavigationMsg -> { Navigation = model.Navigation.Pop() }, Cmd.none
+        | NavigationMsg route ->
+            let route = Route.create $"page-{model.NextRouteId}" route
+
+            { Navigation = NavigationStack.push route model.Navigation
+              NextRouteId = model.NextRouteId + 1 },
+            Cmd.none
+        | BackNavigationMsg ->
+            { model with
+                Navigation = NavigationStack.pop model.Navigation },
+            Cmd.none
         | BackButtonPressed -> model, notifyBackButtonPressed appMsgDispatcher
 
     let subscribe (nav: NavigationController) _ =
@@ -49,17 +64,13 @@ module Sample =
         | NavigationRoute.PageC(someArgs, stepCount) -> AnyPage(PageC.view nav appMsgDispatcher (someArgs, stepCount))
 
     let view nav appMsgDispatcher () =
-        Component(program nav appMsgDispatcher) {
-            let! model = Mvu.State
+        Component("Navigation") {
+            let! model = Context.Mvu(program nav appMsgDispatcher)
 
             Application(
                 (NavigationPage() {
-                    // We inject in the NavigationPage history the back stack of our navigation
-                    for navPath in List.rev model.Navigation.BackStack do
-                        navView nav appMsgDispatcher navPath
-
-                    // The page currently displayed is the one on top of the stack
-                    navView nav appMsgDispatcher model.Navigation.CurrentPage
+                    for route in NavigationStack.routes model.Navigation do
+                        navView nav appMsgDispatcher route.Value
                 })
                     .onBackButtonPressed(BackButtonPressed)
                     .onBackNavigated(BackNavigationMsg)
