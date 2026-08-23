@@ -28,7 +28,7 @@
         <Compile Include="DevTools.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Diagnostics" VersionOverride="$(AvaloniaVersion)">
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport" VersionOverride="2.2.3">
             <PrivateAssets>build; native; contentfiles; analyzers</PrivateAssets>
         </PackageReference>
     </ItemGroup>

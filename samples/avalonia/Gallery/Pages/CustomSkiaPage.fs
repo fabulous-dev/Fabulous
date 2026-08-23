@@ -117,9 +117,9 @@ type CustomSkiaControl() as this =
         this.ClipToBounds <- true
         let text = "Current rendering API is not Skia"
 
-        let glyphs =
+        let glyphs: uint16[] =
             text.ToCharArray()
-            |> Array.map(fun ch -> Typeface.Default.GlyphTypeface.GetGlyph(uint32 ch))
+            |> Array.map(fun ch -> Typeface.Default.GlyphTypeface.CharacterToGlyphMap.GetGlyph(int ch))
 
         _noSkia <- new GlyphRun(Typeface.Default.GlyphTypeface, 12., text.AsMemory(), glyphs)
 

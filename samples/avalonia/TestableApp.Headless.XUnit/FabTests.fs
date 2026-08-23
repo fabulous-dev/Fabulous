@@ -6,6 +6,7 @@ open Avalonia.Controls
 open Avalonia.Headless
 open Avalonia.Headless.XUnit
 open Avalonia.Input
+open Avalonia.Media.Imaging
 open Fabulous
 open Fabulous.Avalonia
 open Xunit
@@ -24,7 +25,7 @@ module FabTests =
             Assert.NotNull(bitmap)
 
             use stream = File.Create(Path.Combine(directory, $"{name}.png"))
-            bitmap.Save(stream)
+            bitmap.Save(stream, PngBitmapEncoderOptions.Default)
 
     /// It takes the root of the widget tree and create the corresponding Avalonia node, and recursively creating all children nodes
     let mkView<'a> (root: Widget) : 'a =
