@@ -20,7 +20,15 @@ module App =
         | GoToSample of int
         | GoBack
 
-    let init () = { Paths = [ Overview ] }
+    let init () =
+        let paths =
+            match Runtime.StartupSampleIndex with
+            | Some index when index >= 0 && index < RegisteredSamples.samples.Length ->
+                let sampleModel = RegisteredSamples.samples[index].Program.init()
+                [ Sample(index, sampleModel); Overview ]
+            | _ -> [ Overview ]
+
+        { Paths = paths }
 
     let update msg model =
         match msg with
@@ -50,13 +58,7 @@ module App =
                 )
                     .title("Samples")
 
-                ContentPage(
-                    VStack() {
-                        Label("Fabulous.Maui Gallery")
-                            .horizontalOptions(LayoutOptions.Center)
-                            .verticalOptions(LayoutOptions.Center)
-                    }
-                )
+                ContentPage(VStack() { Label("Fabulous.Maui Gallery").horizontalOptions(LayoutOptions.Center).verticalOptions(LayoutOptions.Center) })
                     .title("Info")
             }
         )

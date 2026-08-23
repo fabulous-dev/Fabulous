@@ -57,7 +57,7 @@ jobs:
           path: nupkgs/
 
   avalonia-samples:
-    name: Avalonia sample tests
+    name: Avalonia sample runtime tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -71,12 +71,58 @@ jobs:
       - name: Test headless UI
         run: dotnet run --project samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
         env:
-          FABULOUS_SCREENSHOT_DIR: ${{ github.workspace }}/artifacts/screenshots
+          FABULOUS_SCREENSHOT_DIR: ${{ github.workspace }}/artifacts/screenshots/avalonia-headless
+      - name: Install desktop capture tools
+        run: sudo apt-get update && sudo apt-get install -y imagemagick xdotool xvfb
+      - name: Build, run, and capture every sample
+        run: xvfb-run --auto-servernum --server-args='-screen 0 1440x900x24' bash eng/ci/capture-avalonia-samples.sh
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         with:
           name: Screenshots-Avalonia
-          path: artifacts/screenshots/*.png
+          path: artifacts/screenshots/**/*.png
+          if-no-files-found: error
+
+  maui-android-samples:
+    name: MAUI Android sample runtime tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Install Android workload
+        run: dotnet workload install maui-android --skip-manifest-update
+      - name: Build every Android sample
+        run: bash eng/ci/capture-maui-android-samples.sh build
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run and capture every Android sample
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: bash eng/ci/capture-maui-android-samples.sh capture
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Screenshots-MAUI-Android
+          path: artifacts/screenshots/maui-android/
           if-no-files-found: error
 
   avalonia-template:
@@ -138,6 +184,10 @@ jobs:
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
         run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
+      - name: Build Windows-only samples
+        run: |
+          dotnet build samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj -c $env:CONFIG
+          dotnet build samples/maui/WinUICompat/HelloWorld.Maui/HelloWorld.Maui.fsproj -c $env:CONFIG
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
