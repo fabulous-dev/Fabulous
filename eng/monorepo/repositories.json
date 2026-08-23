@@ -52,7 +52,8 @@
       "destination": "src/FSharp.Maui.WinUICompat",
       "ref": "main",
       "wave": 2,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from c6c139ed136a2c39409a206da9ce28c7bf54e6ea and upgraded to .NET 8 with root Windows CI coverage."
     },
     {
       "name": "FSharp.Mobile.Templates",

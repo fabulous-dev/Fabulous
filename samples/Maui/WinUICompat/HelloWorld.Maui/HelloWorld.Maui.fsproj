@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>HelloWorld</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -26,7 +26,7 @@
 	</PropertyGroup>
 
 
-	<Import Project="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
+	<Import Project="..\..\..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.props" />
 	
 
 	<ItemGroup>
@@ -79,7 +79,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
+	  <ProjectReference Include="..\..\..\..\src\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" />
 	</ItemGroup>
 
 </Project>
