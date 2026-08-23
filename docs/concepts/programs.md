@@ -26,3 +26,39 @@ Program.statefulWithCmdMsg
 After choosing a constructor, attach rendering with `Program.withView` for the direct MVU style, or consume the program through `Context.Mvu` inside a component. Optional configuration includes `Program.withSubscription`, `Program.withLogger`, `Program.withTrace`, and `Program.withExceptionHandler`.
 
 Keep `init`, `update`, and `view` deterministic. Put I/O and timers in commands, translate exceptions into messages where the UI can recover, and reserve the exception handler for uncaught failures.
+
+## Throttling external updates
+
+Use a `DispatchThrottle` when a background producer reports values faster than the UI should process them. Choose the behavior explicitly:
+
+- `Dispatch.throttle` forwards the leading value and drops intermediate values.
+- `Dispatch.throttleLatest` forwards the leading value and guarantees the latest pending value.
+- `Dispatch.batchThrottled` forwards the leading value, then batches every pending value.
+
+Create the throttle once for the lifetime of the producer or program. Do not create it in `update`, because that resets its interval and leaves timers undisposed. Calls to `Dispatch` are thread-safe, including calls from multiple producers.
+
+This progress reporter preserves the final update from a high-frequency stream:
+
+```fsharp
+let reportProgress (dispatch: Dispatch<Msg>) =
+    let throttle =
+        Dispatch.throttleLatest
+            (TimeSpan.FromMilliseconds(100.))
+            ProgressChanged
+            dispatch
+
+    let progress = Progress<float>(throttle.Dispatch)
+
+    task {
+        try
+            do! copyFiles progress
+            do! throttle.FlushAsync()
+            dispatch CopyCompleted
+        finally
+            throttle.Dispose()
+    }
+```
+
+`FlushAsync` immediately forwards pending values and resets the interval. Call it before `Dispose` when completion must preserve the final value. `Dispose` cancels the timer and drops pending values; later calls to `Dispatch` or `FlushAsync` throw `ObjectDisposedException`. Mapping or dispatch exceptions from timer callbacks are sent to the `onError` function by the `With` factories. Immediate leading-edge calls and `FlushAsync` report exceptions to their caller.
+
+The default factories use a timer. Tests can use `throttleWith`, `throttleLatestWith`, or `batchThrottledWith` with an `IDispatchThrottleScheduler` implementation to advance callbacks deterministically.
