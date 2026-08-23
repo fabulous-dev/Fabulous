@@ -1,0 +1,10 @@
+baseURL = 'https://fabulous.dev'
+languageCode = 'en-us'
+title = 'Fabulous - Build reliable multi-platform apps effortlessly'
+theme = 'fabulous.dev-theme'
+
+[params]
+    Tagline = 'Build reliable multi-platform apps effortlessly'
+    Description = 'Unleashing the power of declarative UI and functional programming, Fabulous empowers you to create amazing and reliable apps with ease. Target Android, iOS, macOS, Windows and more.'
+    GetStartedLink = 'https://docs.fabulous.dev/get-started'
+    GitHubLink = 'https://github.com/fabulous-dev/Fabulous'

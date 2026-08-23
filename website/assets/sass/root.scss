@@ -1,0 +1,613 @@
+@import '../../themes/fabulous.dev-theme/assets/sass/main';
+@import 'root-colors', 'root-fonts';
+
+main {
+    display: flex;
+    flex-direction: column;
+
+    .hero {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        @include padding-page;
+        padding-top: 48px;
+
+        .hero-container {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 36px;
+
+            .hero-description {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+                text-align: center;
+
+                .button {
+                    margin-top: 20px;
+                }
+            }
+    
+            .hero-image {
+                position: relative;
+                width: 320px;
+                height: 255px;
+                align-self: center;
+
+                @keyframes slideInFromTopBig {
+                    100% {
+                        top: 5%;
+                    }
+                }
+
+                @keyframes slideInFromTop {
+                    100% {
+                        bottom: 0%;
+                    }
+                }
+
+                img {
+                    object-fit: contain;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                #hero-1 {
+                    position: absolute;
+                    width: 97%;
+                    height: 86%;
+                    top: -5%;
+                    left: 0;
+
+                    animation: 1s ease-out 0s 1 slideInFromTopBig forwards;
+                }
+
+                #hero-2 {
+                    position: absolute;
+                    width: 20%;
+                    height: 54%;
+                    right: 22%;
+                    bottom: 16%;
+
+                    animation: 1s ease-out 0s 1 slideInFromTop forwards;
+                }
+
+                #hero-3 {
+                    position: absolute;
+                    width: 20%;
+                    height: 54%;
+                    right: 0;
+                    bottom: 12%;
+                    animation: 1s ease-out 0s 1 slideInFromTop forwards;
+                }
+            }
+        }
+
+        .spotlight {
+            background-color: $spotlight-header-color;
+            width: 200px;
+            height: 300px;
+            filter: blur(90px);
+            left: -180px;
+            bottom: 0px;
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        padding-top: 108px;
+        padding-bottom: 108px;
+        gap: 88px;
+        overflow: hidden;
+
+        .spotlight {
+            width: 200px;
+            height: 300px;
+            filter: blur(90px);
+        }
+
+        .content {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            @include padding-page;
+        
+            .content-container {
+                display: flex;
+                flex-direction: column;
+                gap: 36px;
+
+                .content-description {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+
+                    hgroup {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+
+                        h2 {
+                            color: $secondary-color-1;
+                        }
+                    }
+                }
+
+                .content-image {
+                    width: 264px;
+                    height: 264px;
+                    align-self: center;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                }
+            }
+
+            &#declarative-ui {
+                #declarative-ui-animated {
+                    position: relative;
+                    align-self: center;
+
+                    #expressive-views-1 {
+                        position: absolute;
+                    }
+
+                    #expressive-views-2 {
+                        position: absolute;
+                        height: 17%;
+                        width: 43%;
+                        right: 0%;
+                        bottom: 38%;
+
+                        @keyframes moveRight {
+                            33%, 66% {
+                                right: -10%;
+                            }
+                            100% {
+                                right: 0%;
+                            }
+                        }
+
+                        animation: 4s ease 0s infinite moveRight forwards;
+                    }
+                }
+
+                .content-image {
+                    width: 261px;
+                    height: 264px;
+                }
+            }
+
+            &#mvu {
+                .spotlight {
+                    background-color: $spotlight-mvu-color;
+                    right: -180px;
+                    bottom: 0px;
+                }
+
+                .content-image {
+                    width: 270px;
+                    height: 108px;
+                }
+            }
+
+            &#functional-programming {
+                .content-image {
+                    width: 191px;
+                    height: 188px;
+                }
+
+                #functional-programming-animated {
+                    position: relative;
+                    overflow: hidden;
+                    align-self: center;
+
+                    #fsharp-1 {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: -5%;
+                    }
+
+                    #fsharp-2 {
+                        position: absolute;
+                        width: 24%;
+                        height: 24%;
+                        background: linear-gradient(180deg, #85B2E6 0%, #9EC3EE 47.71%, #ACC7F8 100%);
+                        border-radius: 9999px;
+                        bottom: 33%;
+                        left: 17%;
+
+                        @keyframes zoomIn {
+                            50%, 100% {
+                                width: 36%;
+                                height: 36%;
+                                bottom: 27%;
+                                left: 10%
+                            }
+                        }
+
+                        animation: 1.2s ease 0s infinite alternate zoomIn forwards;
+                    }
+
+                    #fsharp-3 {
+                        position: absolute;
+                        width: 45%;
+                        height: 45%;
+                        bottom: 0%;
+                        left: 18%;
+                    }
+                }
+            }
+
+            &#dotnet {
+                .spotlight {
+                    background-color: $spotlight-dotnet-color;
+                    left: -180px;
+                    bottom: 0px;
+                }
+
+                .content-image {
+                    width: 194px;
+                    height: 177px;
+                }
+            }
+        }
+
+        .community {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            .community-container {
+                display: flex;
+                flex-direction: column;
+                gap: 88px
+            }
+
+            .spotlight {
+                background-color: $spotlight-community-color;
+                right: -180px;
+                bottom: 0px;
+            }
+        }
+
+        .callout {
+            display: flex;
+            flex-direction: row;
+            @include padding-page;
+            justify-content: center;
+        
+            div {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                padding: 30px;
+                background-color: $secondary-color-3;
+                border-radius: 18px;
+
+                &:hover {
+                    filter: drop-shadow(4px 4px 30px $shadow-color);
+                }
+
+                h2 {
+                    text-align: center;
+                    @include font-callout-header;
+                }
+
+                ul {
+                    display: flex;
+                    flex-direction: row;
+                    list-style: none;
+                    justify-content: space-around;
+
+                    li {
+                        a {
+                            display: flex;
+                            flex-direction: column;
+                            text-decoration: none;
+                            align-items: center;
+                            gap: 8px;
+
+                            p {
+                                @include font-getstarted-optionlabel;
+                            }
+                        
+                            img {
+                                height: 48px;
+                                width: 48px;
+                                object-fit: contain;
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+    }
+
+    .get-started {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        @include padding-page;
+        margin-bottom: 108px;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+
+            h3 {
+                text-align: center;
+                @include font-getstarted-header;
+
+                i {
+                    @include font-getstarted-header;
+                    color: $secondary-color-1;
+                }
+            }
+
+            .actions {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+            }
+        }
+    }
+}
+
+/* Tablet mode (700px to 999px) */
+@media only screen and (min-width: 700px) {
+    main {
+        .hero {
+            .hero-container {
+                .hero-description {
+                    gap: 32px;
+
+                    .button {
+                        margin-top: 4px;
+                    }
+                }
+
+                .hero-image {
+                    width: 380px;
+                    height: 300px;
+                }
+            }
+        }
+
+        .body {
+            margin-top: 128px;
+            margin-bottom: 128px;
+            gap: 96px;
+
+            .content {
+                .content-container {
+                    .content-description {
+                        gap: 24px;
+
+                        hgroup {
+                            gap: 12px;
+                        }
+                    }
+
+                    &#declarative-ui .content-image {
+                        width: 320px;
+                        height: 325px;
+                    }
+
+                    &#mvu .content-image {
+                        width: 416px;
+                        height: 168px;
+                    }
+
+                    &#functional-programming .content-image {
+                        width: 280px;
+                        height: 276px;
+                    }
+
+                    &#dotnet .content-image {
+                        width: 280px;
+                        height: 260px;
+                    }
+                }
+            }
+
+            .community .community-container {
+                gap: 96px;
+            }
+
+            .callout div {
+                padding: 40px;
+                gap: 18px;
+
+                ul {
+                    padding-top: 18px;
+                }
+            }
+        }
+
+        .get-started {
+            padding-left: 90px;
+            padding-right: 90px;
+            margin-bottom: 128px;
+
+            div {
+                gap: 63px;
+
+                .actions {
+                    flex-direction: row;
+                    justify-content: center;
+                    gap: 74px;
+                }
+            }
+        }
+    }
+}
+
+/* Desktop mode (1000px and more) */
+@media only screen and (min-width: 1000px) {
+    main {
+        .hero {
+            padding-top: 160px;
+
+            .spotlight {
+                width: 312px;
+                height: 460px;
+                filter: blur(75px);
+                left: -224px;
+                bottom: -160px;
+            }
+
+            .hero-container {
+                flex-direction: row;
+                gap: 48px;
+                max-width: 1280px;
+
+                .hero-description {
+                    gap: 16px;
+
+                    .button {
+                        margin-top: 32px;
+                    }
+                }
+
+                .hero-image {
+                    flex-shrink: 0;
+                    width: 400px;
+                    height: 288px;
+                }
+            }
+        }
+
+        .body {
+            padding-top: 146px;
+            padding-bottom: 146px;
+            gap: 136px;
+
+            .spotlight {
+                width: 312px;
+                height: 460px;
+                filter: blur(75px);
+            }
+
+            .content {
+                .content-container {
+                    flex-direction: row-reverse;
+                    gap: 72px;
+                    width: 100%;
+                    max-width: 1280px;
+
+                    .content-description {
+                        gap: 16px;
+                        flex-grow: 1;
+                        
+                        hgroup {
+                            gap: 4px;
+                        }
+                    }
+                    .content-image {
+                        flex-grow: 1;
+                        flex-shrink: 0;
+                    }
+                }
+
+                &:nth-child(even) .content-container {
+                    flex-direction: row;
+                }
+
+                &#declarative-ui .content-image {
+                    width: 350px;
+                    height: 345px;
+                }
+
+                &#mvu {
+                    .spotlight {
+                        right: -224px;
+                    }
+
+                     .content-image {
+                        width: 355px;
+                        height: 143px;
+                    }
+                }
+
+                &#functional-programming .content-image {
+                    width: 300px;
+                    height: 300px;
+                }
+
+                &#dotnet {
+                    .spotlight {
+                        left: -224px;
+                    }
+
+                    .content-image {
+                        width: 315px;
+                        height: 300px;
+                    }
+                }
+            }
+
+            .community {
+                .spotlight {
+                    right: -224px;
+                }
+
+                .community-container {
+                    max-width: 1280px;
+                    flex-direction: row;
+                    gap: 64px;
+                    @include padding-page;
+
+                    hgroup h3 {
+                        @include font-community-header;
+                    }
+
+                    .content {
+                        padding: 0px;
+                    }
+                }
+            }
+
+            .callout {
+                div {
+                    max-width: 528px;
+                    text-align: center;
+                    padding: 60px 96px;
+                    gap: 32px;
+
+                    ul li a img {
+                        width: 74px;
+                        height: 74px;
+                    }
+                }
+            }
+        }
+
+        .get-started {
+            margin-bottom: 220px;
+
+            div {
+                max-width: 682px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    main .hero .hero-container .hero-image {
+        width: 490px;
+        height: 386px;
+    }
+}

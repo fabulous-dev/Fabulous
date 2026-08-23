@@ -1,0 +1,23 @@
+@import '../../themes/fabulous.dev-theme/assets/sass/fonts';
+
+@mixin font-community-header {
+    font: $semibold 28px /1.6 $poppins;
+    @media (min-width: 1000px) { font: $semibold 32px /1.5 $poppins }
+}
+
+@mixin font-callout-header {
+    font: $semibold 20px /1.4 $poppins;
+    @media (min-width: 700px) { font: $semibold 28px /1.4 $poppins; }
+    @media (min-width: 1000px) { font: $semibold 32px /1.5 $poppins }
+}
+
+@mixin font-getstarted-header {
+    font: $semibold 28px /1.6 $poppins;
+    @media (min-width: 700px) { font: $semibold 32px /1.44 $poppins; }
+    @media (min-width: 1000px) { font: $semibold 40px /1.44 $poppins; }
+}
+
+@mixin font-getstarted-optionlabel {
+    font: $medium 10px /1.4 $poppins;
+    @media (min-width: 700px) { font: $medium 11px /1.5 $poppins }
+}

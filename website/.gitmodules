@@ -1,0 +1,3 @@
+[submodule "themes/fabulous.dev-theme"]
+	path = themes/fabulous.dev-theme
+	url = https://github.com/fabulous-dev/fabulous.dev-theme
