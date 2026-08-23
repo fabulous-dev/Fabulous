@@ -6,5 +6,5 @@ theme = 'fabulous.dev-theme'
 [params]
     Tagline = 'Build reliable multi-platform apps effortlessly'
     Description = 'Unleashing the power of declarative UI and functional programming, Fabulous empowers you to create amazing and reliable apps with ease. Target Android, iOS, macOS, Windows and more.'
-    GetStartedLink = '/docs/get-started/'
+    GetStartedLink = 'docs/get-started/'
     GitHubLink = 'https://github.com/fabulous-dev/Fabulous'

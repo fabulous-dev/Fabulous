@@ -11,7 +11,7 @@ theme:
 nav:
   - Welcome: README.md
   - Get started: get-started.md
-  - API reference: /docs/api/
+  - API reference: api/
   - Platforms:
       - .NET MAUI: maui/get-started.md
       - Avalonia: avalonia/get-started.md
