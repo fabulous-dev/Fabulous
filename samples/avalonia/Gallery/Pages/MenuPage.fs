@@ -43,13 +43,9 @@ module MenuPage =
                 Dock() {
                     (Menu() {
                         MenuItems(header = Image("avares://Gallery/Assets/Icons/fabulous-icon.png")) {
-                            MenuItem("Standard _Menu Item")
-                                .inputGesture(KeyGesture(Key.A, KeyModifiers.Control))
-                                .enableMenuItemClickForwarding(true)
+                            MenuItem("Standard _Menu Item").inputGesture(KeyGesture(Key.A, KeyModifiers.Control))
 
-                            MenuItem("_Disabled Menu Item")
-                                .inputGesture(KeyGesture(Key.D, KeyModifiers.Control))
-                                .isEnabled(false)
+                            MenuItem("_Disabled Menu Item").inputGesture(KeyGesture(Key.D, KeyModifiers.Control)).isEnabled(false)
 
                             MenuItem(Separator())
 
@@ -59,18 +55,14 @@ module MenuPage =
                                 MenuItems("Submenu _2 with Submenu") { MenuItem("Submenu Level 2") }
 
 
-                                (MenuItems("Submenu _3 with Submenu Disabled") { MenuItem("Submenu Level 2") })
-                                    .isEnabled(false)
+                                (MenuItems("Submenu _3 with Submenu Disabled") { MenuItem("Submenu Level 2") }).isEnabled(false)
                             }
 
                             MenuItem("Menu Item with _Icon")
                                 .inputGesture(KeyGesture(Key.B, KeyModifiers.Control ||| KeyModifiers.Shift))
                                 .icon(Image("avares://Gallery/Assets/Icons/fabulous-icon.png"))
 
-                            MenuItem("Menu Item with _Checkbox")
-                                .icon(CheckBox(model.IsChecked, ValueChanged))
-                                .borderThickness(0.)
-                                .isHitTestVisible(false)
+                            MenuItem("Menu Item with _Checkbox").icon(CheckBox(model.IsChecked, ValueChanged)).borderThickness(0.).isHitTestVisible(false)
                         }
 
                         MenuItems("_Second") { MenuItem("Second _Menu Item") }

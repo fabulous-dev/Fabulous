@@ -32,7 +32,7 @@
         <Compile Include="DataGrid.Components.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Controls.DataGrid" VersionOverride="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />

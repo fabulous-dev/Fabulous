@@ -5,21 +5,23 @@ open System.Collections
 open Avalonia.Controls
 open Avalonia.Controls.Primitives
 open Avalonia.Controls.Templates
-open Avalonia.Data
 open Fabulous
 
-type WidgetControlTemplate(node: IViewNode, templateFn: Widget) as this =
-    inherit FuncControlTemplate(System.Func<TemplatedControl, INameScope, Control>(fun tc n -> this.Build(tc, n)))
-
-    member this.Build(_: TemplatedControl, _: INameScope) =
-        let widget = templateFn
+module private TemplateHelpers =
+    let createView (node: IViewNode) (widget: Widget) =
         let definition = WidgetDefinitionStore.get widget.Key
 
         let struct (_, view) =
             definition.CreateView(widget, node.EnvironmentContext, node.TreeContext, ValueSome node)
 
+        view :?> Control
+
+type WidgetControlTemplate(node: IViewNode, templateFn: Widget) as this =
+    inherit FuncControlTemplate(System.Func<TemplatedControl, INameScope, Control>(fun tc n -> this.Build(tc, n)))
+
+    member this.Build(_: TemplatedControl, _: INameScope) =
         let item = ContentControl()
-        item.Content <- (view :?> Control)
+        item.Content <- TemplateHelpers.createView node templateFn
 
         item
 
@@ -33,33 +35,17 @@ type WidgetDataTemplate(node: IViewNode, templateFn: obj -> Widget) as this =
         currWidget
 
     member this.Build(data: obj, _: INameScope) =
-        let widget = templateFn data
-        let definition = WidgetDefinitionStore.get widget.Key
-
-        let struct (_, view) =
-            definition.CreateView(widget, node.EnvironmentContext, node.TreeContext, ValueSome node)
-
         let item = ContentControl()
-        item.Content <- (view :?> Control)
+        item.Content <- templateFn data |> TemplateHelpers.createView node
 
         item
 
-type WidgetTreeDataTemplate(node: IViewNode, childrenFn: obj -> IEnumerable, templateFn: obj -> Widget) =
+type WidgetTreeDataTemplate(node: IViewNode, childrenFn: obj -> IEnumerable, templateFn: obj -> Widget) as this =
+    inherit
+        FuncTreeDataTemplate(typeof<obj>, System.Func<obj, INameScope, Control>(fun data n -> this.Build(data, n)), System.Func<obj, IEnumerable>(childrenFn))
 
-    interface ITreeDataTemplate with
-        member this.ItemsSelector(item) =
-            InstancedBinding.OneTime(childrenFn item)
-
-        member this.Match(_data) = true
-
-        member this.Build(data: obj) =
-            let widget = templateFn data
-            let definition = WidgetDefinitionStore.get widget.Key
-
-            let struct (_, view) =
-                definition.CreateView(widget, node.EnvironmentContext, node.TreeContext, ValueSome node)
-
-            view :?> Control
+    member this.Build(data: obj, _: INameScope) =
+        templateFn data |> TemplateHelpers.createView node
 
 type WidgetItemsPanel(node: IViewNode, widget: Widget) as this =
     inherit FuncTemplate<Panel>(fun _ -> this.BuildPanel())

@@ -67,8 +67,7 @@ module ThemeAwarePage =
                 TextBlock($"Actual theme variant is: {theme.ToString()}")
                 TextBlock($"ScopedTheme is: {model.ScopeTheme.ToString()}")
 
-                TextBlock("I'm a text that is theme aware.")
-                    .foreground(SolidColorBrush(ThemeAware.With(Colors.Red, Colors.Green)))
+                TextBlock("I'm a text that is theme aware.").foreground(SolidColorBrush(ThemeAware.With(Colors.Red, Colors.Green)))
 
                 ThemeVariantScope(ThemeVariant.Light, TextBlock("Im a text only visible in light mode"))
 
@@ -85,32 +84,23 @@ module ThemeAwarePage =
                                 .selectedIndex(0)
                                 .onSelectionChanged(OnScopeThemeSelectionChanged)
 
-                            TextBlock("Username:")
-                                .gridColumn(0)
-                                .gridRow(2)
-                                .verticalAlignment(VerticalAlignment.Center)
+                            TextBlock("Username:").gridColumn(0).gridRow(2).verticalAlignment(VerticalAlignment.Center)
 
-                            TextBlock("Password:")
-                                .gridColumn(0)
-                                .gridRow(4)
-                                .verticalAlignment(VerticalAlignment.Center)
+                            TextBlock("Password:").gridColumn(0).gridRow(4).verticalAlignment(VerticalAlignment.Center)
 
                             TextBox(model.Text, TextChanged)
-                                .watermark("Input here")
+                                .placeholderText("Input here")
                                 .gridColumn(1)
                                 .gridRow(2)
                                 .horizontalAlignment(HorizontalAlignment.Stretch)
 
                             TextBox(model.Text2, Text2Changed)
-                                .watermark("Input here")
+                                .placeholderText("Input here")
                                 .gridColumn(1)
                                 .gridRow(4)
                                 .horizontalAlignment(HorizontalAlignment.Stretch)
 
-                            Button("Login", DoNothing)
-                                .gridColumn(1)
-                                .gridRow(6)
-                                .horizontalAlignment(HorizontalAlignment.Stretch)
+                            Button("Login", DoNothing).gridColumn(1).gridRow(6).horizontalAlignment(HorizontalAlignment.Stretch)
                         }
                     )
                         .verticalAlignment(VerticalAlignment.Top)

@@ -64,7 +64,7 @@ type NativeMenuItemModifiers =
     /// <param name="this">Current widget.</param>
     /// <param name="value">The ToggleType value.</param>
     [<Extension>]
-    static member inline toggleType(this: WidgetBuilder<'msg, #IFabNativeMenuItem>, value: NativeMenuItemToggleType) =
+    static member inline toggleType(this: WidgetBuilder<'msg, #IFabNativeMenuItem>, value: MenuItemToggleType) =
         this.AddScalar(NativeMenuItem.ToggleType.WithValue(value))
 
     /// <summary>Sets the IsEnabled property.</summary>

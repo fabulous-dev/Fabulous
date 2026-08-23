@@ -51,7 +51,7 @@ module TextBlock =
         Attributes.defineAvaloniaPropertyWithEquality TextBlock.LineHeightProperty
 
     let LetterSpacing =
-        Attributes.defineAvaloniaPropertyWithEquality TextBlock.LetterSpacingProperty
+        Attributes.defineAvaloniaPropertyWithEquality TextElement.LetterSpacingProperty
 
     let MaxLines =
         Attributes.defineAvaloniaPropertyWithEquality TextBlock.MaxLinesProperty

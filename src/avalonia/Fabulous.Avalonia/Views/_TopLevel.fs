@@ -11,9 +11,6 @@ type IFabTopLevel =
     inherit IFabContentControl
 
 module TopLevel =
-    let PointerOverElement =
-        Attributes.defineAvaloniaPropertyWithEquality TopLevel.PointerOverElementProperty
-
     let TransparencyLevelHint =
         Attributes.defineAvaloniaPropertyWithEquality TopLevel.TransparencyLevelHintProperty
 
@@ -43,13 +40,6 @@ module TopLevel =
                 target.RequestedThemeVariant <- value)
 
 type TopLevelModifiers =
-    /// <summary>Sets the PointerOverElement property.</summary>
-    /// <param name="this">Current widget.</param>
-    /// <param name="value">The PointerOverElement value.</param>
-    [<Extension>]
-    static member inline pointerOverElement(this: WidgetBuilder<'msg, #IFabTopLevel>, value: IInputElement) =
-        this.AddScalar(TopLevel.PointerOverElement.WithValue(value))
-
     /// <summary>Sets the ThemeVariant property.</summary>
     /// <param name="this">Current widget.</param>
     /// <param name="value">The ThemeVariant value.</param>
