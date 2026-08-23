@@ -91,7 +91,8 @@
       "destination": "website",
       "ref": "main",
       "wave": 3,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from 82c4dfaf52264754a7a52fe87559fcc3b74afb3d. Published with the root GitHub Pages workflow."
     },
     {
       "name": "fabulous.dev-theme",
@@ -99,7 +100,8 @@
       "destination": "website/themes/fabulous.dev-theme",
       "ref": "main",
       "wave": 3,
-      "status": "pending"
+      "status": "imported",
+      "notes": "Imported from 12774a9271e333cb97e13a050cc45f1360ccc69f, replacing the website submodule."
     }
   ]
 }

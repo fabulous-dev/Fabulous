@@ -1,0 +1,58 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/pages.yml
+      - website/**
+  pull_request:
+    paths:
+      - .github/workflows/pages.yml
+      - website/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 0.127.0
+          extended: true
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build
+        run: hugo --source website --destination "$GITHUB_WORKSPACE/public" --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    name: Deploy website
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
