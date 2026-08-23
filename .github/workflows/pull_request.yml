@@ -255,6 +255,33 @@ jobs:
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
+      - name: Build packaged F# WinUI compatibility samples
+        run: |
+          dotnet build samples/maui/WinUICompat/HelloWorld.Maui/HelloWorld.Maui.fsproj -c $env:CONFIG -p:RuntimeIdentifier=win10-x64
+          dotnet build samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj -c $env:CONFIG -p:RuntimeIdentifier=win10-x64
+      - name: Build and launch unpackaged F# WinUI compatibility samples
+        run: |
+          $samples = @(
+            @{ Project = 'samples/maui/WinUICompat/HelloWorld.Maui/HelloWorld.Maui.fsproj'; Name = 'plain MAUI' },
+            @{ Project = 'samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj'; Name = 'Fabulous' }
+          )
+          foreach ($sample in $samples) {
+            dotnet build $sample.Project -c $env:CONFIG -p:RuntimeIdentifier=win10-x64 -p:WindowsPackageType=None
+            if ($LASTEXITCODE -ne 0) {
+              throw "Failed to build the $($sample.Name) WinUI compatibility sample."
+            }
+            $projectDirectory = Split-Path $sample.Project
+            $executable = Get-ChildItem "$projectDirectory/bin/$env:CONFIG" -Recurse -Filter HelloWorld.exe | Select-Object -First 1
+            if (-not $executable) {
+              throw "The $($sample.Name) WinUI compatibility executable was not produced."
+            }
+            $process = Start-Process $executable.FullName -PassThru
+            Start-Sleep -Seconds 10
+            if ($process.HasExited) {
+              throw "The $($sample.Name) WinUI compatibility sample exited during startup with code $($process.ExitCode)."
+            }
+            Stop-Process -Id $process.Id
+          }
       - name: Build TicTacToe sample
         run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0 -p:FabulousWindowsOnly=true -p:RuntimeIdentifier=win10-x64 -p:WindowsPackageType=None
       - name: Launch and assert Windows sample process
