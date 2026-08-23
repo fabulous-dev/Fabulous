@@ -45,6 +45,29 @@ jobs:
       - name: Test
         run: dotnet test Fabulous.sln -c ${CONFIG}
 
+  pack:
+    name: Pack
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: Prepare templates
+        run: python3 eng/release/prepare-templates.py 0.0.0-ci.${GITHUB_RUN_ID}
+      - name: Pack
+        run: dotnet pack Fabulous.sln -c ${CONFIG} -p:Version=0.0.0-ci.${GITHUB_RUN_ID} --property PackageOutputPath=${PWD}/nupkgs
+      - name: Validate package count
+        run: test "$(find nupkgs -maxdepth 1 -name '*.nupkg' ! -name '*.symbols.nupkg' | wc -l)" -eq 13
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: Packages
+          path: nupkgs/
+
   windows-compat:
     name: Windows compatibility
     runs-on: windows-latest

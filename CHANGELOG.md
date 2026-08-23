@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes_
+### Added
+- Consolidate the Fabulous core, Avalonia, .NET MAUI, extensions, templates, tests, documentation, and engineering into one repository.
+
+### Changed
+- Rename the core project and assembly from `Fabulous` to `Fabulous.Core`. The NuGet package ID and F# namespaces remain `Fabulous`.
+- Build and publish all Fabulous packages and templates from one solution and release workflow.
 
 ## [3.0.0-pre23] - 2025-06-05
 
