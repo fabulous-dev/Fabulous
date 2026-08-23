@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0-ios;net8.0-android;net8.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="'$(FabulousAndroidOnly)' == 'true'">net8.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(FabulousIosOnly)' == 'true'">net8.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="'$(FabulousMacCatalystOnly)' == 'true'">net8.0-maccatalyst</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
     <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
     <OutputType>Exe</OutputType>

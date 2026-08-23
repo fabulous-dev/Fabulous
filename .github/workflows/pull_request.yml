@@ -56,9 +56,13 @@ jobs:
         run: |
           dotnet tool install --global sourcelink
           while IFS= read -r -d '' package; do
-            mappings="$(sourcelink print-urls "$package")"
-            test -n "$mappings"
-            grep -Fq 'https://raw.githubusercontent.com/fabulous-dev/Fabulous/' <<< "$mappings"
+            package_dir="${RUNNER_TEMP}/sourcelink/$(basename "$package" .snupkg)"
+            unzip -q "$package" -d "$package_dir"
+            while IFS= read -r -d '' pdb; do
+              mappings="$(sourcelink print-urls "$pdb")"
+              test -n "$mappings"
+              grep -Fq 'https://raw.githubusercontent.com/fabulous-dev/Fabulous/' <<< "$mappings"
+            done < <(find "$package_dir" -name '*.pdb' -print0)
           done < <(find nupkgs -maxdepth 1 -name '*.snupkg' -print0)
       - name: Upload packages
         uses: actions/upload-artifact@v4
@@ -155,7 +159,7 @@ jobs:
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:TargetFrameworks=net8.0-android
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:FabulousAndroidOnly=true
       - name: Launch and assert Android process
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -187,9 +191,9 @@ jobs:
       - name: Install Apple workloads
         run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
       - name: Build iOS sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:TargetFrameworks=net8.0-ios -p:RuntimeIdentifier=iossimulator-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-x64
       - name: Build Mac Catalyst sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:TargetFrameworks=net8.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-x64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-x64
       - name: Launch and assert Mac Catalyst process
         shell: bash
         run: |
