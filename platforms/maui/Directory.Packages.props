@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageVersion Include="Fabulous" Version="3.0.0-pre23" />
     <PackageVersion Include="FsCheck.NUnit" Version="2.16.6" />
-    <PackageVersion Include="FSharp.Core" Version="8.0.200" />
+    <PackageVersion Include="FSharp.Core" Version="8.0.300" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="NUnit" Version="3.14.0" />
