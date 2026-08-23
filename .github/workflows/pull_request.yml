@@ -22,7 +22,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
       - name: Validate monorepo migration inventory
         run: python3 eng/monorepo/validate-inventory.py
       - name: Check core code formatting
@@ -41,7 +41,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
+      - name: Install MAUI workload packs
+        run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Test
         run: dotnet test Fabulous.sln -c ${CONFIG}
       - name: Prepare templates
@@ -80,11 +82,11 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
       - name: Test view logic
         run: dotnet test samples/avalonia/TestableApp.UnitTests/TestableApp.UnitTests.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
       - name: Test headless UI
-        run: dotnet test samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
+        run: dotnet run --project samples/avalonia/TestableApp.Headless.XUnit/TestableApp.Headless.XUnit.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
         env:
           FABULOUS_SCREENSHOT_DIR: ${{ github.workspace }}/artifacts/screenshots
       - name: Upload screenshots
@@ -126,7 +128,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
@@ -233,15 +235,15 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
-      - name: Select preinstalled .NET 9 SDK
+          dotnet-version: 10.x
+      - name: Select .NET 10 SDK
         run: |
           $sdkVersion = dotnet --list-sdks |
             ForEach-Object { ($_ -split ' ')[0] } |
-            Where-Object { $_ -like '9.0.*' } |
+            Where-Object { $_ -like '10.0.*' } |
             Select-Object -Last 1
           if (-not $sdkVersion) {
-            throw 'No .NET 9 SDK is installed on the runner.'
+            throw 'No .NET 10 SDK is installed on the runner.'
           }
           @{
             sdk = @{

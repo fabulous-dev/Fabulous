@@ -46,12 +46,12 @@ module MainWindow =
         | DecorationsOnSelectionChanged args ->
             let args = args.Source :?> ComboBox
             let content = args.SelectedItem :?> ComboBoxItem
-            let decoration = SystemDecorations.Parse(content.Content.ToString())
+            let decoration = WindowDecorations.Parse(content.Content.ToString())
             let mainWindow = FabApplication.Current.FindWindowById("MainWindow")
 
             match mainWindow with
             | None -> ()
-            | Some currentWindow -> currentWindow.SystemDecorations <- decoration
+            | Some currentWindow -> currentWindow.WindowDecorations <- decoration
 
             model
         | ThemeVariantsOnSelectionChanged args ->
@@ -104,8 +104,7 @@ module MainWindow =
                         NativeMenuItem("Open Pan", DoNothing)
                         NativeMenuItemSeparator()
 
-                        NativeMenuItem("After separator", DoNothing)
-                            .toggleType(NativeMenuItemToggleType.CheckBox)
+                        NativeMenuItem("After separator", DoNothing).toggleType(MenuItemToggleType.CheckBox)
                     }
                 )
         }
@@ -117,25 +116,17 @@ module MainWindow =
                     NativeMenuItem("Settings")
                         .menu(
                             NativeMenu() {
-                                NativeMenuItem("Option 1", DoNothing)
-                                    .toggleType(NativeMenuItemToggleType.Radio)
-                                    .isChecked(true)
+                                NativeMenuItem("Option 1", DoNothing).toggleType(MenuItemToggleType.Radio).isChecked(true)
 
-                                NativeMenuItem("Option 2", DoNothing)
-                                    .toggleType(NativeMenuItemToggleType.Radio)
-                                    .isChecked(true)
+                                NativeMenuItem("Option 2", DoNothing).toggleType(MenuItemToggleType.Radio).isChecked(true)
 
                                 NativeMenuItemSeparator()
 
-                                NativeMenuItem("Option 3", DoNothing)
-                                    .toggleType(NativeMenuItemToggleType.CheckBox)
-                                    .isChecked(true)
+                                NativeMenuItem("Option 3", DoNothing).toggleType(MenuItemToggleType.CheckBox).isChecked(true)
 
-                                NativeMenuItem("Restore defaults", DoNothing)
-                                    .icon(ImageSource.fromString "avares://Gallery/Assets/Icons/logo.ico")
+                                NativeMenuItem("Restore defaults", DoNothing).icon(ImageSource.fromString "avares://Gallery/Assets/Icons/logo.ico")
 
-                                NativeMenuItem("Disabled option", DoNothing)
-                                    .isEnabled(false)
+                                NativeMenuItem("Disabled option", DoNothing).isEnabled(false)
                             }
                         )
 
@@ -322,7 +313,7 @@ module MainWindow =
                     .icon("avares://Gallery/Assets/Icons/logo.ico")
                     .windowId("MainWindow")
 #if DEBUG
-                    .attachDevTools()
+                    .attachDeveloperTools()
 #endif
             })
                 .trayIcon(trayIcon())

@@ -26,7 +26,9 @@ module ItemsView =
                     itemsView.ClearValue(ItemsView.ItemTemplateProperty)
                     itemsView.ClearValue(ItemsView.ItemsSourceProperty)
                 | ValueSome value ->
-                    itemsView.SetValue(ItemsView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.Template))
+                    match itemsView.ItemTemplate with
+                    | :? WidgetDataTemplateSelector as selector -> selector.UpdateTemplate(unbox >> value.Template)
+                    | _ -> itemsView.SetValue(ItemsView.ItemTemplateProperty, WidgetDataTemplateSelector(node, unbox >> value.Template))
 
                     itemsView.SetValue(ItemsView.ItemsSourceProperty, value.OriginalItems))
 

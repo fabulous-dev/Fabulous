@@ -50,6 +50,9 @@ type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Wi
 
     /// Reuse data template for already known widget target type
     let cache = Dictionary<Type, DataTemplate>()
+    let mutable templateFn = templateFn
+
+    member _.UpdateTemplate(value) = templateFn <- value
 
     override _.OnSelectTemplate(item, _) =
         let widget = templateFn item
@@ -59,7 +62,8 @@ type WidgetDataTemplateSelector internal (node: IViewNode, templateFn: obj -> Wi
         match cache.TryGetValue(targetType) with
         | true, dataTemplate -> dataTemplate
         | false, _ ->
-            let dataTemplate = WidgetDataTemplate(node, targetType, templateFn) :> DataTemplate
+            let dataTemplate =
+                WidgetDataTemplate(node, targetType, fun item -> templateFn item) :> DataTemplate
 
             cache.Add(targetType, dataTemplate)
             dataTemplate

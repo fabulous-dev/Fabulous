@@ -73,7 +73,7 @@ module StylesPage =
                 TextBlock("I'm just a text")
 
                 AutoCompleteBox([])
-                    .watermark("I'm an AutoCompleteBox styled to have a crimson watermark and accept Return/Enter")
+                    .placeholderText("I'm an AutoCompleteBox styled to have a crimson watermark and accept Return/Enter")
                     .styles(
                         [ coloredTextBoxWatermark(Brushes.Crimson)
                           acceptReturnOnAutoCompleteTextBox() ]

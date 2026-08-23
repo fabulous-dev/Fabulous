@@ -15,9 +15,11 @@ type BindingExtensions =
     /// <param name="format">The format string to use when binding the properties.</param>
     /// <param name="propertyNames">The property names to bind to the bound property.</param>
     [<Extension>]
-    static member multiBind<'T>(control: obj, property: Expression<Func<'T, IBinding>>, format: string, [<ParamArray>] propertyNames: string array) =
+    static member multiBind<'T>(control: obj, property: Expression<Func<'T, BindingBase>>, format: string, [<ParamArray>] propertyNames: string array) =
         let binding = MultiBinding()
-        binding.Converter <- FuncMultiValueConverter<obj, string>(fun parts -> String.Format(format, parts |> Seq.toArray))
+
+        binding.Converter <-
+            FuncMultiValueConverter<obj, string>(Func<Collections.Generic.IReadOnlyList<obj>, string>(fun parts -> String.Format(format, parts |> Seq.toArray)))
 
         for property in propertyNames do
             binding.Bindings.Add(Binding(property))

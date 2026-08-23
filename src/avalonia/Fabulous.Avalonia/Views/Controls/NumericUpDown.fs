@@ -79,8 +79,8 @@ module NumericUpDown =
     let TextConverter =
         Attributes.defineAvaloniaPropertyWithEquality NumericUpDown.TextConverterProperty
 
-    let Watermark =
-        Attributes.defineAvaloniaPropertyWithEquality NumericUpDown.WatermarkProperty
+    let PlaceholderText =
+        Attributes.defineAvaloniaPropertyWithEquality NumericUpDown.PlaceholderTextProperty
 
     let TextAlignment =
         Attributes.defineAvaloniaPropertyWithEquality NumericUpDown.TextAlignmentProperty
@@ -179,12 +179,12 @@ type NumericUpDownModifiers =
     static member inline textConverter(this: WidgetBuilder<'msg, #IFabNumericUpDown>, value: IValueConverter) =
         this.AddScalar(NumericUpDown.TextConverter.WithValue(value))
 
-    /// <summary>Sets the Watermark property.</summary>
+    /// <summary>Sets the PlaceholderText property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The Watermark value.</param>
+    /// <param name="value">The PlaceholderText value.</param>
     [<Extension>]
-    static member inline watermark(this: WidgetBuilder<'msg, #IFabNumericUpDown>, value: string) =
-        this.AddScalar(NumericUpDown.Watermark.WithValue(value))
+    static member inline placeholderText(this: WidgetBuilder<'msg, #IFabNumericUpDown>, value: string) =
+        this.AddScalar(NumericUpDown.PlaceholderText.WithValue(value))
 
     /// <summary>Sets the TextAlignment property.</summary>
     /// <param name="this">Current widget.</param>

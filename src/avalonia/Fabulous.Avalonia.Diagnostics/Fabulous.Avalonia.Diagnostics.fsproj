@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0</TargetFrameworks>
         <IsPackable>true</IsPackable>
         <RootNamespace>Fabulous.Avalonia.Diagnostics</RootNamespace>
     </PropertyGroup>
@@ -28,7 +28,7 @@
         <Compile Include="DevTools.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Diagnostics" VersionOverride="$(AvaloniaVersion)">
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport" VersionOverride="2.2.3">
             <PrivateAssets>build; native; contentfiles; analyzers</PrivateAssets>
         </PackageReference>
     </ItemGroup>

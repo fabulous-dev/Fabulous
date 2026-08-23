@@ -105,10 +105,7 @@ type FabApplication() =
 
     /// <summary>Gets the platform-specific settings for the application.</summary>
     member this.PlatformSettings =
-        match this.ApplicationLifetime with
-        | :? IClassicDesktopStyleApplicationLifetime when _windows.Count > 0 -> TopLevel.GetTopLevel(_windows[0]).PlatformSettings
-        | :? ISingleViewApplicationLifetime when not(isNull _mainView) -> TopLevel.GetTopLevel(_mainView).PlatformSettings
-        | _ -> failwith "ApplicationLifetime is not supported"
+        Avalonia.VisualTree.VisualExtensions.GetPlatformSettings(this.TopLevel)
 
     /// <summary>Gets the platform-specific insets manager for the application.</summary>
     member this.InsetsManager =
@@ -190,12 +187,8 @@ module Application =
     let DebugOverlays =
         Attributes.definePropertyWithGetSet
             "Application_DebugOverlays"
-            (fun target ->
-                (target :?> FabApplication)
-                    .TopLevel.RendererDiagnostics.DebugOverlays)
-            (fun target value ->
-                (target :?> FabApplication)
-                    .TopLevel.RendererDiagnostics.DebugOverlays <- value)
+            (fun target -> (target :?> FabApplication).TopLevel.RendererDiagnostics.DebugOverlays)
+            (fun target value -> (target :?> FabApplication).TopLevel.RendererDiagnostics.DebugOverlays <- value)
 
     let IsSystemBarVisible =
         Attributes.definePropertyWithGetSet
@@ -206,8 +199,8 @@ module Application =
     let DisplayEdgeToEdge =
         Attributes.definePropertyWithGetSet
             "Application_DisplayEdgeToEdge"
-            (fun target -> (target :?> FabApplication).InsetsManager.DisplayEdgeToEdge)
-            (fun target value -> (target :?> FabApplication).InsetsManager.DisplayEdgeToEdge <- value)
+            (fun target -> (target :?> FabApplication).InsetsManager.DisplayEdgeToEdgePreference)
+            (fun target value -> (target :?> FabApplication).InsetsManager.DisplayEdgeToEdgePreference <- value)
 
     let SystemBarColor =
         Attributes.definePropertyWithGetSet

@@ -29,7 +29,7 @@ Lottie("lottie-file.json")
 ```
 
 ## Other useful links:
-- [The official Fabulous website](https://fabulous.dev)
-- [Get started](https://docs.fabulous.dev/avalonia/get-started)
+- [Fabulous documentation](https://fabulous-dev.github.io/Fabulous/docs/)
+- [Get started](https://fabulous-dev.github.io/Fabulous/docs/tutorials/avalonia/)
 
 Additionally, we have the [Fabulous Discord server](https://discord.gg/bpTJMbSSYK) where you can ask any of your Fabulous related questions.

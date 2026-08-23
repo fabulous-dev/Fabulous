@@ -63,11 +63,11 @@ module TextBox =
     let SelectionEnd =
         Attributes.defineAvaloniaPropertyWithEquality TextBox.SelectionEndProperty
 
-    let Watermark =
-        Attributes.defineAvaloniaPropertyWithEquality TextBox.WatermarkProperty
+    let PlaceholderText =
+        Attributes.defineAvaloniaPropertyWithEquality TextBox.PlaceholderTextProperty
 
-    let UseFloatingWatermark =
-        Attributes.defineAvaloniaPropertyWithEquality TextBox.UseFloatingWatermarkProperty
+    let UseFloatingPlaceholder =
+        Attributes.defineAvaloniaPropertyWithEquality TextBox.UseFloatingPlaceholderProperty
 
     let CaretIndex =
         Attributes.defineAvaloniaPropertyWithEquality TextBox.CaretIndexProperty
@@ -219,19 +219,19 @@ type TextBoxModifiers =
     static member inline selectionEnd(this: WidgetBuilder<'msg, #IFabTextBox>, value: int) =
         this.AddScalar(TextBox.SelectionEnd.WithValue(value))
 
-    /// <summary>Sets the Watermark property.</summary>
+    /// <summary>Sets the PlaceholderText property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The Watermark value.</param>
+    /// <param name="value">The PlaceholderText value.</param>
     [<Extension>]
-    static member inline watermark(this: WidgetBuilder<'msg, #IFabTextBox>, value: string) =
-        this.AddScalar(TextBox.Watermark.WithValue(value))
+    static member inline placeholderText(this: WidgetBuilder<'msg, #IFabTextBox>, value: string) =
+        this.AddScalar(TextBox.PlaceholderText.WithValue(value))
 
-    /// <summary>Sets the UseFloatingWatermark property.</summary>
+    /// <summary>Sets the UseFloatingPlaceholder property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The UseFloatingWatermark value.</param>
+    /// <param name="value">The UseFloatingPlaceholder value.</param>
     [<Extension>]
-    static member inline useFloatingWatermark(this: WidgetBuilder<'msg, #IFabTextBox>, value: bool) =
-        this.AddScalar(TextBox.UseFloatingWatermark.WithValue(value))
+    static member inline useFloatingPlaceholder(this: WidgetBuilder<'msg, #IFabTextBox>, value: bool) =
+        this.AddScalar(TextBox.UseFloatingPlaceholder.WithValue(value))
 
     /// <summary>Sets the CaretIndex property.</summary>
     /// <param name="this">Current widget.</param>

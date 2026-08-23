@@ -103,9 +103,7 @@ module DrawLineAnimationPage =
 
             (Canvas() {
                 let line =
-                    Line(model.StartPosition, model.EndPosition)
-                        .stroke(Brushes.Red)
-                        .strokeThickness(model.StrokeThickness)
+                    Line(model.StartPosition, model.EndPosition).stroke(Brushes.Red).strokeThickness(model.StrokeThickness)
 
                 if model.ShouldAnimate then
                     line
@@ -113,7 +111,7 @@ module DrawLineAnimationPage =
                         .renderTransformOrigin(model.Origin)
                         .renderTransform(RotateTransform())
                         .animation(
-                            (Animation(TimeSpan.FromSeconds(5)) {
+                            (Animation(TimeSpan.FromSeconds(5.)) {
                                 KeyFrame(RotateTransform.AngleProperty, 0.).cue(0.)
                                 KeyFrame(RotateTransform.AngleProperty, 360.).cue(1.)
                             })

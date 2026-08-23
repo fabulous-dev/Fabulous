@@ -82,5 +82,5 @@ type ItemsControlModifiers =
     /// <param name="this">Current widget.</param>
     /// <param name="value">The DisplayMemberBinding value.</param>
     [<Extension>]
-    static member inline displayMemberBinding(this: WidgetBuilder<'msg, #IFabItemsControl>, value: IBinding) =
+    static member inline displayMemberBinding(this: WidgetBuilder<'msg, #IFabItemsControl>, value: BindingBase) =
         this.AddScalar(ItemsControl.DisplayMemberBinding.WithValue(value))

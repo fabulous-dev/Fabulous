@@ -11,7 +11,6 @@ open Avalonia.Layout
 open Avalonia.LogicalTree
 open Avalonia.Media
 open Avalonia.Rendering.Composition
-open Avalonia.Utilities
 open Fabulous
 open Fabulous.Avalonia
 
@@ -47,7 +46,7 @@ module GesturesPage =
 
                     offsetAnimation.Target <- "Offset"
                     offsetAnimation.InsertExpressionKeyFrame(1.0f, "this.FinalValue")
-                    offsetAnimation.Duration <- TimeSpan.FromMilliseconds(100)
+                    offsetAnimation.Duration <- TimeSpan.FromMilliseconds(100.)
 
                     let implicitAnimations =
                         ballCompositionVisual.Compositor.CreateImplicitAnimationCollection()
@@ -66,8 +65,8 @@ module GesturesPage =
                     defaultOffset <- ballCompositionVisual.Offset)
 
             control.AddHandler(
-                Gestures.PullGestureEvent,
-                fun _ args ->
+                InputElement.PullGestureEvent,
+                EventHandler<PullGestureEventArgs>(fun _ args ->
                     let _center =
                         Vector3D(float control.Bounds.Center.X, float control.Bounds.Center.Y, 0)
 
@@ -79,17 +78,17 @@ module GesturesPage =
                             + Vector3D(float args.Delta.X * float 0.4f, args.Delta.Y * float 0.4f, 0)
                               * float(if isInverse then -1 else 1)
 
-                        args.Handled <- true
+                        args.Handled <- true)
 
             )
 
             control.AddHandler(
-                Gestures.PullGestureEndedEvent,
-                fun _ args ->
+                InputElement.PullGestureEndedEvent,
+                EventHandler<PullGestureEndedEventArgs>(fun _ _ ->
                     initComposition(ball)
 
                     if ballCompositionVisual <> null then
-                        ballCompositionVisual.Offset <- defaultOffset
+                        ballCompositionVisual.Offset <- defaultOffset)
             )
 
     let setPinchHandlers (control: Control) (currentScale: float) =
@@ -116,8 +115,8 @@ module GesturesPage =
                         currentOffset <- compositionVisual.Offset)
 
             control.AddHandler(
-                Gestures.PinchEvent,
-                fun _ args ->
+                InputElement.PinchEvent,
+                EventHandler<PinchEventArgs>(fun _ args ->
                     initComposition(control)
 
                     if compositionVisual <> null then
@@ -128,21 +127,21 @@ module GesturesPage =
                             scale <- 1.
 
                         compositionVisual.Scale <- Vector3D(scale, scale, 1)
-                        args.Handled <- true
+                        args.Handled <- true)
             )
 
             control.AddHandler(
-                Gestures.PinchEndedEvent,
-                fun _ args ->
+                InputElement.PinchEndedEvent,
+                EventHandler<PinchEventArgs>(fun _ _ ->
                     initComposition(control)
 
                     if compositionVisual <> null then
-                        _currentScale <- compositionVisual.Scale.X
+                        _currentScale <- compositionVisual.Scale.X)
             )
 
             control.AddHandler(
-                Gestures.ScrollGestureEvent,
-                fun _ args ->
+                InputElement.ScrollGestureEvent,
+                EventHandler<ScrollGestureEventArgs>(fun _ args ->
                     initComposition(control)
 
                     if compositionVisual <> null && _currentScale <> 1. then
@@ -152,13 +151,13 @@ module GesturesPage =
 
                         currentOffset <-
                             Vector3D(
-                                MathUtilities.Clamp(currentOffset.X, 0., currentSize.Width - control.Bounds.Width),
-                                float(MathUtilities.Clamp(currentOffset.Y, 0., currentSize.Height - control.Bounds.Height)),
+                                Math.Clamp(currentOffset.X, 0., currentSize.Width - control.Bounds.Width),
+                                Math.Clamp(currentOffset.Y, 0., currentSize.Height - control.Bounds.Height),
                                 0.
                             )
 
                         compositionVisual.Offset <- currentOffset * -1.
-                        args.Handled <- true
+                        args.Handled <- true)
             )
 
         _currentScale
@@ -219,7 +218,7 @@ module GesturesPage =
         | LoadedPinchRotate _ ->
             rotationGesture.Value.GestureRecognizers.Add(PinchGestureRecognizer())
 
-            rotationGesture.Value.AddHandler(Gestures.PinchEvent, (fun sender args -> angleSlider.Value.Value <- args.Angle))
+            rotationGesture.Value.AddHandler(InputElement.PinchEvent, EventHandler<PinchEventArgs>(fun _ args -> angleSlider.Value.Value <- args.Angle))
 
             model, []
 
@@ -328,15 +327,9 @@ module GesturesPage =
 
     let pinchZoomGestures () =
         VStack(spacing = 4.) {
-            Border(
-                Image("avares://Gallery/Assets/delicate-arch.jpg", Stretch.UniformToFill)
-                    .margin(5)
-                    .reference(pinchImage)
-            )
-                .clipToBounds(true)
+            Border(Image("avares://Gallery/Assets/delicate-arch.jpg", Stretch.UniformToFill).margin(5).reference(pinchImage)).clipToBounds(true)
 
-            Button("Reset", Reset)
-                .horizontalAlignment(HorizontalAlignment.Center)
+            Button("Reset", Reset).horizontalAlignment(HorizontalAlignment.Center)
         }
         |> _.onLoaded(LoadedPinchZoom)
 
@@ -344,10 +337,7 @@ module GesturesPage =
     let pinchRotateGestures angle =
         VStack(spacing = 4.) {
             Dock() {
-                Slider(0, 360, angle, AngleChanged)
-                    .dock(Dock.Bottom)
-                    .reference(angleSlider)
-                    .margin(5.)
+                Slider(0, 360, angle, AngleChanged).dock(Dock.Bottom).reference(angleSlider).margin(5.)
 
                 Panel() {
                     Border().borderThickness(1).borderBrush(Colors.LawnGreen)
@@ -384,25 +374,10 @@ module GesturesPage =
             let! model = Context.Mvu program
 
             TabControl() {
-                TabItem(
-                    TextBlock("Pull(Touch / Pen)")
-                        .fontSize(18.)
-                        .fontWeight(FontWeight.Bold),
-                    pullGestures()
-                )
+                TabItem(TextBlock("Pull(Touch / Pen)").fontSize(18.).fontWeight(FontWeight.Bold), pullGestures())
 
-                TabItem(
-                    TextBlock("Pinch/Zoom (Multi Touch)")
-                        .fontSize(18.)
-                        .fontWeight(FontWeight.Bold),
-                    pinchZoomGestures()
-                )
+                TabItem(TextBlock("Pinch/Zoom (Multi Touch)").fontSize(18.).fontWeight(FontWeight.Bold), pinchZoomGestures())
 
-                TabItem(
-                    TextBlock("Pinch/Rotation (Multi Touch)")
-                        .fontSize(18.)
-                        .fontWeight(FontWeight.Bold),
-                    pinchRotateGestures(model.Angle)
-                )
+                TabItem(TextBlock("Pinch/Rotation (Multi Touch)").fontSize(18.).fontWeight(FontWeight.Bold), pinchRotateGestures(model.Angle))
             }
         }
