@@ -139,8 +139,12 @@ jobs:
       - name: Build generated app
         run: |
           project="${RUNNER_TEMP}/avalonia-template/${{ matrix.project }}"
-          dotnet restore "$project" -p:TargetFrameworks=net8.0 --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build "$project" -c ${CONFIG} -p:TargetFrameworks=net8.0 --no-restore
+          build_args=()
+          if [[ "${{ matrix.template }}" == "blank" ]]; then
+            build_args=(-p:TargetFrameworks=net8.0)
+          fi
+          dotnet restore "$project" "${build_args[@]}" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "$project" -c ${CONFIG} "${build_args[@]}" --no-restore
 
   android-runtime:
     name: Android build and launch
@@ -160,7 +164,7 @@ jobs:
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:FabulousAndroidOnly=true
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net8.0-android -p:FabulousAndroidOnly=true -p:AndroidPackageFormats=apk
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -252,7 +256,7 @@ jobs:
       - name: Build compatibility package
         run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
       - name: Build TicTacToe sample
-        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
+        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net8.0-windows10.0.19041.0 -p:FabulousWindowsOnly=true -p:RuntimeIdentifier=win10-x64 -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true
       - name: Launch and assert Windows sample process
         run: |
           $executable = Get-ChildItem samples/maui/TicTacToe/bin/$env:CONFIG -Recurse -Filter TicTacToe.exe | Select-Object -First 1
