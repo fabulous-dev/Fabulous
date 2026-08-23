@@ -39,9 +39,9 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Media
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{808186BE-9BD0-DD1D-D574-36EEAD1E7F8F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Avalonia.Templates", "templates\Avalonia\Fabulous.Avalonia.Templates.proj", "{23AEB364-B01D-48D1-83E2-A9ADDCCF0D33}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Avalonia.Templates", "templates\avalonia\Fabulous.Avalonia.Templates.proj", "{23AEB364-B01D-48D1-83E2-A9ADDCCF0D33}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Templates", "templates\Maui\Fabulous.MauiControls.Templates.proj", "{F23CDDF9-047F-4AA9-8B5D-D4ACDBC995FC}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.MauiControls.Templates", "templates\maui\Fabulous.MauiControls.Templates.proj", "{F23CDDF9-047F-4AA9-8B5D-D4ACDBC995FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

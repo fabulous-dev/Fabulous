@@ -90,6 +90,11 @@ source_groups = {path.name for path in source_root.iterdir() if path.is_dir()}
 if source_groups != {"neutral", "maui", "avalonia"}:
     fail("src must contain only neutral, maui, and avalonia directories")
 
+for content_root in (repository_root / "samples", repository_root / "templates"):
+    content_groups = {path.name for path in content_root.iterdir() if path.is_dir()}
+    if content_groups != {"maui", "avalonia"}:
+        fail(f"{content_root.name} must contain only lowercase maui and avalonia directories")
+
 core_project = source_root / "neutral/Fabulous.Core/Fabulous.Core.fsproj"
 if not core_project.is_file():
     fail("the core project must be src/neutral/Fabulous.Core/Fabulous.Core.fsproj")
