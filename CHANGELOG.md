@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expand CI to build all Avalonia desktop samples, exercise native MAUI targets, instantiate all Avalonia template variants, and capture Gallery screenshots.
 - Publish the website, authored documentation, and generated API reference together on GitHub Pages.
 - Improve CI concurrency, dependency caching, sharding, artifact discovery, runtime readiness checks, and pull-request execution time ([#1133](https://github.com/fabulous-dev/Fabulous/pull/1133), [#1134](https://github.com/fabulous-dev/Fabulous/pull/1134), [#1139](https://github.com/fabulous-dev/Fabulous/pull/1139)).
+- Update the contribution guide for agent-assisted development, maintainer review, and repository validation ([#1153](https://github.com/fabulous-dev/Fabulous/pull/1153)).
 - Update Windows compatibility and sample APIs for .NET 10 and current MAUI behavior.
 - Remove the obsolete MAUI `MenuItem.accelerator` modifier; use `MenuFlyoutItem.keyboardAccelerators` instead.
 
