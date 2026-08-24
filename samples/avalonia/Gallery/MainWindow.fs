@@ -209,7 +209,9 @@ module MainWindow =
             TabItem("ToolTipPage", ToolTipPage.view())
             TabItem("TabControlPage", TabControlPage.view())
             TabItem("TreeViewPage", TreeViewPage.view())
+#if PREMIUM_CONTROLS
             TabItem("TreeDataGridViewPage", TreeDataGridPage.view())
+#endif
             TabItem("TransitioningContentPage", TransitioningContentControlPage.view())
             TabItem("TabStripPage", TabStripPage.view())
             TabItem("ThemeAwarePage", ThemeAwarePage.view())
@@ -322,6 +324,10 @@ module MainWindow =
 
     let create () =
         let theme () =
+#if PREMIUM_CONTROLS
+            StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.Premium.xaml"))
+#else
             StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.xaml"))
+#endif
 
         FabulousAppBuilder.Configure(theme, view)

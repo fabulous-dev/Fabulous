@@ -38,23 +38,20 @@ for project_index in "${!projects[@]}"; do
   slug="${slug// /-}"
 
   echo "::group::Build $relative"
-  dotnet build "$project" -c "$configuration" -p:FabulousSamplesDesktopOnly=true
+  dotnet build "$project" -c "$configuration" -p:FabulousSamplesDesktopOnly=true \
+    -p:FabulousIncludePremiumControls=false
   echo "::endgroup::"
 
   pages=("")
   if [[ "$is_gallery" == true ]]; then
     mapfile -t gallery_pages < <(python3 - <<'PY'
 import re
-import sys
 from pathlib import Path
 
 source = Path("samples/avalonia/Gallery/MainView.fs").read_text()
-registry = source.split("let controlNames =", 1)[1].split("let program =", 1)[0]
+registry = source.split("let freeControlNames =", 1)[1].split("#if PREMIUM_CONTROLS", 1)[0]
 for name in dict.fromkeys(re.findall(r'"([^"]+)"', registry)):
-  if name == "TreeDataGrid":
-    print("Skipping TreeDataGrid because Avalonia 12 requires a license key.", file=sys.stderr)
-  else:
-    print(name)
+  print(name)
 PY
 )
     pages+=("${gallery_pages[@]}")
@@ -74,7 +71,8 @@ PY
 
     mapfile -t existing_windows < <(xdotool search --onlyvisible --name '.*' 2>/dev/null || true)
     FABULOUS_GALLERY_PAGE="$page" dotnet run --project "$project" -c "$configuration" -f net10.0 \
-      -p:FabulousSamplesDesktopOnly=true --no-build --no-restore >"$log" 2>&1 &
+      -p:FabulousSamplesDesktopOnly=true -p:FabulousIncludePremiumControls=false \
+      --no-build --no-restore >"$log" 2>&1 &
     app_pid=$!
 
     window_id=""

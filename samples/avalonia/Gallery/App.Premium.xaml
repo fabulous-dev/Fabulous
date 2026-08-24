@@ -1,0 +1,51 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:gallery="clr-namespace:Gallery">
+    <StyleInclude Source="avares://Gallery/App.xaml" />
+    <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
+    <Styles.Resources>
+        <DataTemplate x:Key="RegionCell" DataType="gallery:Country">
+            <TextBlock Text="{Binding Region}" />
+        </DataTemplate>
+        <DataTemplate x:Key="RegionEditCell" DataType="gallery:Country">
+            <ComboBox ItemsSource="{x:Static gallery:Countries.Regions}"
+                      SelectedItem="{Binding Region}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FileNameCell" DataType="gallery:FileTreeNodeModel">
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="0 0 4 0" VerticalAlignment="Center">
+                    <Image.Source>
+                        <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
+                            <Binding Path="IsDirectory" />
+                            <Binding Path="IsExpanded" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="FileNameEditCell" DataType="gallery:FileTreeNodeModel">
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="0 0 4 0" VerticalAlignment="Center">
+                    <Image.Source>
+                        <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
+                            <Binding Path="IsDirectory" />
+                            <Binding Path="IsExpanded" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <TextBox Text="{Binding Name}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+    </Styles.Resources>
+    <Style Selector="TreeDataGrid TreeDataGridRow:nth-last-child(2n)">
+        <Setter Property="Background" Value="#20808080" />
+    </Style>
+    <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-last-child(1)">
+        <Setter Property="TextBlock.FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-last-child(1)">
+        <Setter Property="TextBlock.FontWeight" Value="Bold" />
+    </Style>
+</Styles>
