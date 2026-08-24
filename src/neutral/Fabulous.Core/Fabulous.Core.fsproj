@@ -35,6 +35,7 @@
     <Compile Include="Reconciler.fs" />
     <Compile Include="ViewNode.fs" />
     <Compile Include="Cmd.fs" />
+    <Compile Include="DispatchThrottle.fs" />
     <Compile Include="Sub.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Runner.fs" />
