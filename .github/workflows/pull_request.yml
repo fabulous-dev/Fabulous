@@ -179,9 +179,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            apk=$(find samples/maui/HelloWorld/bin/${CONFIG}/net10.0-android -name '*.apk' -print -quit)
-            test -n "$apk"
-            adb install -r "$apk"
+            dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -t:Install -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:RuntimeIdentifier=android-x64
             adb shell monkey -p org.fabulous.maui.helloworld 1
             adb shell pidof org.fabulous.maui.helloworld
 
@@ -207,9 +205,9 @@ jobs:
       - name: Install Apple workloads
         run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
       - name: Build iOS sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-arm64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-arm64 -p:ValidateXcodeVersion=false
       - name: Build Mac Catalyst sample
-        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-arm64
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-arm64 -p:ValidateXcodeVersion=false
       - name: Launch and assert Mac Catalyst process
         shell: bash
         run: |
