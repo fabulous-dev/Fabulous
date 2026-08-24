@@ -26,8 +26,8 @@ type FabTimePicker() =
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
 
-        if propertyName = TimePicker.TimeProperty.PropertyName then
-            timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time))
+        if propertyName = TimePicker.TimeProperty.PropertyName && this.Time.HasValue then
+            timeSelected.Trigger(this, TimeSelectedEventArgs(this.Time.Value))
 
 module TimePicker =
     let WidgetKey = Widgets.register<FabTimePicker>()

@@ -58,8 +58,9 @@ module DatePicker =
                         // Set the new event handler
                         let handler =
                             target.DateSelected.Subscribe(fun args ->
-                                let (MsgValue r) = curr.Event args
-                                Dispatcher.dispatch node r)
+                                if args.NewDate.HasValue then
+                                    let (MsgValue r) = curr.Event args
+                                    Dispatcher.dispatch node r)
 
                         node.SetHandler(name, handler))
             )
@@ -108,7 +109,7 @@ module DatePickerBuilders =
             WidgetBuilder<'msg, IFabDatePicker>(
                 DatePicker.WidgetKey,
                 DatePicker.DateWithEvent.WithValue(
-                    ValueEventData.create (struct (min, max, date)) (fun (args: DateChangedEventArgs) -> onDateSelected args.NewDate)
+                    ValueEventData.create (struct (min, max, date)) (fun (args: DateChangedEventArgs) -> onDateSelected args.NewDate.Value)
                 )
             )
 
