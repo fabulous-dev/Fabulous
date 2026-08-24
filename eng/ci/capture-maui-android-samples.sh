@@ -85,8 +85,9 @@ build_samples() {
     slug="${slug// /-}"
 
     echo "::group::Build $relative"
-    dotnet build "$project" -t:SignAndroidPackage -c "$configuration" -f net10.0-android -r android-x64 \
-      -p:TargetFrameworks=net10.0-android -p:AndroidPackageFormat=apk -p:AndroidPackageFormats=apk
+    dotnet build "$project" -t:SignAndroidPackage -c "$configuration" -r android-x64 \
+      -p:FabulousAndroidOnly=true \
+      -p:AndroidPackageFormat=apk -p:AndroidPackageFormats=apk
     echo "::endgroup::"
 
     apk=$(find "$(dirname "$project")/bin/$configuration/net10.0-android" \
@@ -97,7 +98,7 @@ build_samples() {
     fi
 
     application_id=$(dotnet msbuild "$project" -getProperty:ApplicationId \
-      -p:TargetFramework=net10.0-android -p:TargetFrameworks=net10.0-android \
+      -p:FabulousAndroidOnly=true \
       --nologo | tail -n 1)
     if [[ -z "$application_id" ]]; then
       echo "$relative has no Android application ID." >&2
