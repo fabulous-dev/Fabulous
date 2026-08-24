@@ -40,12 +40,12 @@ module Form =
 module App =
     let view () =
         Application(
-            ContentPage() {
+            ContentPage(
                 (VStack(spacing = 25.) {
                     Label("App")
 
-                    Component(Counter.program) {
-                        let! model = Mvu.State
+                    Component("Counter") {
+                        let! model = Context.Mvu(Counter.program)
 
                         VStack() {
                             Label($"Count = {model.Count}")
@@ -54,8 +54,8 @@ module App =
                         }
                     }
 
-                    Component(Form.program) {
-                        let! model = Mvu.State
+                    Component("Form") {
+                        let! model = Context.Mvu(Form.program)
 
                         VStack() {
                             Label($"Hello {model.FirstName} {model.LastName}")
@@ -66,5 +66,5 @@ module App =
                 })
                     .width(250.)
                     .center()
-            }
+            )
         )

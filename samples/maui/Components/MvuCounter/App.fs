@@ -52,11 +52,11 @@ module App =
     let program = Program.statefulWithCmd init update
 
     let view () =
-        Component(program) {
-            let! model = Mvu.State
+        Component("MvuCounter") {
+            let! model = Context.Mvu(program)
 
             Application(
-                ContentPage() {
+                ContentPage(
                     (VStack() {
                         Label($"%d{model.Count}").centerTextHorizontal()
 
@@ -79,6 +79,6 @@ module App =
                         Button("Reset", Reset)
                     })
                         .center()
-                }
+                )
             )
         }

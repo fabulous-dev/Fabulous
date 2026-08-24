@@ -7,6 +7,4 @@ open Microsoft.Maui
 type MainApplication(handle, ownership) =
     inherit MauiApplication(handle, ownership)
 
-    do HelloMediaElement.Resource.UpdateIdValues()
-
     override _.CreateMauiApp() = MauiProgram.CreateMauiApp()

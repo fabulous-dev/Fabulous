@@ -31,21 +31,21 @@ module App =
             do controller.Pause()
             return VideoPaused
         }
-        |> Cmd.ofAsyncMsg
+        |> Cmd.OfAsync.msg
 
     let startVideoCmd () =
         async {
             do controller.Play()
             return VideoStarted
         }
-        |> Cmd.ofAsyncMsg
+        |> Cmd.OfAsync.msg
 
     let seekTo3MinsCmd () =
         async {
-            do controller.SeekTo(TimeSpan.FromMinutes(5))
+            do controller.SeekTo(TimeSpan.FromMinutes(5.))
             return SeekTo5MinsCompleted
         }
-        |> Cmd.ofAsyncMsg
+        |> Cmd.OfAsync.msg
 
     let update msg model =
         match msg with
@@ -109,4 +109,4 @@ module App =
             )
         )
 
-    let program = Program.statefulWithCmd init update view
+    let program = Program.statefulWithCmd init update |> Program.withView view
