@@ -4,14 +4,11 @@ on:
   push:
     branches:
       - main
-    paths:
-      - CHANGELOG.md
   workflow_dispatch:
-    inputs:
-      version:
-        description: Existing changelog version to retry
-        required: true
-        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: true
 
 permissions:
   actions: read
@@ -27,44 +24,40 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.release.outputs.changed }}
+      pending: ${{ steps.release.outputs.pending }}
       version: ${{ steps.release.outputs.version }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Detect new release section
+      - name: Detect pending release
         id: release
-        env:
-          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
           CURRENT_VERSION=$(python3 eng/monorepo/changelog.py current-version CHANGELOG.md)
-          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            if [ "$REQUESTED_VERSION" != "$CURRENT_VERSION" ]; then
-              echo "Requested version $REQUESTED_VERSION does not match current changelog version $CURRENT_VERSION" >&2
-              exit 1
-            fi
-            python3 eng/monorepo/changelog.py validate-version CHANGELOG.md "$CURRENT_VERSION"
-            python3 eng/monorepo/changelog.py notes CHANGELOG.md "$CURRENT_VERSION" > "$RUNNER_TEMP/release-notes.md"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          git show HEAD^:CHANGELOG.md > "$RUNNER_TEMP/previous-changelog.md"
-          PREVIOUS_VERSION=$(python3 eng/monorepo/changelog.py current-version "$RUNNER_TEMP/previous-changelog.md")
-          if [ "$CURRENT_VERSION" = "$PREVIOUS_VERSION" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
           python3 eng/monorepo/changelog.py validate-version CHANGELOG.md "$CURRENT_VERSION"
           python3 eng/monorepo/changelog.py notes CHANGELOG.md "$CURRENT_VERSION" > "$RUNNER_TEMP/release-notes.md"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          set +e
+          git ls-remote --exit-code --tags origin "refs/tags/$CURRENT_VERSION" >/dev/null
+          TAG_STATUS=$?
+          set -e
+          case "$TAG_STATUS" in
+            0)
+              echo "pending=false" >> "$GITHUB_OUTPUT"
+              ;;
+            2)
+              echo "pending=true" >> "$GITHUB_OUTPUT"
+              echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unable to query tag refs from origin" >&2
+              exit "$TAG_STATUS"
+              ;;
+          esac
 
   release:
     needs: detect
-    if: needs.detect.outputs.changed == 'true'
+    if: needs.detect.outputs.pending == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Wait for matching Build and test run
@@ -122,7 +115,7 @@ jobs:
         with:
           user: dsyme
       - name: Push packages
-        run: dotnet nuget push "nupkgs/*" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --skip-duplicate
+        run: dotnet nuget push "nupkgs/*" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

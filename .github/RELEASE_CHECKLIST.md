@@ -38,9 +38,10 @@ Trusted publishing is intentionally not exercised by pull-request CI. After the 
 NuGet packages are immutable and cannot be overwritten.
 
 1. Cancel the Release workflow before the NuGet push step whenever possible.
-2. If only some packages were published, finish publishing the same tested artifact set; do not rebuild the same version from a different commit.
-3. If a published version is defective, unlist every package at that version on NuGet.org and add a deprecation message pointing to the replacement.
-4. Mark the GitHub release as a prerelease or remove it if no package was published. Never move an existing tag to different source.
-5. Restore documentation by reverting the Pages source commit; do not edit generated Pages output.
-6. Add a changelog entry for the replacement version, rerun the complete candidate checklist, and publish a new version.
-7. Record affected package IDs, timestamps, NuGet/GitHub actions, customer impact, and the replacement version in an incident issue.
+2. If cancellation occurs before any package is published, leave the version untagged; the next `main` push retries it from the newer commit.
+3. If only some packages were published, do not reuse that version. Record the affected package IDs and prepare the next higher version.
+4. If a published version is defective, unlist every package at that version on NuGet.org and add a deprecation message pointing to the replacement.
+5. Mark the GitHub release as a prerelease or remove it if no package was published. Never move an existing tag to different source.
+6. Restore documentation by reverting the Pages source commit; do not edit generated Pages output.
+7. Add a changelog entry for the replacement version, rerun the complete candidate checklist, and publish a new version.
+8. Record affected package IDs, timestamps, NuGet/GitHub actions, customer impact, and the replacement version in an incident issue.
