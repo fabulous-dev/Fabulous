@@ -146,4 +146,4 @@ module App =
                 .ignoreSafeArea()
         )
 
-    let program = Program.statefulWithCmd init update view
+    let program = Program.statefulWithCmd init update |> Program.withView view

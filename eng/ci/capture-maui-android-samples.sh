@@ -3,9 +3,9 @@ set -euo pipefail
 
 configuration="${CONFIG:-Release}"
 output_dir="${FABULOUS_SCREENSHOT_DIR:-$PWD/artifacts/screenshots/maui-android}"
-manifest="$output_dir/samples.tsv"
+package_dir="${FABULOUS_ANDROID_PACKAGE_DIR:-$PWD/artifacts/android-packages}"
 coverage="$output_dir/coverage.tsv"
-mkdir -p "$output_dir"
+mkdir -p "$output_dir" "$package_dir"
 
 assert_png() {
   python3 - "$1" <<'PY'
@@ -74,11 +74,25 @@ mapfile -d '' projects < <(
 test "${#projects[@]}" -gt 0
 
 build_samples() {
-  : >"$manifest"
-  printf 'project\tplatform\tstatus\treason\n' >"$coverage"
-  printf 'Building %d MAUI sample applications for Android.\n' "${#projects[@]}"
+  local shard_index="${1:-0}"
+  local shard_count="${2:-1}"
+  local manifest="$package_dir/samples-$shard_index.tsv"
+  local built=0
 
-  for project in "${projects[@]}"; do
+  if ((shard_index < 0 || shard_index >= shard_count)); then
+    echo "Invalid shard $shard_index of $shard_count." >&2
+    exit 2
+  fi
+
+  : >"$manifest"
+  printf 'Building Android sample shard %d of %d.\n' "$shard_index" "$shard_count"
+
+  for project_index in "${!projects[@]}"; do
+    if ((project_index % shard_count != shard_index)); then
+      continue
+    fi
+
+    project="${projects[$project_index]}"
     relative="${project#samples/maui/}"
     slug="${relative%.fsproj}"
     slug="${slug//\//-}"
@@ -105,20 +119,37 @@ build_samples() {
       exit 1
     fi
 
-    printf '%s\t%s\t%s\t%s\n' "$slug" "$relative" "$application_id" "$apk" >>"$manifest"
-    printf '%s\tandroid\tbuilt\t\n' "$relative" >>"$coverage"
+    apk_name="$slug.apk"
+    cp "$apk" "$package_dir/$apk_name"
+    printf '%s\t%s\t%s\t%s\n' "$slug" "$relative" "$application_id" "$apk_name" >>"$manifest"
+    built=$((built + 1))
   done
+
+  test "$built" -gt 0
+}
+
+capture_samples() {
+  mapfile -t manifests < <(find "$package_dir" -maxdepth 1 -name 'samples-*.tsv' -type f | sort)
+  test "${#manifests[@]}" -gt 0
+
+  actual_count=$(cat "${manifests[@]}" | wc -l)
+  unique_count=$(cat "${manifests[@]}" | cut -f2 | sort -u | wc -l)
+  test "$actual_count" -eq "${#projects[@]}"
+  test "$unique_count" -eq "${#projects[@]}"
+
+  printf 'project\tplatform\tstatus\treason\n' >"$coverage"
+  while IFS=$'\t' read -r _ relative _ _; do
+    printf '%s\tandroid\tbuilt\t\n' "$relative" >>"$coverage"
+  done < <(cat "${manifests[@]}" | sort -t $'\t' -k2,2)
 
   while IFS= read -r project; do
     relative="${project#samples/maui/}"
     printf '%s\twindows\tbuild-only\tWinUI has no Android runtime\n' "$relative" >>"$coverage"
   done < <(find samples/maui/WinUICompat -name '*.fsproj' | sort)
-}
 
-capture_samples() {
-  test -s "$manifest"
-
-  while IFS=$'\t' read -r slug relative application_id apk; do
+  while IFS=$'\t' read -r slug relative application_id apk_name; do
+    apk="$package_dir/$apk_name"
+    test -s "$apk"
     screenshot="$output_dir/$slug.png"
     echo "::group::Launch $relative"
     adb install -r "$apk"
@@ -152,11 +183,11 @@ capture_samples() {
     adb shell am force-stop "$application_id"
     adb uninstall "$application_id"
     echo "::endgroup::"
-  done <"$manifest"
+  done < <(cat "${manifests[@]}" | sort -t $'\t' -k2,2)
 }
 
 case "${1:-}" in
-  build) build_samples ;;
+  build) build_samples "${2:-0}" "${3:-1}" ;;
   capture) capture_samples ;;
-  *) echo "Usage: $0 build|capture" >&2; exit 2 ;;
+  *) echo "Usage: $0 build [shard-index shard-count]|capture" >&2; exit 2 ;;
 esac

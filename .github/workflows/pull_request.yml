@@ -129,9 +129,13 @@ jobs:
           path: artifacts/screenshots/**/*.png
           if-no-files-found: error
 
-  maui-android-samples:
-    name: MAUI Android sample runtime tests
+  maui-android-package:
+    name: MAUI Android package shard ${{ matrix.shard }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -146,8 +150,28 @@ jobs:
           java-version: 17
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
-      - name: Build every Android sample
-        run: bash eng/ci/capture-maui-android-samples.sh build
+      - name: Build Android sample shard
+        run: bash eng/ci/capture-maui-android-samples.sh build ${{ matrix.shard }} 4
+      - name: Upload signed Android packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: MAUI-Android-Packages-${{ matrix.shard }}
+          path: artifacts/android-packages/
+          if-no-files-found: error
+
+  maui-android-samples:
+    name: MAUI Android sample runtime tests
+    needs: maui-android-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Download signed Android packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: MAUI-Android-Packages-*
+          path: artifacts/android-packages/
+          merge-multiple: true
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \

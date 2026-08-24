@@ -22,13 +22,13 @@ module CarouselView =
     let indicator = ViewRef<IndicatorView>()
 
     let view () =
-        Grid(rowdefs = [ Star; Auto ]) {
-            (View.CarouselView (slides) (fun slide -> Border(Label(slide.Title).font(size = 30.).center()).backgroundColor(slide.Color).margin(20.)))
+        Grid(coldefs = [ Star ], rowdefs = [ Star; Auto ]) {
+            (View.CarouselView (slides) (fun slide -> Border(Label(slide.Title).font(size = 30.).center()).background(SolidColorBrush(slide.Color)).margin(20.)))
                 .indicatorView(indicator)
                 .loop(false)
                 .gridRow(0)
 
-            IndicatorView(indicator).indicatorColor(Colors.Gray).selectedIndicatorColor(Colors.Blue).centerHorizontal().margin(0., 12.).gridRow(1)
+            IndicatorView(indicator).indicatorColor(Colors.Gray).selectedIndicatorColor(Colors.Blue).centerHorizontal().margin(0., 12., 0., 12.).gridRow(1)
         }
 
     let sample =
