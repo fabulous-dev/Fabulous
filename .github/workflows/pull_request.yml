@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3]
+        shard: ${{ fromJSON(github.event_name == 'push' && '[0,1,2,3]' || '[0]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
