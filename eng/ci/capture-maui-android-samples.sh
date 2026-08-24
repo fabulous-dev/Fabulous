@@ -84,9 +84,9 @@ build_samples() {
     slug="${slug//\//-}"
     slug="${slug// /-}"
 
-    echo "::group::Publish $relative"
-    dotnet publish "$project" -c "$configuration" -f net10.0-android \
-      -p:TargetFrameworks=net10.0-android -p:AndroidPackageFormat=apk
+    echo "::group::Build $relative"
+    dotnet build "$project" -t:SignAndroidPackage -c "$configuration" -f net10.0-android -r android-x64 \
+      -p:TargetFrameworks=net10.0-android -p:AndroidPackageFormat=apk -p:AndroidPackageFormats=apk
     echo "::endgroup::"
 
     apk=$(find "$(dirname "$project")/bin/$configuration/net10.0-android" \
