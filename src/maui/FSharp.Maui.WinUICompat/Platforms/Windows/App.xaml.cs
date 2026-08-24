@@ -1,5 +1,7 @@
 ﻿using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace FSharp.Maui.WinUICompat;
 
@@ -63,6 +65,12 @@ public static class Program
 {
     [global::System.Runtime.InteropServices.DllImport("Microsoft.ui.xaml.dll")]
     private static extern void XamlCheckProcessRequirements();
+
+    [DllImport("Microsoft.WindowsAppRuntime.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+    private static extern int WindowsAppRuntime_EnsureIsLoaded();
+
+    [ModuleInitializer]
+    internal static void InitializeWindowsAppRuntime() => WindowsAppRuntime_EnsureIsLoaded();
 
     [global::System.STAThreadAttribute]
     public static void Main(string[] args, Type appType)

@@ -132,7 +132,8 @@ module App =
 
             { model with VisualBoardSize = size }, Cmd.none
 #else
-            let desiredSize = app.MainWindow.Screens.Primary
+            let window = app.FindWindowById("MainWindow") |> Option.get
+            let desiredSize = window.Screens.Primary
 
             let size =
                 Math.Min(float desiredSize.Bounds.Width, float desiredSize.Bounds.Height)
@@ -207,10 +208,7 @@ module App =
                     SolidColorBrush(Colors.White)
 
             (Grid(coldefs = [ Star ], rowdefs = [ Auto; Star; Auto ]) {
-                TextBlock(getMessage model)
-                    .textAlignment(TextAlignment.Center)
-                    .fontSize(32.)
-                    .margin(16., 50., 16., 16.)
+                TextBlock(getMessage model).textAlignment(TextAlignment.Center).fontSize(32.).margin(16., 50., 16., 16.)
 
                 (Grid(coldefs = [ Star; Pixel(5.); Star; Pixel(5.); Star ], rowdefs = [ Star; Pixel(5.); Star; Pixel(5.); Star ]) {
 
@@ -234,15 +232,9 @@ module App =
                             match model.Board[pos] with
                             | Empty -> ()
                             | Full X ->
-                                Border(TextBlock("X").fontSize(model.VisualBoardSize / 3.).center())
-                                    .gridRow(row * 2)
-                                    .gridColumn(col * 2)
-                                    .background(background)
+                                Border(TextBlock("X").fontSize(model.VisualBoardSize / 3.).center()).gridRow(row * 2).gridColumn(col * 2).background(background)
                             | Full O ->
-                                Border(TextBlock("O").fontSize(model.VisualBoardSize / 3.).center())
-                                    .gridRow(row * 2)
-                                    .gridColumn(col * 2)
-                                    .background(background)
+                                Border(TextBlock("O").fontSize(model.VisualBoardSize / 3.).center()).gridRow(row * 2).gridColumn(col * 2).background(background)
                 })
                     .size(model.VisualBoardSize, model.VisualBoardSize)
                     .gridRow(1)
@@ -262,10 +254,7 @@ module App =
 #if MOBILE
         SingleViewApplication(content())
 #else
-        DesktopApplication() {
-            Window(content())
-                .sizeToContent(SizeToContent.WidthAndHeight)
-        }
+        DesktopApplication() { Window(content()).windowId("MainWindow").sizeToContent(SizeToContent.WidthAndHeight) }
 #endif
     let create () =
         FabulousAppBuilder.Configure(FluentTheme, view)
