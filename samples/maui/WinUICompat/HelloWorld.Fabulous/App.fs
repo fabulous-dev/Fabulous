@@ -17,7 +17,7 @@ module App =
     type CmdMsg = SemanticAnnounce of string
 
     let semanticAnnounce text =
-        Cmd.ofSub(fun _ -> SemanticScreenReader.Announce(text))
+        Cmd.ofEffect(fun _ -> SemanticScreenReader.Announce(text))
 
     let mapCmd cmdMsg =
         match cmdMsg with
@@ -31,19 +31,12 @@ module App =
 
     let view model =
         Application(
-            ContentPage(
-                "HelloWorld",
+            (ContentPage(
                 ScrollView(
                     (VStack(spacing = 25.) {
-                        Image(Aspect.AspectFit, "dotnet_bot.png")
-                            .semantics(description = "Cute dotnet bot waving hi to you!")
-                            .height(200.)
-                            .centerHorizontal()
+                        Image("dotnet_bot.png", Aspect.AspectFit).semantics(description = "Cute dotnet bot waving hi to you!").height(200.).centerHorizontal()
 
-                        Label("Hello, World!")
-                            .semantics(SemanticHeadingLevel.Level1)
-                            .font(size = 32.)
-                            .centerTextHorizontal()
+                        Label("Hello, World!").semantics(SemanticHeadingLevel.Level1).font(size = 32.).centerTextHorizontal()
 
                         Label("Welcome to .NET Multi-platform App UI powered by Fabulous")
                             .semantics(SemanticHeadingLevel.Level2, "Welcome to dot net Multi platform App U I powered by Fabulous")
@@ -56,16 +49,16 @@ module App =
                             else
                                 $"Clicked {model.Count} times"
 
-                        Button(text, Clicked)
-                            .semantics(hint = "Counts the number of times you click")
-                            .centerHorizontal()
+                        Button(text, Clicked).semantics(hint = "Counts the number of times you click").centerHorizontal()
                     })
                         .padding(Thickness(30., 0., 30., 0.))
                         .centerVertical()
                 )
-            )
+            ))
+                .title("HelloWorld")
         )
 
     let program =
-        Program.statefulWithCmdMsg init update view mapCmd
-        |> Program.withLogger { ViewHelpers.defaultLogger() with MinLogLevel = LogLevel.Debug }
+        Program.statefulWithCmdMsg init update mapCmd
+        |> Program.withTrace System.Console.WriteLine
+        |> Program.withView view

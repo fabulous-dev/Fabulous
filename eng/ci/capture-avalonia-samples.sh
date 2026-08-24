@@ -14,6 +14,7 @@ fi
 
 mapfile -d '' projects < <(
   find samples/avalonia -name '*.fsproj' \
+    ! -path '*/TestableApp/TestableApp.fsproj' \
     ! -path '*/TestableApp.UnitTests/*' \
     ! -path '*/TestableApp.Headless.XUnit/*' \
     -print0 | sort -z
