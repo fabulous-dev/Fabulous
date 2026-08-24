@@ -8,6 +8,4 @@ open Gallery
 type MainApplication(handle, ownership) =
     inherit MauiApplication(handle, ownership)
 
-    do Gallery.Resource.UpdateIdValues()
-
     override this.CreateMauiApp() = MauiProgram.CreateMauiApp()
