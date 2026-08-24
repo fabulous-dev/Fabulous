@@ -97,7 +97,7 @@ CI additionally validates formatting, package creation, Avalonia headless UI tes
 
 ## Packages and releases
 
-All Fabulous packages use the unified `10.0.x` version line and are released from [.github/workflows/release.yml](.github/workflows/release.yml). To publish, move the completed notes from `Unreleased` into a new top-level `## [10.0.x] - YYYY-MM-DD` section, add a fresh `Unreleased` section, and push the changelog change to `main`. After the full `Build and test` workflow succeeds, the release workflow publishes packages, creates the matching tag, and creates a GitHub release from that section. NuGet publishing uses GitHub OIDC trusted publishing; no long-lived NuGet API key is stored in the repository.
+All Fabulous packages use the unified `10.0.x` version line and are released from [.github/workflows/release.yml](.github/workflows/release.yml). To publish, move the completed notes from `Unreleased` into a new top-level `## [10.0.x] - YYYY-MM-DD` section, add a fresh `Unreleased` section, and push it to `main`. Every `main` push treats the top release section as pending while its matching tag is absent. After the full `Build and test` workflow succeeds, the release workflow publishes packages, creates the matching tag, and creates a GitHub release. A newer `main` push cancels an in-progress attempt and retries the untagged version from the newer commit. NuGet publishing uses GitHub OIDC trusted publishing; no long-lived NuGet API key is stored in the repository.
 
 ## Contributing
 

@@ -92,8 +92,9 @@ This command edits template JSON files. Use it only in a disposable checkout or 
 - CI must remain green on `main` before opening follow-up upgrade PRs.
 - Package creation runs at the end of the Linux Build and test job; downstream template and Windows consumer jobs download that artifact.
 - Avalonia headless tests capture rendered screenshots. Successful pull requests receive links to package and screenshot artifacts from the metadata-only `pr-artifacts.yml` workflow.
-- Releases are triggered by adding a new topmost `## [10.0.x] - YYYY-MM-DD` section to `CHANGELOG.md` and pushing it to `main`. Publishing begins only after the full main `Build and test` workflow succeeds, and the release workflow creates the tag after publishing succeeds.
+- Every push to `main` checks the topmost `## [10.0.x] - YYYY-MM-DD` section in `CHANGELOG.md`. If its tag does not exist, the version is pending and publishing begins only after the matching full main `Build and test` workflow succeeds. A newer push cancels the older attempt and retries from the newer commit; the release workflow creates the tag only after publishing succeeds.
 - NuGet publishing uses `NuGet/login@v1` with GitHub OIDC trusted publishing. Never add a long-lived NuGet API key.
+- If cancellation interrupts NuGet publication after only some packages are pushed, do not reuse that version. Record the partial release and prepare the next higher `10.0.x` version.
 - Do not create or push release tags without explicit authorization.
 
 ## Editing Guidelines
