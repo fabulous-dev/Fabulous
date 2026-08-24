@@ -1,137 +1,97 @@
-# Contribution Guidelines
+# Contributing to Fabulous
 
-**Note:** If these contribution guidelines are not followed your issue or PR might be closed, so
-please read these instructions carefully.
+Fabulous is primarily maintained through agentic development under human guidance. Maintainers
+review and discuss proposed work, then direct coding agents to make the complete, repository-wide
+change, including implementation, tests, documentation, samples, and other affected files.
 
+## Repo Assist
 
-## Contribution types
+[Repo Assist] is an automated AI assistant that runs regularly in this repository. It may triage or
+respond to issues, investigate bugs, suggest improvements, and attempt implementations as draft pull
+requests. Its comments and pull requests identify it as automated, and its work remains subject to
+human review. Repo Assist does not merge pull requests or make final maintenance decisions.
 
+Maintainers can also invoke Repo Assist with `/repo-assist <instructions>` to perform a specific
+agentic task, such as investigating an issue, preparing a fix, adding tests, or updating
+documentation. These directed tasks follow the same review process as its scheduled work.
 
-### Bug Reports
+## Start With an Issue
 
-- If you find a bug, please first report it using [Github issues].
-  - First check if there is not already an issue for it; duplicated issues will be closed.
+We generally prefer contributions as [GitHub issues] rather than pull requests. An issue is the best
+place to report a bug, request a feature, suggest a documentation improvement, or propose another
+change.
 
+Before opening an issue, search for an existing report. If there is one, add any useful context there
+instead of creating a duplicate.
 
-### Bug Fix
+A useful issue explains:
 
-- If you'd like to submit a fix for a bug, please read the [How To](#how-to-contribute) for how to
-   send a Pull Request.
-- Indicate on the open issue that you are working on fixing the bug and the issue will be assigned
-   to you.
-- Write `Fixes #xxxx` in your PR text, where xxxx is the issue number (if there is one).
-- Include a test that isolates the bug and verifies that it was fixed.
+- the problem or desired outcome;
+- why the change would be valuable;
+- steps to reproduce a bug, including relevant platform and version details;
+- examples, screenshots, logs, API sketches, or other supporting material when applicable.
 
+You are welcome to include a proposed implementation, a patch, or a link to a fork or branch. This
+material can help the discussion, but it does not need to be a complete contribution. Maintainers may
+refine the scope with you and then assign the issue to an agent to implement and validate the full
+change.
 
-### New Features
+## Pull Requests
 
-- If you'd like to add a feature to the library that doesn't already exist, feel free to describe
-   the feature in a new [GitHub issue].
-  - You can also join us on [Discord] to discuss some initials thoughts.
-- If you'd like to implement the new feature, please wait for feedback from the project maintainers
-   before spending too much time writing the code. In some cases, enhancements may not align well
-   with the project future development direction.
-- Implement the code for the new feature and please read the [How To](#how-to-contribute).
+Pull requests are still welcome, but every pull request must have a matching issue that has been
+discussed with the maintainers. Open the issue before investing substantial effort, especially for
+new features, public API changes, or broad refactoring.
 
+Link the pull request to its issue. For example, include `Fixes #1234` in the pull request description
+when the change fully resolves that issue.
 
-### Documentation & Miscellaneous
+Submitting a pull request does not guarantee that its commits will be merged. Maintainers may close
+the pull request and use the issue as the basis for an agent-produced implementation instead. This
+lets maintainers ensure that the final change follows current architecture, covers all affected
+projects, and includes the necessary tests, documentation, samples, and validation. The original
+report, analysis, and proposed code remain valuable inputs to that work.
 
-- If you have suggestions for improvements to the documentation, tutorial or examples (or something
-   else), we would love to hear about it.
-- As always first file a [Github issue].
-- Implement the changes to the documentation, please read the [How To](#how-to-contribute).
+If a pull request is the agreed approach, please:
 
+- keep it focused on one issue;
+- follow the existing code and project conventions;
+- add or update deterministic tests for behavior changes;
+- update documentation and samples when applicable;
+- avoid unrelated refactoring or generated files;
+- ensure the relevant focused checks pass before submission.
 
-## How To Contribute
+## Building and Validation
 
+Use the .NET SDK selected by [global.json] and follow the setup guidance in the project [README]. Run
+focused tests for the projects you changed before running broader validation.
 
-### Requirements
+The main repository checks are:
 
-For a contribution to be accepted:
-
-- Format the code using
+```bash
+python3 -B eng/monorepo/validate-inventory.py
+dotnet restore Fabulous.sln
+dotnet test Fabulous.sln -c Release
 ```
+
+For changes to core F# projects, restore the local tools and run the relevant formatting checks:
+
+```bash
 dotnet tool restore
-dotnet fantomas -r src
+dotnet fantomas --check src/neutral/Fabulous.Core
+dotnet fantomas --check src/neutral/Fabulous.Tests
+dotnet fantomas --check src/neutral/Fabulous.Benchmarks
 ```
-- Check that all tests pass: `dotnet test`;
-- Documentation should always be updated or added (if applicable);
-- Examples should always be updated or added (if applicable);
-- Tests should always be updated or added (if applicable).
 
-If the contribution doesn't meet these criteria, a maintainer will discuss it with you on the issue
-or PR. You can still continue to add more commits to the branch you have sent the Pull Request from
-and it will be automatically reflected in the PR.
+Some platform projects require additional workloads or operating systems. If you cannot run an
+applicable check locally, say so in the pull request and describe what you did validate.
 
+## Community
 
-## Open an issue and fork the repository
+Questions and early ideas can also be discussed on [Discord], but actionable bugs and proposals
+should be recorded in a GitHub issue so that decisions and follow-up work remain discoverable.
 
-- If it is a bigger change or a new feature, first of all
-   [file a bug or feature report][GitHub issue], so that we can discuss what direction to follow.
-- [Fork the project][fork guide] on GitHub.
-- Clone the forked repository to your local development machine
-   (e.g. `git clone git@github.com:<YOUR_GITHUB_USER>/Fabulous.git`).
-
-
-### Environment Setup
-
-Setting up your environment for Fabulous is pretty easy.  
-You will only need to install the [.NET 7.0 SDK] matching your CPU architecture (x64 or Arm64 for Mac M1).
-
-After .NET is installed, you can make sure Fabulous builds by executing the command line `dotnet build` at the Fabulous root folder.
-
-You can also pick any IDE you prefer to work on the codebase: Visual Studio (both Windows and macOS), Jetbrains Rider, or Visual Studio Code (with the [Ionide plugin]).
-
-### Performing changes
-
-- Create a new local branch from `main` (e.g. `git checkout -b my-new-feature`)
-- Make your changes (try to split them up with one PR per feature/fix).
-- When committing your changes, make sure that each commit message is clear.
-- Push your new branch to your own fork into the same remote branch
- (e.g. `git push origin my-username.my-new-feature`, replace `origin` if you use another remote.)
-
-
-### Open a pull request
-
-Go to the [pull request page of Fabulous][PRs] and in the top
-of the page it will ask you if you want to open a pull request from your newly created branch.
-
-The title of the pull request should be descriptive of the work you did.
-
-
-## Maintainers
-
-These instructions are for the maintainers of Fabulous.
-
-
-### Merging a pull request
-
-When merging a pull request, make sure that the title of the merge commit has a descriptive title.
-
-
-### Creating a release
-
-There are a few things to think about when doing a release:
-
-- Search through the codebase for `[<Obsolete>]` methods/fields and remove the ones that are marked
-   for removal in the version that you are intending to release.
-- Create a PR containing the changes for removing the deprecated entities.
-- Update [CHANGELOG.md] with the latest fixes and features since the last release.
-- Go through the PRs with breaking changes and add migration documentation to the changelog.
-   There should be migration docs on each PR, if they haven't been copied to the commit message.
-- Bump the version number in the [build workflow] file so Github can release nightly packages with the new version.
-- Make sure the build pipeline is succeeding on the main branch.
-- Once you are satisfied, create a new release via the [Github releases page], create a new tag with the version you want (eg. `2.2.0`), use the version number as the release name, paste the [CHANGELOG.md] section about this release into the description, and hit Submit.
-- The release pipeline will need to be approved by one of the maintainers with release rights.
-
-
-[GitHub issue]: https://github.com/fabulous-dev/fabulous/issues
-[GitHub issues]: https://github.com/fabulous-dev/fabulous/issues
-[GitHub releases page]: https://github.com/fabulous-dev/Fabulous/releases/new
-[PRs]: https://github.com/fabulous-dev/fabulous/pulls
-[fork guide]: https://docs.github.com/en/get-started/quickstart/contributing-to-projects
 [Discord]: https://discord.com/channels/196693847965696000/1541149327701971026
-[.NET 7.0 SDK]: https://dotnet.microsoft.com/en-us/download
-[Ionide plugin]: https://ionide.io/Editors/Code/overview.html
-[build workflow]: .github/workflows/build.yml
-[CHANGELOG.md]: CHANGELOG.md
+[GitHub issues]: https://github.com/fabulous-dev/Fabulous/issues
+[global.json]: global.json
+[README]: README.md
+[Repo Assist]: https://github.com/githubnext/agentics/blob/main/docs/repo-assist.md
