@@ -12,8 +12,8 @@ dotnet new install Fabulous.MauiControls.Templates
 dotnet new fabulous-mauicontrols -n Counter
 cd Counter
 dotnet restore
-dotnet build -f net8.0-android
-dotnet build -f net8.0-android -t:Run
+dotnet build -f net10.0-android
+dotnet build -f net10.0-android -t:Run
 ```
 
 The generated project contains platform hosts and an `App.fs` with the application logic. Compare it with the maintained [MAUI CounterApp](https://github.com/fabulous-dev/Fabulous/blob/main/samples/maui/CounterApp/App.fs), which demonstrates model, messages, asynchronous commands, layouts, controls, events, and modifiers in one compiled file.
@@ -35,8 +35,8 @@ Build a richer application by choosing controls from the [MAUI Gallery](https://
 Run a build before deploying:
 
 ```bash
-dotnet build -c Release -f net8.0-android
-dotnet publish -c Release -f net8.0-android
+dotnet build -c Release -f net10.0-android
+dotnet publish -c Release -f net10.0-android
 ```
 
 Signing, store packaging, iOS/Mac Catalyst, and Windows commands are covered in [deployment](../guides/deployment.md). Unit-test `init` and `update` using the pattern in [testing and debugging](../guides/testing-debugging.md).

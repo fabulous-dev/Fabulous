@@ -7,20 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
-- Release publishing now starts only for changelog changes, waits for the matching successful CI run, and no longer requests approval for ordinary builds.
+## [10.0.0] - 2026-08-24
 
 ### Added
 - Consolidate the Fabulous core, Avalonia, .NET MAUI, extensions, templates, tests, documentation, and engineering into one repository.
-- Add release-candidate package, sample, template, SourceLink, and native launch validation for Fabulous 10.
+- Add thread-safe throttled dispatch APIs and the `onReceive` component modifier ([#1130](https://github.com/fabulous-dev/Fabulous/pull/1130)).
+- Add route-based .NET MAUI navigation stacks ([#1123](https://github.com/fabulous-dev/Fabulous/pull/1123)).
+- Add Fabulous 10 architecture, migration, deployment, licensing, glossary, tutorial, and generated API-reference documentation ([#1127](https://github.com/fabulous-dev/Fabulous/pull/1127), [#1135](https://github.com/fabulous-dev/Fabulous/pull/1135)).
+- Add release-candidate validation for packages, symbols, SourceLink, public APIs, samples, templates, clean consumers, screenshots, and native application launch ([#1126](https://github.com/fabulous-dev/Fabulous/pull/1126), [#1129](https://github.com/fabulous-dev/Fabulous/pull/1129), [#1131](https://github.com/fabulous-dev/Fabulous/pull/1131)).
+- Add repository automation for issue triage and maintenance assistance ([#1146](https://github.com/fabulous-dev/Fabulous/pull/1146)).
 
 ### Changed
 - Rename the core project and assembly from `Fabulous` to `Fabulous.Core`. The NuGet package ID and F# namespaces remain `Fabulous`.
 - Build and publish all Fabulous packages and templates from one solution and release workflow.
 - Unify all Fabulous package versions on the `10.0.x` release line.
-- Target .NET 10 across the core, Avalonia, MAUI, samples, templates, and CI.
+- Target .NET 10 across the core, Avalonia, MAUI, samples, templates, and CI ([#1128](https://github.com/fabulous-dev/Fabulous/pull/1128)).
+- Upgrade the Avalonia backend to Avalonia 12 and the MAUI backend to MAUI 10 ([#1124](https://github.com/fabulous-dev/Fabulous/pull/1124), [#1132](https://github.com/fabulous-dev/Fabulous/pull/1132)).
+- Expand CI to build all Avalonia desktop samples, exercise native MAUI targets, instantiate all Avalonia template variants, and capture Gallery screenshots.
+- Publish the website, authored documentation, and generated API reference together on GitHub Pages.
+- Improve CI concurrency, dependency caching, sharding, artifact discovery, runtime readiness checks, and pull-request execution time ([#1133](https://github.com/fabulous-dev/Fabulous/pull/1133), [#1134](https://github.com/fabulous-dev/Fabulous/pull/1134), [#1139](https://github.com/fabulous-dev/Fabulous/pull/1139)).
+- Update Windows compatibility and sample APIs for .NET 10 and current MAUI behavior.
 - Remove the obsolete MAUI `MenuItem.accelerator` modifier; use `MenuFlyoutItem.keyboardAccelerators` instead.
+
+### Fixed
+- Release publishing now starts only for changelog changes, waits for the matching successful CI run, and no longer requests approval for ordinary builds.
+- Make MAUI virtualized collection updates safe when templates and source collections change ([#1125](https://github.com/fabulous-dev/Fabulous/pull/1125)).
+- Fix Android, Apple, and Windows package discovery, deployment, startup, and runtime smoke validation ([#1131](https://github.com/fabulous-dev/Fabulous/pull/1131), [#1134](https://github.com/fabulous-dev/Fabulous/pull/1134), [#1138](https://github.com/fabulous-dev/Fabulous/pull/1138)).
+- Fix Avalonia screenshot readiness and Gallery overview capture ([#1140](https://github.com/fabulous-dev/Fabulous/pull/1140)).
+- Fix .NET 10 sample and template restore, packaging, runtime identifiers, platform architecture, and generated resources.
+- Fix MAUI deprecation warnings, WinUI sample executable discovery, and website community links ([#1136](https://github.com/fabulous-dev/Fabulous/pull/1136), [#1137](https://github.com/fabulous-dev/Fabulous/pull/1137), [#1138](https://github.com/fabulous-dev/Fabulous/pull/1138)).
+- Correct the published MAUI and Avalonia deployment commands for .NET 10.
 
 ## [3.0.0-pre23] - 2025-06-05
 

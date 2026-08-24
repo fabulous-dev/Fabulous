@@ -79,6 +79,8 @@ def validate(root: Path) -> list[str]:
 
             for raw_target in LINK_RE.findall(line):
                 target = raw_target.strip().split(maxsplit=1)[0].strip("<>")
+                if "{" in target or "}" in target:
+                    continue
                 parsed = urlsplit(target)
 
                 if parsed.hostname and parsed.hostname.lower() in RETIRED_HOSTS:
