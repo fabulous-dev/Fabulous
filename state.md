@@ -5,11 +5,9 @@
 
 ## Issues
 - #1143: Welcome/intro issue, no action required (not a bug/feature request). Reviewed 2026-08-24.
-- #1148: Release blockers/signoff checklist for 10.0.0. Labelled `documentation` 2026-08-24. Track for maintainer follow-up; do not action items requiring manual/human signoff.
-- #1156: 10.0.0 release announcement. Labelled `documentation` 2026-08-24. Informational only.
 
 ## PRs
-- Created draft PR "Update test tooling packages (coverlet.collector, NUnit3TestAdapter)" from branch repo-assist/eng-test-package-updates-20260824 (2026-08-24, Task 4). Bumped coverlet.collector 3.1.2->3.2.0 and NUnit3TestAdapter 5.0.0->5.2.0 in Directory.Packages.props. Core+Avalonia tests passed locally; MAUI tests untestable in sandbox (no maui-tizen workload) but low risk (packaging-only change).
+- None open as of 2026-08-24.
 
 ## Investigation notes for future work (Task 10 candidates)
 - src/neutral/Fabulous.Core/WidgetDiff.fs:43 — TODO: hot-path skip-repeating-scalars function; author unsure if more optimal approach exists. Potential perf investigation (Task 8) but needs benchmarks before touching hot path.
@@ -28,7 +26,7 @@ None of these are yet turned into fixes since they need benchmarks/careful valid
 (none yet)
 
 ## Backlog cursor
-- Issue list cursor: reviewed all 4 open issues (#1143, #1147, #1148, #1156) as of 2026-08-24. Next run should re-check #1148 for newly checked-off items and watch for new issues on #1156.
+- Issue list cursor: none (only 1 open issue, already reviewed)
 
 ## Monthly Activity Issue
-- #1147 exists for 2026-08, updated 2026-08-24 with Task 4 PR and labelling activity.
+- Not yet created (this run creates the first one for 2026-08).
