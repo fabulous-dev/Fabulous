@@ -1,5 +1,7 @@
 namespace Fabulous.Maui
 
+#nowarn "44"
+
 open System
 open System.IO
 open System.Runtime.CompilerServices

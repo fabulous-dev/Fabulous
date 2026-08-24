@@ -156,64 +156,64 @@ module VisualElementAnimations =
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.FadeTo(0., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.FadeTo(data.Opacity, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.FadeToAsync(0., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.FadeToAsync(data.Opacity, data.AnimationDuration, data.Easing) |> ignore)
 
     let RotateTo =
         Attributes.defineSimpleScalarWithEquality<RotateToData> "VisualElement_RotateTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.RotateTo(0., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.RotateTo(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.RotateToAsync(0., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.RotateToAsync(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
 
     let RotateXTo =
         Attributes.defineSimpleScalarWithEquality<RotateToData> "VisualElement_RotateXTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.RotateXTo(0., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.RotateXTo(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.RotateXToAsync(0., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.RotateXToAsync(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
 
     let RotateYTo =
         Attributes.defineSimpleScalarWithEquality<RotateToData> "VisualElement_RotateYTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.RotateYTo(0., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.RotateYTo(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.RotateYToAsync(0., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.RotateYToAsync(data.Rotation, data.AnimationDuration, data.Easing) |> ignore)
 
     let ScaleTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData> "VisualElement_ScaleTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.ScaleTo(1., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.ScaleTo(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.ScaleToAsync(1., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.ScaleToAsync(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
 
     let ScaleXTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData> "VisualElement_ScaleXTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.ScaleXTo(1., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.ScaleXTo(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.ScaleXToAsync(1., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.ScaleXToAsync(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
 
     let ScaleYTo =
         Attributes.defineSimpleScalarWithEquality<ScaleToData> "VisualElement_ScaleYTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.ScaleYTo(1., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.ScaleYTo(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.ScaleYToAsync(1., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.ScaleYToAsync(data.Scale, data.AnimationDuration, data.Easing) |> ignore)
 
     let TranslateTo =
         Attributes.defineSimpleScalarWithEquality<TranslateToData> "VisualElement_TranslateTo" (fun _ newValueOpt node ->
             let view = node.Target :?> View
 
             match newValueOpt with
-            | ValueNone -> view.TranslateTo(0., 0., uint 0, Easing.Linear) |> ignore
-            | ValueSome data -> view.TranslateTo(data.X, data.Y, data.AnimationDuration, data.Easing) |> ignore)
+            | ValueNone -> view.TranslateToAsync(0., 0., uint 0, Easing.Linear) |> ignore
+            | ValueSome data -> view.TranslateToAsync(data.X, data.Y, data.AnimationDuration, data.Easing) |> ignore)
 
 [<Extension>]
 type VisualElementModifiers =
