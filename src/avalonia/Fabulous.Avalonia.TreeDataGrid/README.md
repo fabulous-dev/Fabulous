@@ -2,6 +2,8 @@
 
 The tree data grid displays hierarchical and tabular data together in a single view. It is a combination of a tree view and data grid.. See the [Avalonia documentation](https://docs.avaloniaui.net/docs/next/reference/controls/detailed-reference/treedatagrid/) for more information.
 
+> **License required:** Avalonia TreeDataGrid is a [premium Avalonia control](https://avaloniaui.net/tree-data-grid) and requires a commercial Avalonia license. The `Fabulous.Avalonia.TreeDataGrid` package provides a Fabulous wrapper but does not include that license. See the [Fabulous Avalonia licensing guide](https://fabulous-dev.github.io/Fabulous/docs/avalonia/licensing/).
+
 ### How to use
 - Add the `Fabulous.Avalonia.TreeDataGrid` package to your project.
 - Open `Fabulous.Avalonia` at the top of the file where you declare your Fabulous program (eg. Program.stateful).

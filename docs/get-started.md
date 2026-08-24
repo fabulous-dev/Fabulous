@@ -9,6 +9,8 @@ You'll need to choose a "flavor" of Fabulous first:
 
 The flavor you choose will determine the requirements, the available widgets and the supported platforms you can target.
 
+Avalonia uses a freemium model: its core framework and standard controls are free and open source, while selected premium controls require a commercial license. Review [Avalonia licensing](avalonia/licensing.md) before choosing extension controls.
+
 Once chosen, please refer to the corresponding "Get Started" documentation to learn more about writing an app with that flavor.
 
 | Flavor                     | Documentation                              |

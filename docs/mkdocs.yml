@@ -20,6 +20,7 @@ nav:
       - MAUI virtualized collections: maui/virtualized-collections.md
       - MAUI Route-based navigation: maui/navigation.md
       - Avalonia: avalonia/get-started.md
+      - Avalonia licensing: avalonia/licensing.md
       - Migrate to Avalonia 12: avalonia/migrate-to-12.md
   - Core concepts:
     - Programs and commands: concepts/programs.md

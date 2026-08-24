@@ -2,6 +2,8 @@
 
 This tutorial creates a desktop Fabulous 10 application, connects MVU state to Avalonia widgets, runs tests, and prepares a release build. Use the multi-platform template only when you also need Android or iOS hosts.
 
+The template and standard Avalonia controls do not require a commercial control license. Avalonia also offers premium controls under a freemium model; read [Avalonia licensing](../avalonia/licensing.md) before adding extension controls.
+
 ## Create and run
 
 ```bash

@@ -1,5 +1,7 @@
 # Get Started
 
+The templates use Avalonia's free, open-source core framework and standard controls. Some optional Avalonia controls are commercial products; see [Avalonia licensing](licensing.md) before adding extensions such as TreeDataGrid.
+
 ## Install the templates
 
 \
