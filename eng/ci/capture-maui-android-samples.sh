@@ -130,6 +130,7 @@ build_samples() {
     echo "::group::Build $relative"
     dotnet build "$project" -t:SignAndroidPackage -c "$configuration" -f net10.0-android -r android-x64 \
       -p:FabulousAndroidOnly=true \
+      -p:EmbedAssembliesIntoApk=true \
       -p:AndroidPackageFormat=apk -p:AndroidPackageFormats=apk
     echo "::endgroup::"
 
