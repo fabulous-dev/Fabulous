@@ -9,8 +9,13 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   CONFIG: Release
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
 jobs:
   validate:
@@ -23,6 +28,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Validate monorepo migration inventory
         run: python3 eng/monorepo/validate-inventory.py
       - name: Check core code formatting
@@ -42,6 +55,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Install MAUI workload packs
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Test
@@ -83,6 +104,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Test view logic
         run: dotnet test samples/avalonia/TestableApp.UnitTests/TestableApp.UnitTests.fsproj -c ${CONFIG} -p:FabulousSamplesDesktopOnly=true
       - name: Test headless UI
@@ -129,6 +158,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
@@ -158,6 +195,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Select installed .NET 10 SDK
         run: |
           sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
@@ -199,6 +244,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Select installed .NET 10 SDK
         run: |
           sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
@@ -236,6 +289,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Select .NET 10 SDK
         run: |
           $sdkVersion = dotnet --list-sdks |
