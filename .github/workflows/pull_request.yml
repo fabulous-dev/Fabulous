@@ -119,6 +119,7 @@ jobs:
         env:
           FABULOUS_SCREENSHOT_DIR: ${{ github.workspace }}/artifacts/screenshots/avalonia-headless
       - name: Upload headless screenshots
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: Avalonia-Headless-Screenshots
@@ -131,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3]
+        shard: ${{ fromJSON(github.event_name == 'push' && '[0,1,2,3]' || '[0]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -150,9 +151,10 @@ jobs:
       - name: Install desktop capture tools
         run: sudo apt-get update && sudo apt-get install -y imagemagick xdotool xvfb
       - name: Build, run, and capture sample shard
-        run: xvfb-run --auto-servernum --server-args='-screen 0 1440x900x24' bash eng/ci/capture-avalonia-samples.sh ${{ matrix.shard }} 4
+        run: xvfb-run --auto-servernum --server-args='-screen 0 1440x900x24' bash eng/ci/capture-avalonia-samples.sh ${{ matrix.shard }} ${{ github.event_name == 'push' && 4 || 1 }}
         env:
           CONFIG: Debug
+          FABULOUS_SAMPLE_CAPTURE_MODE: ${{ github.event_name == 'push' && 'all' || 'gallery' }}
       - name: Upload shard screenshots
         uses: actions/upload-artifact@v4
         with:
@@ -168,7 +170,7 @@ jobs:
       - name: Download screenshots
         uses: actions/download-artifact@v4
         with:
-          pattern: Avalonia-*Screenshots*
+          pattern: Avalonia-Screenshots-*
           path: artifacts/screenshots/
           merge-multiple: true
       - name: Upload screenshots
@@ -184,7 +186,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3]
+        shard: ${{ fromJSON(github.event_name == 'push' && '[0,1,2,3]' || '[0]') }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -200,9 +202,10 @@ jobs:
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample shard
-        run: bash eng/ci/capture-maui-android-samples.sh build ${{ matrix.shard }} 4
+        run: bash eng/ci/capture-maui-android-samples.sh build ${{ matrix.shard }} ${{ github.event_name == 'push' && 4 || 1 }}
         env:
           CONFIG: Debug
+          FABULOUS_SAMPLE_CAPTURE_MODE: ${{ github.event_name == 'push' && 'all' || 'gallery' }}
       - name: Upload signed Android packages
         uses: actions/upload-artifact@v4
         with:
@@ -229,7 +232,7 @@ jobs:
             | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Run and capture every Android sample
+      - name: Run and capture Android samples
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -238,6 +241,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: bash eng/ci/capture-maui-android-samples.sh capture
+        env:
+          FABULOUS_SAMPLE_CAPTURE_MODE: ${{ github.event_name == 'push' && 'all' || 'gallery' }}
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

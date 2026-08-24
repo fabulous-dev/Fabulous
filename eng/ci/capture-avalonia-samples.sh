@@ -3,22 +3,32 @@ set -euo pipefail
 
 configuration="${CONFIG:-Release}"
 output_dir="${FABULOUS_SCREENSHOT_DIR:-$PWD/artifacts/screenshots/avalonia}"
+capture_mode="${FABULOUS_SAMPLE_CAPTURE_MODE:-all}"
 shard_index="${1:-0}"
 shard_count="${2:-1}"
 mkdir -p "$output_dir"
+
+if [[ "$capture_mode" != "all" && "$capture_mode" != "gallery" ]]; then
+  echo "Invalid capture mode: $capture_mode." >&2
+  exit 2
+fi
 
 if ((shard_index < 0 || shard_index >= shard_count)); then
   echo "Invalid shard $shard_index of $shard_count." >&2
   exit 2
 fi
 
-mapfile -d '' projects < <(
-  find samples/avalonia -name '*.fsproj' \
-    ! -path '*/TestableApp/TestableApp.fsproj' \
-    ! -path '*/TestableApp.UnitTests/*' \
-    ! -path '*/TestableApp.Headless.XUnit/*' \
-    -print0 | sort -z
-)
+if [[ "$capture_mode" == "gallery" ]]; then
+  projects=("samples/avalonia/Gallery/Gallery.fsproj")
+else
+  mapfile -d '' projects < <(
+    find samples/avalonia -name '*.fsproj' \
+      ! -path '*/TestableApp/TestableApp.fsproj' \
+      ! -path '*/TestableApp.UnitTests/*' \
+      ! -path '*/TestableApp.Headless.XUnit/*' \
+      -print0 | sort -z
+  )
+fi
 
 test "${#projects[@]}" -gt 0
 printf 'Capturing Avalonia sample shard %d of %d.\n' "$shard_index" "$shard_count"
@@ -44,7 +54,7 @@ for project_index in "${!projects[@]}"; do
   echo "::endgroup::"
 
   pages=("")
-  if [[ "$is_gallery" == true ]]; then
+  if [[ "$is_gallery" == true && "$capture_mode" == "all" ]]; then
     mapfile -t gallery_pages < <(python3 - <<'PY'
 import re
 from pathlib import Path
