@@ -52,6 +52,21 @@ jobs:
         run: dotnet pack Fabulous.sln -c ${CONFIG} -p:Version=0.0.0-ci.${GITHUB_RUN_ID} --no-restore --property PackageOutputPath=${PWD}/nupkgs
       - name: Validate package count
         run: test "$(find nupkgs -maxdepth 1 -name '*.nupkg' ! -name '*.symbols.nupkg' | wc -l)" -eq 13
+      - name: Validate package contents
+        run: python3 eng/monorepo/validate-packages.py nupkgs
+      - name: Validate SourceLink mappings
+        run: |
+          dotnet tool install --global sourcelink
+          while IFS= read -r -d '' package; do
+            package_dir="${RUNNER_TEMP}/sourcelink/$(basename "$package" .snupkg)"
+            mkdir -p "$package_dir"
+            unzip -q "$package" -d "$package_dir"
+            while IFS= read -r -d '' pdb; do
+              mappings="$(sourcelink print-urls "$pdb")"
+              test -n "$mappings"
+              grep -Fq 'https://raw.githubusercontent.com/fabulous-dev/Fabulous/' <<< "$mappings"
+            done < <(find "$package_dir" -name '*.pdb' -print0)
+          done < <(find nupkgs -maxdepth 1 -name '*.snupkg' -print0)
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
@@ -128,9 +143,22 @@ jobs:
           if-no-files-found: error
 
   avalonia-template:
-    name: Avalonia template smoke test
+    name: Avalonia template (${{ matrix.template }})
     needs: build-and-test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - template: blank
+            short-name: fabulous-avalonia
+            project: AvaloniaTemplateApp.fsproj
+          - template: desktop
+            short-name: fabulous-avalonia-desktop
+            project: AvaloniaTemplateApp.fsproj
+          - template: multi-project
+            short-name: fabulous-avalonia-multi
+            project: AvaloniaTemplateApp.Desktop/AvaloniaTemplateApp.Desktop.fsproj
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -146,11 +174,93 @@ jobs:
       - name: Instantiate template
         run: |
           dotnet new install nupkgs/Fabulous.Avalonia.Templates.*.nupkg
-          dotnet new fabulous-avalonia-desktop -n AvaloniaTemplateApp -o "${RUNNER_TEMP}/avalonia-template"
+          dotnet new ${{ matrix.short-name }} -n AvaloniaTemplateApp -o "${RUNNER_TEMP}/avalonia-template"
       - name: Build generated app
         run: |
-          dotnet restore "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
-          dotnet build "${RUNNER_TEMP}/avalonia-template/AvaloniaTemplateApp.fsproj" -c ${CONFIG} --no-restore
+          project="${RUNNER_TEMP}/avalonia-template/${{ matrix.project }}"
+          build_args=()
+          if [[ "${{ matrix.template }}" == "blank" ]]; then
+            build_args=(-p:TargetFrameworks=net10.0)
+          fi
+          dotnet restore "$project" "${build_args[@]}" --source "${PWD}/nupkgs" --source https://api.nuget.org/v3/index.json
+          dotnet build "$project" -c ${CONFIG} "${build_args[@]}" --no-restore
+
+  android-runtime:
+    name: Android build and launch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+      - name: Select installed .NET 10 SDK
+        run: |
+          sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
+          test -n "$sdk_version"
+          dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
+      - name: Install Android workload
+        run: dotnet workload install maui-android --skip-manifest-update
+      - name: Build Android sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -t:SignAndroidPackage -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:RuntimeIdentifier=android-x64 -p:AndroidPackageFormat=apk -p:AndroidPackageFormats=apk
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Launch and assert Android process
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          disable-animations: true
+          script: |
+            test -n "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
+            adb uninstall org.fabulous.maui.helloworld || true
+            adb install -r "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
+            adb shell monkey -p org.fabulous.maui.helloworld 1
+            adb shell pidof org.fabulous.maui.helloworld
+
+  apple-runtime:
+    name: Apple build and launch
+    runs-on: macos-26
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Select Xcode 26.2
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.2'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+      - name: Select installed .NET 10 SDK
+        run: |
+          sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
+          test -n "$sdk_version"
+          dotnet new globaljson --sdk-version "$sdk_version" --roll-forward latestPatch --force
+      - name: Install Apple workloads
+        run: dotnet workload install maui-ios maui-maccatalyst --skip-manifest-update
+      - name: Build iOS sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-ios -p:FabulousIosOnly=true -p:RuntimeIdentifier=iossimulator-arm64 -p:ValidateXcodeVersion=false
+      - name: Build Mac Catalyst sample
+        run: dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -c ${CONFIG} -f net10.0-maccatalyst -p:FabulousMacCatalystOnly=true -p:RuntimeIdentifier=maccatalyst-arm64 -p:ValidateXcodeVersion=false
+      - name: Launch and assert Mac Catalyst process
+        shell: bash
+        run: |
+          app=$(find samples/maui/HelloWorld/bin/${CONFIG}/net10.0-maccatalyst -name '*.app' -print -quit)
+          test -n "$app"
+          open "$app"
+          for attempt in {1..10}; do
+            if pgrep -f "$app/Contents/MacOS"; then
+              pkill -f "$app/Contents/MacOS"
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
 
   windows-compat:
     name: Windows compatibility
@@ -183,9 +293,21 @@ jobs:
       - name: Install missing Tizen workload
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Build compatibility package
-        run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG
+        run: dotnet build src/maui/FSharp.Maui.WinUICompat/FSharp.Maui.WinUICompat.csproj -c $env:CONFIG -p:RuntimeIdentifier=win-x64 -p:Platform=x64
       - name: Build TicTacToe sample
-        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -p:FabulousWindowsOnly=true
+        run: dotnet build samples/maui/TicTacToe/TicTacToe.fsproj -c $env:CONFIG -f net10.0-windows10.0.19041.0 -p:FabulousWindowsOnly=true -p:RuntimeIdentifier=win-x64 -p:Platform=x64 -p:WindowsPackageType=None
+      - name: Launch and assert Windows sample process
+        run: |
+          $executable = Get-ChildItem samples/maui/TicTacToe/bin -Recurse -Filter TicTacToe.exe | Select-Object -First 1
+          if (-not $executable) {
+            throw 'TicTacToe executable was not produced.'
+          }
+          $process = Start-Process $executable.FullName -PassThru
+          Start-Sleep -Seconds 10
+          if ($process.HasExited) {
+            throw "TicTacToe exited during startup with code $($process.ExitCode)."
+          }
+          Stop-Process -Id $process.Id
       - name: Build Windows-only samples
         run: |
           dotnet build samples/maui/WinUICompat/HelloWorld.Fabulous/HelloWorld.Fabulous.fsproj -c $env:CONFIG
