@@ -25,7 +25,7 @@
         <Compile Include="ItemsRepeater.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia.Controls.ItemsRepeater" VersionOverride="11.1.5" />
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
