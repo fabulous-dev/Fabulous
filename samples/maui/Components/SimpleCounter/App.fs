@@ -8,7 +8,7 @@ open type Fabulous.Maui.View
 
 module App =
     let view () =
-        Component() {
+        Component("SimpleCounter") {
             let! count = Context.State(0)
 
             Application(

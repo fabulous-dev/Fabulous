@@ -17,7 +17,15 @@ module MainView =
         | SelectControl of RoutedEventArgs
         | GoBack
 
-    let init () = { Details = None }, Cmd.none
+    let init () =
+        let details =
+            match Environment.GetEnvironmentVariable("FABULOUS_GALLERY_PAGE") with
+            | null
+            | "" -> None
+            | CurrentPage page -> Some page
+            | page -> invalidArg "FABULOUS_GALLERY_PAGE" $"Unknown Gallery page: {page}"
+
+        { Details = details }, Cmd.none
 
     let update msg model =
         match msg with
@@ -157,9 +165,7 @@ module MainView =
                             Grid() {
                                 UniformGrid(cols = 2, rows = 37) {
                                     for i in 0 .. controlNames.Length - 1 do
-                                        CardItem(controlNames[i])
-                                            .onTapped(SelectControl)
-                                            .gridRow(i / 2)
+                                        CardItem(controlNames[i]).onTapped(SelectControl).gridRow(i / 2)
                                 }
                             }
                         )

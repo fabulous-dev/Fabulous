@@ -104,6 +104,7 @@ module App =
         | FormattedText
         | TextFormatter
         | WrapPanel
+        | SkCanvas
 
     [<return: Struct>]
     let (|CurrentPage|_|) page =
@@ -205,6 +206,7 @@ module App =
         | "FormattedText" -> ValueSome FormattedText
         | "TextFormatter" -> ValueSome TextFormatter
         | "WrapPanel" -> ValueSome WrapPanel
+        | "SkCanvas" -> ValueSome SkCanvas
         | _ -> ValueNone
 
     [<return: Struct>]
@@ -307,3 +309,4 @@ module App =
         | TextFormatter -> ValueSome(AnyView(TextFormatterPage.view()))
         | ViewBoxPage -> ValueSome(AnyView(ViewBoxPage.view()))
         | WrapPanel -> ValueSome(AnyView(WrapPanelsPage.view()))
+        | SkCanvas -> ValueSome(AnyView(CustomSkiaPage.view()))

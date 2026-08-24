@@ -15,6 +15,9 @@ type Sample =
       Description: string
       Program: SampleProgram }
 
+module Runtime =
+    let mutable StartupSampleIndex: int option = None
+
 module Helper =
     let createProgram (init: unit -> 'model) (update: 'msg -> 'model -> 'model) (view: 'model -> WidgetBuilder<'msg, 'marker>) =
         { init = init >> box

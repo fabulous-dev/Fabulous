@@ -44,7 +44,8 @@ jobs:
               { owner, repo, run_id: run.id, per_page: 100 }
             );
             const published = artifacts.filter(
-              artifact => !artifact.expired && ['Packages', 'Screenshots-Avalonia'].includes(artifact.name)
+              artifact => !artifact.expired &&
+                ['Packages', 'Screenshots-Avalonia', 'Screenshots-MAUI-Android'].includes(artifact.name)
             );
             const artifactLines = published.map(
               artifact => `- [${artifact.name}](${context.serverUrl}/${owner}/${repo}/actions/runs/${run.id}/artifacts/${artifact.id})`

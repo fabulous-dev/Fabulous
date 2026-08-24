@@ -202,8 +202,8 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view () =
-        Component(program) {
-            let! model = Mvu.State
+        Component("TicTacComponent") {
+            let! model = Context.Mvu(program)
 
             Application(
                 ContentPage(
