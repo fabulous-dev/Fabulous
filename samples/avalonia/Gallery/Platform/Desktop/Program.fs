@@ -7,7 +7,10 @@ open Gallery
 module Program =
 
     [<CompiledName "BuildAvaloniaApp">]
-    let buildAvaloniaApp () = MainWindow.create().UsePlatformDetect()
+    let buildAvaloniaApp () =
+        match Environment.GetEnvironmentVariable("FABULOUS_GALLERY_PAGE") with
+        | null -> MainWindow.create().UsePlatformDetect()
+        | _ -> MainView.createDesktop().UsePlatformDetect()
 
     [<EntryPoint; STAThread>]
     let main argv =

@@ -152,39 +152,45 @@ module MainView =
         )
 
 
-    let view () =
+    let content () =
         Component("MainView") {
             let! model = Context.Mvu program
 
-            SingleViewApplication(
-                ScrollViewer(
-                    match model.Details with
-                    | Some(CurrentWidget page) ->
-                        AnyView(
-                            VStack(16.) {
-                                Button("Go back", GoBack)
-                                page
+            ScrollViewer(
+                match model.Details with
+                | Some(CurrentWidget page) ->
+                    AnyView(
+                        VStack(16.) {
+                            Button("Go back", GoBack)
+                            page
+                        }
+                    )
+                | _ ->
+                    AnyView(
+                        Grid() {
+                            UniformGrid(cols = 2, rows = 37) {
+                                for i in 0 .. controlNames.Length - 1 do
+                                    CardItem(controlNames[i]).onTapped(SelectControl).gridRow(i / 2)
                             }
-                        )
-                    | _ ->
-                        AnyView(
-                            Grid() {
-                                UniformGrid(cols = 2, rows = 37) {
-                                    for i in 0 .. controlNames.Length - 1 do
-                                        CardItem(controlNames[i]).onTapped(SelectControl).gridRow(i / 2)
-                                }
-                            }
-                        )
-                )
+                        }
+                    )
             )
         }
 
-    let create () =
-        let theme () =
+    let view () = SingleViewApplication(content())
+
+    let desktopView () =
+        DesktopApplication() { Window(content()).title("Fabulous Gallery").width(1024.).height(800.).icon("avares://Gallery/Assets/Icons/logo.ico") }
+
+    let theme () =
 #if PREMIUM_CONTROLS
-            StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.Premium.xaml"))
+        StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.Premium.xaml"))
 #else
-            StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.xaml"))
+        StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.xaml"))
 #endif
 
+    let create () =
         FabulousAppBuilder.Configure(theme, view)
+
+    let createDesktop () =
+        FabulousAppBuilder.Configure(theme, desktopView)
