@@ -179,10 +179,9 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            apk=$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)
-            test -n "$apk"
+            test -n "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
             adb uninstall org.fabulous.maui.helloworld || true
-            adb install -r "$apk"
+            adb install -r "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
             adb shell monkey -p org.fabulous.maui.helloworld 1
             adb shell pidof org.fabulous.maui.helloworld
 
