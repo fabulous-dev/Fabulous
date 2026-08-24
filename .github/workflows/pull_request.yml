@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJSON(github.event_name == 'push' && '[0,1,2,3]' || '[0]') }}
+        shard: [0, 1, 2, 3]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -182,11 +182,12 @@ jobs:
 
   maui-android-package:
     name: MAUI Android package shard ${{ matrix.shard }}
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJSON(github.event_name == 'push' && '[0,1,2,3]' || '[0]') }}
+        shard: [0, 1, 2, 3]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -202,10 +203,9 @@ jobs:
       - name: Install Android workload
         run: dotnet workload install maui-android --skip-manifest-update
       - name: Build Android sample shard
-        run: bash eng/ci/capture-maui-android-samples.sh build ${{ matrix.shard }} ${{ github.event_name == 'push' && 4 || 1 }}
+        run: bash eng/ci/capture-maui-android-samples.sh build ${{ matrix.shard }} 4
         env:
           CONFIG: Debug
-          FABULOUS_SAMPLE_CAPTURE_MODE: ${{ github.event_name == 'push' && 'all' || 'gallery' }}
       - name: Upload signed Android packages
         uses: actions/upload-artifact@v4
         with:
@@ -216,6 +216,7 @@ jobs:
   maui-android-samples:
     name: MAUI Android sample runtime tests
     needs: maui-android-package
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -232,7 +233,7 @@ jobs:
             | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Run and capture Android samples
+      - name: Run and capture every Android sample
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -241,8 +242,6 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: bash eng/ci/capture-maui-android-samples.sh capture
-        env:
-          FABULOUS_SAMPLE_CAPTURE_MODE: ${{ github.event_name == 'push' && 'all' || 'gallery' }}
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -254,6 +253,7 @@ jobs:
   avalonia-template:
     name: Avalonia template (${{ matrix.template }})
     needs: build-and-test
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -304,6 +304,7 @@ jobs:
 
   android-runtime:
     name: Android build and launch
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -344,6 +345,7 @@ jobs:
 
   apple-runtime:
     name: Apple build and launch
+    if: github.event_name == 'push'
     runs-on: macos-26
     steps:
       - name: Checkout sources
@@ -393,6 +395,7 @@ jobs:
   windows-compat:
     name: Windows compatibility
     needs: build-and-test
+    if: github.event_name == 'push'
     runs-on: windows-latest
     steps:
       - name: Checkout sources

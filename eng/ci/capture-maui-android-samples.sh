@@ -4,14 +4,8 @@ set -euo pipefail
 configuration="${CONFIG:-Release}"
 output_dir="${FABULOUS_SCREENSHOT_DIR:-$PWD/artifacts/screenshots/maui-android}"
 package_dir="${FABULOUS_ANDROID_PACKAGE_DIR:-$PWD/artifacts/android-packages}"
-capture_mode="${FABULOUS_SAMPLE_CAPTURE_MODE:-all}"
 coverage="$output_dir/coverage.tsv"
 mkdir -p "$output_dir" "$package_dir"
-
-if [[ "$capture_mode" != "all" && "$capture_mode" != "gallery" ]]; then
-  echo "Invalid capture mode: $capture_mode." >&2
-  exit 2
-fi
 
 assert_png() {
   python3 - "$1" <<'PY'
@@ -100,15 +94,11 @@ path.write_text("\n".join(replacement if line == expected else line for line in 
 PY
 }
 
-if [[ "$capture_mode" == "gallery" ]]; then
-  projects=("samples/maui/Gallery/Gallery.fsproj")
-else
-  mapfile -d '' projects < <(
-    find samples/maui -name '*.fsproj' \
-      ! -path '*/WinUICompat/*' \
-      -print0 | sort -z
-  )
-fi
+mapfile -d '' projects < <(
+  find samples/maui -name '*.fsproj' \
+    ! -path '*/WinUICompat/*' \
+    -print0 | sort -z
+)
 
 test "${#projects[@]}" -gt 0
 
@@ -202,7 +192,7 @@ capture_samples() {
     adb exec-out screencap -p >"$screenshot"
     assert_png "$screenshot"
 
-    if [[ "$relative" == "Gallery/Gallery.fsproj" && "$capture_mode" == "all" ]]; then
+    if [[ "$relative" == "Gallery/Gallery.fsproj" ]]; then
       capture_gallery_pages "$slug" "$application_id"
     fi
     mark_captured "$relative"
