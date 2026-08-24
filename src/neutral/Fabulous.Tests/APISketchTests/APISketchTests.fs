@@ -575,7 +575,6 @@ module SmallScalars =
         Assert.AreEqual(numbers.valueThree, 6.)
 
 
-/// https://github.com/TimLariviere/Fabulous-new/issues/99
 module Issue99 =
     type Msg = Toggle
 
@@ -614,7 +613,6 @@ module Issue99 =
         Assert.AreSame(button1Start, button1Toggled)
         Assert.AreSame(button1Start, button1Untoggled)
 
-/// https://github.com/TimLariviere/Fabulous-new/issues/104
 module Issue104 =
     type Msg = Toggle
 

@@ -130,7 +130,7 @@ There are a few things to think about when doing a release:
 [GitHub releases page]: https://github.com/fabulous-dev/Fabulous/releases/new
 [PRs]: https://github.com/fabulous-dev/fabulous/pulls
 [fork guide]: https://docs.github.com/en/get-started/quickstart/contributing-to-projects
-[Discord]: https://discord.gg/bpTJMbSSYK
+[Discord]: https://discord.com/channels/196693847965696000/1541149327701971026
 [.NET 7.0 SDK]: https://dotnet.microsoft.com/en-us/download
 [Ionide plugin]: https://ionide.io/Editors/Code/overview.html
 [build workflow]: .github/workflows/build.yml
