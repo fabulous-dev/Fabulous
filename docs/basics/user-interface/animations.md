@@ -1,5 +1,7 @@
 # Animations
 
+> **⚠️ Legacy content:** This page documents an older, pre-10.0.x version of Fabulous (including Xamarin.Forms-era APIs) and is **not part of the current documentation**. It is intentionally excluded from the published MkDocs sites and from automated link validation, and may contain outdated or retired links. It is retained for historical reference only.
+
 Animations and focus are specified by accessing the underlying Xamarin.Forms control and using Xamarin.Forms animation specifications. The underlying control is usually accessed via a `ViewRef`, akin to a `ref` in HTML/JavaScript and React.
 
 * A `ViewRef` must have a sufficient scope that it lives long enough, e.g. a global scope or the scope of the model. The `ViewRef` can be held in the model itself if necessary.
