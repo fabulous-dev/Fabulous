@@ -23,7 +23,7 @@ ItemsRepeater(["Item 1"; "Item 2"; "Item 3"], fun x -> TextBlock(x))
 A full, working example is included in the [ItemsRepeaterPage](https://github.com/fabulous-dev/Fabulous.Avalonia/blob/main/samples/Gallery/Pages/ItemsRepeaterPage.fs) sample
 
 ## Other useful links:
-- [The official Fabulous website](https://fabulous.dev)
-- [Get started](https://docs.fabulous.dev/avalonia/get-started)
+- [Fabulous documentation](https://fabulous-dev.github.io/Fabulous/docs/)
+- [Get started](https://fabulous-dev.github.io/Fabulous/docs/tutorials/avalonia/)
 
 Additionally, we have the [Fabulous Discord server](https://discord.com/channels/196693847965696000/1541149327701971026) where you can ask any of your Fabulous related questions.

@@ -38,7 +38,7 @@ module GalaxyAnimation =
                 ()
             else
                 let orbitAnimation = compositor.CreateScalarKeyFrameAnimation()
-                orbitAnimation.Duration <- TimeSpan.FromSeconds(10)
+                orbitAnimation.Duration <- TimeSpan.FromSeconds(10.)
                 orbitAnimation.IterationBehavior <- AnimationIterationBehavior.Forever
                 orbitAnimation.InsertKeyFrame(1f, float32(4.0 * Math.PI), LinearEasing())
                 _orbitVisual.CenterPoint <- Vector3(float32 orbit.Bounds.Width / float32 2, float32 orbit.Bounds.Height / float32 2., float32 0.)
@@ -111,44 +111,22 @@ module GalaxyAnimation =
     let view () =
         Component("GalaxyAnimation") {
             Grid() {
-                Ellipse()
-                    .width(15.)
-                    .height(15.)
-                    .fill(SolidColorBrush(Colors.Orange))
+                Ellipse().width(15.).height(15.).fill(SolidColorBrush(Colors.Orange))
 
                 Grid() {
-                    Rectangle()
-                        .width(15.)
-                        .height(15.)
-                        .fill(SolidColorBrush(Colors.Yellow))
-                        .renderTransform(TranslateTransform(200., 120.))
+                    Rectangle().width(15.).height(15.).fill(SolidColorBrush(Colors.Yellow)).renderTransform(TranslateTransform(200., 120.))
 
-                    Rectangle()
-                        .width(5.)
-                        .height(5.)
-                        .fill(SolidColorBrush(Colors.Yellow))
-                        .renderTransform(TranslateTransform(-200., 150.))
+                    Rectangle().width(5.).height(5.).fill(SolidColorBrush(Colors.Yellow)).renderTransform(TranslateTransform(-200., 150.))
 
-                    Rectangle()
-                        .width(10.)
-                        .height(10.)
-                        .fill(SolidColorBrush(Colors.Yellow))
-                        .renderTransform(TranslateTransform(-150., -150.))
+                    Rectangle().width(10.).height(10.).fill(SolidColorBrush(Colors.Yellow)).renderTransform(TranslateTransform(-150., -150.))
 
-                    Rectangle()
-                        .width(5.)
-                        .height(5.)
-                        .fill(SolidColorBrush(Colors.Yellow))
-                        .renderTransform(TranslateTransform(150., -200.))
+                    Rectangle().width(5.).height(5.).fill(SolidColorBrush(Colors.Yellow)).renderTransform(TranslateTransform(150., -200.))
                 }
                 |> _.reference(startField)
 
                 Grid() {
                     Grid() {
-                        Ellipse()
-                            .width(30.)
-                            .height(30.)
-                            .fill(SolidColorBrush(Colors.DarkGreen))
+                        Ellipse().width(30.).height(30.).fill(SolidColorBrush(Colors.DarkGreen))
 
                         Ellipse()
                             .width(15.)

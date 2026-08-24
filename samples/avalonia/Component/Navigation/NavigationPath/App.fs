@@ -82,8 +82,9 @@ module App =
 #if MOBILE
         SingleViewApplication(content model)
 #else
-        DesktopApplication(Window(content model))
+        DesktopApplication() { Window(content model) }
 #endif
+
     let create () =
         let theme () = FluentTheme()
 

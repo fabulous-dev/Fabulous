@@ -1,7 +1,6 @@
 namespace Gallery
 
 open System
-open System.Buffers
 open System.Collections.Generic
 open System.Diagnostics
 open System.IO
@@ -103,19 +102,6 @@ module DialogsPage =
             item.AppleUniformTypeIdentifiers <- [ "public.data" ]
             [ FilePickerFileTypes.All; FilePickerFileTypes.TextPlain; item ]
 
-    let readTextFromFile (file: IStorageFile) (length: int) =
-        task {
-            use! stream = file.OpenReadAsync()
-            use reader = new StreamReader(stream)
-            let buffer = ArrayPool<char>.Shared.Rent(length)
-
-            try
-                let! charsRead = reader.ReadAsync(buffer, 0, length)
-                return new string(buffer, 0, charsRead)
-            finally
-                ArrayPool<char>.Shared.Return(buffer)
-        }
-
     let fullPathOrName (item: IStorageItem) =
         if (item = null) then "(null)"
         else if item.Path.IsAbsoluteUri then item.Path.ToString()
@@ -150,7 +136,7 @@ CanBookmark: {item.Value.CanBookmark}"
 
                 match item.Value with
                 | :? IStorageFile as item ->
-                    let! res = readTextFromFile item 500
+                    let! res = readTextFromStorageFile item 500
                     resultText <- resultText + res
                 | _ -> ()
 
@@ -167,7 +153,7 @@ CanBookmark: {item.Value.CanBookmark}"
                         if selectedItem <> null then
                             match selectedItem with
                             | :? IStorageFolder as folder ->
-                                let! innerItems = folder.GetItemsAsync().AsTask()
+                                let! innerItems = asyncEnumerableToArray(folder.GetItemsAsync())
 
                                 for innerItem in innerItems do
                                     mappedResults.Add("++> " + fullPathOrName(innerItem))
@@ -369,22 +355,17 @@ CanBookmark: {item.Value.CanBookmark}"
                 }
 
                 AutoCompleteBox([])
-                    .watermark("Write full path/uri or well known folder name")
+                    .placeholderText("Write full path/uri or well known folder name")
                     .onLoaded(CurrentFolderBoxLoaded)
                     .onTextChanged(model.CurrentFolderBox, CurrentFolderBoxTextChanged)
 
-                TextBlock("Last picker results:")
-                    .isVisible(model.PickerLastResultsVisible)
+                TextBlock("Last picker results:").isVisible(model.PickerLastResultsVisible)
 
-                ItemsControl(model.FileResults, (fun item -> TextBlock(item)))
-                    .isVisible(model.PickerLastResultsVisible)
+                ItemsControl(model.FileResults, (fun item -> TextBlock(item))).isVisible(model.PickerLastResultsVisible)
 
-                TextBox(model.BookmarkContainer, BookmarkContainerTextChanged)
-                    .watermark("Bookmark")
+                TextBox(model.BookmarkContainer, BookmarkContainerTextChanged).placeholderText("Bookmark")
 
-                TextBox(model.OpenedFileContent, BookmarkContainerTextChanged)
-                    .watermark("Picked file content")
-                    .maxLines(10)
+                TextBox(model.OpenedFileContent, BookmarkContainerTextChanged).placeholderText("Picked file content").maxLines(10)
 
             })
                 .margin(4.)

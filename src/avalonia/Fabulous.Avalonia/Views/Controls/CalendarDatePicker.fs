@@ -39,11 +39,11 @@ module CalendarDatePicker =
     let Text =
         Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.TextProperty
 
-    let Watermark =
-        Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.WatermarkProperty
+    let PlaceholderText =
+        Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.PlaceholderTextProperty
 
-    let UseFloatingWatermark =
-        Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.UseFloatingWatermarkProperty
+    let UseFloatingPlaceholder =
+        Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.UseFloatingPlaceholderProperty
 
     let HorizontalContentAlignment =
         Attributes.defineAvaloniaPropertyWithEquality CalendarDatePicker.HorizontalContentAlignmentProperty
@@ -116,19 +116,19 @@ type CalendarDatePickerModifiers =
     static member inline text(this: WidgetBuilder<'msg, #IFabCalendarDatePicker>, value: string) =
         this.AddScalar(CalendarDatePicker.Text.WithValue(value))
 
-    /// <summary>Sets the Watermark property.</summary>
+    /// <summary>Sets the PlaceholderText property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The Watermark value.</param>
+    /// <param name="value">The PlaceholderText value.</param>
     [<Extension>]
-    static member inline watermark(this: WidgetBuilder<'msg, #IFabCalendarDatePicker>, value: string) =
-        this.AddScalar(CalendarDatePicker.Watermark.WithValue(value))
+    static member inline placeholderText(this: WidgetBuilder<'msg, #IFabCalendarDatePicker>, value: string) =
+        this.AddScalar(CalendarDatePicker.PlaceholderText.WithValue(value))
 
-    /// <summary>Sets the UseFloatingWatermark property.</summary>
+    /// <summary>Sets the UseFloatingPlaceholder property.</summary>
     /// <param name="this">Current widget.</param>
-    /// <param name="value">The UseFloatingWatermark value.</param>
+    /// <param name="value">The UseFloatingPlaceholder value.</param>
     [<Extension>]
-    static member inline useFloatingWatermark(this: WidgetBuilder<'msg, #IFabCalendarDatePicker>, value: bool) =
-        this.AddScalar(CalendarDatePicker.UseFloatingWatermark.WithValue(value))
+    static member inline useFloatingPlaceholder(this: WidgetBuilder<'msg, #IFabCalendarDatePicker>, value: bool) =
+        this.AddScalar(CalendarDatePicker.UseFloatingPlaceholder.WithValue(value))
 
     /// <summary>Sets the HorizontalContentAlignment property.</summary>
     /// <param name="this">Current widget.</param>

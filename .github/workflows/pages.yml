@@ -22,7 +22,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -43,6 +43,10 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+      - name: Validate documentation links
+        run: python3 -B eng/monorepo/validate-doc-links.py
+      - name: Validate generated API reference
+        run: python3 -B eng/monorepo/generate-api-reference.py --check
       - name: Build
         run: hugo --source website --destination "$GITHUB_WORKSPACE/public" --minify --baseURL "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
       - name: Build authored documentation

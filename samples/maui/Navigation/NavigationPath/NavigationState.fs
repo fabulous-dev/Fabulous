@@ -54,30 +54,3 @@ module NavigationState =
         match model with
         | PageAModel model -> update nav (PageAMsg PageA.BackButtonPressed) (PageAModel model)
         | _ -> model, Cmd.none
-
-/// The NavigationStack represents the history of the navigation.
-/// This is a simple stack of pages that the app will use to remember and display the pages needed.
-type NavigationStack =
-    { BackStack: NavigationState.Model list
-      CurrentPage: NavigationState.Model
-      ForwardStack: NavigationState.Model list }
-
-    static member Init(model: NavigationState.Model) =
-        { BackStack = []
-          CurrentPage = model
-          ForwardStack = [] }
-
-    member this.Push(model: NavigationState.Model) =
-        { BackStack = this.CurrentPage :: this.BackStack
-          CurrentPage = model
-          ForwardStack = [] }
-
-    member this.Pop() =
-        match this.BackStack with
-        | [] -> this
-        | head :: tail ->
-            { BackStack = tail
-              CurrentPage = head
-              ForwardStack = [] }
-
-    member this.UpdateCurrentPage(newPage: NavigationState.Model) = { this with CurrentPage = newPage }

@@ -58,7 +58,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "8.0.100"
+      "defaultValue": "10.0.100"
     },
     "FSharpMauiWinUICompatPkgVersion": {
       "type": "parameter",

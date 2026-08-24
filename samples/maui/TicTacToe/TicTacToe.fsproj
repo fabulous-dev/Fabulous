@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(FabulousWindowsOnly)' == 'true'">net8.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(FabulousWindowsOnly)' == 'true'">net10.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-    <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+    <!-- <TargetFrameworks>$(TargetFrameworks);net10.0-tizen</TargetFrameworks> -->
     <OutputType>Exe</OutputType>
     <RootNamespace>TicTacToe</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -26,10 +26,11 @@
     <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
 
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'ios'">14.2</SupportedOSPlatformVersion>
-    <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'android'">21.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$(TargetPlatformIdentifier) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <WindowsAppSdkUndockedRegFreeWinRTInitialize Condition="$(TargetPlatformIdentifier) == 'windows'">false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'tizen'">6.5</SupportedOSPlatformVersion>
   </PropertyGroup>
 
@@ -83,8 +84,8 @@
     <AppxManifest Include="$(WindowsProjectFolder)Package.appxmanifest" />
     <Compile Include="$(WindowsProjectFolder)App.fs" />
     <Compile Include="$(WindowsProjectFolder)Main.fs" />
-
-    <PackageReference Include="FSharp.Maui.WinUICompat" />
+    <PackageReference Include="FSharp.Maui.WinUICompat" Condition="!Exists('..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj')" />
+    <ProjectReference Include="..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj" Condition="Exists('..\..\..\src\maui\FSharp.Maui.WinUICompat\FSharp.Maui.WinUICompat.csproj')" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetPlatformIdentifier) == 'tizen'">
@@ -105,5 +106,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\maui\Fabulous.MauiControls\Fabulous.MauiControls.fsproj" />
   </ItemGroup>
+
+  <Target Name="XamlPreCompile" />
 
 </Project>

@@ -10,6 +10,8 @@ theme:
 
 exclude_docs: |
   SUMMARY.md
+  avalonia/**
+  maui/**
 
 markdown_extensions:
   - fenced_code

@@ -13,11 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Consolidate the Fabulous core, Avalonia, .NET MAUI, extensions, templates, tests, documentation, and engineering into one repository.
+- Add release-candidate package, sample, template, SourceLink, and native launch validation for Fabulous 10.
 
 ### Changed
 - Rename the core project and assembly from `Fabulous` to `Fabulous.Core`. The NuGet package ID and F# namespaces remain `Fabulous`.
 - Build and publish all Fabulous packages and templates from one solution and release workflow.
 - Unify all Fabulous package versions on the `10.0.x` release line.
+- Target .NET 10 across the core, Avalonia, MAUI, samples, templates, and CI.
+- Remove the obsolete MAUI `MenuItem.accelerator` modifier; use `MenuFlyoutItem.keyboardAccelerators` instead.
 
 ## [3.0.0-pre23] - 2025-06-05
 

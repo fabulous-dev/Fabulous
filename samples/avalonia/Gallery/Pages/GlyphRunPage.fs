@@ -19,9 +19,9 @@ type GlyphRunControl() =
 
     let mutable _rand = Random()
 
-    let mutable _glyphIndices = Array.zeroCreate<_> 1
+    let mutable _glyphIndices: uint16[] = Array.zeroCreate 1
 
-    let mutable _characters = Array.zeroCreate<_> 1
+    let mutable _characters: char[] = Array.zeroCreate 1
 
     let mutable _fontSize = 20.0
 
@@ -51,11 +51,12 @@ type GlyphRunControl() =
 
         _fontSize <- _fontSize + float _direction
 
-        _glyphIndices[0] <- _glyphTypeface.GetGlyph(uint32 c)
+        _glyphIndices[0] <- _glyphTypeface.CharacterToGlyphMap.GetGlyph(int c)
 
         _characters[0] <- c
 
-        let glyphRun = new GlyphRun(_glyphTypeface, _fontSize, _characters, _glyphIndices)
+        let glyphRun =
+            new GlyphRun(_glyphTypeface, _fontSize, ReadOnlyMemory<char>(_characters), _glyphIndices)
 
         context.DrawGlyphRun(Brushes.Black, glyphRun)
 
@@ -66,9 +67,9 @@ type GlyphRunGeometryControl() =
 
     let mutable _rand = Random()
 
-    let mutable _glyphIndices = Array.zeroCreate<_> 1
+    let mutable _glyphIndices: uint16[] = Array.zeroCreate 1
 
-    let mutable _characters = Array.zeroCreate<_> 1
+    let mutable _characters: char[] = Array.zeroCreate 1
 
     let mutable _fontSize = 20.0
 
@@ -98,11 +99,12 @@ type GlyphRunGeometryControl() =
 
         _fontSize <- _fontSize + float _direction
 
-        _glyphIndices[0] <- _glyphTypeface.GetGlyph(uint32 c)
+        _glyphIndices[0] <- _glyphTypeface.CharacterToGlyphMap.GetGlyph(int c)
 
         _characters[0] <- c
 
-        let glyphRun = new GlyphRun(_glyphTypeface, _fontSize, _characters, _glyphIndices)
+        let glyphRun =
+            new GlyphRun(_glyphTypeface, _fontSize, ReadOnlyMemory<char>(_characters), _glyphIndices)
 
         let geometry = glyphRun.BuildGeometry()
 
