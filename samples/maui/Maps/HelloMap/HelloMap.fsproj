@@ -65,8 +65,6 @@
 		<AndroidManifest Include="$(AndroidProjectFolder)AndroidManifest.xml" />
 		<Compile Include="$(AndroidProjectFolder)MainActivity.fs" />
 		<Compile Include="$(AndroidProjectFolder)MainApplication.fs" />
-
-		<PackageReference Include="FSharp.Android.Resource" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetPlatformIdentifier) == 'ios'">

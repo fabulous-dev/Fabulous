@@ -284,12 +284,7 @@ jobs:
           api-level: 35
           arch: x86_64
           disable-animations: true
-          script: |
-            test -n "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
-            adb uninstall org.fabulous.maui.helloworld || true
-            adb install -r "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
-            adb shell monkey -p org.fabulous.maui.helloworld 1
-            adb shell pidof org.fabulous.maui.helloworld
+          script: bash eng/ci/capture-maui-android-samples.sh smoke org.fabulous.maui.helloworld "$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)"
 
   apple-runtime:
     name: Apple build and launch

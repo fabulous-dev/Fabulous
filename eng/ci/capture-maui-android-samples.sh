@@ -24,6 +24,35 @@ print(f"Captured {path} ({width}x{height}, {len(data)} bytes).")
 PY
 }
 
+wait_for_process() {
+  local application_id="$1"
+  local logcat_path="$2"
+
+  for _ in {1..30}; do
+    if adb shell pidof "$application_id" >/dev/null; then
+      return 0
+    fi
+    sleep 1
+  done
+
+  adb logcat -d -t 300 >"$logcat_path"
+  echo "$application_id did not remain running. See $logcat_path." >&2
+  return 1
+}
+
+smoke_test() {
+  local application_id="$1"
+  local apk="$2"
+  local logcat_path="$output_dir/$application_id.logcat.txt"
+
+  test -s "$apk"
+  adb uninstall "$application_id" || true
+  adb install -r "$apk"
+  adb logcat -c
+  adb shell monkey -p "$application_id" -c android.intent.category.LAUNCHER 1
+  wait_for_process "$application_id" "$logcat_path"
+}
+
 capture_gallery_pages() {
   local slug="$1"
   local application_id="$2"
@@ -154,22 +183,9 @@ capture_samples() {
     echo "::group::Launch $relative"
     adb install -r "$apk"
     adb shell am force-stop "$application_id"
+    adb logcat -c
     adb shell monkey -p "$application_id" -c android.intent.category.LAUNCHER 1
-
-    running=false
-    for _ in {1..30}; do
-      if adb shell pidof "$application_id" >/dev/null; then
-        running=true
-        break
-      fi
-      sleep 1
-    done
-
-    if [[ "$running" != true ]]; then
-      adb logcat -d -t 300 >"$output_dir/$slug.logcat.txt"
-      echo "$relative did not remain running." >&2
-      exit 1
-    fi
+    wait_for_process "$application_id" "$output_dir/$slug.logcat.txt"
 
     sleep 3
     adb exec-out screencap -p >"$screenshot"
@@ -189,5 +205,6 @@ capture_samples() {
 case "${1:-}" in
   build) build_samples "${2:-0}" "${3:-1}" ;;
   capture) capture_samples ;;
-  *) echo "Usage: $0 build [shard-index shard-count]|capture" >&2; exit 2 ;;
+  smoke) smoke_test "${2:?application ID is required}" "${3:?APK path is required}" ;;
+  *) echo "Usage: $0 build [shard-index shard-count]|capture|smoke application-id apk" >&2; exit 2 ;;
 esac
