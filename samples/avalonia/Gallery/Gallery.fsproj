@@ -11,6 +11,8 @@
     <WarningsAsErrors>FS0025</WarningsAsErrors>
     <NoWarn>MT7091;NETSDK1206</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <FabulousIncludePremiumControls Condition="'$(FabulousIncludePremiumControls)' == ''">false</FabulousIncludePremiumControls>
+    <DefineConstants Condition="'$(FabulousIncludePremiumControls)' == 'true'">$(DefineConstants);PREMIUM_CONTROLS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'Android'">
@@ -26,7 +28,8 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Styles\*.xaml" />
-    <AvaloniaResource Include="*.xaml" />
+    <AvaloniaResource Include="*.xaml" Exclude="App.Premium.xaml" />
+    <AvaloniaResource Include="App.Premium.xaml" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
     <AvaloniaResource Include="Assets\**\*" />
     <AvaloniaResource Include="Assets\*" />
     <AvaloniaResource Include="Assets\Fonts\*" />
@@ -126,10 +129,10 @@
     <Compile Include="Pages\TreeView\TreeViewWithNodeInteraction.fs" />
     <Compile Include="Pages\TreeView\EditableTreeView.fs" />
     <Compile Include="Pages\TreeViewPage.fs" />
-    <Compile Include="Pages\TreeDataGrid\CountriesPage.fs" />
-    <Compile Include="Pages\TreeDataGrid\FileTreeNodeModel.fs" />
-    <Compile Include="Pages\TreeDataGrid\FilesPage.fs" />
-    <Compile Include="Pages\TreeDataGridPage.fs" />
+    <Compile Include="Pages\TreeDataGrid\CountriesPage.fs" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
+    <Compile Include="Pages\TreeDataGrid\FileTreeNodeModel.fs" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
+    <Compile Include="Pages\TreeDataGrid\FilesPage.fs" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
+    <Compile Include="Pages\TreeDataGridPage.fs" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
     <Compile Include="Pages\TransitioningContentControlPage.fs" />
     <Compile Include="Pages\UniformGridPage.fs" />
     <Compile Include="Pages\ShapesPage.fs" />
@@ -177,7 +180,7 @@
     <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.Diagnostics\Fabulous.Avalonia.Diagnostics.fsproj" />
     <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.ItemsRepeater\Fabulous.Avalonia.ItemsRepeater.fsproj" />
     <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.Labs\Fabulous.Avalonia.Labs.fsproj" />
-    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.TreeDataGrid\Fabulous.Avalonia.TreeDataGrid.fsproj" />
+    <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia.TreeDataGrid\Fabulous.Avalonia.TreeDataGrid.fsproj" Condition="'$(FabulousIncludePremiumControls)' == 'true'" />
     <ProjectReference Include="..\..\..\src\avalonia\Fabulous.Avalonia\Fabulous.Avalonia.fsproj" />
     <ProjectReference Include="..\ControlSamples\ControlSamples.csproj" />
   </ItemGroup>

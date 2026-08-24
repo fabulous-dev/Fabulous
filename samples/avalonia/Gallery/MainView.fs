@@ -41,7 +41,7 @@ module MainView =
             { Details = detailPage }, Cmd.none
         | GoBack -> { Details = None }, Cmd.none
 
-    let controlNames =
+    let freeControlNames =
         [ "Acrylic"
           "AdornerLayer"
           "AutoCompleteBox"
@@ -109,7 +109,6 @@ module MainView =
           "ToolTip"
           "TabControl"
           "TreeView"
-          "TreeDataGrid"
           "TransitioningContent"
           "TabStrip"
           "ThemeAware"
@@ -132,6 +131,13 @@ module MainView =
           "Path Measurement"
           "Custom Animator"
           "SkCanvas" ]
+
+#if PREMIUM_CONTROLS
+    let premiumControlNames = [ "TreeDataGrid" ]
+    let controlNames = freeControlNames @ premiumControlNames
+#else
+    let controlNames = freeControlNames
+#endif
 
     let program =
         Program.statefulWithCmd init update
@@ -175,6 +181,10 @@ module MainView =
 
     let create () =
         let theme () =
+#if PREMIUM_CONTROLS
+            StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.Premium.xaml"))
+#else
             StyleInclude(baseUri = null, Source = Uri("avares://Gallery/App.xaml"))
+#endif
 
         FabulousAppBuilder.Configure(theme, view)

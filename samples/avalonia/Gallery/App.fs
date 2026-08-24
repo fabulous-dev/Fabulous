@@ -79,7 +79,9 @@ module App =
         | TabControlPage
         | TabStripPage
         | TreeViewPage
+    #if PREMIUM_CONTROLS
         | TreeDataGridPage
+    #endif
         | TransitioningContentControlPage
         | ThemeAwarePage
         | UniformGridPage
@@ -181,7 +183,9 @@ module App =
         | "TabControl" -> ValueSome TabControlPage
         | "TabStrip" -> ValueSome TabStripPage
         | "TreeView" -> ValueSome TreeViewPage
+    #if PREMIUM_CONTROLS
         | "TreeDataGrid" -> ValueSome TreeDataGridPage
+    #endif
         | "TransitioningContent" -> ValueSome TransitioningContentControlPage
         | "ThemeAware" -> ValueSome ThemeAwarePage
         | "UniformGrid" -> ValueSome UniformGridPage
@@ -284,7 +288,9 @@ module App =
         | TabControlPage -> ValueSome(AnyView(TabControlPage.view()))
         | TabStripPage -> ValueSome(AnyView(TabStripPage.view()))
         | TreeViewPage -> ValueSome(AnyView(TreeViewPage.view()))
+    #if PREMIUM_CONTROLS
         | TreeDataGridPage -> ValueSome(AnyView(TreeDataGridPage.view()))
+    #endif
         | TransitioningContentControlPage -> ValueSome(AnyView(TransitioningContentControlPage.view()))
         | ThemeAwarePage -> ValueSome(AnyView(ThemeAwarePage.view()))
         | UniformGridPage -> ValueSome(AnyView(UniformGridPage.view()))

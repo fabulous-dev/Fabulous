@@ -7,7 +7,6 @@
     <labs:ControlThemes/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
-    <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
     <!--     <FluentTheme.Palettes> -->
     <!--         ~1~ Palette for Light theme variant @1@ -->
     <!--         <ColorPaletteResources x:Key="Light" Accent="Green" RegionColor="White" ErrorText="Red" /> -->
@@ -57,44 +56,6 @@
                     </Setter.Value>
                 </Setter>
             </ControlTheme>
-            <DataTemplate x:Key="RegionCell" DataType="gallery:Country">
-                <TextBlock Text="{Binding Region}" />
-            </DataTemplate>
-            <DataTemplate x:Key="RegionEditCell" DataType="gallery:Country">
-                <ComboBox ItemsSource="{x:Static gallery:Countries.Regions}"
-                          SelectedItem="{Binding Region}" />
-            </DataTemplate>
-            <!-- Template for Name column cells -->
-            <DataTemplate x:Key="FileNameCell" DataType="gallery:FileTreeNodeModel">
-                <StackPanel Orientation="Horizontal">
-                    <Image Margin="0 0 4 0"
-                           VerticalAlignment="Center">
-                        <Image.Source>
-                            <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
-                                <Binding Path="IsDirectory" />
-                                <Binding Path="IsExpanded" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-                </StackPanel>
-            </DataTemplate>
-
-            <!-- Edit template for Name column cells -->
-            <DataTemplate x:Key="FileNameEditCell" DataType="gallery:FileTreeNodeModel">
-                <StackPanel Orientation="Horizontal">
-                    <Image Margin="0 0 4 0"
-                           VerticalAlignment="Center">
-                        <Image.Source>
-                            <MultiBinding Converter="{x:Static gallery:FileTreeNodeModel.FileIconConverter}">
-                                <Binding Path="IsDirectory" />
-                                <Binding Path="IsExpanded" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <TextBox Text="{Binding Name}" VerticalAlignment="Center" />
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </Styles.Resources>
     <Style Selector="Button">
@@ -120,15 +81,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-    <Style Selector="TreeDataGrid TreeDataGridRow:nth-last-child(2n)">
-        <Setter Property="Background" Value="#20808080" />
-    </Style>
-    <Style Selector="TreeDataGrid :is(TreeDataGridCell):nth-last-child(1)">
-        <Setter Property="TextBlock.FontWeight" Value="Bold" />
-    </Style>
-    <Style Selector="TreeDataGrid TreeDataGridColumnHeader:nth-last-child(1)">
-        <Setter Property="TextBlock.FontWeight" Value="Bold" />
     </Style>
     <Style Selector="Thumb.drag">
         <Setter Property="ClipToBounds" Value="False" />
