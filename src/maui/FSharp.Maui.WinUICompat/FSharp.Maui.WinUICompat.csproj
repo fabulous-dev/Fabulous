@@ -14,6 +14,7 @@
   <PropertyGroup>
     <Description>Enables compiling a Maui application targeting WinUI</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
   <!-- SourceLink -->
