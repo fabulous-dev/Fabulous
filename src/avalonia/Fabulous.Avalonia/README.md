@@ -4,6 +4,8 @@ Fabulous.Avalonia brings the great development experience of Fabulous to Avaloni
 
 Deploy to any platform supported by Avalonia, such as Android, iOS, macOS, Windows, Linux and more!
 
+Avalonia's core framework and standard controls are free and open source, while selected premium controls require a commercial Avalonia license. See the [Fabulous Avalonia licensing guide](https://fabulous-dev.github.io/Fabulous/docs/avalonia/licensing/) before adding extension controls.
+
 ## Getting Started
 
 You can start your new Fabulous.Avalonia app in a matter of seconds using the dotnet CLI templates.  

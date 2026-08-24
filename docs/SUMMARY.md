@@ -28,5 +28,6 @@
 ## Avalonia
 
 * [Get Started](avalonia/get-started.md)
+* [Licensing](avalonia/licensing.md)
 * [Migrate to Avalonia 12](avalonia/migrate-to-12.md)
 * [API reference](api/README.md)
