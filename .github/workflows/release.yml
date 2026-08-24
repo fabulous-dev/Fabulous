@@ -15,6 +15,7 @@ permissions:
 env:
   CONFIG: Release
   SLN_FILE: Fabulous.sln
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
 jobs:
   detect:
@@ -71,6 +72,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Install MAUI workload packs
         run: dotnet workload install maui-tizen --skip-manifest-update
       - name: Restore
