@@ -244,6 +244,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Select installed .NET 10 SDK
         run: |
           sdk_version=$(dotnet --list-sdks | awk '/^10\.0\./ { version=$1 } END { print version }')
@@ -281,6 +289,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.fsproj', '**/*.csproj', '**/*.proj', '**/*.props', '**/*.targets', '**/dotnet-tools.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-${{ github.job }}-
+            nuget-${{ runner.os }}-
       - name: Select .NET 10 SDK
         run: |
           $sdkVersion = dotnet --list-sdks |
