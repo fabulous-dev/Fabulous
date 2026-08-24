@@ -179,7 +179,10 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            dotnet build samples/maui/HelloWorld/HelloWorld.fsproj -t:Install -c ${CONFIG} -f net10.0-android -p:FabulousAndroidOnly=true -p:RuntimeIdentifier=android-x64
+            apk=$(find samples/maui/HelloWorld -name '*-Signed.apk' -print -quit)
+            test -n "$apk"
+            adb uninstall org.fabulous.maui.helloworld || true
+            adb install -r "$apk"
             adb shell monkey -p org.fabulous.maui.helloworld 1
             adb shell pidof org.fabulous.maui.helloworld
 
