@@ -386,7 +386,8 @@ jobs:
               throw "Failed to build the $($sample.Name) WinUI compatibility sample."
             }
             $projectDirectory = Split-Path $sample.Project
-            $executable = Get-ChildItem "$projectDirectory/bin/$env:CONFIG" -Recurse -Filter HelloWorld.exe | Select-Object -First 1
+            $projectName = [System.IO.Path]::GetFileNameWithoutExtension($sample.Project)
+            $executable = Get-ChildItem "$projectDirectory/bin/$env:CONFIG" -Recurse -Filter "$projectName.exe" | Select-Object -First 1
             if (-not $executable) {
               throw "The $($sample.Name) WinUI compatibility executable was not produced."
             }
