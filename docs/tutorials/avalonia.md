@@ -28,7 +28,7 @@ For larger flows, start with [basic navigation](https://github.com/fabulous-dev/
 
 ```bash
 dotnet build -c Release
-dotnet publish -c Release -f net8.0 -r linux-x64 --self-contained true
+dotnet publish -c Release -f net10.0 -r linux-x64 --self-contained true
 ```
 
 Before publishing, add pure update tests and an Avalonia headless test. The repository's [TestableApp](https://github.com/fabulous-dev/Fabulous/tree/main/samples/avalonia/TestableApp) demonstrates both and captures a screenshot artifact in CI; see [testing and debugging](../guides/testing-debugging.md). Runtime identifiers and mobile hosts are covered in [deployment](../guides/deployment.md).
