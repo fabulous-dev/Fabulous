@@ -199,13 +199,19 @@ module App =
                     visualBoardSize.Set(size)
 #else
                     let window = app.FindWindowById("MainWindow") |> Option.get
-                    let desiredSize = window.Screens.Primary
 
-                    let size =
-                        Math.Min(float desiredSize.Bounds.Width, float desiredSize.Bounds.Height)
-                        / desiredSize.Scaling
+                    let screen =
+                        window.Screens.Primary
+                        |> Option.ofObj
+                        |> Option.orElseWith(fun () -> window.Screens.All |> Seq.tryHead)
 
-                    visualBoardSize.Set(size)
+                    match screen with
+                    | Some screen ->
+                        let size =
+                            Math.Min(float screen.Bounds.Width, float screen.Bounds.Height) / screen.Scaling
+
+                        visualBoardSize.Set(size)
+                    | None -> ()
 #endif
                 )
         }
