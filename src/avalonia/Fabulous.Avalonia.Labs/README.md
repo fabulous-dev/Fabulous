@@ -32,4 +32,4 @@ Lottie("lottie-file.json")
 - [The official Fabulous website](https://fabulous.dev)
 - [Get started](https://docs.fabulous.dev/avalonia/get-started)
 
-Additionally, we have the [Fabulous Discord server](https://discord.gg/bpTJMbSSYK) where you can ask any of your Fabulous related questions.
+Additionally, we have the [Fabulous Discord server](https://discord.com/channels/196693847965696000/1541149327701971026) where you can ask any of your Fabulous related questions.

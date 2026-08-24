@@ -13,7 +13,7 @@
   <a href="https://github.com/fabulous-dev/Fabulous/actions/workflows/pages.yml"><img alt="Documentation" src="https://github.com/fabulous-dev/Fabulous/actions/workflows/pages.yml/badge.svg?branch=main"></a>
   <a href="https://www.nuget.org/packages/Fabulous"><img alt="NuGet version" src="https://img.shields.io/nuget/v/Fabulous"></a>
   <a href="https://www.nuget.org/packages/Fabulous"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/Fabulous"></a>
-  <a href="https://discord.gg/bpTJMbSSYK"><img alt="Discord" src="https://img.shields.io/discord/716980335593914419?label=discord&logo=discord"></a>
+  <a href="https://discord.com/channels/196693847965696000/1541149327701971026"><img alt="Discord" src="https://img.shields.io/discord/716980335593914419?label=discord&logo=discord"></a>
 </p>
 
 Fabulous combines F#, declarative UI, and Model-View-Update (MVU) to build mobile and desktop applications with explicit state transitions and testable application logic.
@@ -34,7 +34,7 @@ Core, both backends, extensions, templates, samples, tests, documentation, packa
 - [Samples](samples/)
 - [Contributing](CONTRIBUTING.md)
 
-For questions and community support, join the [Fabulous Discord server](https://discord.gg/bpTJMbSSYK).
+For questions and community support, join the [Fabulous Discord server](https://discord.com/channels/196693847965696000/1541149327701971026).
 
 ## Example
 
