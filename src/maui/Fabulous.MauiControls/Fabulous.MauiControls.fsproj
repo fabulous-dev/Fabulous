@@ -156,8 +156,8 @@
     -->
     <PackageReference Include="FSharp.Core" VersionOverride="8.0.300" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="8.0.3" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" VersionOverride="8.0.3" />
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\neutral\Fabulous.Core\Fabulous.Core.fsproj" />
