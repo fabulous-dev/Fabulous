@@ -29,6 +29,22 @@ Download the workflow artifacts and test the Gallery plus one representative app
 
 All failures must link to an issue or block the release. The maintainer approving release notes records approval in the release issue; approval is not inferred from a green build.
 
+## Deprecation warning triage
+
+The `Build and test` job for the 10.0.0 candidate (commit `4a930280`, [run 32787985509](https://github.com/fabulous-dev/Fabulous/actions/runs/32787985509)) reported 60 `FS0044` deprecation warnings across 25 source locations. Grouped by message, they break down as follows:
+
+| Warning | Occurrences | Source |
+| --- | --- | --- |
+| `EntryCell` (`ListView`/`TableView`) is obsolete; use `CollectionView` instead | 36 | `src/maui/Fabulous.MauiControls/Views/Cells/EntryCell.fs` |
+| `SwitchCell` (`ListView`/`TableView`) is obsolete; use `CollectionView` instead | 14 | `src/maui/Fabulous.MauiControls/Views/Cells/SwitchCell.fs` |
+| `Page.IsBusy` deprecated, will be removed in .NET 11 | 2 | `src/maui/Fabulous.MauiControls/Views/Pages/_Page.fs`, `ContentPage.fs` |
+| Use `SafeAreaEdges` attached property instead of per-edge safe area control | 4 | `src/maui/Fabulous.MauiControls/Views/Layouts/_Layout.fs` |
+| Use `SafeAreaElement.IgnoreSafeArea` attached property instead of per-edge safe area control | 4 | `src/maui/Fabulous.MauiControls/Views/Layouts/_Layout.fs` |
+
+All 60 warnings originate from `Microsoft.Maui.Controls` `[Obsolete]` attributes on `EntryCell`, `SwitchCell`, `Page.IsBusy`, and legacy per-edge safe-area properties in the MAUI 10.0.100 baseline that ships with the supported MAUI 10 release. None of these APIs have been *removed* from that baseline — MAUI 10 still ships them as compile-time obsolete members for backward compatibility, so the current Fabulous bindings continue to build and function correctly. No API removal or breaking change is required to ship 10.0.0.
+
+Fabulous intentionally still exposes bindings for `EntryCell` and `SwitchCell` (used only inside legacy `ListView`/`TableView` hosts) and the older per-edge safe-area modifiers for apps migrating from earlier Fabulous/Xamarin.Forms code. Removing these bindings, or suppressing the warnings, is tracked as a follow-up cleanup and is not a release blocker.
+
 ## Publication
 
 Trusted publishing is intentionally not exercised by pull-request CI. After the version-policy issue is resolved, use a dedicated `10.0.x-pre.N` changelog section to verify OIDC publishing. Confirm package ownership and artifact hashes before approving the release workflow.
