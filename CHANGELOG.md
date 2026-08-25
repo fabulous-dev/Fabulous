@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
+- Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
+
 ## [10.0.0] - 2026-08-24
 
 ### Added

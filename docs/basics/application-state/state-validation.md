@@ -1,5 +1,7 @@
 # State validation
 
+> **⚠️ Legacy content:** This page documents an older, pre-10.0.x version of Fabulous (including Xamarin.Forms-era APIs) and is **not part of the current documentation**. It is intentionally excluded from the published MkDocs sites and from automated link validation, and may contain outdated or retired links. It is retained for historical reference only.
+
 The model is the core data from which the whole state of the app can be resurrected. The model is generally immutable but may also contain elements such as service connections. It is common for the design of the model to grow “organically” as you prototype your app.
 
 The init function returns your initial model. The update function updates the model as messages are received.

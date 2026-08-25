@@ -1,5 +1,7 @@
 # Testing
 
+> **⚠️ Legacy content:** This page documents an older, pre-10.0.x version of Fabulous (including Xamarin.Forms-era APIs) and is **not part of the current documentation**. It is intentionally excluded from the published MkDocs sites and from automated link validation, and may contain outdated or retired links. It is retained for historical reference only.
+
 The Model-View-Update architecture used by Fabulous makes it simple to unit test every part of your application.\
 Apps are composed of 3 key pure F# functions: `init`, `update` and `view`\
 They take some parameters and return a value. Ideal for unit testing.
