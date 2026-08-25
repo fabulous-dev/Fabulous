@@ -25,7 +25,6 @@
 {{ $fsharp1 := resources.Get "images/fsharp-1.webp" }}
 {{ $fsharp2 := resources.Get "images/fsharp-2.webp" }}
 {{ $dotnetEcosystem := resources.Get "images/dotnet-ecosystem.webp" }}
-{{ $xamarinLogo := resources.Get "images/xamarin.svg" }}
 {{ $mauiLogo := resources.Get "images/maui.svg" }}
 {{ $avaloniaLogo := resources.Get "images/avalonia.svg" }}
 
@@ -149,8 +148,6 @@
                             <p>Fabulous is not a commercial product and is being built on the free time of everyone involved.</p>
                             <p>If you are a company using Fabulous or simply want to support all the efforts going into Fabulous, you can sponsor us via the GitHub Sponsors program.</p>
                             <a href="https://github.com/fabulous-dev/Fabulous">Support us on GitHub</a>
-                            <p>Looking for support? We can provide you with paid services to help you build your apps.</p>
-                            <a href="mailto:maintainers@fabulous.dev">Commercial support</a>
                         </div>
                     </div>
                 </section>
@@ -163,19 +160,13 @@
                 <p>Fabulous brings declarative UI and functional programming to existing .NET UI frameworks. <br/> <br/> You can choose the one that fits your needs best.</p>
                 <ul>
                     <li>
-                        <a href="https://github.com/fabulous-dev/Fabulous.MauiControls">
+                        <a href="{{ "docs/maui/get-started/" | relURL }}">
                             <img src="{{ $mauiLogo.RelPermalink }}" alt="Logo of .NET MAUI" />
                             <p>.NET MAUI</p>
                         </a>
                     </li>
                     <li>
-                        <a href="https://github.com/fabulous-dev/Fabulous.XamarinForms">
-                            <img src="{{ $xamarinLogo.RelPermalink }}" alt="Logo of Xamarin.Forms" />
-                            <p>Xamarin.Forms</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/fabulous-dev/Fabulous.Avalonia">
+                        <a href="{{ "docs/avalonia/get-started/" | relURL }}">
                             <img src="{{ $avaloniaLogo.RelPermalink }}" alt="Logo of Avalonia" />
                             <p>Avalonia</p>
                         </a>
