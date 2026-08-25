@@ -1,5 +1,7 @@
 # Saving and Restoring app state
 
+> **⚠️ Legacy content:** This page documents an older, pre-10.0.x version of Fabulous (including Xamarin.Forms-era APIs) and is **not part of the current documentation**. It is intentionally excluded from the published MkDocs sites and from automated link validation, and may contain outdated or retired links. It is retained for historical reference only.
+
 Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using `Json.NET`:
 
 ```fsharp

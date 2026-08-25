@@ -85,6 +85,7 @@ This command edits template JSON files. Use it only in a disposable checkout or 
 - Use repository-relative links for tracked files and the GitHub Pages URLs for published documentation.
 - Do not link to retired `fabulous.dev`, `docs.fabulous.dev`, or `api.fabulous.dev` deployments.
 - Changes to `website/` or `docs/` must keep the combined Hugo and MkDocs Pages artifact buildable.
+- Every pull request must add an entry to `CHANGELOG.md` describing the change, under the pending `## [10.0.x] - YYYY-MM-DD` section (adding that section if it does not yet exist).
 
 ## CI and Releases
 
