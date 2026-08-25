@@ -1,6 +1,6 @@
 # Get Started
 
-While you can write complete Fabulous applications, Fabulous can not be used independently as it does not provide any UI rendering by itself.
+While you can write complete Fabulous applications, Fabulous cannot be used independently as it does not provide any UI rendering by itself.
 
 You'll need to choose a "flavor" of Fabulous first:
 
