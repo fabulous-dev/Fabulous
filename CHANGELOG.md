@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline ([#1148](https://github.com/fabulous-dev/Fabulous/issues/1148)).
+
 ## [10.0.0] - 2026-08-24
 
 ### Added
