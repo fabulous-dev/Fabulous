@@ -70,7 +70,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "MicrosoftMauiControlsPkgVersion",
-      "defaultValue": "8.0.14"
+      "defaultValue": "10.0.100"
     }
   }
 }
