@@ -37,8 +37,7 @@ This will create a new folder called GetStartedApp containing the new project.
 
 In this folder, you'll find a project named `GetStartedApp`. This project uses the single project format to target several platforms from a single codebase.
 
->
-> See the official [.NET MAUI documentation](https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms) for more information about the supported platforms.
+See the official [.NET MAUI documentation](https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms) for more information about the supported platforms.
 
 ## Run a project
 
