@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
+
 ### Changed
 - Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline ([#1148](https://github.com/fabulous-dev/Fabulous/issues/1148)).
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
