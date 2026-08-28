@@ -1,6 +1,7 @@
 name: Verify MAUI template output
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'templates/maui/**'
