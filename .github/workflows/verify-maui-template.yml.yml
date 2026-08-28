@@ -1,0 +1,44 @@
+name: Verify MAUI template output
+
+on:
+  pull_request:
+    paths:
+      - 'templates/maui/**'
+  push:
+    branches: [main]
+    paths:
+      - 'templates/maui/**'
+
+jobs:
+  scaffold-and-check:
+    runs-on: windows-latest   # MAUI workloads are easiest on windows-latest runners
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui --skip-manifest-update
+
+      - name: Install template from source (not NuGet)
+        run: dotnet new install ./templates/maui/content/blank --force
+
+      - name: Scaffold a test project
+        run: dotnet new fabulous-mauicontrols -n SmokeTest -o smoke-test
+
+      - name: Check generated .fsproj doesn't pin a stale MAUI version
+        shell: bash
+        run: |
+          FSPROJ="smoke-test/SmokeTest.fsproj"
+          echo "--- Generated PackageReferences ---"
+          grep "PackageReference" "$FSPROJ"
+
+          if grep -q 'Microsoft.Maui.Controls" Version="8\.' "$FSPROJ"; then
+            echo "::error::Generated project still pins a pre-10.0 Microsoft.Maui.Controls version. Template default is not wired correctly."
+            exit 1
+          fi
+
+      - name: Restore (fails loudly on NU1605-class downgrades)
+        run: dotnet restore smoke-test/SmokeTest.fsproj /warnaserror:NU1605
