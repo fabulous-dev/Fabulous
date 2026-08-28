@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
 
 ### Fixed
+- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
+- Bump the `fabulous-avalonia` template's default `FSharp.Core` package version from the stale `8.0.301` to `10.0.100`, matching the `fabulous-mauicontrols` template ([#1179](https://github.com/fabulous-dev/Fabulous/issues/1179)).
 - Update the website home page's "Choose your own adventure" section to link to the current MAUI and Avalonia get-started docs instead of the archived `Fabulous.MauiControls`, `Fabulous.XamarinForms`, and `Fabulous.Avalonia` repositories, and remove the outdated paid/commercial support section (Repo Assist, [#1166](https://github.com/fabulous-dev/Fabulous/issues/1166)).
 - Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
 

@@ -56,7 +56,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "8.0.301"
+      "defaultValue": "10.0.100"
     },
     "AvaloniaAndroidPkgVersion": {
       "type": "parameter",
