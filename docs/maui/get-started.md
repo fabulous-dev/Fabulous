@@ -47,12 +47,12 @@ Go into the `GetStartedApp` directory and run:
 
 ```bash
 # run the Android app
-dotnet build -f net7.0-android -t:Run
+dotnet build -f net10.0-android -t:Run
 
 # run the iOS app
-dotnet build -f net7.0-ios -t:Run
+dotnet build -f net10.0-ios -t:Run
 
-# for other platforms, use the corresponding TFM (net7.0-xxx)
+# for other platforms, use the corresponding TFM (net10.0-xxx)
 ```
 
 You can also open the solution `GetStartedApp.sln` with your favorite IDE and select the platform you want, then press debug to deploy and run the app.
