@@ -1,5 +1,4 @@
 name: Verify MAUI template output
-
 on:
   workflow_dispatch:
   pull_request:
@@ -21,7 +20,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Install MAUI workload
-        run: dotnet workload install maui --skip-manifest-update
+        run: dotnet workload install maui
 
       - name: Install template from source (not NuGet)
         run: dotnet new install ./templates/maui/content/blank --force
@@ -30,6 +29,7 @@ jobs:
         run: dotnet new fabulous-mauicontrols -n SmokeTest -o smoke-test
 
       - name: Check generated .fsproj doesn't pin a stale MAUI version
+        id: version_check
         shell: bash
         run: |
           FSPROJ="smoke-test/SmokeTest.fsproj"
@@ -40,6 +40,28 @@ jobs:
             echo "::error::Generated project still pins a pre-10.0 Microsoft.Maui.Controls version. Template default is not wired correctly."
             exit 1
           fi
+          echo "Version check passed: no stale 8.x MAUI pin found."
 
-      - name: Restore (fails loudly on NU1605-class downgrades)
-        run: dotnet restore smoke-test/SmokeTest.fsproj /warnaserror:NU1605
+      - name: Restore (net10.0-android only, fails loudly on NU1605-class downgrades)
+        id: restore_check
+        run: >
+          dotnet restore smoke-test/SmokeTest.fsproj
+          -f net10.0-android
+          /warnaserror:NU1605
+          -v:normal
+          /bl:restore.binlog
+
+      - name: Upload restore binlog on failure
+        if: failure() && steps.restore_check.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-binlog
+          path: restore.binlog
+
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## Verify MAUI template output" >> $GITHUB_STEP_SUMMARY
+          echo "- Version check: ${{ steps.version_check.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Restore check: ${{ steps.restore_check.outcome }}" >> $GITHUB_STEP_SUMMARY
