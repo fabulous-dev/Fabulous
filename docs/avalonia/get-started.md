@@ -54,9 +54,7 @@ dotnet new fabulous-avalonia-multi -n GetStartedApp
 
 This will create a set of folders called GetStartedApp containing the supported platform targets.
 
-{% hint style="info" %}
 See the official [Avalonia documentation](https://docs.avaloniaui.net/docs/next/welcome) for more information on the supported platforms.
-{% endhint %}
 
 ## Run a project
 
