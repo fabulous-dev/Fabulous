@@ -21,3 +21,13 @@ type ``Array tests``() =
 
         // Reference should be equal to arrB since the array was reused
         Assert.True(Object.ReferenceEquals(arrC, arrB))
+
+    [<Test>]
+    member _.``StackArray3.sortInPlace sorts all permutations of 3 elements correctly``() =
+        let permutations =
+            [ (1, 2, 3); (1, 3, 2); (2, 1, 3); (2, 3, 1); (3, 1, 2); (3, 2, 1) ]
+
+        for (a, b, c) in permutations do
+            let mutable arr = StackArray3.three(a, b, c)
+            let sorted = StackArray3.sortInPlace id &arr
+            Assert.AreEqual([| 1; 2; 3 |], StackArray3.toArray &sorted)
