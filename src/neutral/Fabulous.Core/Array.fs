@@ -333,7 +333,7 @@ module StackAllocatedCollections =
                 | Size.One -> arr
                 | Size.Two -> if (getKey v0 > getKey v1) then two(v1, v0) else arr
                 | Size.Three ->
-                    match (getKey v0, getKey v1, getKey v1) with
+                    match (getKey v0, getKey v1, getKey v2) with
                     // abc acb bac bca cba cab
 
                     //  a, c, b
