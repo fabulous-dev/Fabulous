@@ -10,7 +10,7 @@ theme:
 
 nav:
   - Welcome: README.md
-  - Choose a backend: get-started.md
+  - Choose a flavor: get-started.md
   - Glossary: glossary.md
   - Tutorials:
     - .NET MAUI: tutorials/maui.md
