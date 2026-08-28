@@ -18,6 +18,6 @@ Then, you will be able to create new Fabulous.MauiControls projects with `dotnet
 dotnet new fabulous-mauicontrols -n MyApp
 ```
 
-### Documentation
+### Documentation 
 
 Documentation can be found at https://docs.fabulous.dev/v2/maui.controls
