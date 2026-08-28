@@ -22,9 +22,28 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
+      - name: Locate template package project
+        id: locate
+        shell: bash
+        run: |
+          echo "--- Searching for packable project files under templates ---"
+          find templates -maxdepth 3 \( -iname "*.fsproj" -o -iname "*.csproj" \) | tee found.txt
+
+          PROJ=$(grep -i "templates" found.txt | head -n1)
+          if [ -z "$PROJ" ]; then
+            PROJ=$(head -n1 found.txt)
+          fi
+
+          if [ -z "$PROJ" ]; then
+            echo "::error::No .fsproj/.csproj found under templates/ - cannot pack."
+            exit 1
+          fi
+
+          echo "Using project: $PROJ"
+          echo "proj=$PROJ" >> "$GITHUB_OUTPUT"
+
       - name: Pack template
-        run: dotnet pack templates/maui/Fabulous.MauiControls.Templates.fsproj -c Release -o ./nupkg-local
-        # Adjust the project path above if the packable template project has a different name/location.
+        run: dotnet pack "${{ steps.locate.outputs.proj }}" -c Release -o ./nupkg-local
 
       - name: Install template from local package (not source folder, not NuGet)
         shell: bash
@@ -72,9 +91,10 @@ jobs:
         shell: bash
         run: |
           echo "## Verify MAUI template output" >> $GITHUB_STEP_SUMMARY
+          echo "- Located project: ${{ steps.locate.outputs.proj }}" >> $GITHUB_STEP_SUMMARY
           echo "- Version check: ${{ steps.version_check.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- Restore check: ${{ steps.restore_check.outcome }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup local template install
         if: always()
-        run: dotnet new uninstall Fabulous.MauiControls.Templates
+        run: dotnet new uninstall Fabulous.MauiControls.Templates || true
