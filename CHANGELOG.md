@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
+### Added
+- Document how to build, run, and debug the generated MAUI template's `net10.0-windows10.0.19041.0` target in the MAUI tutorial ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
 
 ### Changed
 - Fix the MAUI get-started documentation to reference `net10.0-android` / `net10.0-ios` instead of the retired `net7.0-android` / `net7.0-ios` TFMs (Repo Assist, [#1174](https://github.com/fabulous-dev/Fabulous/issues/1174)).
@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Update the website home page's "Choose your own adventure" section to link to the current MAUI and Avalonia get-started docs instead of the archived `Fabulous.MauiControls`, `Fabulous.XamarinForms`, and `Fabulous.Avalonia` repositories, and remove the outdated paid/commercial support section (Repo Assist, [#1166](https://github.com/fabulous-dev/Fabulous/issues/1166)).
+- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
 
 ## [10.0.0] - 2026-08-24
 

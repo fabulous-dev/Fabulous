@@ -16,6 +16,15 @@ dotnet build -f net10.0-android
 dotnet build -f net10.0-android -t:Run
 ```
 
+On Windows, the generated project also targets `net10.0-windows10.0.19041.0` (added automatically when the workload runs on Windows, or unconditionally with `-p:FabulousWindowsOnly=true`). Build and run/debug that target directly instead of using an Android emulator:
+
+```bash
+dotnet build -f net10.0-windows10.0.19041.0
+dotnet build -f net10.0-windows10.0.19041.0 -t:Run
+```
+
+The `-t:Run` target launches and deploys the app; to debug from an IDE (Visual Studio or the C#/F# Dev Kit in VS Code), set the project's target framework to `net10.0-windows10.0.19041.0` and start debugging as usual. See [deployment](../guides/deployment.md) for packaging and store publishing details.
+
 The generated project contains platform hosts and an `App.fs` with the application logic. Compare it with the maintained [MAUI CounterApp](https://github.com/fabulous-dev/Fabulous/blob/main/samples/maui/CounterApp/App.fs), which demonstrates model, messages, asynchronous commands, layouts, controls, events, and modifiers in one compiled file.
 
 ## Follow the data flow
