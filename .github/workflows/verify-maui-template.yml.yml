@@ -22,20 +22,34 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
+      - name: Show repo layout (debug)
+        shell: bash
+        run: |
+          echo "--- pwd ---"
+          pwd
+          echo "--- top-level contents ---"
+          ls -la
+          echo "--- searching whole repo for template-ish project files ---"
+          find . -maxdepth 5 \( -iname "*.fsproj" -o -iname "*.csproj" \) 2>&1 | grep -i -E "templ|maui" || echo "no matches found"
+          echo "--- full list of all fsproj/csproj under templates/ if it exists ---"
+          if [ -d "templates" ]; then
+            find templates -maxdepth 4 \( -iname "*.fsproj" -o -iname "*.csproj" \)
+          else
+            echo "no 'templates' directory at repo root"
+          fi
+
       - name: Locate template package project
         id: locate
         shell: bash
         run: |
-          echo "--- Searching for packable project files under templates ---"
-          find templates -maxdepth 3 \( -iname "*.fsproj" -o -iname "*.csproj" \) | tee found.txt
+          PROJ=$(find . -maxdepth 5 \( -iname "*.fsproj" -o -iname "*.csproj" \) 2>/dev/null | grep -i "templates" | grep -i "maui" | head -n1)
 
-          PROJ=$(grep -i "templates" found.txt | head -n1)
           if [ -z "$PROJ" ]; then
-            PROJ=$(head -n1 found.txt)
+            PROJ=$(find . -maxdepth 5 \( -iname "*.fsproj" -o -iname "*.csproj" \) 2>/dev/null | grep -i "templates" | head -n1)
           fi
 
           if [ -z "$PROJ" ]; then
-            echo "::error::No .fsproj/.csproj found under templates/ - cannot pack."
+            echo "::error::No candidate templates project found. Check the 'Show repo layout' step output above and hardcode the path manually."
             exit 1
           fi
 
