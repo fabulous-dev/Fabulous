@@ -22,8 +22,16 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
-      - name: Install template from source (not NuGet)
-        run: dotnet new install ./templates/maui/content/blank --force
+      - name: Pack template
+        run: dotnet pack templates/maui/Fabulous.MauiControls.Templates.fsproj -c Release -o ./nupkg-local
+        # Adjust the project path above if the packable template project has a different name/location.
+
+      - name: Install template from local package (not source folder, not NuGet)
+        shell: bash
+        run: |
+          NUPKG=$(ls ./nupkg-local/*.nupkg)
+          echo "Installing $NUPKG"
+          dotnet new install "$NUPKG" --force
 
       - name: Scaffold a test project
         run: dotnet new fabulous-mauicontrols -n SmokeTest -o smoke-test
@@ -45,7 +53,8 @@ jobs:
       - name: Restore (net10.0-android only, fails loudly on NU1605-class downgrades)
         id: restore_check
         run: >
-          dotnet restore smoke-test/SmokeTest.fsproj
+          dotnet build smoke-test/SmokeTest.fsproj
+          -t:Restore
           -f net10.0-android
           /warnaserror:NU1605
           -v:normal
@@ -65,3 +74,7 @@ jobs:
           echo "## Verify MAUI template output" >> $GITHUB_STEP_SUMMARY
           echo "- Version check: ${{ steps.version_check.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- Restore check: ${{ steps.restore_check.outcome }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Cleanup local template install
+        if: always()
+        run: dotnet new uninstall Fabulous.MauiControls.Templates
