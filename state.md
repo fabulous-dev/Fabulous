@@ -39,3 +39,9 @@ None yet turned into fixes; need benchmarks/careful validation first.
 
 ## Monthly Activity Issue
 - #1147 "[repo-assist] Monthly Activity 2026-08" — updated 2026-08-27 with run history entry (run 33027188500): new PR for #1171, labelling+comments on #1169/#1170/#1171.
+
+## Update 2026-08-28 (run 33134727520)
+- Labelled #1143, #1156 `documentation`; #1148 `needs triage`; #1174 `documentation`+`bug`; #1179 `bug`+`good first issue`.
+- Fixed #1179 (fabulous-avalonia template FSharp.Core stale 8.0.301 -> bumped to 10.0.100 across blank/desktop/multi template.json). Draft PR created on branch repo-assist/fix-issue-1179-fsharp-core-version. Commented on #1179 linking PR.
+- Updated Monthly Activity issue #1147 with new run history + suggested actions list (added #1179 PR, kept prior pending items #1168, #1171-part1 PR, #1180, #1181, #1148, #1169, #1170, #1162/1163/1164, #1174).
+- Backlog cursor: next run check whether #1179 PR / #1168 / #1171-part1 PR merged; still pending direct fixes for #1169/#1170 if untouched.
