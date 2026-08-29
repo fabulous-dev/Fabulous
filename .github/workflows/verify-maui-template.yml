@@ -1,0 +1,104 @@
+name: Verify MAUI template output
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'templates/maui/**'
+  push:
+    branches: [main]
+    paths:
+      - 'templates/maui/**'
+
+jobs:
+  scaffold-and-check:
+    runs-on: windows-latest   # MAUI workloads are easiest on windows-latest runners
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install MAUI workload packs
+        run: dotnet workload install maui-tizen --skip-manifest-update
+
+      - name: Determine current published Fabulous version
+        id: fabulous_version
+        shell: bash
+        run: |
+          VERSION=$(curl -s https://api.nuget.org/v3-flatcontainer/fabulous/index.json \
+            | python3 -c "import json,sys; print(json.load(sys.stdin)['versions'][-1])")
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not determine a published Fabulous version from NuGet."
+            exit 1
+          fi
+          echo "Using Fabulous version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare templates (replace PKG_VERSION placeholders)
+        run: python3 eng/monorepo/prepare-templates.py ${{ steps.fabulous_version.outputs.version }}
+
+      - name: Restore templates project
+        run: dotnet restore templates/maui/Fabulous.MauiControls.Templates.proj
+
+      - name: Pack template
+        run: >
+          dotnet pack templates/maui/Fabulous.MauiControls.Templates.proj
+          -p:Version=${{ steps.fabulous_version.outputs.version }}
+          -c Release
+          --no-restore
+          -o ./nupkg-local
+
+      - name: Install template from local package (not source folder, not NuGet)
+        shell: bash
+        run: |
+          NUPKG=$(ls ./nupkg-local/*.nupkg | grep -i "MauiControls.Templates")
+          echo "Installing $NUPKG"
+          dotnet new install "$NUPKG" --force
+
+      - name: Scaffold a test project
+        run: dotnet new fabulous-mauicontrols -n SmokeTest -o smoke-test
+
+      - name: Check generated .fsproj doesn't pin a stale MAUI version
+        id: version_check
+        shell: bash
+        run: |
+          FSPROJ="smoke-test/SmokeTest.fsproj"
+          echo "--- Generated PackageReferences ---"
+          grep "PackageReference" "$FSPROJ"
+
+          if grep -q 'Microsoft.Maui.Controls" Version="8\.' "$FSPROJ"; then
+            echo "::error::Generated project still pins a pre-10.0 Microsoft.Maui.Controls version. Template default is not wired correctly."
+            exit 1
+          fi
+          echo "Version check passed: no stale 8.x MAUI pin found."
+
+      - name: Restore (net10.0-android only, fails loudly on NU1605-class downgrades)
+        id: restore_check
+        run: >
+          dotnet build smoke-test/SmokeTest.fsproj
+          -t:Restore
+          -f net10.0-android
+          /warnaserror:NU1605
+          -v:normal
+          /bl:restore.binlog
+
+      - name: Upload restore binlog on failure
+        if: failure() && steps.restore_check.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-binlog
+          path: restore.binlog
+
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## Verify MAUI template output" >> $GITHUB_STEP_SUMMARY
+          echo "- Fabulous version used: ${{ steps.fabulous_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Version check: ${{ steps.version_check.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Restore check: ${{ steps.restore_check.outcome }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Cleanup local template install
+        if: always()
+        run: dotnet new uninstall Fabulous.MauiControls.Templates || true
