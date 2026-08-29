@@ -56,14 +56,20 @@ jobs:
           echo "Installing $NUPKG"
           dotnet new install "$NUPKG" --force
 
-      - name: Scaffold a test project
-        run: dotnet new fabulous-mauicontrols -n SmokeTest -o smoke-test
+      - name: Scaffold a test project (outside the repo checkout, to avoid CPM leakage)
+        id: scaffold
+        shell: bash
+        run: |
+          OUT_DIR="${RUNNER_TEMP}/smoke-test"
+          echo "Scaffolding into: $OUT_DIR"
+          dotnet new fabulous-mauicontrols -n SmokeTest -o "$OUT_DIR"
+          echo "out_dir=$OUT_DIR" >> "$GITHUB_OUTPUT"
 
       - name: Check generated .fsproj doesn't pin a stale MAUI version
         id: version_check
         shell: bash
         run: |
-          FSPROJ="smoke-test/SmokeTest.fsproj"
+          FSPROJ="${{ steps.scaffold.outputs.out_dir }}/SmokeTest.fsproj"
           echo "--- Generated PackageReferences ---"
           grep "PackageReference" "$FSPROJ"
 
@@ -76,19 +82,19 @@ jobs:
       - name: Restore (net10.0-android only, fails loudly on NU1605-class downgrades)
         id: restore_check
         run: >
-          dotnet build smoke-test/SmokeTest.fsproj
+          dotnet build "${{ steps.scaffold.outputs.out_dir }}/SmokeTest.fsproj"
           -t:Restore
           -f net10.0-android
           /warnaserror:NU1605
           -v:normal
-          /bl:restore.binlog
+          /bl:${{ runner.temp }}/restore.binlog
 
       - name: Upload restore binlog on failure
         if: failure() && steps.restore_check.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: restore-binlog
-          path: restore.binlog
+          path: ${{ runner.temp }}/restore.binlog
 
       - name: Summary
         if: always()
@@ -96,6 +102,7 @@ jobs:
         run: |
           echo "## Verify MAUI template output" >> $GITHUB_STEP_SUMMARY
           echo "- Fabulous version used: ${{ steps.fabulous_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Scaffold dir: ${{ steps.scaffold.outputs.out_dir }}" >> $GITHUB_STEP_SUMMARY
           echo "- Version check: ${{ steps.version_check.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- Restore check: ${{ steps.restore_check.outcome }}" >> $GITHUB_STEP_SUMMARY
 
