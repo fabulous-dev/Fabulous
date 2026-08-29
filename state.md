@@ -1,53 +1,47 @@
 # Repo Assist Memory
 
-Last updated: 2026-08-28 (run https://github.com/fabulous-dev/Fabulous/actions/runs/33220311002)
+Last updated: 2026-08-29 (run https://github.com/fabulous-dev/Fabulous/actions/runs/33280925431)
 
-## Reconciliation note
-Live state re-verified this run via GitHub API. Open issues (7): #1143, #1147, #1156,
-#1162, #1163, #1164, #1171. No open PRs at all (repo-assist or otherwise).
+## Task selection this run
+Selected: [3 (Issue Fix), 8 (Performance Improvements), 2 (Issue Comment)].
+- Task 3: no fixable bug/help-wanted/good-first-issue found this run (only #1171, already fixed &
+  re-verified multiple times; no new bug reports). Substituted with more Task 8 work.
+- Task 8: implemented — replaced immutable Set with mutable HashSet in Sub.fs subscription
+  diffing (Sub.Internal.diff / NewSubs.calculate), which runs every Program update cycle.
+  Added SubTests.fs (3 new tests). PR: repo-assist/perf-sub-hashset branch, created via
+  create_pull_request tool this run.
+- Task 2: reviewed all 7 open issues for new human comments since last run - none found, so
+  no comment was made (avoiding redundant/spammy engagement per anti-spam guideline).
 
-## Currently open issues
-- #1147 - Monthly Activity issue itself (Task 11 target).
+## Currently open issues (7)
+- #1147 - Monthly Activity issue itself (Task 11 target, updated this run).
 - #1143 - Welcome/intro post, no action needed.
 - #1156 - Release announcement, no code action, awaiting timing.
 - #1162, #1163, #1164 - QA tracking issues, awaiting human tester results, no bot action.
-- #1171 - MAUI tutorial NU1605 downgrade warning. Maintainer (dsyme) explicitly asked on
-  2026-08-28 to re-verify by ACTUALLY running `dotnet new` and inspecting output, not just
-  trusting memory/diffs. Done this run:
-    - Installed `fabulous-mauicontrols` template from templates/maui/content/blank (main).
-    - Ran `dotnet new fabulous-mauicontrols -n VerifyApp`; generated .fsproj pins
-      Microsoft.Maui.Controls / .Compatibility to 10.0.100 (not old 8.0.14).
-    - MAUI workloads not installable in sandbox, so isolated the NuGet resolution logic in
-      a minimal repro project (Fabulous.MauiControls 10.0.0 + the two Maui packages):
-      pinned 8.0.14 -> reproduces exact NU1605 text from issue; pinned 10.0.100 -> zero
-      warnings on `dotnet restore`. This ties generated-project version to symptom
-      presence/absence directly (stronger evidence than prior run's diff-only check).
-    - Posted verification comment on #1171 recommending maintainer close it.
-    - No further code change needed; template fix (from earlier PR #1177 / commit d06cdd00)
-      is confirmed effective for freshly generated MAUI apps.
-  Cleaned up all temp verification directories and uninstalled the temp template afterward.
+- #1171 - MAUI tutorial NU1605 downgrade warning. Verified fixed and re-verified 3x
+  (dotnet new + isolated NuGet restore repro) across the last 3 runs. Awaiting maintainer
+  to close. No further action needed unless new activity appears.
 
 ## Open PRs
-None currently open (repo-assist or otherwise).
-
-## Task selection this run
-Selected: [2 (Issue Comment), 9 (Testing Improvements), 3 (Issue Fix)].
-- Task 2: satisfied by the #1171 re-verification comment (substantive, not a rubber-stamp).
-- Task 3: #1171 was the only bug-labelled issue; already fixed/verified, no code change
-  needed this run (verification-only task, not a code fix).
-- Task 9: not separately actioned this run due to time budget; deferred to next run -
-  revisit StackArray3 test coverage (see below) and look for other test gaps.
+- repo-assist/perf-sub-hashset (this run): "Optimize Sub subscription diffing with mutable
+  HashSet" - draft PR, awaiting maintainer review.
 
 ## Backlog / follow-ups for next run
 - StackArray3 (src/neutral/Fabulous.Core/Array.fs) has no call sites elsewhere in the
   codebase - worth checking whether it's dead/preparatory code or intended for future
-  wiring (noted in a previous run, still unresolved).
-- Re-check whether maintainer closes #1171 after this run's verification comment; if not
-  closed and no new activity, no further action needed (comment already posted).
-- No unlabelled issues; no stale non-repo-assist PRs (there are no open PRs at all).
-- Consider Task 9 (testing improvements) more thoroughly next run given it was selected
-  but not deeply pursued this run.
+  wiring (noted in several previous runs, still unresolved - low priority).
+- Check whether maintainer merges/reviews the perf-sub-hashset PR; if CI fails on it,
+  address in a future Task 6 run.
+- Check whether maintainer closes #1171 (no new action needed from bot side).
+- No unlabelled issues; no stale non-repo-assist PRs (there are no other open PRs).
+- Considered other perf candidates in WidgetDiff.fs/Reconciler.fs/ViewNode.fs during
+  exploration this run - already heavily hand-optimized (struct enumerators, spans,
+  IsByRefLike) - no further clear low-risk wins found there without deeper profiling.
 
 ## Comments made log
-- #1171 (2026-08-28, this run): posted detailed re-verification comment with dotnet new +
+- #1171 (2026-08-28, previous run): posted detailed re-verification comment with dotnet new +
   isolated NuGet restore repro proving the fix works, per maintainer's explicit request.
+- No new comments made this run (2026-08-29) - no new human activity on any open issue.
+
+## PRs created log
+- repo-assist/perf-sub-hashset (2026-08-29, this run): Sub.fs HashSet optimization + tests.
