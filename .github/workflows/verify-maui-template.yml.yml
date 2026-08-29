@@ -18,7 +18,16 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          
+      - name: Show real release packing steps (debug)
+        shell: bash
+        run: |
+          echo "--- eng/monorepo/prepare-templates.py ---"
+          cat eng/monorepo/prepare-templates.py
 
+          echo "--- relevant lines of .github/workflows/release.yml ---"
+          grep -n -B2 -A5 -i "pack\|prepare-templates\|maui" .github/workflows/release.yml
+          
       - name: Locate actual packaging mechanism (debug)
         shell: bash
         run: |
