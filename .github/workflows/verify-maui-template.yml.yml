@@ -19,6 +19,21 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Locate actual packaging mechanism (debug)
+        shell: bash
+        run: |
+          echo "--- .nuspec files anywhere in repo ---"
+          find . -maxdepth 5 -iname "*.nuspec" 2>/dev/null
+
+          echo "--- contents of templates/maui (all files, not just proj) ---"
+          find templates/maui -maxdepth 3 -type f
+
+          echo "--- contents of eng/ (packing/release scripts likely live here) ---"
+          find eng -maxdepth 3 -type f 2>/dev/null
+
+          echo "--- grep for 'pack' in any script/yml under eng/ or .github ---"
+          grep -ril "pack" eng .github 2>/dev/null | grep -v -i "content/"
+
       - name: Install MAUI workload
         run: dotnet workload install maui
 
