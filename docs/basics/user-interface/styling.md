@@ -50,7 +50,7 @@ A suggestion to change the F# language is currently under review. Give it a thum
 [F# Suggestion: Allow dot notation after body of computation expression without need for parenthesis](https://github.com/fsharp/fslang-suggestions/issues/1163)
 {% endhint %}
 
-In case you want to see which modifiers are available for a certain widget, you can refer to the API documentation of that widget: [API documentation](https://docs.fabulous.dev/v2/api/controls)
+In case you want to see which modifiers are available for a certain widget, you can refer to the API documentation of that widget: [API documentation](https://fabulous-dev.github.io/Fabulous/v2/api/controls)
 
 ### Applying a same style across multiple widgets&#x20;
 
@@ -315,7 +315,7 @@ UserView(model.User)
 Here is an example coming from the Gallery app sample.\
 We need to let the user switch between 2 views: the running samples and the samples' code.
 
-![Custom widget showing 2 radio buttons, letting user switch between running sample and code](https://docs.fabulous.dev/v2/development/styling-widgets/custom-radio-buttons.png)
+![Custom widget showing 2 radio buttons, letting user switch between running sample and code](https://fabulous-dev.github.io/Fabulous/v2/development/styling-widgets/custom-radio-buttons.png)
 
 It is essentially 2 radio buttons that are linked together. They share a custom style.\
 To do that, we created a `radioButton` function that let us reuse a frame with a label to act as a single radio button.\

@@ -1,6 +1,6 @@
 # FormattedLabel
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/) -> [Label](https://docs.fabulous.dev/v2/api/controls/label/)\
+**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [Label](https://fabulous-dev.github.io/Fabulous/v2/api/controls/label/)\
 **Xamarin.Forms documentation:** FormattedLabel [API](https://todo/) / [Guide](https://todo/)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://todo/).
@@ -30,7 +30,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
   .font(fontFamily = "Consolas")
 ```
 
-#### Get access to the underlying Xamarin.Forms.FormattedLabel [#](https://docs.fabulous.dev/v2/api/controls/formatted-label/#get-access-to-the-underlying-xamarinformsformattedlabel) <a href="#get-access-to-the-underlying-xamarinformsformattedlabel" id="get-access-to-the-underlying-xamarinformsformattedlabel"></a>
+#### Get access to the underlying Xamarin.Forms.FormattedLabel [#](https://fabulous-dev.github.io/Fabulous/v2/api/controls/formatted-label/#get-access-to-the-underlying-xamarinformsformattedlabel) <a href="#get-access-to-the-underlying-xamarinformsformattedlabel" id="get-access-to-the-underlying-xamarinformsformattedlabel"></a>
 
 ```fsharp
 let formattedLabelRef = ViewRef<Label>()

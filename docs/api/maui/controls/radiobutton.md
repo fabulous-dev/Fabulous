@@ -1,6 +1,6 @@
 # RadioButton
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/) -> [Layout](https://docs.fabulous.dev/v2/api/layouts/layout/) -> [TemplatedView](https://docs.fabulous.dev/v2/api/layouts/templated-view/)\
+**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [Layout](https://fabulous-dev.github.io/Fabulous/v2/api/layouts/layout/) -> [TemplatedView](https://fabulous-dev.github.io/Fabulous/v2/api/layouts/templated-view/)\
 **Xamarin.Forms documentation:** RadioButton [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.radiobutton) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/radiobutton)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/radiobutton).
@@ -43,7 +43,7 @@ RadioButton("Cat", model.IsChecked, CheckedChangedMsg)
     .textTransform(TextTransform.Lowercase)
 ```
 
-#### Get access to the underlying Xamarin.Forms.RadioButton [#](https://docs.fabulous.dev/v2/api/controls/radio-button/#get-access-to-the-underlying-xamarinformsradiobutton) <a href="#get-access-to-the-underlying-xamarinformsradiobutton" id="get-access-to-the-underlying-xamarinformsradiobutton"></a>
+#### Get access to the underlying Xamarin.Forms.RadioButton [#](https://fabulous-dev.github.io/Fabulous/v2/api/controls/radio-button/#get-access-to-the-underlying-xamarinformsradiobutton) <a href="#get-access-to-the-underlying-xamarinformsradiobutton" id="get-access-to-the-underlying-xamarinformsradiobutton"></a>
 
 ```fsharp
 let radioButtonRef = ViewRef<RadioButton>()

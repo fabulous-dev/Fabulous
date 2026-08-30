@@ -54,7 +54,7 @@ You can also use
 
 ### Optimizing view performance in advanced scenarios: the `key` property&#x20;
 
-Each time the `view` function is called, Fabulous will try to update the UI the most efficiently possible by reusing existing controls as much as possible (for exact details, see [Views: Differential Update of Lists of Things](https://docs.fabulous.dev/v1/api/performance/#views-differential-update-of-lists-of-things)).\
+Each time the `view` function is called, Fabulous will try to update the UI the most efficiently possible by reusing existing controls as much as possible (for exact details, see [Views: Differential Update of Lists of Things](https://fabulous-dev.github.io/Fabulous/v1/api/performance/#views-differential-update-of-lists-of-things)).\
 This is fine in the majority of scenarios, but some times Fabulous might reuse controls that don’t really match the expectations we can have from the code.
 
 This is especially true if the ordering of the elements are changed, or an element has been added/removed before other elements.\
