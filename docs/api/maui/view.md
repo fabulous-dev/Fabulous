@@ -1,6 +1,6 @@
 # View
 
-**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev.github.io/Fabulous//blob/main/docs/api/maui/visualelement.md)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md)\
 **Xamarin.Forms documentation:** View [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.view)
 
 ### Constructors&#x20;
