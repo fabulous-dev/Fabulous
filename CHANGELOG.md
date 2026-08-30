@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
 - Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
 - Replace retired `docs.fabulous.dev` links across `docs/` with the current documentation site at `https://fabulous-dev.github.io/Fabulous/` (Repo Assist, [#1207](https://github.com/fabulous-dev/Fabulous/issues/1207)).
+- Remove the hand-written `**Inheritance:**` line from 32 `docs/api/maui` and `docs/api/avalonia` pages where it linked to the retired `fabulous-dev.github.io/Fabulous/v2/api/...` API reference, which 404s (Repo Assist, [#1211](https://github.com/fabulous-dev/Fabulous/issues/1211)).
 
 ### Fixed
 - Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, [#1170](https://github.com/fabulous-dev/Fabulous/issues/1170)).

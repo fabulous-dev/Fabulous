@@ -1,6 +1,5 @@
 # View
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/)\
 **Xamarin.Forms documentation:** View [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.view)
 
 ### Constructors&#x20;

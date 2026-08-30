@@ -1,6 +1,5 @@
 # Layout
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/)\
 **Xamarin.Forms documentation:** Layout [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.layout)
 
 ### Constructors&#x20;

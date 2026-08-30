@@ -1,6 +1,5 @@
 # Span
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) })\
 **Xamarin.Forms documentation:** Span [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.span)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.span).
