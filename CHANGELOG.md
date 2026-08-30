@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document how to build, run, and debug the generated MAUI template's `net10.0-windows10.0.19041.0` target in the MAUI tutorial ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
 
 ### Changed
+- Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist).
 - Fix the MAUI get-started documentation to reference `net10.0-android` / `net10.0-ios` instead of the retired `net7.0-android` / `net7.0-ios` TFMs (Repo Assist, [#1174](https://github.com/fabulous-dev/Fabulous/issues/1174)).
 - Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline ([#1148](https://github.com/fabulous-dev/Fabulous/issues/1148)).
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
