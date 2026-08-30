@@ -1,11 +1,11 @@
 # CollectionView
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/) -> [View](https://docs.fabulous.dev/v2/api/collections/items-view/)\
+**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/collections/items-view/)\
 **Xamarin.Forms documentation:** CollectionView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.collectionview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview)
 
 For details on how the control actually works, please refer to:
 
-[Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview). [Virtualized Collections](https://docs.fabulous.dev/v2/architecture/virtualized-collections/)
+[Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview). [Virtualized Collections](https://fabulous-dev.github.io/Fabulous/v2/architecture/virtualized-collections/)
 
 ### Constructors&#x20;
 

@@ -1,6 +1,6 @@
 # BoxView
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/)\
+**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/)\
 **Xamarin.Forms documentation:** BoxView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.boxview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/boxview)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/boxview).
@@ -25,7 +25,7 @@ BoxView(light = Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
     .cornerRadius(10.)
 ```
 
-#### Get access to the underlying Xamarin.Forms.BoxView [#](https://docs.fabulous.dev/v2/api/controls/box-view/#get-access-to-the-underlying-xamarinformsboxview) <a href="#get-access-to-the-underlying-xamarinformsboxview" id="get-access-to-the-underlying-xamarinformsboxview"></a>
+#### Get access to the underlying Xamarin.Forms.BoxView [#](https://fabulous-dev.github.io/Fabulous/v2/api/controls/box-view/#get-access-to-the-underlying-xamarinformsboxview) <a href="#get-access-to-the-underlying-xamarinformsboxview" id="get-access-to-the-underlying-xamarinformsboxview"></a>
 
 ```fsharp
 let boxViewRef = ViewRef<BoxView>()

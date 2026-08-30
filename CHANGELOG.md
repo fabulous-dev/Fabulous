@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline ([#1148](https://github.com/fabulous-dev/Fabulous/issues/1148)).
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
 - Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
+- Replace retired `docs.fabulous.dev` links across `docs/` with the current documentation site at `https://fabulous-dev.github.io/Fabulous/` (Repo Assist, [#1207](https://github.com/fabulous-dev/Fabulous/issues/1207)).
 
 ### Fixed
 - Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, [#1170](https://github.com/fabulous-dev/Fabulous/issues/1170)).
