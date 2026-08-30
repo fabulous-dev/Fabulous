@@ -1,6 +1,5 @@
 # NavigableElement
-
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/blob/main/docs/api/maui/element.md)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md)\
 **Xamarin.Forms documentation:** NavigableElement [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.navigableelement)
 
 ### Constructors&#x20;
