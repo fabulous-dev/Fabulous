@@ -1,6 +1,6 @@
 name = "Fabulous"
 license = "Apache-2.0"
-licenselink = "https://github.com/fabulous-dev/fabulous.dev-theme/blob/main/LICENSE"
+licenselink = "https://github.com/fabulous-dev/fabulous-theme/blob/main/LICENSE"
 description = "Hugo theme for the Fabulous website"
 homepage = "https://fabulous-dev.github.io/Fabulous/"
 tags = []
