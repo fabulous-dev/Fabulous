@@ -2,7 +2,6 @@
 
 ## Install the templates
 
-\
 To install the templates for Fabulous for .NET MAUI, run the following command:
 
 ```bash
