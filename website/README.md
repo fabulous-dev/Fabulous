@@ -1,4 +1,4 @@
-# fabulous.dev
+# fabulous-dev
 
 ## How to build locally on macOS
 
