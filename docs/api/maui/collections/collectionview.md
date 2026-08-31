@@ -5,7 +5,7 @@
 
 For details on how the control actually works, please refer to:
 
-[Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview). [Virtualized Collections](https://fabulous-dev.github.io/Fabulous/v2/architecture/virtualized-collections/)
+[Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview).
 
 ### Constructors&#x20;
 
