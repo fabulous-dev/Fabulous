@@ -10,7 +10,7 @@ For more information: https://gohugo.io/installation/
 
 ## Basic ideas for this repository
 
-- This repository will be the home of https://fabulous.dev
+- This repository will be the home of https://fabulous-dev.github.io/Fabulous/
 - It will be compiled as a static website from this Hugo template and published on GitHub Pages
 - Authored and API documentation are published with this site from the Fabulous monorepo.
 - A Hugo theme `Fabulous` is available in the `themes` folder, ideally it should be generic enough to be reused on the docs and api websites directly. Everything related to fabulous.dev itself should be in the folders at the root of this repo.
