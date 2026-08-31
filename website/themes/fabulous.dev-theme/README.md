@@ -1,2 +1,2 @@
-# fabulous.dev-theme
-Hugo theme for the fabulous.dev website
+# fabulous-theme
+Hugo theme for the https://fabulous-dev.github.io/Fabulous/ website
