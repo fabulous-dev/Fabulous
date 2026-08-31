@@ -83,9 +83,9 @@
       "notes": "Imported from 82c4dfaf52264754a7a52fe87559fcc3b74afb3d. Published with the root GitHub Pages workflow."
     },
     {
-      "name": "fabulous.dev-theme",
-      "repository": "fabulous-dev/fabulous.dev-theme",
-      "destination": "website/themes/fabulous.dev-theme",
+      "name": "fabulous-theme",
+      "repository": "fabulous-dev/fabulous-theme",
+      "destination": "website/themes/fabulous-theme",
       "ref": "main",
       "wave": 3,
       "status": "imported",
