@@ -4,7 +4,6 @@ The templates use Avalonia's free, open-source core framework and standard contr
 
 ## Install the templates
 
-\
 To install the templates for Fabulous for Avalonia, run the following command:
 
 ```bash
@@ -20,10 +19,10 @@ dotnet new list
 You should see the installed Fabulous for Avalonia templates:
 
 ```
-Template Name            Short Name         Language  Tags             
------------------------  -----------------  --------  -----------------
-Fabulous Avalonia Blank  fabulous-avalonia  F#        Fabulous/Avalonia
-Fabulous Avalonia Multi  fabulous-avalonia-multi F#.  Fabulous/Avalonia
+Template Name            Short Name               Language  Tags             
+-----------------------  -----------------        --------  -----------------
+Fabulous Avalonia Blank  fabulous-avalonia        F#        Fabulous/Avalonia
+Fabulous Avalonia Multi  fabulous-avalonia-multi  F#        Fabulous/Avalonia
 ```
 
 ## Create a single project
