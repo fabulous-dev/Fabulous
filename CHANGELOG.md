@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace retired `docs.fabulous.dev` links across `docs/` with the current documentation site at `https://fabulous-dev.github.io/Fabulous/` (Repo Assist, [#1207](https://github.com/fabulous-dev/Fabulous/issues/1207)).
 
 ### Fixed
+- Remove the stale "Xamarin.Forms" section from `docs/api/SUMMARY.md`, which linked to ~36 `xamarinforms/*.md` files that no longer exist under `docs/api/` (Repo Assist, [#1278](https://github.com/fabulous-dev/Fabulous/issues/1278)).
 - Rename `website/themes/fabulous.dev-theme` to `website/themes/fabulous-theme` and update the SCSS `@import` paths in `website/assets/sass/root*.scss` accordingly, matching `theme = 'fabulous-theme'` already set in `website/config.toml` (Repo Assist, [#1264](https://github.com/fabulous-dev/Fabulous/issues/1264)).
 - Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, [#1170](https://github.com/fabulous-dev/Fabulous/issues/1170)).
 - Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
