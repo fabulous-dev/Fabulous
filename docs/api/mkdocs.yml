@@ -16,3 +16,8 @@ exclude_docs: |
 markdown_extensions:
   - fenced_code
   - tables
+
+nav:
+  - Home: https://fabulous-dev.github.io/Fabulous/docs/
+  - API reference: README.md
+  - Source API inventory: source-inventory.md
