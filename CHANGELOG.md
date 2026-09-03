@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace retired `docs.fabulous.dev` links across `docs/` with the current documentation site at `https://fabulous-dev.github.io/Fabulous/` (Repo Assist, [#1207](https://github.com/fabulous-dev/Fabulous/issues/1207)).
 
 ### Fixed
+- Default the `fabulous-mauicontrols` template's Windows target to `RuntimeIdentifier=win-x64` / `Platform=x64` (when not already set by the caller) so `dotnet publish` for `net10.0-windows10.0.19041.0` no longer fails with `error: Packaged .NET applications with an app host exe cannot be ProcessorArchitecture neutral`, and document the workaround in the deployment guide (Repo Assist, [#1286](https://github.com/fabulous-dev/Fabulous/issues/1286)).
 - Regenerate `docs/api/source-inventory.md` via `eng/monorepo/generate-api-reference.py` so the Build website CI check passes again (Repo Assist, [#1283](https://github.com/fabulous-dev/Fabulous/issues/1283)).
 - Rename `website/themes/fabulous.dev-theme` to `website/themes/fabulous-theme` and update the SCSS `@import` paths in `website/assets/sass/root*.scss` accordingly, matching `theme = 'fabulous-theme'` already set in `website/config.toml` (Repo Assist, [#1264](https://github.com/fabulous-dev/Fabulous/issues/1264)).
 - Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, [#1170](https://github.com/fabulous-dev/Fabulous/issues/1170)).
