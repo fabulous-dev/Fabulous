@@ -1,6 +1,7 @@
 namespace Fabulous
 
 open System
+open System.Collections.Generic
 
 /// SubId - Subscription ID, alias for string list
 type SubId = string list
@@ -60,27 +61,32 @@ module Sub =
 
         module NewSubs =
 
-            let (_dupes, _newKeys, _newSubs) as init = List.empty, Set.empty, List.empty
+            /// Computes duplicates, the set of unique subscription keys, and the deduplicated
+            /// subscriptions list, in a single pass. Uses a mutable HashSet instead of an
+            /// immutable Set to avoid O(log n) tree-node allocations per insertion.
+            let calculate (subs: Sub<'msg>) =
+                let newKeys = HashSet<SubId>()
+                let mutable dupes = []
+                let mutable newSubs = []
 
-            let update (subId, start) (dupes, newKeys, newSubs) =
-                if Set.contains subId newKeys then
-                    subId :: dupes, newKeys, newSubs
-                else
-                    dupes, Set.add subId newKeys, (subId, start) :: newSubs
+                for subId, start in List.rev subs do
+                    if not(newKeys.Add(subId)) then
+                        dupes <- subId :: dupes
+                    else
+                        newSubs <- (subId, start) :: newSubs
 
-            let calculate subs = List.foldBack update subs init
+                dupes, newKeys, newSubs
 
         let empty = List.empty<SubId * IDisposable>
 
         let diff (activeSubs: (SubId * IDisposable) list) (sub: Sub<'msg>) =
-            let keys = activeSubs |> List.map fst |> Set.ofList
+            let keys = HashSet<SubId>(activeSubs |> List.map fst)
             let dupes, newKeys, newSubs = NewSubs.calculate sub
 
-            if keys = newKeys then
+            if keys.SetEquals(newKeys) then
                 dupes, [], activeSubs, []
             else
-                let toKeep, toStop =
-                    activeSubs |> List.partition(fun (k, _) -> Set.contains k newKeys)
+                let toKeep, toStop = activeSubs |> List.partition(fun (k, _) -> newKeys.Contains(k))
 
-                let toStart = newSubs |> List.filter(fun (k, _) -> not(Set.contains k keys))
+                let toStart = newSubs |> List.filter(fun (k, _) -> not(keys.Contains(k)))
                 dupes, toStop, toKeep, toStart
