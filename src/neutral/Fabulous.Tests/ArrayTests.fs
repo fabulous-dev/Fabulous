@@ -31,3 +31,14 @@ type ``Array tests``() =
             let mutable arr = StackArray3.three(a, b, c)
             let sorted = StackArray3.sortInPlace id &arr
             Assert.AreEqual([| 1; 2; 3 |], StackArray3.toArray &sorted)
+
+    [<Test>]
+    member _.``StackArray3.combine merges a Few and a Many array in either order``() =
+        let few = StackArray3.two(1, 2)
+        let many = StackArray3.many [| 3; 4; 5; 6 |]
+
+        let combined1 = StackArray3.combine few many
+        Assert.AreEqual([| 1; 2; 3; 4; 5; 6 |], StackArray3.toArray &combined1)
+
+        let combined2 = StackArray3.combine many few
+        Assert.AreEqual([| 3; 4; 5; 6; 1; 2 |], StackArray3.toArray &combined2)
