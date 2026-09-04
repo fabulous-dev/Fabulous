@@ -1,51 +1,51 @@
 # Repo Assist Memory
 
-Last updated: 2026-09-03 (run https://github.com/fabulous-dev/Fabulous/actions/runs/33817534545)
+Last updated: 2026-09-04 (run https://github.com/fabulous-dev/Fabulous/actions/runs/33929419256)
 
 ## Task selection this run
 Selected: [6 (Maintain Repo Assist PRs), 4 (Engineering Investments), 5 (Coding Improvements)].
-- Task 6: checked #1202, #1234, #1270 — no CI check runs reported for any of the three, and the
-  collaborator's (@MiroslavHustak) "hold off until canary/QA completes" comment on each still
-  stands with no new activity since. No updates pushed, no nudges made — respecting the hold.
-- Task 4: found the repo's only remaining unpinned GitHub Action reference —
-  `actions/github-script@v7` in `.github/workflows/pr-artifacts.yml` — every other workflow in
-  the repo already pins `actions/github-script` (and all third-party actions) to a full commit
-  SHA. Pinned it to the same SHA (`3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0`) used
-  everywhere else. Docs/workflow-only change, no build/test needed. Created draft PR (see below).
-  Checked Dependabot alerts (none visible/authorized) and Directory.Packages.props versions -
-  nothing else stood out as a safe, actionable dependency bump this run.
-- Task 5: reviewed outstanding `// TODO` markers (Array.fs:622 growth handling, Builders.fs:244
-  addMut optimization, WidgetDiff.fs:43, ViewNode.fs:18, Attributes.fs:45) - as noted in prior
-  runs, none rose to a clearly beneficial, low-risk change worth a new PR, especially given the
-  existing QA hold on #1202/#1234/#1270 already queued for review. Deferred rather than adding
-  to the review backlog.
+- Task 6: checked #1202, #1234, #1270 — no CI check runs reported for any, collaborator's
+  "hold off until canary/QA completes" comment still stands with no new activity. No updates
+  pushed, no nudges made.
+- Task 4: discovered the previous run's "pin actions/github-script" PR had failed to git push
+  and instead surfaced as issue #1299 with manual recreation instructions. Re-did the fix
+  cleanly on a fresh branch (repo-assist/eng-pin-github-script-action-v2), pinning
+  actions/github-script@v7 to 3a2844b7e9c422d3c10d287c895573f7108da1b3 in
+  .github/workflows/pr-artifacts.yml, added a CHANGELOG.md [Unreleased] entry, and successfully
+  created the PR this time. Issue #1299 should be closed by maintainer once this PR merges.
+- Task 5: re-reviewed the same outstanding `// TODO` markers (Array.fs growth/append-optimize,
+  Attributes.fs conversion algorithm, Builders.fs addMut, ViewNode.fs handler combining,
+  WidgetDiff.fs hot path) — none rose to a clearly beneficial, low-risk change worth a PR,
+  same conclusion as prior runs.
 
-## Currently open issues (6)
-- #1281 - Monthly Activity issue itself (Task 11 target, updated this run).
+## Currently open issues (7)
+- #1299 - "[repo-assist] Pin actions/github-script..." — leftover from failed push last run;
+  now superseded by the successfully-created PR this run. Flagged for maintainer to close.
+- #1281 - Monthly Activity issue (Task 11 target, updated this run).
 - #1143 - Welcome/intro post, no action needed.
 - #1156 - Release announcement, no code action, awaiting timing.
 - #1162, #1163, #1164 - QA tracking issues, awaiting human tester results, no bot action.
-(Note: #1278 from last run appears to have been closed/resolved - no longer in open issue list.)
 
 ## Open PRs
 - #1202 repo-assist/perf-sub-hashset (created 2026-08-29) - still holding per collaborator request.
 - #1234 repo-assist/improve-stackarray3-combine (created 2026-08-30) - still holding.
 - #1270 repo-assist/test-stackarray3-coverage (created 2026-08-31) - still holding.
 - #1280 repo-assist/fix-summary-xamarinforms-links (created 2026-09-02) - docs fix for #1278.
-- NEW: repo-assist/eng-pin-github-script-action-20260903 (created 2026-09-03) - pins
+- NEW: repo-assist/eng-pin-github-script-action-v2 (created 2026-09-04) - pins
   actions/github-script to commit SHA in pr-artifacts.yml. Docs/workflow-only, no build needed.
+  This supersedes the abandoned attempt that became issue #1299.
 
 ## Backlog / follow-ups for next run
+- Verify whether the new "eng-pin-github-script-action-v2" PR pushed/created successfully
+  (check it shows up in the PR list next run); if not, investigate push failures further.
 - Before creating any new perf/coding PRs (Tasks 5/8): check whether #1202/#1234/#1270 have been
   merged/closed or the QA hold has been lifted by a maintainer comment.
-- Monitor the new eng-pin-github-script-action PR and the fix-summary-xamarinforms-links PR (#1280)
-  for CI/review status.
+- Suggest maintainer close issue #1299 once the new PR is reviewed/merged (duplicate/leftover
+  from a failed push).
 - TODO markers survey still pending (Array.fs ~622, Attributes.fs SmallScalars.Int, Builders.fs
   ~244, ViewNode.fs ~18, WidgetDiff.fs ~43) — author's own comments suggest no perf difference,
   likely not worth pursuing.
 - Test coverage gaps: Memo.fs, Reconciler.fs, WidgetDiff.fs still have no dedicated test files.
-- Dependabot alerts: list_dependabot_alerts returned a secrecy-filtered result this run
-  (1 item hidden, not authorized) - could not evaluate; try again next run.
 
 ## Comments made log
 - No new issue comments made this run.
@@ -58,6 +58,8 @@ Selected: [6 (Maintain Repo Assist PRs), 4 (Engineering Investments), 5 (Coding 
   tests (7 new tests). Still open (#1270).
 - repo-assist/fix-summary-xamarinforms-links (2026-09-02): Removed stale Xamarin.Forms broken
   links section from docs/api/SUMMARY.md, closes #1278's actionable finding. Still open (#1280).
-- repo-assist/eng-pin-github-script-action-20260903 (2026-09-03): Pinned actions/github-script
-  to commit SHA in .github/workflows/pr-artifacts.yml (the only unpinned action reference left
-  in the repo). Docs/workflow-only, no build/test needed.
+- repo-assist/eng-pin-github-script-action-20260903 (2026-09-03): FAILED TO PUSH — became
+  issue #1299 instead of a PR.
+- repo-assist/eng-pin-github-script-action-v2 (2026-09-04): Pinned actions/github-script to
+  commit SHA in .github/workflows/pr-artifacts.yml (re-attempt of 2026-09-03's failed push).
+  Docs/workflow-only, no build/test needed. Supersedes issue #1299.
