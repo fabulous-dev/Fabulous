@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
 - Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
 - Replace retired `docs.fabulous.dev` links across `docs/` with the current documentation site at `https://fabulous-dev.github.io/Fabulous/` (Repo Assist, [#1207](https://github.com/fabulous-dev/Fabulous/issues/1207)).
+- Pin `actions/github-script` to a commit SHA (`v9.0.0`) in `pr-artifacts.yml` for supply-chain safety ([#1301](https://github.com/fabulous-dev/Fabulous/pull/1301), [#1300](https://github.com/fabulous-dev/Fabulous/issues/1300)).
 
 ### Fixed
 - Default the `fabulous-mauicontrols` template's Windows target to `RuntimeIdentifier=win-x64` / `Platform=x64` (when not already set by the caller) so `dotnet publish` for `net10.0-windows10.0.19041.0` no longer fails with `error: Packaged .NET applications with an app host exe cannot be ProcessorArchitecture neutral`, and document the workaround in the deployment guide (Repo Assist, [#1286](https://github.com/fabulous-dev/Fabulous/issues/1286)).
