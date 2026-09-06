@@ -1,57 +1,58 @@
 # Repo Assist Memory
 
-Last updated: 2026-09-05 (run https://github.com/fabulous-dev/Fabulous/actions/runs/33998620295)
+Last updated: 2026-09-06 (run https://github.com/fabulous-dev/Fabulous/actions/runs/34066845679)
 
 ## Task selection this run
-Selected: [2 (Issue Investigation and Comment), 3 (Issue Investigation and Fix), 5 (Coding Improvements)].
-- Task 2: reviewed all 6 open issues (#1143, #1156, #1162, #1163, #1164, #1281) — no new human
-  comments since last run except the standing "QA hold" comment on #1281 (already logged).
-  Nothing warranted a new comment; no action taken (issues #1162-1164 are repo-assist QA tracking
-  placeholders awaiting human testers, #1143/#1156 are informational, #1281 is the monthly summary).
-- Task 3: no issues labelled `bug`, `help wanted`, or `good first issue` currently open (checked
-  full open-issue list) — no fixable bug found this run. Fell back toward Task 5 effort instead.
-- Task 5: used an explore sub-agent to scan src/neutral/Fabulous.Core for a new low-risk issue not
-  already surveyed (previous TODO markers in Array.fs/Attributes.fs/Builders.fs/ViewNode.fs/
-  WidgetDiff.fs already rejected). Found a genuine inconsistency in DispatchThrottle.fs: the
-  leading-edge `Dispatch` call (`values |> Option.iter emit`) did not wrap `emit` in try/with,
-  unlike the timer callback and FlushAsync, so a throwing dispatch handler would crash the
-  caller's thread instead of routing to onError. Fixed with the same try/with -> reportError
-  pattern, added a regression test ("Leading throttle routes emit exceptions on the first
-  dispatch to onError") in CmdTests.fs, added CHANGELOG entry, and created a draft PR:
-  repo-assist/fix-dispatchthrottle-leading-error-handling. Build/tests green (43/43 passed),
-  fantomas check clean.
+Selected: [10 (Take the Repository Forward), 4 (Engineering Investments), 2 (Issue Investigation
+and Comment)].
+- New issue #1304 found: human-authored (collaborator MiroslavHustak) QA/canary status report.
+  Confirms and reaffirms: (a) QA/canary testing largely done, minor issues found and fixed by
+  humans; (b) two issues (#1177 tested OK locally, #1286 not yet tested) await NuGet 10.0.1
+  release for final validation; (c) explicit request that existing repo-assist issues/PRs be
+  reviewed only AFTER final validation of 10.0.1. Same collaborator also posted identical
+  "hold off reviewing" comments on #1162, #1163, #1164 on 2026-09-06.
+- Given this explicit, repeated maintainer instruction, deliberately deferred Tasks 10/4/2 (no
+  new PR, no new issue comments, no new engineering work) this run to avoid growing the backlog
+  of unreviewed repo-assist output during the freeze. This is a conscious no-action decision, not
+  an oversight — re-verify the freeze status every run before resuming Tasks 3/4/5/8/9/10.
+- Task 11: rewrote Monthly Activity issue #1281 body — added #1303 to "Review PR" list (was
+  missing), added #1304 acknowledgement item, updated Future Work to note the freeze, prepended
+  new Run History entry.
 
-## Currently open issues (6)
-- #1281 - Monthly Activity issue (Task 11 target, rewritten to standard format this run;
-  previous body used a different structure — corrected).
+## Currently open issues (7)
+- #1304 - NEW. Human QA/canary summary from collaborator. No repo-assist action; informational
+  for maintainers. Reaffirms freeze on reviewing repo-assist output until 10.0.1 released+validated.
+- #1281 - Monthly Activity issue (Task 11 target), updated this run.
+- #1162, #1163, #1164 - QA tracking issues; collaborator posted "hold off reviewing" comment on
+  2026-09-06 on all three (same wording). No further bot action needed — human has responded.
 - #1143 - Welcome/intro post, no action needed.
-- #1156 - Release announcement (10.0.0), no code action, awaiting timing.
-- #1162, #1163, #1164 - QA tracking issues (rendering/lifecycle, accessibility, input/nav),
-  awaiting human tester results, no bot action expected until testers report findings.
+- #1156 - Release announcement (10.0.0), no code action, awaiting timing (10.0.1 now pending too).
 
-## Open PRs
-- #1202 repo-assist/perf-sub-hashset (created 2026-08-29) - still holding per collaborator QA request.
-- #1234 repo-assist/improve-stackarray3-combine (created 2026-08-30) - still holding.
-- #1270 repo-assist/test-stackarray3-coverage (created 2026-08-31) - still holding.
-- NEW: repo-assist/fix-dispatchthrottle-leading-error-handling (created 2026-09-05) - fixes
-  DispatchThrottle.Dispatch leading-edge emit exceptions not being routed to onError, with
-  regression test + CHANGELOG entry. Build/tests green.
-- NOTE: repo-assist/fix-summary-xamarinforms-links (#1280, docs fix) and
-  repo-assist/eng-pin-github-script-action-v2 from prior runs are no longer showing in the open
-  PR list as of this run (likely merged/closed) — issue #1299 (leftover from a failed push) can
-  likely be closed by maintainer if not already.
+## Open PRs (4, all repo-assist, all still open/draft except #1270 which is non-draft)
+- #1202 repo-assist/perf-sub-hashset (created 2026-08-29) - holding per QA freeze.
+- #1234 repo-assist/improve-stackarray3-combine (created 2026-08-30) - holding per QA freeze.
+- #1270 repo-assist/test-stackarray3-coverage (created 2026-08-31) - holding per QA freeze (not
+  draft, but no CI action needed — no failures reported).
+- #1303 repo-assist/fix-dispatchthrottle-leading-error-handling (created 2026-09-05) - fixes
+  DispatchThrottle.Dispatch leading-edge emit exceptions not routed to onError. Build/tests green
+  (43/43) at creation. Holding per QA freeze; had 1 comment (from collaborator, generic hold
+  notice likely) as of this run — not re-checked in detail since freeze already understood.
 
 ## Backlog / follow-ups for next run
-- Suggest maintainer lift the QA/canary hold on #1202/#1234/#1270 (waiting since late August) or
-  provide an update — flagged again in the Monthly Activity issue.
-- Verify whether the new fix-dispatchthrottle PR shows up correctly next run (confirm push succeeded).
-- Test coverage gaps: Memo.fs, Reconciler.fs, WidgetDiff.fs still have no dedicated test files
-  (candidate for Task 9 next time it's selected).
-- No open bug/help-wanted/good-first-issue labelled issues currently — Task 3 will need to fall
-  back to Task 2 or investigate newly filed issues in future runs.
+- **PRIMARY**: Check whether NuGet 10.0.1 has been released and validated (issue #1304 mentions
+  #1177 and #1286 as the final validation gates). If released+validated, the freeze on reviewing
+  repo-assist PRs/issues should be considered lifted — resume normal Task 2-10 activity, and
+  specifically re-surface #1202/#1234/#1270/#1303 for maintainer review in the Monthly Activity
+  issue (already listed).
+- Until confirmed lifted, continue to avoid creating new PRs/issue comments to prevent backlog
+  growth — but Task 11 (Monthly Activity update) should still run every run to keep the
+  freeze/status visible to maintainers.
+- Test coverage gaps: Memo.fs, Reconciler.fs, WidgetDiff.fs still have no dedicated test files —
+  candidate for Task 9 once the freeze lifts.
+- No open bug/help-wanted/good-first-issue labelled issues currently.
 
 ## Comments made log
-- No new issue comments made this run (Task 2: nothing warranted comment).
+- No new issue comments made this run (deferred per freeze).
 
 ## PRs created log
 - repo-assist/perf-sub-hashset (2026-08-29): Sub.fs HashSet optimization + tests. Still open (#1202).
@@ -64,5 +65,6 @@ Selected: [2 (Issue Investigation and Comment), 3 (Issue Investigation and Fix),
 - repo-assist/eng-pin-github-script-action-v2 (2026-09-04): pin actions/github-script to commit
   SHA, no longer in open PR list (likely merged; superseded issue #1299).
 - repo-assist/fix-dispatchthrottle-leading-error-handling (2026-09-05): Fixed DispatchThrottle
-  leading-edge Dispatch not routing emit exceptions to onError (inconsistent with timer callback
-  and FlushAsync). Added regression test + CHANGELOG entry. Build/tests green (43/43).
+  leading-edge Dispatch not routing emit exceptions to onError. Added regression test + CHANGELOG
+  entry. Build/tests green (43/43). Still open (#1303), holding per QA freeze.
+- No new PRs created this run (2026-09-06) — freeze in effect.
