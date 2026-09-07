@@ -1,6 +1,6 @@
 # RadioButton
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [Layout](https://fabulous-dev.github.io/Fabulous/v2/api/layouts/layout/) -> [TemplatedView](https://fabulous-dev.github.io/Fabulous/v2/api/layouts/templated-view/)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md) -> [View](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/view.md/) -> [Layout](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/layouts/layout.md) -> [TemplatedView](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/layouts/templatedview.md)\
 **Xamarin.Forms documentation:** RadioButton [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.radiobutton) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/radiobutton)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/radiobutton).

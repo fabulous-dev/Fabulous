@@ -1,9 +1,9 @@
 # ListView
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/collections/items-view/)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md) -> [View](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/view.md) -> [ItemView](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/collections/itemsview.md)\
 **Xamarin.Forms documentation:** ListView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.listview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview)
 
-For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview). [Virtualized Collections](https://fabulous-dev.github.io/Fabulous/v2/architecture/virtualized-collections/)
+For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview). 
 
 ### Constructors&#x20;
 

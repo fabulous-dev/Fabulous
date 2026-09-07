@@ -1,6 +1,6 @@
 # FormattedLabel
 
-**Inheritance:** [Element](https://fabulous-dev.github.io/Fabulous/v2/api/controls/element/) -> [NavigableElement](https://fabulous-dev.github.io/Fabulous/v2/api/navigable-element/) -> [VisualElement](https://fabulous-dev.github.io/Fabulous/v2/api/visual-element/) -> [View](https://fabulous-dev.github.io/Fabulous/v2/api/view/) -> [Label](https://fabulous-dev.github.io/Fabulous/v2/api/controls/label/)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md) -> [View](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/view.md) -> [Label](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/controls/label.md)\
 **Xamarin.Forms documentation:** FormattedLabel [API](https://todo/) / [Guide](https://todo/)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://todo/).

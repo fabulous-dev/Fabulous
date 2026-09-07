@@ -38,7 +38,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ```fsharp
 let cookies = CookieContainer()
 
-WebView("https://fabulous.dev")
+WebView("https://fabulous-dev.github.io/Fabulous/")
     .canGoBack(false) 
     .canGoForward(true)
     .cookies(cookies)
@@ -54,6 +54,6 @@ WebView("https://fabulous.dev")
 ```fsharp
 let webViewRef = ViewRef<WebView>()
 
-WebView("https://fabulous.dev")
+WebView("https://fabulous-dev.github.io/Fabulous/")
     .reference(webViewRef)
 ```
