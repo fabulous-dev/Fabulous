@@ -1,6 +1,6 @@
 # ProgressBar
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/) -> [InputView](https://docs.fabulous.dev/v2/api/controls/input-view/)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md) -> [View](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/view.md) -> [InputView](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/controls/inputview.md)\
 **Xamarin.Forms documentation:** ProgressBar [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.progressbar) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/progressbar)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/progressbar).
@@ -29,7 +29,7 @@ ProgressBar(0.5, 1000, Easing.CubicInOut)
     .progressColor(Color.Red.ToFabColor(), dark = Color.Blue.ToFabColor())
 ```
 
-#### Get access to the underlying Xamarin.Forms.ProgressBar [#](https://docs.fabulous.dev/v2/api/controls/progress-bar/#get-access-to-the-underlying-xamarinformsprogressbar) <a href="#get-access-to-the-underlying-xamarinformsprogressbar" id="get-access-to-the-underlying-xamarinformsprogressbar"></a>
+#### Get access to the underlying Xamarin.Forms.ProgressBar [#](https://fabulous-dev.github.io/Fabulous/v2/api/controls/progress-bar/#get-access-to-the-underlying-xamarinformsprogressbar) <a href="#get-access-to-the-underlying-xamarinformsprogressbar" id="get-access-to-the-underlying-xamarinformsprogressbar"></a>
 
 ```fsharp
 let progressBarRef = ViewRef<ProgressBar>()

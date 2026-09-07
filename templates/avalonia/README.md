@@ -48,4 +48,4 @@ Note: Browser is not supported in multi project template.
 
 ### Documentation
 
-Documentation can be found at https://docs.fabulous.dev/v2/avalonia
+Documentation can be found at https://fabulous-dev.github.io/Fabulous/docs/tutorials/avalonia/ and https://fabulous-dev.github.io/Fabulous/docs/avalonia/get-started/.

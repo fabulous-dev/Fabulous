@@ -1,6 +1,6 @@
 # WebView
 
-**Inheritance:** [Element](https://docs.fabulous.dev/v2/api/controls/element/) -> [NavigableElement](https://docs.fabulous.dev/v2/api/navigable-element/) -> [VisualElement](https://docs.fabulous.dev/v2/api/visual-element/) -> [View](https://docs.fabulous.dev/v2/api/view/) -> [View](https://docs.fabulous.dev/v2/api/collections/items-view/)\
+**Inheritance:** [Element](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/element.md) -> [NavigableElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/navigableelement.md) -> [VisualElement](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/visualelement.md) -> [View](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/view.md) -> [ItemView](https://github.com/fabulous-dev/Fabulous/blob/main/docs/api/maui/collections/itemsview.md)\
 **Xamarin.Forms documentation:** WebView [API](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.webview) / [Guide](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/webview)
 
 For details on how the control actually works, please refer to the [Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/webview)
@@ -38,7 +38,7 @@ For details on how the control actually works, please refer to the [Xamarin.Form
 ```fsharp
 let cookies = CookieContainer()
 
-WebView("https://fabulous.dev")
+WebView("https://fabulous-dev.github.io/Fabulous/")
     .canGoBack(false) 
     .canGoForward(true)
     .cookies(cookies)
@@ -54,6 +54,6 @@ WebView("https://fabulous.dev")
 ```fsharp
 let webViewRef = ViewRef<WebView>()
 
-WebView("https://fabulous.dev")
+WebView("https://fabulous-dev.github.io/Fabulous/")
     .reference(webViewRef)
 ```

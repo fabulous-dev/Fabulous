@@ -7,22 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle; added unit tests covering unchanged, added/removed, and duplicate subscription IDs (Repo Assist).
+
+## [10.0.1] - 2026-09-07
+
 ### Added
-- Document how to build, run, and debug the generated MAUI template's `net10.0-windows10.0.19041.0` target in the MAUI tutorial ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
+
+- Document how to build, run, and debug the generated MAUI template's `net10.0-windows10.0.19041.0` target in the MAUI tutorial (#1171).
 
 ### Changed
-- Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle; added unit tests covering unchanged, added/removed, and duplicate subscription IDs (Repo Assist).
-- Fix the MAUI get-started documentation to reference `net10.0-android` / `net10.0-ios` instead of the retired `net7.0-android` / `net7.0-ios` TFMs (Repo Assist, [#1174](https://github.com/fabulous-dev/Fabulous/issues/1174)).
-- Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline ([#1148](https://github.com/fabulous-dev/Fabulous/issues/1148)).
+
+- Fix the MAUI get-started documentation to reference `net10.0-android` / `net10.0-ios` instead of the retired `net7.0-android` / `net7.0-ios` TFMs (Repo Assist, #1174).
+- Document the triage of the 60 `FS0044` deprecation warnings from the MAUI Release build in `.github/RELEASE_CHECKLIST.md`; none of the flagged `EntryCell`, `SwitchCell`, `Page.IsBusy`, or per-edge safe-area APIs have been removed from the supported MAUI 10 baseline (#1148).
 - Mark the excluded, Xamarin-era legacy documentation trees under `docs/advanced`, `docs/basics`, and `docs/samples-and-tutorials` with an unmistakable legacy content notice (Repo Assist).
 - Require an entry in `CHANGELOG.md` for every pull request, documented in `AGENTS.md` (Repo Assist).
+- Replace retired docs.fabulous.dev links across `docs/` with the current documentation site at https://fabulous-dev.github.io/Fabulous/ (Repo Assist, #1207).
+- Pin `actions/github-script` to a commit SHA (v9.0.0) in `pr-artifacts.yml` for supply-chain safety (#1301, #1300).
 
 ### Fixed
-- Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, [#1170](https://github.com/fabulous-dev/Fabulous/issues/1170)).
-- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
-- Bump the `fabulous-avalonia` template's default `FSharp.Core` package version from the stale `8.0.301` to `10.0.100`, matching the `fabulous-mauicontrols` template ([#1179](https://github.com/fabulous-dev/Fabulous/issues/1179)).
-- Update the website home page's "Choose your own adventure" section to link to the current MAUI and Avalonia get-started docs instead of the archived `Fabulous.MauiControls`, `Fabulous.XamarinForms`, and `Fabulous.Avalonia` repositories, and remove the outdated paid/commercial support section (Repo Assist, [#1166](https://github.com/fabulous-dev/Fabulous/issues/1166)).
-- Fix `NU1605` package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with `Fabulous.MauiControls`'s minimum required version ([#1171](https://github.com/fabulous-dev/Fabulous/issues/1171)).
+
+- Default the `fabulous-mauicontrols` template's Windows target to `RuntimeIdentifier=win-x64` / `Platform=x64` (when not already set by the caller) so `dotnet publish` for `net10.0-windows10.0.19041.0` no longer fails with `error: Packaged .NET applications with an app host exe cannot be ProcessorArchitecture neutral`, and document the workaround in the deployment guide (Repo Assist, #1286).
+- Regenerate `docs/api/source-inventory.md` via `eng/monorepo/generate-api-reference.py` so the Build website CI check passes again (Repo Assist, #1283).
+- Rename `website/themes/fabulous.dev-theme` to `website/themes/fabulous-theme` and update the SCSS `@import` paths in `website/assets/sass/root*.scss` accordingly, matching `theme = 'fabulous-theme'` already set in `website/config.toml` (Repo Assist, #1264).
+- Fix `StackArray3.sortInPlace` using the wrong key (`v1` instead of `v2`) for the third element when sorting a 3-element `StackArray3`, which could produce an incorrectly ordered result (Repo Assist, #1170).
+- Fix NU1605 package downgrade warnings when building a new project from the MAUI template by aligning the template's default `Microsoft.Maui.Controls`/`Microsoft.Maui.Controls.Compatibility` version with Fabulous.MauiControls's minimum required version (#1171).
+- Bump the `fabulous-avalonia` template's default `FSharp.Core` package version from the stale 8.0.301 to 10.0.100, matching the `fabulous-mauicontrols` template (#1179).
+- Update the website home page's "Choose your own adventure" section to link to the current MAUI and Avalonia get-started docs instead of the archived Fabulous.MauiControls, Fabulous.XamarinForms, and Fabulous.Avalonia repositories, and remove the outdated paid/commercial support section (Repo Assist, #1166).
 
 ## [10.0.0] - 2026-08-24
 
@@ -285,7 +297,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/3.0.0-pre23...HEAD
+[10.0.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.1
+[10.0.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.0
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/10.0.1...HEAD
 [3.0.0-pre23]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre23
 [3.0.0-pre22]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre22
 [3.0.0-pre21]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre21

@@ -1,7 +1,7 @@
-baseURL = 'https://fabulous.dev'
+baseURL = 'https://fabulous-dev.github.io/Fabulous/'
 languageCode = 'en-us'
 title = 'Fabulous - Build reliable multi-platform apps effortlessly'
-theme = 'fabulous.dev-theme'
+theme = 'fabulous-theme'
 
 [params]
     Tagline = 'Build reliable multi-platform apps effortlessly'
