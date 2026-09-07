@@ -21,9 +21,9 @@ Avalonia renamed watermark and window-decoration APIs. Update Fabulous modifiers
 | --- | --- |
 | `watermark` | `placeholderText` |
 | `useFloatingWatermark` | `useFloatingPlaceholder` |
-| `extendClientAreaChromeHints` | `windowDecorations` |
+| `systemDecorations` | `windowDecorations` (old name kept as compat alias, now accepts `WindowDecorations`) |
 
-The `systemDecorations` modifier remains available but now accepts `WindowDecorations`. Native menu item `toggleType` now accepts `MenuItemToggleType`.
+`extendClientAreaChromeHints` has no direct successor — it was removed by Avalonia 12 with no replacement modifier. Combine `windowDecorations` with `extendClientAreaToDecorationsHint` to achieve the equivalent effect. Native menu item `toggleType` now accepts `MenuItemToggleType`.
 
 ## Event and binding types
 

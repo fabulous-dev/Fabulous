@@ -28,6 +28,12 @@
 
     <TargetPlatformIdentifier Condition=" $(TargetPlatformIdentifier) == '' ">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</TargetPlatformIdentifier>
 
+    <!-- A packaged Windows app host cannot be built/published as ProcessorArchitecture-neutral (AnyCPU),
+         so a concrete RuntimeIdentifier and Platform are required for `dotnet publish` on the Windows target.
+         Only set a default when the caller hasn't already specified one (e.g. via -p:RuntimeIdentifier=...). -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND $(TargetPlatformIdentifier) == 'windows'">win-x64</RuntimeIdentifier>
+    <Platform Condition="'$(Platform)' == '' AND $(TargetPlatformIdentifier) == 'windows'">x64</Platform>
+
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'ios'">14.2</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$(TargetPlatformIdentifier) == 'android'">21.0</SupportedOSPlatformVersion>
