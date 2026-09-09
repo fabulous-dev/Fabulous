@@ -29,6 +29,8 @@ The generated project contains platform hosts and an `App.fs` with the applicati
 
 ## Debugging on Windows from Visual Studio
 
+*This section applies when running Visual Studio directly on a **Windows Machine** to debug the `net10.0-windows10.0.19041.0` target.*
+
 Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug/Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier/Platform` set in the `.fsproj`. It defaults to `Any CPU`. Because a packaged Windows app host cannot be `Any CPU`, leaving this at the default causes deployment to fail.
 
 Therefore, before debugging on Windows in Visual Studio you shall:
