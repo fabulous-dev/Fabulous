@@ -27,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pin `actions/github-script` to a commit SHA (v9.0.0) in `pr-artifacts.yml` for supply-chain safety (#1301, #1300).
 
 ### Fixed
-
 - Default the `fabulous-mauicontrols` template's Windows target to `RuntimeIdentifier=win-x64` / `Platform=x64` (when not already set by the caller) so `dotnet publish` for `net10.0-windows10.0.19041.0` no longer fails with `error: Packaged .NET applications with an app host exe cannot be ProcessorArchitecture neutral`, and document the workaround in the deployment guide (Repo Assist, #1286).
 - Regenerate `docs/api/source-inventory.md` via `eng/monorepo/generate-api-reference.py` so the Build website CI check passes again (Repo Assist, #1283).
 - Rename `website/themes/fabulous.dev-theme` to `website/themes/fabulous-theme` and update the SCSS `@import` paths in `website/assets/sass/root*.scss` accordingly, matching `theme = 'fabulous-theme'` already set in `website/config.toml` (Repo Assist, #1264).
