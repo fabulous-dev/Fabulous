@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add unit tests covering `WidgetDiff.ScalarChanges` diffing (Added/Removed/Updated cases, empty prev/next, and the `SkipRepeatingScalars` duplicate-key behavior) (Repo Assist).
+
 ## [10.0.1] - 2026-09-07
 
 ### Added
