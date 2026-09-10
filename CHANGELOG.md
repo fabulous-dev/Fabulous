@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist).
+
 ## [10.0.1] - 2026-09-07
 
 ### Added
