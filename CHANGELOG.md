@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist).
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
