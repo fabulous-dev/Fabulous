@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add unit tests for `WidgetDiff.WidgetChanges` covering Added/Removed/Updated/ReplacedBy cases, empty prev/next, no-op on identical widgets, `canReuseView` true/false branching, and disjoint attribute sets (Repo Assist).
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
