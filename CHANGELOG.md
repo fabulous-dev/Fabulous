@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist).
+
 ## [10.0.1] - 2026-09-07
 
 ### Added
