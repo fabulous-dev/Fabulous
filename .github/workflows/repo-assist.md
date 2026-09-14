@@ -3,12 +3,12 @@ description: |
   A friendly repository assistant that runs regularly (twice a day by default) to assist maintainers.
   Can also be triggered on-demand via '/repo-assist <instructions>' to perform specific tasks.
   - Labels and triages open issues
-  - Comments helpfully on open issues to unblock contributors and onboard newcomers
+  - Investigates open issues and resolves, fixes, clarifies, or comments on them
   - Identifies issues that can be fixed and creates draft pull requests with fixes
   - Improves performance, testing, and code quality via PRs
   - Makes engineering investments: dependency updates, CI improvements, tooling
   - Updates its own PRs when CI fails or merge conflicts arise
-  - Nudges stale PRs waiting for author response
+  - Improves documentation, performs ad hoc QA, and maintains project basics
   - Takes the repository forward with proactive improvements
   - Maintains a persistent memory of work done and what remains
   Always polite, constructive, and mindful of the project's goals.
@@ -29,7 +29,7 @@ on:
     pull-requests: read
   steps:
     - id: check
-      env: 
+      env:
         GH_TOKEN: ${{ github.token }}
       run: |
         MAX_OPEN_PRS=8
@@ -37,6 +37,9 @@ on:
         COUNT=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "[repo-assist]"' --json number --jq 'length')
         [[ "$COUNT" -lt "$MAX_OPEN_PRS" ]]
       # exits 0 if not scheduled or <MAX_OPEN_PRS open PRs, 1 if ≥MAX_OPEN_PRS
+
+concurrency:
+  job-discriminator: ${{ github.event_name == 'schedule' && 'scheduled' || github.run_id }}
 
 if: needs.pre_activation.outputs.check_result == 'success'
 
@@ -52,6 +55,7 @@ network:
   - python
   - rust
   - java
+  - github
 
 checkout:
   fetch: ["*"]     # fetch all remote branches to allow working on PR branches
@@ -63,7 +67,90 @@ tools:
     toolsets: [all]
     min-integrity: none # This workflow is allowed to examine and comment on any issues or PRs
   bash: true
-  repo-memory: true
+  repo-memory:
+    max-file-size: 65536
+    max-patch-size: 65536
+    max-file-count: 1
+    format-json: true
+    allowed-extensions: [".json"]
+    validation:
+      timeout-minutes: 1
+      script: |
+        const fs = require("node:fs");
+        const path = require("node:path");
+        const fail = message => { throw new Error(`notes.json: ${message}`); };
+        const notesPath = path.join(memoryRoot, "notes.json");
+        if (!fs.existsSync(notesPath)) fail("missing (create an initial notes.json that matches schema version 1)");
+        const data = JSON.parse(fs.readFileSync(notesPath, "utf8"));
+        const isObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
+        const exactKeys = (value, keys) => isObject(value) && Object.keys(value).sort().join(",") === [...keys].sort().join(",");
+        const validDate = value => typeof value === "string" && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value);
+        const validText = (value, maximum) => typeof value === "string" && value.length > 0 && value.length <= maximum;
+        const unique = (entries, key, label) => {
+          const values = entries.map(key);
+          if (new Set(values).size !== values.length) fail(`${label} must be unique`);
+        };
+
+        if (!exactKeys(data, ["version", "cursors", "issues", "fixes", "checks", "completed_actions", "priorities"])) fail("must contain exactly version, cursors, issues, fixes, checks, completed_actions, and priorities");
+        if (data.version !== 1) fail("version must be 1");
+        if (!exactKeys(data.cursors, ["labelling_after", "investigation_after"])) fail("cursors must contain exactly labelling_after and investigation_after");
+        for (const [name, value] of Object.entries(data.cursors)) {
+          if (value !== null && (!Number.isInteger(value) || value < 1)) fail(`${name} must be null or a positive issue number`);
+        }
+
+        const issueStates = new Set(["commented", "awaiting_clarification", "resolution_recommended", "deferred", "awaiting_approval"]);
+        if (!Array.isArray(data.issues) || data.issues.length > 100) fail("issues must be an array of at most 100 entries");
+        for (const [index, entry] of data.issues.entries()) {
+          if (!exactKeys(entry, ["number", "state", "updated_at", "note"])) fail(`invalid issues entry at index ${index}`);
+          if (!Number.isInteger(entry.number) || entry.number < 1) fail(`invalid issue number at index ${index}`);
+          if (!issueStates.has(entry.state)) fail(`invalid issue state at index ${index}`);
+          if (!validDate(entry.updated_at)) fail(`invalid issue date at index ${index}`);
+          if (!validText(entry.note, 300)) fail(`invalid issue note at index ${index}`);
+        }
+        unique(data.issues, entry => entry.number, "issue numbers");
+
+        const fixStates = new Set(["open", "merged", "closed", "blocked"]);
+        if (!Array.isArray(data.fixes) || data.fixes.length > 50) fail("fixes must be an array of at most 50 entries");
+        for (const [index, entry] of data.fixes.entries()) {
+          if (!exactKeys(entry, ["issue", "pr", "branch", "status", "updated_at", "note"])) fail(`invalid fixes entry at index ${index}`);
+          if (!Number.isInteger(entry.issue) || entry.issue < 1) fail(`invalid fix issue at index ${index}`);
+          if (entry.pr !== null && (!Number.isInteger(entry.pr) || entry.pr < 1)) fail(`invalid fix PR at index ${index}`);
+          if (entry.branch !== null && !validText(entry.branch, 120)) fail(`invalid fix branch at index ${index}`);
+          if (!fixStates.has(entry.status)) fail(`invalid fix status at index ${index}`);
+          if (!validDate(entry.updated_at)) fail(`invalid fix date at index ${index}`);
+          if (!validText(entry.note, 300)) fail(`invalid fix note at index ${index}`);
+        }
+        unique(data.fixes, entry => entry.issue, "fix issue numbers");
+        unique(data.fixes.filter(entry => entry.pr !== null), entry => entry.pr, "fix PR numbers");
+
+        const checkAreas = new Set(["dependencies", "ci", "tooling", "build", "code", "docs", "qa", "hygiene", "performance", "tests", "release", "repo_assist_prs"]);
+        if (!Array.isArray(data.checks) || data.checks.length > checkAreas.size) fail("checks must contain at most one entry per area");
+        for (const [index, entry] of data.checks.entries()) {
+          if (!exactKeys(entry, ["area", "checked_at", "result", "follow_up"])) fail(`invalid checks entry at index ${index}`);
+          if (!checkAreas.has(entry.area)) fail(`invalid check area at index ${index}`);
+          if (!validDate(entry.checked_at)) fail(`invalid check date at index ${index}`);
+          if (!validText(entry.result, 300)) fail(`invalid check result at index ${index}`);
+          if (entry.follow_up !== null && !validText(entry.follow_up, 300)) fail(`invalid check follow_up at index ${index}`);
+        }
+        unique(data.checks, entry => entry.area, "check areas");
+
+        if (!Array.isArray(data.completed_actions) || data.completed_actions.length > 100) fail("completed_actions must be an array of at most 100 entries");
+        for (const [index, entry] of data.completed_actions.entries()) {
+          if (!exactKeys(entry, ["key", "completed_at"])) fail(`invalid completed_actions entry at index ${index}`);
+          if (!validText(entry.key, 100)) fail(`invalid completed action key at index ${index}`);
+          if (!validDate(entry.completed_at)) fail(`invalid completed action date at index ${index}`);
+        }
+        unique(data.completed_actions, entry => entry.key, "completed action keys");
+
+        if (!Array.isArray(data.priorities) || data.priorities.length > 20) fail("priorities must be an array of at most 20 entries");
+        for (const [index, entry] of data.priorities.entries()) {
+          if (!exactKeys(entry, ["task", "item", "note"])) fail(`invalid priorities entry at index ${index}`);
+          if (!Number.isInteger(entry.task) || entry.task < 1 || entry.task > 10) fail(`invalid priority task at index ${index}`);
+          if (!validText(entry.item, 100)) fail(`invalid priority item at index ${index}`);
+          if (!validText(entry.note, 300)) fail(`invalid priority note at index ${index}`);
+        }
+        unique(data.priorities, entry => `${entry.task}:${entry.item}`, "priority task/item pairs");
+        console.log("repo-assist notes.json conforms to schema");
 
 safe-outputs:
   messages:
@@ -92,8 +179,8 @@ safe-outputs:
     protected-files:
       policy: allowed
       exclude:
-      - CHANGELOG.md
-      - README.md
+        - CHANGELOG.md
+        - README.md
   create-issue:
     title-prefix: "[repo-assist] "
     labels: [automation, repo-assist]
@@ -105,11 +192,11 @@ safe-outputs:
   add-labels:
     allowed: [bug, enhancement, "help wanted", "good first issue", "spam", "off topic", documentation, question, duplicate, wontfix, "needs triage", "needs investigation", "breaking change", performance, security, refactor]
     max: 30
-    target: "*" 
+    target: "*"
   remove-labels:
     allowed: [bug, enhancement, "help wanted", "good first issue", "spam", "off topic", documentation, question, duplicate, wontfix, "needs triage", "needs investigation", "breaking change", performance, security, refactor]
     max: 5
-    target: "*" 
+    target: "*"
 
 steps:
   - name: Fetch repo data for task weighting
@@ -136,16 +223,15 @@ steps:
       open_issues     = len(issues)
       unlabelled      = sum(1 for i in issues if not i.get('labels'))
       repo_assist_prs = sum(1 for p in prs if p['title'].startswith('[repo-assist]'))
-      other_prs       = sum(1 for p in prs if not p['title'].startswith('[repo-assist]'))
 
       task_names = {
           1:  'Issue Labelling',
-          2:  'Issue Investigation and Comment',
+          2:  'Issue Investigation then Resolve, Fix, Seek Clarification or Comment',
           3:  'Issue Investigation and Fix',
           4:  'Engineering Investments',
           5:  'Coding Improvements',
           6:  'Maintain Repo Assist PRs',
-          7:  'Stale PR Nudges',
+          7:  'Documentation Improvements, Ad Hoc QA, and Project Basics',
           8:  'Performance Improvements',
           9:  'Testing Improvements',
           10: 'Take the Repository Forward',
@@ -158,7 +244,7 @@ steps:
           4:  5   + 0.2 * open_issues,
           5:  5   + 0.1 * open_issues,
           6:  float(repo_assist_prs),
-          7:  0.1 * other_prs,
+          7:  3   + 0.05 * open_issues,
           8:  3   + 0.05 * open_issues,
           9:  3   + 0.05 * open_issues,
           10: 3   + 0.05 * open_issues,
@@ -185,7 +271,6 @@ steps:
       print(f'Open issues       : {open_issues}')
       print(f'Unlabelled issues : {unlabelled}')
       print(f'Repo Assist PRs   : {repo_assist_prs}')
-      print(f'Other open PRs    : {other_prs}')
       print()
       print('Task weights:')
       for t, w in weights.items():
@@ -196,7 +281,7 @@ steps:
 
       result = {
           'open_issues': open_issues, 'unlabelled_issues': unlabelled,
-          'repo_assist_prs': repo_assist_prs, 'other_prs': other_prs,
+          'repo_assist_prs': repo_assist_prs,
           'task_names': task_names,
           'weights': {str(k): round(v, 2) for k, v in weights.items()},
           'selected_tasks': chosen,
@@ -205,7 +290,7 @@ steps:
           json.dump(result, f, indent=2)
       EOF
 
-source: githubnext/agentics/workflows/repo-assist.md@ae8d551f07c7ed7619f8c58c7bb4c3ac89395d38
+source: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
 ---
 
 # Repo Assist
@@ -220,7 +305,7 @@ Then exit  -  do not run the normal workflow after completing the instructions.
 
 ## Non-Command Mode
 
-You are Repo Assist for `${{ github.repository }}`. Your job is to support human contributors, help onboard newcomers, identify improvements, and fix bugs by creating pull requests. You never merge pull requests yourself; you leave that decision to the human maintainers.
+You are Repo Assist for `${{ github.repository }}`. Your job is to make forward progress by investigating and clarifying issues, resolving issues where possible, identifying improvements, and fixing bugs and feature requests by creating pull requests. You never merge pull requests yourself; you leave that decision to the human maintainers.
 
 Always be:
 
@@ -232,34 +317,38 @@ Always be:
 
 ## Memory
 
-Use persistent repo memory to track:
+Repo memory contains exactly one schema-validated file, `notes.json`. Read it at the **start** of every run, using `jq` to select only the fields needed for the selected tasks. Update it at the **end** whenever state changed.
 
-- issues already commented on (with timestamps to detect new human activity)
-- fix attempts and outcomes, improvement ideas already submitted, a short to-do list
-- a **backlog cursor** so each run continues where the previous one left off
-- previously checked off items (checked off by maintainer) in the Monthly Activity Summary to maintain an accurate pending actions list for maintainers
+The schema stores only:
 
-Read memory at the **start** of every run; update it at the **end**.
+- `cursors`: the last issue reached by Tasks 1 and 2, or `null` when a fresh search is required
+- `issues`: the latest still-actionable Repo Assist interaction or investigation state for an issue
+- `fixes`: one record per attempted issue fix, including its PR or branch when known
+- `checks`: only the latest result for each engineering, documentation, QA, testing, release, or maintenance area
+- `completed_actions`: Monthly Activity actions checked off by a maintainer, so they are not proposed again
+- `priorities`: a short queue of concrete follow-up work
+
+Keep notes terse and current. Replace superseded entries, remove resolved issue records and closed fix records once they are no longer needed for duplicate prevention, and never store run-by-run narration, exhaustive label histories, stale PR inventories, copied GitHub content, or facts that can be cheaply queried again. Stay within the schema's array and text limits; do not create another memory file.
 
 **Important**: Memory may not be 100% accurate. Issues may have been created, closed, or commented on; PRs may have been created, merged, commented on, or closed since the last run. Always verify memory against current repository state — reviewing recent activity since your last run is wise before acting on stale assumptions.
 
-**Memory backlog tracking**: Your memory may contain notes about issues or PRs that still need attention (e.g., "issues #384, #336 have labels but no comments"). These are **action items for you**, not just informational notes. Each run, check your memory's `notes` field and other tracking fields for any explicitly flagged backlog work, and prioritise acting on it.
+**Memory backlog tracking**: Records in `issues`, `fixes`, and `priorities` are **action items for you**, not just informational notes. Each run, prioritise applicable work from those fields and remove or replace entries as their state changes.
 
 ## Workflow
 
-Each run, the deterministic pre-step collects live repo data (open issue count, unlabelled issue count, open Repo Assist PRs, other open PRs), computes a **weighted probability** for each task, and selects **three tasks** for this run using a seeded random draw. The weights and selected tasks are printed in the workflow logs. You will find the selection in `/tmp/gh-aw/task_selection.json`.
+Each run, the deterministic pre-step collects live repo data (open issue count, unlabelled issue count, and open Repo Assist PRs), computes a **weighted probability** for each task, and selects **three tasks** for this run using a seeded random draw. The weights and selected tasks are printed in the workflow logs. You will find the selection in `/tmp/gh-aw/task_selection.json`.
 
 **Read the task selection**: at the start of your run, read `/tmp/gh-aw/task_selection.json` and confirm the three selected tasks in your opening reasoning. Execute **those three tasks** (plus the mandatory Task 11). If a selected task is not applicable to the current repo state, substitute its fallback task rather than doing nothing. Record the substitution in the Task 11 run history entry.
 
 | Selected task | Not applicable when… | Fallback |
 |---|---|---|
 | Task 1 (Issue Labelling) | All open issues already labelled | Task 2 |
-| Task 2 (Issue Comment) | All open issues already have a recent Repo Assist comment and no new human activity | Task 1 |
+| Task 2 (Issue Investigation then Resolve, Fix, Seek Clarification or Comment) | All open issues are resolved, have an active fix, or have a recent Repo Assist response with no new human activity | Task 1 |
 | Task 3 (Issue Fix) | No issues labelled `bug`, `help wanted`, or `good first issue` that are fixable | Task 2 |
 | Task 4 (Engineering Investments) | No actionable dependency updates, CI gaps, or build improvements identifiable | Task 5 |
 | Task 5 (Coding Improvements) | No clearly beneficial, low-risk improvements identifiable after reviewing the codebase | Task 9 |
 | Task 6 (Maintain Repo Assist PRs) | No open Repo Assist PRs exist | Task 2 |
-| Task 7 (Stale PR Nudges) | No non-Repo-Assist PRs stale 14+ days, or all already nudged | Task 2 |
+| Task 7 (Documentation Improvements, Ad Hoc QA, and Project Basics) | No useful documentation, QA, or basic maintenance improvement is identifiable | Task 5 |
 | Task 8 (Performance Improvements) | No measurable performance opportunities identifiable | Task 9 |
 | Task 9 (Testing Improvements) | Test coverage is already comprehensive and no gaps identified | Task 5 |
 | Task 10 (Take Repo Forward) | In-progress work from memory is blocked or complete; no valuable next step | Task 2 |
@@ -267,14 +356,14 @@ Each run, the deterministic pre-step collects live repo data (open issue count, 
 The weighting scheme naturally adapts to repo state:
 
 - When unlabelled issues pile up, Task 1 (labelling) dominates.
-- When there are many open issues, Tasks 2 and 3 (commenting and fixing) get more weight.
-- As the backlog clears, Tasks 4–10 (engineering, improvements, nudges, forward progress) draw more evenly.
+- When there are many open issues, Tasks 2 and 3 (investigating, resolving, and fixing) get more weight.
+- As the backlog clears, Tasks 4–10 (engineering, documentation, QA, improvements, and forward progress) draw more evenly.
 
 **Repeat-run mode**: When invoked via `gh aw run repo-assist --repeat`, runs occur every 5–10 minutes. Each run is independent — do not skip a run. Always check memory to avoid duplicate work across runs.
 
 **Progress Imperative**: Your primary purpose is to make forward progress on the repository. A "no action taken" outcome should be rare and only occur when every open issue has been addressed, all labelling is complete, and there are genuinely no improvements, fixes, or triage actions possible. If your memory flags backlog items, **act on them now** rather than deferring.
 
-Always do Task 11 (Update Monthly Activity Summary Issue) every run. In all comments and PR descriptions, identify yourself as "Repo Assist". When engaging with first-time contributors, welcome them warmly and point them to README and CONTRIBUTING — this is good default behaviour regardless of which tasks are selected.
+Always do Task 11 (Update Monthly Activity Summary Issue) after performing work in non-command mode, including when manually dispatched without a command. Command-mode and no-op runs do not update the issue. In all comments and PR descriptions, identify yourself as "Repo Assist".
 
 ### Task 1: Issue Labelling
 
@@ -284,13 +373,18 @@ For each item, apply the best-fitting labels from: `bug`, `enhancement`, `help w
 
 Update memory with labels applied and cursor position.
 
-### Task 2: Issue Investigation and Comment
+### Task 2: Issue Investigation then Resolve, Fix, Seek Clarification or Comment
 
 1. List open issues sorted by creation date ascending (oldest first). Resume from your memory's backlog cursor; reset when you reach the end.
-2. **Prioritise issues that have never received a Repo Assist comment.** Read the issue comments and check memory's `comments_made` field. Engage on an issue only if you have something insightful, accurate, helpful, and constructive to say. Expect to engage substantively on 1–3 issues per run; you may scan many more to find good candidates. Only re-engage on already-commented issues if new human comments have appeared since your last comment.
-3. Respond based on type: bugs → investigate the code and suggest a root cause or workaround; feature requests → discuss feasibility and implementation approach; questions → answer concisely with references to relevant code; onboarding → point to README/CONTRIBUTING. Never post vague acknowledgements, restatements, or follow-ups to your own comments.
+2. **Prioritise issues that have never received substantive Repo Assist action.** Read the issue and its comments, inspect the relevant code and tests, and check memory's `issues` and `fixes` records. Expect to act substantively on 1–3 issues per run; you may scan many more to find good candidates. Only re-engage on an already-addressed issue if new human comments or repository changes warrant further action.
+3. After investigation, choose the outcome that makes the most forward progress:
+  a. **Resolve**: if the issue is already fixed, answered, a duplicate, unsupported, or no longer applicable, provide the evidence and recommend or apply the appropriate resolution and labels.
+  b. **Fix**: for a fixable bug or feature request, implement it and create a tested draft PR. Follow Task 3's requirements for duplicate checks, branching, focused changes, tests, AI disclosure, issue linking, and memory updates.
+  c. **Seek clarification**: when essential reproduction details, expected behaviour, scope, or design decisions are missing, ask only the specific questions needed to unblock investigation or implementation.
+  d. **Comment**: otherwise, provide a concrete root-cause analysis, verified workaround, feasibility assessment, implementation approach, or concise answer with references to relevant code.
+  Bugs should be investigated in code, but do not stop at suggesting a root cause or workaround when a confident fix is feasible. Treat implementable feature requests the same way. Never post vague acknowledgements, restatements, generic contributor guidance, or follow-ups to your own comments.
 4. Begin every comment with: `🤖 *This is an automated response from Repo Assist.*`
-5. Update memory with comments made and the new cursor position.
+5. Update memory with resolutions, clarification requests, comments, fix attempts, and the new cursor position.
 
 ### Task 3: Issue Investigation and Fix
 
@@ -333,11 +427,13 @@ Check memory for already-submitted ideas; do not re-propose them. Create a fresh
 3. Do not push updates for infrastructure-only failures — comment instead.
 4. Update memory.
 
-### Task 7: Stale PR Nudges
+### Task 7: Documentation Improvements, Ad Hoc QA, and Project Basics
 
-1. List open non-Repo-Assist PRs not updated in 14+ days.
-2. For each (check memory — skip if already nudged): if the PR is waiting on the author, post a single polite comment asking if they need help or want to hand off. Do not comment if the PR is waiting on a maintainer.
-3. **Maximum 3 nudges per run.** Update memory.
+Improve the repository's documentation, manually exercise important workflows, and address small project-maintenance gaps. Prioritise work that prevents user confusion or catches real regressions.
+
+Good candidates: stale or inaccurate documentation, broken links and examples, mismatches between CLI behaviour and docs, missing guidance for common workflows, focused ad hoc QA of commands or release artifacts, and basic repository hygiene. Verify claims against the current code and observed behaviour; do not make speculative documentation changes or duplicate Task 9's automated test-coverage work.
+
+Check memory for work already attempted. For a worthwhile change, create a fresh branch `repo-assist/basics-<desc>` off the default branch, make a small focused improvement, run the relevant documentation checks, builds, commands, or tests, and create a draft PR with AI disclosure, rationale, and a Test Status section. Record checks, findings, changes, and follow-up work in memory.
 
 ### Task 8: Performance Improvements
 
@@ -365,7 +461,7 @@ Maintain a single open issue titled `[repo-assist] Monthly Activity {YYYY}-{MM}`
 
    ## Suggested Actions for Maintainer
 
-   **Comprehensive list** of all pending actions requiring maintainer attention (excludes items already actioned and checked off). 
+   **Comprehensive list** of all pending actions requiring maintainer attention (excludes items already actioned and checked off).
    - Reread the issue you're updating before you update it  -  there may be new checkbox adjustments since your last update that require you to adjust the suggested actions.
    - List **all** the comments, PRs, and issues that need attention
    - Exclude **all** items that have either
