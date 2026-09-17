@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 
+### Changed
+
+- Bump the `Avalonia` package version from `12.1.1` to `12.1.2` in `Directory.Build.props` (Repo Assist).
+
 ## [10.0.1] - 2026-09-07
 
 ### Added
