@@ -30,6 +30,16 @@ dotnet new fabulous-avalonia -n MyApp
 
 Note: Browser is not supported in single project template.
 
+Note: this template's `TargetFrameworks` include `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so it requires the corresponding `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install) to be installed. If you only need a desktop app, use the desktop-only template below instead.
+
+#### Desktop Project
+
+Desktop project targets only `net10.0` and requires no mobile workloads. Use this if you only need a desktop app.
+
+```sh
+dotnet new fabulous-avalonia-desktop -n MyApp
+```
+
 #### Multi Project
 
 Multi project takes the platform-specific development and abstracts them into a multiple projects that can target Android, iOS, Desktop, Browser.
