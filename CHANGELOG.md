@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Bump the `Avalonia` package version from `12.1.1` to `12.1.2` in `Directory.Build.props` (Repo Assist).
+- Document that the `fabulous-avalonia` single-project template's `net10.0-android`/`net10.0-ios` target frameworks require the `android`/`ios` .NET workloads, and document the previously-unlisted desktop-only `fabulous-avalonia-desktop` template as a workload-free alternative, in the Avalonia tutorial, get-started guide, and templates README (Repo Assist, #1319).
 
 ## [10.0.1] - 2026-09-07
 
