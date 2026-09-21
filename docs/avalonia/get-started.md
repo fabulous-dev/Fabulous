@@ -42,7 +42,7 @@ In this folder, you'll find a project named `GetStartedApp`. This project uses t
 
 Note: Browser target is not supported in the single project template
 
-This template's `TargetFrameworks` include `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so `dotnet restore`/`dotnet new` will fail with an error like `NETSDK1147: ... workloads ... must be installed` unless the corresponding `android`/`ios`/`maci` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install) are installed. If you only need a desktop app, use the desktop-only template below instead, which has no mobile workload requirement.
+This template's `TargetFrameworks` include `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so `dotnet restore`/`dotnet new` will fail with an error like `NETSDK1147: ... workloads ... must be installed` unless the corresponding `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install) are installed. If you only need a desktop app, use the desktop-only template below instead, which has no mobile workload requirement.
 
 ## Create a desktop-only project
 
