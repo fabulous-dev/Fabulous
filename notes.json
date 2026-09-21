@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "cursors": {
+    "labelling_after": null,
+    "investigation_after": 1327
+  },
+  "issues": [
+    {
+      "number": 1304,
+      "state": "resolution_recommended",
+      "updated_at": "2026-09-21",
+      "note": "Human QA/canary summary; labelled documentation; maintainer TimLariviere replied thanking collaborator. No further action needed."
+    },
+    {
+      "number": 1162,
+      "state": "commented",
+      "updated_at": "2026-09-21",
+      "note": "QA tracking: rendering/lifecycle automation research posted. No new human activity since."
+    },
+    {
+      "number": 1163,
+      "state": "commented",
+      "updated_at": "2026-09-21",
+      "note": "QA tracking: accessibility automation research posted. No new human activity since."
+    },
+    {
+      "number": 1164,
+      "state": "commented",
+      "updated_at": "2026-09-21",
+      "note": "QA tracking: input/navigation automation research posted. No new human activity since."
+    },
+    {
+      "number": 1325,
+      "state": "deferred",
+      "updated_at": "2026-09-21",
+      "note": "Auto-managed [aw] Detection Runs tracking issue; explicitly says do not assign to an agent."
+    },
+    {
+      "number": 1327,
+      "state": "deferred",
+      "updated_at": "2026-09-21",
+      "note": "[aw] Repo Assist failed - engine terminated unexpectedly mid-run 2026-09-18. Infra/engine failure, not fixable from a normal run."
+    }
+  ],
+  "fixes": [],
+  "checks": [
+    {
+      "area": "tests",
+      "checked_at": "2026-09-21",
+      "result": "Added WidgetCollectionChanges/WidgetCollectionItemChanges unit tests (13 new, 63/63 total green), draft PR repo-assist/test-widgetdiff-widgetcollectionchanges. WidgetDiff.fs now fully covered.",
+      "follow_up": "Memo.fs and Reconciler.fs remain untested; good next Task 9/10 candidates."
+    },
+    {
+      "area": "dependencies",
+      "checked_at": "2026-09-14",
+      "result": "dotnet list package --outdated scoped per-fsproj works around missing maui-tizen workload; found and bumped FSharp.Core/Test.Sdk and Avalonia already.",
+      "follow_up": "MAUI/Avalonia-referencing package versions still unchecked this way; try src/avalonia/**/*.fsproj individually."
+    },
+    {
+      "area": "repo_assist_prs",
+      "checked_at": "2026-09-21",
+      "result": "9 open PRs (8 repo-assist + 1 human #1331). #1234 and #1315 now show merge conflicts against main; others clean or CI-pending.",
+      "follow_up": "Rebase #1234 and #1315 onto main next Task 6 run."
+    }
+  ],
+  "completed_actions": [],
+  "priorities": [
+    {
+      "task": 6,
+      "item": "Rebase PR 1234",
+      "note": "improve-stackarray3-combine now conflicts with main; needs rebase before merge."
+    },
+    {
+      "task": 6,
+      "item": "Rebase PR 1315",
+      "note": "eng-fsharp-core-testsdk-bump now conflicts with main; needs rebase before merge."
+    },
+    {
+      "task": 9,
+      "item": "Test Memo.fs",
+      "note": "Memo.fs (memoization widget) has no unit test coverage; next test-coverage candidate."
+    },
+    {
+      "task": 9,
+      "item": "Test Reconciler.fs",
+      "note": "Thin wrapper around WidgetDiff.create + node.ApplyDiff; no direct unit tests yet."
+    }
+  ]
+}
