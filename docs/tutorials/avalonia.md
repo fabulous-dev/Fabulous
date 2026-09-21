@@ -6,6 +6,8 @@ The template and standard Avalonia controls do not require a commercial control 
 
 ## Create and run
 
+The `fabulous-avalonia` template also targets `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so restoring it requires the `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install). Without them, `dotnet restore` fails with an error such as `NETSDK1147: ... workloads ... must be installed`. If you only need a desktop app, use `fabulous-avalonia-desktop` instead of `fabulous-avalonia` in the command below. It targets only `net10.0` and has no mobile workload requirement.
+
 ```bash
 dotnet new install Fabulous.Avalonia.Templates
 dotnet new fabulous-avalonia -n Counter
@@ -13,9 +15,6 @@ cd Counter
 dotnet restore
 dotnet run -c Debug
 ```
-
-The `fabulous-avalonia` template also targets `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so `dotnet restore`/`dotnet new` fails with an error such as `NETSDK1147: ... workloads ... must be installed` unless the `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install) are installed. If you only need a desktop app, use `dotnet new fabulous-avalonia-desktop -n Counter` instead, which targets only `net10.0` and has no mobile workload requirement.
-
 Confirm that template installation selected a `10.0.x` package. The maintained [Avalonia MVU CounterApp](https://github.com/fabulous-dev/Fabulous/blob/main/samples/avalonia/Mvu/CounterApp/App.fs) is the reference implementation: it uses `Program.statefulWithCmd`, tracing, exception handling, `Component`, layouts, events, and modifiers. The app selects `DesktopApplication` or `SingleViewApplication` at compile time, so shared UI stays in one file while each target keeps a small native host.
 
 ## Change the app
