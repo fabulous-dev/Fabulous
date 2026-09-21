@@ -19,11 +19,11 @@ dotnet new list
 You should see the installed Fabulous for Avalonia templates:
 
 ```
-Template Name               Short Name               Language  Tags             
---------------------------  -----------------------  --------  -----------------
-Fabulous Avalonia Blank     fabulous-avalonia         F#        Fabulous/Avalonia
-Fabulous Avalonia Desktop   fabulous-avalonia-desktop F#        Fabulous/Avalonia
-Fabulous Avalonia Multi     fabulous-avalonia-multi   F#        Fabulous/Avalonia
+Template Name              Short Name                 Language  Tags
+-------------------------  -------------------------  --------  -----------------
+Fabulous Avalonia Blank    fabulous-avalonia          F#        Fabulous/Avalonia
+Fabulous Avalonia Desktop  fabulous-avalonia-desktop  F#        Fabulous/Avalonia
+Fabulous Avalonia Multi    fabulous-avalonia-multi    F#        Fabulous/Avalonia
 ```
 
 ## Create a single project
@@ -38,11 +38,17 @@ dotnet new fabulous-avalonia -n GetStartedApp
 
 This will create a new folder called GetStartedApp containing the new project.
 
-In this folder, you'll find a project named `GetStartedApp`. This project uses the single project format to target several platforms from a single codebase.&#x20;
+In this folder, you'll find a project named `GetStartedApp`. This project uses the single project format to target several platforms from a single codebase.
 
 Note: Browser target is not supported in the single project template
 
-This template's `TargetFrameworks` include `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so `dotnet restore`/`dotnet new` will fail with an error like `NETSDK1147: ... workloads ... must be installed` unless the corresponding `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install) are installed. If you only need a desktop app, use the desktop-only template below instead, which has no mobile workload requirement.
+This template's `TargetFrameworks` include `net10.0-android` (and `net10.0-ios` on non-Linux hosts), so restoring it requires the `android`/`ios` [.NET workloads](https://learn.microsoft.com/dotnet/core/tools/dotnet-workload-install). Without them, `dotnet restore` fails with an error like `NETSDK1147: ... workloads ... must be installed`. To install the workloads the project needs, run this inside the project folder:
+
+```bash
+dotnet workload restore
+```
+
+If you only need a desktop app, use the desktop-only template below instead, which has no mobile workload requirement.
 
 ## Create a desktop-only project
 
