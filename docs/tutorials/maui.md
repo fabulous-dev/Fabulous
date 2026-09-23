@@ -31,17 +31,25 @@ The generated project contains platform hosts and an `App.fs` with the applicati
 
 *This section applies when running Visual Studio directly on a **Windows Machine** to debug the `net10.0-windows10.0.19041.0` target.*
 
-Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug/Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier/Platform` set in the `.fsproj`. It defaults to `Any CPU`. Because a packaged Windows app host cannot be `Any CPU`, leaving this at the default causes deployment to fail.
+Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug/Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier`/`Platform` set in the `.fsproj`. It defaults to `Any CPU`.
 
-Therefore, before debugging on Windows in Visual Studio you shall:
+### Packaged apps (`WindowsPackageType=MSIX`, the default)
+
+A packaged Windows app host cannot be `Any CPU` — MSIX packaging requires a concrete architecture, enforced by the WindowsAppSDK build pipeline itself, not by Fabulous. Leaving Solution Platform at the default causes deployment to fail.
+
+Before debugging in Visual Studio:
 
 1) Open `Build` > `Configuration Manager`.
- 
-Under `Active solution platform`, select `x64` — create it first if it isn't listed (`New...` > `x64`, copying settings from `Any CPU`). This is a Visual Studio / solution-file setting, not a project-file setting — it is not affected by `RuntimeIdentifier` or `Platform defaults` in the `.fsproj`, so this step is required regardless of the template version and cannot be fixed upstream in Fabulous.
+
+Under `Active solution platform`, select `x64` — create it first if it isn't listed (`New...` > `x64`, copying settings from `Any CPU`). This is a Visual Studio/solution-file setting, unaffected by `RuntimeIdentifier` or `Platform` defaults in the `.fsproj`, so it's required regardless of template version and can't be fixed upstream in Fabulous.
 
 2) Confirm your project's row shows `x64` under Platform.
+   
+Rebuild the solution (`Build` > `Rebuild Solution`), not an incremental build. Switching platforms after a prior `Any CPU` build can leave stale intermediate/output files that reproduce the same error even once the platform is set correctly. If rebuilding doesn't clear it, delete the `bin` and `obj` folders and rebuild again.
 
-Rebuild the solution (`Build` > `Rebuild Solution`), not an incremental build. Switching platforms after a prior `Any CPU` build can leave stale intermediate/output files that reproduce the same error even once the platform is set correctly. If rebuilding does not clear it, delete the `bin` and `obj` folders and rebuild again.
+### Unpackaged apps (`<WindowsPackageType>None</WindowsPackageType>`)
+
+This constraint doesn't apply — the MSIX-specific check never runs, so `Any CPU` debugging works fine. Unpackaged builds also skip the MSIX packaging step entirely, which speeds up local build/debug cycles considerably. Use this during development if you don't need MSIX-specific features (e.g. Store packaging).
 
 ## Follow the data flow
 
