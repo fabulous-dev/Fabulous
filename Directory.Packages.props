@@ -19,7 +19,7 @@
     <PackageVersion Include="Avalonia.Labs.Lottie" Version="$(AvaloniaLabsVersion)" />
     <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="coverlet.collector" Version="3.2.0" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="4.0.0" />
     <PackageVersion Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.100" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.100" />
     <PackageVersion Include="Microsoft.Maui.Controls.Maps" Version="10.0.100" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.2.0" />
