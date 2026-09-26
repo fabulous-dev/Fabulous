@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Add unit tests for `WidgetDiff.WidgetCollectionChanges` and `WidgetDiff.WidgetCollectionItemChanges` diffing, covering attribute-level added/removed/updated collection attributes and item-level insert/replace/update/remove behavior for collections of differing lengths (Repo Assist).
 
 ### Changed
 
