@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
+- Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
