@@ -21,7 +21,7 @@ Replace old `View.*` constructors with the backend's current `open type Fabulous
 
 If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in `2.5.0-pre8` (2024-01-30, bundled into PR #1066, a change primarily about component disposal lifecycle) — well before the Fabulous 3 or 10.0.0 lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
 
-- **`Cmd.ofSub`** — removed. `Sub` is no longer bridged into `Cmd`; wire your subscription directly through the current subscription mechanism instead (see [subscriptions](../concepts/subscriptions.md)).
+- **`Cmd.ofSub`** — removed. `Sub` is no longer bridged into `Cmd`; wire your subscription directly through the current subscription mechanism instead.
 - **`Cmd.dispatch`** — removed from the public API (the internal equivalent, `Cmd.exec`, is private and also gained an `onError` handler parameter).
 - **The `Sub<'msg>` type used by `Cmd`** (`Dispatch<'msg> -> unit`) — renamed to `Effect<'msg>`. A new `Cmd.ofEffect : Effect<'msg> -> Cmd<'msg>` bridges it into `Cmd`. (This is unrelated to the current, still-present `Sub` subscription mechanism with `SubId`/`IDisposable`-based lifecycle tracking — the naming overlap between the two is coincidental and has caused confusion.)
 - **`Cmd.ofAsyncMsg` / `Cmd.ofAsyncMsgOption` / `Cmd.ofTaskMsg`** — relocated to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg`.
