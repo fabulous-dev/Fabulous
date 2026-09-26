@@ -7,18 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle; added unit tests covering unchanged, added/removed, and duplicate subscription IDs (Repo Assist).
-
 ### Added
 
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 
 ### Changed
 
-- Bump the `Avalonia` package version from `12.1.1` to `12.1.2` in `Directory.Build.props` (Repo Assist).
-- Document that the `fabulous-avalonia` single-project template's `net10.0-android`/`net10.0-ios` target frameworks require the `android`/`ios` .NET workloads, and document the previously-unlisted desktop-only `fabulous-avalonia-desktop` template as a workload-free alternative, in the Avalonia tutorial, get-started guide, and templates README (Repo Assist, #1319).
+- Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
