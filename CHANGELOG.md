@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist).
+- Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
