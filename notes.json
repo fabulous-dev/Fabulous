@@ -40,6 +40,12 @@
       "state": "deferred",
       "updated_at": "2026-09-21",
       "note": "[aw] Repo Assist failed - engine terminated unexpectedly mid-run 2026-09-18. Infra/engine failure, not fixable from a normal run."
+    },
+    {
+      "number": 1340,
+      "state": "commented",
+      "updated_at": "2026-09-26",
+      "note": "Follow-up with raw log excerpts (Apple ILStrip error context + Android Build succeeded/warnings) posted per maintainer request; confirmed no open dotnet/macios issue matches; recommended re-run + upstream report."
     }
   ],
   "fixes": [],
