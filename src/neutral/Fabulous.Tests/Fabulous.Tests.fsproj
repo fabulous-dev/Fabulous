@@ -19,6 +19,7 @@
     <Compile Include="ViewTests.fs" />
     <Compile Include="ArrayTests.fs" />
     <Compile Include="CmdTests.fs" />
+    <Compile Include="SubTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsCheck.NUnit" />
