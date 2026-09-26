@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
 
 ### Changed
 
