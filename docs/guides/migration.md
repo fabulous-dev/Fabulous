@@ -17,7 +17,7 @@ There is no maintained Xamarin.Forms backend in Fabulous 10. Migrate the host to
 
 Replace old `View.*` constructors with the backend's current `open type Fabulous.Maui.View` or `open type Fabulous.Avalonia.View` style. Revisit navigation, styles, platform services, permissions, and `ViewRef` code because their native APIs changed. The two [end-to-end tutorials](../tutorials/maui.md) and [UI guide](../concepts/ui.md) provide current starting points.
 
-### `Cmd` module changes (since 2.5.0-pre8)
+## `Cmd` module changes (since 2.5.0-pre8)
 
 If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in `2.5.0-pre8` (2024-01-30, bundled into PR #1066, a change primarily about component disposal lifecycle) — well before the Fabulous 3 or 10.0.0 lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
 
