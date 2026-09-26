@@ -93,6 +93,18 @@ type ``Dispatch throttle tests``() =
         Assert.That(messages, Is.EqualTo([ NewValue 1; NewValue 3 ]))
 
     [<Test>]
+    member _.``Leading throttle routes emit exceptions on the first dispatch to onError``() =
+        let scheduler = TestDispatchThrottleScheduler()
+        let errors = ResizeArray()
+        let dispatch (_: CmdTestsMsg) = failwith "boom"
+        use throttle = Dispatch.throttleWith scheduler interval NewValue dispatch errors.Add
+
+        throttle.Dispatch(1)
+
+        Assert.That(errors.Count, Is.EqualTo(1))
+        Assert.That(errors.[0].Message, Is.EqualTo("boom"))
+
+    [<Test>]
     member _.``Latest throttle guarantees the final value``() =
         let scheduler = TestDispatchThrottleScheduler()
         let messages = ResizeArray()
