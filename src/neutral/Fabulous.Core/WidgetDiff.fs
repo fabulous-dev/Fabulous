@@ -2,7 +2,6 @@ namespace Fabulous
 
 open System
 open System.Runtime.CompilerServices
-open Fabulous
 
 [<Struct; RequireQualifiedAccess>]
 type ScalarAttributeComparison =
