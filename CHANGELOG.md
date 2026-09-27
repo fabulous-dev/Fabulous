@@ -318,9 +318,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
+[10.0.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.2
 [10.0.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.1
 [10.0.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.0
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/10.0.1...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/10.0.2...HEAD
 [3.0.0-pre23]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre23
 [3.0.0-pre22]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre22
 [3.0.0-pre21]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre21
