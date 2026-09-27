@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
+
 ## [10.0.2] - 2026-09-27
 
 ### Added
 
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 - Document the historical `Cmd` module breaking changes between Fabulous 2.4.x and 10.0.1 (removed `Cmd.ofSub`/`Cmd.dispatch`, the `Cmd.OfAsync`/`Cmd.OfTask` relocations, and the two-continuation `either` signature) in `docs/guides/migration.md` (#1336, #1337, #1338, #1339).
 
 ### Changed
