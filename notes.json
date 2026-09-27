@@ -2,32 +2,32 @@
   "version": 1,
   "cursors": {
     "labelling_after": null,
-    "investigation_after": 1327
+    "investigation_after": 1347
   },
   "issues": [
     {
-      "number": 1304,
+      "number": 1340,
       "state": "resolution_recommended",
-      "updated_at": "2026-09-21",
-      "note": "Human QA/canary summary; labelled documentation; maintainer TimLariviere replied thanking collaborator. No further action needed."
+      "updated_at": "2026-09-27",
+      "note": "CI failure investigation follow-up (raw log excerpts) posted per maintainer MiroslavHustak's request. No new activity since; no further action needed unless maintainer replies again."
     },
     {
-      "number": 1162,
+      "number": 1345,
       "state": "commented",
-      "updated_at": "2026-09-21",
-      "note": "QA tracking: rendering/lifecycle automation research posted. No new human activity since."
+      "updated_at": "2026-09-27",
+      "note": "Investigation-only deprecation proposal (Cells/ListView -> CollectionView). Full analysis posted. Awaiting maintainer decision before any code changes."
     },
     {
-      "number": 1163,
+      "number": 1347,
       "state": "commented",
-      "updated_at": "2026-09-21",
-      "note": "QA tracking: accessibility automation research posted. No new human activity since."
+      "updated_at": "2026-09-27",
+      "note": "10.0.2 release-readiness changelog audit posted (found missing entries, corrected proposal). Awaiting maintainer confirmation/merge of changelog fixes."
     },
     {
-      "number": 1164,
-      "state": "commented",
-      "updated_at": "2026-09-21",
-      "note": "QA tracking: input/navigation automation research posted. No new human activity since."
+      "number": 1343,
+      "state": "deferred",
+      "updated_at": "2026-09-27",
+      "note": "Auto-managed [aw] Repo Assist failed tracking issue (engine terminated mid-run 2026-09-26); infra failure, not fixable from a normal run. Same category as #1325."
     },
     {
       "number": 1325,
@@ -36,60 +36,49 @@
       "note": "Auto-managed [aw] Detection Runs tracking issue; explicitly says do not assign to an agent."
     },
     {
-      "number": 1327,
-      "state": "deferred",
+      "number": 1304,
+      "state": "resolution_recommended",
       "updated_at": "2026-09-21",
-      "note": "[aw] Repo Assist failed - engine terminated unexpectedly mid-run 2026-09-18. Infra/engine failure, not fixable from a normal run."
-    },
-    {
-      "number": 1340,
-      "state": "commented",
-      "updated_at": "2026-09-26",
-      "note": "Follow-up with raw log excerpts (Apple ILStrip error context + Android Build succeeded/warnings) posted per maintainer request; confirmed no open dotnet/macios issue matches; recommended re-run + upstream report."
+      "note": "Human QA/canary summary; labelled documentation; maintainer TimLariviere replied thanking collaborator. No further action needed."
     }
   ],
   "fixes": [],
   "checks": [
     {
+      "area": "repo_assist_prs",
+      "checked_at": "2026-09-27",
+      "result": "Rebased/merged main into #1311, #1312, #1316, #1332 (CHANGELOG.md/.fsproj conflicts); all re-tested green (61/61, 61/61, 61/61, 67/67) and pushed via push_to_pull_request_branch. #1341 (Reconciler tests) still conflicts with main; not yet rebased this run (push-call budget used).",
+      "follow_up": "Rebase/merge PR #1341 next Task 6 run (still shows mergeable_state=dirty)."
+    },
+    {
       "area": "tests",
-      "checked_at": "2026-09-21",
-      "result": "Added WidgetCollectionChanges/WidgetCollectionItemChanges unit tests (13 new, 63/63 total green), draft PR repo-assist/test-widgetdiff-widgetcollectionchanges. WidgetDiff.fs now fully covered.",
-      "follow_up": "Memo.fs and Reconciler.fs remain untested; good next Task 9/10 candidates."
+      "checked_at": "2026-09-27",
+      "result": "Removed 4 redundant self-namespace 'open Fabulous' statements (IViewNode/WidgetDefinitions/WidgetDiff/Reconciler); draft PR, 54/54 tests. RELEASE_CHECKLIST.md deprecation triage was stale re: FS0044 suppression, now fixed. WidgetDiff.fs fully tested; Memo.fs remains untested.",
+      "follow_up": "Memo.fs remains untested; good next Task 9/10 candidate."
     },
     {
       "area": "dependencies",
       "checked_at": "2026-09-14",
       "result": "dotnet list package --outdated scoped per-fsproj works around missing maui-tizen workload; found and bumped FSharp.Core/Test.Sdk and Avalonia already.",
       "follow_up": "MAUI/Avalonia-referencing package versions still unchecked this way; try src/avalonia/**/*.fsproj individually."
-    },
-    {
-      "area": "repo_assist_prs",
-      "checked_at": "2026-09-21",
-      "result": "9 open PRs (8 repo-assist + 1 human #1331). #1234 and #1315 now show merge conflicts against main; others clean or CI-pending.",
-      "follow_up": "Rebase #1234 and #1315 onto main next Task 6 run."
     }
   ],
   "completed_actions": [],
   "priorities": [
     {
       "task": 6,
-      "item": "Rebase PR 1234",
-      "note": "improve-stackarray3-combine now conflicts with main; needs rebase before merge."
-    },
-    {
-      "task": 6,
-      "item": "Rebase PR 1315",
-      "note": "eng-fsharp-core-testsdk-bump now conflicts with main; needs rebase before merge."
+      "item": "Rebase/merge PR #1341",
+      "note": "repo-assist/test-reconciler-update-* still conflicts with main (CHANGELOG.md); not addressed this run due to push-call budget (4 used on other PRs)."
     },
     {
       "task": 9,
       "item": "Test Memo.fs",
-      "note": "Memo.fs (memoization widget) has no unit test coverage; next test-coverage candidate."
+      "note": "Memo.fs (memoization widget) has no unit test coverage; last remaining core-module test-coverage gap."
     },
     {
-      "task": 9,
-      "item": "Test Reconciler.fs",
-      "note": "Thin wrapper around WidgetDiff.create + node.ApplyDiff; no direct unit tests yet."
+      "task": 2,
+      "item": "Watch #1345 and #1347 for maintainer replies",
+      "note": "Both fully investigated/answered by Repo Assist; awaiting maintainer decision. Do not re-comment unless new human activity appears."
     }
   ]
 }
