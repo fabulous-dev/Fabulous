@@ -62,13 +62,13 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "AvaloniaDesktopPkgVersion",
-      "defaultValue": "11.3.0"
+      "defaultValue": "12.1.1"
     },
     "AvaloniaThemesFluentPkgVersion": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "AvaloniaThemesFluentPkgVersion",
-      "defaultValue": "11.3.0"
+      "defaultValue": "12.1.1"
     }
   }
 }

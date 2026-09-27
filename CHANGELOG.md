@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+### Fixed
 
 - Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist).
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
+
+### Changed
+
+- Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
+- Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
+- Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
 
 ## [10.0.1] - 2026-09-07
 

@@ -390,8 +390,41 @@ module StackAllocatedCollections =
                 | Size.Two, Size.Three -> many [| a0; a1; b0; b1; b2 |]
                 | Size.Three, Size.Three -> many [| a0; a1; a2; b0; b1; b2 |]
                 | _ -> a // this should never happen because we exhausted all the other cases
-            | Few _, Many arr2 -> many(Array.append (toArray &a) arr2) // TODO optimize
-            | Many arr1, Few _ -> many(Array.append arr1 (toArray &b)) // TODO optimize
+            | Few(asize, a0, a1, a2), Many arr2 ->
+                let asize = int asize
+                let result = Array.zeroCreate(asize + arr2.Length)
+
+                match asize with
+                | 1 -> result[0] <- a0
+                | 2 ->
+                    result[0] <- a0
+                    result[1] <- a1
+                | 3 ->
+                    result[0] <- a0
+                    result[1] <- a1
+                    result[2] <- a2
+                | _ -> ()
+
+                arr2.CopyTo(result, asize)
+                many result
+            | Many arr1, Few(bsize, b0, b1, b2) ->
+                let bsize = int bsize
+                let result = Array.zeroCreate(arr1.Length + bsize)
+                arr1.CopyTo(result, 0)
+                let offset = arr1.Length
+
+                match bsize with
+                | 1 -> result[offset] <- b0
+                | 2 ->
+                    result[offset] <- b0
+                    result[offset + 1] <- b1
+                | 3 ->
+                    result[offset] <- b0
+                    result[offset + 1] <- b1
+                    result[offset + 2] <- b2
+                | _ -> ()
+
+                many result
             | Many arr1, Many arr2 -> many(Array.append arr1 arr2)
 
 
