@@ -7,16 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
+## [10.0.2] - 2026-09-27
 
-- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
-- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
+### Added
+
+- Document the historical `Cmd` module breaking changes between Fabulous 2.4.x and 10.0.1 (removed `Cmd.ofSub`/`Cmd.dispatch`, the `Cmd.OfAsync`/`Cmd.OfTask` relocations, and the two-continuation `either` signature) in `docs/guides/migration.md` (#1336, #1337, #1338, #1339).
 
 ### Changed
 
 - Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
 - Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
 - Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
+- Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle (Repo Assist, #1202).
+- Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist, #1234).
+- Bump the `Avalonia` package version from `12.1.1` to `12.1.2` in `Directory.Build.props` (Repo Assist, #1317).
+- Bump the `fabulous-avalonia` template's default `Avalonia`/`Avalonia.Desktop`/`Avalonia.Android`/`Avalonia.iOS`/`Avalonia.Themes.Fluent` package versions from `11.3.0` to `12.1.1` in `templates/avalonia/**/.template.config/template.json` (@kant2002, #1321).
+- Document that the `fabulous-avalonia` single-project template's `net10.0-android`/`net10.0-ios` target frameworks require the `android`/`ios` .NET workloads, and document the previously-unlisted desktop-only `fabulous-avalonia-desktop` template as a workload-free alternative, in the Avalonia tutorial, get-started guide, and templates README (Repo Assist, #1319, #1326).
+- Add Windows-from-Visual-Studio debugging guidance (Solution Platform selector, MSIX-packaged vs. unpackaged apps) to the MAUI tutorial and get-started guide (#1306, #1307, #1308, #1309, #1310, #1334, #1335).
+- Fix formatting and clarify instructions in the Avalonia get-started guide and tutorial (#1329, #1330, #1331).
+- Replace the dead Discord "Contact us" link with a mailto link in the website header (#1313).
+
+### Fixed
+
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
