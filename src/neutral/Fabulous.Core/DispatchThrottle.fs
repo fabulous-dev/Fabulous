@@ -95,7 +95,12 @@ type DispatchThrottle<'value>
                         pending.Add(value)
                         None)
 
-        values |> Option.iter emit
+        values
+        |> Option.iter(fun values ->
+            try
+                emit values
+            with ex ->
+                reportError ex)
 
     /// Immediately forwards pending values and resets the throttle interval.
     member _.FlushAsync() =
