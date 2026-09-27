@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
 - Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
 - Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
+- Update `.github/RELEASE_CHECKLIST.md`'s deprecation-warning triage section to record that the 60 `FS0044` warnings are now suppressed via `#nowarn "44"` (#1344), so the `Build and test` job no longer reports them (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
