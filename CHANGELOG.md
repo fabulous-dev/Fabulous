@@ -15,8 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
+- Bump the `Microsoft.NET.Test.Sdk` version from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
 - Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
+- Revert the `FSharp.Core` package version floor bump from `10.1.401` back to `10.0.100` in `Directory.Packages.props`, after CI (#1351, #1354) confirmed it triggers a `NullReferenceException` in Apple's `ILStrip` post-processing tool when building the `net10.0-ios` sample target, keeping the `Microsoft.NET.Test.Sdk`/`BenchmarkDotNet` bumps intact (Repo Assist, #1355).
 - Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
 - Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle (Repo Assist, #1202).
 - Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist, #1234).
