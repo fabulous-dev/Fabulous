@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 - Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
 
+### Changed
+ - Remove the redundant `open Fabulous` self-import in `IViewNode.fs`, `WidgetDefinitions.fs`, `WidgetDiff.fs`, and `Reconciler.fs` (a no-op since each file is already declared in the `Fabulous` namespace) (Repo Assist).
+
 ## [10.0.2] - 2026-09-27
 
 ### Added
@@ -24,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
 - Revert the `FSharp.Core` package version floor bump from `10.1.401` back to `10.0.100` in `Directory.Packages.props`, after CI (#1351, #1354) confirmed it triggers a `NullReferenceException` in Apple's `ILStrip` post-processing tool when building the `net10.0-ios` sample target, keeping the `Microsoft.NET.Test.Sdk`/`BenchmarkDotNet` bumps intact (Repo Assist, #1355).
 - Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
+
+=======
 - Update `.github/RELEASE_CHECKLIST.md`'s deprecation-warning triage section to record that the 60 `FS0044` warnings are now suppressed via `#nowarn "44"` (#1344), so the `Build and test` job no longer reports them (Repo Assist).
 =======
 - Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle (Repo Assist, #1202).
