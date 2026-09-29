@@ -241,12 +241,12 @@ type CollectionBuilder<'msg, 'marker, 'itemMarker when 'msg: equality> =
             res
 
         member inline _.YieldFrom(sequence: WidgetBuilder<'msg, 'itemMarker> seq) : Content<'msg> =
-            // TODO optimize this one with addMut
-            { Widgets =
-                sequence
-                |> Seq.map(fun wb -> wb.Compile())
-                |> Seq.toArray
-                |> MutStackArray1.fromArray }
+            let mutable res: MutStackArray1.T<Widget> = MutStackArray1.Empty
+
+            for wb in sequence do
+                res <- MutStackArray1.addMut(&res, wb.Compile())
+
+            { Widgets = res }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member inline x.AddScalar(attr: ScalarAttribute) =

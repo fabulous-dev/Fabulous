@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
  - Remove the redundant `open Fabulous` self-import in `IViewNode.fs`, `WidgetDefinitions.fs`, `WidgetDiff.fs`, and `Reconciler.fs` (a no-op since each file is already declared in the `Fabulous` namespace) (Repo Assist).
+ - Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist).
+ - Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist).
 
 ## [10.0.2] - 2026-09-27
 
