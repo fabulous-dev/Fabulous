@@ -58,25 +58,53 @@ You can also open the solution `GetStartedApp.sln` with your favorite IDE and se
 
 ## Debugging on Windows from Visual Studio
 
-*This section applies when running Visual Studio directly on a **Windows Machine** to debug the `net10.0-windows10.0.19041.0` target.*
+This section applies when running Visual Studio directly on a Windows machine to debug the `net10.0-windows10.0.19041.0` target.
 
-Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug/Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier`/`Platform` set in the `.fsproj`. It defaults to `Any CPU`.
+Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug`/`Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier`/`Platform` set in the `.fsproj`. It defaults to `Any CPU`.
 
-### Packaged apps (`WindowsPackageType=MSIX`, the default)
+#### Packaged apps (`WindowsPackageType=MSIX`, the default)
 
-A packaged Windows app host cannot be `Any CPU` — MSIX packaging requires a concrete architecture, enforced by the WindowsAppSDK build pipeline itself, not by Fabulous. Leaving Solution Platform at the default causes deployment to fail.
+A packaged Windows app host cannot be architecture-neutral — MSIX requires a concrete architecture, enforced by the Windows App SDK build pipeline itself, not by Fabulous. In Visual Studio, this requirement interacts badly with Solution Platform, intermediate output paths, splash-screen packaging, and Appx deployment. In practice, reliable F5 debugging of packaged Fabulous/F# MAUI Windows apps from Visual Studio is not something we can currently document as working.
 
-Before debugging in Visual Studio:
+Typical failures include a missing `splashSplashScreen.png` (`DEP0700`), a missing `.appxrecipe`, activation/registration errors, and path mismatches when Solution Platform is switched to `x64`.
 
-1) Open `Build` > `Configuration Manager`.
+For local development, switch to unpackaged (see below) instead of fighting packaged deploy in Visual Studio.
 
-Under `Active solution platform`, select `x64` — create it first if it isn't listed (`New...` > `x64`, copying settings from `Any CPU`). This is a Visual Studio/solution-file setting, unaffected by `RuntimeIdentifier` or `Platform` defaults in the `.fsproj`, so it's required regardless of template version and can't be fixed upstream in Fabulous.
-
-2) Confirm your project's row shows `x64` under Platform.
-   
-Rebuild the solution (`Build` > `Rebuild Solution`), not an incremental build. Switching platforms after a prior `Any CPU` build can leave stale intermediate/output files that reproduce the same error even once the platform is set correctly. If rebuilding doesn't clear it, delete the `bin` and `obj` folders and rebuild again.
-
-### Unpackaged apps (`<WindowsPackageType>None</WindowsPackageType>`)
+#### Unpackaged apps (`<WindowsPackageType>None</WindowsPackageType>`)
 
 This constraint doesn't apply — the MSIX-specific check never runs, so `Any CPU` debugging works fine. Unpackaged builds also skip the MSIX packaging step entirely, which speeds up local build/debug cycles considerably. Use this during development if you don't need MSIX-specific features (e.g. Store packaging).
+
+1. In your `.fsproj`:
+
+```xml
+   <PropertyGroup>
+     <WindowsPackageType>None</WindowsPackageType>
+     <!-- F#: avoid WASDK injecting a .cs auto-initializer (FS0226) -->
+     <WindowsAppSdkUndockedRegFreeWinRTInitialize>false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
+   </PropertyGroup>
+```
+
+2. In `Properties/launchSettings.json`:
+
+```json
+   {
+     "profiles": {
+       "Windows Machine": {
+         "commandName": "Project",
+         "nativeDebugging": false
+       }
+     }
+   }
+```
+
+   Use `"commandName": "Project"` (not `"MsixPackage"`).
+
+3. Run:
+
+```bash
+   dotnet build -f net10.0-windows10.0.19041.0 -c Debug
+   dotnet run   -f net10.0-windows10.0.19041.0 -c Debug
+```
+
+   Or press F5 in Visual Studio with the Windows TFM selected. Leave Solution Platform on `Any CPU`.
 
