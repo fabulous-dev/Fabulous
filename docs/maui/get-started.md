@@ -72,9 +72,9 @@ For local development, switch to unpackaged (see below) instead of fighting pack
 
 #### Unpackaged apps (`<WindowsPackageType>None</WindowsPackageType>`)
 
-This constraint doesn't apply — the MSIX-specific check never runs, so `Any CPU` debugging works fine. Unpackaged builds also skip the MSIX packaging step entirely, which speeds up local build/debug cycles considerably. Use this during development if you don't need MSIX-specific features (e.g. Store packaging).
+This constraint doesn't apply — the MSIX-specific check never runs, so `Any CPU` debugging works fine. Unpackaged builds also skip the MSIX packaging step entirely, which speeds up local build/debug cycles considerably. Use this during development if you don't need MSIX-specific features.
 
-1. In your `.fsproj`:
+1. In your `.fsproj`, add the following lines into `<PropertyGroup>`:
 
 ```xml
    <PropertyGroup>
@@ -84,7 +84,7 @@ This constraint doesn't apply — the MSIX-specific check never runs, so `Any CP
    </PropertyGroup>
 ```
 
-2. In `Properties/launchSettings.json`:
+2. In `Properties/launchSettings.json`, the json shall be like this:
 
 ```json
    {
