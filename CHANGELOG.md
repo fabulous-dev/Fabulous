@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [10.0.3] - 2026-09-30
 
 ### Fixed
 
+- Fix the Avalonia templates and samples failing to build for Android: raise the Android `SupportedOSPlatformVersion` from 21 to 23.0 (required by `androidx.lifecycle.runtime`) and align the templates' Avalonia package versions to 12.1.2 (Repo Assist, #1363).
 - Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 - Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
 
