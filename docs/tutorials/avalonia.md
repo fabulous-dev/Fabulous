@@ -32,7 +32,7 @@ dotnet build -c Release
 dotnet publish -c Release -f net10.0 -r linux-x64 --self-contained true
 ```
 
-Note: Certain versions of Fabulous.Avalonia.Templates generate Android host code that inherits from AvaloniaMainActivity<TApp>. Newer Avalonia Android packages expose a non-generic AvaloniaMainActivity. If Android builds fail with FS0033 ("does not expect any type arguments"), update Platform/Android/MainActivity.fs to the API expected by the restored Avalonia package.
+**Important note:** Certain versions of Fabulous.Avalonia.Templates generate Android host code that inherits from AvaloniaMainActivity<TApp>. Newer Avalonia Android packages expose a non-generic AvaloniaMainActivity. If Android builds fail with FS0033 ("does not expect any type arguments"), update Platform/Android/MainActivity.fs to the API expected by the restored Avalonia package.
 
 ```code
 namespace Counter.Android
