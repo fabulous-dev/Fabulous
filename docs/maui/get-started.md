@@ -55,5 +55,5 @@ dotnet build -f net10.0-ios -t:Run
 ```
 You can also open the solution `GetStartedApp.sln` with your favorite IDE and select the platform you want.
 
-**For detailed instructions on running and debugging Fabulous .NET MAUI applications from the CLI and Visual Studio, see the [Tutorials .NET MAUI section](https://fabulous-dev.github.io/Fabulous/docs/tutorials/maui/) of the documentation. If you are following the examples using the generated GetStartedApp project, replace Counter with GetStartedApp in all commands.**
+**For detailed instructions on running and debugging Fabulous .NET MAUI applications from the CLI and Visual Studio, see [Tutorials](https://fabulous-dev.github.io/Fabulous/docs/tutorials/maui/). If you are following the examples using the generated GetStartedApp project, replace Counter with GetStartedApp in all commands.**
 
