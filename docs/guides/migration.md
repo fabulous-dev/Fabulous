@@ -36,3 +36,42 @@ dotnet list package --include-transitive
 dotnet build -c Release
 dotnet test -c Release
 ```
+
+## Program construction changes (MAUI)
+
+In Fabulous 10.0.x, program construction is split between the core MVU program and the MAUI view layer.
+
+### Fabulous 2.x vs 10.x
+
+**Before:**
+```fsharp
+Program.statefulWithCmd init update view
+|> Program.withSubscription subscriptions
+```
+
+**Now:**
+```fsharp
+Program.statefulWithCmd init update
+|> Program.withSubscription subscriptions
+|> Fabulous.Maui.Program.withView view
+```
+### Why
+
+Fabulous 10 separates `Program<'arg,'model,'msg>` (core MVU logic) from `Program<'arg,'model,'msg,'marker>` (includes view rendering). `UseFabulousApp` requires the latter form.
+
+### Subscriptions
+
+If chaining multiple subscriptions, consolidate them:
+
+```fsharp
+let subscriptions model : Sub<Msg> =
+    Sub.batch
+        [
+            subscriptionA model
+            subscriptionB model
+        ]
+```
+
+## Program construction changes (Avalonia)
+
+This entry is under preparation.
