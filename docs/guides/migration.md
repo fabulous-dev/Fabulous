@@ -19,15 +19,51 @@ Replace old `View.*` constructors with the backend's current `open type Fabulous
 
 ## `Cmd` module changes (since 2.5.0-pre8)
 
-If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in `2.5.0-pre8` (2024-01-30, bundled into PR #1066, a change primarily about component disposal lifecycle) — well before the Fabulous 3 or 10.0.0 lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
+If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in 2.5.0 pre-releases  — well before the Fabulous 3 or 10.0.x lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
 
-- **`Cmd.ofSub`** — removed. `Sub` is no longer bridged into `Cmd`; wire your subscription directly through the current subscription mechanism instead.
+- **`Cmd.ofSub`** — removed. Use `Cmd.ofEffect` with a function of the same shape (`Dispatch<'msg> -> unit`) instead. If you used `Cmd.ofSub` to set up a long-lived listener or callback (for example an event handler or a timer), `Cmd.ofEffect` still works, but you may prefer the current `Sub` subscription mechanism, which manages start/stop lifecycle for you.
 - **`Cmd.dispatch`** — removed from the public API (the internal equivalent, `Cmd.exec`, is private and also gained an `onError` handler parameter).
-- **The `Sub<'msg>` type used by `Cmd`** (`Dispatch<'msg> -> unit`) — renamed to `Effect<'msg>`. A new `Cmd.ofEffect : Effect<'msg> -> Cmd<'msg>` bridges it into `Cmd`. (This is unrelated to the current, still-present `Sub` subscription mechanism with `SubId`/`IDisposable`-based lifecycle tracking — the naming overlap between the two is coincidental and has caused confusion.)
-- **`Cmd.ofAsyncMsg` / `Cmd.ofAsyncMsgOption` / `Cmd.ofTaskMsg`** — relocated to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg`.
+- **The old `Sub<'msg>` type** (`Dispatch<'msg> -> unit`) — renamed to `Effect<'msg>`. This is the same type under a new name, not a new type with different semantics. The new `Cmd.ofEffect : Effect<'msg> -> Cmd<'msg>` bridges it into `Cmd`.
+  > **Note:** this old `Sub<'msg>` / `Effect<'msg>` is unrelated to the current `Sub` subscription mechanism (`SubId`, `IDisposable`-based lifecycle tracking). The shared name is historical and has caused confusion.
+- **`Cmd.ofAsyncMsg` / `Cmd.ofAsyncMsgOption` / `Cmd.ofTaskMsg`** — relocated to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg`. This is **not** a pure rename: in 2.4.x the async work was started on the UI thread, whereas the relocated functions no longer guarantee that. See the threading warning below.
 - **`Cmd.ofAsyncResult` / `Cmd.ofTaskResult`** — removed. `Cmd.OfAsync.either` / `Cmd.OfTask.either` are the closest equivalents, but take **two** continuations (`ofSuccess`, `ofError`) instead of the previous **three** (`success`, `error` for a domain `Result.Error`, `failure` for a thrown exception). If your code relied on that distinction, handle it explicitly — e.g. catch exceptions inside your task function and fold them into your `Result` before it reaches `either`, so a thrown exception and a domain error don't collapse into the same handler.
 
-> ⚠️ The `ofAsyncResult`/`ofTaskResult` change is the one most likely to cause a silent behavioral bug rather than a compile error: a mechanical rename to `Cmd.OfAsync.either` will build successfully but changes what happens when your task throws.
+> ⚠️ Two changes are likely to cause silent behavioral bugs rather than compile errors:
+>
+> 1. **Exception handling** (`ofAsyncResult`/`ofTaskResult`): a mechanical rename to `Cmd.OfAsync.either` will build successfully but changes what happens when your task throws.
+> 2. **Threading** (`ofAsyncMsg`/`ofAsyncMsgOption`/`ofTaskMsg`): a mechanical rename to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg` will build successfully, but the old guarantee of starting on the UI thread is gone, so the code may now run elsewhere. This typically surfaces at runtime, for example with APIs that must be called on the main thread, such as .NET MAUI permission checks (`Permissions.CheckStatusAsync`, `Permissions.RequestAsync`).
+
+### Example: keeping a call on the UI thread
+
+If the async body touches UI-thread-affine APIs, marshal that call explicitly instead of relying on the command's starting thread:
+
+```fsharp
+// Fabulous 2.4.x — the async was started on the UI thread
+Cmd.ofAsyncMsg
+    (
+        async
+            {
+                let! status =
+                    Permissions.CheckStatusAsync<Permissions.PostNotifications>()
+                |> Async.AwaitTask
+                return PermissionResult (status = PermissionStatus.Granted)
+            }
+    )
+
+// Fabulous 10.0.x — marshal the UI-thread-affine call explicitly
+Cmd.OfAsync.msg
+     (
+         async
+                {
+                    let! status =
+                        MainThread.InvokeOnMainThreadAsync<PermissionStatus>(fun () ->
+                            Permissions.CheckStatusAsync<Permissions.PostNotifications>())
+                        |> Async.AwaitTask
+                    return PermissionResult (status = PermissionStatus.Granted)
+                }
+      )
+```
+> **Note:** the explicit type argument (`<PermissionStatus>`) is used here to make the overload choice unambiguous.
 
 Finish by removing retired packages and links, clearing `bin`/`obj`, restoring, and checking the installed package graph:
 
