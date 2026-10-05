@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Correct the `Cmd` module migration section in `docs/guides/migration.md`: `Cmd.ofSub` is replaced by `Cmd.ofEffect`, and the relocated `Cmd.OfAsync.msg`/`msgOption`/`Cmd.OfTask.msg` no longer start on the UI thread, with a UI-thread marshalling example (Repo Assist).
+
 ## [10.0.3] - 2026-09-30
 
 ### Fixed
