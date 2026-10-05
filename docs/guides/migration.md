@@ -75,3 +75,9 @@ let subscriptions model : Sub<Msg> =
 ## Program construction changes (Avalonia)
 
 This entry is under preparation.
+
+## ⚠️ Issues during migration
+
+If you run into problems during migration, please consult the Fabulous community on Discord first (in the F# channel, under the Fabulous project), rather than immediately resorting to LLM-based coding assistants.
+
+Even if you manage to resolve the problem yourself, please share it on Discord. This helps us learn about migration issues that might otherwise never be reported as formal GitHub issues.
