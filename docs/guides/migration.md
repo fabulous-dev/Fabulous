@@ -19,7 +19,7 @@ Replace old `View.*` constructors with the backend's current `open type Fabulous
 
 ## `Cmd` module changes (since 2.5.0-pre8)
 
-If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in 2.5.0 pre-releases  — well before the Fabulous 3 or 10.0.x lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
+If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substantially in 2.5.0 pre-releases — well before the Fabulous 3 or 10.0.x lines, and never called out at the time as a breaking `Cmd` API change. If your code predates this, check for the following:
 
 - **`Cmd.ofSub`** — removed. Use `Cmd.ofEffect` with a function of the same shape (`Dispatch<'msg> -> unit`) instead. If you used `Cmd.ofSub` to set up a long-lived listener or callback (for example an event handler or a timer), `Cmd.ofEffect` still works, but you may prefer the current `Sub` subscription mechanism, which manages start/stop lifecycle for you.
 - **`Cmd.dispatch`** — removed from the public API (the internal equivalent, `Cmd.exec`, is private and also gained an `onError` handler parameter).
@@ -54,13 +54,13 @@ Cmd.ofAsyncMsg
 Cmd.OfAsync.msg
      (
          async
-                {
-                    let! status =
-                        MainThread.InvokeOnMainThreadAsync<PermissionStatus>(fun () ->
-                            Permissions.CheckStatusAsync<Permissions.PostNotifications>())
-                        |> Async.AwaitTask
-                    return PermissionResult (status = PermissionStatus.Granted)
-                }
+             {
+                 let! status =
+                     MainThread.InvokeOnMainThreadAsync<PermissionStatus>(fun () ->
+                         Permissions.CheckStatusAsync<Permissions.PostNotifications>())
+                     |> Async.AwaitTask
+                 return PermissionResult (status = PermissionStatus.Granted)
+             }
       )
 ```
 > **Note:** the explicit type argument (`<PermissionStatus>`) is used here to make the overload choice unambiguous.
@@ -77,7 +77,7 @@ dotnet test -c Release
 
 In Fabulous 10.0.x, program construction is split between the core MVU program and the MAUI view layer.
 
-### Fabulous 2.x vs 10.x
+### Fabulous 2.4.x vs 10.0.x
 
 **Before:**
 ```fsharp
@@ -107,13 +107,12 @@ let subscriptions model : Sub<Msg> =
             subscriptionB model
         ]
 ```
-
 ## Program construction changes (Avalonia)
 
 This entry is under preparation.
 
 ## ⚠️ Issues during migration
 
-If you run into problems during migration, please consult the Fabulous community on Discord first (in the F# channel, under the Fabulous project), rather than immediately resorting to LLM-based coding assistants.
+If you run into problems during migration (and you will), please consult the Fabulous community on Discord first (in the F# channel, under the Fabulous project), rather than immediately resorting to LLM-based coding assistants.
 
 Even if you manage to resolve the problem yourself, please share it on Discord. This helps us learn about migration issues that might otherwise never be reported as formal GitHub issues.
