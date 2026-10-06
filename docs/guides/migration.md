@@ -23,10 +23,10 @@ If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substa
 
 - **`Cmd.ofSub`** — removed. Use `Cmd.ofEffect` with a function of the same shape (`Dispatch<'msg> -> unit`) instead. If you used `Cmd.ofSub` to set up a long-lived listener or callback (for example an event handler or a timer), `Cmd.ofEffect` still works, but you may prefer the current `Sub` subscription mechanism, which manages start/stop lifecycle for you.
 - **`Cmd.dispatch`** — removed from the public API (the internal equivalent, `Cmd.exec`, is private and also gained an `onError` handler parameter).
-- **The old `Sub<'msg>` type** (`Dispatch<'msg> -> unit`) — renamed to `Effect<'msg>`. This is the same type under a new name, not a new type with different semantics. The new `Cmd.ofEffect : Effect<'msg> -> Cmd<'msg>` bridges it into `Cmd`.
+- The old **`Sub<'msg>`** type (`Dispatch<'msg> -> unit`) — renamed to `Effect<'msg>`. This is the same type under a new name, not a new type with different semantics. The new `Cmd.ofEffect : Effect<'msg> -> Cmd<'msg>` bridges it into `Cmd`.
   > **Note:** this old `Sub<'msg>` / `Effect<'msg>` is unrelated to the current `Sub` subscription mechanism (`SubId`, `IDisposable`-based lifecycle tracking). The shared name is historical and has caused confusion.
-- **`Cmd.ofAsyncMsg` / `Cmd.ofAsyncMsgOption` / `Cmd.ofTaskMsg`** — relocated to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg`. This is **not** a pure rename: in 2.4.x the async work was started on the UI thread, whereas the relocated functions no longer guarantee that. See the threading warning below.
-- **`Cmd.ofAsyncResult` / `Cmd.ofTaskResult`** — removed. `Cmd.OfAsync.either` / `Cmd.OfTask.either` are the closest equivalents, but take **two** continuations (`ofSuccess`, `ofError`) instead of the previous **three** (`success`, `error` for a domain `Result.Error`, `failure` for a thrown exception). If your code relied on that distinction, handle it explicitly — e.g. catch exceptions inside your task function and fold them into your `Result` before it reaches `either`, so a thrown exception and a domain error don't collapse into the same handler.
+- **`Cmd.ofAsyncMsg` / `Cmd.ofAsyncMsgOption` / `Cmd.ofTaskMsg`** — relocated to `Cmd.OfAsync.msg` / `Cmd.OfAsync.msgOption` / `Cmd.OfTask.msg`. This is not a pure rename: in 2.4.1 the async work was started on the UI thread, whereas the relocated functions no longer guarantee that. See the threading warning below.
+- **`Cmd.ofAsyncResult` / `Cmd.ofTaskResult`** — removed. `Cmd.OfAsync.either` / `Cmd.OfTask.either` are the closest equivalents, but take two continuations (`ofSuccess`, `ofError`) instead of the previous three (`success`, `error` for a domain `Result.Error`, `failure` for a thrown exception). If your code relied on that distinction, handle it explicitly — e.g. catch exceptions inside your task function and fold them into your `Result` before it reaches `either`, so a thrown exception and a domain error don't collapse into the same handler.
 
 > ⚠️ Two changes are likely to cause silent behavioral bugs rather than compile errors:
 >
@@ -38,7 +38,7 @@ If you're coming from Fabulous 2.4.x or earlier, the `Cmd` module changed substa
 If the async body touches UI-thread-affine APIs, marshal that call explicitly instead of relying on the command's starting thread:
 
 ```fsharp
-// Fabulous 2.4.x — the async was started on the UI thread
+// Fabulous 2.4.1 — the async was started on the UI thread
 Cmd.ofAsyncMsg
     (
         async
@@ -63,7 +63,7 @@ Cmd.OfAsync.msg
              }
       )
 ```
-> **Note:** the explicit type argument (`<PermissionStatus>`) is used here to make the overload choice unambiguous.
+> **Note:** The explicit type argument (`<PermissionStatus>`) is used here to make the overload choice unambiguous.
 
 Finish by removing retired packages and links, clearing `bin`/`obj`, restoring, and checking the installed package graph:
 
