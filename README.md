@@ -16,7 +16,7 @@
   <a href="https://discord.com/channels/196693847965696000/1541149327701971026"><img alt="Discord" src="https://img.shields.io/discord/716980335593914419?label=discord&logo=discord"></a>
 </p>
 
-Fabulous combines F#, declarative UI, and Model-View-Update (MVU) to build mobile and desktop applications with explicit state transitions and testable application logic.
+Fabulous combines F#, declarative UI, and Model-View-Update (MVU) to build mobile and desktop applications with explicit state transitions and testable application logic. 
 
 Fabulous provides the application architecture and declarative DSL. Choose a UI backend for rendering:
 
