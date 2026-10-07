@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist).
+- Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist).
+
 ### Fixed
 
 - Correct the `Cmd` module migration section in `docs/guides/migration.md`: `Cmd.ofSub` is replaced by `Cmd.ofEffect`, and the relocated `Cmd.OfAsync.msg`/`msgOption`/`Cmd.OfTask.msg` no longer start on the UI thread, with a UI-thread marshalling example (Repo Assist).
