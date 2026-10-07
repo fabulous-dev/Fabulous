@@ -1,7 +1,6 @@
 namespace Fabulous
 
 open System
-open Fabulous
 
 type ViewRef(onAttached, onDetached) =
     let handle = System.WeakReference<obj>(null)

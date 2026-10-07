@@ -43,7 +43,9 @@ The `Build and test` job for the 10.0.0 candidate (commit `4a930280`, [run 32787
 
 All 60 warnings originate from `Microsoft.Maui.Controls` `[Obsolete]` attributes on `EntryCell`, `SwitchCell`, `Page.IsBusy`, and legacy per-edge safe-area properties in the MAUI 10.0.100 baseline that ships with the supported MAUI 10 release. None of these APIs have been *removed* from that baseline — MAUI 10 still ships them as compile-time obsolete members for backward compatibility, so the current Fabulous bindings continue to build and function correctly. No API removal or breaking change is required to ship 10.0.0.
 
-Fabulous intentionally still exposes bindings for `EntryCell` and `SwitchCell` (used only inside legacy `ListView`/`TableView` hosts) and the older per-edge safe-area modifiers for apps migrating from earlier Fabulous/Xamarin.Forms code. Removing these bindings, or suppressing the warnings, is tracked as a follow-up cleanup and is not a release blocker.
+Fabulous intentionally still exposes bindings for `EntryCell` and `SwitchCell` (used only inside legacy `ListView`/`TableView` hosts) and the older per-edge safe-area modifiers for apps migrating from earlier Fabulous/Xamarin.Forms code.
+
+**Update (ahead of 10.0.2):** all 60 warnings are now suppressed at the source via `#nowarn "44"` in `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs` (#1344), so `Build and test` no longer reports them. The underlying bindings are unchanged and still intentionally exposed for backward compatibility; removing them remains a follow-up cleanup and is not a release blocker.
 
 ## Publication
 

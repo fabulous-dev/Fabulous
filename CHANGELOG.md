@@ -1,11 +1,33 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
+
+### Added
+
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
+
+### Changed
+
+- Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist).
+- Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist).
+
+### Fixed
+
+- Correct the `Cmd` module migration section in `docs/guides/migration.md`: ... (leave this line exactly as it is)
+
+## [10.0.3] - 2026-09-30
+
+### Fixed
+
+- Fix the Avalonia templates and samples failing to build for Android: raise the Android `SupportedOSPlatformVersion` from 21 to 23.0 (required by `androidx.lifecycle.runtime`) and align the templates' Avalonia package versions to 12.1.2 (Repo Assist, #1363).
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
+
+### Changed
+
+- Remove the redundant `open Fabulous` self-import in `IViewNode.fs`, `WidgetDefinitions.fs`, `WidgetDiff.fs`, and `Reconciler.fs` (a no-op since each file is already declared in the `Fabulous` namespace) (Repo Assist).
+
+### Added
+
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
 
 ### Fixed
 
@@ -15,13 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
 - Document the historical `Cmd` module breaking changes between Fabulous 2.4.x and 10.0.1 (removed `Cmd.ofSub`/`Cmd.dispatch`, the `Cmd.OfAsync`/`Cmd.OfTask` relocations, and the two-continuation `either` signature) in `docs/guides/migration.md` (#1336, #1337, #1338, #1339).
 
 ### Changed
 
-- Bump the `FSharp.Core` package version floor from `10.0.100` to `10.1.401` and `Microsoft.NET.Test.Sdk` from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
+- Bump the `Microsoft.NET.Test.Sdk` version from `18.9.0` to `18.10.0` in `Directory.Packages.props` (Repo Assist).
 - Bump `BenchmarkDotNet` from `0.14.0` to `0.15.8` and `Microsoft.NET.Test.Sdk` from `18.10.0` to `18.10.1` in `Directory.Packages.props` (Repo Assist).
+- Revert the `FSharp.Core` package version floor bump from `10.1.401` back to `10.0.100` in `Directory.Packages.props`, after CI (#1351, #1354) confirmed it triggers a `NullReferenceException` in Apple's `ILStrip` post-processing tool when building the `net10.0-ios` sample target, keeping the `Microsoft.NET.Test.Sdk`/`BenchmarkDotNet` bumps intact (Repo Assist, #1355).
 - Suppress the 60 `FS0044` deprecation warnings from MAUI's own `[Obsolete]` attributes on `SwitchCell`/`EntryCell`/`Page.IsBusy`/`SafeArea` by adding `#nowarn "44"` to `Views/Cells/_Cell.fs`, `EntryCell.fs`, `SwitchCell.fs`, `Views/Pages/_Page.fs`, `ContentPage.fs`, and `Views/Layouts/_Layout.fs`, ahead of the 10.0.2 release (Repo Assist, #1344).
+- Update `.github/RELEASE_CHECKLIST.md`'s deprecation-warning triage section to record that the 60 `FS0044` warnings are now suppressed via `#nowarn "44"` (#1344), so the `Build and test` job no longer reports them (Repo Assist).
 - Replace the immutable `Set`-based subscription-diffing in `Sub.Internal.diff`/`Sub.Internal.NewSubs.calculate` with a mutable `HashSet`, avoiding repeated O(log n) tree-node allocations on every `Program` update cycle (Repo Assist, #1202).
 - Optimize `StackArray3.combine` to avoid an intermediate array allocation when merging a `Few`-cased value with a `Many`-cased array, writing directly into the final result array instead of allocating via `toArray`/`Array.append` (Repo Assist, #1234).
 - Bump the `Avalonia` package version from `12.1.1` to `12.1.2` in `Directory.Build.props` (Repo Assist, #1317).
@@ -30,11 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Windows-from-Visual-Studio debugging guidance (Solution Platform selector, MSIX-packaged vs. unpackaged apps) to the MAUI tutorial and get-started guide (#1306, #1307, #1308, #1309, #1310, #1334, #1335).
 - Fix formatting and clarify instructions in the Avalonia get-started guide and tutorial (#1329, #1330, #1331).
 - Replace the dead Discord "Contact us" link with a mailto link in the website header (#1313).
-
-### Fixed
-
-- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
-- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
 
 ## [10.0.1] - 2026-09-07
 
@@ -180,7 +200,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced custom MvuComponentBuilder with a Mvu binding by @TimLariviere
 
 ### Fixed
-- Fixed an invalid cast exception when using a null or unit model with MVU in Component by @TimLariviere 
+- Fixed an invalid cast exception when using a null or unit model with MVU in Component by @TimLariviere
 
 ## [3.0.0-pre7] - 2024-09-28
 
@@ -304,7 +324,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.1] - 2023-02-01
 
 ### Fixed
-- Fix a NullReferenceException when applying `View.map` to a view using `Unit` Msg type by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1037) 
+- Fix a NullReferenceException when applying `View.map` to a view using `Unit` Msg type by @TimLariviere (https://github.com/fabulous-dev/Fabulous/pull/1037)
 
 ## [2.2.0] - 2023-01-24
 
@@ -322,10 +342,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fabulous.XamarinForms & Fabulous.MauiControls have been moved been out of the Fabulous repository. Find them in their own repositories: [https://github.com/fabulous-dev/Fabulous.XamarinForms](https://github.com/fabulous-dev/Fabulous.XamarinForms) / [https://github.com/fabulous-dev/Fabulous.MauiControls](https://github.com/fabulous-dev/Fabulous.MauiControls)
 
+[10.0.3]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.3
 [10.0.2]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.2
 [10.0.1]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.1
 [10.0.0]: https://github.com/fabulous-dev/Fabulous/releases/tag/10.0.0
-[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/10.0.2...HEAD
+[unreleased]: https://github.com/fabulous-dev/Fabulous/compare/10.0.3...HEAD
 [3.0.0-pre23]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre23
 [3.0.0-pre22]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre22
 [3.0.0-pre21]: https://github.com/fabulous-dev/Fabulous/releases/tag/3.0.0-pre21
