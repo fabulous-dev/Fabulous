@@ -1,11 +1,8 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
+
+### Added
+
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
 
 ### Changed
 
@@ -14,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Correct the `Cmd` module migration section in `docs/guides/migration.md`: `Cmd.ofSub` is replaced by `Cmd.ofEffect`, and the relocated `Cmd.OfAsync.msg`/`msgOption`/`Cmd.OfTask.msg` no longer start on the UI thread, with a UI-thread marshalling example (Repo Assist).
+- Correct the `Cmd` module migration section in `docs/guides/migration.md`: ... (leave this line exactly as it is)
 
 ## [10.0.3] - 2026-09-30
 
