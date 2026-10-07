@@ -20,6 +20,7 @@
     <Compile Include="ArrayTests.fs" />
     <Compile Include="CmdTests.fs" />
     <Compile Include="SubTests.fs" />
+    <Compile Include="ReconcilerTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsCheck.NUnit" />
