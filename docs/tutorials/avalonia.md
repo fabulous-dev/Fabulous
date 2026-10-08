@@ -32,4 +32,26 @@ dotnet build -c Release
 dotnet publish -c Release -f net10.0 -r linux-x64 --self-contained true
 ```
 
+**Important note:** Certain versions of Fabulous.Avalonia.Templates generate Android host code that inherits from AvaloniaMainActivity<TApp>. Newer Avalonia Android packages expose a non-generic AvaloniaMainActivity. If Android builds fail with FS0033 ("does not expect any type arguments"), update Platform/Android/MainActivity.fs to the API expected by the restored Avalonia package.
+
+```code
+namespace Counter.Android
+
+open Android.App
+open Android.Runtime
+open Avalonia
+open Avalonia.Android
+
+[<Android.App.Application>]
+type AndroidApp(javaReference: nativeint, transfer: JniHandleOwnership) =
+    inherit AvaloniaAndroidApplication<Avalonia.Application>(javaReference, transfer)
+
+    override _.CustomizeAppBuilder(builder: AppBuilder) =
+        base.CustomizeAppBuilder(Counter.App.create ())
+
+[<Activity(Label = "Counter", MainLauncher = false)>]   // keep your generated attribute arguments
+type MainActivity() =
+    inherit AvaloniaMainActivity()
+```
+
 Before publishing, add pure update tests and an Avalonia headless test. The repository's [TestableApp](https://github.com/fabulous-dev/Fabulous/tree/main/samples/avalonia/TestableApp) demonstrates both and captures a screenshot artifact in CI; see [testing and debugging](../guides/testing-debugging.md). Runtime identifiers and mobile hosts are covered in [deployment](../guides/deployment.md).

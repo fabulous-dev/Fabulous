@@ -84,3 +84,5 @@ dotnet run -f net10.0
 ```
 
 You can also open the solution `GetStartedApp.sln` with your favorite IDE and select the platform you want, then press debug to deploy and run the app.
+
+**For detailed instructions on running and debugging Fabulous Avalonia applications, see [Tutorials](https://fabulous-dev.github.io/Fabulous/docs/tutorials/avalonia/). If you are following the examples using the generated GetStartedApp project, replace Counter with GetStartedApp in all commands.**
