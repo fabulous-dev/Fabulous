@@ -28,6 +28,12 @@
 
 - Remove the redundant `open Fabulous` self-import in `IViewNode.fs`, `WidgetDefinitions.fs`, `WidgetDiff.fs`, and `Reconciler.fs` (a no-op since each file is already declared in the `Fabulous` namespace) (Repo Assist).
 
+### Fixed
+
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Add unit tests for `WidgetDiff.WidgetCollectionChanges` and `WidgetDiff.WidgetCollectionItemChanges` diffing, covering attribute-level added/removed/updated collection attributes and item-level insert/replace/update/remove behavior for collections of differing lengths (Repo Assist).
+- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
+
 ## [10.0.2] - 2026-09-27
 
 ### Added
