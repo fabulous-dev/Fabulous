@@ -18,7 +18,7 @@ dotnet build -f net10.0-android -t:Run
 
 On Windows, the generated project also targets `net10.0-windows10.0.19041.0` (added automatically when the workload runs on Windows, or unconditionally with `-p:FabulousWindowsOnly=true`).
 
-For local Windows development, we recommend using an unpackaged application.
+For local Windows development, we recommend an unpackaged application:
 
 1. In your `.fsproj`, add the following lines into the main `<PropertyGroup>`:
 
@@ -29,7 +29,7 @@ For local Windows development, we recommend using an unpackaged application.
    <WindowsAppSdkUndockedRegFreeWinRTInitialize>false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
 ```
 
-2. In `Properties/launchSettings.json`, the json shall be like this:
+2. In `Properties/launchSettings.json`, use the `Project` command (not `MsixPackage`):
 
 ```json
    {
@@ -42,70 +42,38 @@ For local Windows development, we recommend using an unpackaged application.
    }
 ```
 
-   Use `"commandName": "Project"` (not `"MsixPackage"`).
-
-Then build and run:
-
-```bash
-dotnet build -f net10.0-windows10.0.19041.0
-dotnet run   -f net10.0-windows10.0.19041.0
-```
-
-Unpackaged builds avoid the Windows App SDK/MSIX deployment issues discussed below and provide a faster edit-build-run cycle during development.
-See [deployment](../guides/deployment.md) for packaging and store publishing details.
-
-The generated project contains platform hosts and an `App.fs` with the application logic. Compare it with the maintained [MAUI CounterApp](https://github.com/fabulous-dev/Fabulous/blob/main/samples/maui/CounterApp/App.fs), which demonstrates model, messages, asynchronous commands, layouts, controls, events, and modifiers in one compiled file.
-
-## Debugging on Windows from Visual Studio
-
-This section applies when running Visual Studio directly on a Windows machine to debug the `net10.0-windows10.0.19041.0` target.
-
-Visual Studio has its own Solution Platform selector (the dropdown next to the `Debug`/`Release` configuration in the toolbar), tracked in the `.sln` file and completely independent of any `RuntimeIdentifier`/`Platform` set in the `.fsproj`. It defaults to `Any CPU`.
-
-#### Packaged apps (`WindowsPackageType=MSIX`, the default)
-
-A packaged Windows app host cannot be architecture-neutral — MSIX requires a concrete architecture, enforced by the Windows App SDK build pipeline itself, not by Fabulous. In Visual Studio, this requirement interacts badly with Solution Platform, intermediate output paths, splash-screen packaging, and Appx deployment. In practice, reliable F5 debugging of packaged Fabulous/F# MAUI Windows apps from Visual Studio is not something we can currently document as working.
-
-Typical failures include a missing `splashSplashScreen.png` (`DEP0700`), a missing `.appxrecipe`, activation/registration errors, and path mismatches when Solution Platform is switched to `x64`.
-
-For local development, switch to unpackaged (recommended for both CLI and Visual Studio development) instead of relying on packaged deployment.
-
-#### Unpackaged apps (`<WindowsPackageType>None</WindowsPackageType>`)
-
-This constraint doesn't apply — the MSIX-specific check never runs, so `Any CPU` debugging works fine. Unpackaged builds also skip the MSIX packaging step entirely, which speeds up local build/debug cycles considerably. Use this during development if you don't need MSIX-specific features.
-
-1. In your `.fsproj`, add the following lines into the main `<PropertyGroup>`:
-
-```xml
-   <WindowsPackageType>None</WindowsPackageType>
-
-   <!-- F#: avoid WASDK injecting a .cs auto-initializer (FS0226) -->
-   <WindowsAppSdkUndockedRegFreeWinRTInitialize>false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
-```
-
-2. In `Properties/launchSettings.json`, the json shall be like this:
-
-```json
-   {
-     "profiles": {
-       "Windows Machine": {
-         "commandName": "Project",
-         "nativeDebugging": false
-       }
-     }
-   }
-```
-
-   Use `"commandName": "Project"` (not `"MsixPackage"`).
-
-3. Run:
+3. Build and run:
 
 ```bash
    dotnet build -f net10.0-windows10.0.19041.0 -c Debug
    dotnet run   -f net10.0-windows10.0.19041.0 -c Debug
 ```
 
-   Or press F5 in Visual Studio with the Windows TFM selected. Leave Solution Platform on `Any CPU`.
+Unpackaged builds skip MSIX packaging entirely, which avoids the deployment issues described [below](#debugging-on-windows-from-visual-studio) and gives a much faster edit-build-run cycle. See [deployment](../guides/deployment.md) for packaging and store publishing details.
+
+The generated project contains platform hosts and an `App.fs` with the application logic. Compare it with the maintained [MAUI CounterApp](https://github.com/fabulous-dev/Fabulous/blob/main/samples/maui/CounterApp/App.fs), which demonstrates model, messages, asynchronous commands, layouts, controls, events, and modifiers in one compiled file.
+
+## Debugging on Windows from Visual Studio
+
+Once your project is unpackaged (see [Create and run](#create-and-run)), debugging in Visual Studio is straightforward:
+
+1. Open the solution on a Windows machine.
+2. Make sure the **Windows Machine** profile and the `net10.0-windows10.0.19041.0` target are selected in the toolbar.
+3. Leave the Solution Platform (the dropdown next to `Debug`/`Release`) on **Any CPU**.
+4. Run a build
+5. Press **F5**.
+
+This only works with the unpackaged setup. If `WindowsPackageType` is still the default (`MSIX`), or `launchSettings.json` still uses `MsixPackage`, F5 will hit the packaged deployment problems described below.
+
+Visual Studio's Solution Platform is tracked in the `.sln` file and is completely independent of any `RuntimeIdentifier`/`Platform` set in the `.fsproj`. It defaults to `Any CPU`, and unpackaged apps don't need an architecture-specific host, so that default works.
+
+#### Why not packaged (MSIX)?
+
+A packaged Windows app host cannot be architecture-neutral. MSIX requires a concrete architecture, enforced by the Windows App SDK build pipeline rather than by Fabulous. In Visual Studio, this interacts badly with Solution Platform, intermediate output paths, splash-screen packaging, and Appx deployment, so F5 debugging of packaged Fabulous/F# apps is not currently reliable.
+
+Typical failures include a missing `splashSplashScreen.png` (`DEP0700`), a missing `.appxrecipe`, activation/registration errors, and path mismatches when Solution Platform is switched to `x64`.
+
+Use packaged builds only when you need MSIX-specific features, and test them outside the Visual Studio F5 flow.
 
 ## Follow the data flow
 
