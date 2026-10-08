@@ -2,43 +2,38 @@
 
 ### Added
 
-- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
-- Add unit tests covering `WidgetDiff.ScalarChanges` diffing (Added/Removed/Updated cases, empty prev/next, and the `SkipRepeatingScalars` duplicate-key behavior) (Repo Assist).
-- Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist).
-- Add unit tests for `WidgetDiff.WidgetChanges`, covering Added/Removed/Updated/ReplacedBy cases, empty prev/next, no-op on identical widgets, `canReuseView` true/false branching, and disjoint attribute sets (Repo Assist).
+- Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist, #1341).
+- Add unit tests covering `WidgetDiff.ScalarChanges` diffing (Added/Removed/Updated cases, empty prev/next, and the `SkipRepeatingScalars` duplicate-key behavior) (Repo Assist, #1311).
+- Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist, #1312).
+- Add unit tests for `WidgetDiff.WidgetChanges`, covering Added/Removed/Updated/ReplacedBy cases, empty prev/next, no-op on identical widgets, `canReuseView` true/false branching, and disjoint attribute sets (Repo Assist, #1316).
+- Add unit tests for `WidgetDiff.WidgetCollectionChanges` and `WidgetDiff.WidgetCollectionItemChanges` diffing, covering attribute-level added/removed/updated collection attributes and item-level insert/replace/update/remove behavior for collections of differing lengths (Repo Assist, #1332).
 
 ### Changed
 
-- Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist).
-- Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist).
+- Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist, #1357).
+- Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist, #1357).
+- Revise the Windows development instructions in the MAUI tutorial and get-started guide, the MAUI/Avalonia tutorials and get-started guides, and the migration guide, and update the website index page and header.
 
 ### Fixed
 
-- Correct the `Cmd` module migration section in `docs/guides/migration.md`: ... (leave this line exactly as it is)
+- Correct the `Cmd` module migration section in `docs/guides/migration.md` (Repo Assist, #1391).
 
 ## [10.0.3] - 2026-09-30
 
 ### Fixed
 
 - Fix the Avalonia templates and samples failing to build for Android: raise the Android `SupportedOSPlatformVersion` from 21 to 23.0 (required by `androidx.lifecycle.runtime`) and align the templates' Avalonia package versions to 12.1.2 (Repo Assist, #1363).
-- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
-- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
 
 ### Changed
 
 - Remove the redundant `open Fabulous` self-import in `IViewNode.fs`, `WidgetDefinitions.fs`, `WidgetDiff.fs`, and `Reconciler.fs` (a no-op since each file is already declared in the `Fabulous` namespace) (Repo Assist).
-
-### Fixed
-
-- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
-- Add unit tests for `WidgetDiff.WidgetCollectionChanges` and `WidgetDiff.WidgetCollectionItemChanges` diffing, covering attribute-level added/removed/updated collection attributes and item-level insert/replace/update/remove behavior for collections of differing lengths (Repo Assist).
-- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist).
+- Revise the Visual Studio debugging instructions for Windows and the unpackaged app setup in the MAUI tutorial (#1359, #1361, #1362).
 
 ## [10.0.2] - 2026-09-27
 
 ### Added
 
-- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist).
+- Add unit tests for `StackArray3`'s `add`, `get`, `find`, and `combine` operations, covering the `Few`/`Many` representation transitions and error paths that previously had no test coverage (Repo Assist, #1270).
 - Document the historical `Cmd` module breaking changes between Fabulous 2.4.x and 10.0.1 (removed `Cmd.ofSub`/`Cmd.dispatch`, the `Cmd.OfAsync`/`Cmd.OfTask` relocations, and the two-continuation `either` signature) in `docs/guides/migration.md` (#1336, #1337, #1338, #1339).
 
 ### Changed
@@ -56,6 +51,10 @@
 - Add Windows-from-Visual-Studio debugging guidance (Solution Platform selector, MSIX-packaged vs. unpackaged apps) to the MAUI tutorial and get-started guide (#1306, #1307, #1308, #1309, #1310, #1334, #1335).
 - Fix formatting and clarify instructions in the Avalonia get-started guide and tutorial (#1329, #1330, #1331).
 - Replace the dead Discord "Contact us" link with a mailto link in the website header (#1313).
+
+### Fixed
+
+- Route exceptions thrown by the leading-edge `emit` call in `DispatchThrottle.Dispatch` to `onError`, matching the error handling already used by the timer callback and `FlushAsync`, so a throwing dispatch handler no longer crashes the caller's dispatch thread (Repo Assist, #1303).
 
 ## [10.0.1] - 2026-09-07
 
