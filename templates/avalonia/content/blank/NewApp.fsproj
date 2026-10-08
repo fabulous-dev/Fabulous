@@ -18,7 +18,7 @@
     <AvaloniaPlatform Condition="'$(AvaloniaPlatform)' == 'ios'">iOS</AvaloniaPlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'Android'">
-    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(AvaloniaPlatform)' == 'iOS'">
     <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>

@@ -1,7 +1,6 @@
 namespace Fabulous
 
 open System
-open Fabulous
 
 /// Widget definition to create a control
 type WidgetDefinition =
