@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -18,9 +18,12 @@
     <Compile Include="AttributesTests.fs" />
     <Compile Include="ViewTests.fs" />
     <Compile Include="ArrayTests.fs" />
+    <Compile Include="WidgetDiffTests.fs" />
     <Compile Include="CmdTests.fs" />
+    <Compile Include="WidgetDiffEnvironmentChangesTests.fs" />
     <Compile Include="WidgetDiffWidgetChangesTests.fs" />
     <Compile Include="SubTests.fs" />
+    <Compile Include="ReconcilerTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsCheck.NUnit" />
