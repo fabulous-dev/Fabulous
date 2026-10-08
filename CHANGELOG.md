@@ -4,6 +4,7 @@
 
 - Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist).
 - Add unit tests covering `WidgetDiff.ScalarChanges` diffing (Added/Removed/Updated cases, empty prev/next, and the `SkipRepeatingScalars` duplicate-key behavior) (Repo Assist).
+- Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist).
 
 ### Changed
 
