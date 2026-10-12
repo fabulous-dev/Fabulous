@@ -39,6 +39,6 @@ module Program =
     0
 ```
 
-Both packaged and unpackaged Windows applications are supported. The default MAUI launch profile uses `MsixPackage`; configure the package identity, signing certificate, and manifest for deployment. For local or CI launch tests without MSIX registration, build with `-p:WindowsPackageType=None -p:RuntimeIdentifier=win10-x64`. The package initializes the Windows App SDK runtime for that unpackaged path.
+Both packaged and unpackaged Windows applications are supported. Starting with version 10.0.4, the Fabulous MAUI template generates an unpackaged project (`WindowsPackageType=None` and a `Project` launch profile), which is the easiest setup for local development and F5 debugging. The stock MAUI template and earlier Fabulous templates use `MsixPackage`; for a packaged app, configure the package identity, signing certificate, and manifest for deployment. For local or CI launch tests without MSIX registration, build with `-p:WindowsPackageType=None -p:RuntimeIdentifier=win10-x64`. The package initializes the Windows App SDK runtime for that unpackaged path.
 
 See `samples/maui/WinUICompat/HelloWorld.Maui` for a plain MAUI host and `samples/maui/WinUICompat/HelloWorld.Fabulous` for a Fabulous host.
