@@ -29,28 +29,28 @@ Unpackaged builds skip MSIX packaging entirely, which avoids the deployment issu
 
 Earlier versions of the template generated a packaged (MSIX) Windows project, for which F5 debugging in Visual Studio is unreliable. To convert an existing project to unpackaged:
 
-1. In your `.fsproj`, add the following lines into the main `<PropertyGroup>`:
+**Step 1.** In your `.fsproj`, add the following lines into the main `<PropertyGroup>`:
 
-   ```xml
-   <WindowsPackageType>None</WindowsPackageType>
-   <!-- F#: avoid WASDK injecting a .cs auto-initializer (FS0226) -->
-   <WindowsAppSdkUndockedRegFreeWinRTInitialize>false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
-   ```
+```xml
+<WindowsPackageType>None</WindowsPackageType>
+<!-- F#: avoid WASDK injecting a .cs auto-initializer (FS0226) -->
+<WindowsAppSdkUndockedRegFreeWinRTInitialize>false</WindowsAppSdkUndockedRegFreeWinRTInitialize>
+```
 
-2. In `Properties/launchSettings.json`, use the `Project` command (not `MsixPackage`):
+**Step 2.** In `Properties/launchSettings.json`, use the `Project` command (not `MsixPackage`):
 
-   ```json
-   {
-     "profiles": {
-       "Windows Machine": {
-         "commandName": "Project",
-         "nativeDebugging": false
-       }
-     }
-   }
-   ```
+```json
+{
+  "profiles": {
+    "Windows Machine": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
+```
 
-3. Build and run with the commands above.
+**Step 3.** Build and run with the commands above.
 
 ### What the project contains
 
