@@ -13,6 +13,7 @@
 - Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist, #1357).
 - Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist, #1357).
 - Revise the Windows development instructions in the MAUI tutorial and get-started guide, the MAUI/Avalonia tutorials and get-started guides, and the migration guide, and update the website index page and header.
+- Change the MAUI samples to build as unpackaged Windows applications, matching the updated MAUI template: each sample's `.fsproj` now sets `WindowsPackageType=None` with the FS0226 workaround, and `Properties/launchSettings.json` uses the `Project` command instead of `MsixPackage` (Repo Assist, #1411, #1413).
 
 ### Fixed
 
