@@ -12,7 +12,10 @@
 
 - Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist, #1357).
 - Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist, #1357).
-- Revise the Windows development instructions in the MAUI tutorial and get-started guide, the MAUI/Avalonia tutorials and get-started guides, and the migration guide, and update the website index page and header.
+- Revise the Windows development instructions in the MAUI tutorial and get-started guide, the MAUI/Avalonia tutorials and get-started guides, and the migration guide, and update the website index page and header (#1410).
+- Change the MAUI template (`Fabulous.MauiControls.Templates`) to generate an unpackaged Windows project by default: `NewApp.fsproj` now sets `WindowsPackageType=None` with the FS0226 workaround (`WindowsAppSdkUndockedRegFreeWinRTInitialize=false`), and `Properties/launchSettings.json` uses the `Project` command instead of `MsixPackage`. F5 debugging in Visual Studio and `dotnet run` now work on Windows without manual edits (#1408).
+- Update the MAUI tutorial for the new unpackaged default: remove the temporary known-issue notice, keep the manual conversion steps for projects created before 10.0.4, fix the "Why not packaged (MSIX)?" anchor links, and document how to switch back to a packaged build (#1410).
+- Update the `FSharp.Maui.WinUICompat` README to reflect that the Fabulous MAUI template now generates an unpackaged Windows project by default, while the stock MAUI template and earlier Fabulous templates still use `MsixPackage` (#1412).
 
 ### Fixed
 
