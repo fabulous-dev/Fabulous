@@ -1,7 +1,8 @@
 ## [Unreleased]
+  
+## [10.0.4] - 2026-10-12
 
 ### Added
-
 - Add unit tests for `Reconciler.update`, covering that it forwards exactly one diff to `IViewNode.ApplyDiff`, correctly reports scalar-attribute added/unchanged/changed cases, and handles a missing previous widget and an attribute-less widget pair (Repo Assist, #1341).
 - Add unit tests covering `WidgetDiff.ScalarChanges` diffing (Added/Removed/Updated cases, empty prev/next, and the `SkipRepeatingScalars` duplicate-key behavior) (Repo Assist, #1311).
 - Add unit tests for `WidgetDiff.EnvironmentChanges`, covering empty prev/next, all-Added/all-Removed cases, `Updated` on differing values, no-op on identical values, disjoint key sets, and the `SkipRepeatingScalars` duplicate-key dedup behavior (Repo Assist, #1312).
@@ -13,6 +14,9 @@
 - Simplify `Cmd.map`'s closure composition to avoid allocating an extra intermediate function per effect on every call (Repo Assist, #1357).
 - Implement `CollectionBuilder.YieldFrom` using `MutStackArray1.addMut` directly (addressing a `TODO` left in the code), avoiding the intermediate `Seq.map`/`Seq.toArray` allocations previously used to compile a sequence of widgets (Repo Assist, #1357).
 - Revise the Windows development instructions in the MAUI tutorial and get-started guide, the MAUI/Avalonia tutorials and get-started guides, and the migration guide, and update the website index page and header.
+- Change the MAUI template (`Fabulous.MauiControls.Templates`) to generate an unpackaged Windows project by default: `NewApp.fsproj` now sets `WindowsPackageType=None` with the FS0226 workaround (`WindowsAppSdkUndockedRegFreeWinRTInitialize=false`), and `Properties/launchSettings.json` uses the `Project` command instead of `MsixPackage`. F5 debugging in Visual Studio and `dotnet run` now work on Windows without manual edits. This only affects projects created with this template version or later; projects generated earlier keep their current setup and can be converted by hand as described in the MAUI tutorial. To use MSIX packaging in a new project, set `WindowsPackageType=MSIX` and use `MsixPackage` in `launchSettings.json` (#1408, #1409).
+- Update the MAUI tutorial for the unpackaged Windows default: keep the manual conversion steps for projects created before 10.0.4, fix the "Why not packaged (MSIX)?" anchor links, and document how to switch back to a packaged build (#1410).
+- Update the `FSharp.Maui.WinUICompat` README to reflect that the Fabulous MAUI template now generates an unpackaged Windows project by default, while the stock MAUI template and earlier Fabulous templates still use `MsixPackage` (#1412).
 - Change the MAUI samples to build as unpackaged Windows applications, matching the updated MAUI template: each sample's `.fsproj` now sets `WindowsPackageType=None` with the FS0226 workaround, and `Properties/launchSettings.json` uses the `Project` command instead of `MsixPackage` (Repo Assist, #1411, #1413).
 
 ### Fixed
