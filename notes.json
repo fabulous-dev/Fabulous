@@ -6,7 +6,14 @@
   },
   "issues": [],
   "fixes": [],
-  "checks": [],
+  "checks": [
+    {
+      "area": "ci",
+      "checked_at": "2026-10-17",
+      "result": "Labelled #1395 enhancement; no actionable eng/bug work found; #1395 is a Nov-2026 tracking issue.",
+      "follow_up": null
+    }
+  ],
   "completed_actions": [],
   "priorities": []
 }
