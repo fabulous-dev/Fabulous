@@ -1,7 +1,9 @@
 namespace ComponentNavigation.Android
 
+open System
 open Android.App
 open Android.Content.PM
+open Android.Runtime
 open Avalonia
 open Avalonia.Android
 open ComponentNavigation
@@ -13,6 +15,10 @@ open Fabulous.Avalonia
            LaunchMode = LaunchMode.SingleTop,
            ConfigurationChanges = (ConfigChanges.Orientation ||| ConfigChanges.ScreenSize))>]
 type MainActivity() =
-    inherit AvaloniaMainActivity<FabApplication>()
+    inherit AvaloniaMainActivity()
+
+[<Application>]
+type MainApplication(handle: IntPtr, ownership: JniHandleOwnership) =
+    inherit AvaloniaAndroidApplication<FabApplication>(handle, ownership)
 
     override this.CustomizeAppBuilder(_builder: AppBuilder) = App.create().UseAndroid()

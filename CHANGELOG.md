@@ -1,4 +1,8 @@
 ## [Unreleased]
+
+### Fixed
+
+- Fix the Avalonia Android host in the templates and samples for Avalonia 12: use the non-generic `AvaloniaMainActivity` and move `CustomizeAppBuilder` to an `[<Application>]` type inheriting `AvaloniaAndroidApplication<FabApplication>` (Repo Assist, #1376).
   
 ## [10.0.4] - 2026-10-12
 
