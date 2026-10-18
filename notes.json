@@ -8,11 +8,11 @@
   "fixes": [
     {
       "issue": 1376,
-      "pr": null,
+      "pr": 1418,
       "branch": "repo-assist/fix-issue-1376-android-host-templates",
-      "status": "open",
+      "status": "closed",
       "updated_at": "2026-10-18",
-      "note": "Draft PR created; ported Android hosts"
+      "note": "Maintainer instruction: do NOT act on #1376 or reopen/recreate #1418; maintainers only."
     }
   ],
   "checks": [
