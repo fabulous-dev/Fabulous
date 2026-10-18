@@ -5,7 +5,16 @@
     "investigation_after": null
   },
   "issues": [],
-  "fixes": [],
+  "fixes": [
+    {
+      "issue": 1376,
+      "pr": null,
+      "branch": "repo-assist/fix-issue-1376-android-host-templates",
+      "status": "open",
+      "updated_at": "2026-10-18",
+      "note": "Draft PR created; ported Android hosts"
+    }
+  ],
   "checks": [
     {
       "area": "ci",
