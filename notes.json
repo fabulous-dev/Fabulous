@@ -18,8 +18,8 @@
   "checks": [
     {
       "area": "ci",
-      "checked_at": "2026-10-17",
-      "result": "Labelled #1395 enhancement; no actionable eng/bug work found; #1395 is a Nov-2026 tracking issue.",
+      "checked_at": "2026-10-27",
+      "result": "All 8 open issues labelled; #1376 held for maintainers; #1395 tracking only; no open repo-assist PRs; no actionable work found in selected tasks 7,4,9.",
       "follow_up": null
     }
   ],
