@@ -1,5 +1,8 @@
 ## [Unreleased]
-  
+
+### Added
+- Add `maui-to-core-usage.md`, a compiler-based map of which Fabulous.Core declarations each MAUI source file uses (Repo Assist, #1419).
+
 ## [10.0.4] - 2026-10-12
 
 ### Added
