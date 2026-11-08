@@ -4,7 +4,14 @@
     "labelling_after": null,
     "investigation_after": null
   },
-  "issues": [],
+  "issues": [
+    {
+      "number": 1395,
+      "state": "deferred",
+      "updated_at": "2026-11-08",
+      "note": "Maintainer: do nothing on #1395 (no PR/issue/comment)."
+    }
+  ],
   "fixes": [
     {
       "issue": 1376,
