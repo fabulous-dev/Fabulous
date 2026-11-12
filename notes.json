@@ -10,6 +10,12 @@
       "state": "deferred",
       "updated_at": "2026-11-08",
       "note": "Maintainer: do nothing on #1395 (no PR/issue/comment)."
+    },
+    {
+      "number": 1422,
+      "state": "deferred",
+      "updated_at": "2026-11-12",
+      "note": "Findings posted; maintainer asked for no PR/action pending human review. Fix candidate: drain queue at end of Runner.start."
     }
   ],
   "fixes": [
@@ -25,9 +31,9 @@
   "checks": [
     {
       "area": "ci",
-      "checked_at": "2026-10-27",
-      "result": "All 8 open issues labelled; #1376 held for maintainers; #1395 tracking only; no open repo-assist PRs; no actionable work found in selected tasks 7,4,9.",
-      "follow_up": null
+      "checked_at": "2026-11-12",
+      "result": "Open issues all labelled/held except #1422 (held by maintainer request); no repo-assist PRs.",
+      "follow_up": "Fix #1422 only if maintainers ask."
     }
   ],
   "completed_actions": [],
