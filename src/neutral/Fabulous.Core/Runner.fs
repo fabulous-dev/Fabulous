@@ -68,6 +68,11 @@ type Runner<'arg, 'model, 'msg>(getState: unit -> 'model, setState: 'model -> un
             // Execute the commands
             Cmd.exec (fun ex -> onError("Error initializing", ex)) dispatch cmd
 
+            // Process the messages that were dispatched while starting
+            match queue.TryDequeue() with
+            | true, msg -> processMsgs dispatch msg
+            | false, _ -> ()
+
             _reentering <- false
         with ex ->
             _reentering <- false
