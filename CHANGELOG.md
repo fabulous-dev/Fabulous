@@ -1,4 +1,8 @@
 ## [Unreleased]
+
+### Fixed
+
+- Fix messages dispatched during runner start (init command, subscription start) staying queued until the next dispatch (#1422)
   
 ## [10.0.4] - 2026-10-12
 
